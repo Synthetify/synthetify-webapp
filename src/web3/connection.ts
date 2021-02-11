@@ -1,5 +1,5 @@
 import { Connection } from '@solana/web3.js'
-import { Provider, Wallet } from '@project-serum/anchor'
+import { Provider, setProvider, Wallet } from '@project-serum/anchor'
 import { getSolanaWallet } from './wallet'
 import { SolanaNetworks } from '@consts/static'
 
@@ -28,6 +28,8 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
   }
   _connection = new Connection(url)
   _network = url
+  // set globaly provider
+  setProvider(getSolanaProvider())
   return _connection
 }
 
