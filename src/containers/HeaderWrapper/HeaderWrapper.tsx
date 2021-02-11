@@ -4,7 +4,7 @@ import Header from '@components/Header/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { network } from '@selectors/solanaConnection'
 import { actions } from '@reducers/solanaConnection'
-import { SolanaNetworks } from '@web3/solana/connection'
+import { SolanaNetworks } from '@web3/connection'
 
 export const HeaderWrapper: React.FC = () => {
   const dispatch = useDispatch()

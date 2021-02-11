@@ -3,7 +3,7 @@ import React from 'react'
 import useStyles from './style'
 import SolanaIcon from '@static/svg/solana.svg'
 import CommonButton from '@components/CommonButton/CommonButton'
-import { SolanaNetworks } from '@web3/solana/connection'
+import { SolanaNetworks } from '@web3/connection'
 
 export interface IProps {
   address: string

@@ -1,11 +1,10 @@
 import { call, SagaGenerator, select } from 'typed-redux-saga'
 
 import { getConnection } from './connection'
-import { TokenProgramMap } from '@web3/solana/wallet'
 import { PublicKey } from '@solana/web3.js'
 import { MintInfo, Token } from '@solana/spl-token'
-import { network } from '@selectors/solanaConnection'
 import { getWallet } from './wallet'
+import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
 
 export function* createToken(
   decimals: number,
@@ -14,7 +13,6 @@ export function* createToken(
 ): SagaGenerator<string> {
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const currentNetwork = yield* select(network)
 
   const token = yield* call(
     [Token, Token.createMint],
@@ -23,21 +21,18 @@ export function* createToken(
     mintAuthority ? new PublicKey(mintAuthority) : wallet.publicKey,
     freezeAuthority ? new PublicKey(freezeAuthority) : null,
     decimals,
-    new PublicKey(TokenProgramMap[currentNetwork])
+    TOKEN_PROGRAM_ID
   )
-
-  // @ts-expect-error
   const tokenPubKey = token.publicKey.toString() as string
   return tokenPubKey
 }
 export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const currentNetwork = yield* select(network)
   const token = new Token(
     connection,
     new PublicKey(address),
-    new PublicKey(TokenProgramMap[currentNetwork]),
+    TOKEN_PROGRAM_ID,
     wallet
   )
   const info = yield* call([token, token.getMintInfo])
@@ -47,11 +42,10 @@ export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
 export function* mintToken(tokenAddress: string, recipient: string, amount: number): Generator {
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const currentNetwork = yield* select(network)
   const token = new Token(
     connection,
     new PublicKey(tokenAddress),
-    new PublicKey(TokenProgramMap[currentNetwork]),
+    TOKEN_PROGRAM_ID,
     wallet
   )
   // This should return txid in future

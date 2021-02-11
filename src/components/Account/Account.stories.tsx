@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Account from './Account'
 import { withKnobs } from '@storybook/addon-knobs'
-import { SolanaNetworks } from '@web3/solana/connection'
+import { SolanaNetworks } from '@web3/connection'
 storiesOf('ui/Account', module)
   .addDecorator(withKnobs)
   .add('mainnet', () => (

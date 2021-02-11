@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { SolanaNetworks } from '@web3/solana/connection'
+import { SolanaNetworks } from '@web3/connection'
 import { PayloadType } from './types'
 export enum Status {
   Uninitialized = 'uninitialized',

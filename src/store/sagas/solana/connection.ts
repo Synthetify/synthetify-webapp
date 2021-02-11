@@ -3,7 +3,7 @@ import { all, call, put, SagaGenerator, select, takeLeading, spawn } from 'typed
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
 import { actions as solanaWalletActions } from '@reducers/solanaWallet'
 import { actions as uiActions } from '@reducers/ui'
-import { getSolanaConnection, networkToName } from '@web3/solana/connection'
+import { getSolanaConnection, networkToName } from '@web3/connection'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'

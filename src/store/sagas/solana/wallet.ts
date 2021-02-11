@@ -11,7 +11,7 @@ import {
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
-import { getSolanaWallet, TokenProgramMap } from '@web3/solana/wallet'
+import { getSolanaWallet } from '@web3/wallet'
 import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
 import { network } from '@selectors/solanaConnection'
@@ -19,6 +19,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 // import { createToken } from './token'
+import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
 
 export function* getWallet(): SagaGenerator<Account> {
   const wallet = yield* call(getSolanaWallet)
@@ -100,13 +101,12 @@ interface IparsedTokenInfo {
 }
 export function* fetchTokensAccounts(): Generator {
   const connection = yield* call(getConnection)
-  const currentNetwork = yield* select(network)
   const wallet = yield* call(getWallet)
   const tokensAccounts = yield* call(
     [connection, connection.getParsedTokenAccountsByOwner],
     wallet.publicKey,
     {
-      programId: new PublicKey(TokenProgramMap[currentNetwork])
+      programId: TOKEN_PROGRAM_ID
     }
   )
 
@@ -126,13 +126,7 @@ export function* fetchTokensAccounts(): Generator {
 export function* getToken(tokenAddress: string): SagaGenerator<Token> {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
-  const currentNetwork = yield* select(network)
-  const token = new Token(
-    connection,
-    new PublicKey(tokenAddress),
-    new PublicKey(TokenProgramMap[currentNetwork]),
-    wallet
-  )
+  const token = new Token(connection, new PublicKey(tokenAddress), TOKEN_PROGRAM_ID, wallet)
   return token
 }
 

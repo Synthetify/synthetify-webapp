@@ -10,14 +10,13 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@reduxjs/toolkit": "^1.4.0",
-    "@solana/spl-token": "0.0.11",
-    "@solana/web3.js": "^0.81.0",
+    "@solana/spl-token": "^0.0.13",
+    "@solana/web3.js": "^0.91.1",
     "@types/redux-persist": "^4.3.1",
     "buffer-layout": "^1.2.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.8.0",
     "cryptocurrency-icons": "^0.16.1",
-    "ethers": "^5.0.8",
     "history": "^5.0.0",
     "immer": "^7.0.7",
     "immutable": "^4.0.0-rc.12",
@@ -40,7 +39,9 @@
     "remeda": "0.0.21",
     "typed-redux-saga": "^1.2.0",
     "typescript": "^3.9.7",
-    "yup": "^0.29.2"
+    "yup": "^0.29.2",
+    "@project-serum/serum": "^0.13.21",
+    "@project-serum/anchor": "^0.2.1"
   },
   "scripts": {
     "start": "react-app-rewired start",

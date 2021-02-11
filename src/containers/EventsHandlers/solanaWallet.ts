@@ -5,9 +5,9 @@ import { accounts, address, status as walletStatus } from '@selectors/solanaWall
 import { status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/solanaWallet'
 import { AccountInfo, PublicKey } from '@solana/web3.js'
-import { getCurrentSolanaConnection } from '@web3/solana/connection'
+import { getCurrentSolanaConnection } from '@web3/connection'
 import { Status } from '@reducers/solanaConnection'
-import { parseTokenAccountData } from '@web3/solana/data'
+import { parseTokenAccountData } from '@web3/data'
 
 const SolanaWalletEvents = () => {
   const dispatch = useDispatch()
