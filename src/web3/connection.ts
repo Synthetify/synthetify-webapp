@@ -37,6 +37,10 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
   }
   _connection = new Connection(url)
   _network = url
+  _provider = new Provider(_connection, new Wallet(getSolanaWallet()), Provider.defaultOptions())
+  _system = new Program(systemIdl as Idl, SYSTEM_ADDRESS, _provider)
+  _oracle = new Program(oracleIdl as Idl, ORACLE_ADDRESS, _provider)
+
   // set globaly provider
   setProvider(getSolanaProvider())
   return _connection
