@@ -3,7 +3,7 @@ import { all, call, put, SagaGenerator, select, takeLeading, spawn } from 'typed
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
 import { actions as solanaWalletActions } from '@reducers/solanaWallet'
 import { actions as uiActions } from '@reducers/ui'
-import { getSolanaConnection, networkToName } from '@web3/connection'
+import { getSolanaConnection, networkToName, getSystemProgram } from '@web3/connection'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
@@ -27,8 +27,14 @@ export function* initConnection(): Generator {
         persist: false
       })
     )
+    const systemProgram = yield* call(getSystemProgram)
+    console.log(systemProgram)
+    // @ts-expect-error
+    const state = yield* call(systemProgram.state)
+    console.log(state)
     yield put(solanaWalletActions.initWallet())
   } catch (error) {
+    console.log(error)
     yield put(actions.setStatus(Status.Error))
     yield put(
       snackbarsActions.add({

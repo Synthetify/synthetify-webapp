@@ -1,0 +1,399 @@
+{
+  "version": "0.0.0",
+  "name": "system",
+  "instructions": [
+    {
+      "name": "createUserAccount",
+      "accounts": [
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "owner",
+          "type": "publicKey"
+        }
+      ]
+    }
+  ],
+  "state": {
+    "struct": {
+      "name": "InternalState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nonce",
+            "type": "u8"
+          },
+          {
+            "name": "signer",
+            "type": "publicKey"
+          },
+          {
+            "name": "initialized",
+            "type": "bool"
+          },
+          {
+            "name": "debt",
+            "type": "u64"
+          },
+          {
+            "name": "shares",
+            "type": "u64"
+          },
+          {
+            "name": "collateralBalance",
+            "type": "u64"
+          },
+          {
+            "name": "collateralToken",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralizationLevel",
+            "type": "u32"
+          },
+          {
+            "name": "maxDelay",
+            "type": "u32"
+          },
+          {
+            "name": "assets",
+            "type": {
+              "vec": {
+                "defined": "Asset"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "methods": [
+      {
+        "name": "new",
+        "accounts": [],
+        "args": []
+      },
+      {
+        "name": "initialize",
+        "accounts": [],
+        "args": [
+          {
+            "name": "nonce",
+            "type": "u8"
+          },
+          {
+            "name": "signer",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralToken",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralTokenFeed",
+            "type": "publicKey"
+          },
+          {
+            "name": "usdToken",
+            "type": "publicKey"
+          }
+        ]
+      },
+      {
+        "name": "mint",
+        "accounts": [
+          {
+            "name": "authority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "mint",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "to",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "userAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "withdraw",
+        "accounts": [
+          {
+            "name": "userAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "authority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "to",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "addAsset",
+        "accounts": [
+          {
+            "name": "assetAddress",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "feedAddress",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "deposit",
+        "accounts": [
+          {
+            "name": "userAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "updatePrice",
+        "accounts": [
+          {
+            "name": "priceFeedAccount",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "feedAddress",
+            "type": "publicKey"
+          }
+        ]
+      },
+      {
+        "name": "burn",
+        "accounts": [
+          {
+            "name": "authority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "mint",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    ]
+  },
+  "accounts": [
+    {
+      "name": "UserAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "shares",
+            "type": "u64"
+          },
+          {
+            "name": "collateral",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "Asset",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "feedAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "assetAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "lastUpdate",
+            "type": "u64"
+          },
+          {
+            "name": "supply",
+            "type": "u64"
+          },
+          {
+            "name": "decimals",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 100,
+      "name": "ErrorType",
+      "msg": "Your error message"
+    },
+    {
+      "code": 101,
+      "name": "AssetsFull",
+      "msg": "Assets is full"
+    },
+    {
+      "code": 102,
+      "name": "ZeroDeposit",
+      "msg": "Deposited zero"
+    },
+    {
+      "code": 103,
+      "name": "OutdatedOracle",
+      "msg": "Outdated oracle"
+    },
+    {
+      "code": 104,
+      "name": "MissingCollateralToken",
+      "msg": "Missing Collateral token"
+    },
+    {
+      "code": 105,
+      "name": "MintLimit",
+      "msg": "Mint limit crossed"
+    },
+    {
+      "code": 106,
+      "name": "NotSyntheticUsd",
+      "msg": "Wrong token not sythetic usd"
+    },
+    {
+      "code": 107,
+      "name": "WithdrawError",
+      "msg": "Not enough collateral"
+    }
+  ],
+  "metadata": {
+    "address": "4dZnVVf6d4Tm2Q7U3BVncEL4camgfuy4T5fx5XE4U8DC"
+  }
+}
