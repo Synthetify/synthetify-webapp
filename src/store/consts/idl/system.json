@@ -39,6 +39,10 @@
             "type": "publicKey"
           },
           {
+            "name": "admin",
+            "type": "publicKey"
+          },
+          {
             "name": "initialized",
             "type": "bool"
           },
@@ -71,6 +75,10 @@
             "type": "u32"
           },
           {
+            "name": "fee",
+            "type": "u8"
+          },
+          {
             "name": "assets",
             "type": {
               "vec": {
@@ -97,6 +105,10 @@
           },
           {
             "name": "signer",
+            "type": "publicKey"
+          },
+          {
+            "name": "admin",
             "type": "publicKey"
           },
           {
@@ -149,6 +161,11 @@
             "name": "clock",
             "isMut": false,
             "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
           }
         ],
         "args": [
@@ -190,6 +207,11 @@
             "name": "clock",
             "isMut": false,
             "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
           }
         ],
         "args": [
@@ -211,9 +233,19 @@
             "name": "feedAddress",
             "isMut": false,
             "isSigner": false
+          },
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
           }
         ],
-        "args": []
+        "args": [
+          {
+            "name": "ticker",
+            "type": "bytes"
+          }
+        ]
       },
       {
         "name": "deposit",
@@ -284,6 +316,67 @@
             "name": "clock",
             "isMut": false,
             "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "swap",
+        "accounts": [
+          {
+            "name": "authority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "tokenIn",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenFor",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccountIn",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccountFor",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
           }
         ],
         "args": [
@@ -346,6 +439,10 @@
           {
             "name": "decimals",
             "type": "u8"
+          },
+          {
+            "name": "ticker",
+            "type": "bytes"
           }
         ]
       }
@@ -391,9 +488,19 @@
       "code": 107,
       "name": "WithdrawError",
       "msg": "Not enough collateral"
+    },
+    {
+      "code": 108,
+      "name": "SyntheticCollateral",
+      "msg": "Synthetic collateral is not supported"
+    },
+    {
+      "code": 109,
+      "name": "Unauthorized",
+      "msg": "You are not admin of system"
     }
   ],
   "metadata": {
-    "address": "4dZnVVf6d4Tm2Q7U3BVncEL4camgfuy4T5fx5XE4U8DC"
+    "address": "4DrEykES68AK3UoSxi6iLismgqGTSV9vDrHiSbnREdT1"
   }
 }

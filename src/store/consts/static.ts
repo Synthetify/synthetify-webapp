@@ -8,9 +8,9 @@ declare global {
 window.ethereum = window.ethereum || {}
 
 enum SolanaNetworks {
-  DEV = 'http://devnet.solana.com',
-  TEST = 'http://testnet.solana.com',
-  MAIN = 'http://api.mainnet-beta.solana.com'
+  DEV = 'https://devnet.solana.com',
+  TEST = 'https://testnet.solana.com',
+  MAIN = 'https://api.mainnet-beta.solana.com'
 }
 
 export { SolanaNetworks }
