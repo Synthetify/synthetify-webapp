@@ -17,8 +17,10 @@ const useStyles = makeStyles(() =>
     contentWrapper: {
       maxWidth: 1160,
       padding: 16
+    },
+    side: {
+      width: 300
     }
-
   })
 )
 export default useStyles
