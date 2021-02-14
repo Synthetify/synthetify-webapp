@@ -19,11 +19,11 @@ export interface IExchange {
   shares: BN
   fee: number
   collateralizationLevel: number
-  assets: IAsset[]
+  assets: { [key in string]: IAsset }
 }
 
 export const defaultState: IExchange = {
-  assets: [],
+  assets: {},
   collateralAccount: new PublicKey(0),
   collateralToken: new PublicKey(0),
   fee: 30,
@@ -41,6 +41,10 @@ const exchangeSlice = createSlice({
     },
     setState(state, action: PayloadAction<IExchange>) {
       state = action.payload
+      return state
+    },
+    setAssetPrice(state, action: PayloadAction<{ token: PublicKey; price: BN }>) {
+      state.assets[action.payload.token.toString()].price = action.payload.price
       return state
     }
   }

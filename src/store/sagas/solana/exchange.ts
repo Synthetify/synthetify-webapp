@@ -8,6 +8,7 @@ import testAdmin from '@consts/testAdmin'
 import * as R from 'remeda'
 import { getSystemProgram } from '@web3/connection'
 import { createAccount, getToken } from './wallet'
+import { pullAssetPrices } from './oracle'
 
 export function* pullExchangeState(): Generator {
   const systemProgram = yield* call(getSystemProgram)
@@ -18,21 +19,24 @@ export function* pullExchangeState(): Generator {
       debt: state.debt,
       shares: state.shares,
       collateralAccount: state.collateralAccount,
-      assets: R.map(state.assets, (a: any) => {
-        return {
-          address: a.assetAddress,
-          feedAddress: a.feedAddress,
-          decimals: a.decimals,
-          price: a.price,
-          supply: a.supply,
-          ticker: a.ticker
-        } as IAsset
-      }),
+      assets: state.assets.reduce((acc: any, a: any) => {
+        return Object.assign(acc, {
+          [a.assetAddress.toString()]: {
+            address: a.assetAddress,
+            feedAddress: a.feedAddress,
+            decimals: a.decimals,
+            price: a.price,
+            supply: a.supply,
+            ticker: a.ticker
+          }
+        })
+      }, {}),
       collateralToken: state.collateralToken,
       fee: state.fee,
       collateralizationLevel: state.collateralizationLevel
     })
   )
+  yield* call(pullAssetPrices)
 }
 export function* getCollateralTokenAirdrop(): Generator {
   const collateralTokenAddress = yield* select(collateralToken)
