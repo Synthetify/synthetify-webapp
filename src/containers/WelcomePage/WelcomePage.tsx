@@ -6,7 +6,8 @@ import solanaConnectionSelector from '@selectors/solanaConnection'
 import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
 import EventsHandlers from '@containers/EventsHandlers'
 import Header from '@containers/HeaderWrapper/HeaderWrapper'
-import WalletPage from '@containers/WalletPage/WalletPage'
+import Account from '@containers/Account/Account'
+import Staking from '@containers/Staking/Staking'
 import SideMenu from '@components/SideMenu/SideMenu'
 
 import useStyles from './style'
@@ -25,6 +26,18 @@ const WelcomePage: React.FC = () => {
     // dispatch(providerActions.initProvider())
     dispatch(solanaConnectionActions.initSolanaConnection())
   }, [dispatch])
+  const getComponent = (location: UiLocation) => {
+    switch (location) {
+      case UiLocation.Account:
+        return <Account />
+
+      case UiLocation.Staking:
+        return <Staking />
+
+      default:
+        return <Account />
+    }
+  }
   return (
     <Grid container direction='column' className={classes.background}>
       <Grid item>
@@ -36,7 +49,11 @@ const WelcomePage: React.FC = () => {
             <SideMenu location={location} setLocation={setLocation}></SideMenu>
           </Grid>
           <Grid item xs>
-            <WalletPage />
+            <Grid container className={classes.contentContainer} justify='center'>
+              <Grid item xs={12} className={classes.contentWrapper}>
+                {getComponent(location)}
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
