@@ -5,6 +5,7 @@ import CommonButton from '@components/CommonButton/CommonButton'
 import { networkToName, SolanaNetworks } from '@web3/connection'
 import BlurOnIcon from '@material-ui/icons/BlurOn'
 import useStyles from './style'
+import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
 
 export interface IHeader {
   onClickLogo: () => void
@@ -16,15 +17,26 @@ export const Header: React.FC<IHeader> = ({ onClickLogo, onNetworkClick, network
   const [open, setOpen] = useState(false)
   return (
     <>
-      <Grid container className={classes.root} justify='space-between' alignItems='center'>
+      <Grid
+        container
+        className={classes.root}
+        wrap='nowrap'
+        justify='space-between'
+        alignItems='center'>
         <Grid item>
-          {/* <SynthetifyIconHorizontal onClick={onClickLogo} /> */}
-          <Typography variant='h3' color='primary' className={classes.title} onClick={onClickLogo}>
-            Nebula Wallet
-          </Typography>
+          <SynthetifyIconHorizontal onClick={onClickLogo} />
         </Grid>
         <Grid item>
-          <Grid container>
+          <Grid container wrap='nowrap'>
+            <Grid item className={classes.divAirdropButton}>
+              <CommonButton
+                className={classes.buttonAirdrop}
+                name={'Airdrop'}
+                startIcon={<BlurOnIcon style={{ fontSize: 27 }} />}
+                onClick={() => {
+                  setOpen(true)
+                }}></CommonButton>
+            </Grid>
             <Grid item className={classes.divButton}>
               <CommonButton
                 className={classes.button}

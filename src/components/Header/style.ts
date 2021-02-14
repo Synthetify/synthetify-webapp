@@ -2,22 +2,19 @@ import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   root: {
-    height: 80,
-    paddingLeft: 25,
-    paddingRight: 25,
+    // height: 80,
+    // paddingLeft: 25,
+    padding: 25,
+    // paddingLeft: 25,
+    // paddingRight: 25,
     // backgroundColor: colors.black.greyish,
     borderBottom: `2px solid ${colors.green.hover}`
   },
-  title: {
-    fontWeight: 'bold'
-  },
-  logo: {
-    height: 36,
-    marginTop: 6,
-    cursor: 'pointer'
-  },
   divButton: {
-    marginLeft: 70
+    // marginLeft: 70
+  },
+  divAirdropButton: {
+    marginRight: 20
   },
 
   button: {
@@ -28,6 +25,16 @@ const useStyles = makeStyles(() => ({
       borderWidth: 2,
       backgroundColor: `${colors.red.pinkish}`,
       borderColor: colors.red.pinkish
+    }
+  },
+  buttonAirdrop: {
+    width: 'auto',
+    color: colors.green.main,
+    borderColor: colors.green.main,
+    '&:hover': {
+      borderWidth: 2,
+      backgroundColor: `${colors.green.main}`,
+      borderColor: colors.green.main
     }
   },
   navigationRoot: {

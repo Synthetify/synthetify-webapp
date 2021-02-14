@@ -29,6 +29,8 @@ const SolanaWalletEvents = () => {
   }, [dispatch, publicKey, networkStatus])
 
   // Solana Tokens
+
+  // TODO refactor
   const tokensAccounts = useSelector(accounts)
   const walletStat = useSelector(walletStatus)
   const [initializedAccounts, setInitializedAccounts] = useState<Set<string>>(new Set())
@@ -41,17 +43,17 @@ const SolanaWalletEvents = () => {
       const tempSet = new Set<string>()
       R.forEachObj(tokensAccounts, tokenAccounts => {
         for (const account of tokenAccounts) {
-          tempSet.add(account.address)
-          if (initializedAccounts.has(account.address)) {
+          tempSet.add(account.address.toString())
+          if (initializedAccounts.has(account.address.toString())) {
             continue
           }
           connection.onAccountChange(
-            new PublicKey(account.address),
+            account.address,
             (accountInfo: AccountInfo<Buffer>) => {
               const parsedData = parseTokenAccountData(accountInfo.data)
               dispatch(
                 actions.setTokenBalance({
-                  address: account.address,
+                  address: account.address.toString(),
                   programId: parsedData.token.toString(),
                   balance: parsedData.amount
                 })

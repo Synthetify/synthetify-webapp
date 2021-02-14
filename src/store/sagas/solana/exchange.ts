@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put } from 'typed-redux-saga'
+import { call, put, select } from 'typed-redux-saga'
 
 import { actions, IAsset } from '@reducers/exchange'
+import { collateralToken } from '@selectors/exchange'
+import { accounts } from '@selectors/solanaWallet'
+import testAdmin from '@consts/testAdmin'
 import * as R from 'remeda'
 import { getSystemProgram } from '@web3/connection'
+import { createAccount, getToken } from './wallet'
 
 export function* pullExchangeState(): Generator {
   const systemProgram = yield* call(getSystemProgram)
@@ -29,4 +33,24 @@ export function* pullExchangeState(): Generator {
       collateralizationLevel: state.collateralizationLevel
     })
   )
+}
+export function* getCollateralTokenAirdrop(): Generator {
+  const collateralTokenAddress = yield* select(collateralToken)
+  const tokensAccounts = yield* select(accounts)
+  const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
+  // const wallet = yield* call(getWallet)
+  let accountAddress = tokensAccounts[collateralTokenAddress.toString()]
+    ? tokensAccounts[collateralTokenAddress.toString()][0].address
+    : null
+  if (!accountAddress) {
+    accountAddress = yield* call(createAccount, collateralTokenProgram.publicKey)
+  }
+  yield* call(
+    [collateralTokenProgram, collateralTokenProgram.mintTo],
+    accountAddress,
+    testAdmin,
+    [],
+    1e9
+  )
+  console.log('Token Airdroped')
 }

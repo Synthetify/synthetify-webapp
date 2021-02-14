@@ -1,12 +1,4 @@
-import {
-  call,
-  takeLeading,
-  SagaGenerator,
-  put,
-  takeEvery,
-  spawn,
-  all
-} from 'typed-redux-saga'
+import { call, takeLeading, SagaGenerator, put, takeEvery, spawn, all } from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
@@ -18,6 +10,8 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 // import { createToken } from './token'
 import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
+import { BN } from '@project-serum/anchor'
+import { getCollateralTokenAirdrop } from './exchange'
 
 export function* getWallet(): SagaGenerator<Account> {
   const wallet = yield* call(getSolanaWallet)
@@ -107,24 +101,23 @@ export function* fetchTokensAccounts(): Generator {
       programId: TOKEN_PROGRAM_ID
     }
   )
-
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
     yield put(
       actions.addTokenAccount({
-        programId: info.mint,
-        balance: parseInt(info.tokenAmount.amount),
-        address: account.pubkey.toString(),
+        programId: new PublicKey(info.mint),
+        balance: new BN(info.tokenAmount.amount),
+        address: account.pubkey,
         decimals: info.tokenAmount.decimals
       })
     )
   }
 }
 
-export function* getToken(tokenAddress: string): SagaGenerator<Token> {
+export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
-  const token = new Token(connection, new PublicKey(tokenAddress), TOKEN_PROGRAM_ID, wallet)
+  const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, wallet)
   return token
 }
 
@@ -132,6 +125,7 @@ export function* handleAirdrop(): Generator {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
+  yield* call(getCollateralTokenAirdrop)
   yield put(
     snackbarsActions.add({
       message: 'You will soon receive airdrop',
@@ -149,7 +143,7 @@ export function* sendToken(
   from: string,
   target: string,
   amount: number,
-  tokenAddress: string
+  tokenAddress: PublicKey
 ): SagaGenerator<string> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
@@ -163,7 +157,7 @@ export function* sendToken(
   )
   return signature
 }
-export function* createAccount(tokenAddress: string): SagaGenerator<string> {
+export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
 
@@ -171,12 +165,12 @@ export function* createAccount(tokenAddress: string): SagaGenerator<string> {
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,
-      balance: 0,
-      address: address.toString(),
-      decimals: 9
+      balance: new BN(0),
+      address: address,
+      decimals: 8
     })
   )
-  return address.toString()
+  return address
 }
 
 export function* init(): Generator {

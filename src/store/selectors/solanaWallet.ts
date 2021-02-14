@@ -1,3 +1,4 @@
+import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import * as R from 'remeda'
 import { ISolanaWallet, solanaWalletSliceName } from '../reducers/solanaWallet'
@@ -16,7 +17,7 @@ export const { address, balance, accounts, status, transactions } = keySelectors
 export const tokensAggregated = createSelector(accounts, tokensAccounts => {
   return R.mapValues(tokensAccounts, tokenAccounts => {
     return {
-      balance: tokenAccounts.reduce((acc, account) => acc + account.balance, 0),
+      balance: tokenAccounts.reduce((acc, account) => acc.add(account.balance), new BN(0)),
       accounts: tokenAccounts
     }
   })

@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PublicKey } from '@solana/web3.js'
+import BN from 'bn.js'
 import { PayloadType } from './types'
 export enum Status {
   Uninitialized = 'uninitialized',
@@ -7,9 +9,9 @@ export enum Status {
   Initalized = 'initalized'
 }
 export interface ITokenAccount {
-  programId: string
-  balance: number
-  address: string
+  programId: PublicKey
+  balance: BN
+  address: PublicKey
   decimals: number
 }
 export interface ITokenData {
@@ -24,7 +26,7 @@ export interface ITransaction {
   amount: number
   txid: string
   sending: boolean
-  token?: string
+  token?: PublicKey
   error?: string
 }
 export interface ISolanaWallet {
@@ -86,15 +88,15 @@ const solanaWalletSlice = createSlice({
       return state
     },
     addTokenAccount(state, action: PayloadAction<ITokenAccount>) {
-      if (!state.accounts[action.payload.programId]) {
-        state.accounts[action.payload.programId] = []
+      if (!state.accounts[action.payload.programId.toString()]) {
+        state.accounts[action.payload.programId.toString()] = []
       }
-      state.accounts[action.payload.programId].push(action.payload)
+      state.accounts[action.payload.programId.toString()].push(action.payload)
       return state
     },
     setTokenBalance(state, action: PayloadAction<IsetTokenBalance>) {
       const index = state.accounts[action.payload.programId].findIndex(
-        account => account.address === action.payload.address
+        account => account.address.toString() === action.payload.address
       )
       state.accounts[action.payload.programId][index].balance = action.payload.balance
       return state
@@ -107,13 +109,13 @@ const solanaWalletSlice = createSlice({
 interface IsetTokenBalance {
   address: string
   programId: string
-  balance: number
+  balance: BN
 }
 interface IaddTransaction {
   recipient: string
   amount: number
   id: string
-  token?: string
+  token?: PublicKey
   accountAddress?: string
 }
 export const actions = solanaWalletSlice.actions
