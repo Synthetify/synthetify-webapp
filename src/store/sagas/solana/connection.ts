@@ -3,12 +3,13 @@ import { all, call, put, SagaGenerator, select, takeLeading, spawn } from 'typed
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
 import { actions as solanaWalletActions } from '@reducers/solanaWallet'
 import { actions as uiActions } from '@reducers/ui'
-import { getSolanaConnection, networkToName, getSystemProgram } from '@web3/connection'
+import { getSolanaConnection, networkToName } from '@web3/connection'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { init } from './wallet'
+import { pullExchangeState } from './exchange'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const currentNetwork = yield* select(network)
@@ -27,12 +28,8 @@ export function* initConnection(): Generator {
         persist: false
       })
     )
-    const systemProgram = yield* call(getSystemProgram)
-    console.log(systemProgram)
-    // @ts-expect-error
-    const state = yield* call(systemProgram.state)
-    console.log(state)
     yield put(solanaWalletActions.initWallet())
+    yield* call(pullExchangeState)
   } catch (error) {
     console.log(error)
     yield put(actions.setStatus(Status.Error))

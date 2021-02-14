@@ -3,7 +3,6 @@ import {
   takeLeading,
   SagaGenerator,
   put,
-  select,
   takeEvery,
   spawn,
   all
@@ -14,7 +13,6 @@ import { getConnection } from './connection'
 import { getSolanaWallet } from '@web3/wallet'
 import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
-import { network } from '@selectors/solanaConnection'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
