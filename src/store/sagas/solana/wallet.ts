@@ -125,7 +125,10 @@ export function* handleAirdrop(): Generator {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
-  yield* call(sleep, 2000)
+  const balance = yield* call([connection, connection.getBalance], wallet.publicKey)
+  if (balance < 1e8) {
+    yield* call(sleep, 2000)
+  }
 
   // let retries = 30
   // for (;;) {
@@ -192,11 +195,10 @@ export function* init(): Generator {
   yield* call(fetchTokensAccounts)
 
   yield* put(actions.setAddress(wallet.publicKey.toString()))
-  // yield* put(actions.setBalance(balance))
-  yield* put(actions.setStatus(Status.Initalized))
-  yield* call(handleAirdrop)
+  // yield* call(handleAirdrop)
   const balance = yield* call(getBalance, wallet.publicKey)
   yield* put(actions.setBalance(balance))
+  yield* put(actions.setStatus(Status.Initalized))
 
   // const address = yield* call(fetchGovernedTokens)
   // const address = yield* call(getTokenDetails)

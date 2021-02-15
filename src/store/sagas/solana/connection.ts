@@ -23,7 +23,7 @@ export function* initConnection(): Generator {
 
     yield* call(pullExchangeState)
     yield* call(init)
-    yield* call(depositCollateral)
+    // yield* call(depositCollateral)
     yield put(
       snackbarsActions.add({
         message: 'Solana network connected.',

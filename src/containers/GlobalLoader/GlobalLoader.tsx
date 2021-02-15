@@ -10,7 +10,7 @@ export const GlobalLoader: React.FC = () => {
   const classes = useStyles()
 
   return (
-    <Backdrop className={classes.backdrop} open={loaderData.open}>
+    <Backdrop className={classes.backdrop} open={true}>
       <Grid container direction='column' alignItems='center' justify='center' spacing={2}>
         <Grid item>
           <CircularProgress size={100} className={classes.loader} color='primary' />
