@@ -12,12 +12,17 @@ const authPersistConfig = {
   storage: storage,
   whitelist: ['address', 'governedTokens']
 }
+const exchangePersistConfig = {
+  key: exchangeSliceName,
+  storage: storage,
+  whitelist: ['userAccount']
+}
 
 const combinedReducers = combineReducers({
   [snackbarsSliceName]: snackbarsReducer,
   [uiSliceName]: uiReducer,
   [solanaConnectionSliceName]: solanaConnectionReducer,
-  [exchangeSliceName]: exhcangeReducer,
+  [exchangeSliceName]: persistReducer(exchangePersistConfig, exhcangeReducer),
   [solanaWalletSliceName]: persistReducer(authPersistConfig, solanaWalletReducer)
 })
 export default combinedReducers

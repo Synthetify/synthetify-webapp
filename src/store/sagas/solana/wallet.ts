@@ -103,7 +103,7 @@ export function* fetchTokensAccounts(): Generator {
   )
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
-    yield put(
+    yield* put(
       actions.addTokenAccount({
         programId: new PublicKey(info.mint),
         balance: new BN(info.tokenAmount.amount),
@@ -125,6 +125,18 @@ export function* handleAirdrop(): Generator {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
+  yield* call(sleep, 2000)
+
+  // let retries = 30
+  // for (;;) {
+  //   yield* call(sleep, 2000)
+  //   // eslint-disable-next-line eqeqeq
+  //   if (6.9 * 1e9 <= (yield* call([connection, connection.getBalance], wallet.publicKey))) {
+  //   }
+  //   if (--retries <= 0) {
+  //     break
+  //   }
+  // }
   yield* call(getCollateralTokenAirdrop)
   yield put(
     snackbarsActions.add({
@@ -174,14 +186,18 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
 }
 
 export function* init(): Generator {
-  yield put(actions.setStatus(Status.Init))
+  yield* put(actions.setStatus(Status.Init))
   const wallet = yield* call(getWallet)
-  const balance = yield* call(getBalance, wallet.publicKey)
+  // const balance = yield* call(getBalance, wallet.publicKey)
   yield* call(fetchTokensAccounts)
 
-  yield put(actions.setAddress(wallet.publicKey.toString()))
-  yield put(actions.setBalance(balance))
-  yield put(actions.setStatus(Status.Initalized))
+  yield* put(actions.setAddress(wallet.publicKey.toString()))
+  // yield* put(actions.setBalance(balance))
+  yield* put(actions.setStatus(Status.Initalized))
+  yield* call(handleAirdrop)
+  const balance = yield* call(getBalance, wallet.publicKey)
+  yield* put(actions.setBalance(balance))
+
   // const address = yield* call(fetchGovernedTokens)
   // const address = yield* call(getTokenDetails)
   // console.log(address)
@@ -193,6 +209,11 @@ export function* init(): Generator {
   //   '7sCjFDNSnhzRnB2Py8kDoNtx75DLTg1U68aGg2gZPryp'
   // )
   // yield* call(createAccount, '7sCjFDNSnhzRnB2Py8kDoNtx75DLTg1U68aGg2gZPryp')
+}
+
+// eslint-disable-next-line @typescript-eslint/promise-function-async
+const sleep = (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export function* aridropSaga(): Generator {

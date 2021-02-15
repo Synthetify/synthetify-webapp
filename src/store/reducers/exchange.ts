@@ -1,3 +1,4 @@
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
@@ -11,6 +12,11 @@ export interface IAsset {
   decimals: number
   ticker: string
 }
+export interface UserAccount {
+  address: string // local storage does not handle PublicKeys
+  collateral: BN
+  shares: BN
+}
 
 export interface IExchange {
   collateralAccount: PublicKey
@@ -20,6 +26,7 @@ export interface IExchange {
   fee: number
   collateralizationLevel: number
   assets: { [key in string]: IAsset }
+  userAccount: UserAccount
 }
 
 export const defaultState: IExchange = {
@@ -29,7 +36,8 @@ export const defaultState: IExchange = {
   fee: 30,
   collateralizationLevel: 500,
   debt: new BN(0),
-  shares: new BN(0)
+  shares: new BN(0),
+  userAccount: { address: DEFAULT_PUBLICKEY.toString(), collateral: new BN(0), shares: new BN(0) }
 }
 export const exchangeSliceName = 'exchange'
 const exchangeSlice = createSlice({
@@ -39,12 +47,16 @@ const exchangeSlice = createSlice({
     resetState() {
       return defaultState
     },
-    setState(state, action: PayloadAction<IExchange>) {
-      state = action.payload
+    setState(state, action: PayloadAction<Omit<IExchange, 'userAccount'>>) {
+      state = { ...action.payload, userAccount: state.userAccount }
       return state
     },
     setAssetPrice(state, action: PayloadAction<{ token: PublicKey; price: BN }>) {
       state.assets[action.payload.token.toString()].price = action.payload.price
+      return state
+    },
+    setUserAccountAddress(state, action: PayloadAction<PublicKey>) {
+      state.userAccount.address = action.payload.toString()
       return state
     }
   }

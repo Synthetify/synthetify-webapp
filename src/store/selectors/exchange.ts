@@ -1,3 +1,5 @@
+import { createSelector } from '@reduxjs/toolkit'
+import { PublicKey } from '@solana/web3.js'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 
@@ -10,7 +12,8 @@ export const {
   collateralizationLevel,
   debt,
   fee,
-  shares
+  shares,
+  userAccount
 } = keySelectors(store, [
   'assets',
   'collateralAccount',
@@ -18,9 +21,12 @@ export const {
   'collateralizationLevel',
   'debt',
   'fee',
-  'shares'
+  'shares',
+  'userAccount'
 ])
-
+export const userAccountAddress = createSelector(userAccount, userAcc => {
+  return new PublicKey(userAcc.address)
+})
 export const exchangeSelectors = {
   assets,
   collateralAccount,
@@ -28,7 +34,9 @@ export const exchangeSelectors = {
   collateralizationLevel,
   debt,
   fee,
-  shares
+  shares,
+  userAccount,
+  userAccountAddress
 }
 
 export default exchangeSelectors

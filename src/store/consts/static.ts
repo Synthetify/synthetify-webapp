@@ -1,3 +1,5 @@
+import { PublicKey } from '@solana/web3.js'
+
 export const constValue: string = 'constValue'
 
 declare global {
@@ -12,5 +14,5 @@ enum SolanaNetworks {
   TEST = 'https://testnet.solana.com',
   MAIN = 'https://api.mainnet-beta.solana.com'
 }
-
-export { SolanaNetworks }
+const DEFAULT_PUBLICKEY = new PublicKey(0)
+export { SolanaNetworks, DEFAULT_PUBLICKEY }
