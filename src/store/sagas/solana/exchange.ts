@@ -135,6 +135,18 @@ export function* updateFeedsTransactions(): SagaGenerator<TransactionInstruction
   }
   return transactions
 }
+export function* pullUserAccountData(): Generator {
+  const systemProgram = yield* call(getSystemProgram)
+  const userExchangeAccount = yield* select(userAccountAddress)
+  if (userExchangeAccount.equals(DEFAULT_PUBLICKEY)) {
+    return
+  }
+  const account = yield* call(
+    [systemProgram, systemProgram.account.userAccount],
+    userExchangeAccount
+  ) as any
+  yield* put(actions.setUserAccountData({ collateral: account.collateral, shares: account.shares }))
+}
 export function* mintUsd(amount: BN): Generator {
   const usdTokenAddress = yield* select(xUSDAddress)
   const authority = yield* select(mintAuthority)
@@ -151,18 +163,23 @@ export function* mintUsd(amount: BN): Generator {
   }
   const updateFeedsTxs = yield* call(updateFeedsTransactions)
   const wallet = yield* call(getWallet)
-
-  yield* call([systemProgram, systemProgram.state.rpc.mint], amount, {
-    accounts: {
-      authority: authority,
-      mint: usdTokenAddress,
-      to: accountAddress,
-      tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-      userAccount: userExchangeAccount,
-      owner: wallet.publicKey
-    },
-    signers: [wallet],
-    instructions: updateFeedsTxs
-  })
+  console.log(accountAddress.toString())
+  // console.log(accountAddress.toString())
+  try {
+    yield* call([systemProgram, systemProgram.state.rpc.mint], amount, {
+      accounts: {
+        authority: authority,
+        mint: usdTokenAddress,
+        to: accountAddress,
+        tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+        clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
+        userAccount: userExchangeAccount,
+        owner: wallet.publicKey
+      },
+      signers: [wallet],
+      instructions: updateFeedsTxs
+    })
+  } catch (error) {
+    console.log(error.toString())
+  }
 }

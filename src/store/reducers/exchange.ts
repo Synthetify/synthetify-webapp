@@ -60,6 +60,11 @@ const exchangeSlice = createSlice({
     setUserAccountAddress(state, action: PayloadAction<PublicKey>) {
       state.userAccount.address = action.payload.toString()
       return state
+    },
+    setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {
+      state.userAccount.collateral = action.payload.collateral
+      state.userAccount.shares = action.payload.shares
+      return state
     }
   }
 })
