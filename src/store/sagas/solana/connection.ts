@@ -24,7 +24,13 @@ export function* initConnection(): Generator {
     yield* call(pullExchangeState)
     yield* call(init)
     // yield* call(depositCollateral)
-    yield put(
+    yield* put(
+      uiActions.setLoader({
+        open: false,
+        message: ''
+      })
+    )
+    yield* put(
       snackbarsActions.add({
         message: 'Solana network connected.',
         variant: 'success',

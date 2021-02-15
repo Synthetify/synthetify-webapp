@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { Backdrop, CircularProgress, Grid, Typography } from '@material-ui/core'
+import { Backdrop, Grid, CardMedia } from '@material-ui/core'
 import { loader } from '@selectors/ui'
+import video from '@static/loading.mp4'
 import useStyles from './style'
 
 export const GlobalLoader: React.FC = () => {
@@ -10,14 +11,21 @@ export const GlobalLoader: React.FC = () => {
   const classes = useStyles()
 
   return (
-    <Backdrop className={classes.backdrop} open={true}>
+    <Backdrop className={classes.backdrop} open={loaderData.open}>
       <Grid container direction='column' alignItems='center' justify='center' spacing={2}>
         <Grid item>
-          <CircularProgress size={100} className={classes.loader} color='primary' />
+          <CardMedia
+            autoPlay
+            loop
+            component='video'
+            height='100%'
+            image={video}
+            title='Loading wallet'
+          />
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Typography variant='h3'>{loaderData.message}</Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Backdrop>
   )

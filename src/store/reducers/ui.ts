@@ -9,7 +9,7 @@ export interface IUIStore {
 }
 
 export const defaultState: IUIStore = {
-  loader: { open: false, message: '' }
+  loader: { open: true, message: '' }
 }
 export const uiSliceName = 'ui'
 const uiSlice = createSlice({
