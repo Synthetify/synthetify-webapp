@@ -17,6 +17,7 @@ export const GlobalLoader: React.FC = () => {
           <CardMedia
             autoPlay
             loop
+            muted
             component='video'
             height='100%'
             image={video}
