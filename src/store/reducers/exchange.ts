@@ -21,6 +21,7 @@ export interface UserAccount {
 export interface IExchange {
   collateralAccount: PublicKey
   collateralToken: PublicKey
+  mintAuthority: PublicKey
   debt: BN
   shares: BN
   fee: number
@@ -31,8 +32,9 @@ export interface IExchange {
 
 export const defaultState: IExchange = {
   assets: {},
-  collateralAccount: new PublicKey(0),
-  collateralToken: new PublicKey(0),
+  collateralAccount: DEFAULT_PUBLICKEY,
+  collateralToken: DEFAULT_PUBLICKEY,
+  mintAuthority: DEFAULT_PUBLICKEY,
   fee: 30,
   collateralizationLevel: 500,
   debt: new BN(0),

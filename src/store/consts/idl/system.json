@@ -43,6 +43,10 @@
             "type": "publicKey"
           },
           {
+            "name": "mintAuthority",
+            "type": "publicKey"
+          },
+          {
             "name": "initialized",
             "type": "bool"
           },
@@ -125,6 +129,10 @@
           },
           {
             "name": "usdToken",
+            "type": "publicKey"
+          },
+          {
+            "name": "mintAuthority",
             "type": "publicKey"
           }
         ]
@@ -501,6 +509,6 @@
     }
   ],
   "metadata": {
-    "address": "4DrEykES68AK3UoSxi6iLismgqGTSV9vDrHiSbnREdT1"
+    "address": "EV1wjxTwke8rPBKSvJGZxMFzRfCAH3dwkfdg6g7bBtpu"
   }
 }

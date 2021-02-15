@@ -1,3 +1,4 @@
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
@@ -13,7 +14,8 @@ export const {
   debt,
   fee,
   shares,
-  userAccount
+  userAccount,
+  mintAuthority
 } = keySelectors(store, [
   'assets',
   'collateralAccount',
@@ -22,10 +24,21 @@ export const {
   'debt',
   'fee',
   'shares',
-  'userAccount'
+  'userAccount',
+  'mintAuthority'
 ])
 export const userAccountAddress = createSelector(userAccount, userAcc => {
   return new PublicKey(userAcc.address)
+})
+export const xUSDAddress = createSelector(assets, allAssets => {
+  const xusd = Object.entries(allAssets).find(([_, b]) => {
+    return b.ticker === 'xUSD'
+  })
+  if (xusd) {
+    return xusd[1].address
+  } else {
+    return DEFAULT_PUBLICKEY
+  }
 })
 export const exchangeSelectors = {
   assets,
@@ -36,7 +49,8 @@ export const exchangeSelectors = {
   fee,
   shares,
   userAccount,
-  userAccountAddress
+  userAccountAddress,
+  mintAuthority
 }
 
 export default exchangeSelectors

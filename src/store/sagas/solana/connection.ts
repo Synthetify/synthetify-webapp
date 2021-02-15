@@ -9,7 +9,8 @@ import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { init } from './wallet'
-import { depositCollateral, pullExchangeState } from './exchange'
+import { depositCollateral, pullExchangeState, mintUsd } from './exchange'
+import BN from 'bn.js'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const currentNetwork = yield* select(network)
@@ -23,7 +24,6 @@ export function* initConnection(): Generator {
 
     yield* call(pullExchangeState)
     yield* call(init)
-    // yield* call(depositCollateral)
     yield* put(
       uiActions.setLoader({
         open: false,
@@ -38,6 +38,8 @@ export function* initConnection(): Generator {
       })
     )
     yield* put(actions.setStatus(Status.Initalized))
+    // yield* call(depositCollateral, new BN(1e8))
+    // yield* call(mintUsd, new BN(1e6))
   } catch (error) {
     console.log(error)
     yield put(actions.setStatus(Status.Error))

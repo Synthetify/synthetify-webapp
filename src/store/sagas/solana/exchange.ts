@@ -1,18 +1,26 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put, select } from 'typed-redux-saga'
+import { call, put, SagaGenerator, select } from 'typed-redux-saga'
 
 import { actions } from '@reducers/exchange'
-import { collateralAccount, collateralToken, userAccountAddress } from '@selectors/exchange'
+import {
+  collateralAccount,
+  collateralToken,
+  userAccountAddress,
+  assets,
+  xUSDAddress,
+  mintAuthority
+} from '@selectors/exchange'
 import { accounts } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import * as anchor from '@project-serum/anchor'
 import { getSystemProgram } from '@web3/connection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { Account } from '@solana/web3.js'
+import { Account, TransactionInstruction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
 import { createTransferInstruction } from './token'
+import { TokenInstructions } from '@project-serum/serum'
 
 export function* pullExchangeState(): Generator {
   const systemProgram = yield* call(getSystemProgram)
@@ -31,11 +39,12 @@ export function* pullExchangeState(): Generator {
             decimals: a.decimals,
             price: a.price,
             supply: a.supply,
-            ticker: a.ticker
+            ticker: a.ticker.toString()
           }
         })
       }, {}),
       collateralToken: state.collateralToken,
+      mintAuthority: state.mintAuthority,
       fee: state.fee,
       collateralizationLevel: state.collateralizationLevel
     })
@@ -102,5 +111,58 @@ export function* depositCollateral(amount: BN): Generator {
     },
     signers: [wallet],
     instructions: [transferTx]
+  })
+}
+export function* updateFeedsTransactions(): SagaGenerator<TransactionInstruction[]> {
+  const transactions: TransactionInstruction[] = []
+  const systemProgram = yield* call(getSystemProgram)
+  // @ts-expect-error
+  const state = yield* call(systemProgram.state) as any
+  for (let index = 1; index < state.assets.length; index++) {
+    transactions.push(
+      yield* call(
+        // @ts-expect-error
+        [systemProgram, systemProgram.state.instruction.updatePrice],
+        state.assets[index].feedAddress,
+        {
+          accounts: {
+            priceFeedAccount: state.assets[index].feedAddress,
+            clock: anchor.web3.SYSVAR_CLOCK_PUBKEY
+          }
+        }
+      ) as any
+    )
+  }
+  return transactions
+}
+export function* mintUsd(amount: BN): Generator {
+  const usdTokenAddress = yield* select(xUSDAddress)
+  const authority = yield* select(mintAuthority)
+  const tokensAccounts = yield* select(accounts)
+  const tokenProgram = yield* call(getToken, usdTokenAddress)
+  const systemProgram = yield* call(getSystemProgram)
+  const userExchangeAccount = yield* select(userAccountAddress)
+
+  let accountAddress = tokensAccounts[usdTokenAddress.toString()]
+    ? tokensAccounts[usdTokenAddress.toString()][0].address
+    : null
+  if (accountAddress == null) {
+    accountAddress = yield* call(createAccount, tokenProgram.publicKey)
+  }
+  const updateFeedsTxs = yield* call(updateFeedsTransactions)
+  const wallet = yield* call(getWallet)
+
+  yield* call([systemProgram, systemProgram.state.rpc.mint], amount, {
+    accounts: {
+      authority: authority,
+      mint: usdTokenAddress,
+      to: accountAddress,
+      tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
+      userAccount: userExchangeAccount,
+      owner: wallet.publicKey
+    },
+    signers: [wallet],
+    instructions: updateFeedsTxs
   })
 }
