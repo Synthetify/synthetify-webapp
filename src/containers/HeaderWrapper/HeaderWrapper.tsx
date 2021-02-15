@@ -12,7 +12,6 @@ export const HeaderWrapper: React.FC = () => {
 
   return (
     <Header
-      onClickLogo={() => window.open('https://synthetify.io')}
       onNetworkClick={(network: SolanaNetworks) => {
         if (network !== currentNetwork) {
           dispatch(actions.setNetwork(network))

@@ -39,16 +39,16 @@ const WelcomePage: React.FC = () => {
     }
   }
   return (
-    <Grid container direction='column' className={classes.background}>
-      <Grid item>
-        <Header />
+    <Grid container direction='row' className={classes.background}>
+      <Grid item className={classes.side}>
+        <SideMenu location={location} setLocation={setLocation}></SideMenu>
       </Grid>
-      <Grid item>
-        <Grid container>
-          <Grid item className={classes.side}>
-            <SideMenu location={location} setLocation={setLocation}></SideMenu>
+      <Grid item xs>
+        <Grid container direction='row'>
+          <Grid xs={12}>
+            <Header />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Grid container className={classes.contentContainer} justify='center'>
               <Grid item xs={12} className={classes.contentWrapper}>
                 {getComponent(location)}

@@ -1,22 +1,27 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
-  root: { width: 400, borderRight: `2px solid ${colors.green.hover}`, height: '100%' },
+  root: { width: 400, backgroundColor: colors.blue.subtle, height: '100%' },
   menuText: {
-    color: colors.white.main,
-    padding: 16,
-    textAlign: 'center'
+    marginLeft: 60,
+    color: colors.white.main
   },
   menuItem: {
-    borderBottom: `2px solid ${colors.black.background}`,
+    padding: 10,
     '&:hover': {
-      backgroundColor: `${colors.green.hover}`,
-      borderBottom: `2px solid ${colors.green.main}`
+      backgroundImage: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)'
     },
     cursor: 'pointer'
   },
   selected: {
-    color: colors.green.main
+    fontWeight: 'bold',
+    background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent'
+  },
+  logo: {
+    paddingLeft: 50,
+    paddingTop: 50
   }
 }))
 

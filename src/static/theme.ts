@@ -9,6 +9,7 @@ export const colors = {
   },
   blue: {
     accent: '#072E5A',
+    subtle: 'rgba(7,46,90,0.1)',
     base: '#0B2545',
     light: '#66AFF5',
     neon: '#08F7FE',

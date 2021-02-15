@@ -5,27 +5,17 @@ import CommonButton from '@components/CommonButton/CommonButton'
 import { networkToName, SolanaNetworks } from '@web3/connection'
 import BlurOnIcon from '@material-ui/icons/BlurOn'
 import useStyles from './style'
-import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
 
 export interface IHeader {
-  onClickLogo: () => void
   onNetworkClick: (network: SolanaNetworks) => void
   network: SolanaNetworks
 }
-export const Header: React.FC<IHeader> = ({ onClickLogo, onNetworkClick, network }) => {
+export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   return (
     <>
-      <Grid
-        container
-        className={classes.root}
-        wrap='nowrap'
-        justify='space-between'
-        alignItems='center'>
-        <Grid item>
-          <SynthetifyIconHorizontal onClick={onClickLogo} />
-        </Grid>
+      <Grid container className={classes.root} wrap='nowrap' justify='flex-end' alignItems='center'>
         <Grid item>
           <Grid container wrap='nowrap'>
             <Grid item className={classes.divAirdropButton}>

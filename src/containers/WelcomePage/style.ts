@@ -19,7 +19,7 @@ const useStyles = makeStyles(() =>
       padding: 16
     },
     side: {
-      width: 300
+      width: 400
     }
   })
 )
