@@ -17,8 +17,8 @@ export const Account: React.FC<IProps> = ({ address, balance, onSend, network, o
   return (
     <>
       <Grid container className={classes.root}>
-        <Grid item xs={12} className={classes.titleDiv}>
-          <Typography variant='h4' color='primary' className={classes.title}>
+        <Grid item className={classes.titleDiv}>
+          <Typography variant='h3' color='primary' className={classes.title}>
             Account
           </Typography>
         </Grid>

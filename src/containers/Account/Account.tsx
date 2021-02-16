@@ -5,6 +5,7 @@ import Account from '@components/Account/Account'
 import { balance, address } from '@selectors/solanaWallet'
 import { actions } from '@reducers/solanaWallet'
 import { network } from '@selectors/solanaConnection'
+import Tokens from '@containers/Tokens/Tokens'
 
 export const AccountWrapper: React.FC = () => {
   const userAddress = useSelector(address)
@@ -25,6 +26,7 @@ export const AccountWrapper: React.FC = () => {
           dispatch(actions.airdrop())
         }}
       />
+      <Tokens></Tokens>
     </>
   )
 }

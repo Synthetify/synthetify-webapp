@@ -11,13 +11,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%'
   },
   title: {
+    marginLeft: 10,
     fontWeight: 'bold',
-    marginLeft: 20
+    background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent'
   },
   titleDiv: {
     marginBottom: 16,
-    paddingBottom: 8,
-    borderBottom: `2px solid ${colors.green.hover}`
+    paddingBottom: 8
   },
   solanaLogoDiv: {
     [theme.breakpoints.down('xs')]: {
