@@ -32,7 +32,7 @@ export interface ITransaction {
 export interface ISolanaWallet {
   status: Status
   address: string
-  balance: number
+  balance: BN
   transactions: { [key in string]: ITransaction }
   accounts: { [key in string]: ITokenAccount[] }
 }
@@ -40,7 +40,7 @@ export interface ISolanaWallet {
 export const defaultState: ISolanaWallet = {
   status: Status.Uninitialized,
   address: '',
-  balance: 0,
+  balance: new BN(0),
   transactions: {},
   accounts: {}
 }
@@ -63,7 +63,7 @@ const solanaWalletSlice = createSlice({
       state.status = action.payload
       return state
     },
-    setBalance(state, action: PayloadAction<number>) {
+    setBalance(state, action: PayloadAction<BN>) {
       state.balance = action.payload
       return state
     },

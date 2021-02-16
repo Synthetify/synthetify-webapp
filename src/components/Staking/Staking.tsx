@@ -8,12 +8,14 @@ import BN from 'bn.js'
 import { transformBN } from '@consts/utils'
 import { TokenAccounts } from '@selectors/solanaWallet'
 import Token from '@containers/Tokens/Token/Token'
+import { PublicKey } from '@solana/web3.js'
 
 export interface IStaking {
   stakedValue: BN
   collateralRatio: BN
   debt: BN
   tokens: TokenAccounts[]
+  onSend: (address: PublicKey) => void
 }
 export const Stacking: React.FC<IStaking> = ({ debt, collateralRatio, stakedValue, tokens }) => {
   const classes = useStyles()

@@ -4,10 +4,12 @@ import useStyles from './style'
 import SolanaIcon from '@static/svg/solana.svg'
 import CommonButton from '@components/CommonButton/CommonButton'
 import { SolanaNetworks } from '@web3/connection'
+import { BN } from '@project-serum/anchor'
+import { printBN } from '@consts/utils'
 
 export interface IProps {
   address: string
-  balance: number
+  balance: BN
   onSend: () => void
   onAirdrop?: () => void
   network: SolanaNetworks
@@ -46,7 +48,7 @@ export const Account: React.FC<IProps> = ({ address, balance, onSend, network, o
                         </Grid>
                         <Grid item>
                           <Typography variant='body1' color='textPrimary'>
-                            {balance / 1e9} SOL
+                            {printBN(balance, 9)} SOL
                           </Typography>
                         </Grid>
                       </Grid>

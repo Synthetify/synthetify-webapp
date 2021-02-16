@@ -8,6 +8,7 @@ import { AccountInfo, PublicKey } from '@solana/web3.js'
 import { getCurrentSolanaConnection } from '@web3/connection'
 import { Status } from '@reducers/solanaConnection'
 import { parseTokenAccountData } from '@web3/data'
+import { BN } from '@project-serum/anchor'
 
 const SolanaWalletEvents = () => {
   const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const SolanaWalletEvents = () => {
     }
     const connectEvents = () => {
       connection.onAccountChange(new PublicKey(publicKey), (accountInfo: AccountInfo<Buffer>) => {
-        dispatch(actions.setBalance(accountInfo.lamports))
+        dispatch(actions.setBalance(new BN(accountInfo.lamports)))
         // console.log(accountInfo)
       })
     }
@@ -47,19 +48,16 @@ const SolanaWalletEvents = () => {
           if (initializedAccounts.has(account.address.toString())) {
             continue
           }
-          connection.onAccountChange(
-            account.address,
-            (accountInfo: AccountInfo<Buffer>) => {
-              const parsedData = parseTokenAccountData(accountInfo.data)
-              dispatch(
-                actions.setTokenBalance({
-                  address: account.address.toString(),
-                  programId: parsedData.token.toString(),
-                  balance: parsedData.amount
-                })
-              )
-            }
-          )
+          connection.onAccountChange(account.address, (accountInfo: AccountInfo<Buffer>) => {
+            const parsedData = parseTokenAccountData(accountInfo.data)
+            dispatch(
+              actions.setTokenBalance({
+                address: account.address.toString(),
+                programId: parsedData.token.toString(),
+                balance: parsedData.amount
+              })
+            )
+          })
         }
       })
       setInitializedAccounts(tempSet)

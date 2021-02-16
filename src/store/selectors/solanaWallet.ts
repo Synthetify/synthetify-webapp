@@ -4,6 +4,8 @@ import * as R from 'remeda'
 import { assets } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
+import { PublicKey } from '@solana/web3.js'
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -23,6 +25,21 @@ export const tokensAggregated = createSelector(accounts, tokensAccounts => {
     }
   })
 })
+export const tokenBalance = (tokenAddress: PublicKey) =>
+  createSelector(accounts, balance, (tokensAccounts, solBalance) => {
+    if (tokenAddress.equals(DEFAULT_PUBLICKEY)) {
+      return { balance: solBalance, decimals: 9 }
+    } else {
+      return {
+        balance: tokensAccounts[tokenAddress.toString()][0].balance,
+        decimals: tokensAccounts[tokenAddress.toString()][0].decimals
+      }
+    }
+  })
+export const tokenAccount = (tokenAddress: PublicKey) =>
+  createSelector(accounts, tokensAccounts => {
+    return tokensAccounts[tokenAddress.toString()][0]
+  })
 
 export type TokenAccounts = ITokenAccount & { ticker?: string }
 export const accountsArray = createSelector(accounts, assets, (tokensAccounts, exchangeAssets) => {
@@ -42,6 +59,8 @@ export const solanaWalletSelectors = {
   accounts,
   status,
   tokensAggregated,
-  transactions
+  transactions,
+  accountsArray,
+  tokenAccount
 }
 export default solanaWalletSelectors

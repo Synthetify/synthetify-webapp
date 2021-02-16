@@ -12,6 +12,8 @@ import WelcomePage from '@containers/WelcomePage/WelcomePage'
 import Notifier from '@containers/Notifier/Notifier'
 import { SnackbarProvider } from 'notistack'
 import GlobalLoader from '@containers/GlobalLoader/GlobalLoader'
+import SendMoneyModal from '@containers/Modals/SendMoneyModal'
+
 setConfig({
   reloadHooks: false
 })
@@ -22,6 +24,7 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <SnackbarProvider maxSnack={99}>
+            <SendMoneyModal />
             <WelcomePage />
             <Notifier />
             <GlobalLoader />

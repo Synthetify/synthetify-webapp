@@ -6,16 +6,14 @@ import { balance, address, accountsArray } from '@selectors/solanaWallet'
 import { actions } from '@reducers/solanaWallet'
 import { network } from '@selectors/solanaConnection'
 import { stakedValue, userDebtValue, userCollateralRatio } from '@selectors/exchange'
+import { actions as modalsActions } from '@reducers/modals'
+import { PublicKey } from '@solana/web3.js'
 
 export const StakingWrapper: React.FC = () => {
   const stakedUserValue = useSelector(stakedValue)
   const userDebt = useSelector(userDebtValue)
   const collateralRatio = useSelector(userCollateralRatio)
   const dispatch = useDispatch()
-  const [open, setOpen] = useState(false)
-  // console.log(stakedUserValue.toString())
-  // console.log(userDebt.toString())
-  console.log(collateralRatio.toString())
   const userTokens = useSelector(accountsArray)
 
   return (
@@ -25,6 +23,9 @@ export const StakingWrapper: React.FC = () => {
         debt={userDebt}
         stakedValue={stakedUserValue}
         tokens={userTokens}
+        onSend={(address: PublicKey) => {
+          dispatch(modalsActions.openSend({ tokenAddress: address }))
+        }}
       />
     </>
   )

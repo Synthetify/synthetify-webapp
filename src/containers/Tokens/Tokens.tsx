@@ -4,6 +4,8 @@ import { Grid, Typography } from '@material-ui/core'
 import { accountsArray } from '@selectors/solanaWallet'
 import { useDispatch, useSelector } from 'react-redux'
 import Token from './Token/Token'
+import { actions as modalsActions } from '@reducers/modals'
+
 import CommonButton from '@components/CommonButton/CommonButton'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
 import useStyles from './style'
@@ -11,6 +13,8 @@ import useStyles from './style'
 export const Tokens: React.FC = () => {
   const classes = useStyles()
   const userTokens = useSelector(accountsArray)
+  const dispatch = useDispatch()
+
   return (
     <>
       <Grid container className={classes.root}>
@@ -87,17 +91,16 @@ export const Tokens: React.FC = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              {userTokens
-                .map((token, index) => (
-                  <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
-                    <CommonButton
-                      name='Send'
-                      onClick={() => {
-                        // setOpen(true)
-                      }}
-                    />
-                  </Token>
-                ))}
+              {userTokens.map((token, index) => (
+                <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
+                  <CommonButton
+                    name='Send'
+                    onClick={() => {
+                      dispatch(modalsActions.openSend({ tokenAddress: token.programId }))
+                    }}
+                  />
+                </Token>
+              ))}
             </Grid>
           </Grid>
         )}

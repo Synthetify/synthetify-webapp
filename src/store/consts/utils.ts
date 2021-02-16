@@ -12,12 +12,25 @@ export const transformBN = (amount: BN): string => {
 export const printBN = (amount: BN, decimals: number): string => {
   const balanceString = amount.toString()
   if (balanceString.length <= decimals) {
-    return '0,' + '0'.repeat(decimals - balanceString.length) + balanceString
+    return '0.' + '0'.repeat(decimals - balanceString.length) + balanceString
   } else {
     return (
       balanceString.substring(0, balanceString.length - decimals) +
-      ',' +
+      '.' +
       balanceString.substring(balanceString.length - decimals)
     )
   }
+}
+export const printBNtoBN = (amount: string, decimals: number): BN => {
+  const balanceString = amount.split('.')
+  if (balanceString.length !== 2) {
+    return new BN(balanceString[0] + '0'.repeat(decimals))
+  }
+  // console.log(balanceString[1].length)
+  if (balanceString[1].length <= decimals) {
+    return new BN(
+      balanceString[0] + balanceString[1] + '0'.repeat(decimals - balanceString[1].length)
+    )
+  }
+  return new BN(0)
 }

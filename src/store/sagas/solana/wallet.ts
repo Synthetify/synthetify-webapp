@@ -3,7 +3,7 @@ import { call, takeLeading, SagaGenerator, put, takeEvery, spawn, all } from 'ty
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
 import { getSolanaWallet } from '@web3/wallet'
-import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
+import { Account, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -12,15 +12,15 @@ import { Status } from '@reducers/solanaConnection'
 import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
 import { BN } from '@project-serum/anchor'
 import { getCollateralTokenAirdrop } from './exchange'
-
+import { tou64 } from '@consts/utils'
 export function* getWallet(): SagaGenerator<Account> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
 }
-export function* getBalance(pubKey: PublicKey): SagaGenerator<number> {
+export function* getBalance(pubKey: PublicKey): SagaGenerator<BN> {
   const connection = yield* call(getConnection)
   const balance = yield* call([connection, connection.getBalance], pubKey)
-  return balance
+  return new BN(balance)
 }
 export function* handleTransaction(
   action: PayloadAction<PayloadTypes['addTransaction']>
@@ -30,19 +30,19 @@ export function* handleTransaction(
   // Send token
   try {
     if (action.payload.token && action.payload.accountAddress) {
-      const signature = yield* call(
-        sendToken,
-        action.payload.accountAddress,
-        action.payload.recipient,
-        action.payload.amount * 1e9,
-        action.payload.token
-      )
-      yield put(
-        actions.setTransactionTxid({
-          txid: signature,
-          id: action.payload.id
-        })
-      )
+      // const signature = yield* call(
+      //   sendToken,
+      //   action.payload.accountAddress,
+      //   action.payload.recipient,
+      //   action.payload.amount * 1e9,
+      //   action.payload.token
+      // )
+      // yield put(
+      //   actions.setTransactionTxid({
+      //     txid: signature,
+      //     id: action.payload.id
+      //   })
+      // )
     } else {
       // Send SOL
       const signature = yield* call(
@@ -155,20 +155,20 @@ export function* handleAirdrop(): Generator {
 //   return balance
 // }
 export function* sendToken(
-  from: string,
-  target: string,
-  amount: number,
+  from: PublicKey,
+  target: PublicKey,
+  amount: BN,
   tokenAddress: PublicKey
 ): SagaGenerator<string> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
   const signature = yield* call(
     [token, token.transfer],
-    new PublicKey(from),
-    new PublicKey(target),
+    from,
+    target,
     wallet,
     [],
-    amount
+    tou64(amount)
   )
   return signature
 }
@@ -217,7 +217,22 @@ export function* init(): Generator {
 const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
-
+export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string> {
+  const connection = yield* call(getConnection)
+  const wallet = yield* call(getWallet)
+  console.log(wallet.publicKey.toString())
+  console.log(recipient.toString())
+  console.log(amount.toNumber())
+  const transaction = new Transaction().add(
+    SystemProgram.transfer({
+      fromPubkey: wallet.publicKey,
+      toPubkey: recipient,
+      lamports: amount.toNumber()
+    })
+  )
+  const txid = yield* call(sendAndConfirmTransaction, connection, transaction, [wallet])
+  return txid
+}
 export function* aridropSaga(): Generator {
   yield takeLeading(actions.airdrop, handleAirdrop)
 }

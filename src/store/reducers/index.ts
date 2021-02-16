@@ -6,14 +6,13 @@ import { reducer as solanaWalletReducer, solanaWalletSliceName } from './solanaW
 import { reducer as solanaConnectionReducer, solanaConnectionSliceName } from './solanaConnection'
 import { reducer as uiReducer, uiSliceName } from './ui'
 import { reducer as exhcangeReducer, exchangeSliceName } from './exchange'
-import { createFilter } from 'redux-persist-transform-filter'
+import { reducer as modalsReducer, modalsSliceName } from './modals'
 import { BN } from '@project-serum/anchor'
 // const authPersistConfig = {
 //   key: solanaWalletSliceName,
 //   storage: storage,
 //   whitelist: ['address', 'governedTokens']
 // }
-const saveSubsetFilter = createFilter('userAccount', ['address'])
 const transformExchange = createTransform(
   (inboundState: any, key) => {
     return {
@@ -43,6 +42,7 @@ const combinedReducers = combineReducers({
   [uiSliceName]: uiReducer,
   [solanaConnectionSliceName]: solanaConnectionReducer,
   [exchangeSliceName]: persistReducer(exchangePersistConfig, exhcangeReducer),
-  [solanaWalletSliceName]: solanaWalletReducer
+  [solanaWalletSliceName]: solanaWalletReducer,
+  [modalsSliceName]: modalsReducer
 })
 export default combinedReducers
