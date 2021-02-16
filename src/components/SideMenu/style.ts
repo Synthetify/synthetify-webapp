@@ -17,7 +17,10 @@ const useStyles = makeStyles(() => ({
     fontWeight: 'bold',
     background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
     WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent'
+    WebkitTextFillColor: 'transparent',
+    '&:hover': {
+      WebkitTextFillColor: colors.black.background
+    }
   },
   logo: {
     paddingLeft: 50,

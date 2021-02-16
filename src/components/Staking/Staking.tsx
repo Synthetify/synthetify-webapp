@@ -65,7 +65,7 @@ export const Stacking: React.FC<IStaking> = ({ debt, collateralRatio, stakedValu
                       Deposit
                     </Typography>
                   </Grid>
-                  <Grid item xs className={classes.button} style={{ marginLeft: 33 }}>
+                  <Grid item xs className={classes.button} style={{ marginLeft: 24 }}>
                     <Typography variant='body1' className={classes.buttonText}>
                       Mint
                     </Typography>

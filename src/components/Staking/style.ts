@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 15,
     borderRadius: 2,
     cursor: 'pointer',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.45)',
     '&:hover': {
       // opacity: '0.7',
       color: colors.black.background,
