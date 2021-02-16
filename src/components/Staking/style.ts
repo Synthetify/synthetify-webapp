@@ -42,13 +42,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%'
   },
   button: {
-    background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
+    backgroundColor: colors.blue.accent,
+    color: colors.white.main,
     height: 70,
     padding: 15,
     borderRadius: 2,
     cursor: 'pointer',
     '&:hover': {
-      opacity: '0.7'
+      // opacity: '0.7',
+      color: colors.black.background,
+      background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)'
     }
   },
   buttonText: {
