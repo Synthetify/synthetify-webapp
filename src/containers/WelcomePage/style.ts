@@ -16,10 +16,14 @@ const useStyles = makeStyles(() =>
     },
     contentWrapper: {
       maxWidth: 1300,
-      padding: 16
+      // Hackish way TODO fix
+      maxHeight: 'calc(100vh - 110px)',
+      padding: 16,
+      overflow: 'auto'
     },
     side: {
-      width: 400
+      width: 400,
+      overflow: 'hidden'
     }
   })
 )
