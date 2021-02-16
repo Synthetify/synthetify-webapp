@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
     paddingBottom: 15
   },
   balanceDiv: {
-    minWidth: 350
+    minWidth: 300
   },
   addAccountButton: {
     fontSize: 20,

@@ -19,8 +19,74 @@ const useStyles = makeStyles((theme: Theme) => ({
   userStats: {
     backgroundColor: 'rgba(7,46,90,0.5)',
     padding: 80,
+    borderRadius: 10
+  },
+  title: {
+    marginLeft: 10,
+    paddingTop: 30,
+    paddingBottom: 20,
+    fontWeight: 'bold',
+    background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent'
+  },
+  titleDiv: {
+    marginBottom: 16,
+    paddingBottom: 8
+  },
+  actionsDiv: {
+    height: 100,
+    backgroundColor: colors.blue.deepAccent,
     borderRadius: 10,
-    maxWidth: 1300
+    padding: '16px 30px',
+    width: '100%'
+  },
+  button: {
+    background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
+    height: 70,
+    padding: 15,
+    borderRadius: 2,
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: '0.7'
+    }
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  divider: {
+    width: 80
+  },
+  info: {
+    backgroundColor: colors.blue.deepAccent,
+    minWidth: 800,
+    borderRadius: 10,
+    overflow: 'hidden'
+  },
+  headers: {
+    paddingTop: 15,
+    paddingLeft: 50,
+    paddingRight: 50,
+    paddingBottom: 15
+  },
+  balanceDiv: {
+    minWidth: 350
+  },
+  fieldName: {
+    fontWeight: 'bold'
+  },
+  burnButton: {
+    marginLeft: 20,
+    marginRight: -20,
+    width: 'auto',
+    color: colors.red.neon,
+    borderColor: colors.red.neon,
+    '&:hover': {
+      borderWidth: 2,
+      backgroundColor: `${colors.red.neon}`,
+      borderColor: colors.red.neon
+    }
   }
 }))
 

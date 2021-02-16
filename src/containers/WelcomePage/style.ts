@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
       width: '100%'
     },
     contentWrapper: {
-      maxWidth: 1160,
+      maxWidth: 1300,
       padding: 16
     },
     side: {

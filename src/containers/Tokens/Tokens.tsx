@@ -11,7 +11,6 @@ import useStyles from './style'
 export const Tokens: React.FC = () => {
   const classes = useStyles()
   const userTokens = useSelector(accountsArray)
-  console.log(userTokens)
   return (
     <>
       <Grid container className={classes.root}>
