@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   iconDiv: {
     marginTop: 76,
-    height: 150,
-    backgroundColor: 'green'
+    height: 200,
+    width: 200
   },
   titleDiv: {
     marginTop: 35
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: 18
   },
   buttonsDiv: {
-    marginTop: 75
+    marginTop: 50
   },
   closeButton: {
     marginLeft: 55,

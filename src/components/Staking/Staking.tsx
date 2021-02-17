@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography, SvgIcon } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 import SolanaIcon from '@static/svg/solana.svg'
@@ -9,7 +9,9 @@ import { transformBN } from '@consts/utils'
 import { TokenAccounts } from '@selectors/solanaWallet'
 import Token from '@containers/Tokens/Token/Token'
 import { PublicKey } from '@solana/web3.js'
-
+import { ReactComponent as DepositIcon } from '@static/svg/depo_ic.svg'
+import { ReactComponent as MintIcon } from '@static/svg/mint_ic.svg'
+import { ReactComponent as WithdrawIcon } from '@static/svg/withdraw_ic.svg'
 export interface IStaking {
   stakedValue: BN
   collateralRatio: BN
@@ -76,9 +78,25 @@ export const Stacking: React.FC<IStaking> = ({
                     onClick={() => {
                       onDeposit()
                     }}>
-                    <Typography variant='body1' className={classes.buttonText}>
-                      Deposit
-                    </Typography>
+                    <Grid
+                      container
+                      direction='column'
+                      justify='center'
+                      alignItems='center'
+                      style={{ height: '100%' }}>
+                      <Grid item>
+                        <SvgIcon
+                          component={DepositIcon}
+                          style={{ width: 80, height: 80 }}
+                          viewBox='0 0 200 200'
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant='body1' className={classes.buttonText}>
+                          Deposit
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
                   <Grid
                     item
@@ -88,9 +106,25 @@ export const Stacking: React.FC<IStaking> = ({
                     onClick={() => {
                       onMint()
                     }}>
-                    <Typography variant='body1' className={classes.buttonText}>
-                      Mint
-                    </Typography>
+                    <Grid
+                      container
+                      direction='column'
+                      justify='center'
+                      alignItems='center'
+                      style={{ height: '100%' }}>
+                      <Grid item>
+                        <SvgIcon
+                          component={MintIcon}
+                          style={{ width: 80, height: 80 }}
+                          viewBox='0 0 200 200'
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant='body1' className={classes.buttonText}>
+                          Mint
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -107,9 +141,25 @@ export const Stacking: React.FC<IStaking> = ({
               <Grid item xs={12}>
                 <Grid container className={classes.actionsDiv}>
                   <Grid item xs className={classes.button}>
-                    <Typography variant='body1' className={classes.buttonText}>
-                      Withdraw
-                    </Typography>
+                    <Grid
+                      container
+                      direction='column'
+                      justify='center'
+                      alignItems='center'
+                      style={{ height: '100%' }}>
+                      <Grid item>
+                        <SvgIcon
+                          component={WithdrawIcon}
+                          style={{ width: 80, height: 80 }}
+                          viewBox='0 0 200 200'
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant='body1' className={classes.buttonText}>
+                          Withdraw
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>

@@ -6,6 +6,8 @@ import { mint } from '@selectors/modals'
 import { userMaxMintUsd } from '@selectors/exchange'
 import { actions } from '@reducers/modals'
 import { BN } from '@project-serum/anchor'
+import { SvgIcon } from '@material-ui/core'
+import { ReactComponent as MintIcon } from '@static/svg/mint_ic.svg'
 
 export const SendMoneyModal = () => {
   const dispatch = useDispatch()
@@ -16,6 +18,9 @@ export const SendMoneyModal = () => {
       onSend={(amount: BN) => {
         dispatch(actions.mint({ amount }))
       }}
+      icon={
+        <SvgIcon component={MintIcon} style={{ width: 200, height: 200 }} viewBox='0 0 200 200' />
+      }
       open={modalState.open}
       title='Mint'
       ticker='xUSD'

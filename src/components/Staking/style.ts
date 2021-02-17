@@ -35,17 +35,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: 8
   },
   actionsDiv: {
-    height: 100,
+    height: 240,
     backgroundColor: colors.blue.deepAccent,
     borderRadius: 10,
-    padding: '16px 30px',
+    padding: '26px 30px',
     width: '100%'
   },
   button: {
     backgroundColor: colors.blue.accent,
     color: colors.white.main,
-    height: 70,
-    padding: 15,
+    height: '100%',
+    // padding: 15,
+    paddingTop: 30,
     borderRadius: 2,
     cursor: 'pointer',
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.45)',
@@ -57,7 +58,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   buttonText: {
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    paddingTop: 10
   },
   divider: {
     width: 80

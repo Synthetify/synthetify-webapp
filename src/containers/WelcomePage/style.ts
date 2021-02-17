@@ -18,7 +18,7 @@ const useStyles = makeStyles(() =>
       maxWidth: 1300,
       // Hackish way TODO fix
       maxHeight: 'calc(100vh - 110px)',
-      padding: 16,
+      // padding: 16,
       overflow: 'auto'
     },
     side: {

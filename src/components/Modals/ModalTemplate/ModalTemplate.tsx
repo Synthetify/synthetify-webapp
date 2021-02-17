@@ -31,6 +31,7 @@ export interface ISendMoneyModal {
   txid?: string
   balance: BN
   decimals?: number
+  icon: JSX.Element
 }
 export interface FormFields {
   amount: string
@@ -45,6 +46,7 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
   helpText,
   title,
   ticker,
+  icon,
   decimals = 9
 }) => {
   const classes = useStyles()
@@ -81,9 +83,7 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
       <Dialog open={open} onClose={handleClose} className={classes.root} keepMounted>
         <Grid container direction='column' alignItems='center'>
           <Grid item className={classes.iconDiv}>
-            <Typography variant='h1' color='textPrimary'>
-              {title}
-            </Typography>
+            {icon}
           </Grid>
           <Grid item className={classes.titleDiv}>
             <Typography variant='h1' color='textPrimary'>
