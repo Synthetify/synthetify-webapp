@@ -30,6 +30,9 @@ export const tokenBalance = (tokenAddress: PublicKey) =>
     if (tokenAddress.equals(DEFAULT_PUBLICKEY)) {
       return { balance: solBalance, decimals: 9 }
     } else {
+      if (!tokensAccounts[tokenAddress.toString()]) {
+        return { balance: new BN(0), decimals: 9 }
+      }
       return {
         balance: tokensAccounts[tokenAddress.toString()][0].balance,
         decimals: tokensAccounts[tokenAddress.toString()][0].decimals

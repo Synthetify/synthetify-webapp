@@ -21,9 +21,17 @@ export interface ISend {
   error?: string
   open: boolean
 }
+export interface IDeposit {
+  amount: BN
+  txid?: string
+  sending: boolean
+  error?: string
+  open: boolean
+}
 export interface IModals {
   createAccount: ICreateAccountTransaction
   send: ISend
+  deposit: IDeposit
 }
 
 export const defaultState: IModals = {
@@ -32,6 +40,11 @@ export const defaultState: IModals = {
     amount: new BN(0),
     recipient: DEFAULT_PUBLICKEY,
     tokenAddress: DEFAULT_PUBLICKEY,
+    sending: false,
+    open: false
+  },
+  deposit: {
+    amount: new BN(0),
     sending: false,
     open: false
   }
@@ -76,6 +89,11 @@ const modalsSlice = createSlice({
     sendDone(state, action: PayloadAction<Pick<ISend, 'txid'>>) {
       state.send.sending = false
       state.send.txid = action.payload.txid
+      return state
+    },
+    deposit(state, action: PayloadAction<Pick<ISend, 'amount'>>) {
+      state.deposit.sending = true
+      state.deposit.amount = action.payload.amount
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: string }>) {

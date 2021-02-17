@@ -12,8 +12,6 @@ export const SendMoneyModal = () => {
   const dispatch = useDispatch()
   const modalState = useSelector(send)
   const { balance, decimals } = useSelector(tokenBalance(modalState.tokenAddress))
-  console.log(decimals)
-  console.log(balance.toString())
   return (
     <SendMoneyModalComponent
       onSend={(amount: BN, recipient: string) => {

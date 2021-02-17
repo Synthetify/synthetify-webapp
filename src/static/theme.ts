@@ -19,7 +19,8 @@ export const colors = {
   gray: {
     base: '#8DA9C4',
     skeletonBackground: '#8E8B8B',
-    skeletonField: '#C4C4C4'
+    skeletonField: '#C4C4C4',
+    CDCDCD: '#CDCDCD'
   },
   green: {
     main: '#00F9BB',
@@ -70,7 +71,8 @@ export const theme = createMuiTheme({
       fontSize: 16
     },
     h1: {
-      fontSize: 56
+      fontSize: 56,
+      fontWeight: 700
     },
     h2: {
       fontSize: 40

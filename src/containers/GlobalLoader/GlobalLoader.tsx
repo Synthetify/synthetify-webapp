@@ -9,7 +9,6 @@ import useStyles from './style'
 export const GlobalLoader: React.FC = () => {
   const loaderData = useSelector(loader)
   const classes = useStyles()
-  console.log(loaderData.open)
   return (
     <Backdrop
       transitionDuration={{ appear: 0, exit: 300 }}

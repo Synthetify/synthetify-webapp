@@ -8,6 +8,13 @@ module.exports = {
     '@storybook/addon-storysource'
   ],
   webpackFinal: config => {
+    config.node = {
+      fs: 'empty',
+      tls: 'empty',
+      net: 'empty',
+      module: 'empty',
+      console: true
+    }
     return require('../config-overrides')(config)
   }
 }

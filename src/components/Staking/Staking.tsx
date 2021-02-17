@@ -16,8 +16,15 @@ export interface IStaking {
   debt: BN
   tokens: TokenAccounts[]
   onSend: (address: PublicKey) => void
+  onDeposit: () => void
 }
-export const Stacking: React.FC<IStaking> = ({ debt, collateralRatio, stakedValue, tokens }) => {
+export const Stacking: React.FC<IStaking> = ({
+  debt,
+  collateralRatio,
+  stakedValue,
+  tokens,
+  onDeposit
+}) => {
   const classes = useStyles()
   return (
     <Grid container className={classes.root}>
@@ -60,7 +67,13 @@ export const Stacking: React.FC<IStaking> = ({ debt, collateralRatio, stakedValu
               </Grid>
               <Grid item xs={12}>
                 <Grid container className={classes.actionsDiv}>
-                  <Grid item xs className={classes.button}>
+                  <Grid
+                    item
+                    xs
+                    className={classes.button}
+                    onClick={() => {
+                      onDeposit()
+                    }}>
                     <Typography variant='body1' className={classes.buttonText}>
                       Deposit
                     </Typography>

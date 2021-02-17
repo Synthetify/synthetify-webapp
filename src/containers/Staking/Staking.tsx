@@ -26,6 +26,9 @@ export const StakingWrapper: React.FC = () => {
         onSend={(address: PublicKey) => {
           dispatch(modalsActions.openSend({ tokenAddress: address }))
         }}
+        onDeposit={() => {
+          dispatch(modalsActions.openModal('deposit'))
+        }}
       />
     </>
   )
