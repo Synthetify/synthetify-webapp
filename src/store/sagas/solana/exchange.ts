@@ -6,21 +6,28 @@ import {
   collateralAccount,
   collateralToken,
   userAccountAddress,
-  assets,
   xUSDAddress,
   mintAuthority
 } from '@selectors/exchange'
-import { accounts } from '@selectors/solanaWallet'
+import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import * as anchor from '@project-serum/anchor'
 import { getSystemProgram } from '@web3/connection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { Account, TransactionInstruction } from '@solana/web3.js'
+import {
+  Account,
+  TransactionInstruction,
+  PublicKey,
+  Transaction,
+  sendAndConfirmTransaction
+} from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
 import { createTransferInstruction } from './token'
 import { TokenInstructions } from '@project-serum/serum'
+import { Token } from '@solana/spl-token'
+import { tou64 } from '@consts/utils'
 
 export function* pullExchangeState(): Generator {
   const systemProgram = yield* call(getSystemProgram)
@@ -200,6 +207,43 @@ export function* withdrawCollateral(amount: BN): SagaGenerator<string> {
       tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
       clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
       userAccount: userExchangeAccount,
+      owner: wallet.publicKey
+    },
+    signers: [wallet],
+    instructions: updateFeedsTxs
+  })
+}
+export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<string> {
+  const userTokenAccount = yield* select(tokenAccount(tokenAddress))
+  if (!userTokenAccount) {
+    return ''
+  }
+  const wallet = yield* call(getWallet)
+
+  const authority = yield* select(mintAuthority)
+  const systemProgram = yield* call(getSystemProgram)
+  const userExchangeAccount = yield* select(userAccountAddress)
+
+  const updateFeedsTxs = yield* call(updateFeedsTransactions)
+  const approveTx = yield* call(
+    [Token, Token.createApproveInstruction],
+    TokenInstructions.TOKEN_PROGRAM_ID,
+    userTokenAccount.address,
+    authority,
+    wallet.publicKey,
+    [],
+    tou64(amount)
+  )
+  updateFeedsTxs.push(approveTx)
+
+  return yield* call([systemProgram, systemProgram.state.rpc.burn], amount, {
+    accounts: {
+      authority: authority,
+      mint: userTokenAccount.programId,
+      userTokenAccount: userTokenAccount.address,
+      userAccount: userExchangeAccount,
+      tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
       owner: wallet.publicKey
     },
     signers: [wallet],

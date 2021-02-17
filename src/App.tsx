@@ -16,6 +16,7 @@ import SendMoneyModal from '@containers/Modals/SendMoneyModal'
 import DepositModal from '@containers/Modals/DepositModal'
 import MintModal from '@containers/Modals/MintModal'
 import WithdrawModal from '@containers/Modals/WithdrawModal'
+import BurnModal from '@containers/Modals/BurnModal'
 
 setConfig({
   reloadHooks: false
@@ -27,6 +28,7 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <SnackbarProvider maxSnack={99}>
+            <BurnModal />
             <WithdrawModal />
             <MintModal />
             <DepositModal />

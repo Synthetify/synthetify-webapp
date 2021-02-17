@@ -1,9 +1,7 @@
 import { Grid, Typography, SvgIcon } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
-import SolanaIcon from '@static/svg/solana.svg'
 import CommonButton from '@components/CommonButton/CommonButton'
-import { SolanaNetworks } from '@web3/connection'
 import BN from 'bn.js'
 import { transformBN } from '@consts/utils'
 import { TokenAccounts } from '@selectors/solanaWallet'
@@ -12,6 +10,7 @@ import { PublicKey } from '@solana/web3.js'
 import { ReactComponent as DepositIcon } from '@static/svg/depo_ic.svg'
 import { ReactComponent as MintIcon } from '@static/svg/mint_ic.svg'
 import { ReactComponent as WithdrawIcon } from '@static/svg/withdraw_ic.svg'
+import { openSync } from 'fs'
 export interface IStaking {
   stakedValue: BN
   collateralRatio: BN
@@ -21,6 +20,7 @@ export interface IStaking {
   onDeposit: () => void
   onMint: () => void
   onWithdraw: () => void
+  onBurn: (address: PublicKey) => void
 }
 export const Stacking: React.FC<IStaking> = ({
   debt,
@@ -29,7 +29,9 @@ export const Stacking: React.FC<IStaking> = ({
   tokens,
   onDeposit,
   onMint,
-  onWithdraw
+  onWithdraw,
+  onSend,
+  onBurn
 }) => {
   const classes = useStyles()
   return (
@@ -203,23 +205,25 @@ export const Stacking: React.FC<IStaking> = ({
                   </Grid>
                 </Grid>
               </Grid>
-              {tokens.map((token, index) => (
-                <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
-                  <CommonButton
-                    name='Send'
-                    onClick={() => {
-                      // setOpen(true)
-                    }}
-                  />
-                  <CommonButton
-                    name='Burn'
-                    onClick={() => {
-                      // setOpen(true)
-                    }}
-                    className={classes.burnButton}
-                  />
-                </Token>
-              ))}
+              {tokens
+                .filter(t => t.ticker?.startsWith('x'))
+                .map((token, index) => (
+                  <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
+                    <CommonButton
+                      name='Send'
+                      onClick={() => {
+                        onSend(token.programId)
+                      }}
+                    />
+                    <CommonButton
+                      name='Burn'
+                      onClick={() => {
+                        onBurn(token.programId)
+                      }}
+                      className={classes.burnButton}
+                    />
+                  </Token>
+                ))}
             </Grid>
           </Grid>
         </>

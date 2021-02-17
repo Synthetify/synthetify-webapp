@@ -33,6 +33,9 @@ export const StakingWrapper: React.FC = () => {
         onWithdraw={() => {
           dispatch(modalsActions.openModal('withdraw'))
         }}
+        onBurn={(address: PublicKey) => {
+          dispatch(modalsActions.openBurn({ tokenAddress: address }))
+        }}
       />
     </>
   )

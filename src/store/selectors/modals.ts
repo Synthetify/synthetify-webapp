@@ -3,12 +3,13 @@ import { keySelectors, AnyProps } from './helpers'
 
 const store = (s: AnyProps) => s[modalsSliceName] as IModals
 
-export const { createAccount, send, deposit, mint, withdraw } = keySelectors(store, [
+export const { createAccount, send, deposit, mint, withdraw, burn } = keySelectors(store, [
   'createAccount',
   'send',
   'deposit',
   'mint',
-  'withdraw'
+  'withdraw',
+  'burn'
 ])
 
 export const modalsSelectors = {
@@ -16,7 +17,8 @@ export const modalsSelectors = {
   send,
   deposit,
   mint,
-  withdraw
+  withdraw,
+  burn
 }
 
 export default modalsSelectors

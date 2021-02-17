@@ -42,12 +42,21 @@ export interface IWithdraw {
   error?: string
   open: boolean
 }
+export interface IBurn {
+  amount: BN
+  tokenAddress: PublicKey
+  txid?: string
+  sending: boolean
+  error?: string
+  open: boolean
+}
 export interface IModals {
   createAccount: ICreateAccountTransaction
   send: ISend
   deposit: IDeposit
   mint: IMint
   withdraw: IWithdraw
+  burn: IBurn
 }
 
 export const defaultState: IModals = {
@@ -71,6 +80,12 @@ export const defaultState: IModals = {
   },
   withdraw: {
     amount: new BN(0),
+    sending: false,
+    open: false
+  },
+  burn: {
+    amount: new BN(0),
+    tokenAddress: DEFAULT_PUBLICKEY,
     sending: false,
     open: false
   }
@@ -108,6 +123,21 @@ const modalsSlice = createSlice({
         default:
           break
       }
+      return state
+    },
+    openBurn(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
+      state.burn.open = true
+      state.burn.tokenAddress = action.payload.tokenAddress
+      return state
+    },
+    burn(state, action: PayloadAction<Pick<IBurn, 'amount'>>) {
+      state.burn.sending = true
+      state.burn.amount = action.payload.amount
+      return state
+    },
+    burnDone(state, action: PayloadAction<Pick<IBurn, 'txid'>>) {
+      state.burn.sending = false
+      state.burn.txid = action.payload.txid
       return state
     },
     openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {

@@ -1,7 +1,7 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/modals'
-import { send, deposit, mint, withdraw } from '@selectors/modals'
+import { send, deposit, mint, withdraw, burn } from '@selectors/modals'
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -11,7 +11,7 @@ import { getWallet, sendSol, sendToken } from './solana/wallet'
 
 import { BN } from '@project-serum/anchor'
 import { Transaction, SystemProgram } from '@solana/web3.js'
-import { depositCollateral, mintUsd, withdrawCollateral } from './solana/exchange'
+import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './solana/exchange'
 
 // export function* handleCreateAccount(
 //   action: PayloadAction<PayloadTypes['createAccount']>
@@ -61,6 +61,9 @@ export function* handleSendToken(): Generator {
       )
     } else {
       const tokenAccount = yield* select(walletSelectors.tokenAccount(sendData.tokenAddress))
+      if (!tokenAccount) {
+        return
+      }
       const txid = yield* call(
         sendToken,
         tokenAccount.address,
@@ -156,6 +159,29 @@ export function* handleWithdraw(): Generator {
     )
   }
 }
+export function* handleBurn(): Generator {
+  const burnData = yield* select(burn)
+  try {
+    const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
+    yield* put(actions.burnDone({ txid: txid }))
+    yield put(
+      snackbarsActions.add({
+        message: 'Succesfully burned token.',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    console.log(error.toString())
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
 
 export function* sendTokenHandler(): Generator {
   yield takeEvery(actions.send, handleSendToken)
@@ -169,7 +195,12 @@ export function* mintHandler(): Generator {
 export function* withdrawHandler(): Generator {
   yield takeEvery(actions.withdraw, handleWithdraw)
 }
+export function* burnHandler(): Generator {
+  yield takeEvery(actions.burn, handleBurn)
+}
 
 export function* modalsSaga(): Generator {
-  yield all([sendTokenHandler, depositHandler, mintHandler, withdrawHandler].map(spawn))
+  yield all(
+    [sendTokenHandler, depositHandler, mintHandler, withdrawHandler, burnHandler].map(spawn)
+  )
 }

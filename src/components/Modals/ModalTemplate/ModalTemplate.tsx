@@ -5,8 +5,6 @@ import {
   Typography,
   Grid,
   Dialog,
-  DialogTitle,
-  CircularProgress,
   TextField,
   InputAdornment,
   CardMedia
@@ -40,7 +38,11 @@ export interface ISendMoneyModal {
 export interface FormFields {
   amount: string
 }
-const loadToMsg = (title: 'Mint' | 'Withdraw' | 'Deposit' | 'Burn', amount: string) => {
+const loadToMsg = (
+  title: 'Mint' | 'Withdraw' | 'Deposit' | 'Burn',
+  amount: string,
+  ticker: string
+) => {
   switch (title) {
     case 'Mint':
       return `Minting ${amount} xUSD.`
@@ -52,13 +54,17 @@ const loadToMsg = (title: 'Mint' | 'Withdraw' | 'Deposit' | 'Burn', amount: stri
       return `Depositing ${amount} SNY to Synthetify Exchange.`
 
     case 'Burn':
-      return `Burning ${amount} tokens`
+      return `Burning ${amount} ${ticker}.`
 
     default:
       break
   }
 }
-const doneToMsg = (title: 'Mint' | 'Withdraw' | 'Deposit' | 'Burn', amount: string) => {
+const doneToMsg = (
+  title: 'Mint' | 'Withdraw' | 'Deposit' | 'Burn',
+  amount: string,
+  ticker: string
+) => {
   switch (title) {
     case 'Mint':
       return `Successfully minted ${amount} xUSD.`
@@ -70,7 +76,7 @@ const doneToMsg = (title: 'Mint' | 'Withdraw' | 'Deposit' | 'Burn', amount: stri
       return `Successfully deposited ${amount} SNY to Synthetify Exchange.`
 
     case 'Burn':
-      return `Successfully burned ${amount} tokens.`
+      return `Successfully burned ${amount} ${ticker}.`
 
     default:
       break
@@ -107,7 +113,7 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
       }
     })
   })
-  const { control, errors, reset, setValue, handleSubmit, getValues } = useForm<FormFields>({
+  const { control, errors, reset, setValue, handleSubmit } = useForm<FormFields>({
     resolver: yupResolver(schema),
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -136,7 +142,7 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
                 </Grid>
                 <Grid item className={classes.helpTextLoaderDiv}>
                   <Typography variant='body1' color='textPrimary'>
-                    {loadToMsg(title, printBN(amountSend, decimals))}
+                    {loadToMsg(title, printBN(amountSend, decimals), ticker)}
                   </Typography>
                 </Grid>
               </>
@@ -152,7 +158,7 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
                 </Grid>
                 <Grid item className={classes.helpTextLoaderDiv}>
                   <Typography variant='body1' color='textPrimary'>
-                    {doneToMsg(title, printBN(amountSend, decimals))}
+                    {doneToMsg(title, printBN(amountSend, decimals), ticker)}
                   </Typography>
                 </Grid>
               </>

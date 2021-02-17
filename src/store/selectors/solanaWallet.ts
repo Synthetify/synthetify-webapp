@@ -41,7 +41,9 @@ export const tokenBalance = (tokenAddress: PublicKey) =>
   })
 export const tokenAccount = (tokenAddress: PublicKey) =>
   createSelector(accounts, tokensAccounts => {
-    return tokensAccounts[tokenAddress.toString()][0]
+    if (tokensAccounts[tokenAddress.toString()]) {
+      return tokensAccounts[tokenAddress.toString()][0]
+    }
   })
 
 export type TokenAccounts = ITokenAccount & { ticker?: string }

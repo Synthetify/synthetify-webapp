@@ -133,7 +133,23 @@ export const userMaxWithdraw = createSelector(
       .div(collateralToken.price)
   }
 )
-
+export const userMaxBurnToken = (assetAddress: PublicKey) =>
+  createSelector(userDebtValue, assets, (debt, allAssets) => {
+    const token = allAssets[assetAddress.toString()]
+    if (debt.eq(new BN(0)) || !token) {
+      return new BN(0)
+    }
+    return debt.mul(new BN(1e4)).div(token.price)
+  })
+export const tokenTicker = (tokenAddress: PublicKey) =>
+  createSelector(assets, allAssets => {
+    const token = allAssets[tokenAddress.toString()]
+    if (!token) {
+      return ''
+    } else {
+      return token.ticker
+    }
+  })
 export const exchangeSelectors = {
   assets,
   collateralAccount,
@@ -145,7 +161,9 @@ export const exchangeSelectors = {
   userAccount,
   userAccountAddress,
   mintAuthority,
-  userMaxWithdraw
+  userMaxWithdraw,
+  tokenTicker,
+  userMaxBurnToken
 }
 
 export default exchangeSelectors
