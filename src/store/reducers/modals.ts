@@ -35,11 +35,19 @@ export interface IMint {
   error?: string
   open: boolean
 }
+export interface IWithdraw {
+  amount: BN
+  txid?: string
+  sending: boolean
+  error?: string
+  open: boolean
+}
 export interface IModals {
   createAccount: ICreateAccountTransaction
   send: ISend
   deposit: IDeposit
   mint: IMint
+  withdraw: IWithdraw
 }
 
 export const defaultState: IModals = {
@@ -57,6 +65,11 @@ export const defaultState: IModals = {
     open: false
   },
   mint: {
+    amount: new BN(0),
+    sending: false,
+    open: false
+  },
+  withdraw: {
     amount: new BN(0),
     sending: false,
     open: false
@@ -112,6 +125,11 @@ const modalsSlice = createSlice({
     mint(state, action: PayloadAction<Pick<IMint, 'amount'>>) {
       state.mint.sending = true
       state.mint.amount = action.payload.amount
+      return state
+    },
+    withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
+      state.withdraw.sending = true
+      state.withdraw.amount = action.payload.amount
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: string }>) {

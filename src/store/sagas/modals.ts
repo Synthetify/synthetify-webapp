@@ -1,7 +1,7 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/modals'
-import { send, deposit, mint } from '@selectors/modals'
+import { send, deposit, mint, withdraw } from '@selectors/modals'
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -11,7 +11,7 @@ import { getWallet, sendSol, sendToken } from './solana/wallet'
 
 import { BN } from '@project-serum/anchor'
 import { Transaction, SystemProgram } from '@solana/web3.js'
-import { depositCollateral,mintUsd } from './solana/exchange'
+import { depositCollateral, mintUsd, withdrawCollateral } from './solana/exchange'
 
 // export function* handleCreateAccount(
 //   action: PayloadAction<PayloadTypes['createAccount']>
@@ -91,7 +91,6 @@ export function* handleSendToken(): Generator {
 }
 export function* handleDeposit(): Generator {
   const depositData = yield* select(deposit)
-  console.log(depositData)
   try {
     yield* call(depositCollateral, depositData.amount)
     yield put(
@@ -113,12 +112,32 @@ export function* handleDeposit(): Generator {
 }
 export function* handleMint(): Generator {
   const mintData = yield* select(mint)
-  console.log(mintData)
   try {
     yield* call(mintUsd, mintData.amount)
     yield put(
       snackbarsActions.add({
         message: 'Succesfully deposited collateral.',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
+export function* handleWithdraw(): Generator {
+  const withdrawData = yield* select(withdraw)
+  try {
+    yield* call(withdrawCollateral, withdrawData.amount)
+    yield put(
+      snackbarsActions.add({
+        message: 'Succesfully withdraw collateral.',
         variant: 'success',
         persist: false
       })
@@ -143,7 +162,10 @@ export function* depositHandler(): Generator {
 export function* mintHandler(): Generator {
   yield takeEvery(actions.mint, handleMint)
 }
+export function* withdrawHandler(): Generator {
+  yield takeEvery(actions.withdraw, handleWithdraw)
+}
 
 export function* modalsSaga(): Generator {
-  yield all([sendTokenHandler, depositHandler, mintHandler].map(spawn))
+  yield all([sendTokenHandler, depositHandler, mintHandler, withdrawHandler].map(spawn))
 }

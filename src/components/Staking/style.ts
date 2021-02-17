@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     marginLeft: 10,
-    paddingTop: 30,
+    paddingTop: 56,
     paddingBottom: 20,
     fontWeight: 'bold',
     background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',

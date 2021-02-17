@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Staking from '@components/Staking/Staking'
 import { balance, address, accountsArray } from '@selectors/solanaWallet'
-import { actions } from '@reducers/solanaWallet'
-import { network } from '@selectors/solanaConnection'
 import { stakedValue, userDebtValue, userCollateralRatio } from '@selectors/exchange'
 import { actions as modalsActions } from '@reducers/modals'
 import { PublicKey } from '@solana/web3.js'
@@ -31,6 +29,9 @@ export const StakingWrapper: React.FC = () => {
         }}
         onMint={() => {
           dispatch(modalsActions.openModal('mint'))
+        }}
+        onWithdraw={() => {
+          dispatch(modalsActions.openModal('withdraw'))
         }}
       />
     </>

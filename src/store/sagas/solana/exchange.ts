@@ -163,7 +163,6 @@ export function* mintUsd(amount: BN): Generator {
   }
   const updateFeedsTxs = yield* call(updateFeedsTransactions)
   const wallet = yield* call(getWallet)
-  console.log(accountAddress.toString())
   // console.log(accountAddress.toString())
   try {
     yield* call([systemProgram, systemProgram.state.rpc.mint], amount, {
@@ -171,6 +170,37 @@ export function* mintUsd(amount: BN): Generator {
         authority: authority,
         mint: usdTokenAddress,
         to: accountAddress,
+        tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+        clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
+        userAccount: userExchangeAccount,
+        owner: wallet.publicKey
+      },
+      signers: [wallet],
+      instructions: updateFeedsTxs
+    })
+  } catch (error) {
+    console.log(error.toString())
+  }
+}
+export function* withdrawCollateral(amount: BN): Generator {
+  const collateralTokenAddress = yield* select(collateralToken)
+  const collateralAccountAddress = yield* select(collateralAccount)
+
+  const authority = yield* select(mintAuthority)
+  const tokensAccounts = yield* select(accounts)
+  const systemProgram = yield* call(getSystemProgram)
+  const userExchangeAccount = yield* select(userAccountAddress)
+
+  const accountAddress = tokensAccounts[collateralTokenAddress.toString()][0].address
+
+  const updateFeedsTxs = yield* call(updateFeedsTransactions)
+  const wallet = yield* call(getWallet)
+  try {
+    yield* call([systemProgram, systemProgram.state.rpc.withdraw], amount, {
+      accounts: {
+        authority: authority,
+        to: accountAddress,
+        collateralAccount: collateralAccountAddress,
         tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
         clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
         userAccount: userExchangeAccount,

@@ -107,6 +107,33 @@ export const userCollateralRatio = createSelector(userDebtValue, stakedValue, (d
   }
   return stake.mul(new BN(1e3)).div(debt).div(new BN(10))
 })
+
+export const userMaxWithdraw = createSelector(
+  userDebtValue,
+  userMaxDebtValue,
+  collateralizationLevel,
+  assets,
+  collateralToken,
+  (debt, maxUsd, collateralLvl, allAssets, collateral) => {
+    if (
+      debt.eq(new BN(0)) ||
+      maxUsd.eq(new BN(0)) ||
+      debt.gte(maxUsd) ||
+      collateral.equals(DEFAULT_PUBLICKEY) ||
+      !allAssets[collateral.toString()]
+    ) {
+      return new BN(0)
+    }
+    const collateralToken = allAssets[collateral.toString()]
+    return maxUsd
+      .sub(debt)
+      .mul(new BN(collateralLvl))
+      .div(new BN(100))
+      .mul(new BN(1e4))
+      .div(collateralToken.price)
+  }
+)
+
 export const exchangeSelectors = {
   assets,
   collateralAccount,
@@ -117,7 +144,8 @@ export const exchangeSelectors = {
   shares,
   userAccount,
   userAccountAddress,
-  mintAuthority
+  mintAuthority,
+  userMaxWithdraw
 }
 
 export default exchangeSelectors
