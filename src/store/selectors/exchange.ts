@@ -116,7 +116,6 @@ export const userMaxWithdraw = createSelector(
   collateralToken,
   (debt, maxUsd, collateralLvl, allAssets, collateral) => {
     if (
-      debt.eq(new BN(0)) ||
       maxUsd.eq(new BN(0)) ||
       debt.gte(maxUsd) ||
       collateral.equals(DEFAULT_PUBLICKEY) ||
