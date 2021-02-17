@@ -1,7 +1,7 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/modals'
-import { send, deposit } from '@selectors/modals'
+import { send, deposit, mint } from '@selectors/modals'
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -11,7 +11,7 @@ import { getWallet, sendSol, sendToken } from './solana/wallet'
 
 import { BN } from '@project-serum/anchor'
 import { Transaction, SystemProgram } from '@solana/web3.js'
-import { depositCollateral } from './solana/exchange'
+import { depositCollateral,mintUsd } from './solana/exchange'
 
 // export function* handleCreateAccount(
 //   action: PayloadAction<PayloadTypes['createAccount']>
@@ -111,6 +111,28 @@ export function* handleDeposit(): Generator {
     )
   }
 }
+export function* handleMint(): Generator {
+  const mintData = yield* select(mint)
+  console.log(mintData)
+  try {
+    yield* call(mintUsd, mintData.amount)
+    yield put(
+      snackbarsActions.add({
+        message: 'Succesfully deposited collateral.',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
 
 export function* sendTokenHandler(): Generator {
   yield takeEvery(actions.send, handleSendToken)
@@ -118,7 +140,10 @@ export function* sendTokenHandler(): Generator {
 export function* depositHandler(): Generator {
   yield takeEvery(actions.deposit, handleDeposit)
 }
+export function* mintHandler(): Generator {
+  yield takeEvery(actions.mint, handleMint)
+}
 
 export function* modalsSaga(): Generator {
-  yield all([sendTokenHandler, depositHandler].map(spawn))
+  yield all([sendTokenHandler, depositHandler, mintHandler].map(spawn))
 }

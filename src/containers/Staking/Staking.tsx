@@ -29,6 +29,9 @@ export const StakingWrapper: React.FC = () => {
         onDeposit={() => {
           dispatch(modalsActions.openModal('deposit'))
         }}
+        onMint={() => {
+          dispatch(modalsActions.openModal('mint'))
+        }}
       />
     </>
   )

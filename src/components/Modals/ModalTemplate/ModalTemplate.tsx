@@ -14,10 +14,6 @@ import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers'
 
-import NearMeIcon from '@material-ui/icons/NearMe'
-import CloseIcon from '@material-ui/icons/Close'
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
-import { PublicKey } from '@solana/web3.js'
 import CommonButton from '@components/CommonButton/CommonButton'
 import useStyles from './style'
 import { BN } from '@project-serum/anchor'
@@ -134,7 +130,7 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
           </Grid>
           <Grid item className={classes.buttonsDiv}>
             <FilledButton
-              name='Deposit'
+              name={title}
               variant='black'
               onClick={() => {
                 handleSubmit(clearAndSubmit)()

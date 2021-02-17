@@ -11,8 +11,8 @@ const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
   const userAccount = useSelector(userAccountAddress)
+  const exchangeProgram = getSystemProgram()
   React.useEffect(() => {
-    const exchangeProgram = getSystemProgram()
     if (
       userAccount.equals(DEFAULT_PUBLICKEY) ||
       !exchangeProgram ||
@@ -27,6 +27,40 @@ const ExhcangeEvents = () => {
     }
     connectEvents()
   }, [dispatch, userAccount.toString(), networkStatus])
+
+  React.useEffect(() => {
+    if (!exchangeProgram || networkStatus !== Status.Initalized) {
+      return
+    }
+    const connectEvents = () => {
+      // @ts-expect-error
+      exchangeProgram.state.subscribe('recent').on('change', state => {
+        dispatch(actions.setState({
+          debt: state.debt,
+          shares: state.shares,
+          collateralAccount: state.collateralAccount,
+          assets: state.assets.reduce((acc: any, a: any) => {
+            return Object.assign(acc, {
+              [a.assetAddress.toString()]: {
+                address: a.assetAddress,
+                feedAddress: a.feedAddress,
+                decimals: a.decimals,
+                price: a.price,
+                supply: a.supply,
+                ticker: a.ticker.toString()
+              }
+            })
+          }, {}),
+          collateralToken: state.collateralToken,
+          mintAuthority: state.mintAuthority,
+          fee: state.fee,
+          collateralizationLevel: state.collateralizationLevel
+        }))
+        // dispatch(actions.setUserAccountData({ shares: a.shares, collateral: a.collateral }))
+      })
+    }
+    connectEvents()
+  }, [dispatch, exchangeProgram.programId.toString(), networkStatus])
 
   return null
 }

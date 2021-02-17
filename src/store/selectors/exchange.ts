@@ -46,14 +46,16 @@ export const stakedValue = createSelector(
   assets,
   collateralToken,
   (account, allAssets, collateralTokenAddress) => {
-    if (account.address === DEFAULT_PUBLICKEY.toString() || account.collateral.eq(new BN(0))) {
+    if (
+      account.address === DEFAULT_PUBLICKEY.toString() ||
+      account.collateral.eq(new BN(0)) ||
+      !allAssets[collateralTokenAddress.toString()]
+    ) {
       return new BN(0)
     }
-    console.log(account.collateral.toString())
     const value = allAssets[collateralTokenAddress.toString()].price
       .mul(account.collateral)
       .div(new BN(1e4))
-    console.log(value.toString())
     return value
   }
 )
@@ -70,6 +72,28 @@ export const userDebtValue = createSelector(
     }, new BN(0))
     const userDebt = debt.mul(allShares).div(account.shares)
     return userDebt
+  }
+)
+export const userMaxDebtValue = createSelector(
+  stakedValue,
+  collateralizationLevel,
+  (userStakedValue, collateralLvl) => {
+    if (userStakedValue.eq(new BN(0))) {
+      return new BN(0)
+    }
+
+    return userStakedValue.mul(new BN(100)).div(new BN(collateralLvl))
+  }
+)
+
+export const userMaxMintUsd = createSelector(
+  userMaxDebtValue,
+  userDebtValue,
+  (maxDebt, userDebt) => {
+    if (maxDebt.eq(new BN(0)) || maxDebt.lt(userDebt)) {
+      return new BN(0)
+    }
+    return maxDebt.sub(userDebt)
   }
 )
 export const userCollateralRatio = createSelector(userDebtValue, stakedValue, (debt, stake) => {
