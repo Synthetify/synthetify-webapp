@@ -92,7 +92,8 @@ export function* handleSendToken(): Generator {
 export function* handleDeposit(): Generator {
   const depositData = yield* select(deposit)
   try {
-    yield* call(depositCollateral, depositData.amount)
+    const txid = yield* call(depositCollateral, depositData.amount)
+    yield* put(actions.depositDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
         message: 'Succesfully deposited collateral.',
@@ -113,7 +114,9 @@ export function* handleDeposit(): Generator {
 export function* handleMint(): Generator {
   const mintData = yield* select(mint)
   try {
-    yield* call(mintUsd, mintData.amount)
+    const txid = yield* call(mintUsd, mintData.amount)
+    yield* put(actions.mintDone({ txid: txid }))
+
     yield put(
       snackbarsActions.add({
         message: 'Succesfully deposited collateral.',
@@ -134,7 +137,8 @@ export function* handleMint(): Generator {
 export function* handleWithdraw(): Generator {
   const withdrawData = yield* select(withdraw)
   try {
-    yield* call(withdrawCollateral, withdrawData.amount)
+    const txid = yield* call(withdrawCollateral, withdrawData.amount)
+    yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
         message: 'Succesfully withdraw collateral.',

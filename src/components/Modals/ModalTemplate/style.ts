@@ -20,7 +20,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 200
   },
   titleDiv: {
-    marginTop: 35
+    marginTop: 35,
+    maxWidth: 330,
+    textAlign: 'center'
   },
   helpTextDiv: { marginTop: 35, maxWidth: 470, textAlign: 'center', height: 100 },
   inputDiv: {
@@ -72,6 +74,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: colors.white.main,
       border: `2px solid ${colors.white.main}`
     }
+  },
+  loader: {
+    width: 300,
+    height: 300,
+    marginTop: 100,
+    marginBottom: 20
+  },
+  helpTextLoaderDiv: {
+    marginTop: 50,
+    maxWidth: 400,
+    textAlign: 'center'
   }
 }))
 

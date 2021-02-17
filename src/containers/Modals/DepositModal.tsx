@@ -41,6 +41,7 @@ export const SendMoneyModal = () => {
       }}
       balance={balance}
       decimals={decimals}
+      amountSend={modalState.amount}
     />
   )
 }

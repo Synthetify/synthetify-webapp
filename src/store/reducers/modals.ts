@@ -96,6 +96,15 @@ const modalsSlice = createSlice({
         case 'send':
           state.send = defaultState[action.payload]
           break
+        case 'mint':
+          state.mint = defaultState[action.payload]
+          break
+        case 'deposit':
+          state.deposit = defaultState[action.payload]
+          break
+        case 'withdraw':
+          state.withdraw = defaultState[action.payload]
+          break
         default:
           break
       }
@@ -122,14 +131,29 @@ const modalsSlice = createSlice({
       state.deposit.amount = action.payload.amount
       return state
     },
+    depositDone(state, action: PayloadAction<Pick<IDeposit, 'txid'>>) {
+      state.deposit.sending = false
+      state.deposit.txid = action.payload.txid
+      return state
+    },
     mint(state, action: PayloadAction<Pick<IMint, 'amount'>>) {
       state.mint.sending = true
       state.mint.amount = action.payload.amount
       return state
     },
+    mintDone(state, action: PayloadAction<Pick<IMint, 'txid'>>) {
+      state.mint.sending = false
+      state.mint.txid = action.payload.txid
+      return state
+    },
     withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
       state.withdraw.sending = true
       state.withdraw.amount = action.payload.amount
+      return state
+    },
+    withdrawDone(state, action: PayloadAction<Pick<IWithdraw, 'txid'>>) {
+      state.withdraw.sending = false
+      state.withdraw.txid = action.payload.txid
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: string }>) {

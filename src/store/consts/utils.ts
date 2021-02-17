@@ -14,11 +14,18 @@ export const printBN = (amount: BN, decimals: number): string => {
   if (balanceString.length <= decimals) {
     return '0.' + '0'.repeat(decimals - balanceString.length) + balanceString
   } else {
-    return (
+    return trimZeros(
       balanceString.substring(0, balanceString.length - decimals) +
       '.' +
       balanceString.substring(balanceString.length - decimals)
     )
+  }
+}
+export const trimZeros = (amount: string) => {
+  try {
+    return parseFloat(amount).toString()
+  } catch (error) {
+    return amount
   }
 }
 export const printBNtoBN = (amount: string, decimals: number): BN => {

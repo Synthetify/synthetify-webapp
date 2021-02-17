@@ -43,6 +43,7 @@ export const WithdrawModal = () => {
       }}
       balance={maxWithdraw}
       decimals={8}
+      amountSend={modalState.amount}
     />
   )
 }

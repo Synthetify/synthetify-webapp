@@ -29,6 +29,7 @@ export const SendMoneyModal = () => {
       txid={modalState.txid}
       handleClose={() => {
         if (modalState.txid) {
+          console.log('reset')
           dispatch(actions.closeModal('mint'))
           setTimeout(() => {
             dispatch(actions.resetModal('mint'))
@@ -39,6 +40,7 @@ export const SendMoneyModal = () => {
       }}
       balance={maxUsd}
       decimals={8}
+      amountSend={modalState.amount}
     />
   )
 }
