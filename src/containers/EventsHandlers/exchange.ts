@@ -1,14 +1,10 @@
-import React, { useState } from 'react'
-import * as R from 'remeda'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { accounts, address, status as walletStatus } from '@selectors/solanaWallet'
 import { userAccountAddress } from '@selectors/exchange'
 import { status } from '@selectors/solanaConnection'
-import { actions } from '@reducers/solanaWallet'
-import { AccountInfo, PublicKey } from '@solana/web3.js'
+import { actions } from '@reducers/exchange'
 import { getSystemProgram } from '@web3/connection'
 import { Status } from '@reducers/solanaConnection'
-import { parseTokenAccountData } from '@web3/data'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
 const ExhcangeEvents = () => {
@@ -25,11 +21,9 @@ const ExhcangeEvents = () => {
       return
     }
     const connectEvents = () => {
-      console.log('connected')
-      // TODO fix add dispatch
-      exchangeProgram.account.userAccount
-        .subscribe(userAccount, 'recent')
-        .on('change', a => console.log(a))
+      exchangeProgram.account.userAccount.subscribe(userAccount, 'recent').on('change', a => {
+        dispatch(actions.setUserAccountData({ shares: a.shares, collateral: a.collateral }))
+      })
     }
     connectEvents()
   }, [dispatch, userAccount.toString(), networkStatus])
