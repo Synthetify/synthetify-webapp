@@ -64,13 +64,18 @@ export const userDebtValue = createSelector(
   assets,
   shares,
   (account, allAssets, allShares) => {
-    if (account.address === DEFAULT_PUBLICKEY.toString() || account.collateral.eq(new BN(0))) {
+    if (
+      account.address === DEFAULT_PUBLICKEY.toString() ||
+      account.collateral.eq(new BN(0)) ||
+      account.shares.eq(new BN(0)) ||
+      allShares.eq(new BN(0))
+    ) {
       return new BN(0)
     }
     const debt = Object.entries(allAssets).reduce((acc, [_, asset]) => {
       return acc.add(asset.price.mul(asset.supply).div(new BN(1e4)))
     }, new BN(0))
-    const userDebt = debt.mul(allShares).div(account.shares)
+    const userDebt = debt.mul(account.shares).div(allShares)
     return userDebt
   }
 )

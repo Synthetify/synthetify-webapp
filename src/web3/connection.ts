@@ -57,7 +57,7 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
   _connection = new Connection(url)
   _network = url
   _provider = new Provider(_connection, new Wallet(getSolanaWallet()), {
-    preflightCommitment: 'max',
+    preflightCommitment: 'single',
     // skipPreflight: true,
     commitment: 'max'
   })
