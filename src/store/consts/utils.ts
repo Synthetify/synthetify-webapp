@@ -21,6 +21,7 @@ export const printBN = (amount: BN, decimals: number): string => {
     )
   }
 }
+// Bad solution but i hate regex
 export const trimZeros = (amount: string) => {
   try {
     return parseFloat(amount).toString()
