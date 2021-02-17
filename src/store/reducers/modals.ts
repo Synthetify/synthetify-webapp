@@ -120,6 +120,9 @@ const modalsSlice = createSlice({
         case 'withdraw':
           state.withdraw = defaultState[action.payload]
           break
+        case 'burn':
+          state.burn = defaultState[action.payload]
+          break
         default:
           break
       }
