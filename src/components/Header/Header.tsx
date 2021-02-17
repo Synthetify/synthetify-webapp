@@ -18,7 +18,7 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
       <Grid container className={classes.root} wrap='nowrap' justify='flex-end' alignItems='center'>
         <Grid item>
           <Grid container wrap='nowrap'>
-            <Grid item className={classes.divAirdropButton}>
+            {/* <Grid item className={classes.divAirdropButton}>
               <CommonButton
                 className={classes.buttonAirdrop}
                 name={'Airdrop'}
@@ -26,7 +26,7 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
                 onClick={() => {
                   setOpen(true)
                 }}></CommonButton>
-            </Grid>
+            </Grid> */}
             <Grid item className={classes.divButton}>
               <CommonButton
                 className={classes.button}
