@@ -9,9 +9,12 @@ import useStyles from './style'
 export const GlobalLoader: React.FC = () => {
   const loaderData = useSelector(loader)
   const classes = useStyles()
-
+  console.log(loaderData.open)
   return (
-    <Backdrop className={classes.backdrop} open={loaderData.open}>
+    <Backdrop
+      transitionDuration={{ appear: 0, exit: 300 }}
+      className={classes.backdrop}
+      open={loaderData.open}>
       <Grid container direction='column' alignItems='center' justify='center' spacing={2}>
         <Grid item>
           <CardMedia
