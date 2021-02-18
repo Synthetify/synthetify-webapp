@@ -144,7 +144,10 @@ export const tokenTicker = (tokenAddress: PublicKey) =>
   createSelector(assets, allAssets => {
     const token = allAssets[tokenAddress.toString()]
     if (!token) {
-      return ''
+      if (tokenAddress.equals(DEFAULT_PUBLICKEY)) {
+        return 'SOL'
+      }
+      return 'token'
     } else {
       return token.ticker
     }

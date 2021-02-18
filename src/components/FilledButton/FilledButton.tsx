@@ -5,7 +5,7 @@ import useStyles from './style'
 
 export interface IProps {
   name: string
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   variant?: 'white' | 'black'
   className?: string
   disabled?: boolean

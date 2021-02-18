@@ -1,23 +1,33 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import SendMoneyModalComponent from '@components/Modals/SendMoneyModal/SendMoneyModal'
-import { tokenBalance } from '@selectors/solanaWallet'
+import SendModalComponent from '@components/Modals/SendModal/SendModal'
 import { send } from '@selectors/modals'
 import { actions } from '@reducers/modals'
 import { BN } from '@project-serum/anchor'
+import { SvgIcon } from '@material-ui/core'
+import { ReactComponent as SendIcon } from '@static/svg/send_ic.svg'
+import { tokenBalance } from '@selectors/solanaWallet'
+import { tokenTicker } from '@selectors/exchange'
 import { PublicKey } from '@solana/web3.js'
 
-export const SendMoneyModal = () => {
+export const SendModal = () => {
   const dispatch = useDispatch()
   const modalState = useSelector(send)
   const { balance, decimals } = useSelector(tokenBalance(modalState.tokenAddress))
+  const ticker = useSelector(tokenTicker(modalState.tokenAddress))
   return (
-    <SendMoneyModalComponent
+    <SendModalComponent
       onSend={(amount: BN, recipient: string) => {
         dispatch(actions.send({ amount, recipient: new PublicKey(recipient) }))
       }}
+      icon={
+        <SvgIcon component={SendIcon} style={{ width: 200, height: 200 }} viewBox='0 0 200 200' />
+      }
       open={modalState.open}
+      title='Send'
+      ticker={ticker}
+      helpText={`Send a set amount of ${ticker} to the recipient.`}
       loading={modalState.sending}
       txid={modalState.txid}
       handleClose={() => {
@@ -32,8 +42,10 @@ export const SendMoneyModal = () => {
       }}
       balance={balance}
       decimals={decimals}
+      amountSend={modalState.amount}
+      sendTo={modalState.recipient.toString()}
     />
   )
 }
 
-export default SendMoneyModal
+export default SendModal

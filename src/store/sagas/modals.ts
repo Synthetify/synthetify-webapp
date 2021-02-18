@@ -1,16 +1,14 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
-import { actions, PayloadTypes } from '@reducers/modals'
+import { actions } from '@reducers/modals'
 import { send, deposit, mint, withdraw, burn } from '@selectors/modals'
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
-import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getConnection } from './solana/connection'
-import { getWallet, sendSol, sendToken } from './solana/wallet'
+import { sendSol, sendToken } from './solana/wallet'
 
 import { BN } from '@project-serum/anchor'
-import { Transaction, SystemProgram } from '@solana/web3.js'
 import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './solana/exchange'
 
 // export function* handleCreateAccount(
@@ -41,7 +39,6 @@ import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './sol
 export function* handleSendToken(): Generator {
   const connection = yield* call(getConnection)
   const sendData = yield* select(send)
-  console.log(sendData)
   try {
     if (sendData.tokenAddress.equals(DEFAULT_PUBLICKEY)) {
       const blockHash = yield* call([connection, connection.getRecentBlockhash])
@@ -85,6 +82,7 @@ export function* handleSendToken(): Generator {
         persist: false
       })
     )
+    yield* put(actions.sendDone({ txid: undefined }))
     yield put(
       actions.accountCreatedError({
         error: error

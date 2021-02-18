@@ -154,7 +154,7 @@ const modalsSlice = createSlice({
       state.send.recipient = action.payload.recipient
       return state
     },
-    sendDone(state, action: PayloadAction<Pick<ISend, 'txid'>>) {
+    sendDone(state, action: PayloadAction<{ txid?: string }>) {
       state.send.sending = false
       state.send.txid = action.payload.txid
       return state
