@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   root: {
-    padding: 25
+    padding: '25px',
+    paddingRight: 0
   },
   divButton: {
     // marginLeft: 70

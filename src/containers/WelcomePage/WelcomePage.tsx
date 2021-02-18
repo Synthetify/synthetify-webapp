@@ -40,23 +40,20 @@ const WelcomePage: React.FC = () => {
   }
   return (
     <Grid container direction='row' className={classes.background}>
-      <Grid item className={classes.side}>
+      <div className={classes.side}>
         <SideMenu location={location} setLocation={setLocation}></SideMenu>
-      </Grid>
-      <Grid item xs>
-        <Grid container direction='row'>
-          <Grid xs={12}>
+      </div>
+      <Grid item className={classes.content}>
+        <Grid container className={classes.contentContainer} justify='center'>
+          <Grid item xs={12} className={classes.contentWrapper}>
             <Header />
           </Grid>
-          <Grid item xs={12}>
-            <Grid container className={classes.contentContainer} justify='center'>
-              <Grid item xs={12} className={classes.contentWrapper}>
-                {getComponent(location)}
-              </Grid>
-            </Grid>
+          <Grid item xs={12} className={classes.contentWrapper}>
+            {getComponent(location)}
           </Grid>
         </Grid>
       </Grid>
+
       {/* <Grid item>
         {signerStatus === Status.Initalized ? getComponent(currentNavigation) : <PageSkeleton />}
       </Grid> */}
