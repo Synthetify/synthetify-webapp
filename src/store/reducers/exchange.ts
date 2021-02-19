@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-
+import * as R from 'remeda'
 export interface IAsset {
   address: PublicKey
   feedAddress: PublicKey
@@ -64,7 +64,20 @@ const exchangeSlice = createSlice({
       return defaultState
     },
     setState(state, action: PayloadAction<Omit<IExchange, 'userAccount' | 'swap'>>) {
-      state = { ...action.payload, userAccount: state.userAccount, swap: state.swap }
+      // to not overwrite asset prices
+      const assets = R.mapValues(action.payload.assets, (value, key) => {
+        if (state.assets[key]) {
+          return { ...value, price: state.assets[key].price }
+        } else {
+          return value
+        }
+      })
+      state = {
+        ...action.payload,
+        assets: assets,
+        userAccount: state.userAccount,
+        swap: state.swap
+      }
       return state
     },
     setAssetPrice(state, action: PayloadAction<{ token: PublicKey; price: BN }>) {
