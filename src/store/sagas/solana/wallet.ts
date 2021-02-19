@@ -3,7 +3,13 @@ import { call, takeLeading, SagaGenerator, put, takeEvery, spawn, all } from 'ty
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
 import { getSolanaWallet } from '@web3/wallet'
-import { Account, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
+import {
+  Account,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+  sendAndConfirmTransaction
+} from '@solana/web3.js'
 import { Token } from '@solana/spl-token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -162,14 +168,7 @@ export function* sendToken(
 ): SagaGenerator<string> {
   const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
-  const signature = yield* call(
-    [token, token.transfer],
-    from,
-    target,
-    wallet,
-    [],
-    tou64(amount)
-  )
+  const signature = yield* call([token, token.transfer], from, target, wallet, [], tou64(amount))
   return signature
 }
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
@@ -185,6 +184,7 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
       decimals: 8
     })
   )
+  yield* call(sleep, 1000) // Give time to subscribe to new token
   return address
 }
 
@@ -214,7 +214,7 @@ export function* init(): Generator {
 }
 
 // eslint-disable-next-line @typescript-eslint/promise-function-async
-const sleep = (ms: number) => {
+export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string> {

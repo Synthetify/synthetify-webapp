@@ -23,7 +23,7 @@ import {
   sendAndConfirmTransaction
 } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
-import { createAccount, getToken, getWallet } from './wallet'
+import { createAccount, getToken, getWallet, sleep } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
 import { createTransferInstruction } from './token'
 import { TokenInstructions } from '@project-serum/serum'
@@ -103,6 +103,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
       instructions: [createInstruction]
     })
     yield* put(actions.setUserAccountAddress(userAccount.publicKey))
+    yield* call(sleep, 1500) // Give time to subscribe to account
   }
   const transferTx = yield* call(
     createTransferInstruction,
