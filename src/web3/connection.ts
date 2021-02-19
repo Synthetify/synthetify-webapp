@@ -59,7 +59,7 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
   _provider = new Provider(_connection, new Wallet(getSolanaWallet()), {
     // preflightCommitment: 'recent',
     skipPreflight: true,
-    commitment: 'recent'
+    commitment: 'singleGossip'
   })
   _system = new Program(systemIdl as Idl, networkToSystemAddress(_network), _provider)
   _oracle = new Program(oracleIdl as Idl, networkToOracleAddress(_network), _provider)

@@ -134,7 +134,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                 </Grid>
                 <Grid item className={classes.titleDiv}>
                   <Typography variant='h1' color='textPrimary'>
-                  Transaction successfull
+                    Transaction successfull
                   </Typography>
                 </Grid>
               </Grid>
@@ -242,7 +242,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                 <Grid container justify='space-between'>
                   <Grid item>
                     <Typography variant='body1' className={classes.labels}>
-                      To
+                      To {toAmount && '(Estimate)'}
                     </Typography>
                   </Grid>
                   <Grid item>

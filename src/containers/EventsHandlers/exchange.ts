@@ -21,7 +21,7 @@ const ExhcangeEvents = () => {
       return
     }
     const connectEvents = () => {
-      exchangeProgram.account.userAccount.subscribe(userAccount, 'recent').on('change', a => {
+      exchangeProgram.account.userAccount.subscribe(userAccount, 'singleGossip').on('change', a => {
         dispatch(actions.setUserAccountData({ shares: a.shares, collateral: a.collateral }))
       })
     }
@@ -34,7 +34,7 @@ const ExhcangeEvents = () => {
     }
     const connectEvents = () => {
       // @ts-expect-error
-      exchangeProgram.state.subscribe('recent').on('change', state => {
+      exchangeProgram.state.subscribe('singleGossip').on('change', state => {
         console.log(state)
         dispatch(actions.setState({
           debt: state.debt,
