@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'bold'
   },
   root: {
-    // paddingLeft: 100,
+    paddingBottom: 60
     // paddingRight: 100
   },
   userStats: {

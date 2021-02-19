@@ -6,6 +6,7 @@ import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { IAsset } from '@reducers/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -46,6 +47,24 @@ export const tokenAccount = (tokenAddress: PublicKey) =>
     }
   })
 
+export type TokensWithBalance = IAsset & { balance: BN }
+export const exchangeTokensWithUserBalance = createSelector(
+  accounts,
+  assets,
+  (tokensAccounts, exchangeAssets) => {
+    return Object.values(exchangeAssets)
+      .filter(a => a.ticker !== 'SNY')
+      .map(asset => {
+        const userAccount = tokensAccounts[asset.address.toString()]
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return {
+          ...asset,
+          balance: userAccount ? userAccount[0].balance : new BN(0)
+        } as TokensWithBalance
+      })
+  }
+)
+
 export type TokenAccounts = ITokenAccount & { ticker?: string }
 export const accountsArray = createSelector(accounts, assets, (tokensAccounts, exchangeAssets) => {
   return Object.values(tokensAccounts).reduce((acc, accounts) => {
@@ -66,6 +85,7 @@ export const solanaWalletSelectors = {
   tokensAggregated,
   transactions,
   accountsArray,
-  tokenAccount
+  tokenAccount,
+  exchangeTokensWithUserBalance
 }
 export default solanaWalletSelectors

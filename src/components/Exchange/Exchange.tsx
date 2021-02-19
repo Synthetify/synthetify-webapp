@@ -1,0 +1,319 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+import React, { useState, useEffect } from 'react'
+import { Grid, Typography, Select, MenuItem, CardMedia } from '@material-ui/core'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
+import * as yup from 'yup'
+
+import FilledButton from '@components/FilledButton/FilledButton'
+import { useForm, Controller, FieldError } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers'
+import useStyles from './style'
+import { TokensWithBalance } from '@selectors/solanaWallet'
+import { printBNtoBN, printBN } from '@consts/utils'
+import { BN } from '@project-serum/anchor'
+import { Swap } from '@reducers/exchange'
+import { PublicKey } from '@solana/web3.js'
+import Loader from '@static/gif/loader.gif'
+import Success from '@static/gif/success.gif'
+
+export interface IExchange {
+  tokens: TokensWithBalance[]
+  swapData: Swap
+  onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
+}
+export interface FormFields {
+  amount: string
+}
+const calculateSwapOutAmount = (from: TokensWithBalance, to: TokensWithBalance, amount: string) => {
+  return printBN(
+    printBNtoBN(amount, from.decimals)
+      .mul(from.price)
+      .div(to.price)
+      .mul(new BN(9970))
+      .div(new BN(10000)),
+    to.decimals
+  )
+}
+const getButtonMsg = (
+  to: TokensWithBalance | null,
+  amountTo: string | null,
+  error: FieldError | undefined
+) => {
+  if (!to) {
+    return 'Select output token'
+  }
+  if (!amountTo) {
+    return 'Enter value of swap'
+  }
+  if (error) {
+    return 'Invalid swap amount'
+  }
+  return 'Swap'
+}
+export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
+  const classes = useStyles()
+  const [fromToken, setFromToken] = useState<TokensWithBalance | null>(tokens[0] ? tokens[0] : null)
+  const [toToken, setToToken] = useState<TokensWithBalance | null>(null)
+  const [toAmount, setToAmount] = useState<string | null>(null)
+  const schema = yup.object().shape({
+    amount: yup.string().test('test-balance', 'Invalid Amount', amount => {
+      try {
+        if (
+          printBNtoBN(amount, fromToken?.decimals || 8).gt(fromToken?.balance || new BN(0)) ||
+          printBNtoBN(amount, fromToken?.decimals || 8).lte(new BN(0))
+        ) {
+          return false
+        } else {
+          return true
+        }
+      } catch (error) {
+        return false
+      }
+    })
+  })
+  // useEffect(() => {
+  //   setFromToken(tokens[0])
+  // }, [tokens.length])
+  useEffect(() => {
+    if (fromToken) {
+      const fromIndex = tokens.findIndex(t => t.address.equals(fromToken?.address))
+      setFromToken(tokens[fromIndex])
+    }
+    if (toToken) {
+      const toIndex = tokens.findIndex(t => t.address.equals(toToken?.address))
+      setToToken(tokens[toIndex])
+    }
+  }, [tokens])
+  useEffect(() => {
+    if (tokens[0]) {
+      setFromToken(tokens[0])
+    }
+  }, [])
+  const { errors, reset, setValue, handleSubmit, register, getValues } = useForm<FormFields>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    defaultValues: { amount: '' },
+    shouldFocusError: true
+  })
+  const submit = (data: FormFields) => {
+    if (fromToken && toToken) {
+      onSwap(fromToken.address, toToken.address, printBNtoBN(data.amount, fromToken.decimals))
+      setValue('amount', '', {
+        shouldValidate: true
+      })
+      setToAmount('0.00')
+    }
+    // reset()
+  }
+  return (
+    <Grid container className={classes.root}>
+      <Grid item>
+        <Typography variant='h3' color='primary' className={classes.title}>
+          Exchange
+        </Typography>
+      </Grid>
+      <Grid item xs={12} style={{ position: 'relative' }}>
+        {(swapData.loading || swapData.txid) && (
+          <span className={classes.loaderWrapper}>
+            {!swapData.txid ? (
+              <Grid container justify='center' alignItems='center' direction='column'>
+                <Grid item className={classes.loader}>
+                  <CardMedia component='img' height='100%' image={Loader} title='Loading wallet' />
+                </Grid>
+                <Grid item className={classes.titleDiv}>
+                  <Typography variant='h1' color='textPrimary'>
+                    Transaction in progress
+                  </Typography>
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid container justify='center' alignItems='center' direction='column'>
+                <Grid item className={classes.loader}>
+                  <CardMedia component='img' height='100%' image={Success} title='Loading wallet' />
+                </Grid>
+                <Grid item className={classes.titleDiv}>
+                  <Typography variant='h1' color='textPrimary'>
+                  Transaction successfull
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
+          </span>
+        )}
+        <Grid container className={classes.wrapper}>
+          <Grid item>
+            <Typography variant='h4' color='primary' className={classes.subTitle}>
+              Swap
+            </Typography>
+          </Grid>
+          <Grid item xs={12} className={classes.inputDiv}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Grid container justify='space-between'>
+                  <Grid item>
+                    <Typography variant='body1' className={classes.labels}>
+                      From
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant='body1' className={classes.labels}>
+                      {fromToken &&
+                        `${printBN(fromToken.balance, fromToken.decimals)} ${fromToken.ticker}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} style={{ marginTop: 10 }}>
+                <Grid container justify='space-between'>
+                  <Grid item>
+                    <input
+                      className={classes.input}
+                      onChange={e => {
+                        if (fromToken && toToken) {
+                          setToAmount(calculateSwapOutAmount(fromToken, toToken, e.target.value))
+                        }
+                      }}
+                      placeholder='0.00'
+                      name='amount'
+                      ref={register}
+                    />
+                  </Grid>
+
+                  <Grid item>
+                    <Grid container>
+                      <Grid item>
+                        <FilledButton
+                          name='MAX'
+                          variant='white'
+                          onClick={() => {
+                            if (fromToken) {
+                              setValue('amount', printBN(fromToken.balance, fromToken.decimals), {
+                                shouldValidate: true
+                              })
+                              if (fromToken && toToken) {
+                                setToAmount(
+                                  calculateSwapOutAmount(
+                                    fromToken,
+                                    toToken,
+                                    printBN(fromToken.balance, fromToken.decimals)
+                                  )
+                                )
+                              }
+                            }
+                          }}
+                          className={classes.maxButton}></FilledButton>
+                      </Grid>
+                      <Grid item>
+                        <Select
+                          value={fromToken?.address.toString()}
+                          onChange={e => {
+                            const token = tokens.find(t => t.address.toString() === e.target.value)
+                            setFromToken(token || null)
+                            const value = getValues().amount
+                            if (value && fromToken && token) {
+                              setToAmount(calculateSwapOutAmount(fromToken, token, value))
+                            }
+                          }}
+                          variant='standard'
+                          disableUnderline
+                          className={classes.tokenInput}
+                          IconComponent={KeyboardArrowDownIcon}
+                          MenuProps={{ classes: { paper: classes.selectMenu } }}
+                          inputProps={{
+                            name: 'age',
+                            id: 'age-native-simple'
+                          }}>
+                          {tokens.map(token => (
+                            <MenuItem value={token.address.toString()}>{token.ticker}</MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} className={classes.middleDiv}></Grid>
+          <Grid item xs={12} className={classes.inputDiv}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Grid container justify='space-between'>
+                  <Grid item>
+                    <Typography variant='body1' className={classes.labels}>
+                      To
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant='body1' className={classes.labels}>
+                      {toToken && `${printBN(toToken.balance, toToken.decimals)} ${toToken.ticker}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} style={{ marginTop: 10 }}>
+                <Grid container justify='space-between'>
+                  <Grid item>
+                    <input
+                      className={classes.input}
+                      placeholder='0.00'
+                      value={toAmount || undefined}
+                      // name='amount'
+                      // ref={register}
+                    />
+                  </Grid>
+
+                  <Grid item>
+                    <Grid container>
+                      <Grid item>
+                        <Select
+                          value={toToken ? toToken?.address.toString() : 'PLACEHOLDER'}
+                          // onChange={handleChange}
+                          onChange={e => {
+                            const token = tokens.find(t => t.address.toString() === e.target.value)
+                            setToToken(token || null)
+                            const value = getValues().amount
+                            if (value && fromToken && token) {
+                              setToAmount(calculateSwapOutAmount(fromToken, token, value))
+                            }
+                          }}
+                          variant='standard'
+                          disableUnderline
+                          className={classes.tokenInput}
+                          IconComponent={KeyboardArrowDownIcon}
+                          MenuProps={{ classes: { paper: classes.selectMenu } }}
+                          inputProps={{
+                            name: 'age',
+                            id: 'age-native-simple'
+                          }}>
+                          <MenuItem value={'PLACEHOLDER'}>{'Select token'}</MenuItem>
+                          {tokens.map(token => (
+                            <MenuItem value={token.address.toString()}>{token.ticker}</MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item></Grid>
+          <Grid item xs={12}>
+            <FilledButton
+              name={getButtonMsg(toToken, toAmount, errors.amount)}
+              variant='white'
+              className={classes.swapButton}
+              onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                handleSubmit(submit)()
+              }}
+              disabled={!toToken || !toAmount || !!errors.amount}></FilledButton>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  )
+}
+export default Exchange

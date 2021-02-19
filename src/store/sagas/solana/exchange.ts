@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put, SagaGenerator, select } from 'typed-redux-saga'
-
+import { call, put, SagaGenerator, select, all, spawn, takeEvery } from 'typed-redux-saga'
+import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions } from '@reducers/exchange'
 import {
   collateralAccount,
   collateralToken,
   userAccountAddress,
   xUSDAddress,
-  mintAuthority
+  mintAuthority,
+  swap
 } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
@@ -249,4 +250,82 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     signers: [wallet],
     instructions: updateFeedsTxs
   })
+}
+
+export function* handleSwap(): Generator {
+  const swapData = yield* select(swap)
+
+  try {
+    const authority = yield* select(mintAuthority)
+    const wallet = yield* call(getWallet)
+
+    const tokensAccounts = yield* select(accounts)
+    const systemProgram = yield* call(getSystemProgram)
+    const userExchangeAccount = yield* select(userAccountAddress)
+
+    let fromAddress = tokensAccounts[swapData.fromToken.toString()]
+      ? tokensAccounts[swapData.fromToken.toString()][0].address
+      : null
+    if (fromAddress == null) {
+      fromAddress = yield* call(createAccount, swapData.fromToken)
+    }
+    let toAddress = tokensAccounts[swapData.toToken.toString()]
+      ? tokensAccounts[swapData.toToken.toString()][0].address
+      : null
+    if (toAddress == null) {
+      toAddress = yield* call(createAccount, swapData.toToken)
+    }
+    const updateFeedsTxs = yield* call(updateFeedsTransactions)
+    const approveTx = yield* call(
+      [Token, Token.createApproveInstruction],
+      TokenInstructions.TOKEN_PROGRAM_ID,
+      fromAddress,
+      authority,
+      wallet.publicKey,
+      [],
+      tou64(swapData.amount)
+    )
+    updateFeedsTxs.push(approveTx)
+    // const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
+    const txid = yield* call([systemProgram, systemProgram.state.rpc.swap], swapData.amount, {
+      accounts: {
+        userAccount: userExchangeAccount,
+        authority: authority,
+        tokenIn: swapData.fromToken,
+        tokenFor: swapData.toToken,
+        userTokenAccountIn: fromAddress,
+        userTokenAccountFor: toAddress,
+        tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+        clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
+        owner: wallet.publicKey
+      },
+      signers: [wallet],
+      instructions: updateFeedsTxs
+    })
+    yield* put(actions.swapDone({ txid: txid }))
+
+    yield put(
+      snackbarsActions.add({
+        message: 'Succesfully swaped token.',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    console.log(error.toString())
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
+export function* swapHandler(): Generator {
+  yield* takeEvery(actions.swap, handleSwap)
+}
+
+export function* exchangeSaga(): Generator {
+  yield all([swapHandler].map(spawn))
 }

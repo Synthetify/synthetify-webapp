@@ -35,6 +35,7 @@ const ExhcangeEvents = () => {
     const connectEvents = () => {
       // @ts-expect-error
       exchangeProgram.state.subscribe('recent').on('change', state => {
+        console.log(state)
         dispatch(actions.setState({
           debt: state.debt,
           shares: state.shares,

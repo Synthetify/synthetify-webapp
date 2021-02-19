@@ -8,6 +8,7 @@ import EventsHandlers from '@containers/EventsHandlers'
 import Header from '@containers/HeaderWrapper/HeaderWrapper'
 import Account from '@containers/Account/Account'
 import Staking from '@containers/Staking/Staking'
+import Exchange from '@containers/Exchange/Exchange'
 import SideMenu from '@components/SideMenu/SideMenu'
 
 import useStyles from './style'
@@ -33,6 +34,8 @@ const WelcomePage: React.FC = () => {
 
       case UiLocation.Staking:
         return <Staking />
+      case UiLocation.Exchange:
+        return <Exchange />
 
       default:
         return <Account />
@@ -53,10 +56,6 @@ const WelcomePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-
-      {/* <Grid item>
-        {signerStatus === Status.Initalized ? getComponent(currentNavigation) : <PageSkeleton />}
-      </Grid> */}
       {signerStatus === Status.Initalized && <EventsHandlers />}
     </Grid>
   )

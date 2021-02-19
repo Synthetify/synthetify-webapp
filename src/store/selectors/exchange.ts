@@ -16,7 +16,8 @@ export const {
   fee,
   shares,
   userAccount,
-  mintAuthority
+  mintAuthority,
+  swap
 } = keySelectors(store, [
   'assets',
   'collateralAccount',
@@ -26,7 +27,8 @@ export const {
   'fee',
   'shares',
   'userAccount',
-  'mintAuthority'
+  'mintAuthority',
+  'swap'
 ])
 export const userAccountAddress = createSelector(userAccount, userAcc => {
   return new PublicKey(userAcc.address)
@@ -165,7 +167,8 @@ export const exchangeSelectors = {
   mintAuthority,
   userMaxWithdraw,
   tokenTicker,
-  userMaxBurnToken
+  userMaxBurnToken,
+  swap
 }
 
 export default exchangeSelectors

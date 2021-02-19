@@ -36,9 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   disabled: {
-    color: `${colors.gray.skeletonField} !important`,
-    borderWidth: '2px !important',
-    borderColor: `${colors.gray.skeletonField} !important`
+    opacity: 0.5
   }
 }))
 

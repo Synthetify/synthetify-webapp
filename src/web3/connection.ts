@@ -8,25 +8,25 @@ import systemIdl from '@consts/idl/system.json'
 export const networkToSystemAddress = (network: SolanaNetworks) => {
   switch (network) {
     case SolanaNetworks.DEV:
-      return new PublicKey('WxztpU6rnwNfBWiUTwXKorGmxmRUFLs23om5g8pqBsV')
+      return new PublicKey('2Lz8Vjs4bLkjehSZh6cZhJSfWiEaGY2Ra3MKmAQuU3Kq')
 
     case SolanaNetworks.TEST:
       return new PublicKey('BvdMp1EL3Pep5xVUjpmFv3YMmKZM25QqomuevVbuoZwH')
 
     default:
-      return new PublicKey('WxztpU6rnwNfBWiUTwXKorGmxmRUFLs23om5g8pqBsV')
+      return new PublicKey('2Lz8Vjs4bLkjehSZh6cZhJSfWiEaGY2Ra3MKmAQuU3Kq')
   }
 }
 export const networkToOracleAddress = (network: SolanaNetworks) => {
   switch (network) {
     case SolanaNetworks.DEV:
-      return new PublicKey('HEXeEiryuTKpekySqoMijt4C1BopsKu2oRij64Gy4vVc')
+      return new PublicKey('Btu5wNiVkqxgqZKDRqEEPGemrXfS9hctaNeTry2z95JW')
 
     case SolanaNetworks.TEST:
       return new PublicKey('9A1kwrqLzpt3992bKs4bkfS7TMRxaCgM4oNKisvXJxSz')
 
     default:
-      return new PublicKey('HEXeEiryuTKpekySqoMijt4C1BopsKu2oRij64Gy4vVc')
+      return new PublicKey('Btu5wNiVkqxgqZKDRqEEPGemrXfS9hctaNeTry2z95JW')
   }
 }
 export const networkToName = (network: SolanaNetworks) => {
@@ -57,9 +57,9 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
   _connection = new Connection(url)
   _network = url
   _provider = new Provider(_connection, new Wallet(getSolanaWallet()), {
-    preflightCommitment: 'single',
-    // skipPreflight: true,
-    commitment: 'max'
+    // preflightCommitment: 'recent',
+    skipPreflight: true,
+    commitment: 'recent'
   })
   _system = new Program(systemIdl as Idl, networkToSystemAddress(_network), _provider)
   _oracle = new Program(oracleIdl as Idl, networkToOracleAddress(_network), _provider)
