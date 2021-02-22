@@ -52,7 +52,7 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
               Select network:
             </Typography>
           </Grid>
-          <Grid item className={classes.networkButtonDiv}>
+          {/* <Grid item className={classes.networkButtonDiv}>
             <Button
               variant='outlined'
               onClick={() => {
@@ -73,8 +73,8 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
                 </Grid>
               </Grid>
             </Button>
-          </Grid>
-          <Grid item className={classes.networkButtonDiv}>
+          </Grid> */}
+          {/* <Grid item className={classes.networkButtonDiv}>
             <Button
               variant='outlined'
               onClick={() => {
@@ -95,7 +95,7 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
                 </Grid>
               </Grid>
             </Button>
-          </Grid>
+          </Grid> */}
           <Grid item className={classes.networkButtonDiv}>
             <Button
               variant='outlined'

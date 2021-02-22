@@ -8,25 +8,25 @@ import systemIdl from '@consts/idl/system.json'
 export const networkToSystemAddress = (network: SolanaNetworks) => {
   switch (network) {
     case SolanaNetworks.DEV:
-      return new PublicKey('4RnVyXHhr9ddNTkgNsQSHQ34TFdsaUNjzMVyh84Sw9Pd')
+      return new PublicKey('95tSv88thk5XPCXFaEuGbKUBuiHHVNaQr1m61xgu72p8')
 
     case SolanaNetworks.TEST:
       return new PublicKey('BvdMp1EL3Pep5xVUjpmFv3YMmKZM25QqomuevVbuoZwH')
 
     default:
-      return new PublicKey('4RnVyXHhr9ddNTkgNsQSHQ34TFdsaUNjzMVyh84Sw9Pd')
+      return new PublicKey('95tSv88thk5XPCXFaEuGbKUBuiHHVNaQr1m61xgu72p8')
   }
 }
 export const networkToOracleAddress = (network: SolanaNetworks) => {
   switch (network) {
     case SolanaNetworks.DEV:
-      return new PublicKey('65Yx3tYiJqbKW8VatPSmDBB2b4tENTQqj15wBT3MtAXh')
+      return new PublicKey('2DZFhZtw94pnyoXuLfovtYZwtv1ZBLqsr3va65KKVCsz')
 
     case SolanaNetworks.TEST:
       return new PublicKey('9A1kwrqLzpt3992bKs4bkfS7TMRxaCgM4oNKisvXJxSz')
 
     default:
-      return new PublicKey('65Yx3tYiJqbKW8VatPSmDBB2b4tENTQqj15wBT3MtAXh')
+      return new PublicKey('2DZFhZtw94pnyoXuLfovtYZwtv1ZBLqsr3va65KKVCsz')
   }
 }
 export const networkToName = (network: SolanaNetworks) => {

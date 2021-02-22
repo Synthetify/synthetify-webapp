@@ -74,7 +74,7 @@ export function* getCollateralTokenAirdrop(): Generator {
     accountAddress,
     testAdmin,
     [],
-    1e9
+    1e10
   )
   // console.log('Token Airdroped')
 }
