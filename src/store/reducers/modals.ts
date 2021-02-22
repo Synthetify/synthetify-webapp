@@ -4,12 +4,12 @@ import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
-export interface ICreateAccountTransaction {
-  tokenAddress: string
-  accountAddress: string
+export interface ICreateAccount {
+  tokenAddress: PublicKey
   sending: boolean
-  error: string
+  error?: string
   open: boolean
+  txid?: string
 }
 
 export interface ISend {
@@ -51,7 +51,7 @@ export interface IBurn {
   open: boolean
 }
 export interface IModals {
-  createAccount: ICreateAccountTransaction
+  createAccount: ICreateAccount
   send: ISend
   deposit: IDeposit
   mint: IMint
@@ -60,7 +60,12 @@ export interface IModals {
 }
 
 export const defaultState: IModals = {
-  createAccount: { open: false, sending: false, accountAddress: '', error: '', tokenAddress: '' },
+  createAccount: {
+    open: false,
+    sending: false,
+    error: '',
+    tokenAddress: DEFAULT_PUBLICKEY
+  },
   send: {
     amount: new BN(0),
     recipient: DEFAULT_PUBLICKEY,
@@ -189,19 +194,14 @@ const modalsSlice = createSlice({
       state.withdraw.txid = action.payload.txid
       return state
     },
-    createAccount(state, action: PayloadAction<{ tokenAddress: string }>) {
+    createAccount(state, action: PayloadAction<{ tokenAddress: PublicKey }>) {
       state.createAccount.sending = true
       state.createAccount.tokenAddress = action.payload.tokenAddress
       return state
     },
-    accountCreated(state, action: PayloadAction<{ accountAddress: string }>) {
+    createAccountDone(state, action: PayloadAction<Pick<ICreateAccount, 'txid'>>) {
       state.createAccount.sending = false
-      state.createAccount.accountAddress = action.payload.accountAddress
-      return state
-    },
-    accountCreatedError(state, action: PayloadAction<{ error: string }>) {
-      state.createAccount.sending = false
-      state.createAccount.error = action.payload.error
+      state.createAccount.txid = action.payload.txid
       return state
     }
   }

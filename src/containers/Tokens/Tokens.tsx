@@ -2,6 +2,7 @@
 import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import { accountsArray } from '@selectors/solanaWallet'
+import { actions } from '@reducers/modals'
 import { useDispatch, useSelector } from 'react-redux'
 import Token from './Token/Token'
 import { actions as modalsActions } from '@reducers/modals'
@@ -30,7 +31,8 @@ export const Tokens: React.FC = () => {
                 name='Add Account'
                 className={classes.addAccountButton}
                 onClick={() => {
-                  // dispatch(actions.openModal('createAccount'))
+                  console.log('1')
+                  dispatch(actions.openModal('createAccount'))
                 }}
                 startIcon={<PlaylistAddIcon style={{ fontSize: 27 }} />}
               />
@@ -59,7 +61,7 @@ export const Tokens: React.FC = () => {
                         name='Add Account'
                         className={classes.addAccountButton}
                         onClick={() => {
-                          // dispatch(actions.openModal('createAccount'))
+                          dispatch(actions.openModal('createAccount'))
                         }}
                         startIcon={<PlaylistAddIcon style={{ fontSize: 27 }} />}
                       />

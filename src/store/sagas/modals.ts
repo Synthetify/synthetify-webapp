@@ -1,41 +1,43 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
 import { actions } from '@reducers/modals'
-import { send, deposit, mint, withdraw, burn } from '@selectors/modals'
+import {
+  send,
+  deposit,
+  mint,
+  withdraw,
+  burn,
+  createAccount as createAccountRedux
+} from '@selectors/modals'
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getConnection } from './solana/connection'
-import { sendSol, sendToken } from './solana/wallet'
+import { sendSol, sendToken, createAccount } from './solana/wallet'
 
 import { BN } from '@project-serum/anchor'
 import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './solana/exchange'
 
-// export function* handleCreateAccount(
-//   action: PayloadAction<PayloadTypes['createAccount']>
-// ): Generator {
-//   try {
-//     const accountAddress = yield* call(createAccount, action.payload.tokenAddress)
-//     yield* put(
-//       actions.accountCreated({
-//         accountAddress: accountAddress
-//       })
-//     )
-//   } catch (error) {
-//     yield put(
-//       snackbarsActions.add({
-//         message: 'Failed to send. Please try again.',
-//         variant: 'error',
-//         persist: false
-//       })
-//     )
-//     yield put(
-//       actions.accountCreatedError({
-//         error: error
-//       })
-//     )
-//   }
-// }
+export function* handleCreateAccount(): Generator {
+  const createAccountData = yield* select(createAccountRedux)
+
+  try {
+    const accountAddress = yield* call(createAccount, createAccountData.tokenAddress)
+    yield* put(
+      actions.createAccountDone({
+        txid: accountAddress.toString()
+      })
+    )
+  } catch (error) {
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
 export function* handleSendToken(): Generator {
   const connection = yield* call(getConnection)
   const sendData = yield* select(send)
@@ -83,11 +85,6 @@ export function* handleSendToken(): Generator {
       })
     )
     yield* put(actions.sendDone({ txid: undefined }))
-    yield put(
-      actions.accountCreatedError({
-        error: error
-      })
-    )
   }
 }
 export function* handleDeposit(): Generator {
@@ -196,9 +193,19 @@ export function* withdrawHandler(): Generator {
 export function* burnHandler(): Generator {
   yield takeEvery(actions.burn, handleBurn)
 }
+export function* createAccountHanlder(): Generator {
+  yield takeEvery(actions.createAccount, handleCreateAccount)
+}
 
 export function* modalsSaga(): Generator {
   yield all(
-    [sendTokenHandler, depositHandler, mintHandler, withdrawHandler, burnHandler].map(spawn)
+    [
+      sendTokenHandler,
+      depositHandler,
+      mintHandler,
+      withdrawHandler,
+      burnHandler,
+      createAccountHanlder
+    ].map(spawn)
   )
 }

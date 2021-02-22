@@ -4,77 +4,44 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     '& .MuiDialogTitle-root': {
-      padding: '0 8px 10px'
+      padding: '0'
     },
     '& .MuiDialog-paper': {
-      padding: 10,
-      height: 300,
-      width: 430,
-      background: colors.blue.neon
+      padding: '0px',
+      height: 700,
+      maxWidth: 700,
+      width: 700,
+      background: colors.black.light
     }
-  },
-  titleWrapper: {
-    color: colors.black.background,
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  close: {
-    cursor: 'pointer'
   },
 
-  progressWrapper: {
-    background: colors.black.background,
-    width: '100%',
-    height: '100%',
-    padding: 32
-  },
-  contentWrapper: {
-    background: colors.black.background,
-    padding: 32,
-    width: '100%',
-    height: '100%'
-  },
-  progress: {
-    marginBottom: 16,
-    color: colors.blue.neon
-  },
-  input: {
-    '& .MuiInputLabel-outlined': {
-      color: colors.blue.neon
-    },
-    '& .MuiFormLabel-root.Mui-error': {
-      color: colors.red.main
-    },
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: colors.blue.neon
-    },
-    '& .MuiOutlinedInput-root': {
-      borderColor: colors.blue.neon,
-      '&.Mui-focused fieldset': {
-        borderColor: colors.blue.neon
-      }
-    }
-  },
-  inputDiv: {
-    minHeight: 100,
-    position: 'relative'
-  },
-  txid: {
-    wordBreak: 'break-all',
+  titleDiv: {
+    marginTop: 35,
+    maxWidth: 330,
     textAlign: 'center'
   },
-  successIcon: {
-    color: colors.blue.neon,
-    fontSize: 120
+  loader: {
+    width: 300,
+    height: 300,
+    marginTop: 60,
+    marginBottom: 20
+  },
+  helpTextLoaderDiv: {
+    marginTop: 50,
+    maxWidth: 400,
+    textAlign: 'center'
   },
   button: {
-    fontSize: 20,
-    color: colors.blue.neon,
-    borderColor: colors.blue.neon,
+    color: colors.white.main,
+    width: '100%',
+    padding: 20,
+    borderRadius: 2,
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    fontSize: 22,
     '&:hover': {
-      borderWidth: 2,
-      backgroundColor: `${colors.blue.neon}`,
-      borderColor: colors.blue.neon
+      color: colors.black.background,
+      background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)'
     }
   }
 }))
