@@ -224,9 +224,31 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             name: 'age',
                             id: 'age-native-simple'
                           }}>
-                          {tokens.map(token => (
-                            <MenuItem value={token.address.toString()}>{token.ticker}</MenuItem>
-                          ))}
+                          {tokens.map(token => {
+                            const ticker = token.ticker.toString().toLowerCase()
+                            const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
+                            let icon
+                            try {
+                              icon = require(`@static/icons/${image}.png`)
+                            } catch (error) {
+                              icon = require(`@static/icons/sny.png`)
+                            }
+                            return (
+                              <MenuItem
+                                value={token.address.toString()}
+                                className={classes.menuOption}>
+                                <Grid container alignItems='center'>
+                                  <Grid item>
+                                    <CardMedia
+                                      style={{ width: 32, height: 32, marginRight: 10 }}
+                                      image={icon}
+                                    />
+                                  </Grid>
+                                  <Grid item> {token.ticker}</Grid>
+                                </Grid>
+                              </MenuItem>
+                            )
+                          })}
                         </Select>
                       </Grid>
                     </Grid>
@@ -287,10 +309,34 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             name: 'age',
                             id: 'age-native-simple'
                           }}>
-                          <MenuItem value={'PLACEHOLDER'}>{'Select token'}</MenuItem>
-                          {tokens.map(token => (
-                            <MenuItem value={token.address.toString()}>{token.ticker}</MenuItem>
-                          ))}
+                          <MenuItem value={'PLACEHOLDER'} className={classes.menuOption}>
+                            {'Select token'}
+                          </MenuItem>
+                          {tokens.map(token => {
+                            const ticker = token.ticker.toString().toLowerCase()
+                            const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
+                            let icon
+                            try {
+                              icon = require(`@static/icons/${image}.png`)
+                            } catch (error) {
+                              icon = require(`@static/icons/sny.png`)
+                            }
+                            return (
+                              <MenuItem
+                                value={token.address.toString()}
+                                className={classes.menuOption}>
+                                <Grid container alignItems='center'>
+                                  <Grid item>
+                                    <CardMedia
+                                      style={{ width: 32, height: 32, marginRight: 10 }}
+                                      image={icon}
+                                    />
+                                  </Grid>
+                                  <Grid item> {token.ticker}</Grid>
+                                </Grid>
+                              </MenuItem>
+                            )
+                          })}
                         </Select>
                       </Grid>
                     </Grid>

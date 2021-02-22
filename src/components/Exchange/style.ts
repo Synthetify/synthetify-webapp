@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: 'white',
     outline: 'none',
     width: 'auto',
-
+    minWidth: 140,
+    minHeight: 45,
     '& .MuiSelect-icon': {
       color: 'white',
       fontSize: 35,
@@ -71,13 +72,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginRight: 15
     }
   },
-  selectMenu: { background: 'blue' },
-  dropdownStyle: {
-    '& ul': {
-      backgroundColor: '#cccccc !important'
-    },
-    '& li': {
-      fontSize: 12
+  selectMenu: { minWidth: 150, backgroundColor: colors.black.background },
+  menuOption: {
+    padding: '10px 30px',
+    '&:hover': {
+      color: colors.black.background,
+      fontSize: 'bold',
+      background: 'linear-gradient(225deg, #627EEA -0.21%,#10F9BB 100.21%)'
     }
   },
   loaderWrapper: {
