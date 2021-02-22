@@ -8,7 +8,7 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { init } from './wallet'
+import { init, handleAirdrop } from './wallet'
 import { depositCollateral, pullExchangeState, mintUsd, pullUserAccountData } from './exchange'
 import BN from 'bn.js'
 
@@ -41,6 +41,7 @@ export function* initConnection(): Generator {
     yield* put(actions.setStatus(Status.Initalized))
     // yield* call(depositCollateral, new BN(4 * 1e8))
     // yield* call(mintUsd, new BN(8 * 1e7))
+    yield* call(handleAirdrop)
   } catch (error) {
     console.log(error)
     yield put(actions.setStatus(Status.Error))

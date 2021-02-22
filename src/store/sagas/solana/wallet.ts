@@ -195,7 +195,6 @@ export function* init(): Generator {
   yield* call(fetchTokensAccounts)
 
   yield* put(actions.setAddress(wallet.publicKey.toString()))
-  // yield* call(handleAirdrop)
   const balance = yield* call(getBalance, wallet.publicKey)
   yield* put(actions.setBalance(balance))
   yield* put(actions.setStatus(Status.Initalized))
