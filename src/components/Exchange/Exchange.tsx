@@ -181,7 +181,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                   </Grid>
 
                   <Grid item>
-                    <Grid container>
+                    <Grid container alignItems='center'>
                       <Grid item>
                         <FilledButton
                           name='MAX'
