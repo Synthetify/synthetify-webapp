@@ -25,6 +25,18 @@ const useStyles = makeStyles(() => ({
   logo: {
     paddingLeft: 50,
     paddingTop: 50
+  },
+  icon: {
+    background: 'transparent',
+    cursor: 'pointer',
+    
+    '&:hover path': {
+      fill: colors.green.main
+    }
+  },
+  socialsDiv: {
+    marginLeft: 60,
+    marginBottom: 40
   }
 }))
 
