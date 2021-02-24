@@ -22,7 +22,7 @@ export const WithdrawModal = () => {
         dispatch(actions.burn({ amount }))
       }}
       icon={
-        <SvgIcon component={BurnIcon} style={{ width: 200, height: 200 }} viewBox='0 0 200 200' />
+        <SvgIcon component={BurnIcon} style={{ width: 220, height: 220 }} viewBox='0 0 220 220' />
       }
       open={modalState.open}
       title='Burn'

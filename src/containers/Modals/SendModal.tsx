@@ -22,7 +22,7 @@ export const SendModal = () => {
         dispatch(actions.send({ amount, recipient: new PublicKey(recipient) }))
       }}
       icon={
-        <SvgIcon component={SendIcon} style={{ width: 200, height: 200 }} viewBox='0 0 200 200' />
+        <SvgIcon component={SendIcon} style={{ width: 220, height: 220 }} viewBox='0 0 220 220' />
       }
       open={modalState.open}
       title='Send'

@@ -15,6 +15,7 @@ import { Swap } from '@reducers/exchange'
 import { PublicKey } from '@solana/web3.js'
 import Loader from '@static/gif/loader.gif'
 import Success from '@static/gif/success.gif'
+import SwapIcon from '@static/svg/swap.svg'
 
 export interface IExchange {
   tokens: TokensWithBalance[]
@@ -49,6 +50,12 @@ const getButtonMsg = (
     return 'Invalid swap amount'
   }
   return 'Swap'
+}
+const getExchangeRate = (to: TokensWithBalance | null, from: TokensWithBalance | null) => {
+  if (!to || !from) {
+    return '---'
+  }
+  return to.price.mul(new BN(1e8)).div(from.price).toNumber() / 1e8
 }
 export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
   const classes = useStyles()
@@ -89,7 +96,9 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
       setFromToken(tokens[0])
     }
   }, [])
-  const { errors, reset, setValue, handleSubmit, register, getValues } = useForm<FormFields>({
+  const { errors, reset, setValue, handleSubmit, register, getValues, trigger } = useForm<
+    FormFields
+  >({
     resolver: yupResolver(schema),
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -257,7 +266,27 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} className={classes.middleDiv}></Grid>
+          <Grid item xs={12} className={classes.middleDiv}>
+            <Grid container justify='center' alignItems='center' style={{ height: '100%' }}>
+              <Grid
+                item
+                className={classes.swapIcon}
+                onClick={() => {
+                  const temp = fromToken
+                  setFromToken(toToken)
+                  setToToken(temp)
+                  setTimeout(() => {
+                    if (fromToken && toToken) {
+                      const value = getValues().amount
+                      setToAmount(calculateSwapOutAmount(toToken, fromToken, value))
+                    }
+                    trigger()
+                  }, 0)
+                }}>
+                <CardMedia style={{ width: 40, height: 19 }} image={SwapIcon} />
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid item xs={12} className={classes.inputDiv}>
             <Grid container>
               <Grid item xs={12}>
@@ -274,7 +303,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} style={{ marginTop: 10 }}>
+              <Grid item xs={12} style={{ marginTop: 10, height: 48 }}>
                 <Grid container justify='space-between'>
                   <Grid item>
                     <input
@@ -345,7 +374,43 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item></Grid>
+          <Grid item style={{ marginTop: 25 }}>
+            <Grid container direction='column'>
+              <Grid item>
+                <Grid container>
+                  <Grid item>
+                    <Typography className={classes.infoTitle} variant='body1'>
+                      Transaction Fee:
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ marginLeft: 15 }}>
+                    <Typography variant='body1' color='textPrimary'>
+                      0.3%
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Grid container>
+                  <Grid item>
+                    <Typography className={classes.infoTitle} variant='body1'>
+                      Echange Rate:
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ marginLeft: 15 }}>
+                    <Typography variant='body1' color='textPrimary'>
+                      {fromToken && toToken
+                        ? `${getExchangeRate(
+                            toToken,
+                            fromToken
+                          )} ${fromToken?.ticker.toString()} per ${toToken?.ticker.toString()}`
+                        : '---'}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid item xs={12}>
             <FilledButton
               name={getButtonMsg(toToken, toAmount, errors.amount)}

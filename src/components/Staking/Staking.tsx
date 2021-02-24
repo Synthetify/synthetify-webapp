@@ -92,7 +92,7 @@ export const Stacking: React.FC<IStaking> = ({
                         <SvgIcon
                           component={DepositIcon}
                           style={{ width: 80, height: 80 }}
-                          viewBox='0 0 200 200'
+                          viewBox='0 0 220 220'
                         />
                       </Grid>
                       <Grid item>
@@ -120,7 +120,7 @@ export const Stacking: React.FC<IStaking> = ({
                         <SvgIcon
                           component={MintIcon}
                           style={{ width: 80, height: 80 }}
-                          viewBox='0 0 200 200'
+                          viewBox='0 0 220 220'
                         />
                       </Grid>
                       <Grid item>
@@ -161,7 +161,7 @@ export const Stacking: React.FC<IStaking> = ({
                         <SvgIcon
                           component={WithdrawIcon}
                           style={{ width: 80, height: 80 }}
-                          viewBox='0 0 200 200'
+                          viewBox='0 0 220 220'
                         />
                       </Grid>
                       <Grid item>

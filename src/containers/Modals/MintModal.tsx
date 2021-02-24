@@ -19,7 +19,7 @@ export const SendMoneyModal = () => {
         dispatch(actions.mint({ amount }))
       }}
       icon={
-        <SvgIcon component={MintIcon} style={{ width: 200, height: 200 }} viewBox='0 0 200 200' />
+        <SvgIcon component={MintIcon} style={{ width: 220, height: 220 }} viewBox='0 0 220 220' />
       }
       open={modalState.open}
       title='Mint'

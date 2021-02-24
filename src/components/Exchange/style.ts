@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   middleDiv: { minHeight: 60 },
   swapButton: {
-    marginTop: 65,
+    marginTop: 25,
     // opacity: 0.3,
     width: '100%'
   },
@@ -99,6 +99,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 35,
     maxWidth: 330,
     textAlign: 'center'
+  },
+  swapIcon: {
+    marginTop:20,
+    marginBottom:20,
+    cursor: 'pointer',
+    border: '1px solid white',
+    borderRadius: 10,
+    padding: '8px 18px',
+    '&:hover': {
+      background: 'linear-gradient(225deg, #627EEA -0.21%,#10F9BB 100.21%)'
+    }
+  },
+  infoTitle: {
+    fontWeight: 'bold',
+    background: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent'
   }
 }))
 
