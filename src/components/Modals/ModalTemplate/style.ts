@@ -3,6 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    position: 'relative',
     '& .MuiDialogTitle-root': {
       padding: '0'
     },
@@ -85,6 +86,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 50,
     maxWidth: 400,
     textAlign: 'center'
+  },
+  closeIcon: {
+    cursor: 'pointer',
+    position: 'absolute',
+    right: 20,
+    top: 20,
+    fontSize: 40
   }
 }))
 

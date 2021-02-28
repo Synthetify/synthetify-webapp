@@ -5,15 +5,16 @@ import { Typography, Grid, Dialog, TextField, InputAdornment, CardMedia } from '
 import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers'
+import CloseIcon from '@material-ui/icons/Close'
 
 import CommonButton from '@components/CommonButton/CommonButton'
-import useStyles from './style'
 import { BN } from '@project-serum/anchor'
 import { printBN, printBNtoBN } from '@consts/utils'
 import FilledButton from '@components/FilledButton/FilledButton'
 import Loader from '@static/gif/loader.gif'
 import Success from '@static/gif/success.gif'
 import { PublicKey } from '@solana/web3.js'
+import useStyles from './style'
 
 export interface ISendModal {
   open: boolean
@@ -93,6 +94,8 @@ export const SendModal: React.FC<ISendModal> = ({
   return (
     <Grid container>
       <Dialog open={open} onClose={handleClose} className={classes.root} keepMounted>
+        <CloseIcon onClick={handleClose} className={classes.closeIcon} />
+
         <Grid container direction='column' alignItems='center'>
           {loading || txid ? (
             !txid ? (

@@ -3,6 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    position: 'relative',
     '& .MuiDialogTitle-root': {
       padding: '0'
     },
@@ -92,6 +93,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     width: 120
+  },
+  closeIcon: {
+    cursor: 'pointer',
+    position: 'absolute',
+    right: 20,
+    top: 20,
+    fontSize: 40
   }
 }))
 
