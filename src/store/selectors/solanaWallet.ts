@@ -66,17 +66,21 @@ export const exchangeTokensWithUserBalance = createSelector(
 )
 
 export type TokenAccounts = ITokenAccount & { ticker?: string }
-export const accountsArray = createSelector(accounts, assets, (tokensAccounts, exchangeAssets) => {
-  return Object.values(tokensAccounts).reduce((acc, accounts) => {
-    if (exchangeAssets[accounts[0].programId.toString()]) {
-      const a = accounts.map((v: ITokenAccount) => {
-        return { ...v, ticker: exchangeAssets[accounts[0].programId.toString()].ticker }
-      }) as TokenAccounts[]
-      return acc.concat(a)
-    }
-    return acc.concat(accounts as TokenAccounts[])
-  }, [] as TokenAccounts[])
-})
+export const accountsArray = createSelector(
+  accounts,
+  assets,
+  (tokensAccounts, exchangeAssets): TokenAccounts[] => {
+    return Object.values(tokensAccounts).reduce((acc, accounts) => {
+      if (exchangeAssets[accounts[0].programId.toString()]) {
+        const a = accounts.map((v: ITokenAccount) => {
+          return { ...v, ticker: exchangeAssets[accounts[0].programId.toString()].ticker }
+        }) as TokenAccounts[]
+        return acc.concat(a)
+      }
+      return acc.concat(accounts as TokenAccounts[])
+    }, [] as TokenAccounts[])
+  }
+)
 export const solanaWalletSelectors = {
   address,
   balance,

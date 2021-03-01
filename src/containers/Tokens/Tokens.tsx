@@ -49,11 +49,6 @@ export const Tokens: React.FC = () => {
                     You don't have any token accounts.
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <Typography variant='h4' color='textPrimary'>
-                    You can create one for registered tokens or provide address of token.
-                  </Typography>
-                </Grid>
                 <Grid item style={{ width: '100%', marginTop: 24 }}>
                   <Grid container wrap='nowrap' justify='center'>
                     <Grid item>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import Staking from '@components/Staking/Staking'
-import { balance, address, accountsArray } from '@selectors/solanaWallet'
+import { accountsArray } from '@selectors/solanaWallet'
 import { stakedValue, userDebtValue, userCollateralRatio } from '@selectors/exchange'
 import { actions as modalsActions } from '@reducers/modals'
 import { PublicKey } from '@solana/web3.js'
@@ -20,7 +20,7 @@ export const StakingWrapper: React.FC = () => {
         collateralRatio={collateralRatio}
         debt={userDebt}
         stakedValue={stakedUserValue}
-        tokens={userTokens}
+        tokens={userTokens.filter(t => t.ticker?.startsWith('x'))}
         onSend={(address: PublicKey) => {
           dispatch(modalsActions.openSend({ tokenAddress: address }))
         }}

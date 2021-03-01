@@ -117,7 +117,7 @@ export function* handleMint(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Succesfully deposited collateral.',
+        message: 'Succesfully minted xUSD.',
         variant: 'success',
         persist: false
       })

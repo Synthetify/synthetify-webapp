@@ -206,7 +206,6 @@ export const Stacking: React.FC<IStaking> = ({
                 </Grid>
               </Grid>
               {tokens
-                .filter(t => t.ticker?.startsWith('x'))
                 .map((token, index) => (
                   <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
                     <CommonButton
