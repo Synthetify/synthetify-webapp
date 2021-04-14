@@ -1,4 +1,13 @@
-import { call, takeLeading, SagaGenerator, put, takeEvery, spawn, all } from 'typed-redux-saga'
+import {
+  call,
+  takeLeading,
+  SagaGenerator,
+  put,
+  takeEvery,
+  spawn,
+  all,
+  select
+} from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
@@ -21,6 +30,8 @@ import { getCollateralTokenAirdrop } from './exchange'
 import { tou64 } from '@consts/utils'
 import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
+import { getManagerProgram } from '@web3/programs/manager'
+import { state } from '@selectors/exchange'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -252,9 +263,6 @@ export const sleep = (ms: number) => {
 export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string> {
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
-  console.log(wallet.publicKey.toString())
-  console.log(recipient.toString())
-  console.log(amount.toNumber())
   const transaction = new Transaction().add(
     SystemProgram.transfer({
       fromPubkey: wallet.publicKey,
@@ -271,6 +279,22 @@ export function* handleConnect(): Generator {
   yield* call(connectWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  // const managerProgram = yield* call(getManagerProgram)
+  // const stateExchange = yield* select(state)
+  // const ix = yield* call(
+  //   [managerProgram, managerProgram.updatePricesInstruction],
+  //   stateExchange.assetsList
+  // )
+  // console.log(ix)
+  // const wallet = yield* call(getWallet)
+  // const tx = new Transaction().add(ix)
+  // const connection = yield* call(getConnection)
+  // const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  // tx.feePayer = wallet.publicKey
+  // tx.recentBlockhash = blockhash.blockhash
+  // const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+  // const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+  // console.log(signature)
 }
 export function* connectHandler(): Generator {
   yield takeLeading(actions.connect, handleConnect)

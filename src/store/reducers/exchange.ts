@@ -5,6 +5,7 @@ import BN from 'bn.js'
 import { PayloadType } from './types'
 import { ExchangeState } from '@synthetify/sdk/lib/exchange'
 import { Asset } from '@synthetify/sdk/lib/manager'
+import * as R from 'remeda'
 export interface UserAccount {
   address: string // local storage does not handle PublicKeys
   collateral: BN
@@ -24,6 +25,7 @@ export interface ExchangeAccount {
 }
 export interface IExchange {
   state: ExchangeState
+  collateralAccountBalance: BN
   collateralAccount: PublicKey
   collateralToken: PublicKey
   mintAuthority: PublicKey
@@ -55,6 +57,7 @@ export const defaultState: IExchange = {
     nonce: 255
   },
   assets: {},
+  collateralAccountBalance: new BN(0),
   collateralAccount: DEFAULT_PUBLICKEY,
   collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
@@ -91,12 +94,25 @@ const exchangeSlice = createSlice({
       state.assets = action.payload
       return state
     },
+    mergeAssets(state, action: PayloadAction<Asset[]>) {
+      for (const asset of action.payload) {
+        state.assets[asset.assetAddress.toString()] = R.merge(
+          state.assets[asset.assetAddress.toString()],
+          asset
+        )
+      }
+      return state
+    },
     setAssetPrice(state, action: PayloadAction<{ token: PublicKey; price: BN }>) {
       state.assets[action.payload.token.toString()].price = action.payload.price
       return state
     },
     setUserAccountAddress(state, action: PayloadAction<PublicKey>) {
       state.userAccount.address = action.payload.toString()
+      return state
+    },
+    setCollateralAccountBalance(state, action: PayloadAction<BN>) {
+      state.collateralAccountBalance = action.payload
       return state
     },
     setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {

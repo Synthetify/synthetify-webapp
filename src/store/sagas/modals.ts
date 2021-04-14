@@ -123,6 +123,7 @@ export function* handleMint(): Generator {
       })
     )
   } catch (error) {
+    console.log(error)
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',

@@ -1,16 +1,18 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assets, exchangeAccount } from '@selectors/exchange'
+import { assets, exchangeAccount, state } from '@selectors/exchange'
 import { status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 import { getOracleProgram } from '@web3/programs/oracle'
+import { parseTokenAccountData } from '@web3/data'
 
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
+  const exchangeState = useSelector(state)
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
   const exchangeProgram = getCurrentExchangeProgram()
@@ -52,6 +54,19 @@ const ExhcangeEvents = () => {
     }
     connectEvents()
   }, [dispatch, exchangeProgram.programId.toString(), networkStatus])
+
+  React.useEffect(() => {
+    if (!exchangeProgram || networkStatus !== Status.Initalized) {
+      return
+    }
+    const connectEvents = () => {
+      exchangeProgram.connection.onAccountChange(exchangeState.collateralAccount, accountInfo => {
+        const parsedData = parseTokenAccountData(accountInfo.data)
+        dispatch(actions.setCollateralAccountBalance(parsedData.amount))
+      })
+    }
+    connectEvents()
+  }, [dispatch, exchangeState.collateralAccount.toString(), networkStatus])
 
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()

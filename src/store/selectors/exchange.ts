@@ -1,4 +1,4 @@
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -9,7 +9,6 @@ const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
 export const {
   assets,
-  collateralizationLevel,
   debt,
   fee,
   shares,
@@ -17,10 +16,10 @@ export const {
   mintAuthority,
   swap,
   state,
-  exchangeAccount
+  exchangeAccount,
+  collateralAccountBalance
 } = keySelectors(store, [
   'assets',
-  'collateralizationLevel',
   'debt',
   'fee',
   'shares',
@@ -28,8 +27,12 @@ export const {
   'mintAuthority',
   'swap',
   'state',
-  'exchangeAccount'
+  'exchangeAccount',
+  'collateralAccountBalance'
 ])
+export const collateralizationLevel = createSelector(state, s => {
+  return s.collateralizationLevel
+})
 export const collateralAccount = createSelector(state, s => {
   return s.collateralAccount
 })
@@ -41,8 +44,9 @@ export const userAccountAddress = createSelector(userAccount, userAcc => {
 })
 export const xUSDAddress = createSelector(assets, allAssets => {
   const xusd = Object.entries(allAssets).find(([_, b]) => {
-    return b.symbol === 'xUSD'
+    return b.feedAddress.equals(DEFAULT_PUBLICKEY)
   })
+  console.log(xusd?.[1])
   if (xusd) {
     return xusd[1].assetAddress
   } else {
@@ -50,40 +54,46 @@ export const xUSDAddress = createSelector(assets, allAssets => {
   }
 })
 export const stakedValue = createSelector(
-  userAccount,
+  exchangeAccount,
   assets,
   collateralToken,
-  (account, allAssets, collateralTokenAddress) => {
+  collateralAccountBalance,
+  state,
+  (account, allAssets, collateralTokenAddress, exchangeBalance, exchangeState) => {
     if (
-      account.address === DEFAULT_PUBLICKEY.toString() ||
-      account.collateral.eq(new BN(0)) ||
+      account.address.equals(DEFAULT_PUBLICKEY) ||
+      account.collateralShares.eq(new BN(0)) ||
       !allAssets[collateralTokenAddress.toString()]
     ) {
       return new BN(0)
     }
-    const value = allAssets[collateralTokenAddress.toString()].price
-      .mul(account.collateral)
+    const value = account.collateralShares
+      .mul(exchangeBalance)
+      .div(exchangeState.collateralShares)
+      .mul(allAssets[collateralTokenAddress.toString()].price)
       .div(new BN(1e4))
     return value
   }
 )
 export const userDebtValue = createSelector(
-  userAccount,
+  exchangeAccount,
   assets,
-  shares,
-  (account, allAssets, allShares) => {
+  state,
+  (account, allAssets, exchangeState) => {
     if (
-      account.address === DEFAULT_PUBLICKEY.toString() ||
-      account.collateral.eq(new BN(0)) ||
-      account.shares.eq(new BN(0)) ||
-      allShares.eq(new BN(0))
+      account.address.equals(DEFAULT_PUBLICKEY) ||
+      account.collateralShares.eq(new BN(0)) ||
+      account.debtShares.eq(new BN(0)) ||
+      exchangeState.debtShares.eq(new BN(0))
     ) {
       return new BN(0)
     }
     const debt = Object.entries(allAssets).reduce((acc, [_, asset]) => {
-      return acc.add(asset.price.mul(asset.supply).div(new BN(1e4)))
+      return acc.add(
+        asset.price.mul(asset.supply).div(new BN(10 ** (asset.decimals + ORACLE_OFFSET - ACCURACY)))
+      )
     }, new BN(0))
-    const userDebt = debt.mul(account.shares).div(allShares)
+    const userDebt = debt.mul(account.debtShares).div(exchangeState.debtShares)
     return userDebt
   }
 )
@@ -94,7 +104,6 @@ export const userMaxDebtValue = createSelector(
     if (userStakedValue.eq(new BN(0))) {
       return new BN(0)
     }
-
     return userStakedValue.mul(new BN(100)).div(new BN(collateralLvl))
   }
 )

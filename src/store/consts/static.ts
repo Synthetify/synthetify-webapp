@@ -15,4 +15,6 @@ enum SolanaNetworks {
   MAIN = 'https://api.mainnet-beta.solana.com'
 }
 const DEFAULT_PUBLICKEY = new PublicKey(0)
-export { SolanaNetworks, DEFAULT_PUBLICKEY }
+const ORACLE_OFFSET = 4
+const ACCURACY = 6
+export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY }

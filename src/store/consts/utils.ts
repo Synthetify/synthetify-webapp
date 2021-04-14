@@ -7,7 +7,7 @@ export const tou64 = (amount: BN | String) => {
 }
 export const transformBN = (amount: BN): string => {
   // eslint-disable-next-line new-cap
-  return (amount.div(new BN(1e4)).toNumber() / 1e4).toString()
+  return (amount.div(new BN(1e2)).toNumber() / 1e4).toString()
 }
 export const printBN = (amount: BN, decimals: number): string => {
   const balanceString = amount.toString()
@@ -16,8 +16,8 @@ export const printBN = (amount: BN, decimals: number): string => {
   } else {
     return trimZeros(
       balanceString.substring(0, balanceString.length - decimals) +
-      '.' +
-      balanceString.substring(balanceString.length - decimals)
+        '.' +
+        balanceString.substring(balanceString.length - decimals)
     )
   }
 }

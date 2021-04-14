@@ -28,7 +28,6 @@ export function* createToken(
   return tokenPubKey
 }
 export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
-  const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
   const token = new Token(connection, new PublicKey(address), TOKEN_PROGRAM_ID, new Account())
   const info = yield* call([token, token.getMintInfo])

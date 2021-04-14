@@ -39,7 +39,7 @@ export const SendMoneyModal = () => {
         }
       }}
       balance={maxUsd}
-      decimals={8}
+      decimals={6}
       amountSend={modalState.amount}
     />
   )

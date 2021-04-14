@@ -37,6 +37,9 @@ export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
   const state = yield* call([exchangeProgram, exchangeProgram.getState])
   yield* put(actions.setState(state))
+  const token = yield* call(getToken, state.collateralToken)
+  const accountInfo = yield* call([token, token.getAccountInfo], state.collateralAccount)
+  yield* put(actions.setCollateralAccountBalance(accountInfo.amount))
   yield* call(pullAssetPrices)
 }
 export function* getCollateralTokenAirdrop(): Generator {
@@ -72,7 +75,6 @@ export function* getCollateralTokenAirdrop(): Generator {
 export function* depositCollateral(amount: BN): SagaGenerator<string> {
   const collateralTokenAddress = yield* select(collateralToken)
   const tokensAccounts = yield* select(accounts)
-  console.log(collateralTokenAddress.toString())
   const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()][0]
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
@@ -170,63 +172,41 @@ export function* pullUserAccountData(): Generator {
 }
 export function* mintUsd(amount: BN): SagaGenerator<string> {
   const usdTokenAddress = yield* select(xUSDAddress)
-  const authority = yield* select(mintAuthority)
   const tokensAccounts = yield* select(accounts)
-  const tokenProgram = yield* call(getToken, usdTokenAddress)
-  const systemProgram = yield* call(getSystemProgram)
-  const userExchangeAccount = yield* select(userAccountAddress)
-
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const wallet = yield* call(getWallet)
+  const userExchangeAccount = yield* select(exchangeAccount)
   let accountAddress = tokensAccounts[usdTokenAddress.toString()]
     ? tokensAccounts[usdTokenAddress.toString()][0].address
     : null
   if (accountAddress == null) {
-    accountAddress = yield* call(createAccount, tokenProgram.publicKey)
+    accountAddress = yield* call(createAccount, usdTokenAddress)
   }
-  const updateFeedsTxs = yield* call(updateFeedsTransactions)
-  const wallet = yield* call(getWallet)
-  // console.log(accountAddress.toString())
-  // @ts-expect-error
-  return yield* call([systemProgram, systemProgram.state.rpc.mint], amount, {
-    accounts: {
-      authority: authority,
-      mint: usdTokenAddress,
-      to: accountAddress,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-      userAccount: userExchangeAccount,
-      owner: wallet.publicKey
-    },
-    signers: [wallet],
-    instructions: updateFeedsTxs
+  const signature = yield* call([exchangeProgram, exchangeProgram.mint], {
+    amount,
+    exchangeAccount: userExchangeAccount.address,
+    owner: wallet.publicKey,
+    to: accountAddress
   })
+  return signature[1]
 }
 export function* withdrawCollateral(amount: BN): SagaGenerator<string> {
   const collateralTokenAddress = yield* select(collateralToken)
-  const collateralAccountAddress = yield* select(collateralAccount)
+  const collateralAccountAddress = yield* select(tokenAccount(collateralTokenAddress))
 
-  const authority = yield* select(mintAuthority)
-  const tokensAccounts = yield* select(accounts)
-  const systemProgram = yield* call(getSystemProgram)
-  const userExchangeAccount = yield* select(userAccountAddress)
-
-  const accountAddress = tokensAccounts[collateralTokenAddress.toString()][0].address
-
-  const updateFeedsTxs = yield* call(updateFeedsTransactions)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
-  // @ts-expect-error
-  return yield* call([systemProgram, systemProgram.state.rpc.withdraw], amount, {
-    accounts: {
-      authority: authority,
-      to: accountAddress,
-      collateralAccount: collateralAccountAddress,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-      userAccount: userExchangeAccount,
-      owner: wallet.publicKey
-    },
-    signers: [wallet],
-    instructions: updateFeedsTxs
+  if (!collateralAccountAddress) {
+    throw new Error('Collateral token account not found')
+  }
+  const signature = yield* call([exchangeProgram, exchangeProgram.withdraw], {
+    amount,
+    exchangeAccount: userExchangeAccount.address,
+    owner: wallet.publicKey,
+    to: collateralAccountAddress?.address
   })
+  return signature[1]
 }
 export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<string> {
   const userTokenAccount = yield* select(tokenAccount(tokenAddress))

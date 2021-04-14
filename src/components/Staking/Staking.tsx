@@ -205,24 +205,23 @@ export const Stacking: React.FC<IStaking> = ({
                   </Grid>
                 </Grid>
               </Grid>
-              {tokens
-                .map((token, index) => (
-                  <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
-                    <CommonButton
-                      name='Send'
-                      onClick={() => {
-                        onSend(token.programId)
-                      }}
-                    />
-                    <CommonButton
-                      name='Burn'
-                      onClick={() => {
-                        onBurn(token.programId)
-                      }}
-                      className={classes.burnButton}
-                    />
-                  </Token>
-                ))}
+              {tokens.map((token, index) => (
+                <Token token={token} backgroundColor={index % 2 === 0 ? 'light' : 'dark'}>
+                  <CommonButton
+                    name='Send'
+                    onClick={() => {
+                      onSend(token.programId)
+                    }}
+                  />
+                  <CommonButton
+                    name='Burn'
+                    onClick={() => {
+                      onBurn(token.programId)
+                    }}
+                    className={classes.burnButton}
+                  />
+                </Token>
+              ))}
             </Grid>
           </Grid>
         </>
