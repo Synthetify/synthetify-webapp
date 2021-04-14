@@ -13,14 +13,13 @@ export const StakingWrapper: React.FC = () => {
   const collateralRatio = useSelector(userCollateralRatio)
   const dispatch = useDispatch()
   const userTokens = useSelector(accountsArray)
-
   return (
     <>
       <Staking
         collateralRatio={collateralRatio}
         debt={userDebt}
         stakedValue={stakedUserValue}
-        tokens={userTokens.filter(t => t.ticker?.startsWith('x'))}
+        tokens={userTokens}
         onSend={(address: PublicKey) => {
           dispatch(modalsActions.openSend({ tokenAddress: address }))
         }}

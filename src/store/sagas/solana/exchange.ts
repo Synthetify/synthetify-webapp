@@ -215,47 +215,28 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
   }
   const wallet = yield* call(getWallet)
 
-  const authority = yield* select(mintAuthority)
-  const systemProgram = yield* call(getSystemProgram)
-  const userExchangeAccount = yield* select(userAccountAddress)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const userExchangeAccount = yield* select(exchangeAccount)
 
-  const updateFeedsTxs = yield* call(updateFeedsTransactions)
-  const approveTx = yield* call(
-    [Token, Token.createApproveInstruction],
-    TOKEN_PROGRAM_ID,
-    userTokenAccount.address,
-    authority,
-    wallet.publicKey,
-    [],
-    tou64(amount)
-  )
-  updateFeedsTxs.push(approveTx)
-  // @ts-expect-error
-  return yield* call([systemProgram, systemProgram.state.rpc.burn], amount, {
-    accounts: {
-      authority: authority,
-      mint: userTokenAccount.programId,
-      userTokenAccount: userTokenAccount.address,
-      userAccount: userExchangeAccount,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-      owner: wallet.publicKey
-    },
-    signers: [wallet],
-    instructions: updateFeedsTxs
+  const signature = yield* call([exchangeProgram, exchangeProgram.burn], {
+    amount,
+    exchangeAccount: userExchangeAccount.address,
+    owner: wallet.publicKey,
+    tokenBurn: tokenAddress,
+    userTokenAccountBurn: userTokenAccount.address
   })
+  return signature[1]
 }
 
 export function* handleSwap(): Generator {
   const swapData = yield* select(swap)
 
   try {
-    const authority = yield* select(mintAuthority)
     const wallet = yield* call(getWallet)
 
     const tokensAccounts = yield* select(accounts)
-    const systemProgram = yield* call(getSystemProgram)
-    const userExchangeAccount = yield* select(userAccountAddress)
+    const exchangeProgram = yield* call(getExchangeProgram)
+    const userExchangeAccount = yield* select(exchangeAccount)
 
     let fromAddress = tokensAccounts[swapData.fromToken.toString()]
       ? tokensAccounts[swapData.fromToken.toString()][0].address
@@ -269,35 +250,19 @@ export function* handleSwap(): Generator {
     if (toAddress == null) {
       toAddress = yield* call(createAccount, swapData.toToken)
     }
-    const updateFeedsTxs = yield* call(updateFeedsTransactions)
-    const approveTx = yield* call(
-      [Token, Token.createApproveInstruction],
-      TOKEN_PROGRAM_ID,
-      fromAddress,
-      authority,
-      wallet.publicKey,
-      [],
-      tou64(swapData.amount)
-    )
-    updateFeedsTxs.push(approveTx)
-    // const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
-    // @ts-expect-error
-    const txid = yield* call([systemProgram, systemProgram.state.rpc.swap], swapData.amount, {
-      accounts: {
-        userAccount: userExchangeAccount,
-        authority: authority,
-        tokenIn: swapData.fromToken,
-        tokenFor: swapData.toToken,
-        userTokenAccountIn: fromAddress,
-        userTokenAccountFor: toAddress,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-        owner: wallet.publicKey
-      },
-      signers: [wallet],
-      instructions: updateFeedsTxs
-    }) as string
-    yield* put(actions.swapDone({ txid: txid }))
+    console.log(swapData.fromToken.toString())
+    console.log(swapData.toToken.toString())
+    console.log(swapData.amount.toString())
+    const txid = yield* call([exchangeProgram, exchangeProgram.swap], {
+      amount: swapData.amount,
+      exchangeAccount: userExchangeAccount.address,
+      owner: wallet.publicKey,
+      tokenIn: swapData.fromToken,
+      tokenFor: swapData.toToken,
+      userTokenAccountIn: fromAddress,
+      userTokenAccountFor: toAddress
+    })
+    yield* put(actions.swapDone({ txid: txid[1] }))
 
     yield put(
       snackbarsActions.add({
@@ -308,6 +273,7 @@ export function* handleSwap(): Generator {
     )
   } catch (error) {
     console.log(error.toString())
+    yield* put(actions.swapDone({ txid: '12' }))
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',

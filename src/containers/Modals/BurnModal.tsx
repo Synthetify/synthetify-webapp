@@ -37,7 +37,7 @@ export const WithdrawModal = () => {
       balance={
         burnedTokenAccount?.balance.lt(maxBurnToken) ? burnedTokenAccount?.balance : maxBurnToken
       }
-      decimals={8}
+      decimals={burnedTokenAccount?.decimals}
       amountSend={modalState.amount}
     />
   )

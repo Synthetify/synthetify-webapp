@@ -62,7 +62,9 @@ export const stakedValue = createSelector(
   (account, allAssets, collateralTokenAddress, exchangeBalance, exchangeState) => {
     if (
       account.address.equals(DEFAULT_PUBLICKEY) ||
-      account.collateralShares.eq(new BN(0)) ||
+      exchangeBalance.eqn(0) ||
+      account.collateralShares.eqn(0) ||
+      exchangeState.collateralShares.eqn(0) ||
       !allAssets[collateralTokenAddress.toString()]
     ) {
       return new BN(0)
