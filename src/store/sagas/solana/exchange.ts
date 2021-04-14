@@ -68,7 +68,9 @@ export function* getCollateralTokenAirdrop(): Generator {
   tx.recentBlockhash = blockhash.blockhash
   tx.sign(testAdmin)
   const signedTx = yield* call([wallet, wallet.signTransaction], tx)
-  yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+  yield* call([connection, connection.sendRawTransaction], signedTx.serialize(), {
+    skipPreflight: true
+  })
 
   console.log('Token Airdroped')
 }
@@ -250,9 +252,6 @@ export function* handleSwap(): Generator {
     if (toAddress == null) {
       toAddress = yield* call(createAccount, swapData.toToken)
     }
-    console.log(swapData.fromToken.toString())
-    console.log(swapData.toToken.toString())
-    console.log(swapData.amount.toString())
     const txid = yield* call([exchangeProgram, exchangeProgram.swap], {
       amount: swapData.amount,
       exchangeAccount: userExchangeAccount.address,
@@ -272,7 +271,6 @@ export function* handleSwap(): Generator {
       })
     )
   } catch (error) {
-    console.log(error.toString())
     yield* put(actions.swapDone({ txid: '12' }))
     yield put(
       snackbarsActions.add({

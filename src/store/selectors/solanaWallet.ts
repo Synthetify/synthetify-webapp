@@ -65,7 +65,7 @@ export const exchangeTokensWithUserBalance = createSelector(
   }
 )
 
-export type TokenAccounts = ITokenAccount & { ticker?: string }
+export type TokenAccounts = ITokenAccount & { symbol?: string }
 export const accountsArray = createSelector(
   accounts,
   assets,
@@ -73,7 +73,7 @@ export const accountsArray = createSelector(
     return Object.values(tokensAccounts).reduce((acc, accounts) => {
       if (exchangeAssets[accounts[0].programId.toString()]) {
         const a = accounts.map((v: ITokenAccount) => {
-          return { ...v, ticker: exchangeAssets[accounts[0].programId.toString()].symbol }
+          return { ...v, symbol: exchangeAssets[accounts[0].programId.toString()].symbol }
         }) as TokenAccounts[]
         return acc.concat(a)
       }

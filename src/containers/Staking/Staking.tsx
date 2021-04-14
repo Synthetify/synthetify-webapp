@@ -19,7 +19,7 @@ export const StakingWrapper: React.FC = () => {
         collateralRatio={collateralRatio}
         debt={userDebt}
         stakedValue={stakedUserValue}
-        tokens={userTokens}
+        tokens={userTokens.filter(a => a.symbol?.startsWith('x'))}
         onSend={(address: PublicKey) => {
           dispatch(modalsActions.openSend({ tokenAddress: address }))
         }}

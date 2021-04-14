@@ -32,6 +32,7 @@ import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getManagerProgram } from '@web3/programs/manager'
 import { state } from '@selectors/exchange'
+import { getTokenDetails } from './token'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -122,6 +123,7 @@ export function* fetchTokensAccounts(): Generator {
   )
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
+    console.log(info.tokenAmount.decimals)
     yield* put(
       actions.addTokenAccount({
         programId: new PublicKey(info.mint),
@@ -148,16 +150,17 @@ export function* handleAirdrop(): Generator {
     yield* call(sleep, 2000)
   }
 
-  // let retries = 30
-  // for (;;) {
-  //   yield* call(sleep, 2000)
-  //   // eslint-disable-next-line eqeqeq
-  //   if (6.9 * 1e9 <= (yield* call([connection, connection.getBalance], wallet.publicKey))) {
-  //   }
-  //   if (--retries <= 0) {
-  //     break
-  //   }
-  // }
+  let retries = 30
+  for (;;) {
+    // eslint-disable-next-line eqeqeq
+    if (1 * 1e9 <= (yield* call([connection, connection.getBalance], wallet.publicKey))) {
+      break
+    }
+    yield* call(sleep, 2000)
+    if (--retries <= 0) {
+      break
+    }
+  }
   yield* call(getCollateralTokenAirdrop)
   yield put(
     snackbarsActions.add({
@@ -215,14 +218,15 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
     wallet.publicKey,
     wallet.publicKey
   )
-
   yield* call(signAndSend, wallet, new Transaction().add(ix))
+  const token = yield* call(getTokenDetails, tokenAddress.toString())
+  console.log(token)
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,
       balance: new BN(0),
       address: associatedAccount,
-      decimals: 6
+      decimals: token.decimals
     })
   )
   yield* call(sleep, 1000) // Give time to subscribe to new token

@@ -9,11 +9,7 @@ export interface ISendMoneyModal {
   token: TokenAccounts
   backgroundColor: 'dark' | 'light'
 }
-export const Token: React.FC<ISendMoneyModal> = ({
-  token,
-  backgroundColor,
-  children
-}) => {
+export const Token: React.FC<ISendMoneyModal> = ({ token, backgroundColor, children }) => {
   const classes = useStyles()
   return (
     <Grid
@@ -30,10 +26,10 @@ export const Token: React.FC<ISendMoneyModal> = ({
         </Grid>
         <Grid item xs={4}>
           <Grid container direction='row'>
-            {token.ticker && (
+            {token.symbol && (
               <Grid item>
                 <Typography variant='h5' color='textPrimary' className={classes.tokenName}>
-                  {token.ticker}
+                  {token.symbol}
                 </Typography>
               </Grid>
             )}

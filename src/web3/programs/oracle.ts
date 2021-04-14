@@ -6,7 +6,7 @@ import { Program, Provider, Idl } from '@project-serum/anchor'
 import oracleIdl from '@consts/idl/oracle.json'
 
 let _oracle: Program
-const oracleProgramId: PublicKey = new PublicKey('GVq5UAzCwrHiCBLro8iJfsd6bZMBvEGB1RscqrZhzSxW')
+const oracleProgramId: PublicKey = new PublicKey('7aYbRN3RN7vvPvyr3igRtcRtgns6LDMUKf3MPxKFe4MG')
 
 export const getOracleProgram = () => {
   if (_oracle) {

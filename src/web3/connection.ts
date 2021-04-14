@@ -1,5 +1,5 @@
-import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
-import { Provider, setProvider, Wallet, Program, Idl } from '@project-serum/anchor'
+import { Connection, PublicKey } from '@solana/web3.js'
+import { Provider, setProvider, Program, Idl } from '@project-serum/anchor'
 import { getSolanaWallet } from './wallet'
 import { SolanaNetworks } from '@consts/static'
 import oracleIdl from '@consts/idl/oracle.json'

@@ -25,16 +25,33 @@ export interface IExchange {
 export interface FormFields {
   amount: string
 }
-const calculateSwapOutAmount = (from: TokensWithBalance, to: TokensWithBalance, amount: string) => {
-  return printBN(
-    printBNtoBN(amount, from.decimals)
-      .mul(from.price)
-      .div(to.price)
-      .mul(new BN(9970))
-      .div(new BN(10000)),
-    to.decimals
-  )
+export const calculateSwapOutAmount = (
+  assetIn: TokensWithBalance,
+  assetFor: TokensWithBalance,
+  amount: string,
+  effectiveFee: number = 300
+) => {
+  const amountOutBeforeFee = assetIn.price
+    .mul(printBNtoBN(amount, assetIn.decimals))
+    .div(assetFor.price)
+  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
+  if (decimalChange < 1) {
+    return printBN(
+      amountOutBeforeFee
+        .sub(amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000)))
+        .div(new BN(1 / decimalChange)),
+      assetFor.decimals
+    )
+  } else {
+    return printBN(
+      amountOutBeforeFee
+        .sub(amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000)))
+        .mul(new BN(decimalChange)),
+      assetFor.decimals
+    )
+  }
 }
+
 const getButtonMsg = (
   to: TokensWithBalance | null,
   amountTo: string | null,
