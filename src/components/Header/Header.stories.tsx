@@ -7,8 +7,8 @@ import { SolanaNetworks } from '@web3/connection'
 storiesOf('ui/Header', module)
   .addDecorator(withKnobs)
   .add('default', () => {
-    return <Header network={SolanaNetworks.DEV} onNetworkClick={() => {}} />
+    return <Header network={SolanaNetworks.DEV} onConnect={() => {}} onNetworkClick={() => {}} />
   })
   .add('connected', () => {
-    return <Header onNetworkClick={() => {}} network={SolanaNetworks.MAIN} />
+    return <Header onNetworkClick={() => {}} onConnect={() => {}} network={SolanaNetworks.MAIN} />
   })

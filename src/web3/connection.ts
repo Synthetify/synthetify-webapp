@@ -1,4 +1,4 @@
-import { Connection, PublicKey } from '@solana/web3.js'
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
 import { Provider, setProvider, Wallet, Program, Idl } from '@project-serum/anchor'
 import { getSolanaWallet } from './wallet'
 import { SolanaNetworks } from '@consts/static'
@@ -54,9 +54,9 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
   if (_connection && _network === url) {
     return _connection
   }
-  _connection = new Connection(url)
+  _connection = new Connection('http://127.0.0.1:8899')
   _network = url
-  _provider = new Provider(_connection, new Wallet(getSolanaWallet()), {
+  _provider = new Provider(_connection, getSolanaWallet(), {
     // preflightCommitment: 'recent',
     skipPreflight: true,
     commitment: 'singleGossip'
@@ -78,10 +78,10 @@ const getSolanaProvider = (): Provider => {
   }
   if (_connection == null) {
     const connection = getSolanaConnection(SolanaNetworks.DEV)
-    _provider = new Provider(connection, new Wallet(getSolanaWallet()), Provider.defaultOptions())
+    _provider = new Provider(connection, getSolanaWallet(), Provider.defaultOptions())
     return _provider
   }
-  _provider = new Provider(_connection, new Wallet(getSolanaWallet()), Provider.defaultOptions())
+  _provider = new Provider(_connection, getSolanaWallet(), Provider.defaultOptions())
   return _provider
 }
 const getSystemProgram = (): Program => {

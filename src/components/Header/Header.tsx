@@ -5,12 +5,12 @@ import CommonButton from '@components/CommonButton/CommonButton'
 import { networkToName, SolanaNetworks } from '@web3/connection'
 import BlurOnIcon from '@material-ui/icons/BlurOn'
 import useStyles from './style'
-
 export interface IHeader {
   onNetworkClick: (network: SolanaNetworks) => void
+  onConnect: () => void
   network: SolanaNetworks
 }
-export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
+export const Header: React.FC<IHeader> = ({ onNetworkClick, network, onConnect }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   return (
@@ -27,6 +27,15 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network }) => {
                   setOpen(true)
                 }}></CommonButton>
             </Grid> */}
+            <Grid item className={classes.divButton}>
+              <CommonButton
+                className={classes.button}
+                name='Connect'
+                startIcon={<BlurOnIcon style={{ fontSize: 27 }} />}
+                onClick={() => {
+                  onConnect()
+                }}></CommonButton>
+            </Grid>
             <Grid item className={classes.divButton}>
               <CommonButton
                 className={classes.button}

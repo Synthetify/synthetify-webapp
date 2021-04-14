@@ -1,7 +1,7 @@
 import { call, SagaGenerator, select } from 'typed-redux-saga'
 
 import { getConnection } from './connection'
-import { PublicKey, TransactionInstruction } from '@solana/web3.js'
+import { PublicKey, TransactionInstruction, Account } from '@solana/web3.js'
 import { MintInfo, Token } from '@solana/spl-token'
 import { getWallet } from './wallet'
 import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
@@ -19,7 +19,7 @@ export function* createToken(
   const token = yield* call(
     [Token, Token.createMint],
     connection,
-    wallet,
+    new Account(),
     mintAuthority ? new PublicKey(mintAuthority) : wallet.publicKey,
     freezeAuthority ? new PublicKey(freezeAuthority) : null,
     decimals,
@@ -31,7 +31,7 @@ export function* createToken(
 export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const token = new Token(connection, new PublicKey(address), TOKEN_PROGRAM_ID, wallet)
+  const token = new Token(connection, new PublicKey(address), TOKEN_PROGRAM_ID, new Account())
   const info = yield* call([token, token.getMintInfo])
   return info
 }
@@ -39,9 +39,9 @@ export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
 export function* mintToken(tokenAddress: string, recipient: string, amount: number): Generator {
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const token = new Token(connection, new PublicKey(tokenAddress), TOKEN_PROGRAM_ID, wallet)
+  const token = new Token(connection, new PublicKey(tokenAddress), TOKEN_PROGRAM_ID, new Account())
   // This should return txid in future
-  yield* call([token, token.mintTo], new PublicKey(recipient), wallet, [], amount)
+  yield* call([token, token.mintTo], new PublicKey(recipient), new Account(), [], amount)
 }
 
 export function* createTransferInstruction(
@@ -52,7 +52,7 @@ export function* createTransferInstruction(
 ): SagaGenerator<TransactionInstruction> {
   const wallet = yield* call(getWallet)
   const connection = yield* call(getConnection)
-  const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, wallet)
+  const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, new Account())
   return yield* call(
     [Token, Token.createTransferInstruction],
     token.programId,

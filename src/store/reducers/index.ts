@@ -30,18 +30,17 @@ const transformExchange = createTransform(
   },
   { whitelist: ['userAccount'] }
 )
-const exchangePersistConfig = {
-  key: exchangeSliceName,
+const connectionPersistConfig = {
+  key: solanaConnectionSliceName,
   storage: storage,
-  transforms: [transformExchange],
   whitelist: ['userAccount']
 }
 
 const combinedReducers = combineReducers({
   [snackbarsSliceName]: snackbarsReducer,
   [uiSliceName]: uiReducer,
-  [solanaConnectionSliceName]: solanaConnectionReducer,
-  [exchangeSliceName]: persistReducer(exchangePersistConfig, exhcangeReducer),
+  [solanaConnectionSliceName]: persistReducer(connectionPersistConfig, solanaConnectionReducer),
+  [exchangeSliceName]: exhcangeReducer,
   [solanaWalletSliceName]: solanaWalletReducer,
   [modalsSliceName]: modalsReducer
 })

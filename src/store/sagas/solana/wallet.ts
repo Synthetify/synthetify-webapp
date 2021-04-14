@@ -2,7 +2,7 @@ import { call, takeLeading, SagaGenerator, put, takeEvery, spawn, all } from 'ty
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
-import { getSolanaWallet } from '@web3/wallet'
+import { getSolanaWallet, connectWallet } from '@web3/wallet'
 import {
   Account,
   PublicKey,
@@ -10,16 +10,19 @@ import {
   Transaction,
   sendAndConfirmTransaction
 } from '@solana/web3.js'
-import { Token } from '@solana/spl-token'
+import { Token, ASSOCIATED_TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
+import { actions as exchangeActions } from '@reducers/exchange'
 // import { createToken } from './token'
 import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
 import { BN } from '@project-serum/anchor'
 import { getCollateralTokenAirdrop } from './exchange'
 import { tou64 } from '@consts/utils'
-export function* getWallet(): SagaGenerator<Account> {
+import { WalletAdapter } from '@web3/adapters/types'
+import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
+export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
 }
@@ -51,26 +54,26 @@ export function* handleTransaction(
       // )
     } else {
       // Send SOL
-      const signature = yield* call(
-        [connection, connection.sendTransaction],
-        new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: wallet.publicKey,
-            toPubkey: new PublicKey(action.payload.recipient),
-            lamports: action.payload.amount * 1e9
-          })
-        ),
-        [wallet],
-        {
-          preflightCommitment: 'singleGossip'
-        }
-      )
-      yield put(
-        actions.setTransactionTxid({
-          txid: signature,
-          id: action.payload.id
-        })
-      )
+      // const signature = yield* call(
+      //   [connection, connection.sendTransaction],
+      //   new Transaction().add(
+      //     SystemProgram.transfer({
+      //       fromPubkey: wallet.publicKey,
+      //       toPubkey: new PublicKey(action.payload.recipient),
+      //       lamports: action.payload.amount * 1e9
+      //     })
+      //   ),
+      //   [wallet],
+      //   {
+      //     preflightCommitment: 'singleGossip'
+      //   }
+      // )
+      // yield put(
+      //   actions.setTransactionTxid({
+      //     txid: signature,
+      //     id: action.payload.id
+      //   })
+      // )
     }
   } catch (error) {
     yield put(
@@ -122,8 +125,7 @@ export function* fetchTokensAccounts(): Generator {
 
 export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
   const connection = yield* call(getConnection)
-  const wallet = yield* call(getWallet)
-  const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, wallet)
+  const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID, new Account())
   return token
 }
 
@@ -167,49 +169,81 @@ export function* sendToken(
   tokenAddress: PublicKey
 ): SagaGenerator<string> {
   const token = yield* call(getToken, tokenAddress)
-  const wallet = yield* call(getWallet)
-  const signature = yield* call([token, token.transfer], from, target, wallet, [], tou64(amount))
+  const signature = yield* call(
+    [token, token.transfer],
+    from,
+    target,
+    new Account(),
+    [],
+    tou64(amount)
+  )
+  return signature
+}
+export function* signAndSend(wallet: WalletAdapter, tx: Transaction): SagaGenerator<string> {
+  const connection = yield* call(getConnection)
+  const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  tx.feePayer = wallet.publicKey
+  tx.recentBlockhash = blockhash.blockhash
+  const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+  const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
   return signature
 }
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
-  const token = yield* call(getToken, tokenAddress)
   const wallet = yield* call(getWallet)
+  const associatedAccount = yield* call(
+    Token.getAssociatedTokenAddress,
+    ASSOCIATED_TOKEN_PROGRAM_ID,
+    TOKEN_PROGRAM_ID,
+    tokenAddress,
+    wallet.publicKey
+  )
+  const ix = Token.createAssociatedTokenAccountInstruction(
+    ASSOCIATED_TOKEN_PROGRAM_ID,
+    TOKEN_PROGRAM_ID,
+    tokenAddress,
+    associatedAccount,
+    wallet.publicKey,
+    wallet.publicKey
+  )
 
-  const address = yield* call([token, token.createAccount], wallet.publicKey)
+  yield* call(signAndSend, wallet, new Transaction().add(ix))
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,
       balance: new BN(0),
-      address: address,
-      decimals: 8
+      address: associatedAccount,
+      decimals: 6
     })
   )
   yield* call(sleep, 1000) // Give time to subscribe to new token
-  return address
+  return associatedAccount
 }
 
 export function* init(): Generator {
   yield* put(actions.setStatus(Status.Init))
   const wallet = yield* call(getWallet)
   // const balance = yield* call(getBalance, wallet.publicKey)
-  yield* call(fetchTokensAccounts)
-
   yield* put(actions.setAddress(wallet.publicKey.toString()))
   const balance = yield* call(getBalance, wallet.publicKey)
   yield* put(actions.setBalance(balance))
   yield* put(actions.setStatus(Status.Initalized))
+  yield* call(fetchTokensAccounts)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const address = yield* call(
+    [exchangeProgram, exchangeProgram.getExchangeAccountAddress],
+    wallet.publicKey
+  )
+  try {
+    const account = yield* call([exchangeProgram, exchangeProgram.getExchangeAccount], address)
 
-  // const address = yield* call(fetchGovernedTokens)
-  // const address = yield* call(getTokenDetails)
-  // console.log(address)
-  // yield* call(
-  //   sendToken,
-  //   'CDeKid1BQ4kL2xi4Ytn8XsKpCeoYnT4XULKLTtrg2FvK',
-  //   'AgGfPnfCyfa71My835QupNZ4m7sKDEwaVHT8xkDQudaa',
-  //   100 * 1e9,
-  //   '7sCjFDNSnhzRnB2Py8kDoNtx75DLTg1U68aGg2gZPryp'
-  // )
-  // yield* call(createAccount, '7sCjFDNSnhzRnB2Py8kDoNtx75DLTg1U68aGg2gZPryp')
+    yield* put(
+      exchangeActions.setExchangeAccount({
+        address: address,
+        collateralShares: account.collateralShares,
+        debtShares: account.debtShares
+      })
+    )
+  } catch (error) {}
 }
 
 // eslint-disable-next-line @typescript-eslint/promise-function-async
@@ -229,10 +263,20 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
       lamports: amount.toNumber()
     })
   )
-  const txid = yield* call(sendAndConfirmTransaction, connection, transaction, [wallet])
+  const txid = yield* call(sendAndConfirmTransaction, connection, transaction, [new Account()])
   return txid
 }
-export function* aridropSaga(): Generator {
+
+export function* handleConnect(): Generator {
+  // TODO add side effects
+  yield* call(connectWallet)
+  yield* call(init)
+  yield* call(connectExchangeWallet)
+}
+export function* connectHandler(): Generator {
+  yield takeLeading(actions.connect, handleConnect)
+}
+export function* airdropSaga(): Generator {
   yield takeLeading(actions.airdrop, handleAirdrop)
 }
 
@@ -243,5 +287,5 @@ export function* initSaga(): Generator {
   yield takeLeading(actions.initWallet, init)
 }
 export function* walletSaga(): Generator {
-  yield all([transactionsSaga, initSaga, aridropSaga].map(spawn))
+  yield all([transactionsSaga, initSaga, airdropSaga, connectHandler].map(spawn))
 }

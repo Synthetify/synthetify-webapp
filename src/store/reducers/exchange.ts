@@ -3,15 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import * as R from 'remeda'
-export interface IAsset {
-  address: PublicKey
-  feedAddress: PublicKey
-  price: BN
-  supply: BN
-  decimals: number
-  ticker: string
-}
+import { ExchangeState } from '@synthetify/sdk/lib/exchange'
+import { Asset } from '@synthetify/sdk/lib/manager'
 export interface UserAccount {
   address: string // local storage does not handle PublicKeys
   collateral: BN
@@ -24,8 +17,13 @@ export interface Swap {
   loading: boolean
   txid?: string
 }
-
+export interface ExchangeAccount {
+  address: PublicKey
+  collateralShares: BN
+  debtShares: BN
+}
 export interface IExchange {
+  state: ExchangeState
   collateralAccount: PublicKey
   collateralToken: PublicKey
   mintAuthority: PublicKey
@@ -35,10 +33,27 @@ export interface IExchange {
   collateralizationLevel: number
   assets: { [key in string]: IAsset }
   userAccount: UserAccount
+  exchangeAccount: ExchangeAccount
   swap: Swap
 }
+export type IAsset = Asset & { symbol: string }
 
 export const defaultState: IExchange = {
+  state: {
+    admin: DEFAULT_PUBLICKEY,
+    assetsList: DEFAULT_PUBLICKEY,
+    collateralAccount: DEFAULT_PUBLICKEY,
+    collateralShares: new BN(0),
+    debtShares: new BN(0),
+    collateralToken: DEFAULT_PUBLICKEY,
+    collateralizationLevel: 1000,
+    fee: 30,
+    liquidationAccount: DEFAULT_PUBLICKEY,
+    liquidationPenalty: 15,
+    liquidationThreshold: 200,
+    maxDelay: 10,
+    nonce: 255
+  },
   assets: {},
   collateralAccount: DEFAULT_PUBLICKEY,
   collateralToken: DEFAULT_PUBLICKEY,
@@ -48,6 +63,11 @@ export const defaultState: IExchange = {
   debt: new BN(0),
   shares: new BN(0),
   userAccount: { address: DEFAULT_PUBLICKEY.toString(), collateral: new BN(0), shares: new BN(0) },
+  exchangeAccount: {
+    address: DEFAULT_PUBLICKEY,
+    collateralShares: new BN(0),
+    debtShares: new BN(0)
+  },
   swap: {
     fromToken: DEFAULT_PUBLICKEY,
     toToken: DEFAULT_PUBLICKEY,
@@ -63,21 +83,12 @@ const exchangeSlice = createSlice({
     resetState() {
       return defaultState
     },
-    setState(state, action: PayloadAction<Omit<IExchange, 'userAccount' | 'swap'>>) {
-      // to not overwrite asset prices
-      const assets = R.mapValues(action.payload.assets, (value, key) => {
-        if (state.assets[key]) {
-          return { ...value, price: state.assets[key].price }
-        } else {
-          return value
-        }
-      })
-      state = {
-        ...action.payload,
-        assets: assets,
-        userAccount: state.userAccount,
-        swap: state.swap
-      }
+    setState(state, action: PayloadAction<ExchangeState>) {
+      state.state = action.payload
+      return state
+    },
+    setAssets(state, action: PayloadAction<{ [key in string]: IAsset }>) {
+      state.assets = action.payload
       return state
     },
     setAssetPrice(state, action: PayloadAction<{ token: PublicKey; price: BN }>) {
@@ -91,6 +102,12 @@ const exchangeSlice = createSlice({
     setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {
       state.userAccount.collateral = action.payload.collateral
       state.userAccount.shares = action.payload.shares
+      return state
+    },
+    setExchangeAccount(state, action: PayloadAction<ExchangeAccount>) {
+      state.exchangeAccount.collateralShares = action.payload.collateralShares
+      state.exchangeAccount.debtShares = action.payload.debtShares
+      state.exchangeAccount.address = action.payload.address
       return state
     },
     swap(state, action: PayloadAction<Omit<Swap, 'loading'>>) {

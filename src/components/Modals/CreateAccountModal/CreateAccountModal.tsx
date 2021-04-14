@@ -13,8 +13,8 @@ import { printBN, printBNtoBN } from '@consts/utils'
 import FilledButton from '@components/FilledButton/FilledButton'
 import Loader from '@static/gif/loader.gif'
 import Success from '@static/gif/success.gif'
-import { IAsset } from '@reducers/exchange'
 import { PublicKey } from '@solana/web3.js'
+import { Asset } from '@synthetify/sdk'
 
 export interface ICreateAccountModal {
   open: boolean
@@ -22,7 +22,7 @@ export interface ICreateAccountModal {
   handleClose: () => void
   onSend: (tokenAddress: PublicKey) => void
   txid?: string
-  assets: IAsset[]
+  assets: Asset[]
 }
 
 export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
@@ -80,7 +80,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
           ) : (
             <>
               {assets.map(asset => {
-                const ticker = asset.ticker.toString().toLowerCase()
+                const ticker = 'xBTC'
                 const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                 let icon
                 try {
@@ -93,7 +93,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                     item
                     className={classes.button}
                     onClick={() => {
-                      onSend(asset.address)
+                      onSend(asset.assetAddress)
                     }}>
                     <Grid container alignItems='center'>
                       <Grid item style={{ marginLeft: 250 }}>
@@ -102,7 +102,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                           image={icon}
                         />
                       </Grid>
-                      <Grid item>{asset.ticker.toString()}</Grid>
+                      {/* <Grid item>{asset?.ticker?.toString()}</Grid> */}
                     </Grid>
                   </Grid>
                 )

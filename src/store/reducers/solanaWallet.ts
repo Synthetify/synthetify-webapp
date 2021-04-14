@@ -77,12 +77,12 @@ const solanaWalletSlice = createSlice({
       }
       return state
     },
-    setTransactionTxid(state, action: PayloadAction<{ txid: string, id: string }>) {
+    setTransactionTxid(state, action: PayloadAction<{ txid: string; id: string }>) {
       state.transactions[action.payload.id].txid = action.payload.txid
       state.transactions[action.payload.id].sending = false
       return state
     },
-    setTransactionError(state, action: PayloadAction<{ error: string, id: string }>) {
+    setTransactionError(state, action: PayloadAction<{ error: string; id: string }>) {
       state.transactions[action.payload.id].error = action.payload.error
       state.transactions[action.payload.id].sending = false
       return state
@@ -103,7 +103,8 @@ const solanaWalletSlice = createSlice({
     },
     // Triggers rescan for tokens that we control
     rescanTokens() {},
-    airdrop() {}
+    airdrop() {},
+    connect() {}
   }
 })
 interface IsetTokenBalance {

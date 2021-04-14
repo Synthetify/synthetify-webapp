@@ -11,6 +11,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { init, handleAirdrop } from './wallet'
 import { depositCollateral, pullExchangeState, mintUsd, pullUserAccountData } from './exchange'
 import BN from 'bn.js'
+import { getExchangeProgram } from '@web3/programs/exchange'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const currentNetwork = yield* select(network)
@@ -20,11 +21,11 @@ export function* getConnection(): SagaGenerator<Connection> {
 
 export function* initConnection(): Generator {
   try {
+    console.log('123')
     yield* call(getConnection)
-
     yield* call(pullExchangeState)
-    yield* call(pullUserAccountData)
-    yield* call(init)
+    // yield* call(pullUserAccountData)
+    // yield* call(init)
     yield* put(
       uiActions.setLoader({
         open: false,
@@ -41,7 +42,7 @@ export function* initConnection(): Generator {
     yield* put(actions.setStatus(Status.Initalized))
     // yield* call(depositCollateral, new BN(4 * 1e8))
     // yield* call(mintUsd, new BN(8 * 1e7))
-    yield* call(handleAirdrop)
+    // yield* call(handleAirdrop)
   } catch (error) {
     console.log(error)
     yield put(actions.setStatus(Status.Error))

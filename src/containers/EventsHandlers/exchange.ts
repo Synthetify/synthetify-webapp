@@ -37,29 +37,29 @@ const ExhcangeEvents = () => {
       // @ts-expect-error
       exchangeProgram.state.subscribe('singleGossip').on('change', state => {
         console.log(state)
-        dispatch(
-          actions.setState({
-            debt: state.debt,
-            shares: state.shares,
-            collateralAccount: state.collateralAccount,
-            assets: state.assets.reduce((acc: any, a: any) => {
-              return Object.assign(acc, {
-                [a.assetAddress.toString()]: {
-                  address: a.assetAddress,
-                  feedAddress: a.feedAddress,
-                  decimals: a.decimals,
-                  price: a.price,
-                  supply: a.supply,
-                  ticker: a.ticker.toString()
-                }
-              })
-            }, {}),
-            collateralToken: state.collateralToken,
-            mintAuthority: state.mintAuthority,
-            fee: state.fee,
-            collateralizationLevel: state.collateralizationLevel
-          })
-        )
+        // dispatch(
+        //   actions.setState({
+        //     debt: state.debt,
+        //     shares: state.shares,
+        //     collateralAccount: state.collateralAccount,
+        //     assets: state.assets.reduce((acc: any, a: any) => {
+        //       return Object.assign(acc, {
+        //         [a.assetAddress.toString()]: {
+        //           address: a.assetAddress,
+        //           feedAddress: a.feedAddress,
+        //           decimals: a.decimals,
+        //           price: a.price,
+        //           supply: a.supply,
+        //           ticker: a.ticker.toString()
+        //         }
+        //       })
+        //     }, {}),
+        //     collateralToken: state.collateralToken,
+        //     mintAuthority: state.mintAuthority,
+        //     fee: state.fee,
+        //     collateralizationLevel: state.collateralizationLevel
+        //   })
+        // )
         // dispatch(actions.setUserAccountData({ shares: a.shares, collateral: a.collateral }))
       })
     }
@@ -82,7 +82,7 @@ const ExhcangeEvents = () => {
           .subscribe(asset.feedAddress, 'singleGossip')
           .on('change', a => {
             console.log(a.price.toString())
-            dispatch(actions.setAssetPrice({ token: asset.address, price: a.price }))
+            dispatch(actions.setAssetPrice({ token: asset.assetAddress, price: a.price }))
           })
       }
     }

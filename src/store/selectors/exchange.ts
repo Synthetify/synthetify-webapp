@@ -10,35 +10,40 @@ const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 export const {
   assets,
   collateralAccount,
-  collateralToken,
   collateralizationLevel,
   debt,
   fee,
   shares,
   userAccount,
   mintAuthority,
-  swap
+  swap,
+  state,
+  exchangeAccount
 } = keySelectors(store, [
   'assets',
   'collateralAccount',
-  'collateralToken',
   'collateralizationLevel',
   'debt',
   'fee',
   'shares',
   'userAccount',
   'mintAuthority',
-  'swap'
+  'swap',
+  'state',
+  'exchangeAccount'
 ])
+export const collateralToken = createSelector(state, s => {
+  return s.collateralToken
+})
 export const userAccountAddress = createSelector(userAccount, userAcc => {
   return new PublicKey(userAcc.address)
 })
 export const xUSDAddress = createSelector(assets, allAssets => {
   const xusd = Object.entries(allAssets).find(([_, b]) => {
-    return b.ticker === 'xUSD'
+    return b.symbol === 'xUSD'
   })
   if (xusd) {
-    return xusd[1].address
+    return xusd[1].assetAddress
   } else {
     return DEFAULT_PUBLICKEY
   }
@@ -151,7 +156,7 @@ export const tokenTicker = (tokenAddress: PublicKey) =>
       }
       return 'token'
     } else {
-      return token.ticker
+      return token.symbol
     }
   })
 export const exchangeSelectors = {

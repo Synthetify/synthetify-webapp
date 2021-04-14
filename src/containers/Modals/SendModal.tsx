@@ -26,8 +26,8 @@ export const SendModal = () => {
       }
       open={modalState.open}
       title='Send'
-      ticker={ticker}
-      helpText={`Send a set amount of ${ticker} to the recipient.`}
+      ticker={ticker || 'xBTC'}
+      helpText={`Send a set amount of ${ticker || 'xBTC'} to the recipient.`}
       loading={modalState.sending}
       txid={modalState.txid}
       handleClose={() => {

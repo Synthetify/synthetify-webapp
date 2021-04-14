@@ -26,8 +26,8 @@ export const WithdrawModal = () => {
       }
       open={modalState.open}
       title='Burn'
-      ticker={ticker}
-      helpText={`Enter a custom or max amount of ${ticker} token you want to burn.`}
+      ticker={ticker || 'xBTC'}
+      helpText={`Enter a custom or max amount of ${ticker || 'xBTC'} token you want to burn.`}
       loading={modalState.sending}
       txid={modalState.txid}
       handleClose={() => {

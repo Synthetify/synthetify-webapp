@@ -53,9 +53,9 @@ export const exchangeTokensWithUserBalance = createSelector(
   assets,
   (tokensAccounts, exchangeAssets) => {
     return Object.values(exchangeAssets)
-      .filter(a => a.ticker !== 'SNY')
+      .filter(a => a.symbol !== 'SNY')
       .map(asset => {
-        const userAccount = tokensAccounts[asset.address.toString()]
+        const userAccount = tokensAccounts[asset.assetAddress.toString()]
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return {
           ...asset,
@@ -73,7 +73,7 @@ export const accountsArray = createSelector(
     return Object.values(tokensAccounts).reduce((acc, accounts) => {
       if (exchangeAssets[accounts[0].programId.toString()]) {
         const a = accounts.map((v: ITokenAccount) => {
-          return { ...v, ticker: exchangeAssets[accounts[0].programId.toString()].ticker }
+          return { ...v, ticker: exchangeAssets[accounts[0].programId.toString()].symbol }
         }) as TokenAccounts[]
         return acc.concat(a)
       }

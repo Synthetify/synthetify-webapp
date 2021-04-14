@@ -83,11 +83,11 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
   // }, [tokens.length])
   useEffect(() => {
     if (fromToken) {
-      const fromIndex = tokens.findIndex(t => t.address.equals(fromToken?.address))
+      const fromIndex = tokens.findIndex(t => t.assetAddress.equals(fromToken?.assetAddress))
       setFromToken(tokens[fromIndex])
     }
     if (toToken) {
-      const toIndex = tokens.findIndex(t => t.address.equals(toToken?.address))
+      const toIndex = tokens.findIndex(t => t.assetAddress.equals(toToken?.assetAddress))
       setToToken(tokens[toIndex])
     }
   }, [tokens])
@@ -107,7 +107,11 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
   })
   const submit = (data: FormFields) => {
     if (fromToken && toToken) {
-      onSwap(fromToken.address, toToken.address, printBNtoBN(data.amount, fromToken.decimals))
+      onSwap(
+        fromToken.assetAddress,
+        toToken.assetAddress,
+        printBNtoBN(data.amount, fromToken.decimals)
+      )
       setValue('amount', '', {
         shouldValidate: true
       })
@@ -168,7 +172,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                   <Grid item>
                     <Typography variant='body1' className={classes.labels}>
                       {fromToken &&
-                        `${printBN(fromToken.balance, fromToken.decimals)} ${fromToken.ticker}`}
+                        `${printBN(fromToken.balance, fromToken.decimals)} ${fromToken.symbol}`}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -215,9 +219,11 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                       </Grid>
                       <Grid item>
                         <Select
-                          value={fromToken?.address.toString()}
+                          value={fromToken?.assetAddress.toString()}
                           onChange={e => {
-                            const token = tokens.find(t => t.address.toString() === e.target.value)
+                            const token = tokens.find(
+                              t => t.assetAddress.toString() === e.target.value
+                            )
                             setFromToken(token || null)
                             const value = getValues().amount
                             if (value && fromToken && token) {
@@ -234,7 +240,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             id: 'age-native-simple'
                           }}>
                           {tokens.map(token => {
-                            const ticker = token.ticker.toString().toLowerCase()
+                            const ticker = token?.symbol?.toString().toLowerCase() || 'xBTC'
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
                             try {
@@ -244,7 +250,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             }
                             return (
                               <MenuItem
-                                value={token.address.toString()}
+                                value={token.assetAddress.toString()}
                                 className={classes.menuOption}>
                                 <Grid container alignItems='center'>
                                   <Grid item>
@@ -253,7 +259,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                                       image={icon}
                                     />
                                   </Grid>
-                                  <Grid item> {token.ticker}</Grid>
+                                  <Grid item> {token.symbol}</Grid>
                                 </Grid>
                               </MenuItem>
                             )
@@ -298,7 +304,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                   </Grid>
                   <Grid item>
                     <Typography variant='body1' className={classes.labels}>
-                      {toToken && `${printBN(toToken.balance, toToken.decimals)} ${toToken.ticker}`}
+                      {toToken && `${printBN(toToken.balance, toToken.decimals)} ${toToken.symbol}`}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -319,10 +325,12 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                     <Grid container>
                       <Grid item>
                         <Select
-                          value={toToken ? toToken?.address.toString() : 'PLACEHOLDER'}
+                          value={toToken ? toToken?.assetAddress.toString() : 'PLACEHOLDER'}
                           // onChange={handleChange}
                           onChange={e => {
-                            const token = tokens.find(t => t.address.toString() === e.target.value)
+                            const token = tokens.find(
+                              t => t.assetAddress.toString() === e.target.value
+                            )
                             setToToken(token || null)
                             const value = getValues().amount
                             if (value && fromToken && token) {
@@ -342,7 +350,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             {'Select token'}
                           </MenuItem>
                           {tokens.map(token => {
-                            const ticker = token.ticker.toString().toLowerCase()
+                            const ticker = token?.symbol?.toString().toLowerCase() || 'xBTC'
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
                             try {
@@ -352,7 +360,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             }
                             return (
                               <MenuItem
-                                value={token.address.toString()}
+                                value={token.assetAddress.toString()}
                                 className={classes.menuOption}>
                                 <Grid container alignItems='center'>
                                   <Grid item>
@@ -361,7 +369,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                                       image={icon}
                                     />
                                   </Grid>
-                                  <Grid item> {token.ticker}</Grid>
+                                  <Grid item> {token.symbol}</Grid>
                                 </Grid>
                               </MenuItem>
                             )
@@ -403,7 +411,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                         ? `${getExchangeRate(
                             toToken,
                             fromToken
-                          )} ${fromToken?.ticker.toString()} per ${toToken?.ticker.toString()}`
+                          )} ${fromToken?.symbol?.toString()} per ${toToken?.symbol?.toString()}`
                         : '---'}
                     </Typography>
                   </Grid>

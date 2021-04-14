@@ -23,43 +23,23 @@ import {
   sendAndConfirmTransaction
 } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
-import { createAccount, getToken, getWallet, sleep } from './wallet'
+import { createAccount, getToken, getWallet, sleep, signAndSend } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
 import { createTransferInstruction } from './token'
 import { TokenInstructions } from '@project-serum/serum'
-import { Token } from '@solana/spl-token'
+import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
+import { getExchangeProgram } from '@web3/programs/exchange'
+import { getConnection } from './connection'
 
 export function* pullExchangeState(): Generator {
-  const systemProgram = yield* call(getSystemProgram)
-  // @ts-expect-error
-  const state = yield* call(systemProgram.state) as any
-  yield* put(
-    actions.setState({
-      debt: state.debt,
-      shares: state.shares,
-      collateralAccount: state.collateralAccount,
-      assets: state.assets.reduce((acc: any, a: any) => {
-        return Object.assign(acc, {
-          [a.assetAddress.toString()]: {
-            address: a.assetAddress,
-            feedAddress: a.feedAddress,
-            decimals: a.decimals,
-            price: a.price,
-            supply: a.supply,
-            ticker: a.ticker.toString()
-          }
-        })
-      }, {}),
-      collateralToken: state.collateralToken,
-      mintAuthority: state.mintAuthority,
-      fee: state.fee,
-      collateralizationLevel: state.collateralizationLevel
-    })
-  )
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const state = yield* call([exchangeProgram, exchangeProgram.getState])
+  yield* put(actions.setState(state))
   yield* call(pullAssetPrices)
 }
 export function* getCollateralTokenAirdrop(): Generator {
+  const wallet = yield* call(getWallet)
   const collateralTokenAddress = yield* select(collateralToken)
   const tokensAccounts = yield* select(accounts)
   const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
@@ -69,14 +49,24 @@ export function* getCollateralTokenAirdrop(): Generator {
   if (accountAddress == null) {
     accountAddress = yield* call(createAccount, collateralTokenProgram.publicKey)
   }
-  yield* call(
-    [collateralTokenProgram, collateralTokenProgram.mintTo],
+  const ix = Token.createMintToInstruction(
+    TOKEN_PROGRAM_ID,
+    collateralTokenAddress,
     accountAddress,
-    testAdmin,
+    testAdmin.publicKey,
     [],
-    1e10
+    1e8
   )
-  // console.log('Token Airdroped')
+  const tx = new Transaction().add(ix)
+  const connection = yield* call(getConnection)
+  const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  tx.feePayer = wallet.publicKey
+  tx.recentBlockhash = blockhash.blockhash
+  tx.sign(testAdmin)
+  const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+  yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+
+  console.log('Token Airdroped')
 }
 const createAccountInstruction = async (userAccount: Account, systemProgram: Program) => {
   return await systemProgram.account.userAccount.createInstruction(userAccount)
@@ -113,6 +103,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     amount
   )
   userExchangeAccount = yield* select(userAccountAddress)
+  // @ts-expect-error
   const txid = yield* call(systemProgram.state.rpc.deposit, {
     accounts: {
       userAccount: userExchangeAccount,
@@ -120,13 +111,12 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     },
     signers: [wallet],
     instructions: [transferTx]
-  })
+  }) as string
   return txid
 }
 export function* updateFeedsTransactions(): SagaGenerator<TransactionInstruction[]> {
   const transactions: TransactionInstruction[] = []
   const systemProgram = yield* call(getSystemProgram)
-  // @ts-expect-error
   const state = yield* call(systemProgram.state) as any
   for (let index = 1; index < state.assets.length; index++) {
     transactions.push(
@@ -174,6 +164,7 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
   const updateFeedsTxs = yield* call(updateFeedsTransactions)
   const wallet = yield* call(getWallet)
   // console.log(accountAddress.toString())
+  // @ts-expect-error
   return yield* call([systemProgram, systemProgram.state.rpc.mint], amount, {
     accounts: {
       authority: authority,
@@ -201,6 +192,7 @@ export function* withdrawCollateral(amount: BN): SagaGenerator<string> {
 
   const updateFeedsTxs = yield* call(updateFeedsTransactions)
   const wallet = yield* call(getWallet)
+  // @ts-expect-error
   return yield* call([systemProgram, systemProgram.state.rpc.withdraw], amount, {
     accounts: {
       authority: authority,
@@ -237,7 +229,7 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     tou64(amount)
   )
   updateFeedsTxs.push(approveTx)
-
+  // @ts-expect-error
   return yield* call([systemProgram, systemProgram.state.rpc.burn], amount, {
     accounts: {
       authority: authority,
@@ -288,6 +280,7 @@ export function* handleSwap(): Generator {
     )
     updateFeedsTxs.push(approveTx)
     // const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
+    // @ts-expect-error
     const txid = yield* call([systemProgram, systemProgram.state.rpc.swap], swapData.amount, {
       accounts: {
         userAccount: userExchangeAccount,
@@ -302,7 +295,7 @@ export function* handleSwap(): Generator {
       },
       signers: [wallet],
       instructions: updateFeedsTxs
-    })
+    }) as string
     yield* put(actions.swapDone({ txid: txid }))
 
     yield put(
