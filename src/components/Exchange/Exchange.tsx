@@ -66,8 +66,10 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
     amount: yup.string().test('test-balance', 'Invalid Amount', amount => {
       try {
         if (
-          printBNtoBN(amount, fromToken?.decimals || 8).gt(fromToken?.balance || new BN(0)) ||
-          printBNtoBN(amount, fromToken?.decimals || 8).lte(new BN(0))
+          printBNtoBN(amount || '0', fromToken?.decimals || 8).gt(
+            fromToken?.balance || new BN(0)
+          ) ||
+          printBNtoBN(amount || '0', fromToken?.decimals || 8).lte(new BN(0))
         ) {
           return false
         } else {

@@ -9,7 +9,6 @@ const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
 export const {
   assets,
-  collateralAccount,
   collateralizationLevel,
   debt,
   fee,
@@ -21,7 +20,6 @@ export const {
   exchangeAccount
 } = keySelectors(store, [
   'assets',
-  'collateralAccount',
   'collateralizationLevel',
   'debt',
   'fee',
@@ -32,6 +30,9 @@ export const {
   'state',
   'exchangeAccount'
 ])
+export const collateralAccount = createSelector(state, s => {
+  return s.collateralAccount
+})
 export const collateralToken = createSelector(state, s => {
   return s.collateralToken
 })

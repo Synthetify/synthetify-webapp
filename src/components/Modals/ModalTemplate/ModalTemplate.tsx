@@ -95,8 +95,8 @@ export const SendMoneyModal: React.FC<ISendMoneyModal> = ({
     amount: yup.string().test('test-balance', 'Invalid Amount', amount => {
       try {
         if (
-          printBNtoBN(amount, decimals).gt(balance) ||
-          printBNtoBN(amount, decimals).lte(new BN(0))
+          printBNtoBN(amount || '0', decimals).gt(balance) ||
+          printBNtoBN(amount || '0', decimals).lte(new BN(0))
         ) {
           return false
         } else {

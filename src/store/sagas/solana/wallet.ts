@@ -10,13 +10,12 @@ import {
   Transaction,
   sendAndConfirmTransaction
 } from '@solana/web3.js'
-import { Token, ASSOCIATED_TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import { Token, ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 import { actions as exchangeActions } from '@reducers/exchange'
 // import { createToken } from './token'
-import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
 import { BN } from '@project-serum/anchor'
 import { getCollateralTokenAirdrop } from './exchange'
 import { tou64 } from '@consts/utils'

@@ -8,7 +8,8 @@ import {
   userAccountAddress,
   xUSDAddress,
   mintAuthority,
-  swap
+  swap,
+  exchangeAccount
 } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
@@ -20,13 +21,13 @@ import {
   TransactionInstruction,
   PublicKey,
   Transaction,
-  sendAndConfirmTransaction
+  sendAndConfirmTransaction,
+  SYSVAR_RENT_PUBKEY,
+  SystemProgram
 } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep, signAndSend } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
-import { createTransferInstruction } from './token'
-import { TokenInstructions } from '@project-serum/serum'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
@@ -68,51 +69,71 @@ export function* getCollateralTokenAirdrop(): Generator {
 
   console.log('Token Airdroped')
 }
-const createAccountInstruction = async (userAccount: Account, systemProgram: Program) => {
-  return await systemProgram.account.userAccount.createInstruction(userAccount)
-}
 export function* depositCollateral(amount: BN): SagaGenerator<string> {
   const collateralTokenAddress = yield* select(collateralToken)
-  const collateralAccountAddress = yield* select(collateralAccount)
   const tokensAccounts = yield* select(accounts)
+  console.log(collateralTokenAddress.toString())
   const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()][0]
-  let userExchangeAccount = yield* select(userAccountAddress)
+  const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
-  const systemProgram = yield* call(getSystemProgram)
-  if (userExchangeAccount.equals(DEFAULT_PUBLICKEY)) {
-    console.log('create account')
-    const userAccount = new Account()
-
-    const createInstruction = yield* call(createAccountInstruction, userAccount, systemProgram)
-    yield* call(systemProgram.rpc.createUserAccount, wallet.publicKey, {
-      accounts: {
-        userAccount: userAccount.publicKey,
-        rent: anchor.web3.SYSVAR_RENT_PUBKEY
-      },
-      signers: [userAccount],
-      instructions: [createInstruction]
+  const exchangeProgram = yield* call(getExchangeProgram)
+  if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
+    const { account, ix } = yield* call(
+      [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
+      wallet.publicKey
+    )
+    const depositIx = yield* call([exchangeProgram, exchangeProgram.depositInstruction], {
+      amount,
+      exchangeAccount: account,
+      userCollateralAccount: userCollateralTokenAccount.address
     })
-    yield* put(actions.setUserAccountAddress(userAccount.publicKey))
+    const approveIx = Token.createApproveInstruction(
+      TOKEN_PROGRAM_ID,
+      userCollateralTokenAccount.address,
+      exchangeProgram.exchangeAuthority,
+      wallet.publicKey,
+      [],
+      tou64(amount)
+    )
+    const tx = new Transaction().add(ix).add(approveIx).add(depositIx)
+    const connection = yield* call(getConnection)
+    const blockhash = yield* call([connection, connection.getRecentBlockhash])
+    tx.feePayer = wallet.publicKey
+    tx.recentBlockhash = blockhash.blockhash
+    const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+    const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+    yield* put(
+      actions.setExchangeAccount({
+        address: account,
+        collateralShares: new BN(0),
+        debtShares: new BN(0)
+      })
+    )
     yield* call(sleep, 1500) // Give time to subscribe to account
+    return signature
+  } else {
+    const depositIx = yield* call([exchangeProgram, exchangeProgram.depositInstruction], {
+      amount,
+      exchangeAccount: userExchangeAccount.address,
+      userCollateralAccount: userCollateralTokenAccount.address
+    })
+    const approveIx = Token.createApproveInstruction(
+      TOKEN_PROGRAM_ID,
+      userCollateralTokenAccount.address,
+      exchangeProgram.exchangeAuthority,
+      wallet.publicKey,
+      [],
+      tou64(amount)
+    )
+    const tx = new Transaction().add(approveIx).add(depositIx)
+    const connection = yield* call(getConnection)
+    const blockhash = yield* call([connection, connection.getRecentBlockhash])
+    tx.feePayer = wallet.publicKey
+    tx.recentBlockhash = blockhash.blockhash
+    const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+    const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+    return signature
   }
-  const transferTx = yield* call(
-    createTransferInstruction,
-    collateralTokenAddress,
-    userCollateralTokenAccount.address,
-    collateralAccountAddress,
-    amount
-  )
-  userExchangeAccount = yield* select(userAccountAddress)
-  // @ts-expect-error
-  const txid = yield* call(systemProgram.state.rpc.deposit, {
-    accounts: {
-      userAccount: userExchangeAccount,
-      collateralAccount: collateralAccountAddress
-    },
-    signers: [wallet],
-    instructions: [transferTx]
-  }) as string
-  return txid
 }
 export function* updateFeedsTransactions(): SagaGenerator<TransactionInstruction[]> {
   const transactions: TransactionInstruction[] = []
@@ -170,7 +191,7 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
       authority: authority,
       mint: usdTokenAddress,
       to: accountAddress,
-      tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+      tokenProgram: TOKEN_PROGRAM_ID,
       clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
       userAccount: userExchangeAccount,
       owner: wallet.publicKey
@@ -198,7 +219,7 @@ export function* withdrawCollateral(amount: BN): SagaGenerator<string> {
       authority: authority,
       to: accountAddress,
       collateralAccount: collateralAccountAddress,
-      tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+      tokenProgram: TOKEN_PROGRAM_ID,
       clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
       userAccount: userExchangeAccount,
       owner: wallet.publicKey
@@ -221,7 +242,7 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
   const updateFeedsTxs = yield* call(updateFeedsTransactions)
   const approveTx = yield* call(
     [Token, Token.createApproveInstruction],
-    TokenInstructions.TOKEN_PROGRAM_ID,
+    TOKEN_PROGRAM_ID,
     userTokenAccount.address,
     authority,
     wallet.publicKey,
@@ -236,7 +257,7 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
       mint: userTokenAccount.programId,
       userTokenAccount: userTokenAccount.address,
       userAccount: userExchangeAccount,
-      tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+      tokenProgram: TOKEN_PROGRAM_ID,
       clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
       owner: wallet.publicKey
     },
@@ -271,7 +292,7 @@ export function* handleSwap(): Generator {
     const updateFeedsTxs = yield* call(updateFeedsTransactions)
     const approveTx = yield* call(
       [Token, Token.createApproveInstruction],
-      TokenInstructions.TOKEN_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
       fromAddress,
       authority,
       wallet.publicKey,
@@ -289,7 +310,7 @@ export function* handleSwap(): Generator {
         tokenFor: swapData.toToken,
         userTokenAccountIn: fromAddress,
         userTokenAccountFor: toAddress,
-        tokenProgram: TokenInstructions.TOKEN_PROGRAM_ID,
+        tokenProgram: TOKEN_PROGRAM_ID,
         clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
         owner: wallet.publicKey
       },

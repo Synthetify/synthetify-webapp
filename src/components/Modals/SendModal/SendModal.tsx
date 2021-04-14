@@ -57,7 +57,7 @@ export const SendModal: React.FC<ISendModal> = ({
       .string()
       .test('is-publicKey', 'Invalid Address', data => {
         try {
-          new PublicKey(data)
+          new PublicKey(data || '0')
           return true
         } catch (error) {
           return false
@@ -67,8 +67,8 @@ export const SendModal: React.FC<ISendModal> = ({
     amount: yup.string().test('test-balance', 'Invalid Amount', amount => {
       try {
         if (
-          printBNtoBN(amount, decimals).gt(balance) ||
-          printBNtoBN(amount, decimals).lte(new BN(0))
+          printBNtoBN(amount || '0', decimals).gt(balance) ||
+          printBNtoBN(amount || '0', decimals).lte(new BN(0))
         ) {
           return false
         } else {

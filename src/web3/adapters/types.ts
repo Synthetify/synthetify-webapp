@@ -1,4 +1,4 @@
-import { Transaction, PublicKey } from '@solana/web3.js'
+import { PublicKey, Transaction } from '@solana/web3.js'
 
 export interface WalletAdapter {
   publicKey: PublicKey

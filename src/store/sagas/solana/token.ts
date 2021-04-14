@@ -2,9 +2,8 @@ import { call, SagaGenerator, select } from 'typed-redux-saga'
 
 import { getConnection } from './connection'
 import { PublicKey, TransactionInstruction, Account } from '@solana/web3.js'
-import { MintInfo, Token } from '@solana/spl-token'
+import { MintInfo, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { getWallet } from './wallet'
-import { TOKEN_PROGRAM_ID } from '@project-serum/serum/lib/token-instructions'
 import { BN, Program } from '@project-serum/anchor'
 import { tou64 } from '@consts/utils'
 

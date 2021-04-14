@@ -6,6 +6,9 @@ import { PublicKey } from '@solana/web3.js'
 import { getManagerProgram } from './manager'
 let _exchange: Exchange
 const exchangeProgramId: PublicKey = new PublicKey('9jASgXRRxyn4U8fPgenQswNSR3dbafocepWJghcYhu3K')
+export const getCurrentExchangeProgram = (): Exchange => {
+  return _exchange
+}
 export const getExchangeProgram = async (): Promise<Exchange> => {
   if (_exchange) {
     return _exchange
