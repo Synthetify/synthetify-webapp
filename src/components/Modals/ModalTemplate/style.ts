@@ -7,12 +7,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& .MuiDialogTitle-root': {
       padding: '0'
     },
+    '& .MuiDialog-scrollPaper': {
+      overflow: 'auto'
+    },
     '& .MuiDialog-paper': {
       padding: '0px',
       height: 800,
       maxWidth: 700,
       width: 700,
-      background: colors.black.light
+      background: colors.black.light,
+      maxHeight: 'none'
     }
   },
   iconDiv: {
