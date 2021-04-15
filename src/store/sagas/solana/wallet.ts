@@ -104,21 +104,18 @@ export function* handleAirdrop(): Generator {
 //   const balance = yield* call(, pubKey)
 //   return balance
 // }
-export function* sendToken(
-  from: PublicKey,
-  target: PublicKey,
-  amount: BN,
-  tokenAddress: PublicKey
-): SagaGenerator<string> {
-  const token = yield* call(getToken, tokenAddress)
-  const signature = yield* call(
-    [token, token.transfer],
+export function* sendToken(from: PublicKey, target: PublicKey, amount: BN): SagaGenerator<string> {
+  const wallet = yield* call(getWallet)
+  const ix = Token.createTransferInstruction(
+    TOKEN_PROGRAM_ID,
     from,
     target,
-    new Account(),
+    wallet.publicKey,
     [],
     tou64(amount)
   )
+  const signature = yield* call(signAndSend, wallet, new Transaction().add(ix))
+
   return signature
 }
 export function* signAndSend(wallet: WalletAdapter, tx: Transaction): SagaGenerator<string> {
@@ -194,7 +191,6 @@ export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string> {
-  const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   const transaction = new Transaction().add(
     SystemProgram.transfer({
@@ -203,7 +199,8 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
       lamports: amount.toNumber()
     })
   )
-  const txid = yield* call(sendAndConfirmTransaction, connection, transaction, [new Account()])
+
+  const txid = yield* call(signAndSend, wallet, transaction)
   return txid
 }
 

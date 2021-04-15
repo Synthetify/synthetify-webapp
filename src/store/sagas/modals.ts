@@ -63,13 +63,7 @@ export function* handleSendToken(): Generator {
       if (!tokenAccount) {
         return
       }
-      const txid = yield* call(
-        sendToken,
-        tokenAccount.address,
-        sendData.recipient,
-        sendData.amount,
-        sendData.tokenAddress
-      )
+      const txid = yield* call(sendToken, tokenAccount.address, sendData.recipient, sendData.amount)
       yield* put(
         actions.sendDone({
           txid: txid
