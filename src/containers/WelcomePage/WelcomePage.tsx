@@ -9,7 +9,7 @@ import Header from '@containers/HeaderWrapper/HeaderWrapper'
 import Account from '@containers/Account/Account'
 import Staking from '@containers/Staking/Staking'
 import Exchange from '@containers/Exchange/Exchange'
-import SideMenu from '@components/SideMenu/SideMenu'
+import SideMenu from '@containers/SideMenu/SideMenu'
 
 import useStyles from './style'
 import { Status } from '@reducers/solanaWallet'

@@ -1,6 +1,6 @@
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     background: {
       minHeight: '100%',
@@ -15,10 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       // marginLeft: 400,
       position: 'absolute',
       width: '100%',
-      paddingLeft: 100,
-      [theme.breakpoints.up('md')]: {
-        paddingLeft: 400
-      },
+      paddingLeft: 400,
       // top: 100,
       overflowX: 'hidden'
     },
@@ -31,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     side: {
       zIndex: 100,
-      // width: 400,
+      width: 400,
       overflow: 'hidden',
       position: 'fixed',
       height: '100%'
