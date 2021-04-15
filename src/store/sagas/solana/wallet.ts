@@ -1,13 +1,4 @@
-import {
-  call,
-  takeLeading,
-  SagaGenerator,
-  put,
-  takeEvery,
-  spawn,
-  all,
-  select
-} from 'typed-redux-saga'
+import { call, takeLeading, SagaGenerator, put, spawn, all, select } from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
@@ -20,7 +11,6 @@ import {
   sendAndConfirmTransaction
 } from '@solana/web3.js'
 import { Token, ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { PayloadAction } from '@reduxjs/toolkit'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 import { actions as exchangeActions } from '@reducers/exchange'
@@ -30,8 +20,6 @@ import { getCollateralTokenAirdrop } from './exchange'
 import { tou64 } from '@consts/utils'
 import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
-import { getManagerProgram } from '@web3/programs/manager'
-import { state } from '@selectors/exchange'
 import { getTokenDetails } from './token'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -42,66 +30,7 @@ export function* getBalance(pubKey: PublicKey): SagaGenerator<BN> {
   const balance = yield* call([connection, connection.getBalance], pubKey)
   return new BN(balance)
 }
-export function* handleTransaction(
-  action: PayloadAction<PayloadTypes['addTransaction']>
-): Generator {
-  const connection = yield* call(getConnection)
-  const wallet = yield* call(getWallet)
-  // Send token
-  try {
-    if (action.payload.token && action.payload.accountAddress) {
-      // const signature = yield* call(
-      //   sendToken,
-      //   action.payload.accountAddress,
-      //   action.payload.recipient,
-      //   action.payload.amount * 1e9,
-      //   action.payload.token
-      // )
-      // yield put(
-      //   actions.setTransactionTxid({
-      //     txid: signature,
-      //     id: action.payload.id
-      //   })
-      // )
-    } else {
-      // Send SOL
-      // const signature = yield* call(
-      //   [connection, connection.sendTransaction],
-      //   new Transaction().add(
-      //     SystemProgram.transfer({
-      //       fromPubkey: wallet.publicKey,
-      //       toPubkey: new PublicKey(action.payload.recipient),
-      //       lamports: action.payload.amount * 1e9
-      //     })
-      //   ),
-      //   [wallet],
-      //   {
-      //     preflightCommitment: 'singleGossip'
-      //   }
-      // )
-      // yield put(
-      //   actions.setTransactionTxid({
-      //     txid: signature,
-      //     id: action.payload.id
-      //   })
-      // )
-    }
-  } catch (error) {
-    yield put(
-      snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
-        variant: 'error',
-        persist: false
-      })
-    )
-    yield put(
-      actions.setTransactionError({
-        error: error,
-        id: action.payload.id
-      })
-    )
-  }
-}
+
 interface IparsedTokenInfo {
   mint: string
   owner: string
@@ -142,25 +71,25 @@ export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
 }
 
 export function* handleAirdrop(): Generator {
-  const connection = yield* call(getConnection)
-  const wallet = yield* call(getWallet)
-  yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
-  const balance = yield* call([connection, connection.getBalance], wallet.publicKey)
-  if (balance < 1e8) {
-    yield* call(sleep, 2000)
-  }
+  // const connection = yield* call(getConnection)
+  // const wallet = yield* call(getWallet)
+  // yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
+  // const balance = yield* call([connection, connection.getBalance], wallet.publicKey)
+  // if (balance < 1e8) {
+  //   yield* call(sleep, 2000)
+  // }
 
-  let retries = 30
-  for (;;) {
-    // eslint-disable-next-line eqeqeq
-    if (1 * 1e9 <= (yield* call([connection, connection.getBalance], wallet.publicKey))) {
-      break
-    }
-    yield* call(sleep, 2000)
-    if (--retries <= 0) {
-      break
-    }
-  }
+  // let retries = 30
+  // for (;;) {
+  //   // eslint-disable-next-line eqeqeq
+  //   if (1 * 1e9 <= (yield* call([connection, connection.getBalance], wallet.publicKey))) {
+  //     break
+  //   }
+  //   yield* call(sleep, 2000)
+  //   if (--retries <= 0) {
+  //     break
+  //   }
+  // }
   yield* call(getCollateralTokenAirdrop)
   yield put(
     snackbarsActions.add({
@@ -283,22 +212,6 @@ export function* handleConnect(): Generator {
   yield* call(connectWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
-  // const managerProgram = yield* call(getManagerProgram)
-  // const stateExchange = yield* select(state)
-  // const ix = yield* call(
-  //   [managerProgram, managerProgram.updatePricesInstruction],
-  //   stateExchange.assetsList
-  // )
-  // console.log(ix)
-  // const wallet = yield* call(getWallet)
-  // const tx = new Transaction().add(ix)
-  // const connection = yield* call(getConnection)
-  // const blockhash = yield* call([connection, connection.getRecentBlockhash])
-  // tx.feePayer = wallet.publicKey
-  // tx.recentBlockhash = blockhash.blockhash
-  // const signedTx = yield* call([wallet, wallet.signTransaction], tx)
-  // const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
-  // console.log(signature)
 }
 export function* connectHandler(): Generator {
   yield takeLeading(actions.connect, handleConnect)
@@ -307,12 +220,9 @@ export function* airdropSaga(): Generator {
   yield takeLeading(actions.airdrop, handleAirdrop)
 }
 
-export function* transactionsSaga(): Generator {
-  yield takeEvery(actions.addTransaction, handleTransaction)
-}
 export function* initSaga(): Generator {
   yield takeLeading(actions.initWallet, init)
 }
 export function* walletSaga(): Generator {
-  yield all([transactionsSaga, initSaga, airdropSaga, connectHandler].map(spawn))
+  yield all([initSaga, airdropSaga, connectHandler].map(spawn))
 }

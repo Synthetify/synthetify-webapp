@@ -8,10 +8,8 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { init, handleAirdrop } from './wallet'
-import { depositCollateral, pullExchangeState, mintUsd, pullUserAccountData } from './exchange'
-import BN from 'bn.js'
-import { getExchangeProgram } from '@web3/programs/exchange'
+import { init } from './wallet'
+import { pullExchangeState } from './exchange'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const currentNetwork = yield* select(network)
@@ -63,8 +61,9 @@ export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetw
       message: `Loading ${networkToName(action.payload)} wallet.`
     })
   )
-  yield* put(solanaWalletActions.resetState())
-  yield* call(init)
+  // yield* put(solanaWalletActions.resetState())
+  // yield* call(init)
+  window.location.reload()
   yield* put(
     uiActions.setLoader({
       open: false,

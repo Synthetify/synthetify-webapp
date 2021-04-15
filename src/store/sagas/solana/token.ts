@@ -61,7 +61,3 @@ export function* createTransferInstruction(
     tou64(amount)
   )
 }
-
-// export function* createToken(): Generator {
-//   yield takeEvery(actions.addTransaction, init)
-// }

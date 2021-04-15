@@ -14,7 +14,6 @@ import {
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import * as anchor from '@project-serum/anchor'
-import { getSystemProgram } from '@web3/connection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import {
   Account,
@@ -139,39 +138,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     return signature
   }
 }
-export function* updateFeedsTransactions(): SagaGenerator<TransactionInstruction[]> {
-  const transactions: TransactionInstruction[] = []
-  const systemProgram = yield* call(getSystemProgram)
-  const state = yield* call(systemProgram.state) as any
-  for (let index = 1; index < state.assets.length; index++) {
-    transactions.push(
-      yield* call(
-        // @ts-expect-error
-        [systemProgram, systemProgram.state.instruction.updatePrice],
-        state.assets[index].feedAddress,
-        {
-          accounts: {
-            priceFeedAccount: state.assets[index].feedAddress,
-            clock: anchor.web3.SYSVAR_CLOCK_PUBKEY
-          }
-        }
-      ) as any
-    )
-  }
-  return transactions
-}
-export function* pullUserAccountData(): Generator {
-  const systemProgram = yield* call(getSystemProgram)
-  const userExchangeAccount = yield* select(userAccountAddress)
-  if (userExchangeAccount.equals(DEFAULT_PUBLICKEY)) {
-    return
-  }
-  const account = yield* call(
-    [systemProgram, systemProgram.account.userAccount],
-    userExchangeAccount
-  ) as any
-  yield* put(actions.setUserAccountData({ collateral: account.collateral, shares: account.shares }))
-}
+
 export function* mintUsd(amount: BN): SagaGenerator<string> {
   const usdTokenAddress = yield* select(xUSDAddress)
   const tokensAccounts = yield* select(accounts)

@@ -33,7 +33,7 @@ const transformExchange = createTransform(
 const connectionPersistConfig = {
   key: solanaConnectionSliceName,
   storage: storage,
-  whitelist: ['userAccount']
+  whitelist: ['network']
 }
 
 const combinedReducers = combineReducers({

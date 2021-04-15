@@ -83,7 +83,7 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network, onConnect }
               </Grid>
             </Button>
           </Grid> */}
-          {/* <Grid item className={classes.networkButtonDiv}>
+          <Grid item className={classes.networkButtonDiv}>
             <Button
               variant='outlined'
               onClick={() => {
@@ -104,7 +104,29 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network, onConnect }
                 </Grid>
               </Grid>
             </Button>
-          </Grid> */}
+          </Grid>
+          <Grid item className={classes.networkButtonDiv}>
+            <Button
+              variant='outlined'
+              onClick={() => {
+                onNetworkClick(SolanaNetworks.LOCAL)
+                setOpen(false)
+              }}
+              className={
+                network === SolanaNetworks.LOCAL
+                  ? classes.networkButton
+                  : classes.networkButtonDisabled
+              }>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Typography variant='body2'>Localnet:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h6'>{SolanaNetworks.LOCAL}</Typography>
+                </Grid>
+              </Grid>
+            </Button>
+          </Grid>
           <Grid item className={classes.networkButtonDiv}>
             <Button
               variant='outlined'
