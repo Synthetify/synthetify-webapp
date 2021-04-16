@@ -1,14 +1,18 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
-// import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
+import { Grid } from '@material-ui/core'
 import { UiLocation } from '@containers/WelcomePage/WelcomePage'
-import classNames from 'classnames'
-import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
 import { ReactComponent as TwitterIcon } from '@static/svg/twitter-ic-footer.svg'
 import { ReactComponent as GithubIcon } from '@static/svg/github-ic-footer.svg'
 import { ReactComponent as LinkedinIcFooter } from '@static/svg/linkedin-ic-footer.svg'
 import { ReactComponent as DiscordIcon } from '@static/svg/discord-ic-footer.svg'
 import { social } from '@static/links'
+import { ReactComponent as AccountWhiteIcon } from '@static/svg/accWhite.svg'
+import { ReactComponent as AccountColorIcon } from '@static/svg/accColor.svg'
+import { ReactComponent as StakeColorIcon } from '@static/svg/stakeColor.svg'
+import { ReactComponent as StakeWhiteIcon } from '@static/svg/stakeWhite.svg'
+import { ReactComponent as ExchangeWhiteIcon } from '@static/svg/exchangeWhite.svg'
+import { ReactComponent as ExchangeColorIcon } from '@static/svg/exchangeColor.svg'
+import SnyIcon from '@static/icons/sny.png'
 
 import useStyles from './style'
 export interface ISideMenu {
@@ -22,7 +26,7 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
     <Grid container direction='column' className={classes.root} justify='space-between'>
       <Grid item>
         <Grid item className={classes.logo}>
-          <SynthetifyIconHorizontal onClick={() => {}} />
+          <img src={SnyIcon} alt='Synthetify Logo' />
         </Grid>
         <Grid item style={{ marginTop: 90 }}>
           <Grid
@@ -31,13 +35,11 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
             onClick={() => {
               setLocation(UiLocation.Account)
             }}>
-            <Typography
-              variant='body1'
-              className={classNames(classes.menuText, {
-                [classes.selected]: location === UiLocation.Account
-              })}>
-              A
-            </Typography>
+            {location === UiLocation.Account ? (
+              <AccountColorIcon></AccountColorIcon>
+            ) : (
+              <AccountWhiteIcon></AccountWhiteIcon>
+            )}
           </Grid>
           <Grid
             item
@@ -45,13 +47,11 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
             onClick={() => {
               setLocation(UiLocation.Staking)
             }}>
-            <Typography
-              variant='body1'
-              className={classNames(classes.menuText, {
-                [classes.selected]: location === UiLocation.Staking
-              })}>
-              S
-            </Typography>
+            {location === UiLocation.Staking ? (
+              <StakeColorIcon></StakeColorIcon>
+            ) : (
+              <StakeWhiteIcon></StakeWhiteIcon>
+            )}
           </Grid>
           <Grid
             item
@@ -59,13 +59,11 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
             onClick={() => {
               setLocation(UiLocation.Exchange)
             }}>
-            <Typography
-              variant='body1'
-              className={classNames(classes.menuText, {
-                [classes.selected]: location === UiLocation.Exchange
-              })}>
-              E
-            </Typography>
+            {location === UiLocation.Exchange ? (
+              <ExchangeColorIcon></ExchangeColorIcon>
+            ) : (
+              <ExchangeWhiteIcon></ExchangeWhiteIcon>
+            )}
           </Grid>
         </Grid>
       </Grid>

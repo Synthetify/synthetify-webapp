@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   root: { width: 400, backgroundColor: colors.blue.subtle, height: '100%' },
   menuText: {
-    marginLeft: 60,
+    marginLeft: 20,
     color: colors.white.main
   },
   menuItem: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   icon: {
     background: 'transparent',
     cursor: 'pointer',
-    
+
     '&:hover path': {
       fill: colors.green.main
     }

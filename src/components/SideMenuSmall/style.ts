@@ -1,13 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
-  root: { width: 100, backgroundColor: colors.blue.subtle, height: '100%' },
+  root: { width: 70, backgroundColor: colors.blue.subtle, height: '100%' },
   menuText: {
     marginLeft: 20,
     color: colors.white.main
   },
   menuItem: {
     padding: 10,
+    paddingLeft: 15,
     '&:hover': {
       backgroundImage: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)'
     },
@@ -23,7 +24,8 @@ const useStyles = makeStyles(() => ({
     }
   },
   logo: {
-    paddingTop: 50
+    padding: 10,
+    paddingTop: 20
   },
   icon: {
     background: 'transparent',
