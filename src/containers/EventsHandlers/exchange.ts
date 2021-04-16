@@ -36,12 +36,7 @@ const ExhcangeEvents = () => {
       })
     }
     connectEvents()
-  }, [
-    dispatch,
-    userAccount.address.toString(),
-    exchangeProgram.programId.toString(),
-    networkStatus
-  ])
+  }, [dispatch, userAccount.address.toString(), exchangeProgram, networkStatus])
 
   React.useEffect(() => {
     if (!exchangeProgram || networkStatus !== Status.Initalized) {
@@ -53,7 +48,7 @@ const ExhcangeEvents = () => {
       })
     }
     connectEvents()
-  }, [dispatch, exchangeProgram.programId.toString(), networkStatus])
+  }, [dispatch, exchangeProgram, networkStatus])
 
   React.useEffect(() => {
     if (!exchangeProgram || networkStatus !== Status.Initalized) {

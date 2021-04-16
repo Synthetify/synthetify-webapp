@@ -1,14 +1,12 @@
 import { all, call, put, SagaGenerator, select, takeLeading, spawn } from 'typed-redux-saga'
 
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
-import { actions as solanaWalletActions } from '@reducers/solanaWallet'
 import { actions as uiActions } from '@reducers/ui'
 import { getSolanaConnection, networkToName } from '@web3/connection'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { init } from './wallet'
 import { pullExchangeState } from './exchange'
 
 export function* getConnection(): SagaGenerator<Connection> {
@@ -43,7 +41,13 @@ export function* initConnection(): Generator {
     // yield* call(handleAirdrop)
   } catch (error) {
     console.log(error)
-    yield put(actions.setStatus(Status.Error))
+    yield* put(
+      uiActions.setLoader({
+        open: false,
+        message: ''
+      })
+    )
+    yield* put(actions.setStatus(Status.Error))
     yield put(
       snackbarsActions.add({
         message: 'Failed to connect to Solana network',

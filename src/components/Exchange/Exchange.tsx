@@ -115,9 +115,15 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
       setFromToken(tokens[0])
     }
   }, [])
-  const { errors, reset, setValue, handleSubmit, register, getValues, trigger } = useForm<
-    FormFields
-  >({
+  const {
+    errors,
+    reset,
+    setValue,
+    handleSubmit,
+    register,
+    getValues,
+    trigger
+  } = useForm<FormFields>({
     resolver: yupResolver(schema),
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -421,7 +427,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                 <Grid container>
                   <Grid item>
                     <Typography className={classes.infoTitle} variant='body1'>
-                      Echange Rate:
+                      Exchange Rate:
                     </Typography>
                   </Grid>
                   <Grid item style={{ marginLeft: 15 }}>
