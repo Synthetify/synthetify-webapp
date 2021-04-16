@@ -22,6 +22,17 @@ const useStyles = makeStyles(() => ({
       borderColor: colors.red.pinkish
     }
   },
+  buttonAddress: {
+    width: 200,
+    color: colors.red.pinkish,
+    borderColor: colors.red.pinkish,
+    '&:hover': {
+      borderWidth: 2,
+      backgroundColor: `${colors.red.pinkish}`,
+      borderColor: colors.red.pinkish
+    },
+    textTransform: 'none'
+  },
   buttonAirdrop: {
     width: 'auto',
     color: colors.green.main,
@@ -85,6 +96,23 @@ const useStyles = makeStyles(() => ({
       color: colors.black.background,
       backgroundColor: `${colors.gray.skeletonBackground}`,
       borderColor: colors.gray.skeletonBackground
+    },
+    textAlign: 'left',
+    textTransform: 'none',
+    transition: '500ms',
+    borderRadius: 10
+  },
+  walletButton: {
+    width: 200,
+    height: 55,
+    color: colors.gray.skeletonBackground,
+    borderColor: colors.gray.skeletonBackground,
+    borderWidth: 2,
+    '&:hover': {
+      borderWidth: 2,
+      color: colors.black.background,
+      backgroundColor: `${colors.green.pastel}`,
+      borderColor: colors.green.pastel
     },
     textAlign: 'left',
     textTransform: 'none',

@@ -1,5 +1,7 @@
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
+import { WalletType } from '@web3/wallet'
 import BN from 'bn.js'
 import { PayloadType } from './types'
 export enum Status {
@@ -39,7 +41,7 @@ export interface ISolanaWallet {
 
 export const defaultState: ISolanaWallet = {
   status: Status.Uninitialized,
-  address: '',
+  address: DEFAULT_PUBLICKEY.toString(),
   balance: new BN(0),
   transactions: {},
   accounts: {}
@@ -104,7 +106,7 @@ const solanaWalletSlice = createSlice({
     // Triggers rescan for tokens that we control
     rescanTokens() {},
     airdrop() {},
-    connect() {}
+    connect(_state, _action: PayloadAction<WalletType>) {}
   }
 })
 interface IsetTokenBalance {

@@ -6,10 +6,12 @@ import { network } from '@selectors/solanaConnection'
 import { actions } from '@reducers/solanaConnection'
 import { actions as walletActions } from '@reducers/solanaWallet'
 import { SolanaNetworks } from '@web3/connection'
+import { address } from '@selectors/solanaWallet'
 
 export const HeaderWrapper: React.FC = () => {
   const dispatch = useDispatch()
   const currentNetwork = useSelector(network)
+  const walletAddress = useSelector(address)
 
   return (
     <Header
@@ -18,8 +20,9 @@ export const HeaderWrapper: React.FC = () => {
           dispatch(actions.setNetwork(network))
         }
       }}
-      onConnect={() => {
-        dispatch(walletActions.connect())
+      address={walletAddress}
+      onConnect={wallet => {
+        dispatch(walletActions.connect(wallet))
       }}
       network={currentNetwork}
     />

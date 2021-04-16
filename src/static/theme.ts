@@ -81,7 +81,8 @@ export const theme = createMuiTheme({
       fontSize: 32
     },
     h4: {
-      fontSize: 24
+      fontSize: 24,
+      fontWeight: 'bold'
     },
     h5: {
       fontSize: 16

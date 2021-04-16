@@ -13,10 +13,6 @@ export function* pullAssetPrices(): Generator {
     [managerProgram, managerProgram.getAssetsList],
     stateExchange.assetsList
   )
-  for (const asset of assetsList.assets) {
-    console.log(asset.assetAddress.toString())
-    console.log(asset.price.toString())
-  }
   yield* put(
     actions.setAssets(
       assetsList.assets.reduce((acc, asset) => {

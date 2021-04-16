@@ -21,6 +21,7 @@ import { tou64 } from '@consts/utils'
 import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getTokenDetails } from './token'
+import { PayloadAction } from '@reduxjs/toolkit'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -52,7 +53,6 @@ export function* fetchTokensAccounts(): Generator {
   )
   for (const account of tokensAccounts.value) {
     const info: IparsedTokenInfo = account.account.data.parsed.info
-    console.log(info.tokenAmount.decimals)
     yield* put(
       actions.addTokenAccount({
         programId: new PublicKey(info.mint),
@@ -146,7 +146,6 @@ export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey
   )
   yield* call(signAndSend, wallet, new Transaction().add(ix))
   const token = yield* call(getTokenDetails, tokenAddress.toString())
-  console.log(token)
   yield* put(
     actions.addTokenAccount({
       programId: tokenAddress,
@@ -204,9 +203,9 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
   return txid
 }
 
-export function* handleConnect(): Generator {
+export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): Generator {
   // TODO add side effects
-  yield* call(connectWallet)
+  yield* call(connectWallet, action.payload)
   yield* call(init)
   yield* call(connectExchangeWallet)
 }
