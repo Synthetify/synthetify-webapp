@@ -84,7 +84,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
   if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
     const { account, ix } = yield* call(
       [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
-      wallet.publicKey
+      new PublicKey(wallet.publicKey.toBuffer())
     )
     const depositIx = yield* call([exchangeProgram, exchangeProgram.depositInstruction], {
       amount,
