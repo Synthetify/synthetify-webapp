@@ -148,6 +148,10 @@ const modalsSlice = createSlice({
       state.burn.txid = action.payload.txid
       return state
     },
+    burnFailed(state) {
+      state.burn.sending = false
+      return state
+    },
     openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {
       state.send.open = true
       state.send.tokenAddress = action.payload.tokenAddress
@@ -174,6 +178,10 @@ const modalsSlice = createSlice({
       state.deposit.txid = action.payload.txid
       return state
     },
+    depositFailed(state) {
+      state.deposit.sending = false
+      return state
+    },
     mint(state, action: PayloadAction<Pick<IMint, 'amount'>>) {
       state.mint.sending = true
       state.mint.amount = action.payload.amount
@@ -184,6 +192,10 @@ const modalsSlice = createSlice({
       state.mint.txid = action.payload.txid
       return state
     },
+    mintFailed(state) {
+      state.mint.sending = false
+      return state
+    },
     withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
       state.withdraw.sending = true
       state.withdraw.amount = action.payload.amount
@@ -192,6 +204,10 @@ const modalsSlice = createSlice({
     withdrawDone(state, action: PayloadAction<Pick<IWithdraw, 'txid'>>) {
       state.withdraw.sending = false
       state.withdraw.txid = action.payload.txid
+      return state
+    },
+    withdrawFailed(state) {
+      state.withdraw.sending = false
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: PublicKey }>) {

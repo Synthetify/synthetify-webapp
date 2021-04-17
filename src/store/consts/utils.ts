@@ -42,3 +42,6 @@ export const printBNtoBN = (amount: string, decimals: number): BN => {
   }
   return new BN(0)
 }
+export const divUp = (a: BN, b: BN): BN => {
+  return a.add(b.subn(1)).div(b)
+}

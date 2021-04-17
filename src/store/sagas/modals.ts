@@ -85,7 +85,11 @@ export function* handleDeposit(): Generator {
   const depositData = yield* select(deposit)
   try {
     const txid = yield* call(depositCollateral, depositData.amount)
-    yield* put(actions.depositDone({ txid: txid }))
+    yield* put(
+      actions.depositDone({
+        txid: txid
+      })
+    )
     yield put(
       snackbarsActions.add({
         message: 'Succesfully deposited collateral.',
@@ -94,6 +98,8 @@ export function* handleDeposit(): Generator {
       })
     )
   } catch (error) {
+    console.log(error)
+    yield* put(actions.depositFailed())
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -118,6 +124,8 @@ export function* handleMint(): Generator {
     )
   } catch (error) {
     console.log(error)
+    yield* put(actions.mintFailed())
+
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -140,6 +148,8 @@ export function* handleWithdraw(): Generator {
       })
     )
   } catch (error) {
+    yield* put(actions.withdrawFailed())
+
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -162,7 +172,8 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    console.log(error.toString())
+    yield* put(actions.burnFailed())
+    console.log(error)
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',

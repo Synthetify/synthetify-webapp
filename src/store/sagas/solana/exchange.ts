@@ -22,7 +22,8 @@ import {
   Transaction,
   sendAndConfirmTransaction,
   SYSVAR_RENT_PUBKEY,
-  SystemProgram
+  SystemProgram,
+  sendAndConfirmRawTransaction
 } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep, signAndSend } from './wallet'
@@ -104,11 +105,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     tx.feePayer = wallet.publicKey
     tx.recentBlockhash = blockhash.blockhash
     const signedTx = yield* call([wallet, wallet.signTransaction], tx)
-    const signature = yield* call(
-      [connection, connection.sendRawTransaction],
-      signedTx.serialize(),
-      { skipPreflight: true }
-    )
+
     yield* put(
       actions.setExchangeAccount({
         address: account,
@@ -116,6 +113,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
         debtShares: new BN(0)
       })
     )
+    const signature = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
     yield* call(sleep, 1500) // Give time to subscribe to account
     return signature
   } else {
@@ -138,7 +136,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     tx.feePayer = wallet.publicKey
     tx.recentBlockhash = blockhash.blockhash
     const signedTx = yield* call([wallet, wallet.signTransaction], tx)
-    const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+    const signature = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
     return signature
   }
 }

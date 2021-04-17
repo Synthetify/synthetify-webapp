@@ -1,4 +1,5 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
+import { divUp } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -92,10 +93,13 @@ export const userDebtValue = createSelector(
     }
     const debt = Object.entries(allAssets).reduce((acc, [_, asset]) => {
       return acc.add(
-        asset.price.mul(asset.supply).div(new BN(10 ** (asset.decimals + ORACLE_OFFSET - ACCURACY)))
+        divUp(
+          asset.price.mul(asset.supply),
+          new BN(10 ** (asset.decimals + ORACLE_OFFSET - ACCURACY))
+        )
       )
     }, new BN(0))
-    const userDebt = debt.mul(account.debtShares).div(exchangeState.debtShares)
+    const userDebt = divUp(debt.mul(account.debtShares), exchangeState.debtShares)
     return userDebt
   }
 )
