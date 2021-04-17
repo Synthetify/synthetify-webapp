@@ -104,7 +104,11 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     tx.feePayer = wallet.publicKey
     tx.recentBlockhash = blockhash.blockhash
     const signedTx = yield* call([wallet, wallet.signTransaction], tx)
-    const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
+    const signature = yield* call(
+      [connection, connection.sendRawTransaction],
+      signedTx.serialize(),
+      { skipPreflight: true }
+    )
     yield* put(
       actions.setExchangeAccount({
         address: account,

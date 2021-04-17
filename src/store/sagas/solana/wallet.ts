@@ -71,25 +71,26 @@ export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
 }
 
 export function* handleAirdrop(): Generator {
-  // const connection = yield* call(getConnection)
-  // const wallet = yield* call(getWallet)
-  // yield* call([connection, connection.requestAirdrop], wallet.publicKey, 6.9 * 1e9)
-  // const balance = yield* call([connection, connection.getBalance], wallet.publicKey)
-  // if (balance < 1e8) {
-  //   yield* call(sleep, 2000)
-  // }
+  const connection = yield* call(getConnection)
+  const wallet = yield* call(getWallet)
+  let balance = yield* call([connection, connection.getBalance], wallet.publicKey)
+  if (balance < 0.05 * 1e9) {
+    yield* call([connection, connection.requestAirdrop], wallet.publicKey, 0.1 * 1e9)
+    balance = yield* call([connection, connection.getBalance], wallet.publicKey)
+    yield* call(sleep, 2000)
+    let retries = 30
+    for (;;) {
+      // eslint-disable-next-line eqeqeq
+      if (0.05 * 1e9 < (yield* call([connection, connection.getBalance], wallet.publicKey))) {
+        break
+      }
+      yield* call(sleep, 2000)
+      if (--retries <= 0) {
+        break
+      }
+    }
+  }
 
-  // let retries = 30
-  // for (;;) {
-  //   // eslint-disable-next-line eqeqeq
-  //   if (1 * 1e9 <= (yield* call([connection, connection.getBalance], wallet.publicKey))) {
-  //     break
-  //   }
-  //   yield* call(sleep, 2000)
-  //   if (--retries <= 0) {
-  //     break
-  //   }
-  // }
   yield* call(getCollateralTokenAirdrop)
   yield put(
     snackbarsActions.add({
