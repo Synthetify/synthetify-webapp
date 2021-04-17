@@ -1,28 +1,21 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable no-new */
 import React from 'react'
-import { Typography, Grid, Dialog, TextField, InputAdornment, CardMedia } from '@material-ui/core'
-import { useForm, Controller } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers'
+import { Typography, Grid, CardMedia, Dialog } from '@material-ui/core'
 
-import CommonButton from '@components/CommonButton/CommonButton'
-import useStyles from './style'
-import { BN } from '@project-serum/anchor'
-import { printBN, printBNtoBN } from '@consts/utils'
-import FilledButton from '@components/FilledButton/FilledButton'
 import Loader from '@static/gif/loader.gif'
 import Success from '@static/gif/success.gif'
 import { PublicKey } from '@solana/web3.js'
-import { Asset } from '@synthetify/sdk'
+import { IAsset } from '@reducers/exchange'
 
+import useStyles from './style'
 export interface ICreateAccountModal {
   open: boolean
   loading: boolean
   handleClose: () => void
   onSend: (tokenAddress: PublicKey) => void
   txid?: string
-  assets: Asset[]
+  assets: IAsset[]
 }
 
 export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
@@ -80,7 +73,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
           ) : (
             <>
               {assets.map(asset => {
-                const ticker = 'xBTC'
+                const ticker = asset.symbol.toString().toLowerCase()
                 const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                 let icon
                 try {
@@ -102,7 +95,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                           image={icon}
                         />
                       </Grid>
-                      {/* <Grid item>{asset?.ticker?.toString()}</Grid> */}
+                      <Grid item>{asset.symbol?.toString()}</Grid>
                     </Grid>
                   </Grid>
                 )

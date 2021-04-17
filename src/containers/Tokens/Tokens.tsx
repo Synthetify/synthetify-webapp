@@ -5,7 +5,6 @@ import { accountsArray } from '@selectors/solanaWallet'
 import { actions } from '@reducers/modals'
 import { useDispatch, useSelector } from 'react-redux'
 import Token from './Token/Token'
-import { actions as modalsActions } from '@reducers/modals'
 
 import CommonButton from '@components/CommonButton/CommonButton'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
@@ -93,7 +92,7 @@ export const Tokens: React.FC = () => {
                   <CommonButton
                     name='Send'
                     onClick={() => {
-                      dispatch(modalsActions.openSend({ tokenAddress: token.programId }))
+                      dispatch(actions.openSend({ tokenAddress: token.programId }))
                     }}
                   />
                 </Token>
