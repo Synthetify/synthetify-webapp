@@ -77,7 +77,7 @@ export const accountsArray = createSelector(
         }) as TokenAccounts[]
         return acc.concat(a)
       }
-      return acc.concat(accounts as TokenAccounts[])
+      return acc
     }, [] as TokenAccounts[])
   }
 )

@@ -30,7 +30,6 @@ export const Tokens: React.FC = () => {
                 name='Add Account'
                 className={classes.addAccountButton}
                 onClick={() => {
-                  console.log('1')
                   dispatch(actions.openModal('createAccount'))
                 }}
                 startIcon={<PlaylistAddIcon style={{ fontSize: 27 }} />}
