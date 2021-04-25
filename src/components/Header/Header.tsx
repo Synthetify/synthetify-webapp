@@ -59,7 +59,8 @@ export const Header: React.FC<IHeader> = ({ onNetworkClick, network, onConnect, 
           container
           direction='column'
           justify='space-between'
-          style={{ height: '100%', paddingBottom: 50 }}>
+          wrap='nowrap'
+          style={{ height: '100%', paddingBottom: 50, minHeight: 600 }}>
           <Grid item>
             <Grid container direction='column' justify='center' alignItems='center'>
               <Grid item className={classes.drawerTitleDiv}>
