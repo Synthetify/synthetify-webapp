@@ -1,4 +1,13 @@
-import { call, takeLeading, SagaGenerator, put, spawn, all, select } from 'typed-redux-saga'
+import {
+  call,
+  takeLeading,
+  SagaGenerator,
+  put,
+  spawn,
+  all,
+  select,
+  takeLatest
+} from 'typed-redux-saga'
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
@@ -22,6 +31,8 @@ import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { address } from '@selectors/solanaWallet'
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -205,13 +216,34 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
 }
 
 export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): Generator {
-  // TODO add side effects
-  yield* call(connectWallet, action.payload)
+  const walletAddress = yield* select(address)
+  if (walletAddress !== DEFAULT_PUBLICKEY.toString()) {
+    yield* put(
+      snackbarsActions.add({
+        message: 'Wallet already connected.',
+        variant: 'info',
+        persist: false
+      })
+    )
+    return
+  }
+  try {
+    yield* call(connectWallet, action.payload)
+  } catch (error) {
+    yield put(
+      snackbarsActions.add({
+        message: 'Unable to connect to wallet.',
+        variant: 'error',
+        persist: false
+      })
+    )
+    return
+  }
   yield* call(init)
   yield* call(connectExchangeWallet)
 }
 export function* connectHandler(): Generator {
-  yield takeLeading(actions.connect, handleConnect)
+  yield takeLatest(actions.connect, handleConnect)
 }
 export function* airdropSaga(): Generator {
   yield takeLeading(actions.airdrop, handleAirdrop)
