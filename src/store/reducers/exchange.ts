@@ -54,7 +54,17 @@ export const defaultState: IExchange = {
     liquidationPenalty: 15,
     liquidationThreshold: 200,
     maxDelay: 10,
-    nonce: 255
+    nonce: 255,
+    halted: false,
+    liquidationBuffer: 0,
+    staking: {
+      amountPerRound: new BN(0),
+      currentRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
+      finishedRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
+      nextRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
+      fundAccount: DEFAULT_PUBLICKEY,
+      roundLength: 0
+    }
   },
   assets: {},
   collateralAccountBalance: new BN(0),
