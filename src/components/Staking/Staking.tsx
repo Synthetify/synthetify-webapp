@@ -11,6 +11,7 @@ import { ReactComponent as DepositIcon } from '@static/svg/depo_ic.svg'
 import { ReactComponent as MintIcon } from '@static/svg/mint_ic.svg'
 import { ReactComponent as WithdrawIcon } from '@static/svg/withdraw_ic.svg'
 import { openSync } from 'fs'
+import UserStatsTile from './UserStatsTile/UserStatsTile'
 export interface IStaking {
   stakedValue: BN
   collateralRatio: BN
@@ -36,32 +37,20 @@ export const Stacking: React.FC<IStaking> = ({
   const classes = useStyles()
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={12} className={classes.userStats}>
-        <Grid container style={{ width: '100%' }}>
-          <Grid item xs={4}>
-            <Typography variant='h3' className={classes.titleText}>
-              Staked value
-            </Typography>
-            <Typography variant='h2' className={classes.titleValueText}>
-              {transformBN(stakedValue)}$
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant='h3' className={classes.titleText}>
-              Collateral ratio
-            </Typography>
-            <Typography variant='h2' className={classes.titleValueText}>
-              {collateralRatio.toString()}%
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant='h3' className={classes.titleText}>
-              Current debt
-            </Typography>
-            <Typography variant='h2' className={classes.titleValueText}>
-              {transformBN(debt)}$
-            </Typography>
-          </Grid>
+      <Grid item xs={12}>
+        <Grid container className={classes.statsContainer}>
+          <UserStatsTile
+            titleText='Staked value'
+            titleValueText={`${transformBN(stakedValue)}$`}
+          />
+          <UserStatsTile
+            titleText='Collateral ratio'
+            titleValueText={`${collateralRatio.toString()}%`}
+          />
+          <UserStatsTile
+            titleText='Current debt'
+            titleValueText={`${transformBN(debt)}$`}
+          />
         </Grid>
       </Grid>
       <Grid item xs={12}>

@@ -1,0 +1,932 @@
+{
+  "version": "0.0.0",
+  "name": "exchange",
+  "instructions": [
+    {
+      "name": "createExchangeAccount",
+      "accounts": [
+        {
+          "name": "exchangeAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "admin",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "state",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "owner",
+          "type": "publicKey"
+        }
+      ]
+    }
+  ],
+  "state": {
+    "struct": {
+      "name": "InternalState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "publicKey"
+          },
+          {
+            "name": "halted",
+            "type": "bool"
+          },
+          {
+            "name": "nonce",
+            "type": "u8"
+          },
+          {
+            "name": "debtShares",
+            "type": "u64"
+          },
+          {
+            "name": "collateralShares",
+            "type": "u64"
+          },
+          {
+            "name": "collateralToken",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "assetsList",
+            "type": "publicKey"
+          },
+          {
+            "name": "collateralizationLevel",
+            "type": "u32"
+          },
+          {
+            "name": "maxDelay",
+            "type": "u32"
+          },
+          {
+            "name": "fee",
+            "type": "u32"
+          },
+          {
+            "name": "liquidationAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "liquidationPenalty",
+            "type": "u8"
+          },
+          {
+            "name": "liquidationThreshold",
+            "type": "u8"
+          },
+          {
+            "name": "liquidationBuffer",
+            "type": "u32"
+          },
+          {
+            "name": "staking",
+            "type": {
+              "defined": "Staking"
+            }
+          }
+        ]
+      }
+    },
+    "methods": [
+      {
+        "name": "new",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralToken",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "assetsList",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "liquidationAccount",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "stakingFundAccount",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "nonce",
+            "type": "u8"
+          },
+          {
+            "name": "stakingRoundLength",
+            "type": "u32"
+          },
+          {
+            "name": "amountPerRound",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "deposit",
+        "accounts": [
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userCollateralAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "mint",
+        "accounts": [
+          {
+            "name": "assetsList",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "usdToken",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "to",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "managerProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "withdraw",
+        "accounts": [
+          {
+            "name": "assetsList",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "to",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "swap",
+        "accounts": [
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "assetsList",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "tokenIn",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenFor",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccountIn",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccountFor",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "managerProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "burn",
+        "accounts": [
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "assetsList",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "usdToken",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccountBurn",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "managerProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "liquidate",
+        "accounts": [
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "assetsList",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "usdToken",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userUsdAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "userCollateralAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "signer",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "managerProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "liquidationAccount",
+            "isMut": true,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "checkAccountCollateralization",
+        "accounts": [
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "assetsList",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "collateralAccount",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "claimRewards",
+        "accounts": [
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "withdrawRewards",
+        "accounts": [
+          {
+            "name": "clock",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "exchangeAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "owner",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "exchangeAuthority",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "tokenProgram",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "userTokenAccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "stakingFundAccount",
+            "isMut": true,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "setLiquidationBuffer",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "liquidationBuffer",
+            "type": "u32"
+          }
+        ]
+      },
+      {
+        "name": "setLiquidationThreshold",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "liquidationThreshold",
+            "type": "u8"
+          }
+        ]
+      },
+      {
+        "name": "setLiquidationPenalty",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "liquidationPenalty",
+            "type": "u8"
+          }
+        ]
+      },
+      {
+        "name": "setCollateralizationLevel",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "collateralizationLevel",
+            "type": "u32"
+          }
+        ]
+      },
+      {
+        "name": "setFee",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "fee",
+            "type": "u32"
+          }
+        ]
+      },
+      {
+        "name": "setMaxDelay",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "maxDelay",
+            "type": "u32"
+          }
+        ]
+      },
+      {
+        "name": "setHalted",
+        "accounts": [
+          {
+            "name": "admin",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": [
+          {
+            "name": "halted",
+            "type": "bool"
+          }
+        ]
+      }
+    ]
+  },
+  "accounts": [
+    {
+      "name": "ExchangeAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "debtShares",
+            "type": "u64"
+          },
+          {
+            "name": "collateralShares",
+            "type": "u64"
+          },
+          {
+            "name": "liquidationDeadline",
+            "type": "u64"
+          },
+          {
+            "name": "userStakingData",
+            "type": {
+              "defined": "UserStaking"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "StakingRound",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "start",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "allPoints",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Staking",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fundAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "roundLength",
+            "type": "u32"
+          },
+          {
+            "name": "amountPerRound",
+            "type": "u64"
+          },
+          {
+            "name": "finishedRound",
+            "type": {
+              "defined": "StakingRound"
+            }
+          },
+          {
+            "name": "currentRound",
+            "type": {
+              "defined": "StakingRound"
+            }
+          },
+          {
+            "name": "nextRound",
+            "type": {
+              "defined": "StakingRound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserStaking",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amountToClaim",
+            "type": "u64"
+          },
+          {
+            "name": "finishedRoundPoints",
+            "type": "u64"
+          },
+          {
+            "name": "currentRoundPoints",
+            "type": "u64"
+          },
+          {
+            "name": "nextRoundPoints",
+            "type": "u64"
+          },
+          {
+            "name": "lastUpdate",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 100,
+      "name": "ErrorType",
+      "msg": "Your error message"
+    },
+    {
+      "code": 101,
+      "name": "Unauthorized",
+      "msg": "You are not admin"
+    },
+    {
+      "code": 102,
+      "name": "NotSyntheticUsd",
+      "msg": "Not synthetic USD asset"
+    },
+    {
+      "code": 103,
+      "name": "OutdatedOracle",
+      "msg": "Oracle price is outdated"
+    },
+    {
+      "code": 104,
+      "name": "MintLimit",
+      "msg": "Mint limit"
+    },
+    {
+      "code": 105,
+      "name": "WithdrawLimit",
+      "msg": "Withdraw limit"
+    },
+    {
+      "code": 106,
+      "name": "CollateralAccountError",
+      "msg": "Invalid collateral_account"
+    },
+    {
+      "code": 107,
+      "name": "SyntheticCollateral",
+      "msg": "Synthetic collateral is not supported"
+    },
+    {
+      "code": 108,
+      "name": "InvalidAssetsList",
+      "msg": "Invalid Assets List"
+    },
+    {
+      "code": 109,
+      "name": "InvalidLiquidation",
+      "msg": "Invalid Liquidation"
+    },
+    {
+      "code": 110,
+      "name": "InvalidSigner",
+      "msg": "Invalid signer"
+    },
+    {
+      "code": 111,
+      "name": "WashTrade",
+      "msg": "Wash trade"
+    },
+    {
+      "code": 112,
+      "name": "ExchangeLiquidationAccount",
+      "msg": "Invalid exchange liquidation account"
+    },
+    {
+      "code": 113,
+      "name": "LiquidationDeadline",
+      "msg": "Liquidation deadline not passed"
+    },
+    {
+      "code": 114,
+      "name": "Halted",
+      "msg": "Program is currently Halted"
+    },
+    {
+      "code": 115,
+      "name": "NoRewards",
+      "msg": "No rewards to claim"
+    },
+    {
+      "code": 116,
+      "name": "FundAccountError",
+      "msg": "Invalid fund_account"
+    }
+  ]
+}

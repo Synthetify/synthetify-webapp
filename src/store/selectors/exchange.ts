@@ -47,7 +47,6 @@ export const xUSDAddress = createSelector(assets, allAssets => {
   const xusd = Object.entries(allAssets).find(([_, b]) => {
     return b.feedAddress.equals(DEFAULT_PUBLICKEY)
   })
-  console.log(xusd?.[1])
   if (xusd) {
     return xusd[1].assetAddress
   } else {
@@ -74,7 +73,7 @@ export const stakedValue = createSelector(
       .mul(exchangeBalance)
       .div(exchangeState.collateralShares)
       .mul(allAssets[collateralTokenAddress.toString()].price)
-      .div(new BN(1e4))
+      .div(new BN(1e6))
     return value
   }
 )

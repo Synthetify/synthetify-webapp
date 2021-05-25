@@ -89,7 +89,8 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     const depositIx = yield* call([exchangeProgram, exchangeProgram.depositInstruction], {
       amount,
       exchangeAccount: account,
-      userCollateralAccount: userCollateralTokenAccount.address
+      userCollateralAccount: userCollateralTokenAccount.address,
+      owner: wallet.publicKey
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -120,7 +121,8 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     const depositIx = yield* call([exchangeProgram, exchangeProgram.depositInstruction], {
       amount,
       exchangeAccount: userExchangeAccount.address,
-      userCollateralAccount: userCollateralTokenAccount.address
+      userCollateralAccount: userCollateralTokenAccount.address,
+      owner: wallet.publicKey
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -193,7 +195,6 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
-    tokenBurn: tokenAddress,
     userTokenAccountBurn: userTokenAccount.address
   })
   return signature[1]

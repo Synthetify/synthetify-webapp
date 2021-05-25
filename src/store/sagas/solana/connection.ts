@@ -17,7 +17,6 @@ export function* getConnection(): SagaGenerator<Connection> {
 
 export function* initConnection(): Generator {
   try {
-    console.log('123')
     yield* call(getConnection)
     yield* call(pullExchangeState)
     // yield* call(pullUserAccountData)

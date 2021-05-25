@@ -8,6 +8,9 @@ import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 import { getOracleProgram } from '@web3/programs/oracle'
 import { parseTokenAccountData } from '@web3/data'
+import { getCurrentSolanaConnection } from '@web3/connection'
+import { BN } from '@synthetify/sdk'
+import { parsePriceData } from '@pythnetwork/client'
 
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
@@ -65,21 +68,24 @@ const ExhcangeEvents = () => {
 
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()
+    const connection = getCurrentSolanaConnection()
 
     if (
       Object.values(allAssets).length === 0 ||
       !oracleProgram ||
-      networkStatus !== Status.Initalized
+      networkStatus !== Status.Initalized ||
+      !connection
     ) {
       return
     }
     const connectEvents = () => {
       for (const asset of Object.values(allAssets)) {
-        oracleProgram.account.priceFeed
-          .subscribe(asset.feedAddress, 'singleGossip')
-          .on('change', a => {
-            dispatch(actions.setAssetPrice({ token: asset.assetAddress, price: a.price }))
-          })
+        connection.onAccountChange(asset.feedAddress, accountInfo => {
+          const data = parsePriceData(accountInfo.data)
+          dispatch(
+            actions.setAssetPrice({ token: asset.assetAddress, price: new BN(data.price * 1e6) })
+          )
+        })
       }
     }
     connectEvents()
