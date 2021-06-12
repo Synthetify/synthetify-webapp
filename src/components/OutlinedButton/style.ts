@@ -4,8 +4,8 @@ import { colors } from '@static/redesign-theme'
 const useStyles = makeStyles((theme: Theme) => ({
   general: {
     borderRadius: 10,
-    backgroundColor: colors.black.black1,
-    color: colors.gray.C4C4C4,
+    backgroundColor: colors.black.dark,
+    color: colors.gray.dark,
     fontWeight: 600,
     textAlign: 'center',
     textTransform: 'none',
@@ -13,7 +13,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '26px',
     transition: 'all 500ms ease',
     padding: '6px 14px',
-    boxShadow: '2px 2px 0px rgba(24, 22, 29, 0.5), -2px -2px 0px rgba(137, 139, 156, 0.5)'
+    boxShadow: '2px 2px 0px rgba(24, 22, 29, 0.5), -2px -2px 0px rgba(137, 139, 156, 0.5)',
+    '&:hover': {
+      backgroundColor: colors.black.light,
+      color: colors.gray.light
+    }
   },
   disabled: {
     opacity: 0.5

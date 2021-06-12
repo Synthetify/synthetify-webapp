@@ -1,8 +1,10 @@
 export const colors = {
   black: {
-    black1: '#44424E'
+    dark: '#44424E',
+    light: '#62606c'
   },
   gray: {
-    C4C4C4: '#C4C4C4'
+    dark: '#C4C4C4',
+    light: '#e1e1e1'
   }
 }
