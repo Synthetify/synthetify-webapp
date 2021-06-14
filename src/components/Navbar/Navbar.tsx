@@ -4,17 +4,23 @@ import NavbarButton from './Button'
 import { Grid } from '@material-ui/core'
 
 export interface IProps {
-  variant?: string
+  current?: string
 }
 export const Navbar: React.FC<IProps> = ({
-  variant
+  current
 }) => {
   const classes = useStyles()
   return (
     <Grid container>
-      <NavbarButton name ='Staking'/>
-      <NavbarButton name ='Stats'/>
-      <NavbarButton name ='Exchange'/>
+      <Grid item>
+        <NavbarButton name ='Staking'/>
+      </Grid>
+      <Grid item>
+        <NavbarButton name ='Stats'/>
+      </Grid>
+      <Grid item>
+        <NavbarButton name ='Exchange'/>
+      </Grid>
     </Grid>
   )
 }

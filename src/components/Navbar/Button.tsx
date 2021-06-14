@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 import classNames from 'classnames'
-import useStyles from './ButtonStyle'
+import useStyles from './style'
 
 export interface IProps {
   name: string
