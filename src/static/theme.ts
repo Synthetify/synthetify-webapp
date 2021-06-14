@@ -22,7 +22,8 @@ export const colors = {
     skeletonBackground: '#8E8B8B',
     skeletonField: '#C4C4C4',
     CDCDCD: '#CDCDCD',
-    manatee: '#898B9C'
+    manatee: '#898B9C',
+    gunPowder: '#44424F' // v2.0 input color
   },
   green: {
     main: '#00F9BB',

@@ -1,18 +1,32 @@
-import { TextField } from '@material-ui/core'
+import { Input } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 
-export interface IProps {
-  name?: string
-  disabled?: boolean
+interface IProps {
+  setValue: (value: string) => void
+  value: string
+  label: string
+  error?: string | null
 }
+
 export const AmountInput: React.FC<IProps> = ({
-  name = 'Amount',
-  disabled = false
+  setValue,
+  value,
+  label,
+  error
 }) => {
   const classes = useStyles()
   return (
-    <TextField />
+    <Input
+      error={!!error}
+      className={classes.amountInput}
+      color='primary'
+      type={'text'}
+      value={value}
+      onChange={e => {
+        setValue(e.target.value)
+      }}
+    />
   )
 }
 export default AmountInput
