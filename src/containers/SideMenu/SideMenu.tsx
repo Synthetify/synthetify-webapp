@@ -32,6 +32,4 @@ const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
     <SideMenuSmallComponent location={location} setLocation={setLocation}></SideMenuSmallComponent>
   )
 }
-console.log(SideMenu)
-
 export default SideMenu

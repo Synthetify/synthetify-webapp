@@ -13,7 +13,6 @@ import SideMenu from '#containers/SideMenu/SideMenu'
 import { Status } from '#reducers/solanaWallet'
 
 import useStyles from './style'
-console.log(SideMenu)
 export enum UiLocation {
   Account,
   Staking,
@@ -47,7 +46,7 @@ const WelcomePage: React.FC = () => {
       <div className={classes.side}>
         <SideMenu location={location} setLocation={setLocation}></SideMenu>
       </div>
-      {/* <Grid item className={classes.content}>
+      <Grid item className={classes.content}>
         <Grid container className={classes.contentContainer} justify='center'>
           <Grid item xs={12} className={classes.contentWrapper}>
             <Header />
@@ -57,7 +56,7 @@ const WelcomePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      {signerStatus === Status.Initalized && <EventsHandlers />} */}
+      {signerStatus === Status.Initalized && <EventsHandlers />}
     </Grid>
   )
 }

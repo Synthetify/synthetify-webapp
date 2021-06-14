@@ -5,7 +5,7 @@ import { actions as uiActions } from '#reducers/ui'
 import { getSolanaConnection, networkToName } from '#web3/connection'
 import { actions as snackbarsActions } from '#reducers/snackbars'
 import { network } from '#selectors/solanaConnection'
-import { Connection } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { pullExchangeState } from './exchange'
 
@@ -34,7 +34,7 @@ export function* initConnection(): Generator {
         persist: false
       })
     )
-    yield* put(actions.setStatus(Status.Initalized))
+    // yield* put(actions.setStatus(Status.Initalized))
     // yield* call(depositCollateral, new BN(4 * 1e8))
     // yield* call(mintUsd, new BN(8 * 1e7))
     // yield* call(handleAirdrop)
