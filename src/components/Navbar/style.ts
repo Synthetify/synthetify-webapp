@@ -2,12 +2,12 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  buttonAccent: {
+  button: {
     minWidth: '115px',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     fontFamily: theme.typography.fontFamily,
     color: colors.gray.manatee,
-    padding: '5px 2s0px',
+    padding: '5px 20px',
     lineHeight: '40px',
     borderRadius: 5,
     fontSize: '18px',
