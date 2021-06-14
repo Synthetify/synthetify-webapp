@@ -23,6 +23,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: `${colors.gray.skeletonField} !important`,
     borderWidth: '2px !important',
     borderColor: `${colors.gray.skeletonField} !important`
+  },
+  maxButton: {
+    textTransform: 'none',
+    border: '1px solid',
+    borderColor: theme.palette.primary.main,
+    borderRadius: 10,
+    fontFamily: theme.typography.fontFamily,
+    fontSize: '22px',
+    fontWeight: 600,
+    lineHeight: '26px',
+    color: colors.gray.skeletonField,
+    padding: '5px 21px',
+    boxSizing: 'border-box',
+    height: '60px'
   }
 }))
 
