@@ -6,5 +6,15 @@ import { action } from '@storybook/addon-actions'
 
 storiesOf('buttons/OutlinedButton', module)
   .addDecorator(withKnobs)
-  .add('enable', () => <OutlinedButton name='Mint' onClick={action('clicked')} />)
-  .add('disable', () => <OutlinedButton name='Mint' disabled={true} onClick={action('clicked')} />)
+  .add('primary-enable', () => (
+    <OutlinedButton name='Mint' color='primary' onClick={action('clicked')} />
+  ))
+  .add('secondary-enable', () => (
+    <OutlinedButton name='Mint' color='secondary' onClick={action('clicked')} />
+  ))
+  .add('primary-disable', () => (
+    <OutlinedButton name='Mint' disabled={true} color='primary' onClick={action('clicked')} />
+  ))
+  .add('secondary-disable', () => (
+    <OutlinedButton name='Mint' disabled={true} color='secondary' onClick={action('clicked')} />
+  ))
