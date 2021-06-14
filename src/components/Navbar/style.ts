@@ -2,13 +2,12 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-
   buttonAccent: {
-    minWidth: '100px',
+    minWidth: '115px',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     fontFamily: theme.typography.fontFamily,
     color: colors.gray.manatee,
-    padding: '5px 20px',
+    padding: '5px 2s0px',
     lineHeight: '40px',
     borderRadius: 5,
     fontSize: '18px',
@@ -21,11 +20,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontWeight: 600
     }
   },
-
-  gridItem: {
-    padding: 0
+  disabled: {
+    opacity: 1
   }
-
 }))
 
 export default useStyles

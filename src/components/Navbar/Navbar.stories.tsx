@@ -3,9 +3,9 @@ import { storiesOf } from '@storybook/react'
 import NavbarButton from './Button'
 import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
-import Navbar from './Navbar'
 
 storiesOf('navbar/button', module)
   .addDecorator(withKnobs)
-  .add('button', () => <NavbarButton name='Staking' onClick={action('clicked')} />)
-  .add('navbar', () => <Navbar/>)
+  .add('button', () => <div style={{ backgroundColor: '#0E0C12', height: '100px', padding: '10px' }}>
+      <NavbarButton name='Staking' onClick={action('clicked')} />
+    </div>)
