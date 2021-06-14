@@ -22,7 +22,7 @@ export const MaxButton: React.FC<IProps> = ({
   const classes = useStyles()
   return (
     <Button
-      className={classNames(className, classes.button)}
+      className={classNames(className, classes.maxButton)}
       color={color}
       variant='outlined'
       classes={{ disabled: classes.disabled }}
