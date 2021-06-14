@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, PropTypes } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import classNames from 'classnames'
 import useStyles from './style'
 
@@ -7,7 +7,6 @@ export interface IProps {
   name?: string
   onClick?: () => void
   className?: string
-  color?: PropTypes.Color
   disabled?: boolean
   startIcon?: JSX.Element
 }
@@ -15,7 +14,6 @@ export const MaxButton: React.FC<IProps> = ({
   name = 'Max',
   onClick,
   className,
-  color = 'primary',
   disabled = false,
   startIcon
 }) => {
@@ -23,7 +21,6 @@ export const MaxButton: React.FC<IProps> = ({
   return (
     <Button
       className={classNames(className, classes.maxButton)}
-      color={color}
       variant='outlined'
       classes={{ disabled: classes.disabled }}
       disabled={disabled}
