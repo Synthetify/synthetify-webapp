@@ -20,7 +20,7 @@ export const NavbarButton: React.FC<IProps> = ({
     <Button
       className={classNames(
         className,
-        classes.buttonAccent
+        classes.button
       )}
       variant='contained'
       classes={{ disabled: classes.disabled }}
