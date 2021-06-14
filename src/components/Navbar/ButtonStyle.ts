@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: 'rgba(0, 0, 0, 0)',
     fontFamily: theme.typography.fontFamily,
     color: colors.gray.manatee,
-    padding: '5px 2s0px',
+    padding: '5px 20px',
     lineHeight: '40px',
     borderRadius: 5,
     fontSize: '18px',
