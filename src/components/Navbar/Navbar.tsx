@@ -12,13 +12,13 @@ export const Navbar: React.FC<IProps> = ({
   const classes = useStyles()
   return (
     <Grid container>
-      <Grid item>
+      <Grid item className={classes.gridItem}>
         <NavbarButton name ='Staking'/>
       </Grid>
-      <Grid item>
+      <Grid item className={classes.gridItem}>
         <NavbarButton name ='Stats'/>
       </Grid>
-      <Grid item>
+      <Grid item className={classes.gridItem}>
         <NavbarButton name ='Exchange'/>
       </Grid>
     </Grid>

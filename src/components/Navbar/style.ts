@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
 
   buttonAccent: {
-    minWidth: '115px',
+    minWidth: '100px',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     fontFamily: theme.typography.fontFamily,
     color: colors.gray.manatee,
@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: colors.gray.skeletonField,
       fontWeight: 600
     }
+  },
+
+  gridItem: {
+    padding: 0
   }
 
 }))
