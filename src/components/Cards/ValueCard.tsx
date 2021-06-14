@@ -24,17 +24,6 @@ export const ValueCard: React.FC<IProps> = ({
         </Typography>
       </CardContent>
     </Card>
-    /*
-    <Button
-      className={classNames(className, classes.valueCard)}
-      color={color}
-      variant='outlined'
-      type={onClick ? 'button' : 'submit'}
-      startIcon={startIcon}
-      onClick={onClick}>
-      {name}
-    </Button>
-    */
   )
 }
 export default ValueCard
