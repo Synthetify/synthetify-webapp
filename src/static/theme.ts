@@ -14,13 +14,15 @@ export const colors = {
     base: '#0B2545',
     light: '#66AFF5',
     neon: '#08F7FE',
-    astel: '#48ADF1'
+    astel: '#48ADF1',
+    bastille: '#1E1A23'
   },
   gray: {
     base: '#8DA9C4',
     skeletonBackground: '#8E8B8B',
     skeletonField: '#C4C4C4',
-    CDCDCD: '#CDCDCD'
+    CDCDCD: '#CDCDCD',
+    manatee: '#898B9C'
   },
   green: {
     main: '#00F9BB',
