@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import ModalTemplate from '@components/Modals/ModalTemplate/ModalTemplate'
-import { mint } from '@selectors/modals'
-import { userMaxMintUsd } from '@selectors/exchange'
-import { actions } from '@reducers/modals'
+import ModalTemplate from '#components/Modals/ModalTemplate/ModalTemplate'
+import { mint } from '#selectors/modals'
+import { userMaxMintUsd } from '#selectors/exchange'
+import { actions } from '#reducers/modals'
 import { BN } from '@project-serum/anchor'
 import { SvgIcon } from '@material-ui/core'
-import { ReactComponent as MintIcon } from '@static/svg/mint_ic.svg'
+import { ReactComponent as MintIcon } from '#static/svg/mint_ic.svg'
 
 export const SendMoneyModal = () => {
   const dispatch = useDispatch()

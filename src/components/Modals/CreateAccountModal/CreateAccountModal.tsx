@@ -3,10 +3,10 @@
 import React from 'react'
 import { Typography, Grid, CardMedia, Dialog } from '@material-ui/core'
 
-import Loader from '@static/gif/loader.gif'
-import Success from '@static/gif/success.gif'
+import Loader from '#static/gif/loader.gif'
+import Success from '#static/gif/success.gif'
 import { PublicKey } from '@solana/web3.js'
-import { IAsset } from '@reducers/exchange'
+import { IAsset } from '#reducers/exchange'
 
 import useStyles from './style'
 export interface ICreateAccountModal {
@@ -77,9 +77,9 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                 const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                 let icon
                 try {
-                  icon = require(`@static/icons/${image}.png`)
+                  icon = require(`#static/icons/${image}.png`)
                 } catch (error) {
-                  icon = require(`@static/icons/sny.png`)
+                  icon = require(`#static/icons/sny.png`)
                 }
                 return (
                   <Grid

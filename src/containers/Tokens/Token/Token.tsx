@@ -1,9 +1,9 @@
 import React from 'react'
 import useStyles from './style'
 import { Grid, Typography } from '@material-ui/core'
-import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
-import { printBN } from '@consts/utils'
-import { TokenAccounts } from '@selectors/solanaWallet'
+import CopyToolTip from '#components/CopyToolTip/CopyToolTip'
+import { printBN } from '#consts/utils'
+import { TokenAccounts } from '#selectors/solanaWallet'
 
 export interface ISendMoneyModal {
   token: TokenAccounts

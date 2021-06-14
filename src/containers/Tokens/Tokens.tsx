@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
-import { accountsArray } from '@selectors/solanaWallet'
-import { actions } from '@reducers/modals'
+import { accountsArray } from '#selectors/solanaWallet'
+import { actions } from '#reducers/modals'
 import { useDispatch, useSelector } from 'react-redux'
 import Token from './Token/Token'
 
-import CommonButton from '@components/CommonButton/CommonButton'
+import CommonButton from '#components/CommonButton/CommonButton'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
 import useStyles from './style'
 

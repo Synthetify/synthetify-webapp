@@ -5,7 +5,7 @@ import { PublicKey, TransactionInstruction, Account } from '@solana/web3.js'
 import { MintInfo, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { getWallet } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
-import { tou64 } from '@consts/utils'
+import { tou64 } from '#consts/utils'
 
 export function* createToken(
   decimals: number,

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import Staking from '@components/Staking/Staking'
-import { accountsArray } from '@selectors/solanaWallet'
-import { stakedValue, userDebtValue, userCollateralRatio } from '@selectors/exchange'
-import { actions as modalsActions } from '@reducers/modals'
+import Staking from '#components/Staking/Staking'
+import { accountsArray } from '#selectors/solanaWallet'
+import { stakedValue, userDebtValue, userCollateralRatio } from '#selectors/exchange'
+import { actions as modalsActions } from '#reducers/modals'
 import { PublicKey } from '@solana/web3.js'
 
 export const StakingWrapper: React.FC = () => {

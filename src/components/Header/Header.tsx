@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Button, Drawer, Grid, Typography, CardMedia } from '@material-ui/core'
-// import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
-import CommonButton from '@components/CommonButton/CommonButton'
-import { SolanaNetworks } from '@web3/connection'
+// import SynthetifyIconHorizontal from '#components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
+import CommonButton from '#components/CommonButton/CommonButton'
+import { SolanaNetworks } from '#web3/connection'
 import BlurOnIcon from '@material-ui/icons/BlurOn'
-import PhantomIcon from '@static/png/phantom.png'
-import SolletIcon from '@static/jpg/sollet.jpg'
+import PhantomIcon from '#static/png/phantom.png'
+import SolletIcon from '#static/jpg/sollet.jpg'
 import useStyles from './style'
-import { WalletType } from '@web3/wallet'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { WalletType } from '#web3/wallet'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
 export interface IHeader {
   onNetworkClick: (network: SolanaNetworks) => void
   onConnect: (wallet: WalletType) => void

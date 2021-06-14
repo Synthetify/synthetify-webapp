@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import { useSelector, useDispatch } from 'react-redux'
-import solanaConnectionSelector from '@selectors/solanaConnection'
-// import { actions as providerActions } from '@reducers/provider'
-import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
-import EventsHandlers from '@containers/EventsHandlers'
-import Header from '@containers/HeaderWrapper/HeaderWrapper'
-import Account from '@containers/Account/Account'
-import Staking from '@containers/Staking/Staking'
-import Exchange from '@containers/Exchange/Exchange'
-import SideMenu from '@containers/SideMenu/SideMenu'
+import solanaConnectionSelector from '#selectors/solanaConnection'
+// import { actions as providerActions } from '#reducers/provider'
+import { actions as solanaConnectionActions } from '#reducers/solanaConnection'
+import EventsHandlers from '#containers/EventsHandlers'
+import Header from '#containers/HeaderWrapper/HeaderWrapper'
+import Account from '#containers/Account/Account'
+import Staking from '#containers/Staking/Staking'
+import Exchange from '#containers/Exchange/Exchange'
+import SideMenu from '#containers/SideMenu/SideMenu'
+import { Status } from '#reducers/solanaWallet'
 
 import useStyles from './style'
-import { Status } from '@reducers/solanaWallet'
+console.log(SideMenu)
 export enum UiLocation {
   Account,
   Staking,
@@ -46,7 +47,7 @@ const WelcomePage: React.FC = () => {
       <div className={classes.side}>
         <SideMenu location={location} setLocation={setLocation}></SideMenu>
       </div>
-      <Grid item className={classes.content}>
+      {/* <Grid item className={classes.content}>
         <Grid container className={classes.contentContainer} justify='center'>
           <Grid item xs={12} className={classes.contentWrapper}>
             <Header />
@@ -56,7 +57,7 @@ const WelcomePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      {signerStatus === Status.Initalized && <EventsHandlers />}
+      {signerStatus === Status.Initalized && <EventsHandlers />} */}
     </Grid>
   )
 }

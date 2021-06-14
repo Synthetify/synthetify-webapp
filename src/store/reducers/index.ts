@@ -7,7 +7,7 @@ import { reducer as solanaConnectionReducer, solanaConnectionSliceName } from '.
 import { reducer as uiReducer, uiSliceName } from './ui'
 import { reducer as exhcangeReducer, exchangeSliceName } from './exchange'
 import { reducer as modalsReducer, modalsSliceName } from './modals'
-import { SolanaNetworks } from '@consts/static'
+import { SolanaNetworks } from '#consts/static'
 
 const transformNetwork = createTransform(
   (inboundState: any, _key) => {

@@ -2,8 +2,8 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 import { Backdrop, Grid, CardMedia } from '@material-ui/core'
-import { loader } from '@selectors/ui'
-import video from '@static/loading.mp4'
+import { loader } from '#selectors/ui'
+import video from '#static/loading.mp4'
 import useStyles from './style'
 
 export const GlobalLoader: React.FC = () => {

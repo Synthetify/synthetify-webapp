@@ -4,18 +4,18 @@ import { Grid, Typography, Select, MenuItem, CardMedia } from '@material-ui/core
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import * as yup from 'yup'
 
-import FilledButton from '@components/FilledButton/FilledButton'
+import FilledButton from '#components/FilledButton/FilledButton'
 import { useForm, Controller, FieldError } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers'
 import useStyles from './style'
-import { TokensWithBalance } from '@selectors/solanaWallet'
-import { printBNtoBN, printBN } from '@consts/utils'
+import { TokensWithBalance } from '#selectors/solanaWallet'
+import { printBNtoBN, printBN } from '#consts/utils'
 import { BN } from '@project-serum/anchor'
-import { Swap } from '@reducers/exchange'
+import { Swap } from '#reducers/exchange'
 import { PublicKey } from '@solana/web3.js'
-import Loader from '@static/gif/loader.gif'
-import Success from '@static/gif/success.gif'
-import SwapIcon from '@static/svg/swap.svg'
+import Loader from '#static/gif/loader.gif'
+import Success from '#static/gif/success.gif'
+import SwapIcon from '#static/svg/swap.svg'
 
 export interface IExchange {
   tokens: TokensWithBalance[]
@@ -269,9 +269,9 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
                             try {
-                              icon = require(`@static/icons/${image}.png`)
+                              icon = require(`#static/icons/${image}.png`)
                             } catch (error) {
-                              icon = require(`@static/icons/sny.png`)
+                              icon = require(`#static/icons/sny.png`)
                             }
                             return (
                               <MenuItem
@@ -379,9 +379,9 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
                             try {
-                              icon = require(`@static/icons/${image}.png`)
+                              icon = require(`#static/icons/${image}.png`)
                             } catch (error) {
-                              icon = require(`@static/icons/sny.png`)
+                              icon = require(`#static/icons/sny.png`)
                             }
                             return (
                               <MenuItem

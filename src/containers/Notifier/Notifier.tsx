@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSnackbar } from 'notistack'
-import { actions } from '@reducers/snackbars'
-import { snackbars } from '@selectors/snackbars'
+import { actions } from '#reducers/snackbars'
+import { snackbars } from '#selectors/snackbars'
 
 let displayed: string[] = []
 

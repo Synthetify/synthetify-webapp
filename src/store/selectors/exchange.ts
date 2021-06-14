@@ -1,5 +1,5 @@
-import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp } from '@consts/utils'
+import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '#consts/static'
+import { divUp } from '#consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'

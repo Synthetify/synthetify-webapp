@@ -2,8 +2,8 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Header from './Header'
 import { withKnobs } from '@storybook/addon-knobs'
-import { SolanaNetworks } from '@web3/connection'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { SolanaNetworks } from '#web3/connection'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
 
 storiesOf('ui/Header', module)
   .addDecorator(withKnobs)

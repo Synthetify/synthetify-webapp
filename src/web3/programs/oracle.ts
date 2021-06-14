@@ -2,11 +2,11 @@ import {
   getSolanaConnection,
   getSolanaNetwork,
   solanaNetworktoProgramNetwork
-} from '@web3/connection'
-import { getSolanaWallet } from '@web3/wallet'
+} from '#web3/connection'
+import { getSolanaWallet } from '#web3/wallet'
 import { PublicKey } from '@solana/web3.js'
 import { Program, Provider, Idl } from '@project-serum/anchor'
-import oracleIdl from '@consts/idl/pyth.json'
+import oracleIdl from '#consts/idl/pyth.json'
 import { Network } from '@synthetify/sdk'
 import { DEV_NET, TEST_NET } from '@synthetify/sdk/lib/network'
 

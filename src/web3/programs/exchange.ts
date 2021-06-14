@@ -3,9 +3,9 @@ import {
   getSolanaConnection,
   getSolanaNetwork,
   solanaNetworktoProgramNetwork
-} from '@web3/connection'
-import { SolanaNetworks } from '@consts/static'
-import { getSolanaWallet } from '@web3/wallet'
+} from '#web3/connection'
+import { SolanaNetworks } from '#consts/static'
+import { getSolanaWallet } from '#web3/wallet'
 import { PublicKey } from '@solana/web3.js'
 import { getManagerProgram } from './manager'
 let _exchange: Exchange

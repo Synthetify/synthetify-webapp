@@ -9,9 +9,9 @@ import {
   takeLatest
 } from 'typed-redux-saga'
 
-import { actions, PayloadTypes } from '@reducers/solanaWallet'
+import { actions, PayloadTypes } from '#reducers/solanaWallet'
 import { getConnection } from './connection'
-import { getSolanaWallet, connectWallet } from '@web3/wallet'
+import { getSolanaWallet, connectWallet } from '#web3/wallet'
 import {
   Account,
   PublicKey,
@@ -20,19 +20,19 @@ import {
   sendAndConfirmTransaction
 } from '@solana/web3.js'
 import { Token, ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { actions as snackbarsActions } from '@reducers/snackbars'
-import { Status } from '@reducers/solanaConnection'
-import { actions as exchangeActions } from '@reducers/exchange'
+import { actions as snackbarsActions } from '#reducers/snackbars'
+import { Status } from '#reducers/solanaConnection'
+import { actions as exchangeActions } from '#reducers/exchange'
 // import { createToken } from './token'
 import { BN } from '@project-serum/anchor'
 import { getCollateralTokenAirdrop } from './exchange'
-import { tou64 } from '@consts/utils'
-import { WalletAdapter } from '@web3/adapters/types'
-import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
+import { tou64 } from '#consts/utils'
+import { WalletAdapter } from '#web3/adapters/types'
+import { connectExchangeWallet, getExchangeProgram } from '#web3/programs/exchange'
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { address } from '@selectors/solanaWallet'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { address } from '#selectors/solanaWallet'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet

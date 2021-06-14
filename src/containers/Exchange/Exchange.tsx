@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import ExchangeComponent from '@components/Exchange/Exchange'
-import { exchangeTokensWithUserBalance } from '@selectors/solanaWallet'
-import { actions } from '@reducers/exchange'
-import { swap } from '@selectors/exchange'
+import ExchangeComponent from '#components/Exchange/Exchange'
+import { exchangeTokensWithUserBalance } from '#selectors/solanaWallet'
+import { actions } from '#reducers/exchange'
+import { swap } from '#selectors/exchange'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 

@@ -1,6 +1,6 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
-import { actions } from '@reducers/modals'
+import { actions } from '#reducers/modals'
 import {
   send,
   deposit,
@@ -8,10 +8,10 @@ import {
   withdraw,
   burn,
   createAccount as createAccountRedux
-} from '@selectors/modals'
-import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
-import { actions as snackbarsActions } from '@reducers/snackbars'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+} from '#selectors/modals'
+import walletSelectors, { tokenBalance } from '#selectors/solanaWallet'
+import { actions as snackbarsActions } from '#reducers/snackbars'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
 import { getConnection } from './solana/connection'
 import { sendSol, sendToken, createAccount } from './solana/wallet'
 

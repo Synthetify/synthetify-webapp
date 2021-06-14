@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import CreateAccountModalComponent from '@components/Modals/CreateAccountModal/CreateAccountModal'
-import { createAccount } from '@selectors/modals'
-import { assets } from '@selectors/exchange'
-import { accounts } from '@selectors/solanaWallet'
-import { actions } from '@reducers/modals'
-import { actions as snackbarActions } from '@reducers/snackbars'
+import CreateAccountModalComponent from '#components/Modals/CreateAccountModal/CreateAccountModal'
+import { createAccount } from '#selectors/modals'
+import { assets } from '#selectors/exchange'
+import { accounts } from '#selectors/solanaWallet'
+import { actions } from '#reducers/modals'
+import { actions as snackbarActions } from '#reducers/snackbars'
 import { PublicKey } from '@solana/web3.js'
 
 export const CreateAccountModal = () => {

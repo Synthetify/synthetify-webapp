@@ -1,7 +1,7 @@
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
-import { WalletType } from '@web3/wallet'
+import { WalletType } from '#web3/wallet'
 import BN from 'bn.js'
 import { PayloadType } from './types'
 export enum Status {

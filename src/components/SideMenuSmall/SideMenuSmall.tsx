@@ -1,25 +1,25 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
-import { UiLocation } from '@containers/WelcomePage/WelcomePage'
-import { ReactComponent as TwitterIcon } from '@static/svg/twitter-ic-footer.svg'
-import { ReactComponent as GithubIcon } from '@static/svg/github-ic-footer.svg'
-import { ReactComponent as LinkedinIcFooter } from '@static/svg/linkedin-ic-footer.svg'
-import { ReactComponent as DiscordIcon } from '@static/svg/discord-ic-footer.svg'
-import { social } from '@static/links'
-import { ReactComponent as AccountWhiteIcon } from '@static/svg/accWhite.svg'
-import { ReactComponent as AccountColorIcon } from '@static/svg/accColor.svg'
-import { ReactComponent as StakeColorIcon } from '@static/svg/stakeColor.svg'
-import { ReactComponent as StakeWhiteIcon } from '@static/svg/stakeWhite.svg'
-import { ReactComponent as ExchangeWhiteIcon } from '@static/svg/exchangeWhite.svg'
-import { ReactComponent as ExchangeColorIcon } from '@static/svg/exchangeColor.svg'
-import SnyIcon from '@static/icons/sny.png'
+import { UiLocation } from '#containers/WelcomePage/WelcomePage'
+import TwitterIcon from '#static/svg/twitter-ic-footer.svg'
+import GithubIcon from '#static/svg/github-ic-footer.svg'
+import LinkedinIcFooter from '#static/svg/linkedin-ic-footer.svg'
+import DiscordIcon from '#static/svg/discord-ic-footer.svg'
+import { social } from '#static/links'
+import AccountWhiteIcon from '#static/svg/accWhite.svg'
+import AccountColorIcon from '#static/svg/accColor.svg'
+import StakeColorIcon from '#static/svg/stakeColor.svg'
+import StakeWhiteIcon from '#static/svg/stakeWhite.svg'
+import ExchangeWhiteIcon from '#static/svg/exchangeWhite.svg'
+import ExchangeColorIcon from '#static/svg/exchangeColor.svg'
+import SnyIcon from '#static/icons/sny.png'
 
 import useStyles from './style'
 export interface ISideMenu {
   location: UiLocation
   setLocation: (location: UiLocation) => void
 }
-export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
+const SideMenuSmall: React.FC<ISideMenu> = ({ location, setLocation }) => {
   const classes = useStyles()
 
   return (
@@ -94,4 +94,4 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
     </Grid>
   )
 }
-export default SideMenu
+export default SideMenuSmall

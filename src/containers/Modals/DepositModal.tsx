@@ -1,14 +1,14 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import ModalTemplate from '@components/Modals/ModalTemplate/ModalTemplate'
-import { tokenBalance } from '@selectors/solanaWallet'
-import { deposit } from '@selectors/modals'
-import { collateralToken } from '@selectors/exchange'
-import { actions } from '@reducers/modals'
+import ModalTemplate from '#components/Modals/ModalTemplate/ModalTemplate'
+import { tokenBalance } from '#selectors/solanaWallet'
+import { deposit } from '#selectors/modals'
+import { collateralToken } from '#selectors/exchange'
+import { actions } from '#reducers/modals'
 import { BN } from '@project-serum/anchor'
 import { SvgIcon } from '@material-ui/core'
-import { ReactComponent as DepositIcon } from '@static/svg/depo_ic.svg'
+import { ReactComponent as DepositIcon } from '#static/svg/depo_ic.svg'
 
 export const SendMoneyModal = () => {
   const dispatch = useDispatch()
@@ -21,7 +21,11 @@ export const SendMoneyModal = () => {
         dispatch(actions.deposit({ amount }))
       }}
       icon={
-        <SvgIcon component={DepositIcon} style={{ width: 220, height: 220 }} viewBox='0 0 220 220' />
+        <SvgIcon
+          component={DepositIcon}
+          style={{ width: 220, height: 220 }}
+          viewBox='0 0 220 220'
+        />
       }
       open={modalState.open}
       title='Deposit'

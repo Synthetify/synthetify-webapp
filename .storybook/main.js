@@ -27,16 +27,16 @@ module.exports = {
 
     config.resolve.fallback.crypto = false
     Object.assign(config.resolve.alias, {
-      '@sb': resolve('.storybook'),
-      '@static': resolve('src/static'),
-      '@components': resolve('src/components'),
-      '@containers': resolve('src/containers'),
-      '@pages': resolve('src/pages'),
-      '@web3': resolve('src/web3'),
-      '@reducers': resolve('src/store/reducers'),
-      '@selectors': resolve('src/store/selectors'),
-      '@sagas': resolve('src/store/sagas'),
-      '@consts': resolve('src/store/consts')
+      '#sb': resolve('.storybook'),
+      '#static': resolve('src/static'),
+      '#components': resolve('src/components'),
+      '#containers': resolve('src/containers'),
+      '#pages': resolve('src/pages'),
+      '#web3': resolve('src/web3'),
+      '#reducers': resolve('src/store/reducers'),
+      '#selectors': resolve('src/store/selectors'),
+      '#sagas': resolve('src/store/sagas'),
+      '#consts': resolve('src/store/consts')
     })
     Object.assign(config.resolve.fallback, {
       fs: false

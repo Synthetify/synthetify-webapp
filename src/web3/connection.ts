@@ -1,5 +1,5 @@
 import { Connection } from '@solana/web3.js'
-import { SolanaNetworks } from '@consts/static'
+import { SolanaNetworks } from '#consts/static'
 import { Network } from '@synthetify/sdk'
 
 export const networkToName = (network: SolanaNetworks) => {

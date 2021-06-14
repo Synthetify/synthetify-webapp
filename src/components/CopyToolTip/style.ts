@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors } from '#static/theme'
 const useStyles = makeStyles(() => ({
   tooltip: {
     backgroundColor: colors.black.greyish,

@@ -1,12 +1,12 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import * as R from 'remeda'
-import { assets } from '@selectors/exchange'
+import { assets } from '#selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { IAsset } from '@reducers/exchange'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
+import { IAsset } from '#reducers/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 

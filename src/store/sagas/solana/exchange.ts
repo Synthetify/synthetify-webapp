@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { call, put, SagaGenerator, select, all, spawn, takeEvery } from 'typed-redux-saga'
-import { actions as snackbarsActions } from '@reducers/snackbars'
-import { actions } from '@reducers/exchange'
+import { actions as snackbarsActions } from '#reducers/snackbars'
+import { actions } from '#reducers/exchange'
 import {
   collateralAccount,
   collateralToken,
@@ -10,11 +10,11 @@ import {
   mintAuthority,
   swap,
   exchangeAccount
-} from '@selectors/exchange'
-import { accounts, tokenAccount } from '@selectors/solanaWallet'
-import testAdmin from '@consts/testAdmin'
+} from '#selectors/exchange'
+import { accounts, tokenAccount } from '#selectors/solanaWallet'
+import testAdmin from '#consts/testAdmin'
 import * as anchor from '@project-serum/anchor'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { DEFAULT_PUBLICKEY } from '#consts/static'
 import {
   Account,
   TransactionInstruction,
@@ -29,8 +29,8 @@ import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep, signAndSend } from './wallet'
 import { BN, Program } from '@project-serum/anchor'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { tou64 } from '@consts/utils'
-import { getExchangeProgram } from '@web3/programs/exchange'
+import { tou64 } from '#consts/utils'
+import { getExchangeProgram } from '#web3/programs/exchange'
 import { getConnection } from './connection'
 
 export function* pullExchangeState(): Generator {

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { call, put, select } from 'typed-redux-saga'
 
-import { state } from '@selectors/exchange'
-import { actions, IAsset } from '@reducers/exchange'
-import { getManagerProgram } from '@web3/programs/manager'
+import { state } from '#selectors/exchange'
+import { actions, IAsset } from '#reducers/exchange'
+import { getManagerProgram } from '#web3/programs/manager'
 import { addressToAssetSymbol } from '@synthetify/sdk/lib/utils'
 
 export function* pullAssetPrices(): Generator {

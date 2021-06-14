@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors } from '#static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -101,8 +101,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center'
   },
   swapIcon: {
-    marginTop:20,
-    marginBottom:20,
+    marginTop: 20,
+    marginBottom: 20,
     cursor: 'pointer',
     border: '1px solid white',
     borderRadius: 10,

@@ -1,12 +1,12 @@
 import React from 'react'
 
-import Header from '@components/Header/Header'
+import Header from '#components/Header/Header'
 import { useDispatch, useSelector } from 'react-redux'
-import { network } from '@selectors/solanaConnection'
-import { actions } from '@reducers/solanaConnection'
-import { actions as walletActions } from '@reducers/solanaWallet'
-import { SolanaNetworks } from '@web3/connection'
-import { address } from '@selectors/solanaWallet'
+import { network } from '#selectors/solanaConnection'
+import { actions } from '#reducers/solanaConnection'
+import { actions as walletActions } from '#reducers/solanaWallet'
+import { SolanaNetworks } from '#web3/connection'
+import { address } from '#selectors/solanaWallet'
 
 export const HeaderWrapper: React.FC = () => {
   const dispatch = useDispatch()

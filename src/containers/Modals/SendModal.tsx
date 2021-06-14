@@ -1,14 +1,14 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import SendModalComponent from '@components/Modals/SendModal/SendModal'
-import { send } from '@selectors/modals'
-import { actions } from '@reducers/modals'
+import SendModalComponent from '#components/Modals/SendModal/SendModal'
+import { send } from '#selectors/modals'
+import { actions } from '#reducers/modals'
 import { BN } from '@project-serum/anchor'
 import { SvgIcon } from '@material-ui/core'
-import { ReactComponent as SendIcon } from '@static/svg/send_ic.svg'
-import { tokenBalance } from '@selectors/solanaWallet'
-import { tokenTicker } from '@selectors/exchange'
+import { ReactComponent as SendIcon } from '#static/svg/send_ic.svg'
+import { tokenBalance } from '#selectors/solanaWallet'
+import { tokenTicker } from '#selectors/exchange'
 import { PublicKey } from '@solana/web3.js'
 
 export const SendModal = () => {
