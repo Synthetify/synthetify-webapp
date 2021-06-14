@@ -5,7 +5,8 @@ export const colors = {
     background: '#030313',
     light: '#090B1B',
     kinda: '#1A1A1A',
-    greyish: '#081323'
+    greyish: '#081323',
+    cinder: '#0E0C12' // v2.0 background color
   },
   blue: {
     accent: '#072E5A',
@@ -14,13 +15,16 @@ export const colors = {
     base: '#0B2545',
     light: '#66AFF5',
     neon: '#08F7FE',
-    astel: '#48ADF1'
+    astel: '#48ADF1',
+    bastille: '#1E1A23'
   },
   gray: {
     base: '#8DA9C4',
     skeletonBackground: '#8E8B8B',
-    skeletonField: '#C4C4C4',
-    CDCDCD: '#CDCDCD'
+    skeletonField: '#C4C4C4', // v2.0 primary text color
+    CDCDCD: '#CDCDCD',
+    manatee: '#898B9C', // v2.0 secondary text color
+    balticSea: 'rgba(40, 36, 46, 0.6)' // v2.0 secondary background
   },
   green: {
     main: '#00F9BB',

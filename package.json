@@ -26,6 +26,7 @@
     "immer": "^7.0.7",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.19",
+    "node-polyfill-webpack-plugin": "^1.1.2",
     "notistack": "^1.0.0",
     "react": "^16.13.1",
     "react-app-rewire-hot-loader": "^2.0.1",
@@ -46,6 +47,8 @@
     "remeda": "0.0.21",
     "typed-redux-saga": "^1.2.0",
     "typescript": "^4.2.4",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.2",
     "yup": "^0.29.2"
   },
   "scripts": {
@@ -82,6 +85,7 @@
     "@storybook/addon-storysource": "^6.2.9",
     "@storybook/addon-viewport": "^6.2.9",
     "@storybook/addons": "^6.2.9",
+    "@storybook/builder-webpack5": "^6.3.0-rc.4",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.2.9",
     "@storybook/theming": "^6.2.9",
@@ -102,6 +106,7 @@
     "@types/storybook__react": "^5.2.1",
     "@types/yup": "^0.29.3",
     "@typescript-eslint/eslint-plugin": "^3.7.1",
+    "dotenv-webpack": "^7.0.3",
     "eslint": "6.6.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-config-standard-with-typescript": "^18.0.2",
