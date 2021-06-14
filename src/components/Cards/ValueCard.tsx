@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent, Typography } from '@material-ui/core'
+import { Card, CardContent, Typography, Divider } from '@material-ui/core'
 import useStyles from './style'
 
 export interface IProps {
@@ -10,7 +10,7 @@ export interface IProps {
 export const ValueCard: React.FC<IProps> = ({
   name,
   value,
-  onClick,
+  onClick
 }) => {
   const classes = useStyles()
   return (
@@ -19,6 +19,7 @@ export const ValueCard: React.FC<IProps> = ({
         <Typography className={classes.valueCardTitle}>
           {name}
         </Typography>
+        <Divider className={classes.divider}/>
         <Typography className={classes.valueCardAmount}>
           {value}
         </Typography>

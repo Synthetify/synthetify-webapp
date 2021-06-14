@@ -3,8 +3,9 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   valueCard: {
-    backgroundColor: colors.gray.balticSea,
-    borderRadius: 10
+    background: colors.gray.balticSea,
+    borderRadius: 10,
+    padding: '4px 6px'
   },
   valueCardTitle: {
     color: colors.gray.manatee,
@@ -18,6 +19,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: theme.typography.fontFamily,
     fontSize: '35px',
     fontWeight: 700
+  },
+  divider: {
+    width: '177px',
+    marginTop: '8px',
+    marginBottom: '15px',
+    background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
   }
 }))
 
