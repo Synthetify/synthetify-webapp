@@ -3,7 +3,17 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
-    background: colors.blue.bastille
+    background: colors.blue.bastille,
+    color: colors.gray.DB,
+    textTransform: 'none',
+    fontSize: 16,
+    lineHeight: '40px',
+    padding: '2px 25px',
+
+    '&:hover': {
+      background: colors.black.cinder,
+      color: colors.gray.skeletonField
+    }
   },
   buttonBlack: {
     borderRadius: 10,
