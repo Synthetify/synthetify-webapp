@@ -9,6 +9,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '40px',
     padding: '2px 25px',
+    borderRadius: 10,
+
+    '&:hover': {
+      background: colors.black.controls,
+      color: colors.gray.skeletonField
+    }
+  },
+  dropdownHeaderButton: {
+    background: colors.blue.bastille,
+    color: colors.gray.DB,
+    textTransform: 'none',
+    fontSize: 16,
+    lineHeight: '40px',
+    padding: '2px 15px',
+    borderRadius: 12,
 
     '&:hover': {
       background: colors.black.controls,
