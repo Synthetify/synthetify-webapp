@@ -41,6 +41,8 @@ const StyledTab = withStyles(() =>
 
 const useStyles = makeStyles(() => ({
   root: {
+    display: 'flex',
+    justifyContent: 'center',
     borderWidth: 1,
     borderBlockStyle: 'solid',
     borderColor: colors.gray.manatee,
