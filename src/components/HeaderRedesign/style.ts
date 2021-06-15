@@ -8,8 +8,8 @@ const useStyles = makeStyles(() => ({
     height: 100
   },
   snyLogo: {
-    width: 42,
-    height: 42,
+    width: 60,
+    height: 60,
     marginRight: 20
   }
 }))

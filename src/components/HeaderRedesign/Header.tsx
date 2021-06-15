@@ -11,12 +11,17 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
 
   return (
     <>
-      <Grid container className={classes.root} wrap='nowrap' justify='flex-end' alignItems='center'>
-        <Grid item>
+      <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
+        <Grid item spacing={8}>
           <CardMedia
             className={classes.snyLogo}
             image={snyIcon}
           />
+        </Grid>
+        <Grid item>
+          <NavbarButton name='Staking' onClick={() => {}}/>
+          <NavbarButton name='Stats' onClick={() => {}}/>
+          <NavbarButton name='Exchange' onClick={() => {}}/>
         </Grid>
       </Grid>
     </>
