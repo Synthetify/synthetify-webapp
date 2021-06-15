@@ -4,7 +4,8 @@ import FilledButton from './FilledButton'
 import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
 import HeaderButton from './HeaderButton'
-import DropdownHeaderButton from './DropdownHeaderButtom'
+import DropdownHeaderButton from './DropdownHeaderButton'
+import DropdownMenu from './DropdownMenu'
 
 storiesOf('buttons/FilledButton', module)
   .addDecorator(withKnobs)
@@ -15,7 +16,7 @@ storiesOf('buttons/FilledButton', module)
   .add('headerDefault', () => <HeaderButton name='Mainnet' onClick={action('clicked')} />)
   .add('headerToOverlay', () => (
     <div>
-      <DropdownHeaderButton name='Open Dropdown' classToBlur='blur-at-overlay' />
+      <DropdownHeaderButton dropdown={<DropdownMenu name='test' />} name='Open Dropdown' classToBlur='blur-at-overlay' />
       <div className='blur-at-overlay'>
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
         been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
