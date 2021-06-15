@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '2px 25px',
 
     '&:hover': {
-      background: colors.black.cinder,
+      background: colors.black.controls,
       color: colors.gray.skeletonField
     }
   },
