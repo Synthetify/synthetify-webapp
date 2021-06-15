@@ -15,7 +15,7 @@ interface StyledTabsProps {
 
 const StyledTabs = withStyles({
   indicator: {
-    backgroundColor: colors.black.controls
+    display: 'none'
   }
 })((props: StyledTabsProps) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />)
 
@@ -32,7 +32,8 @@ const StyledTab = withStyles(() =>
       color: colors.gray.manatee,
       '&:focus': {
         fontWeight: 600,
-        color: colors.gray.C4
+        color: colors.gray.C4,
+        backgroundColor: colors.black.controls
       }
     }
   })
