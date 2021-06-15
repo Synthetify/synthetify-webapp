@@ -24,6 +24,7 @@ export const colors = {
     skeletonBackground: '#8E8B8B',
     skeletonField: '#C4C4C4', // v2.0 primary text color
     CDCDCD: '#CDCDCD',
+    gunPowder: '#44424F',
     C4: '#C4C4C4',
     manatee: '#898B9C', // v2.0 secondary text color
     balticSea: 'rgba(40, 36, 46, 0.6)' // v2.0 secondary background
