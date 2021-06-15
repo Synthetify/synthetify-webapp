@@ -1,27 +1,29 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 
 export interface IProps {
   name: string
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   disabled?: boolean
 }
-export const HeaderButton: React.FC<IProps> = ({
+export const DropdownHeaderButton: React.FC<IProps> = ({
   name,
-  onClick,
   disabled = false
 }) => {
   const classes = useStyles()
   return (
     <Button
-      className={classes.headerButton}
+      className={classes.dropdownHeaderButton}
       variant='contained'
       classes={{ disabled: classes.disabled }}
       disabled={disabled}
-      onClick={onClick}>
+      onClick={() => {
+        console.log('a')
+      }}
+      endIcon={<ExpandMoreIcon />}>
       {name}
     </Button>
   )
 }
-export default HeaderButton
+export default DropdownHeaderButton
