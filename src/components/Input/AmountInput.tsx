@@ -19,7 +19,11 @@ export const AmountInput: React.FC<IProps> = ({ setValue, currency, value, error
       type={'text'}
       value={value}
       disableUnderline={true}
-      endAdornment={<InputAdornment position='end' className={classes.currency}>|&nbsp;&nbsp;{currency}</InputAdornment>}
+      endAdornment={
+        <InputAdornment position='end' className={classes.currency}>
+          |&nbsp;&nbsp;{currency}
+        </InputAdornment>
+      }
       onChange={e => {
         setValue(e.target.value)
         value = e.target.value
