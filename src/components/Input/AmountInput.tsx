@@ -4,17 +4,12 @@ import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
+  currency: string
   value?: string
-  label?: string
   error?: string | null
 }
 
-export const AmountInput: React.FC<IProps> = ({
-  setValue,
-  value,
-  label,
-  error
-}) => {
+export const AmountInput: React.FC<IProps> = ({ setValue, currency, value, error }) => {
   const classes = useStyles()
   return (
     <Input
@@ -23,7 +18,8 @@ export const AmountInput: React.FC<IProps> = ({
       color='primary'
       type={'text'}
       value={value}
-      endAdornment={<InputAdornment>| xUSD</InputAdornment>}
+      disableUnderline={true}
+      endAdornment={<InputAdornment position='end' className={classes.currency}>|&nbsp;&nbsp;{currency}</InputAdornment>}
       onChange={e => {
         setValue(e.target.value)
         value = e.target.value
