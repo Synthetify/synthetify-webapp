@@ -7,17 +7,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: 'rgba(0, 0, 0, 0)',
     fontFamily: theme.typography.fontFamily,
     color: colors.gray.manatee,
-    padding: '5px 20px',
+    padding: '2px 20px',
     lineHeight: '40px',
     borderRadius: 5,
-    fontSize: '18px',
+    fontSize: '16px',
     textTransform: 'none',
     boxShadow: 'none',
 
     '&:hover': {
       background: colors.blue.bastille,
       color: colors.gray.skeletonField,
-      fontWeight: 600
+      fontWeight: 700
     }
   },
   disabled: {
