@@ -17,7 +17,7 @@ export const colors = {
     light: '#66AFF5',
     neon: '#08F7FE',
     astel: '#48ADF1',
-    bastille: '#1E1A23'
+    bastille: '#1E1A23' // v2.0 header button color
   },
   gray: {
     base: '#8DA9C4',

@@ -2,6 +2,9 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  headerButton: {
+    background: colors.blue.bastille
+  },
   buttonBlack: {
     borderRadius: 10,
     fontWeight: 'normal',
