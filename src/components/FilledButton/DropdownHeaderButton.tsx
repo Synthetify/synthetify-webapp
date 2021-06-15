@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Popover } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 
@@ -24,7 +24,6 @@ const blurAllOfClass = (className: string) => {
 
 export interface IProps {
   name: string
-  dropdown: JSX.Element
   classToBlur?: string
   disabled?: boolean
   onClick?: () => void
@@ -35,10 +34,24 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
   classToBlur = 'blur-at-overlay',
   disabled = false,
   startIcon,
-  dropdown,
   onClick = () => {}
 }) => {
   const classes = useStyles()
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+    blurAllOfClass(classToBlur)
+    onClick()
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+
   return (
     <div>
       <Button
@@ -46,15 +59,25 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
         variant='contained'
         classes={{ disabled: classes.disabled }}
         disabled={disabled}
-        onClick={() => {
-          blurAllOfClass(classToBlur)
-          onClick()
-        }}
+        onClick={handleClick}
         startIcon={startIcon}
         endIcon={<ExpandMoreIcon />}>
         {name}
       </Button>
-      {dropdown}
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}>
+        The content of the Popover
+      </Popover>
     </div>
   )
 }
