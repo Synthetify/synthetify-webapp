@@ -29,12 +29,12 @@ const StyledTab = withStyles(() =>
       textTransform: 'none',
       fontWeight: 400,
       fontSize: 22,
-      color: colors.gray.manatee,
-      '&:focus': {
-        fontWeight: 600,
-        color: colors.gray.C4,
-        backgroundColor: colors.black.controls
-      }
+      color: colors.gray.manatee
+    },
+    selected: {
+      fontWeight: 600,
+      color: colors.gray.C4,
+      backgroundColor: colors.black.controls
     }
   })
 )((props: StyledTabProps) => <Tab disableRipple {...props} />)
