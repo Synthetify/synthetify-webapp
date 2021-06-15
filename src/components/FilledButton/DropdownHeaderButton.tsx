@@ -1,24 +1,29 @@
 import React from 'react'
-import { Button, Popover } from '@material-ui/core'
+import { Button, Popover, Typography } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 
 const blurAllOfClass = (className: string) => {
   const els = document.getElementsByClassName(className)
 
-  const filters = 'blur(4px) brightness(0.4)'
+  for (const i in els) {
+    const el = els[i] as HTMLElement
+    if (!el.style) {
+      return
+    }
+    el.style.filter = 'blur(4px) brightness(0.4)'
+  }
+}
+
+const resetFiltersOfClass = (className: string) => {
+  const els = document.getElementsByClassName(className)
 
   for (const i in els) {
     const el = els[i] as HTMLElement
     if (!el.style) {
       return
     }
-
-    if (el.style.filter !== filters) {
-      el.style.filter = filters
-    } else {
-      el.style.filter = 'none'
-    }
+    el.style.filter = 'none'
   }
 }
 
@@ -48,9 +53,8 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
 
   const handleClose = () => {
     setAnchorEl(null)
+    resetFiltersOfClass(classToBlur)
   }
-
-  const open = Boolean(anchorEl)
 
   return (
     <div>
@@ -65,7 +69,7 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
         {name}
       </Button>
       <Popover
-        open={open}
+        open={!!anchorEl}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
@@ -76,7 +80,7 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
           vertical: 'top',
           horizontal: 'center'
         }}>
-        The content of the Popover
+        <Typography className={classes.textInsidePopover}>The content of the Popover</Typography>
       </Popover>
     </div>
   )

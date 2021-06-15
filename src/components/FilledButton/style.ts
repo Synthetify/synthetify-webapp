@@ -2,6 +2,10 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  textInsidePopover: {
+    color: colors.black.cinder,
+    fontSize: 18
+  },
   dropdownMenu: {
     color: 'pink',
     background: colors.blue.bastille,
