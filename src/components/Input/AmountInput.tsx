@@ -1,11 +1,11 @@
-import { Input } from '@material-ui/core'
+import { Input, InputAdornment } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
-  value: string
-  label: string
+  value?: string
+  label?: string
   error?: string | null
 }
 
@@ -23,8 +23,10 @@ export const AmountInput: React.FC<IProps> = ({
       color='primary'
       type={'text'}
       value={value}
+      endAdornment={<InputAdornment>| xUSD</InputAdornment>}
       onChange={e => {
         setValue(e.target.value)
+        value = e.target.value
       }}
     />
   )
