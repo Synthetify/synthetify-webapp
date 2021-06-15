@@ -35,7 +35,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
         <Grid item xs={4}>
           <Grid container>
             <Grid item>
-              <CardMedia style={{ width: 32, height: 32, marginRight: 10 }} image={icon} />
+              <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icon} />
             </Grid>
             <Grid item>
               <Typography variant='h5' color='textPrimary' className={classes.tokenSymbol}>
