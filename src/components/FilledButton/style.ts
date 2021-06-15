@@ -2,6 +2,16 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  dropdownMenu: {
+    color: 'pink',
+    background: colors.blue.bastille,
+    padding: 20,
+    width: 200,
+    height: 100,
+    position: 'absolute',
+    top: 120,
+    zIndex: 100
+  },
   headerButton: {
     background: colors.blue.bastille,
     color: colors.gray.DB,

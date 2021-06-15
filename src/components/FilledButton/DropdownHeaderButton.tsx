@@ -6,7 +6,7 @@ import useStyles from './style'
 const blurAllOfClass = (className: string) => {
   const els = document.getElementsByClassName(className)
 
-  const filters = 'blur(4px)'
+  const filters = 'blur(4px) brightness(0.4)'
 
   for (const i in els) {
     const el = els[i] as HTMLElement
@@ -24,6 +24,7 @@ const blurAllOfClass = (className: string) => {
 
 export interface IProps {
   name: string
+  dropdown: JSX.Element
   classToBlur?: string
   disabled?: boolean
   onClick?: () => void
@@ -34,22 +35,27 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
   classToBlur = 'blur-at-overlay',
   disabled = false,
   startIcon,
+  dropdown,
   onClick = () => {}
 }) => {
   const classes = useStyles()
   return (
-    <Button
-      className={classes.dropdownHeaderButton}
-      variant='contained'
-      classes={{ disabled: classes.disabled }}
-      disabled={disabled}
-      onClick={() => {
-        blurAllOfClass(classToBlur)
-      }}
-      startIcon={startIcon}
-      endIcon={<ExpandMoreIcon />}>
-      {name}
-    </Button>
+    <div>
+      <Button
+        className={classes.dropdownHeaderButton}
+        variant='contained'
+        classes={{ disabled: classes.disabled }}
+        disabled={disabled}
+        onClick={() => {
+          blurAllOfClass(classToBlur)
+          onClick()
+        }}
+        startIcon={startIcon}
+        endIcon={<ExpandMoreIcon />}>
+        {name}
+      </Button>
+      {dropdown}
+    </div>
   )
 }
 export default DropdownHeaderButton
