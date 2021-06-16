@@ -17,7 +17,8 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
         <Grid item>
           <CardMedia className={classes.snyLogo} image={snyIcon} />
         </Grid>
-        <Grid item container spacing={1} justify='center' wrap='nowrap' alignItems='center'>
+        <Grid item/>
+        <Grid item container spacing={1} wrap='nowrap' alignItems='center'>
           <Grid item>
             <NavbarButton name='Staking' onClick={() => {}} />
           </Grid>
@@ -36,13 +37,11 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
             <HeaderButton name='Connect a wallet' />
           </Grid>
           <Grid item zeroMinWidth />
-          <Grid item zeroMinWidth />
           <Grid item>
-            <IconButton onClick={action('more')}>
+            <IconButton className={classes.iconButton} onClick={action('more')}>
               <MoreHoriz fontSize='large' className={classes.dotsIcon} />
             </IconButton>
           </Grid>
-          <Grid item zeroMinWidth />
         </Grid>
       </Grid>
     </>

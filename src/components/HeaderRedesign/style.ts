@@ -8,12 +8,22 @@ const useStyles = makeStyles(() => ({
     height: 100
   },
   snyLogo: {
-    width: 48,
-    height: 36,
+    width: 60,
+    height: 44,
     marginRight: 20
   },
   dotsIcon: {
     fill: colors.gray.C4
+  },
+  iconButton: {
+    margin: 30,
+    marginRight: 50,
+
+    '&:hover': {
+      background: colors.blue.bastille,
+      color: colors.gray.skeletonField,
+      fontWeight: 700
+    }
   }
 }))
 
