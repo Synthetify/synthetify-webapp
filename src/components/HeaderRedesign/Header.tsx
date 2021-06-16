@@ -15,6 +15,15 @@ export interface IHeader {
   typeOfWallet?: 'phantom'
 }
 
+const shortenAdress = (address: string): string => {
+  let result = '0x'
+
+  for (let i = 0; i < 4; i++) result += address[i]
+  result += '...'
+  for (let i = 1; i < 5; i++) result += address[address.length - i]
+  return result
+}
+
 export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }) => {
   const classes = useStyles()
 
@@ -50,7 +59,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }
                     />
                   ) : undefined
                 }
-                name={address}
+                name={shortenAdress(address)}
               />
             )}
           </Grid>
