@@ -8,14 +8,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 100
   },
   snyLogo: {
-    width: 70,
-    height: 40,
+    width: 80,
+    height: 44,
     margin: 10,
     marginLeft: 50,
-    marginRight: 300,
+    marginRight: 80,
 
     [theme.breakpoints.down('sm')]: {
-      marginLeft: 20,
+      marginLeft: 30,
       marginRight: 20
     }
   },
@@ -23,8 +23,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     fill: colors.gray.C4
   },
   iconButton: {
-    marginRight: 50,
+    marginRight: 90,
+    marginLeft: 50,
     minWidth: 60,
+
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 30,
+      marginRight: 50
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      marginRight: 0
+    },
 
     '&:hover': {
       background: colors.blue.bastille,

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     padding: '2px 25px',
     borderRadius: 10,
+    minWidth: 80,
 
     '&:hover': {
       background: colors.black.controls,
