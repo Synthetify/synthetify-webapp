@@ -1,5 +1,6 @@
 import React from 'react'
-import { Grid, CardMedia } from '@material-ui/core'
+import { Grid, CardMedia, IconButton } from '@material-ui/core'
+import { action } from '@storybook/addon-actions'
 import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
@@ -38,8 +39,11 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
             <Grid item>
               <HeaderButton name="Connect a wallet"/>
             </Grid>
+            <Grid item zeroMinWidth/>
             <Grid item>
-              <NavbarButton name='&#8203;' startIcon={<MoreHoriz fontSize="large"/>}/>
+              <IconButton onClick={action('more')}>
+                <MoreHoriz className={classes.dotsIcon} />
+              </IconButton>
             </Grid>
           </Grid>
         </Grid>

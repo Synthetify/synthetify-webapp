@@ -12,8 +12,8 @@ const useStyles = makeStyles(() => ({
     height: 36,
     marginRight: 20
   },
-  dotsButton: {
-    fontSize: 60
+  dotsIcon: {
+    fill: colors.gray.C4
   }
 }))
 
