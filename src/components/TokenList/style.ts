@@ -3,7 +3,10 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    backgroundColor: colors.blue.bastille
+    backgroundColor: colors.blue.bastille,
+    '& > *': {
+      marginTop: 20
+    }
   },
   card: {
     background: colors.blue.bastille,
