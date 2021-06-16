@@ -10,6 +10,6 @@ storiesOf('ui/HeaderRedesign', module)
   .add('default', () => {
     return <Header address={DEFAULT_PUBLICKEY.toString()} />
   })
-  .add('notConnected', () => {
-    return <Header address='some address' />
+  .add('connected', () => {
+    return <Header address='0xB6D5...474B' typeOfWallet='phantom'/>
   })

@@ -8,11 +8,14 @@ import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/FilledButton/HeaderButton'
 import DropdownHeaderButton from '@components/FilledButton/DropdownHeaderButton'
 import { MoreHoriz } from '@material-ui/icons'
+import PhantomIcon from '@static/png/phantom.png'
 
 export interface IHeader {
   address: string
+  typeOfWallet?: 'phantom'
 }
-export const HeaderRedesign: React.FC<IHeader> = ({ address }) => {
+
+export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }) => {
   const classes = useStyles()
 
   return (
@@ -36,9 +39,19 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address }) => {
           </Grid>
           <Grid item>
             {address === DEFAULT_PUBLICKEY.toString() ? (
-              <DropdownHeaderButton name={address[0] + address[1] + address[2] } />
-            ) : (
               <HeaderButton name='Connect a wallet' />
+            ) : (
+              <DropdownHeaderButton
+                startIcon={
+                  typeOfWallet == 'phantom' ? (
+                    <CardMedia
+                      style={{ width: 21, height: 21, marginRight: 5 }}
+                      image={PhantomIcon}
+                    />
+                  ) : undefined
+                }
+                name={address}
+              />
             )}
           </Grid>
           <IconButton className={classes.iconButton} onClick={action('more')}>
