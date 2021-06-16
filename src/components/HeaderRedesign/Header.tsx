@@ -19,7 +19,7 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
             image={snyIcon}
           />
         </Grid>
-        <Grid item />
+        <Grid item zeroMinWidth/>
         <Grid item container spacing={1} wrap='nowrap'>
           <Grid item>
             <NavbarButton name='Staking' onClick={() => {}}/>
@@ -30,11 +30,13 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
           <Grid item>
             <NavbarButton name='Exchange' onClick={() => {}}/>
           </Grid>
-          <Grid>
-            <HeaderButton name="Mainnet"/>
-          </Grid>
-          <Grid>
-            <HeaderButton name="Connect a wallet"/>
+          <Grid container item justify='flex-end' spacing={1}>
+            <Grid item>
+              <HeaderButton name="Mainnet"/>
+            </Grid>
+            <Grid item>
+              <HeaderButton name="Connect a wallet"/>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
