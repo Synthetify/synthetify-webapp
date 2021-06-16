@@ -11,6 +11,9 @@ const useStyles = makeStyles(() => ({
     width: 48,
     height: 36,
     marginRight: 20
+  },
+  dotsButton: {
+    fontSize: 60
   }
 }))
 

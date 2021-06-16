@@ -4,6 +4,7 @@ import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/FilledButton/HeaderButton'
+import { MoreHoriz } from '@material-ui/icons'
 
 export interface IHeader {
 }
@@ -30,12 +31,15 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
           <Grid item>
             <NavbarButton name='Exchange' onClick={() => {}}/>
           </Grid>
-          <Grid container item justify='flex-end' spacing={1}>
+          <Grid container item justify='flex-end' spacing={1} wrap='nowrap'>
             <Grid item>
               <HeaderButton name="Mainnet"/>
             </Grid>
             <Grid item>
               <HeaderButton name="Connect a wallet"/>
+            </Grid>
+            <Grid item>
+              <NavbarButton name='&#8203;' startIcon={<MoreHoriz fontSize="large"/>}/>
             </Grid>
           </Grid>
         </Grid>
