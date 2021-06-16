@@ -3,20 +3,19 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   root: {
     background: colors.black.cinder,
-    padding: '25px',
     paddingRight: 0,
     height: 100
   },
   snyLogo: {
     width: 60,
     height: 44,
-    marginRight: 20
+    margin: 20
   },
   dotsIcon: {
     fill: colors.gray.C4
   },
   iconButton: {
-    margin: 30,
+    marginLeft: 30,
     marginRight: 50,
 
     '&:hover': {
@@ -24,6 +23,12 @@ const useStyles = makeStyles(() => ({
       color: colors.gray.skeletonField,
       fontWeight: 700
     }
+  },
+  divider: {
+    width: '100%',
+    marginTop: 15,
+    marginLeft: -17,
+    background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
   }
 }))
 

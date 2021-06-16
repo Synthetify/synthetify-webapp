@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, CardMedia, IconButton } from '@material-ui/core'
+import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
 import { action } from '@storybook/addon-actions'
 import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
@@ -31,7 +31,7 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
         </Grid>
         <Grid container item justify='flex-end' spacing={1} wrap='nowrap' alignItems='center'>
           <Grid item>
-            <HeaderButton name='Mainnet' />
+            <HeaderButton name='Mainnet'/>
           </Grid>
           <Grid item>
             <HeaderButton name='Connect a wallet' />
@@ -44,6 +44,7 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Divider className={classes.divider}/>
     </>
   )
 }
