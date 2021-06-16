@@ -5,6 +5,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.blue.bastille
   },
+  card: {
+    background: colors.blue.bastille,
+    borderRadius: 10,
+    padding: 32
+  },
   ownedTokens: {
     fontWeight: 400,
     color: colors.gray.manatee,
