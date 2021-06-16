@@ -2,16 +2,18 @@ import React from 'react'
 import { ColorProperty } from 'csstype'
 
 export interface IProps {
-  color?: ColorProperty
+  color: ColorProperty
+  height: number
 }
 
-export const Separator: React.FC<IProps> = ({ color }) => {
+export const Separator: React.FC<IProps> = ({ color, height }) => {
   return (
     <hr
       style={{
         color: color,
         backgroundColor: color,
-        height: 5
+        borderWidth: 0,
+        height: height
       }}
     />
   )
