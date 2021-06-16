@@ -1,22 +1,30 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
-const useStyles = makeStyles(() => ({
+
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.black.cinder,
     paddingRight: 0,
     height: 100
   },
   snyLogo: {
-    width: 60,
-    height: 44,
-    margin: 20
+    width: 70,
+    height: 40,
+    margin: 10,
+    marginLeft: 50,
+    marginRight: 300,
+
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 20,
+      marginRight: 20
+    }
   },
   dotsIcon: {
     fill: colors.gray.C4
   },
   iconButton: {
-    marginLeft: 30,
     marginRight: 50,
+    minWidth: 60,
 
     '&:hover': {
       background: colors.blue.bastille,
