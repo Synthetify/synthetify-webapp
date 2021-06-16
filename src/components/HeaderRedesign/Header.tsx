@@ -1,14 +1,18 @@
 import React from 'react'
 import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
 import { action } from '@storybook/addon-actions'
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/FilledButton/HeaderButton'
+import DropdownHeaderButton from '@components/FilledButton/DropdownHeaderButton'
 import { MoreHoriz } from '@material-ui/icons'
 
-export interface IHeader {}
-export const HeaderRedesign: React.FC<IHeader> = () => {
+export interface IHeader {
+  address: string
+}
+export const HeaderRedesign: React.FC<IHeader> = ({ address }) => {
   const classes = useStyles()
 
   return (
@@ -28,17 +32,21 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
         </Grid>
         <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
           <Grid item>
-            <HeaderButton name='Mainnet'/>
+            <HeaderButton name='Mainnet' />
           </Grid>
           <Grid item>
-            <HeaderButton name='Connect a wallet' />
+            {address === DEFAULT_PUBLICKEY.toString() ? (
+              <DropdownHeaderButton name={address[0] + address[1] + address[2] } />
+            ) : (
+              <HeaderButton name='Connect a wallet' />
+            )}
           </Grid>
           <IconButton className={classes.iconButton} onClick={action('more')}>
             <MoreHoriz fontSize='large' className={classes.dotsIcon} />
           </IconButton>
         </Grid>
       </Grid>
-      <Divider className={classes.divider}/>
+      <Divider className={classes.divider} />
     </>
   )
 }
