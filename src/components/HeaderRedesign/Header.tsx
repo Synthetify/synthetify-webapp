@@ -7,8 +7,7 @@ import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/FilledButton/HeaderButton'
 import { MoreHoriz } from '@material-ui/icons'
 
-export interface IHeader {
-}
+export interface IHeader {}
 export const HeaderRedesign: React.FC<IHeader> = () => {
   const classes = useStyles()
 
@@ -16,36 +15,34 @@ export const HeaderRedesign: React.FC<IHeader> = () => {
     <>
       <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
         <Grid item>
-          <CardMedia
-            className={classes.snyLogo}
-            image={snyIcon}
-          />
+          <CardMedia className={classes.snyLogo} image={snyIcon} />
         </Grid>
-        <Grid item zeroMinWidth/>
-        <Grid item container spacing={1} wrap='nowrap'>
+        <Grid item container spacing={1} justify='center' wrap='nowrap' alignItems='center'>
           <Grid item>
-            <NavbarButton name='Staking' onClick={() => {}}/>
-          </Grid>
-          <Grid item>
-            <NavbarButton name='Stats' onClick={() => {}}/>
+            <NavbarButton name='Staking' onClick={() => {}} />
           </Grid>
           <Grid item>
-            <NavbarButton name='Exchange' onClick={() => {}}/>
+            <NavbarButton name='Stats' onClick={() => {}} />
           </Grid>
-          <Grid container item justify='flex-end' spacing={1} wrap='nowrap'>
-            <Grid item>
-              <HeaderButton name="Mainnet"/>
-            </Grid>
-            <Grid item>
-              <HeaderButton name="Connect a wallet"/>
-            </Grid>
-            <Grid item zeroMinWidth/>
-            <Grid item>
-              <IconButton onClick={action('more')}>
-                <MoreHoriz className={classes.dotsIcon} />
-              </IconButton>
-            </Grid>
+          <Grid item>
+            <NavbarButton name='Exchange' onClick={() => {}} />
           </Grid>
+        </Grid>
+        <Grid container item justify='flex-end' spacing={1} wrap='nowrap' alignItems='center'>
+          <Grid item>
+            <HeaderButton name='Mainnet' />
+          </Grid>
+          <Grid item>
+            <HeaderButton name='Connect a wallet' />
+          </Grid>
+          <Grid item zeroMinWidth />
+          <Grid item zeroMinWidth />
+          <Grid item>
+            <IconButton onClick={action('more')}>
+              <MoreHoriz fontSize='large' className={classes.dotsIcon} />
+            </IconButton>
+          </Grid>
+          <Grid item zeroMinWidth />
         </Grid>
       </Grid>
     </>
