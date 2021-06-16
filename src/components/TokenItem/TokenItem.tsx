@@ -38,19 +38,19 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
               <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icon} />
             </Grid>
             <Grid item>
-              <Typography variant='h5' color='textPrimary' className={classes.tokenSymbol}>
+              <Typography variant='h5' color='textPrimary' className={classes.font}>
                 {token.ticker}
               </Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={4}>
-          <Typography variant='h5' color='textPrimary' className={classes.balance}>
+          <Typography variant='h5' color='textPrimary' className={classes.font}>
             {printBN(token.balance, token.decimals)}
           </Typography>
         </Grid>
         <Grid item xs={4}>
-          <Typography variant='h5' color='textPrimary' className={classes.usdValue}>
+          <Typography variant='h5' color='textPrimary' className={classes.font}>
             $ {printBN(new BN(printUSD), 4)}
           </Typography>
         </Grid>
