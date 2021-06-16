@@ -8,8 +8,8 @@ import { withKnobs } from '@storybook/addon-knobs'
 storiesOf('ui/HeaderRedesign', module)
   .addDecorator(withKnobs)
   .add('default', () => {
-    return <Header address={DEFAULT_PUBLICKEY.toString()} />
+    return <Header address={DEFAULT_PUBLICKEY.toString()} network='Mainnet'/>
   })
   .add('connected', () => {
-    return <Header address='B6D50000474B' typeOfWallet='phantom'/>
+    return <Header address='B6D50000474B' typeOfWallet='phantom' network='Mainnet'/>
   })

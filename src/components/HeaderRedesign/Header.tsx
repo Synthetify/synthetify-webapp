@@ -1,6 +1,5 @@
 import React from 'react'
 import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
-import { action } from '@storybook/addon-actions'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
@@ -12,6 +11,7 @@ import PhantomIcon from '@static/png/phantom.png'
 
 export interface IHeader {
   address: string
+  network: string
   typeOfWallet?: 'phantom'
 }
 
@@ -24,14 +24,14 @@ const shortenAdress = (address: string): string => {
   return result
 }
 
-export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }) => {
+export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWallet = '' }) => {
   const classes = useStyles()
 
   return (
     <>
       <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
         <CardMedia className={classes.snyLogo} image={snyIcon} />
-        <Grid item container spacing={1} wrap='nowrap' alignItems='center'>
+        <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
           <Grid item>
             <NavbarButton name='Staking' onClick={() => {}} />
           </Grid>
@@ -44,7 +44,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }
         </Grid>
         <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
           <Grid item>
-            <HeaderButton name='Mainnet' />
+            <HeaderButton name={network} />
           </Grid>
           <Grid item>
             {address === DEFAULT_PUBLICKEY.toString() ? (
@@ -52,7 +52,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }
             ) : (
               <DropdownHeaderButton
                 startIcon={
-                  typeOfWallet == 'phantom' ? (
+                  typeOfWallet === 'phantom' ? (
                     <CardMedia
                       style={{ width: 21, height: 21, marginRight: 5 }}
                       image={PhantomIcon}
@@ -63,7 +63,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, typeOfWallet = '' }
               />
             )}
           </Grid>
-          <IconButton className={classes.iconButton} onClick={action('more')}>
+          <IconButton className={classes.iconButton} onClick={() => {}}>
             <MoreHoriz fontSize='large' className={classes.dotsIcon} />
           </IconButton>
         </Grid>
