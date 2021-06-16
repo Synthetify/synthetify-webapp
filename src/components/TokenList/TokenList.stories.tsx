@@ -4,6 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { TokenList } from '@components/TokenList/TokenList'
 import { IToken } from '@components/TokenItem/TokenItem'
 import { BN } from '@project-serum/anchor'
+import { action } from '@storybook/addon-actions'
 
 const xSNY: IToken = {
   ticker: '$SNY',
@@ -37,4 +38,4 @@ const tokens = [xSNY, xBTC, SOL, FTT]
 
 storiesOf('Tokens/tokenList', module)
   .addDecorator(withKnobs)
-  .add('Token list example', () => <TokenList tokens={tokens} />)
+  .add('Token list example', () => <TokenList tokens={tokens} addAccount={action('addAccount')} />)

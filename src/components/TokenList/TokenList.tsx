@@ -4,12 +4,14 @@ import { Grid, Typography } from '@material-ui/core'
 import { colors } from '@static/theme'
 import Separator from './Separator/Separator'
 import useStyles from './style'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 
 export interface IProps {
   tokens: IToken[]
+  addAccount: () => void
 }
 
-export const TokenList: React.FC<IProps> = ({ tokens }) => {
+export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
   const classes = useStyles()
   const items = tokens.map((token, index) => (
     <Grid item key={index}>
@@ -20,6 +22,17 @@ export const TokenList: React.FC<IProps> = ({ tokens }) => {
 
   return (
     <Grid item xs={12} className={classes.root} style={{ overflowX: 'hidden' }}>
+      <Grid container justify='space-between'>
+        <Grid item>
+          <Typography className={classes.ownedTokens}>Owned tokens</Typography>
+        </Grid>
+        <Grid item>
+          <OutlinedButton onClick={addAccount} name='Add account' />
+        </Grid>
+      </Grid>
+      <Grid>
+        <Separator color={colors.black.controls} height={1} />
+      </Grid>
       <Grid container>
         <Grid item xs={12} className={classes.headerFont}>
           <Grid container style={{ flexWrap: 'nowrap' }}>
