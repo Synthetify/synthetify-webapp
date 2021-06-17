@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Modal } from '@material-ui/core'
+import { Typography, Modal, Divider, Box } from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 
@@ -27,7 +27,10 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   return (
     <Modal className={classes.root} open={open} onClose={handleClose}>
-      <Typography className={classes.modalName}>Select a token</Typography>
+      <Box>
+        <Typography className={classes.modalName}>Select a token</Typography>
+        <Divider className={classes.divider}/>
+      </Box>
     </Modal>
   )
 }

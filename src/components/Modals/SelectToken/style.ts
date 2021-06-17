@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.C4,
     fontSize: 22,
     lineHeight: '40px'
+  },
+  divider: {
+    width: '350px',
+    marginTop: '8px',
+    marginBottom: '15px',
+    background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
   }
 }))
 
