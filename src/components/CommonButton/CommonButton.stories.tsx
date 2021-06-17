@@ -11,3 +11,8 @@ storiesOf('buttons/CommonButton', module)
       <MaxButton onClick={action('clicked')} />
     </div>
   ))
+  .add('maxButton:disabled', () => (
+    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+      <MaxButton disabled={true} onClick={action('clicked disabled')} />
+    </div>
+  ))
