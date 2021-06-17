@@ -11,10 +11,12 @@ storiesOf('buttons/HeaderButton', module)
   .add('headerDefault', () => <HeaderButton name='Mainnet' onClick={action('clicked')} />)
   .add('headerToOverlay', () => (
     <div>
-      <DropdownHeaderButton name='Open Dropdown'/>
-      <br/>
+      <DropdownHeaderButton name='Open Dropdown' />
+      <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris nisi ut aliquip ex ea commodo consequat.
       </div>
     </div>
   ))

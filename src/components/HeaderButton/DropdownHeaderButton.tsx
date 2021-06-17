@@ -19,16 +19,19 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
+  const [open, setOpen] = React.useState<boolean>(false)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
+    // could use rewriting to backdrop-filter when browser support is better
     blurContent()
     onClick()
+    setOpen(true)
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
     unblurContent()
+    setOpen(false)
   }
 
   return (
@@ -44,7 +47,7 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
         {name}
       </Button>
       <Popover
-        open={!!anchorEl}
+        open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
