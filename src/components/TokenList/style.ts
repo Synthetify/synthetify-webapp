@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     padding: 32
   },
+  header: {
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
+    }
+  },
   ownedTokens: {
     fontWeight: 400,
     color: colors.gray.manatee,
