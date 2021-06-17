@@ -30,11 +30,13 @@ export const colors = {
     DB: '#DBDBDB', // v2.0 header button text
     manatee: '#898B9C', // v2.0 secondary text color
     balticSea: 'rgba(40, 36, 46, 0.6)', // v2.0 secondary background
+    C7C9D1: '#C7C9D1', // v2.0
     veryLight: '#E3E4E8', // v2.0 highlighted font
     light: '#9DA0AE', // v2.0 text
     mid: '#4C4C67', // v2.0
+    upperMid: '#343446', // v2.0
     dark: '#1E202E', // v2.0 background
-    component: '#272735'
+    component: '#272735' // v2.0
   },
   green: {
     main: '#00F9BB',
