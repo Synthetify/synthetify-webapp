@@ -1,6 +1,5 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import * as R from 'remeda'
 import { assets } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
@@ -10,22 +9,13 @@ import { IAsset } from '@reducers/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
-export const { address, balance, accounts, status, transactions } = keySelectors(store, [
+export const { address, balance, accounts, status } = keySelectors(store, [
   'address',
   'balance',
   'accounts',
-  'status',
-  'transactions'
+  'status'
 ])
 
-export const tokensAggregated = createSelector(accounts, tokensAccounts => {
-  return R.mapValues(tokensAccounts, tokenAccounts => {
-    return {
-      balance: tokenAccounts.reduce((acc, account) => acc.add(account.balance), new BN(0)),
-      accounts: tokenAccounts
-    }
-  })
-})
 export const tokenBalance = (tokenAddress: PublicKey) =>
   createSelector(accounts, balance, (tokensAccounts, solBalance) => {
     if (tokenAddress.equals(DEFAULT_PUBLICKEY)) {
@@ -35,15 +25,15 @@ export const tokenBalance = (tokenAddress: PublicKey) =>
         return { balance: new BN(0), decimals: 9 }
       }
       return {
-        balance: tokensAccounts[tokenAddress.toString()][0].balance,
-        decimals: tokensAccounts[tokenAddress.toString()][0].decimals
+        balance: tokensAccounts[tokenAddress.toString()].balance,
+        decimals: tokensAccounts[tokenAddress.toString()].decimals
       }
     }
   })
 export const tokenAccount = (tokenAddress: PublicKey) =>
   createSelector(accounts, tokensAccounts => {
     if (tokensAccounts[tokenAddress.toString()]) {
-      return tokensAccounts[tokenAddress.toString()][0]
+      return tokensAccounts[tokenAddress.toString()]
     }
   })
 
@@ -59,7 +49,7 @@ export const exchangeTokensWithUserBalance = createSelector(
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return {
           ...asset,
-          balance: userAccount ? userAccount[0].balance : new BN(0)
+          balance: userAccount ? userAccount.balance : new BN(0)
         } as TokensWithBalance
       })
   }
@@ -70,12 +60,12 @@ export const accountsArray = createSelector(
   accounts,
   assets,
   (tokensAccounts, exchangeAssets): TokenAccounts[] => {
-    return Object.values(tokensAccounts).reduce((acc, accounts) => {
-      if (exchangeAssets[accounts[0].programId.toString()]) {
-        const a = accounts.map((v: ITokenAccount) => {
-          return { ...v, symbol: exchangeAssets[accounts[0].programId.toString()].symbol }
-        }) as TokenAccounts[]
-        return acc.concat(a)
+    return Object.values(tokensAccounts).reduce((acc, account) => {
+      if (exchangeAssets[account.programId.toString()]) {
+        acc.push({
+          ...account,
+          symbol: exchangeAssets[account.programId.toString()].symbol
+        })
       }
       return acc
     }, [] as TokenAccounts[])
@@ -86,8 +76,6 @@ export const solanaWalletSelectors = {
   balance,
   accounts,
   status,
-  tokensAggregated,
-  transactions,
   accountsArray,
   tokenAccount,
   exchangeTokensWithUserBalance

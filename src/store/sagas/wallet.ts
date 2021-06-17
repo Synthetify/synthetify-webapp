@@ -174,7 +174,7 @@ export function* init(): Generator {
   yield* put(actions.setStatus(Status.Init))
   const wallet = yield* call(getWallet)
   // const balance = yield* call(getBalance, wallet.publicKey)
-  yield* put(actions.setAddress(wallet.publicKey.toString()))
+  yield* put(actions.setAddress(wallet.publicKey))
   const balance = yield* call(getBalance, wallet.publicKey)
   yield* put(actions.setBalance(balance))
   yield* put(actions.setStatus(Status.Initalized))
@@ -217,7 +217,7 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
 
 export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): Generator {
   const walletAddress = yield* select(address)
-  if (walletAddress !== DEFAULT_PUBLICKEY.toString()) {
+  if (!walletAddress.equals(DEFAULT_PUBLICKEY)) {
     yield* put(
       snackbarsActions.add({
         message: 'Wallet already connected.',
