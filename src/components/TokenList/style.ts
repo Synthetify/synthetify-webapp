@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
     fontWeight: 600,
     fontSize: 22,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 18
+    },
     color: colors.gray.manatee
   },
   divider: {

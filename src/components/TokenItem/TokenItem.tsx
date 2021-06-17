@@ -37,7 +37,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
             <Grid item>
               <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icon} />
             </Grid>
-            <Grid item>
+            <Grid item className={classes.ticker}>
               <Typography variant='h5' color='textPrimary' className={classes.font}>
                 {ticker}
               </Typography>
@@ -49,10 +49,17 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
             {printBN(balance, decimals)}
           </Typography>
         </Grid>
-        <Grid item xs={4}>
-          <Typography variant='h5' color='textPrimary' className={classes.font}>
-            $ {printBN(usdValue, 4)}
-          </Typography>
+        <Grid container item xs={4}>
+          <Grid item>
+            <Typography variant='h5' color='textPrimary' className={classes.font}>
+              $
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant='h5' color='textPrimary' className={classes.font}>
+              {printBN(usdValue, 4)}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
