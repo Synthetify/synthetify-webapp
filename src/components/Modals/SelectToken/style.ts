@@ -1,3 +1,4 @@
+import { pink } from '@material-ui/core/colors'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
@@ -14,13 +15,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   modalName: {
     color: colors.gray.C4,
     fontSize: 22,
-    lineHeight: '40px'
+    lineHeight: '40px',
+    float: 'left'
   },
   divider: {
-    width: '350px',
-    marginTop: '8px',
-    marginBottom: '15px',
+    width: '340px',
     background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
+  },
+  closeIcon: {
+    color: colors.gray.C4
+  },
+  closeButton: {
+    float: 'right',
+    marginRight: 25
   }
 }))
 

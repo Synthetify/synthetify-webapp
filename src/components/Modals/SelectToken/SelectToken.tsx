@@ -1,7 +1,8 @@
 import React from 'react'
-import { Typography, Modal, Divider, Box } from '@material-ui/core'
+import { Typography, Modal, Divider, Grid, IconButton, Box } from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
+import { Close } from '@material-ui/icons'
 
 export interface TokenNameWithIcon {
   name: string
@@ -27,10 +28,22 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   return (
     <Modal className={classes.root} open={open} onClose={handleClose}>
-      <Box>
-        <Typography className={classes.modalName}>Select a token</Typography>
-        <Divider className={classes.divider}/>
-      </Box>
+      <Grid container direction='column' spacing={0}>
+        <Grid>
+          <Grid container justify='space-between'>
+            <Grid item>
+              <Typography className={classes.modalName}>Select a token</Typography>
+            </Grid>
+            <Grid item>
+              <IconButton className={classes.closeButton}>
+                <Close className={classes.closeIcon} />
+              </IconButton>
+            </Grid>
+            <Divider className={classes.divider} />
+          </Grid>
+        </Grid>
+        <Grid></Grid>
+      </Grid>
     </Modal>
   )
 }
