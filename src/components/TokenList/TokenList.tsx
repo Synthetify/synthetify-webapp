@@ -37,12 +37,12 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
           <Grid container>
             <Grid item xs={12} className={classes.headerFont}>
               <Grid container style={{ flexWrap: 'nowrap' }}>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                   <Typography variant='body1' color='textPrimary' className={classes.headerFont}>
                     Token
                   </Typography>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={5}>
                   <Typography variant='body1' color='textPrimary' className={classes.headerFont}>
                     Balance
                   </Typography>

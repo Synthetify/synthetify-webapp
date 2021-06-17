@@ -32,7 +32,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
   return (
     <Grid item xs={12}>
       <Grid container alignItems='center' style={{ flexWrap: 'nowrap' }}>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Grid container>
             <Grid item>
               <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icon} />
@@ -44,7 +44,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={5}>
           <Typography variant='h5' color='textPrimary' className={classes.font}>
             {printBN(balance, decimals)}
           </Typography>
