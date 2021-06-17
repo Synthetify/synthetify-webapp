@@ -2,6 +2,20 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  tokenList: {
+    borderRadius: 10,
+    background: colors.blue.bastille
+  },
+  tokenName: {
+    color: colors.gray.C4,
+    fontSize: 16
+  },
+  tokenIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: 16,
+    marginRight: 10
+  },
   root: {
     background: colors.black.cinder,
     width: 400,
@@ -35,10 +49,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   searchInput: {
     background: colors.black.controls,
     height: 40,
+    width: 340,
     lineHeight: 40,
     paddingLeft: 16,
-    minWidth: 320,
-    marginTop: 23,
     fontSize: 16,
     borderRadius: 10
   }
