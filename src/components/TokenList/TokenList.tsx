@@ -1,10 +1,8 @@
 import React from 'react'
 import { IToken, TokenItem } from '@components/TokenItem/TokenItem'
-import { Grid, Typography, Card, CardContent } from '@material-ui/core'
-import { colors } from '@static/theme'
-import Separator from './Separator/Separator'
-import useStyles from './style'
+import { Grid, Typography, Card, CardContent, Divider } from '@material-ui/core'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import useStyles from './style'
 
 export interface IProps {
   tokens: IToken[]
@@ -15,7 +13,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
   const classes = useStyles()
   const items = tokens.map((token, index) => (
     <Grid item key={index}>
-      <Separator color={colors.black.controls} height={1} />
+      <Divider className={classes.divider} />
       <TokenItem token={token} />
     </Grid>
   ))
@@ -33,7 +31,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
             </Grid>
           </Grid>
           <Grid>
-            <Separator color={colors.black.controls} height={1} />
+            <Divider className={classes.divider} />
           </Grid>
           <Grid container>
             <Grid item xs={12} className={classes.headerFont}>

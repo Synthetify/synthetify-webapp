@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 600,
     fontSize: 22,
     color: colors.gray.manatee
+  },
+  divider: {
+    background: `linear-gradient(90deg, ${colors.black.controls}, rgba(255, 255, 255, 0))`
   }
 }))
 
