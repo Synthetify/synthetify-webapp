@@ -15,7 +15,9 @@ interface StyledTabsProps {
 
 const StyledTabs = withStyles({
   indicator: {
-    display: 'none'
+    height: '100%',
+    borderRadius: 10,
+    backgroundColor: colors.black.controls
   }
 })((props: StyledTabsProps) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />)
 
@@ -26,6 +28,7 @@ interface StyledTabProps {
 const StyledTab = withStyles(() =>
   createStyles({
     root: {
+      zIndex: 1,
       textTransform: 'none',
       fontWeight: 400,
       fontSize: 22,
@@ -33,8 +36,7 @@ const StyledTab = withStyles(() =>
     },
     selected: {
       fontWeight: 600,
-      color: colors.gray.C4,
-      backgroundColor: colors.black.controls
+      color: colors.gray.C4
     }
   })
 )((props: StyledTabProps) => <Tab disableRipple {...props} />)
