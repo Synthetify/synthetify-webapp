@@ -34,6 +34,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     background: `linear-gradient(90deg, ${colors.black.controls}, rgba(255, 255, 255, 0))`
   },
+  emptyTokens: {
+    margin: '20px auto',
+    textAlign: 'center',
+    fontWeight: 400,
+    fontSize: 22,
+    maxWidth: 500,
+    color: colors.gray.C4
+  },
   diverMargin: {
     margin: 18
   }
