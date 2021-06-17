@@ -27,7 +27,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
             <Grid item xs={12} sm={8}>
               <Typography className={classes.ownedTokens}>Owned tokens</Typography>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={4} className={classes.addAccountWrapper}>
               <OutlinedButton name='Add account' fontWeight='normal' onClick={addAccount} />
             </Grid>
           </Grid>

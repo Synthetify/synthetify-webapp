@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.manatee,
     fontSize: 22
   },
+  addAccountWrapper: {
+    textAlign: 'end',
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
+    }
+  },
   headerFont: {
     fontWeight: 600,
     fontSize: 22,
