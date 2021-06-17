@@ -1,4 +1,3 @@
-import { pink } from '@material-ui/core/colors'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
@@ -9,8 +8,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 500,
     borderRadius: 10,
     margin: 20,
-    paddingTop: 25,
-    paddingLeft: 35
+    padding: 35,
+    paddingTop: 25
   },
   modalName: {
     color: colors.gray.C4,
@@ -19,15 +18,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     float: 'left'
   },
   divider: {
-    width: '340px',
+    width: '320px',
+    marginTop: -5,
     background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
   },
   closeIcon: {
     color: colors.gray.C4
   },
+  searchIcon: {
+    color: colors.gray.C4,
+    margin: 8
+  },
   closeButton: {
-    float: 'right',
-    marginRight: 25
+    float: 'right'
+  },
+  searchInput: {
+    background: colors.black.controls,
+    height: 40,
+    lineHeight: 40,
+    paddingLeft: 16,
+    minWidth: 320,
+    marginTop: 23,
+    fontSize: 16,
+    borderRadius: 10
   }
 }))
 

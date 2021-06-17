@@ -1,8 +1,8 @@
 import React from 'react'
-import { Typography, Modal, Divider, Grid, IconButton, Box } from '@material-ui/core'
+import { Typography, Modal, Divider, Grid, IconButton, Input } from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
-import { Close } from '@material-ui/icons'
+import { Close, Search } from '@material-ui/icons'
 
 export interface TokenNameWithIcon {
   name: string
@@ -16,6 +16,7 @@ export interface ISelectTokenModal {
   handleClose: () => void
   onSelect: (tokenAddress: PublicKey) => void
   loading?: boolean
+  error?: string
 }
 
 export const SelectToken: React.FC<ISelectTokenModal> = ({
@@ -23,12 +24,15 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   open,
   loading,
   handleClose,
-  onSelect
+  onSelect,
+  error
 }) => {
   const classes = useStyles()
+  const [value, setValue] = React.useState<string>('')
+
   return (
-    <Modal className={classes.root} open={open} onClose={handleClose}>
-      <Grid container direction='column' spacing={0}>
+    <Modal open={open} onClose={handleClose}>
+      <Grid className={classes.root} container direction='column' spacing={2}>
         <Grid>
           <Grid container justify='space-between'>
             <Grid item>
@@ -42,7 +46,20 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
             <Divider className={classes.divider} />
           </Grid>
         </Grid>
-        <Grid></Grid>
+        <Grid>
+          <Input
+            error={!!error}
+            className={classes.searchInput}
+            type={'search'}
+            value={value}
+            disableUnderline={true}
+            placeholder='Search a token'
+            endAdornment={<Search className={classes.searchIcon}/>}
+            onChange={e => {
+              setValue(e.target.value)
+            }}
+          />
+        </Grid>
       </Grid>
     </Modal>
   )
