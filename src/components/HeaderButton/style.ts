@@ -6,16 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.black.cinder,
     fontSize: 18
   },
-  dropdownMenu: {
-    color: 'pink',
-    background: colors.blue.bastille,
-    padding: 20,
-    width: 200,
-    height: 100,
-    position: 'absolute',
-    top: 120,
-    zIndex: 100
-  },
   headerButton: {
     background: colors.blue.bastille,
     color: colors.gray.DB,
@@ -29,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: colors.black.controls,
       color: colors.gray.skeletonField
     }
+  },
+  dropdownHeaderButtonText: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
   dropdownHeaderButton: {
     background: colors.blue.bastille,

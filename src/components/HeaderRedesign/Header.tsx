@@ -9,7 +9,6 @@ import HeaderButton from '@components/HeaderButton/HeaderButton'
 import DropdownHeaderButton from '@components/HeaderButton/DropdownHeaderButton'
 import { MoreHoriz } from '@material-ui/icons'
 import PhantomIcon from '@static/png/phantom.png'
-import { shortenAdress } from '@consts/uiUtils'
 
 export interface IHeader {
   address: PublicKey
@@ -52,7 +51,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWall
                     />
                   ) : undefined
                 }
-                name={shortenAdress(address)}
+                name={address.toString()}
               />
             )}
           </Grid>
