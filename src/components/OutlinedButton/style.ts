@@ -14,9 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       opacity: 0.9
     }
   },
-  disabled: {
-    opacity: 0.5
-  }
+  disabled: {}
 }))
 
 export default useStyles
