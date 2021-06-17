@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core'
-import { createStyles } from '@material-ui/core/styles'
+import { createStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 interface IProps {
@@ -18,20 +18,33 @@ const StyledTabs = withStyles({
     height: '100%',
     borderRadius: 10,
     backgroundColor: colors.black.controls
+  },
+  scrollButtons: {
+    color: 'white'
   }
-})((props: StyledTabsProps) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />)
+})((props: StyledTabsProps) => (
+  <Tabs
+    variant='scrollable'
+    scrollButtons='auto'
+    TabIndicatorProps={{ children: <span /> }}
+    {...props}
+  />
+))
 
 interface StyledTabProps {
   label: string
 }
 
-const StyledTab = withStyles(() =>
+const StyledTab = withStyles((theme: Theme) =>
   createStyles({
     root: {
       zIndex: 1,
       textTransform: 'none',
       fontWeight: 400,
       fontSize: 22,
+      [theme.breakpoints.down('xs')]: {
+        fontSize: 18
+      },
       color: colors.gray.manatee
     },
     selected: {
