@@ -37,8 +37,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     color: colors.gray.light
   },
-  divider: {
-    background: `linear-gradient(90deg, ${colors.black.controls}, rgba(255, 255, 255, 0))`
+  headerDivider: {
+    background: colors.gray.light
+  },
+  tokensDivider: {
+    background: colors.gray.mid
   },
   emptyTokens: {
     margin: '20px auto',
@@ -48,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 500,
     color: colors.gray.veryLight
   },
-  diverMargin: {
+  tokensDividerMargin: {
     margin: 18
   }
 }))

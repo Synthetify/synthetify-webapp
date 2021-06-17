@@ -14,7 +14,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
   const classes = useStyles()
   const items = tokens.map((token, index) => (
     <Grid item key={index}>
-      <Divider className={classNames(classes.divider, classes.diverMargin)} />
+      <Divider className={classNames(classes.tokensDivider, classes.tokensDividerMargin)} />
       <TokenItem token={token} />
     </Grid>
   ))
@@ -32,7 +32,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
             </Grid>
           </Grid>
           <Grid>
-            <Divider className={classes.divider} />
+            <Divider className={classes.headerDivider} />
           </Grid>
           <Grid container>
             <Grid item xs={12} className={classes.headerFont}>
@@ -59,7 +59,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
             <Grid>{items}</Grid>
           ) : (
             <Grid>
-              <Divider className={classes.divider} />
+              <Divider className={classNames(classes.tokensDivider, classes.tokensDividerMargin)} />
               <Grid className={classes.emptyTokens}>
                 <Typography>No tokens to show.</Typography>
                 <Typography>Please connect an account.</Typography>
