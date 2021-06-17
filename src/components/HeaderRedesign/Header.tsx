@@ -5,26 +5,16 @@ import { DEFAULT_PUBLICKEY } from '@consts/static'
 import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
-import HeaderButton from '@components/FilledButton/HeaderButton'
-import DropdownHeaderButton from '@components/FilledButton/DropdownHeaderButton'
+import HeaderButton from '@components/HeaderButton/HeaderButton'
+import DropdownHeaderButton from '@components/HeaderButton/DropdownHeaderButton'
 import { MoreHoriz } from '@material-ui/icons'
 import PhantomIcon from '@static/png/phantom.png'
+import { shortenAdress } from '@consts/uiUtils'
 
 export interface IHeader {
   address: PublicKey
   network: string
   typeOfWallet?: 'phantom'
-}
-
-const shortenAdress = (publicKey: PublicKey): string => {
-  let result = ''
-  const address = publicKey.toString()
-  alert(address)
-
-  for (let i = 0; i < 4; i++) result += address[i]
-  result += '...'
-  for (let i = 5; i > 1; i--) result += address[address.length - i]
-  return result
 }
 
 export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWallet = '' }) => {
