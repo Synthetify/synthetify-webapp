@@ -10,8 +10,7 @@ const useStyles = makeStyles(() => ({
     paddingRight: 27,
     height: 60,
     fontSize: 22,
-    minWidth: 250,
-    marginTop: 14
+    minWidth: 250
   },
   currency: {
     fontSize: 22,
@@ -19,10 +18,9 @@ const useStyles = makeStyles(() => ({
     width: 70
   },
   inputLabel: {
-    color: colors.gray.light,
+    color: colors.gray.veryLight,
     fontSize: 22,
     lineHeight: '26px',
-    marginBottom: '14px',
     fontWeight: 600
   }
 }))
