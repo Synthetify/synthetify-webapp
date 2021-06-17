@@ -8,12 +8,12 @@ interface IProps {
   onChange: (newValue: number) => void
 }
 
-interface StyledTabsProps {
+interface FullHeightIndicatorTabsProps {
   value: number
   onChange: (event: React.ChangeEvent<{}>, newValue: number) => void
 }
 
-const StyledTabs = withStyles({
+const FullHeightIndicatorTabs = withStyles({
   indicator: {
     height: '100%',
     borderRadius: 10,
@@ -22,7 +22,7 @@ const StyledTabs = withStyles({
   scrollButtons: {
     color: 'white'
   }
-})((props: StyledTabsProps) => (
+})((props: FullHeightIndicatorTabsProps) => (
   <Tabs
     variant='scrollable'
     scrollButtons='auto'
@@ -31,11 +31,11 @@ const StyledTabs = withStyles({
   />
 ))
 
-interface StyledTabProps {
+interface FullHeightIndicatorTabProps {
   label: string
 }
 
-const StyledTab = withStyles((theme: Theme) =>
+const FullHeightIndicatorTab = withStyles((theme: Theme) =>
   createStyles({
     root: {
       zIndex: 1,
@@ -52,7 +52,7 @@ const StyledTab = withStyles((theme: Theme) =>
       color: colors.gray.C4
     }
   })
-)((props: StyledTabProps) => <Tab disableRipple {...props} />)
+)((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -69,7 +69,7 @@ const useStyles = makeStyles(() => ({
 export const SwitchMenu: React.FC<IProps> = ({ items, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
-  const tabs = items.map((item, index) => <StyledTab key={index} label={item} />)
+  const tabs = items.map((item, index) => <FullHeightIndicatorTab key={index} label={item} />)
 
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
@@ -78,9 +78,9 @@ export const SwitchMenu: React.FC<IProps> = ({ items, onChange }) => {
 
   return (
     <Grid className={classes.root}>
-      <StyledTabs value={value} onChange={handleChange}>
+      <FullHeightIndicatorTabs value={value} onChange={handleChange}>
         {tabs}
-      </StyledTabs>
+      </FullHeightIndicatorTabs>
     </Grid>
   )
 }
