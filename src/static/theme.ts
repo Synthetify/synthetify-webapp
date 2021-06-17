@@ -7,7 +7,8 @@ export const colors = {
     kinda: '#1A1A1A',
     greyish: '#081323',
     cinder: '#0E0C12', // v2.0 background color
-    controls: '#44424E' // v2.0 controls background color
+    controls: '#44424E', // v2.0 controls background color
+    card: '#28242E' // v2.0 card color
   },
   blue: {
     accent: '#072E5A',
@@ -17,14 +18,16 @@ export const colors = {
     light: '#66AFF5',
     neon: '#08F7FE',
     astel: '#48ADF1',
-    bastille: '#1E1A23'
+    bastille: '#1E1A23' // v2.0 header button color
   },
   gray: {
     base: '#8DA9C4',
     skeletonBackground: '#8E8B8B',
     skeletonField: '#C4C4C4', // v2.0 primary text color
     CDCDCD: '#CDCDCD',
+    gunPowder: '#44424F',
     C4: '#C4C4C4',
+    DB: '#DBDBDB', // v2.0 header button text
     manatee: '#898B9C', // v2.0 secondary text color
     balticSea: 'rgba(40, 36, 46, 0.6)' // v2.0 secondary background
   },
