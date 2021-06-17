@@ -26,8 +26,8 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
 }) => {
   const classes = useStyles()
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Typography>aas</Typography>
+    <Modal className={classes.root} open={open} onClose={handleClose}>
+      <Typography className={classes.modalName}>Select a token</Typography>
     </Modal>
   )
 }

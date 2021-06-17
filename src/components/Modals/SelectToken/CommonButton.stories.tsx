@@ -9,5 +9,5 @@ const tokens: TokenNameWithIcon[] = [{ name: 'SNY', icon: '@static/icons/sny.png
 storiesOf('modals/selectModal', module)
   .addDecorator(withKnobs)
   .add('default', () =>
-    <SelectToken open={true} onClose={() => {}}><Box>Test</Box></SelectToken>
+    <SelectToken tokens={tokens} open={true} handleClose={() => {}} onSelect={() => {}}><Box>Test</Box></SelectToken>
   )
