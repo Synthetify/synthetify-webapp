@@ -54,7 +54,7 @@ const useStyles = makeStyles(() => ({
 export const SwitchMenu: React.FC<IProps> = ({ items, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
-  const tabs = items.map(item => <StyledTab label={item} />)
+  const tabs = items.map((item, index) => <StyledTab key={index} label={item} />)
 
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
