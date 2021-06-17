@@ -2,41 +2,16 @@ import React from 'react'
 import { Button, Popover, Typography } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
-
-const blurAllOfClass = (className: string) => {
-  const els = document.getElementsByClassName(className)
-
-  for (const i in els) {
-    const el = els[i] as HTMLElement
-    if (!el.style) {
-      return
-    }
-    el.style.filter = 'blur(4px) brightness(0.4)'
-  }
-}
-
-const resetFiltersOfClass = (className: string) => {
-  const els = document.getElementsByClassName(className)
-
-  for (const i in els) {
-    const el = els[i] as HTMLElement
-    if (!el.style) {
-      return
-    }
-    el.style.filter = 'none'
-  }
-}
+import { blurContent, unblurContent } from '@consts/uiUtils'
 
 export interface IProps {
   name: string
-  classToBlur?: string
   disabled?: boolean
   onClick?: () => void
   startIcon?: JSX.Element
 }
 export const DropdownHeaderButton: React.FC<IProps> = ({
   name,
-  classToBlur = 'blur-at-overlay',
   disabled = false,
   startIcon,
   onClick = () => {}
@@ -44,16 +19,19 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
+  const [open, setOpen] = React.useState<boolean>(false)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
-    blurAllOfClass(classToBlur)
+    // could use rewriting to backdrop-filter when browser support is better
+    blurContent()
     onClick()
+    setOpen(true)
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
-    resetFiltersOfClass(classToBlur)
+    unblurContent()
+    setOpen(false)
   }
 
   return (
@@ -69,7 +47,7 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
         {name}
       </Button>
       <Popover
-        open={!!anchorEl}
+        open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
