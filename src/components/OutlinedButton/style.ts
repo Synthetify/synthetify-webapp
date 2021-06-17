@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '22px',
     lineHeight: '26px',
     transition: 'all 500ms ease',
-    padding: '8px 19px',
+    padding: '10px 19px',
     '&:hover': {
       opacity: 0.9
     }
