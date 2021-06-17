@@ -10,6 +10,7 @@ storiesOf('menu/switchMenu', module)
   .add('operations', () => (
     <SwitchMenu
       items={['Mint', 'Deposit', 'Withdraw', 'Burn', 'Rewards']}
+      maxWidth={800}
       onChange={action('switch menu')}
     />
   ))

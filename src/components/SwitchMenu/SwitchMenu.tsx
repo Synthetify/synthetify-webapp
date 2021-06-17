@@ -5,6 +5,7 @@ import { colors } from '@static/theme'
 
 interface IProps {
   items: string[]
+  maxWidth: number
   onChange: (newValue: number) => void
 }
 
@@ -56,8 +57,6 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
 
 const useStyles = makeStyles(() => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
     borderWidth: 1,
     borderBlockStyle: 'solid',
     borderColor: colors.gray.manatee,
@@ -66,7 +65,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SwitchMenu: React.FC<IProps> = ({ items, onChange }) => {
+export const SwitchMenu: React.FC<IProps> = ({ items, maxWidth, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const tabs = items.map((item, index) => <FullHeightIndicatorTab key={index} label={item} />)
@@ -77,7 +76,7 @@ export const SwitchMenu: React.FC<IProps> = ({ items, onChange }) => {
   }
 
   return (
-    <Grid className={classes.root}>
+    <Grid className={classes.root} style={{ maxWidth }}>
       <FullHeightIndicatorTabs value={value} onChange={handleChange}>
         {tabs}
       </FullHeightIndicatorTabs>
