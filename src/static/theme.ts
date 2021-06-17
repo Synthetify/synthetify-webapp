@@ -7,7 +7,8 @@ export const colors = {
     kinda: '#1A1A1A',
     greyish: '#081323',
     cinder: '#0E0C12', // v2.0 background color
-    controls: '#44424E' // v2.0 controls background color
+    controls: '#44424E', // v2.0 controls background color
+    card: '#28242E' // v2.0 card color
   },
   blue: {
     accent: '#072E5A',
