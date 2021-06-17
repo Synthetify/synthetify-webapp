@@ -33,7 +33,8 @@ export const colors = {
     veryLight: '#E3E4E8', // v2.0 highlighted font
     light: '#9DA0AE', // v2.0 text
     mid: '#4C4C67', // v2.0
-    dark: '#242733' // v2.0 background
+    dark: '#1E202E', // v2.0 background
+    component: '#272735'
   },
   green: {
     main: '#00F9BB',

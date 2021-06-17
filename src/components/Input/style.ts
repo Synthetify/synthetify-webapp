@@ -3,8 +3,8 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   amountInput: {
-    background: colors.gray.gunPowder,
-    color: colors.gray.skeletonField,
+    background: colors.gray.dark,
+    color: colors.gray.light,
     borderRadius: 10,
     paddingLeft: 16,
     paddingRight: 27,
@@ -15,11 +15,11 @@ const useStyles = makeStyles(() => ({
   },
   currency: {
     fontSize: 22,
-    color: colors.gray.manatee,
+    color: colors.gray.light,
     width: 70
   },
   inputLabel: {
-    color: colors.gray.skeletonField,
+    color: colors.gray.light,
     fontSize: 22,
     lineHeight: '26px',
     marginBottom: '14px',
