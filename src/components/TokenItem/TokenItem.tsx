@@ -8,7 +8,7 @@ export interface IToken {
   ticker: string
   balance: BN
   decimals: 6
-  usdValue: number
+  usdValue: BN
 }
 
 export interface IProps {
@@ -17,11 +17,11 @@ export interface IProps {
 
 export const TokenItem: React.FC<IProps> = ({ token }) => {
   const classes = useStyles()
-  const printUSD = new BN(token.usdValue * 1e4)
+  const { ticker, balance, decimals, usdValue } = token
 
   const tickerPrefix = ['x', '$']
-  const deleteFirstLatter = tickerPrefix.some(prefix => token.ticker.startsWith(prefix))
-  const imgName = deleteFirstLatter ? token.ticker.substr(1) : token.ticker
+  const deleteFirstLatter = tickerPrefix.some(prefix => ticker.startsWith(prefix))
+  const imgName = deleteFirstLatter ? ticker.substr(1) : ticker
   let icon
   try {
     icon = require(`@static/icons/${imgName.toLowerCase()}.png`)
@@ -39,19 +39,19 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
             </Grid>
             <Grid item>
               <Typography variant='h5' color='textPrimary' className={classes.font}>
-                {token.ticker}
+                {ticker}
               </Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={4}>
           <Typography variant='h5' color='textPrimary' className={classes.font}>
-            {printBN(token.balance, token.decimals)}
+            {printBN(balance, decimals)}
           </Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant='h5' color='textPrimary' className={classes.font}>
-            $ {printBN(new BN(printUSD), 4)}
+            $ {printBN(usdValue, 4)}
           </Typography>
         </Grid>
       </Grid>
