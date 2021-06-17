@@ -18,7 +18,7 @@ const FullHeightIndicatorTabs = withStyles({
   indicator: {
     height: '100%',
     borderRadius: 10,
-    backgroundColor: colors.black.controls
+    backgroundColor: colors.gray.mid
   },
   scrollButtons: {
     color: 'white'
@@ -50,18 +50,15 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
     },
     selected: {
       fontWeight: 600,
-      color: colors.gray.C4
+      color: colors.gray.veryLightGray
     }
   })
 )((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
 
 const useStyles = makeStyles(() => ({
   root: {
-    borderWidth: 1,
-    borderBlockStyle: 'solid',
-    borderColor: colors.gray.manatee,
     borderRadius: 10,
-    backgroundColor: colors.blue.bastille
+    backgroundColor: colors.gray.dark
   }
 }))
 
