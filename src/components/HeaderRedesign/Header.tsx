@@ -1,4 +1,5 @@
 import React from 'react'
+import { PublicKey } from '@solana/web3.js'
 import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import useStyles from './style'
@@ -10,17 +11,19 @@ import { MoreHoriz } from '@material-ui/icons'
 import PhantomIcon from '@static/png/phantom.png'
 
 export interface IHeader {
-  address: string
+  address: PublicKey
   network: string
   typeOfWallet?: 'phantom'
 }
 
-const shortenAdress = (address: string): string => {
-  let result = '0x'
+const shortenAdress = (publicKey: PublicKey): string => {
+  let result = ''
+  const address = publicKey.toString()
+  alert(address)
 
   for (let i = 0; i < 4; i++) result += address[i]
   result += '...'
-  for (let i = 1; i < 5; i++) result += address[address.length - i]
+  for (let i = 5; i > 1; i--) result += address[address.length - i]
   return result
 }
 
@@ -47,7 +50,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWall
             <HeaderButton name={network} />
           </Grid>
           <Grid item>
-            {address === DEFAULT_PUBLICKEY.toString() ? (
+            {address === DEFAULT_PUBLICKEY ? (
               <HeaderButton name='Connect a wallet' />
             ) : (
               <DropdownHeaderButton
