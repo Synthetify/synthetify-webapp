@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.black.card,
     '& > *': {
-      marginTop: 20
+      marginTop: 15
     }
   },
   card: {
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   divider: {
     background: `linear-gradient(90deg, ${colors.black.controls}, rgba(255, 255, 255, 0))`
+  },
+  diverMargin: {
+    margin: 18
   }
 }))
 
