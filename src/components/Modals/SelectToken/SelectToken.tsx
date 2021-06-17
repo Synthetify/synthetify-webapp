@@ -3,7 +3,7 @@ import { Typography, Modal } from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 
-interface TokenNameWithIcon {
+export interface TokenNameWithIcon {
   name: string
   icon: string
   disabled?: boolean
@@ -12,9 +12,9 @@ interface TokenNameWithIcon {
 export interface ISelectTokenModal {
   tokens: TokenNameWithIcon[]
   open: boolean
-  loading: boolean
   handleClose: () => void
   onSelect: (tokenAddress: PublicKey) => void
+  loading?: boolean
 }
 
 export const SelectToken: React.FC<ISelectTokenModal> = ({
