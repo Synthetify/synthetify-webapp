@@ -17,7 +17,8 @@ export const colors = {
     light: '#66AFF5',
     neon: '#08F7FE',
     astel: '#48ADF1',
-    bastille: '#1E1A23'
+    bastille: '#1E1A23',
+    charade: '#272735' // v2.0 component
   },
   gray: {
     base: '#8DA9C4',
@@ -30,7 +31,8 @@ export const colors = {
     balticSea: 'rgba(40, 36, 46, 0.6)', // v2.0 secondary background
     athens: '#E3E4E8', // v2.0 choose token text
     mulledWine: '#4C4C67', // v2.0 choose-token hover
-    santas: '#9DA0AE' // v2.0 choose-token scrollbar track
+    santas: '#9DA0AE', // v2.0 choose-token scrollbar track
+    steel: '#1B1C2A' // v2.0 choose-token backgrounds
   },
   green: {
     main: '#00F9BB',

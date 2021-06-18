@@ -4,17 +4,17 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   tokenList: {
     borderRadius: 10,
-    background: colors.blue.bastille,
+    background: colors.gray.steel,
     overflowX: 'hidden',
     overflowY: 'hidden',
     height: 360,
-    paddingTop: 3,
-    paddingRight: 10
+    width: 235,
+    padding: 3
   },
   tokenItem: {
     margin: 5,
     borderRadius: 10,
-    width: 280,
+    width: 180,
 
     '&:hover': {
       background: colors.gray.mulledWine
@@ -31,38 +31,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 14
   },
   root: {
-    background: colors.black.cinder,
-    width: 400,
+    background: colors.blue.charade,
+    width: 250,
     borderRadius: 10,
     margin: 20,
-    padding: 35,
-    paddingTop: 25
-  },
-  modalName: {
-    color: colors.gray.C4,
-    fontSize: 22,
-    lineHeight: '40px',
-    float: 'left'
-  },
-  divider: {
-    width: '320px',
-    marginTop: -5,
-    background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
-  },
-  closeIcon: {
-    color: colors.gray.C4
+    padding: 0,
+    paddingTop: 15,
+    paddingBottom: 10
   },
   searchIcon: {
     color: colors.gray.C4,
     margin: 8
   },
-  closeButton: {
-    float: 'right'
-  },
   searchInput: {
-    background: colors.black.controls,
+    background: colors.gray.steel,
     height: 40,
-    width: 340,
+    width: 235,
     lineHeight: 40,
     paddingLeft: 16,
     fontSize: 16,

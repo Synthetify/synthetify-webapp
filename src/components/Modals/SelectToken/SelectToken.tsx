@@ -24,40 +24,22 @@ export interface ISelectTokenModal {
   open: boolean
   handleClose: () => void
   onSelect: (tokenAddress: PublicKey) => void
-  loading?: boolean
-  error?: string
 }
 
 export const SelectToken: React.FC<ISelectTokenModal> = ({
   tokens,
   open,
-  loading,
   handleClose,
-  onSelect,
-  error
+  onSelect
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Grid className={classes.root} container direction='column' spacing={2}>
-        <Grid item>
-          <Grid container justify='space-between'>
-            <Grid item>
-              <Typography className={classes.modalName}>Select a token</Typography>
-            </Grid>
-            <Grid item>
-              <IconButton className={classes.closeButton}>
-                <Close className={classes.closeIcon} />
-              </IconButton>
-            </Grid>
-            <Divider className={classes.divider} />
-          </Grid>
-        </Grid>
+      <Grid className={classes.root} container alignContent="space-around" direction='column' spacing={2}>
         <Grid item>
           <Input
-            error={!!error}
             className={classes.searchInput}
             type={'search'}
             value={value}
@@ -72,32 +54,30 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         <Grid item>
           <Box className={classes.tokenList}>
             <CustomScrollbar>
-              <Grid container direction={'column'}>
-                {tokens
-                  .filter(token => {
-                    if (!value) return true
-                    return token.name.toLowerCase() === value.toLowerCase()
-                  })
-                  .map(({ name }) => {
-                    let icon
-                    try {
-                      icon = require(`@static/icons/${name.toLowerCase()}.png`)
-                    } catch (error) {
-                      icon = require('@static/icons/sny.png')
-                    }
+              {tokens
+                .filter(token => {
+                  if (!value) return true
+                  return token.name.toLowerCase() === value.toLowerCase()
+                })
+                .map(({ name }) => {
+                  let icon
+                  try {
+                    icon = require(`@static/icons/${name.toLowerCase()}.png`)
+                  } catch (error) {
+                    icon = require('@static/icons/sny.png')
+                  }
 
-                    return (
-                      <Grid item container className={classes.tokenItem} alignItems='center'>
-                        <Grid item>
-                          <CardMedia className={classes.tokenIcon} image={icon} />{' '}
-                        </Grid>
-                        <Grid item>
-                          <Typography className={classes.tokenName}>SNY</Typography>
-                        </Grid>
+                  return (
+                    <Grid item container className={classes.tokenItem} alignItems='center'>
+                      <Grid item>
+                        <CardMedia className={classes.tokenIcon} image={icon} />{' '}
                       </Grid>
-                    )
-                  })}
-              </Grid>
+                      <Grid item>
+                        <Typography className={classes.tokenName}>SNY</Typography>
+                      </Grid>
+                    </Grid>
+                  )
+                })}
             </CustomScrollbar>
           </Box>
         </Grid>
