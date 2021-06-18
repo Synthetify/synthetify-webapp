@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, PropTypes } from '@material-ui/core'
-import { FontWeightProperty } from 'csstype'
+import { FontWeightProperty, PaddingProperty } from 'csstype'
 import classNames from 'classnames'
 import useStyles from './style'
 
@@ -12,6 +12,7 @@ export interface IProps {
   disabled?: boolean
   startIcon?: JSX.Element
   fontWeight?: FontWeightProperty
+  padding?: PaddingProperty<number>
 }
 
 export const OutlinedButton: React.FC<IProps> = ({
@@ -21,7 +22,8 @@ export const OutlinedButton: React.FC<IProps> = ({
   className,
   disabled = false,
   startIcon,
-  fontWeight = 'bold'
+  fontWeight = 'bold',
+  padding
 }) => {
   const classes = useStyles()
   return (
@@ -34,7 +36,7 @@ export const OutlinedButton: React.FC<IProps> = ({
       type={onClick ? 'button' : 'submit'}
       startIcon={startIcon}
       onClick={onClick}
-      style={{ fontWeight }}>
+      style={{ fontWeight, padding }}>
       {name}
     </Button>
   )
