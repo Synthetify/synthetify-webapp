@@ -3,13 +3,13 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.black.card,
+    background: colors.gray.component,
     '& > *': {
       marginTop: 15
     }
   },
   card: {
-    background: colors.black.card,
+    background: colors.gray.component,
     borderRadius: 10,
     padding: 32
   },
@@ -20,8 +20,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   ownedTokens: {
     fontWeight: 400,
-    color: colors.gray.manatee,
+    color: colors.gray.light,
     fontSize: 22
+  },
+  addAccountWrapper: {
+    textAlign: 'end',
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
+    }
   },
   headerFont: {
     fontWeight: 600,
@@ -29,10 +35,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: 18
     },
-    color: colors.gray.manatee
+    color: colors.gray.light
   },
-  divider: {
-    background: `linear-gradient(90deg, ${colors.black.controls}, rgba(255, 255, 255, 0))`
+  headerDivider: {
+    background: colors.gray.light
+  },
+  tokensDivider: {
+    background: colors.gray.mid
   },
   emptyTokens: {
     margin: '20px auto',
@@ -40,9 +49,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 22,
     maxWidth: 500,
-    color: colors.gray.C4
+    color: colors.gray.veryLight
   },
-  diverMargin: {
+  tokensDividerMargin: {
     margin: 18
   }
 }))

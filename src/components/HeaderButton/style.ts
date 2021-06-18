@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 100
   },
   headerButton: {
-    background: colors.blue.bastille,
-    color: colors.gray.DB,
+    background: colors.gray.upperMid,
+    color: colors.gray.C7C9D1,
     textTransform: 'none',
     fontSize: 16,
     lineHeight: '40px',
@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   dropdownHeaderButton: {
-    background: colors.blue.bastille,
-    color: colors.gray.DB,
+    background: colors.gray.upperMid,
+    color: colors.gray.C7C9D1,
     textTransform: 'none',
     fontSize: 16,
     lineHeight: '40px',

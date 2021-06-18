@@ -50,7 +50,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
     },
     selected: {
       fontWeight: 600,
-      color: colors.gray.veryLightGray
+      color: colors.gray.veryLight
     }
   })
 )((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
