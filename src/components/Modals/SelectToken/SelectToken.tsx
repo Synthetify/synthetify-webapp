@@ -14,13 +14,13 @@ import useStyles from './style'
 import { Close, Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 
-export interface TokenNameWithIcon {
+export interface TokenWithName {
   name: string
   disabled?: boolean
 }
 
 export interface ISelectTokenModal {
-  tokens: TokenNameWithIcon[]
+  tokens: TokenWithName[]
   open: boolean
   handleClose: () => void
   onSelect: (tokenAddress: PublicKey) => void
@@ -57,7 +57,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
               {tokens
                 .filter(token => {
                   if (!value) return true
-                  return token.name.toLowerCase() === value.toLowerCase()
+                  return token.name.toLowerCase().includes(value.toLowerCase())
                 })
                 .map(({ name }) => {
                   let icon
@@ -73,7 +73,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
                         <CardMedia className={classes.tokenIcon} image={icon} />{' '}
                       </Grid>
                       <Grid item>
-                        <Typography className={classes.tokenName}>SNY</Typography>
+                        <Typography className={classes.tokenName}>{name}</Typography>
                       </Grid>
                     </Grid>
                   )

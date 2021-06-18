@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflowX: 'hidden',
     overflowY: 'hidden',
     height: 360,
-    width: 235,
     padding: 3
   },
   tokenItem: {
@@ -46,7 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   searchInput: {
     background: colors.gray.steel,
     height: 40,
-    width: 235,
     lineHeight: 40,
     paddingLeft: 16,
     fontSize: 16,

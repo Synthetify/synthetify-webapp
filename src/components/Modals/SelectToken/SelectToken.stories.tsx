@@ -1,10 +1,10 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
-import { SelectToken, TokenNameWithIcon } from '@components/Modals/SelectToken/SelectToken'
+import { SelectToken, TokenWithName } from '@components/Modals/SelectToken/SelectToken'
 import { Box } from '@material-ui/core'
 
-const tokens: TokenNameWithIcon[] = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ').map(i => {
+const tokens: TokenWithName[] = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ').map(i => {
   return { name: i }
 })
 
