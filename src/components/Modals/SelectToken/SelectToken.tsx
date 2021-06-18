@@ -12,6 +12,7 @@ import {
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 import { Close, Search } from '@material-ui/icons'
+import CustomScrollbar from './CustomScrollbar'
 
 export interface TokenNameWithIcon {
   name: string
@@ -70,32 +71,34 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         </Grid>
         <Grid item>
           <Box className={classes.tokenList}>
-            <Grid container direction={'column'}>
-              {tokens
-                .filter(token => {
-                  if (!value) return true
-                  return token.name.toLowerCase() === value.toLowerCase()
-                })
-                .map(({ name }) => {
-                  let icon
-                  try {
-                    icon = require(`@static/icons/${name.toLowerCase()}.png`)
-                  } catch (error) {
-                    icon = require('@static/icons/sny.png')
-                  }
+            <CustomScrollbar>
+              <Grid container direction={'column'}>
+                {tokens
+                  .filter(token => {
+                    if (!value) return true
+                    return token.name.toLowerCase() === value.toLowerCase()
+                  })
+                  .map(({ name }) => {
+                    let icon
+                    try {
+                      icon = require(`@static/icons/${name.toLowerCase()}.png`)
+                    } catch (error) {
+                      icon = require('@static/icons/sny.png')
+                    }
 
-                  return (
-                    <Grid item container className={classes.tokenItem} alignItems='center'>
-                      <Grid item>
-                        <CardMedia className={classes.tokenIcon} image={icon} />{' '}
+                    return (
+                      <Grid item container className={classes.tokenItem} alignItems='center'>
+                        <Grid item>
+                          <CardMedia className={classes.tokenIcon} image={icon} />{' '}
+                        </Grid>
+                        <Grid item>
+                          <Typography className={classes.tokenName}>SNY</Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography className={classes.tokenName}>SNY</Typography>
-                      </Grid>
-                    </Grid>
-                  )
-                })}
-            </Grid>
+                    )
+                  })}
+              </Grid>
+            </CustomScrollbar>
           </Box>
         </Grid>
       </Grid>

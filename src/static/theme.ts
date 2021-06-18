@@ -29,7 +29,8 @@ export const colors = {
     manatee: '#898B9C', // v2.0 secondary text color
     balticSea: 'rgba(40, 36, 46, 0.6)', // v2.0 secondary background
     athens: '#E3E4E8', // v2.0 choose token text
-    mulledWine: '#4C4C67' // v2.0 choose-token hover
+    mulledWine: '#4C4C67', // v2.0 choose-token hover
+    santas: '#9DA0AE' // v2.0 choose-token scrollbar track
   },
   green: {
     main: '#00F9BB',

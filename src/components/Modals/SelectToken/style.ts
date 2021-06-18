@@ -5,8 +5,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenList: {
     borderRadius: 10,
     background: colors.blue.bastille,
-    overflowY: 'scroll',
     overflowX: 'hidden',
+    overflowY: 'hidden',
     height: 360,
     paddingTop: 3,
     paddingRight: 10
@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenItem: {
     margin: 5,
     borderRadius: 10,
+    width: 280,
 
     '&:hover': {
       background: colors.gray.mulledWine
@@ -65,6 +66,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: 40,
     paddingLeft: 16,
     fontSize: 16,
+    borderRadius: 10
+  },
+  scrollbar: {
+    background: colors.green.main,
     borderRadius: 10
   }
 }))
