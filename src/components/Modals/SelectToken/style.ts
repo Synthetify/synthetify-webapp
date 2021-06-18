@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   tokenList: {
     borderRadius: 10,
-    background: colors.gray.steel,
+    background: colors.black.background,
     height: 360,
     padding: 3,
     overflowY: 'hidden'
@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 180,
 
     '&:hover': {
-      background: colors.gray.mulledWine
+      background: colors.gray.component
     }
   },
   tokenName: {
-    color: colors.gray.athens,
+    color: colors.gray.veryLight,
     fontSize: 16
   },
   tokenIcon: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 14
   },
   root: {
-    background: colors.blue.charade,
+    background: colors.gray.component,
     width: 250,
     borderRadius: 10,
     margin: 20,
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 8
   },
   searchInput: {
-    background: colors.gray.steel,
+    background: colors.black.background,
     height: 40,
     lineHeight: 40,
     paddingLeft: 16,
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 9
   },
   scrollbarTrack: {
-    background: colors.gray.mulledWine,
+    background: colors.gray.mid,
     borderRadius: 10,
     height: 'calc(100% - 30px)',
     margin: 15,

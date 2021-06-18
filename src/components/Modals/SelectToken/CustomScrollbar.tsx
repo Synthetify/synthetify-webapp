@@ -10,8 +10,6 @@ export const SelectToken: React.FC<ScrollbarProps> = props => {
 
   return (
     <Scrollbars
-      style={{ scrollbarWidth: 'none', height: 200 }}
-      // className={classes.scrollbar}
       renderThumbVertical={() => {
         return <div className={classes.scrollbarThumb}/>
       }}
