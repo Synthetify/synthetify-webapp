@@ -1,10 +1,8 @@
 import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
+import { Scrollbars } from 'rc-scrollbars'
 import useStyles from './style'
 
-interface ScrollbarProps {}
-
-export const SelectToken: React.FC<ScrollbarProps> = props => {
+export const SelectToken: React.FC<{}> = props => {
   const classes = useStyles()
   console.log('classes')
 
