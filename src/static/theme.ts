@@ -27,7 +27,9 @@ export const colors = {
     gunPowder: '#44424F',
     C4: '#C4C4C4',
     manatee: '#898B9C', // v2.0 secondary text color
-    balticSea: 'rgba(40, 36, 46, 0.6)' // v2.0 secondary background
+    balticSea: 'rgba(40, 36, 46, 0.6)', // v2.0 secondary background
+    athens: '#E3E4E8', // v2.0 choose token text
+    mulledWine: '#4C4C67' // v2.0 choose-token hover
   },
   green: {
     main: '#00F9BB',
