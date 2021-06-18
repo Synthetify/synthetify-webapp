@@ -15,10 +15,15 @@ interface FullHeightIndicatorTabsProps {
 }
 
 const FullHeightIndicatorTabs = withStyles({
+  root: { overflow: 'visible' },
   indicator: {
-    height: '100%',
+    height: 'calc(100% + 10px)',
     borderRadius: 10,
-    backgroundColor: colors.gray.mid
+    backgroundColor: colors.gray.mid,
+    bottom: -5
+  },
+  scrollable: {
+    overflow: 'visible'
   },
   scrollButtons: {
     color: 'white'
