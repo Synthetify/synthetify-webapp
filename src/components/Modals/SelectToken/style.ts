@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenItem: {
     margin: 5,
     borderRadius: 10,
-    width: 180,
+    width: 182,
 
     '&:hover': {
-      background: colors.gray.component
+      background: colors.gray.mid
     }
   },
   tokenName: {
@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     height: 'calc(100% - 30px)',
     margin: 15,
-    marginRight: 20,
     float: 'right',
     width: 9
   }
