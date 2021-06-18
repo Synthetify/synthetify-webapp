@@ -8,10 +8,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflowY: 'scroll',
     overflowX: 'hidden',
     height: 360,
-    paddingTop: 5
+    paddingTop: 3,
+    paddingRight: 10
   },
   tokenItem: {
-    margin: 5
+    margin: 5,
+    borderRadius: 10,
+
+    '&:hover': {
+      background: colors.gray.mulledWine
+    }
   },
   tokenName: {
     color: colors.gray.athens,
