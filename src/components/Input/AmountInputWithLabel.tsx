@@ -25,7 +25,6 @@ export const AmountInputWithLabel: React.FC<IProps> = ({
       <Typography>
         <label className={classes.inputLabel}>{label}</label>
       </Typography>
-      <br />
       <AmountInput setValue={setValue} currency={currency} value={value} error={error} />
     </div>
   )
