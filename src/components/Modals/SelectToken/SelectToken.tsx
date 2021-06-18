@@ -1,12 +1,20 @@
 import React from 'react'
-import { Typography, Modal, Divider, Grid, IconButton, Input, CardMedia } from '@material-ui/core'
+import {
+  Typography,
+  Modal,
+  Divider,
+  Grid,
+  IconButton,
+  Input,
+  CardMedia,
+  Box
+} from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 import { Close, Search } from '@material-ui/icons'
 
 export interface TokenNameWithIcon {
   name: string
-  icon: string
   disabled?: boolean
 }
 
@@ -61,28 +69,34 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
           />
         </Grid>
         <Grid item>
-          <Grid container direction={'column'} className={classes.tokenList}>
-            {(() => {
-              const image = 'sny'
-              let icon
-              try {
-                icon = require(`@static/icons/${image}.png`)
-              } catch (error) {
-                icon = require('@static/icons/sny.png')
-              }
+          <Box className={classes.tokenList}>
+            <Grid container direction={'column'}>
+              {tokens
+                .filter(token => {
+                  if (!value) return true
+                  return token.name.toLowerCase() === value.toLowerCase()
+                })
+                .map(({ name }) => {
+                  let icon
+                  try {
+                    icon = require(`@static/icons/${name.toLowerCase()}.png`)
+                  } catch (error) {
+                    icon = require('@static/icons/sny.png')
+                  }
 
-              return (
-                <Grid item container alignItems='center'>
-                  <Grid item>
-                    <CardMedia className={classes.tokenIcon} image={icon} />{' '}
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.tokenName}>SNY</Typography>
-                  </Grid>
-                </Grid>
-              )
-            })()}
-          </Grid>
+                  return (
+                    <Grid item container className={classes.tokenItem} alignItems='center'>
+                      <Grid item>
+                        <CardMedia className={classes.tokenIcon} image={icon} />{' '}
+                      </Grid>
+                      <Grid item>
+                        <Typography className={classes.tokenName}>SNY</Typography>
+                      </Grid>
+                    </Grid>
+                  )
+                })}
+            </Grid>
+          </Box>
         </Grid>
       </Grid>
     </Modal>

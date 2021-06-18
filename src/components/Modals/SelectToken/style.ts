@@ -4,22 +4,28 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   tokenList: {
     borderRadius: 10,
-    background: colors.blue.bastille
+    background: colors.blue.bastille,
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    height: 360,
+    paddingTop: 5
+  },
+  tokenItem: {
+    margin: 5
   },
   tokenName: {
-    color: colors.gray.C4,
+    color: colors.gray.athens,
     fontSize: 16
   },
   tokenIcon: {
     width: 20,
     height: 20,
-    marginLeft: 16,
-    marginRight: 10
+    marginLeft: 12,
+    marginRight: 14
   },
   root: {
     background: colors.black.cinder,
     width: 400,
-    height: 500,
     borderRadius: 10,
     margin: 20,
     padding: 35,

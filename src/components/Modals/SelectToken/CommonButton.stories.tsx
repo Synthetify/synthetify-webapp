@@ -4,10 +4,14 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { SelectToken, TokenNameWithIcon } from '@components/Modals/SelectToken/SelectToken'
 import { Box } from '@material-ui/core'
 
-const tokens: TokenNameWithIcon[] = [{ name: 'SNY', icon: '@static/icons/sny.png' }]
+const tokens: TokenNameWithIcon[] = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ').map(i => {
+  return { name: i }
+})
 
 storiesOf('modals/selectModal', module)
   .addDecorator(withKnobs)
-  .add('default', () =>
-    <SelectToken tokens={tokens} open={true} handleClose={() => {}} onSelect={() => {}}><Box>Test</Box></SelectToken>
-  )
+  .add('default', () => (
+    <SelectToken tokens={tokens} open={true} handleClose={() => {}} onSelect={() => {}}>
+      <Box>Test</Box>
+    </SelectToken>
+  ))
