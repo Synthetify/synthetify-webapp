@@ -5,15 +5,17 @@ import { withKnobs } from '@storybook/addon-knobs'
 import SwitchMenu from '@components/SwitchMenu/SwitchMenu'
 import { action } from '@storybook/addon-actions'
 import { colors } from '@static/theme'
+import ActionMenu from '@components/SwitchMenu/ActionMenu'
 
 storiesOf('menu/switchMenu', module)
   .addDecorator(withKnobs)
-  .add('operations', () => (
+  .add('Max width', () => (
     <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
-      <SwitchMenu
-        items={['Mint', 'Deposit', 'Withdraw', 'Burn', 'Rewards']}
-        maxWidth={800}
-        onChange={action('switch menu')}
-      />
+      <SwitchMenu items={['Option1', 'Option2', 'Option3']} onChange={action('switch menu')} />
+    </div>
+  ))
+  .add('Actions', () => (
+    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+      <ActionMenu onChange={action('change action')} />
     </div>
   ))

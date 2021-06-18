@@ -5,7 +5,7 @@ import { colors } from '@static/theme'
 
 interface IProps {
   items: string[]
-  maxWidth: number
+  maxWidth?: number
   onChange: (newValue: number) => void
 }
 
@@ -73,7 +73,7 @@ export const SwitchMenu: React.FC<IProps> = ({ items, maxWidth, onChange }) => {
   }
 
   return (
-    <Grid className={classes.root} style={{ maxWidth }}>
+    <Grid className={classes.root} style={{ maxWidth: maxWidth || '100%' }}>
       <FullHeightIndicatorTabs value={value} onChange={handleChange}>
         {tabs}
       </FullHeightIndicatorTabs>
