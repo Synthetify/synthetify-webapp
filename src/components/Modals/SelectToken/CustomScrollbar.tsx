@@ -11,7 +11,10 @@ export const SelectToken: React.FC<ScrollbarProps> = props => {
   return (
     <Scrollbars
       renderThumbVertical={() => {
-        return <div className={classes.scrollbar}/>
+        return <div className={classes.scrollbarThumb}/>
+      }}
+      renderTrackVertical={() => {
+        return <div className={classes.scrollbarTrack}/>
       }}
       {...props}
     />
