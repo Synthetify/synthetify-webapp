@@ -2,12 +2,14 @@ import { createMuiTheme } from '@material-ui/core/styles'
 
 export const colors = {
   black: {
-    background: '#030313',
+    background: '#1B1C2A', // v2.0
     light: '#090B1B',
     kinda: '#1A1A1A',
     greyish: '#081323',
     cinder: '#0E0C12', // v2.0 background color
-    controls: '#44424E' // v2.0 controls background color
+    controls: '#44424E', // v2.0 controls background color
+    header: '#1A1D28', // v2.0 header
+    card: '#28242E' // v2.0 card color
   },
   blue: {
     accent: '#072E5A',
@@ -27,15 +29,24 @@ export const colors = {
     CDCDCD: '#CDCDCD',
     gunPowder: '#44424F',
     C4: '#C4C4C4',
+    DB: '#DBDBDB', // v2.0 header button text
     manatee: '#898B9C', // v2.0 secondary text color
     balticSea: 'rgba(40, 36, 46, 0.6)', // v2.0 secondary background
     athens: '#E3E4E8', // v2.0 choose token text
     mulledWine: '#4C4C67', // v2.0 choose-token hover
     santas: '#9DA0AE', // v2.0 choose-token scrollbar track
-    steel: '#1B1C2A' // v2.0 choose-token backgrounds
+    steel: '#1B1C2A', // v2.0 choose-token backgrounds
+    C7C9D1: '#C7C9D1', // v2.0
+    veryLight: '#E3E4E8', // v2.0 highlighted font
+    light: '#9DA0AE', // v2.0 text
+    mid: '#4C4C67', // v2.0
+    upperMid: '#343446', // v2.0
+    dark: '#1E202E', // v2.0 background
+    component: '#272735' // v2.0
   },
   green: {
     main: '#00F9BB',
+    button: '#40BFA0',
     hover: 'rgba(0,249,187,0.15)',
     pastel: '#8AF7E4'
   },
@@ -59,11 +70,12 @@ export const colors = {
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: colors.black.controls, // v2.0
-      contrastText: colors.gray.C4 // v2.0
+      main: colors.gray.mid, // v2.0
+      contrastText: colors.gray.veryLight // v2.0
     },
     secondary: {
-      main: '#030313'
+      main: colors.green.button,
+      contrastText: colors.black.background
     },
     text: {
       primary: '#FFFFFF',

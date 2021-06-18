@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: '115px',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     fontFamily: theme.typography.fontFamily,
-    color: colors.gray.manatee,
+    color: colors.gray.C7C9D1,
     padding: '5px 20px',
     lineHeight: '40px',
     borderRadius: 5,
@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxShadow: 'none',
 
     '&:hover': {
-      background: colors.blue.bastille,
-      color: colors.gray.skeletonField,
+      background: colors.gray.mid,
+      color: colors.gray.veryLight,
       fontWeight: 600
     }
   },

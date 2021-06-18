@@ -34,7 +34,7 @@ const SolanaWalletEvents = () => {
   // TODO refactor
   const tokensAccounts = useSelector(accounts)
   const walletStat = useSelector(walletStatus)
-  const [initializedAccounts, setInitializedAccounts] = useState<Set<string>>(new Set())
+  const [initializedAccount, setInitializedAccount] = useState<Set<string>>(new Set())
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
     if (!connection || walletStat !== Status.Initalized || networkStatus !== Status.Initalized) {
@@ -42,25 +42,23 @@ const SolanaWalletEvents = () => {
     }
     const connectEvents = () => {
       const tempSet = new Set<string>()
-      R.forEachObj(tokensAccounts, tokenAccounts => {
-        for (const account of tokenAccounts) {
-          tempSet.add(account.address.toString())
-          if (initializedAccounts.has(account.address.toString())) {
-            continue
-          }
-          connection.onAccountChange(account.address, (accountInfo: AccountInfo<Buffer>) => {
-            const parsedData = parseTokenAccountData(accountInfo.data)
-            dispatch(
-              actions.setTokenBalance({
-                address: account.address.toString(),
-                programId: parsedData.token.toString(),
-                balance: parsedData.amount
-              })
-            )
-          })
+      R.forEachObj(tokensAccounts, account => {
+        tempSet.add(account.address.toString())
+        if (initializedAccount.has(account.address.toString())) {
+          return
         }
+        connection.onAccountChange(account.address, (accountInfo: AccountInfo<Buffer>) => {
+          const parsedData = parseTokenAccountData(accountInfo.data)
+          dispatch(
+            actions.setTokenBalance({
+              address: account.address.toString(),
+              programId: parsedData.token.toString(),
+              balance: parsedData.amount
+            })
+          )
+        })
       })
-      setInitializedAccounts(tempSet)
+      setInitializedAccount(tempSet)
     }
     connectEvents()
   }, [dispatch, tokensAccounts, networkStatus, walletStat])

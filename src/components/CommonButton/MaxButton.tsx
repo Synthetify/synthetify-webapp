@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
 import classNames from 'classnames'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import useStyles from './style'
 
 export interface IProps {
@@ -19,16 +19,14 @@ export const MaxButton: React.FC<IProps> = ({
 }) => {
   const classes = useStyles()
   return (
-    <Button
-      className={classNames(className, classes.maxButton)}
-      variant='outlined'
-      classes={{ disabled: classes.disabled }}
+    <OutlinedButton
+      name={name}
+      color='primary'
       disabled={disabled}
-      type={onClick ? 'button' : 'submit'}
+      onClick={onClick}
       startIcon={startIcon}
-      onClick={onClick}>
-      {name}
-    </Button>
+      className={classNames(classes.maxButton, className)}
+    />
   )
 }
 export default MaxButton

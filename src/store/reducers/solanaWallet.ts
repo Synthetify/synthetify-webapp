@@ -33,17 +33,15 @@ export interface ITransaction {
 }
 export interface ISolanaWallet {
   status: Status
-  address: string
+  address: PublicKey
   balance: BN
-  transactions: { [key in string]: ITransaction }
-  accounts: { [key in string]: ITokenAccount[] }
+  accounts: { [key in string]: ITokenAccount }
 }
 
 export const defaultState: ISolanaWallet = {
   status: Status.Uninitialized,
-  address: DEFAULT_PUBLICKEY.toString(),
+  address: DEFAULT_PUBLICKEY,
   balance: new BN(0),
-  transactions: {},
   accounts: {}
 }
 export const solanaWalletSliceName = 'solanaWallet'
@@ -57,7 +55,7 @@ const solanaWalletSlice = createSlice({
     initWallet(state) {
       return state
     },
-    setAddress(state, action: PayloadAction<string>) {
+    setAddress(state, action: PayloadAction<PublicKey>) {
       state.address = action.payload
       return state
     },
@@ -69,38 +67,12 @@ const solanaWalletSlice = createSlice({
       state.balance = action.payload
       return state
     },
-    addTransaction(state, action: PayloadAction<IaddTransaction>) {
-      state.transactions[action.payload.id] = {
-        recipient: action.payload.recipient,
-        amount: action.payload.amount,
-        txid: '',
-        sending: true,
-        token: action.payload.token
-      }
-      return state
-    },
-    setTransactionTxid(state, action: PayloadAction<{ txid: string; id: string }>) {
-      state.transactions[action.payload.id].txid = action.payload.txid
-      state.transactions[action.payload.id].sending = false
-      return state
-    },
-    setTransactionError(state, action: PayloadAction<{ error: string; id: string }>) {
-      state.transactions[action.payload.id].error = action.payload.error
-      state.transactions[action.payload.id].sending = false
-      return state
-    },
     addTokenAccount(state, action: PayloadAction<ITokenAccount>) {
-      if (!state.accounts[action.payload.programId.toString()]) {
-        state.accounts[action.payload.programId.toString()] = []
-      }
-      state.accounts[action.payload.programId.toString()].push(action.payload)
+      state.accounts[action.payload.programId.toString()] = action.payload
       return state
     },
     setTokenBalance(state, action: PayloadAction<IsetTokenBalance>) {
-      const index = state.accounts[action.payload.programId].findIndex(
-        account => account.address.toString() === action.payload.address
-      )
-      state.accounts[action.payload.programId][index].balance = action.payload.balance
+      state.accounts[action.payload.programId].balance = action.payload.balance
       return state
     },
     // Triggers rescan for tokens that we control
@@ -114,13 +86,7 @@ interface IsetTokenBalance {
   programId: string
   balance: BN
 }
-interface IaddTransaction {
-  recipient: string
-  amount: number
-  id: string
-  token?: PublicKey
-  accountAddress?: string
-}
+
 export const actions = solanaWalletSlice.actions
 export const reducer = solanaWalletSlice.reducer
 export type PayloadTypes = PayloadType<typeof actions>
