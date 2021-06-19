@@ -7,9 +7,9 @@ import { transformBN } from '@consts/utils'
 import { TokenAccounts } from '@selectors/solanaWallet'
 import Token from '@containers/Tokens/Token/Token'
 import { PublicKey } from '@solana/web3.js'
-import { ReactComponent as DepositIcon } from '@static/svg/depo_ic.svg'
-import { ReactComponent as MintIcon } from '@static/svg/mint_ic.svg'
-import { ReactComponent as WithdrawIcon } from '@static/svg/withdraw_ic.svg'
+import DepositIcon from '@static/svg/depo_ic.svg'
+import MintIcon from '@static/svg/mint_ic.svg'
+import WithdrawIcon from '@static/svg/withdraw_ic.svg'
 import { openSync } from 'fs'
 import UserStatsTile from './UserStatsTile/UserStatsTile'
 export interface IStaking {
@@ -39,18 +39,12 @@ export const Stacking: React.FC<IStaking> = ({
     <Grid container className={classes.root}>
       <Grid item xs={12}>
         <Grid container className={classes.statsContainer}>
-          <UserStatsTile
-            titleText='Staked value'
-            titleValueText={`${transformBN(stakedValue)}$`}
-          />
+          <UserStatsTile titleText='Staked value' titleValueText={`${transformBN(stakedValue)}$`} />
           <UserStatsTile
             titleText='Collateral ratio'
             titleValueText={`${collateralRatio.toString()}%`}
           />
-          <UserStatsTile
-            titleText='Current debt'
-            titleValueText={`${transformBN(debt)}$`}
-          />
+          <UserStatsTile titleText='Current debt' titleValueText={`${transformBN(debt)}$`} />
         </Grid>
       </Grid>
       <Grid item xs={12}>

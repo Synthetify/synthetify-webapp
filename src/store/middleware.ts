@@ -1,4 +1,3 @@
-import { routerMiddleware } from 'connected-react-router'
 import createSagaMiddleware from 'redux-saga'
 import historyProvider from '../providers/historyProvider'
 
@@ -6,4 +5,4 @@ import historyProvider from '../providers/historyProvider'
 export const sagaMiddleware = createSagaMiddleware()
 
 // Push custom middleware here
-export const middleware = [sagaMiddleware, routerMiddleware(historyProvider)]
+export const middleware = [sagaMiddleware]

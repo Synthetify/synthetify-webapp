@@ -5,10 +5,8 @@ import { muiTheme } from 'storybook-addon-material-ui'
 import { themes } from '@storybook/theming'
 import { theme } from '../src/static/theme'
 import { StylesProvider } from '@material-ui/core'
-import { MemoryRouter } from 'react-router'
 addDecorator(muiTheme([theme]))
 addDecorator(storyFn => <StylesProvider injectFirst>{storyFn()}</StylesProvider>)
-addDecorator(story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>)
 addParameters({
   backgrounds: [
     { name: 'dark', value: '#202020', default: true },
