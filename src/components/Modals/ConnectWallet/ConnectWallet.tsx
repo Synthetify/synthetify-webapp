@@ -25,15 +25,17 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         container
         alignContent='space-around'
         direction='column'
-        spacing={2}>
-        <Grid item className={classes.listItem}>
-          <Typography className={classes.name}>
-            <Icon>
-              <img className={classes.icon} src={SolletIcon} alt={`${options[0]} icon}`} />
-            </Icon>
-            {options[0]}
-          </Typography>
+        spacing={0}>
+
+        <Grid item container className={classes.listItem} alignItems='center' >
+          <Grid item>
+            <img className={classes.icon} src={SolletIcon} alt={`${options[0]} icon}`} />
+          </Grid>
+          <Grid item>
+            <Typography className={classes.name}>{options[0]}</Typography>
+          </Grid>
         </Grid>
+
       </Grid>
     </Modal>
   )
