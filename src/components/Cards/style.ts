@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   valueCard: {
-    background: colors.gray.balticSea,
+    background: colors.gray.component,
     borderRadius: 10,
     padding: '4px 6px'
   },
