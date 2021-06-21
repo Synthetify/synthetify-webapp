@@ -2,7 +2,6 @@ import React from 'react'
 import { Card, CardContent, Typography, Divider, Tooltip, Icon } from '@material-ui/core'
 import useStyles from './style'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
-import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
 
 export interface IProps {
   name: string
