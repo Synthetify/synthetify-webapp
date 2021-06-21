@@ -23,6 +23,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWall
     <>
       <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
         <CardMedia className={classes.snyLogo} image={snyIcon} />
+        <Divider orientation="vertical" className={classes.verticalDivider} />
         <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
           <Grid item>
             <NavbarButton name='Staking' onClick={() => {}} />

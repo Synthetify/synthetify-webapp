@@ -47,7 +47,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     marginTop: 15,
     marginLeft: -17,
-    background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
+    background: colors.gray.light
+  },
+  verticalDivider: {
+    background: colors.gray.light,
+    height: 50
   }
 }))
 
