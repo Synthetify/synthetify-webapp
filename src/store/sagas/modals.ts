@@ -12,11 +12,11 @@ import {
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { getConnection } from './solana/connection'
-import { sendSol, sendToken, createAccount } from './solana/wallet'
+import { getConnection } from './connection'
+import { sendSol, sendToken, createAccount } from './wallet'
 
 import { BN } from '@project-serum/anchor'
-import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './solana/exchange'
+import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './exchange'
 
 export function* handleCreateAccount(): Generator {
   const createAccountData = yield* select(createAccountRedux)

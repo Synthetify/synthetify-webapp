@@ -1,4 +1,6 @@
 import React from 'react'
+import { Typography } from '@material-ui/core'
+
 import useStyles from './style'
 import AmountInput from './AmountInput'
 
@@ -20,7 +22,9 @@ export const AmountInputWithLabel: React.FC<IProps> = ({
   const classes = useStyles()
   return (
     <div>
-      <label className={classes.inputLabel}>{label}</label>
+      <Typography>
+        <label className={classes.inputLabel}>{label}</label>
+      </Typography>
       <br />
       <AmountInput setValue={setValue} currency={currency} value={value} error={error} />
     </div>

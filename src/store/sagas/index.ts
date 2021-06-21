@@ -1,8 +1,11 @@
 import { all, spawn } from 'redux-saga/effects'
-import solanaRootSaga from './solana'
+import { connectionSaga } from './connection'
+import { walletSaga } from './wallet'
+import { exchangeSaga } from './exchange'
+
 import { modalsSaga } from './modals'
 
 export function* rootSaga(): Generator {
-  yield all([solanaRootSaga, modalsSaga].map(spawn))
+  yield all([connectionSaga, walletSaga, exchangeSaga, modalsSaga].map(spawn))
 }
 export default rootSaga

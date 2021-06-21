@@ -48,7 +48,7 @@ export function* getCollateralTokenAirdrop(): Generator {
   const tokensAccounts = yield* select(accounts)
   const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
   let accountAddress = tokensAccounts[collateralTokenAddress.toString()]
-    ? tokensAccounts[collateralTokenAddress.toString()][0].address
+    ? tokensAccounts[collateralTokenAddress.toString()].address
     : null
   if (accountAddress == null) {
     accountAddress = yield* call(createAccount, collateralTokenProgram.publicKey)
@@ -77,7 +77,7 @@ export function* getCollateralTokenAirdrop(): Generator {
 export function* depositCollateral(amount: BN): SagaGenerator<string> {
   const collateralTokenAddress = yield* select(collateralToken)
   const tokensAccounts = yield* select(accounts)
-  const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()][0]
+  const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()]
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -150,7 +150,7 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
   const wallet = yield* call(getWallet)
   const userExchangeAccount = yield* select(exchangeAccount)
   let accountAddress = tokensAccounts[usdTokenAddress.toString()]
-    ? tokensAccounts[usdTokenAddress.toString()][0].address
+    ? tokensAccounts[usdTokenAddress.toString()].address
     : null
   if (accountAddress == null) {
     accountAddress = yield* call(createAccount, usdTokenAddress)
@@ -211,13 +211,13 @@ export function* handleSwap(): Generator {
     const userExchangeAccount = yield* select(exchangeAccount)
 
     let fromAddress = tokensAccounts[swapData.fromToken.toString()]
-      ? tokensAccounts[swapData.fromToken.toString()][0].address
+      ? tokensAccounts[swapData.fromToken.toString()].address
       : null
     if (fromAddress == null) {
       fromAddress = yield* call(createAccount, swapData.fromToken)
     }
     let toAddress = tokensAccounts[swapData.toToken.toString()]
-      ? tokensAccounts[swapData.toToken.toString()][0].address
+      ? tokensAccounts[swapData.toToken.toString()].address
       : null
     if (toAddress == null) {
       toAddress = yield* call(createAccount, swapData.toToken)

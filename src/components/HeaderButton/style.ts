@@ -7,8 +7,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 18
   },
   headerButton: {
-    background: colors.blue.bastille,
-    color: colors.gray.DB,
+    background: colors.gray.upperMid,
+    color: colors.gray.C7C9D1,
     textTransform: 'none',
     fontSize: 16,
     lineHeight: '40px',
@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textOverflow: 'ellipsis'
   },
   dropdownHeaderButton: {
-    background: colors.blue.bastille,
-    color: colors.gray.DB,
+    background: colors.gray.upperMid,
+    color: colors.gray.C7C9D1,
     textTransform: 'none',
     fontSize: 16,
     lineHeight: '40px',
