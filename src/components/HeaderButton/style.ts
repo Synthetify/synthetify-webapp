@@ -16,26 +16,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
 
     '&:hover': {
-      background: colors.black.controls,
-      color: colors.gray.skeletonField
+      background: colors.gray.mid,
+      color: colors.gray.veryLight
     }
   },
   dropdownHeaderButtonText: {
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    textTransform: 'none',
+    fontSize: 16
   },
   dropdownHeaderButton: {
     background: colors.gray.upperMid,
     color: colors.gray.C7C9D1,
-    textTransform: 'none',
-    fontSize: 16,
     lineHeight: '40px',
     padding: '2px 15px',
     borderRadius: 12,
 
     '&:hover': {
-      background: colors.black.controls,
-      color: colors.gray.skeletonField
+      background: colors.gray.mid,
+      color: colors.gray.veryLight
     }
   },
   disabled: {
