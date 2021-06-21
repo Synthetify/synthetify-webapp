@@ -11,13 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 80,
     height: 44,
     margin: 10,
-    marginLeft: 50,
-    marginRight: 80
-
-    // [theme.breakpoints.down('sm')]: {
-    //   marginLeft: 30,
-    //   marginRight: 20
-    // }
+    marginLeft: 50
   },
   dotsIcon: {
     fill: colors.gray.C4
@@ -26,16 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 90,
     marginLeft: 50,
     minWidth: 60,
-
-    // [theme.breakpoints.down('md')]: {
-    //   marginLeft: 30,
-    //   marginRight: 50
-    // },
-
-    // [theme.breakpoints.down('sm')]: {
-    //   marginLeft: 0,
-    //   marginRight: 0
-    // },
 
     '&:hover': {
       background: colors.blue.bastille,
@@ -51,7 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   verticalDivider: {
     background: colors.gray.light,
-    height: 50
+    height: 50,
+    marginLeft: 60,
+    marginRight: 30
   }
 }))
 
