@@ -2,20 +2,19 @@ import React from 'react'
 import {
   Typography,
   Modal,
-  Divider,
   Grid,
-  IconButton,
   Input,
   CardMedia,
   Box
 } from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
-import { Close, Search } from '@material-ui/icons'
+import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 
 export interface TokenWithName {
-  name: string
+  name: string,
+  publicKey: PublicKey
   disabled?: boolean
 }
 
@@ -59,7 +58,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.name.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(({ name }) => {
+                .map(({ name, publicKey }) => {
                   let icon
                   try {
                     icon = require(`@static/icons/${name.toLowerCase()}.png`)
@@ -68,7 +67,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
                   }
 
                   return (
-                    <Grid container className={classes.tokenItem} alignItems='center'>
+                    <Grid container className={classes.tokenItem} alignItems='center' onClick={() => onSelect(publicKey)}>
                       <Grid item>
                         <CardMedia className={classes.tokenIcon} image={icon} />{' '}
                       </Grid>
