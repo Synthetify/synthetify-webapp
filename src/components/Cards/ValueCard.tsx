@@ -5,6 +5,7 @@ import useStyles from './style'
 export interface IProps {
   name: string
   value: string
+  hint?: string
   onClick?: () => void
 }
 export const ValueCard: React.FC<IProps> = ({
