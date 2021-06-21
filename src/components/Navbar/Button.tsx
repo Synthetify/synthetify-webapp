@@ -5,6 +5,7 @@ import useStyles from './style'
 
 export interface IProps {
   name: string
+  active?: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   className?: string
   disabled?: boolean
@@ -12,6 +13,7 @@ export interface IProps {
 }
 export const NavbarButton: React.FC<IProps> = ({
   name,
+  active,
   onClick,
   className,
   disabled = false,
@@ -22,7 +24,7 @@ export const NavbarButton: React.FC<IProps> = ({
     <Button
       className={classNames(
         className,
-        classes.button
+        !active ? classes.button : classes.active
       )}
       variant='contained'
       classes={{ disabled: classes.disabled }}

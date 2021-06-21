@@ -13,27 +13,28 @@ import PhantomIcon from '@static/png/phantom.png'
 export interface IHeader {
   address: PublicKey
   network: string
+  current: string
   typeOfWallet?: 'phantom'
 }
-
-export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWallet = '' }) => {
+export const HeaderRedesign: React.FC<IHeader> = ({
+  address,
+  network,
+  current,
+  typeOfWallet = ''
+}) => {
   const classes = useStyles()
 
   return (
     <>
       <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
         <CardMedia className={classes.snyLogo} image={snyIcon} />
-        <Divider orientation="vertical" className={classes.verticalDivider} />
+        <Divider orientation='vertical' className={classes.verticalDivider} />
         <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
-          <Grid item>
-            <NavbarButton name='Staking' onClick={() => {}} />
-          </Grid>
-          <Grid item>
-            <NavbarButton name='Stats' onClick={() => {}} />
-          </Grid>
-          <Grid item>
-            <NavbarButton name='Exchange' onClick={() => {}} />
-          </Grid>
+          {['staking', 'stats', 'exchange'].map(path => (
+            <Grid item>
+              <NavbarButton name={path} onClick={() => {}} active={path === current} />
+            </Grid>
+          ))}
         </Grid>
         <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
           <Grid item>
