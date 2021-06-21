@@ -2,10 +2,9 @@ import React from 'react'
 import { Typography, Modal, Grid } from '@material-ui/core'
 import useStyles from './style'
 
-interface IConnectWalletModalWallet{
+interface IConnectWalletModalWallet {
   name: string
   network: string
-  disabled?: boolean
 }
 
 export interface IConnectWalletModal {
@@ -24,30 +23,17 @@ export const SelectNetwork: React.FC<IConnectWalletModal> = ({
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Grid
-        className={classes.root}
-        container
-        alignContent='space-around'
-        direction='column'>
-        {networks.map(network => {
-          let icon
-          try {
-            icon = require(`@static/svg/${network}.svg`)
-          } catch (error) {
-            icon = require('@static/icons/sny.png')
-          }
-
-          return (
-            <Grid
-              item
-              className={classes.listItem}
-              alignItems='center'
-              onClick={() => onSelect(network)}>
-              <img className={classes.icon} src={icon} alt={`${network} icon}`} />
-              <Typography className={classes.name}>{option}</Typography>
-            </Grid>
-          )
-        })}
+      <Grid className={classes.root} container alignContent='space-around' direction='column'>
+        {networks.map(({ name, network }) => (
+          <Grid
+            item
+            className={classes.listItem}
+            alignItems='center'
+            onClick={() => onSelect(network)}>
+            <Typography className={classes.name}>{name}</Typography>
+            <Typography className={classes.network}>{network}</Typography>
+          </Grid>
+        ))}
       </Grid>
     </Modal>
   )
