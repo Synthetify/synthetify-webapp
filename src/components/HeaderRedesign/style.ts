@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.black.cinder,
+    background: colors.black.background,
     paddingRight: 0,
     height: 100
   },
