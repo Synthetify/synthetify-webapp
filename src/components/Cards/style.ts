@@ -1,5 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
+import { getArchtype } from 'immer/dist/internal'
 
 const useStyles = makeStyles((theme: Theme) => ({
   valueCard: {
@@ -21,13 +22,23 @@ const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     width: 139,
     marginTop: 6,
-    marginBottom: 11,
+    marginBottom: 15,
     background: colors.gray.light
   },
   questionMark: {
-    height: 20,
-    width: 20,
-    marginLeft: 200
+    height: 17,
+    width: 17,
+    float: 'right'
+  },
+  tooltip: {
+    background: colors.gray.mid,
+    color: colors.gray.veryLight,
+    fontSize: 13,
+    padding: '5px 8px'
+  },
+  tooltipArrow: {
+    color: colors.gray.mid,
+    width: 12
   }
 }))
 

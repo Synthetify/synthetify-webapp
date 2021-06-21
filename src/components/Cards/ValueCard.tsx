@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, CardContent, Typography, Divider, Tooltip, Icon } from '@material-ui/core'
 import useStyles from './style'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
+import CopyToolTip from '@components/CopyToolTip/CopyToolTip'
 
 export interface IProps {
   name: string
@@ -9,16 +10,22 @@ export interface IProps {
   hint?: string
   onClick?: () => void
 }
-export const ValueCard: React.FC<IProps> = ({ name, value, onClick }) => {
+export const ValueCard: React.FC<IProps> = ({ name, value, hint, onClick }) => {
   const classes = useStyles()
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent>
-        <Icon>
-          <Tooltip title='longer test tst test ' placement='top-end' arrow>
-            <img src={HintIcon} alt='' className={classes.questionMark} />
-          </Tooltip>
-        </Icon>
+        {hint ? (
+          <Icon>
+            <Tooltip
+              classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
+              title={hint}
+              placement='top-end'
+              arrow>
+              <img src={HintIcon} alt='' className={classes.questionMark} />
+            </Tooltip>
+          </Icon>
+        ) : null}
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} />
         <Typography className={classes.valueCardAmount}>{value}</Typography>
