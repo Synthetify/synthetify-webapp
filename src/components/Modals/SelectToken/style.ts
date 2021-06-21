@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     borderRadius: 10
   },
+  hideScroll: {
+    '& > *:first-child': {
+      paddingRight: '20px'
+    }
+  },
   scrollbarThumb: {
     background: colors.green.main,
     borderRadius: 10,

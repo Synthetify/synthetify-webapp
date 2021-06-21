@@ -8,12 +8,16 @@ export const SelectToken: React.FC<{}> = props => {
 
   return (
     <Scrollbars
+      autoHide
+      autoHideDuration={200}
+      autoHideTimeout={200}
       renderThumbVertical={() => {
-        return <div className={classes.scrollbarThumb}/>
+        return <div className={classes.scrollbarThumb} />
       }}
       renderTrackVertical={() => {
-        return <div className={classes.scrollbarTrack}/>
+        return <div className={classes.scrollbarTrack} />
       }}
+      className={classes.hideScroll}
       {...props}
     />
   )
