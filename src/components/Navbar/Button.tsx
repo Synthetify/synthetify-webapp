@@ -8,12 +8,14 @@ export interface IProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   className?: string
   disabled?: boolean
+  startIcon?: JSX.Element
 }
 export const NavbarButton: React.FC<IProps> = ({
   name,
   onClick,
   className,
-  disabled = false
+  disabled = false,
+  startIcon
 }) => {
   const classes = useStyles()
   return (
@@ -26,6 +28,7 @@ export const NavbarButton: React.FC<IProps> = ({
       classes={{ disabled: classes.disabled }}
       disabled={disabled}
       type={onClick ? 'button' : 'submit'}
+      startIcon={startIcon}
       onClick={onClick}>
       {name}
     </Button>
