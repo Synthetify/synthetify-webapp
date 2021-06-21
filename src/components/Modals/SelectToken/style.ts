@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenItem: {
     margin: 5,
     borderRadius: 10,
-    width: 182,
+    width: 258,
 
     '&:hover': {
       background: colors.gray.mid
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {
     background: colors.gray.component,
-    width: 250,
+    width: 350,
     borderRadius: 10,
     margin: 20,
     padding: 0,
@@ -38,11 +38,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: 10
   },
   searchIcon: {
-    color: colors.gray.C4,
+    color: colors.gray.light,
     margin: 8
   },
   searchInput: {
     background: colors.black.background,
+    color: colors.gray.light,
     height: 40,
     lineHeight: 40,
     paddingLeft: 16,
@@ -57,7 +58,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   scrollbarThumb: {
     background: colors.green.main,
     borderRadius: 10,
-    marginRight: 20,
     width: 9
   },
   scrollbarTrack: {
