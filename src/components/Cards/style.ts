@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.mid,
     color: colors.gray.veryLight,
     fontSize: 13,
-    padding: '5px 8px'
+    padding: '5px 8px',
+    fontWeight: 400
   },
   tooltipArrow: {
     color: colors.gray.mid,
