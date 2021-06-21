@@ -11,20 +11,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.manatee,
     fontFamily: theme.typography.fontFamily,
     fontSize: '22px',
-    lineHeight: '26px',
+    lineHeight: '40px',
     fontWeight: 400
   },
   valueCardAmount: {
     color: colors.gray.skeletonField,
     fontFamily: theme.typography.fontFamily,
     fontSize: '35px',
-    fontWeight: 700
+    fontWeight: 700,
+    lineHeight: '40px'
   },
   divider: {
-    width: '177px',
-    marginTop: '8px',
-    marginBottom: '15px',
-    background: `linear-gradient(90deg, ${colors.green.main}, rgba(98, 126, 234, 0))`
+    width: 139,
+    marginTop: 6,
+    marginBottom: 11,
+    background: colors.gray.light
   }
 }))
 
