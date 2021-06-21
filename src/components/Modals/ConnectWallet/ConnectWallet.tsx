@@ -1,6 +1,8 @@
 import React from 'react'
-import { Typography, Modal, Grid } from '@material-ui/core'
+import { Typography, Modal, Grid, Icon } from '@material-ui/core'
 import useStyles from './style'
+import PhantomIcon from '@static/svg/phantom.svg'
+import SolletIcon from '@static/svg/sollet.svg'
 
 export interface IConnectWalletModal {
   options: string[]
@@ -24,12 +26,15 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         alignContent='space-around'
         direction='column'
         spacing={2}>
-          <Grid item>
-            <Typography>Placeholder</Typography>
-          </Grid>
-
-
+        <Grid item className={classes.listItem}>
+          <Typography className={classes.name}>
+            <Icon>
+              <img className={classes.icon} src={SolletIcon} alt={`${options[0]} icon}`} />
+            </Icon>
+            {options[0]}
+          </Typography>
         </Grid>
+      </Grid>
     </Modal>
   )
 }
