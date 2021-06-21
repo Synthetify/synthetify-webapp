@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 5,
     borderRadius: 10,
     width: 258,
+    cursor: 'pointer',
 
     '&:hover': {
       background: colors.gray.mid
