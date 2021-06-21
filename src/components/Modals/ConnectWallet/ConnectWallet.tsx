@@ -1,8 +1,6 @@
 import React from 'react'
-import { Typography, Modal, Grid, Icon } from '@material-ui/core'
+import { Typography, Modal, Grid } from '@material-ui/core'
 import useStyles from './style'
-import PhantomIcon from '@static/svg/phantom.svg'
-import SolletIcon from '@static/svg/sollet.svg'
 
 export interface IConnectWalletModal {
   options: string[]
@@ -24,21 +22,26 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         className={classes.root}
         container
         alignContent='space-around'
-        direction='column'
-        spacing={0}>
-        <Grid
-          item
-          container
-          className={classes.listItem}
-          alignItems='center'
-          onClick={() => onSelect(options[0])}>
-          <Grid item>
-            <img className={classes.icon} src={SolletIcon} alt={`${options[0]} icon}`} />
-          </Grid>
-          <Grid item>
-            <Typography className={classes.name}>{options[0]}</Typography>
-          </Grid>
-        </Grid>
+        direction='column'>
+        {options.map(option => {
+          let icon
+          try {
+            icon = require(`@static/svg/${option}.svg`)
+          } catch (error) {
+            icon = require('@static/icons/sny.png')
+          }
+
+          return (
+            <Grid
+              item
+              className={classes.listItem}
+              alignItems='center'
+              onClick={() => onSelect(option)}>
+              <img className={classes.icon} src={icon} alt={`${option} icon}`} />
+              <Typography className={classes.name}>{option}</Typography>
+            </Grid>
+          )
+        })}
       </Grid>
     </Modal>
   )
