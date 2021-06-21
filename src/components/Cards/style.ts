@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 6,
     marginBottom: 11,
     background: colors.gray.light
+  },
+  questionMark: {
+    height: 20,
+    width: 20,
+    marginLeft: 200
   }
 }))
 
