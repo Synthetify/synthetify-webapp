@@ -16,7 +16,7 @@ export const CopyToolTip: React.FC<IProps> = ({ text, children }) => {
       placement='top'
       classes={{ tooltip: classes.tooltip, arrow: classes.arrow }}>
       <div className={classes.wrapper}>
-        <CopyToClipboard44
+        <CopyToClipboard
           text={text}
           onCopy={() => {
             setCopied(true)
