@@ -5,6 +5,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.gray.component,
     borderRadius: 10
+  },
+  title: {
+    fontSize: 22,
+    color: colors.gray.light
+  },
+  titleDivider: {
+    background: colors.gray.light
   }
 }))
 

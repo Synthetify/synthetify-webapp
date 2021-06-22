@@ -1,12 +1,15 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid, Typography, Divider } from '@material-ui/core'
 import useStyles from './style'
 
 export const ExchangeComponent: React.FC<{}> = () => {
   const classes = useStyles()
   return (
-    <Grid containter className={classes.root} spacing={10}>
-      <Grid item>Exchange</Grid>
+    <Grid container className={classes.root} direction='column' spacing={4}>
+      <Grid item>
+        <Typography className={classes.title}>Swap</Typography>
+        <Divider className={classes.titleDivider} />
+      </Grid>
     </Grid>
   )
 }
