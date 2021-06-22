@@ -6,7 +6,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.component,
     width: 226,
     borderRadius: 10,
-    padding: 20
+    padding: 20,
+    margin: 10
   },
   listItem: {
     color: colors.gray.light,

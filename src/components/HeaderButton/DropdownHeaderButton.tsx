@@ -51,14 +51,13 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
           endIcon={<ExpandMoreIcon />}>
           <Typography className={classes.dropdownHeaderButtonText}>{name}</Typography>
         </Button>
-        <Popper transition open={open} anchorEl={anchorEl} placement='bottom'>
-          <ConnectWallet
-            open={true}
-            options={['phantom', 'sollet', 'extension']}
-            handleClose={() => {}}
-            onSelect={() => {}}
-          />
-        </Popper>
+        <ConnectWallet
+          options={['phantom', 'sollet', 'extension']}
+          open={open}
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          onSelect={() => {}}
+        />
       </div>
     </ClickAwayListener>
   )
