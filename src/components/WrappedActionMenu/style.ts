@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   lineHeight: {
     lineHeight: 1.5
   },
-  dividerWrapper: {
-    width: 1
-  },
   divider: {
     backgroundColor: colors.gray.light,
     height: 60

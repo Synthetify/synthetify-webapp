@@ -36,18 +36,16 @@ export const WrappedActionMenu: React.FC = () => {
             <Grid item>
               <MaxButton />
             </Grid>
-            <Grid item container alignItems='center' className={classes.dividerWrapper}>
+            <Grid item alignItems='center'>
               <Divider orientation='vertical' className={classes.divider} />
             </Grid>
-            <Grid item container alignItems='center'>
-              <Grid item className={classes.available}>
-                <Typography className={classNames(classes.property, classes.lineHeight)}>
-                  Available to withdraw
-                </Typography>
-                <Typography className={classNames(classes.value, classes.lineHeight)}>
-                  xUSD 5164.0189
-                </Typography>
-              </Grid>
+            <Grid item alignItems='center' className={classes.available}>
+              <Typography className={classNames(classes.property, classes.lineHeight)}>
+                Available to withdraw
+              </Typography>
+              <Typography className={classNames(classes.value, classes.lineHeight)}>
+                xUSD 5164.0189
+              </Typography>
             </Grid>
           </Grid>
           {/*  BOTTOM*/}
