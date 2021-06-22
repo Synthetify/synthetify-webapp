@@ -11,7 +11,11 @@ storiesOf('menu/switchMenu', module)
   .addDecorator(withKnobs)
   .add('Max width', () => (
     <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
-      <SwitchMenu items={['Option1', 'Option2', 'Option3']} onChange={action('switch menu')} />
+      <SwitchMenu
+        items={['Option1', 'Option2', 'Option3']}
+        itemContents={['Content1', 'Content2', 'Content3']}
+        onChange={action('switch menu')}
+      />
     </div>
   ))
   .add('Actions', () => (

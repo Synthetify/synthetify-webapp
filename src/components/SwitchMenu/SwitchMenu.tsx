@@ -5,13 +5,14 @@ import { colors } from '@static/theme'
 
 interface IProps {
   items: string[]
+  itemContents: React.ReactNode[]
   maxWidth?: number
   onChange: (newValue: number) => void
 }
 
 interface ITabPanelProps {
   children?: React.ReactNode
-  index: any
+  index: number
   value: any
 }
 
@@ -20,8 +21,8 @@ const TabPanel = ({ children, value, index, ...other }: ITabPanelProps) => {
     <div
       role='tabpanel'
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
       {...other}>
       {value === index && (
         <Box p={3}>
@@ -85,10 +86,15 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SwitchMenu: React.FC<IProps> = ({ items, maxWidth, onChange }) => {
+export const SwitchMenu: React.FC<IProps> = ({ items, itemContents, maxWidth, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const tabs = items.map((item, index) => <FullHeightIndicatorTab key={index} label={item} />)
+  const tabContents = itemContents.map((content, index) => (
+    <TabPanel value={value} index={index}>
+      {content}
+    </TabPanel>
+  ))
 
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
@@ -100,15 +106,7 @@ export const SwitchMenu: React.FC<IProps> = ({ items, maxWidth, onChange }) => {
       <FullHeightIndicatorTabs value={value} onChange={handleChange}>
         {tabs}
       </FullHeightIndicatorTabs>
-      <TabPanel value={value} index={0}>
-        {/*item0*/}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {/*item1*/}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        {/*item2*/}
-      </TabPanel>
+      {tabContents}
     </Grid>
   )
 }

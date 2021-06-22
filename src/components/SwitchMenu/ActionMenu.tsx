@@ -8,6 +8,7 @@ export const ActionMenu: React.FC<IProps> = ({ onChange }) => {
   return (
     <SwitchMenu
       items={['Mint', 'Deposit', 'Withdraw', 'Burn', 'Rewards']}
+      itemContents={['Mint mock', 'Deposit mock', 'Withdraw mock', 'Burn mock', 'Rewards mock']}
       maxWidth={800}
       onChange={onChange}
     />
