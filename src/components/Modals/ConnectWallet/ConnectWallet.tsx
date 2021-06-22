@@ -1,28 +1,29 @@
 import React from 'react'
 import { Typography, Modal, Grid } from '@material-ui/core'
 import useStyles from './style'
+import { ExitToApp } from '@material-ui/icons'
 
 export interface IConnectWalletModal {
   options: string[]
   open: boolean
   handleClose: () => void
+  callDisconect: () => void
+  connected: boolean
   onSelect: (wallet: string) => void
 }
 export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   options,
   open,
   handleClose,
+  callDisconect,
+  connected,
   onSelect
 }) => {
   const classes = useStyles()
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Grid
-        className={classes.root}
-        container
-        alignContent='space-around'
-        direction='column'>
+      <Grid className={classes.root} container alignContent='space-around' direction='column'>
         {options.map(option => {
           let icon
           try {
@@ -42,6 +43,13 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
             </Grid>
           )
         })}
+
+        {connected ? (
+          <Grid item className={classes.listItem} alignItems='center' onClick={callDisconect}>
+            <ExitToApp className={classes.icon} />
+            <Typography className={classes.name}>Disconnect</Typography>
+          </Grid>
+        ) : null}
       </Grid>
     </Modal>
   )
