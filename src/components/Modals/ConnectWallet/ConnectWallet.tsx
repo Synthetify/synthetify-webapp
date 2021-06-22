@@ -8,6 +8,7 @@ export interface IConnectWalletModal {
   open: boolean
   handleClose: () => void
   callDisconect: () => void
+  connected: boolean
   onSelect: (wallet: string) => void
 }
 export const ConnectWallet: React.FC<IConnectWalletModal> = ({
@@ -15,6 +16,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   open,
   handleClose,
   callDisconect,
+  connected,
   onSelect
 }) => {
   const classes = useStyles()
@@ -41,14 +43,13 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
             </Grid>
           )
         })}
-        <Grid
-          item
-          className={classes.listItem}
-          alignItems='center'
-          onClick={callDisconect}>
-          <ExitToApp className={classes.icon}/>
-          <Typography className={classes.name}>Disconnect</Typography>
-        </Grid>
+
+        {connected ? (
+          <Grid item className={classes.listItem} alignItems='center' onClick={callDisconect}>
+            <ExitToApp className={classes.icon} />
+            <Typography className={classes.name}>Disconnect</Typography>
+          </Grid>
+        ) : null}
       </Grid>
     </Modal>
   )
