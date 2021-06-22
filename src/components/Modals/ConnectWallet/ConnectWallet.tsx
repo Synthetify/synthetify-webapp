@@ -34,8 +34,8 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
           return (
             <Grid
               item
+              key={option}
               className={classes.listItem}
-              alignItems='center'
               onClick={() => onSelect(option)}>
               <img className={classes.icon} src={icon} alt={`${option} icon}`} />
               <Typography className={classes.name}>{option}</Typography>

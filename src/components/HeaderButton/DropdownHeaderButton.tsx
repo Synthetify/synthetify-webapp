@@ -3,6 +3,7 @@ import { Button, Popover, Typography } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
+import ConnectWallet from '@components/Modals/ConnectWallet/ConnectWallet'
 
 export interface IProps {
   name: string
@@ -58,7 +59,12 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
           vertical: 'top',
           horizontal: 'center'
         }}>
-        <Typography className={classes.textInsidePopover}>The content of the Popover</Typography>
+        <ConnectWallet
+          open={true}
+          options={['phantom', 'sollet', 'extension']}
+          handleClose={() => {}}
+          onSelect={() => {}}
+        />
       </Popover>
     </div>
   )
