@@ -25,6 +25,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
   const classes = useStyles()
 
   const [activePath, setActive] = React.useState(landing)
+  const [selectTokenOpen, setSelectTokenOpen] = React.useState(false)
 
   return (
     <>
@@ -50,9 +51,10 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           </Grid>
           <Grid item>
             {address === DEFAULT_PUBLICKEY ? (
-              <HeaderButton name='Connect a wallet' />
+              <HeaderButton name='Connect a wallet' onClick={() => setSelectTokenOpen(true)} />
             ) : (
               <DropdownHeaderButton
+                onClick={() => setSelectTokenOpen(true)}
                 startIcon={
                   typeOfWallet === 'phantom' ? (
                     <CardMedia
