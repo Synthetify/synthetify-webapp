@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 700,
     textTransform: 'capitalize',
     boxShadow: 'none',
-    
+
     '&:hover': {
       background: colors.gray.mid,
       color: colors.gray.veryLight

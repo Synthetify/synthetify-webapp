@@ -34,7 +34,13 @@ export const HeaderRedesign: React.FC<IHeader> = ({
         <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
           {['staking', 'stats', 'exchange'].map(path => (
             <Grid item>
-              <NavbarButton name={path} onClick={() => {setActive(path)}} active={path === activePath} />
+              <NavbarButton
+                name={path}
+                onClick={() => {
+                  setActive(path)
+                }}
+                active={path === activePath}
+              />
             </Grid>
           ))}
         </Grid>
