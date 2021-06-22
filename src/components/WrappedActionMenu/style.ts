@@ -1,12 +1,9 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     backgroundColor: colors.gray.component
-  },
-  maxWidth375: {
-    maxWidth: 375
   },
   available: {
     maxWidth: 240,

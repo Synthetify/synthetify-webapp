@@ -33,7 +33,7 @@ export const WrappedActionMenu: React.FC = () => {
               <AmountInputWithLabel
                 setValue={(value: string) => value}
                 currency={'xUSD'}
-                className={classes.maxWidth375}
+                style={{ maxWidth: 375 }}
               />
             </Grid>
             <Grid item>
