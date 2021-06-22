@@ -5,13 +5,18 @@ import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import classNames from 'classnames'
+import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
 
-export const WrappedActionMenu: React.FC = () => {
+export interface IProps {
+  maxWidth?: MaxWidthProperty<number>
+}
+
+export const WrappedActionMenu: React.FC<IProps> = ({ maxWidth }) => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{ maxWidth }}>
       <CardContent>
         <Grid
           container
