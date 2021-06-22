@@ -22,6 +22,9 @@ const FullHeightIndicatorTabs = withStyles({
   },
   scrollButtons: {
     color: 'white'
+  },
+  flexContainer: {
+    justifyContent: 'space-around'
   }
 })((props: FullHeightIndicatorTabsProps) => (
   <Tabs
@@ -44,7 +47,9 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       fontWeight: 400,
       fontSize: 22,
       [theme.breakpoints.down('xs')]: {
-        fontSize: 18
+        fontSize: 13,
+        minWidth: 62,
+        padding: 0
       },
       color: colors.gray.manatee
     },
