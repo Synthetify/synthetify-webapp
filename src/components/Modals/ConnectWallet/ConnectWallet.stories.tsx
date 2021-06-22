@@ -8,6 +8,7 @@ storiesOf('modals/connectWallet', module).add('default', () => (
     open={true}
     options={['phantom', 'sollet', 'extension']}
     handleClose={() => {}}
+    callDisconect={action('disconnect')}
     onSelect={(wallet: string) => action('chosen: ' + wallet)()}
   />
 ))
