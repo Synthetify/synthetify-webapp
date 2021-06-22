@@ -2,10 +2,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  textInsidePopover: {
-    color: colors.black.cinder,
-    fontSize: 18
-  },
   headerButton: {
     background: colors.gray.upperMid,
     color: colors.gray.C7C9D1,
