@@ -10,6 +10,7 @@ interface IProps {
   label?: string
   value?: string
   error?: string | null
+  className?: string
 }
 
 export const AmountInputWithLabel: React.FC<IProps> = ({
@@ -17,7 +18,8 @@ export const AmountInputWithLabel: React.FC<IProps> = ({
   currency,
   label = 'Amount',
   value,
-  error
+  error,
+  className
 }) => {
   const classes = useStyles()
   return (
@@ -25,7 +27,13 @@ export const AmountInputWithLabel: React.FC<IProps> = ({
       <Typography>
         <label className={classes.inputLabel}>{label}</label>
       </Typography>
-      <AmountInput setValue={setValue} currency={currency} value={value} error={error} />
+      <AmountInput
+        setValue={setValue}
+        currency={currency}
+        value={value}
+        error={error}
+        className={className}
+      />
     </div>
   )
 }
