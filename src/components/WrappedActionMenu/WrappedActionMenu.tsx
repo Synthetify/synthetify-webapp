@@ -19,17 +19,27 @@ export const WrappedActionMenu: React.FC = () => {
             <ActionMenu onChange={() => {}} />
           </Grid>
           {/*MIDDLE*/}
-          <Grid container item direction='row' alignItems='flex-end'>
-            <Grid item xs={6}>
-              <AmountInputWithLabel setValue={(value: string) => value} currency={'xUSD'} />
+          <Grid
+            container
+            item
+            direction='row'
+            wrap='nowrap'
+            justify='space-between'
+            alignItems='flex-end'>
+            <Grid item>
+              <AmountInputWithLabel
+                setValue={(value: string) => value}
+                currency={'xUSD'}
+                className={classes.maxWidth375}
+              />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item>
               <MaxButton />
             </Grid>
-            <Grid item container xs={4} direction='row' alignItems='center'>
-              <Grid item>
-                <Divider orientation='vertical' className={classes.divider} />
-              </Grid>
+            <Grid item container alignItems='center' className={classes.dividerWrapper}>
+              <Divider orientation='vertical' className={classes.divider} />
+            </Grid>
+            <Grid item container alignItems='center'>
               <Grid item className={classes.available}>
                 <Typography className={classNames(classes.property, classes.lineHeight)}>
                   Available to withdraw

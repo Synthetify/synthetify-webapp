@@ -5,7 +5,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   card: {
     backgroundColor: colors.gray.component
   },
+  maxWidth375: {
+    maxWidth: 375
+  },
   available: {
+    maxWidth: 240,
     maxHeight: 60,
     overflow: 'hidden',
     '& *': {
@@ -22,6 +26,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   lineHeight: {
     lineHeight: 1.5
+  },
+  dividerWrapper: {
+    width: 1
   },
   divider: {
     backgroundColor: colors.gray.light,
