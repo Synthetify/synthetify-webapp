@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography, Modal, Grid } from '@material-ui/core'
 import useStyles from './style'
+import { ExitToApp } from '@material-ui/icons'
 
 export interface IConnectWalletModal {
   options: string[]
@@ -38,6 +39,14 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
             </Grid>
           )
         })}
+        <Grid
+          item
+          className={classes.listItem}
+          alignItems='center'
+          onClick={() => {}}>
+          <ExitToApp className={classes.icon}/>
+          <Typography className={classes.name}>Disconnect</Typography>
+        </Grid>
       </Grid>
     </Modal>
   )
