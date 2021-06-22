@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Popper, Typography, ClickAwayListener } from '@material-ui/core'
+import { Button, Typography, ClickAwayListener } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'

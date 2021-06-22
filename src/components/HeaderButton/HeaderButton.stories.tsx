@@ -11,8 +11,8 @@ import { colors } from '@static/theme'
 storiesOf('buttons/HeaderButton', module)
   .addDecorator(withKnobs)
   .add('headerDefault', () => (
-    <div style={{ backgroundColor: colors.black.header, padding: '10px' }}>
-      <HeaderButton name='Mainnet' onClick={action('clicked')} />
+    <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
+      <HeaderButton name='Mainnet' onClick={(chosen: string) => action(`chosen: ${chosen}`)} />
     </div>
   ))
   .add('headerToOverlay', () => (
