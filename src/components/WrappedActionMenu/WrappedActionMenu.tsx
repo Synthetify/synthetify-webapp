@@ -13,12 +13,15 @@ export const WrappedActionMenu: React.FC = () => {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Grid alignItems='flex-start' direction='column'>
-          {/*TOP*/}
+        <Grid
+          container
+          justify='space-around'
+          alignItems='flex-start'
+          direction='column'
+          style={{ height: 280 }}>
           <Grid item>
             <ActionMenu onChange={() => {}} />
           </Grid>
-          {/*MIDDLE*/}
           <Grid
             container
             item
@@ -48,8 +51,7 @@ export const WrappedActionMenu: React.FC = () => {
               </Typography>
             </Grid>
           </Grid>
-          {/*  BOTTOM*/}
-          <Grid>
+          <Grid item>
             <OutlinedButton name='Mint' color='secondary' padding='11px 40px' />
           </Grid>
         </Grid>
