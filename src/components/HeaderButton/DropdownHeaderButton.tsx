@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Popover, Typography } from '@material-ui/core'
+import { Button, Popper, Typography } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
@@ -47,25 +47,14 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
         endIcon={<ExpandMoreIcon />}>
         <Typography className={classes.dropdownHeaderButtonText}>{name}</Typography>
       </Button>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}>
+      <Popper open={open} anchorEl={anchorEl} placement='bottom'>
         <ConnectWallet
           open={true}
           options={['phantom', 'sollet', 'extension']}
           handleClose={() => {}}
           onSelect={() => {}}
         />
-      </Popover>
+      </Popper>
     </div>
   )
 }

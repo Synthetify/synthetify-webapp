@@ -16,7 +16,7 @@ storiesOf('buttons/HeaderButton', module)
     </div>
   ))
   .add('headerToOverlay', () => (
-    <div style={{ backgroundColor: colors.black.header, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
       <DropdownHeaderButton name='Open Dropdown' />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>

@@ -17,7 +17,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   const classes = useStyles()
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <>
       <Grid
         className={classes.root}
         container
@@ -43,7 +43,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
           )
         })}
       </Grid>
-    </Modal>
+    </>
   )
 }
 export default ConnectWallet
