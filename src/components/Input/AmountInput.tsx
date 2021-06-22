@@ -1,5 +1,5 @@
 import { Input, InputAdornment } from '@material-ui/core'
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import useStyles from './style'
 import classNames from 'classnames'
 
@@ -9,14 +9,23 @@ interface IProps {
   value?: string
   error?: string | null
   className?: string
+  style?: CSSProperties
 }
 
-export const AmountInput: React.FC<IProps> = ({ setValue, currency, value, error, className }) => {
+export const AmountInput: React.FC<IProps> = ({
+  setValue,
+  currency,
+  value,
+  error,
+  className,
+  style
+}) => {
   const classes = useStyles()
   return (
     <Input
       error={!!error}
       className={classNames(classes.amountInput, className)}
+      style={style}
       color='primary'
       type={'text'}
       value={value}
