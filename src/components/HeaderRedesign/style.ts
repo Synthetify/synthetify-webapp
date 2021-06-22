@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 50
   },
   dotsIcon: {
-    fill: colors.gray.C4
+    fill: colors.gray.C7C9D1
   },
   iconButton: {
     marginRight: 90,
