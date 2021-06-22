@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   available: {
     maxHeight: 60,
+    overflow: 'hidden',
     '& *': {
       margin: 0
     }
@@ -18,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   value: {
     fontSize: 20,
     color: colors.gray.veryLight
+  },
+  lineHeight: {
+    lineHeight: 1.5
   },
   divider: {
     backgroundColor: colors.gray.light,
