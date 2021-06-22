@@ -3,11 +3,24 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import ConnectWallet from './ConnectWallet'
 
-storiesOf('modals/connectWallet', module).add('default', () => (
-  <ConnectWallet
-    open={true}
-    options={['phantom', 'sollet', 'extension']}
-    handleClose={() => {}}
-    onSelect={(wallet: string) => action('chosen: ' + wallet)()}
-  />
-))
+storiesOf('modals/connectWallet', module)
+  .add('default', () => (
+    <ConnectWallet
+      open={true}
+      options={['phantom', 'sollet', 'extension']}
+      handleClose={() => {}}
+      callDisconect={action('disconnect')}
+      connected={false}
+      onSelect={(wallet: string) => action('chosen: ' + wallet)()}
+    />
+  ))
+  .add('withDisconnect', () => (
+    <ConnectWallet
+      open={true}
+      options={['phantom', 'sollet', 'extension']}
+      handleClose={() => {}}
+      callDisconect={action('disconnect')}
+      connected={true}
+      onSelect={(wallet: string) => action('chosen: ' + wallet)()}
+    />
+  ))
