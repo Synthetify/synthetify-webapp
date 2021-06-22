@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core'
+import { Box, Grid, makeStyles, Tab, Tabs, Typography, withStyles } from '@material-ui/core'
 import { createStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
@@ -9,8 +9,31 @@ interface IProps {
   onChange: (newValue: number) => void
 }
 
+interface ITabPanelProps {
+  children?: React.ReactNode
+  index: any
+  value: any
+}
+
+const TabPanel = ({ children, value, index, ...other }: ITabPanelProps) => {
+  return (
+    <div
+      role='tabpanel'
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}>
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  )
+}
+
 interface FullHeightIndicatorTabsProps {
-  value: number
+  value?: any
   onChange: (event: React.ChangeEvent<{}>, newValue: number) => void
 }
 
@@ -77,6 +100,15 @@ export const SwitchMenu: React.FC<IProps> = ({ items, maxWidth, onChange }) => {
       <FullHeightIndicatorTabs value={value} onChange={handleChange}>
         {tabs}
       </FullHeightIndicatorTabs>
+      <TabPanel value={value} index={0}>
+        {/*item0*/}
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        {/*item1*/}
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        {/*item2*/}
+      </TabPanel>
     </Grid>
   )
 }
