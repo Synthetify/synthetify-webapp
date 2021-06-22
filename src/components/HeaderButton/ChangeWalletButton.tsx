@@ -11,7 +11,7 @@ export interface IProps {
   onClick?: () => void
   startIcon?: JSX.Element
 }
-export const DropdownHeaderButton: React.FC<IProps> = ({
+export const ChangeWalletButton: React.FC<IProps> = ({
   name,
   disabled = false,
   startIcon,
@@ -42,14 +42,14 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
     <ClickAwayListener onClickAway={handleClose}>
       <div>
         <Button
-          className={classes.dropdownHeaderButton}
+          className={classes.ChangeWalletButton}
           variant='contained'
           classes={{ disabled: classes.disabled }}
           disabled={disabled}
           onClick={handleClick}
           startIcon={startIcon}
           endIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.dropdownHeaderButtonText}>{name}</Typography>
+          <Typography className={classes.ChangeWalletButtonText}>{name}</Typography>
         </Button>
         <ConnectWallet
           options={['phantom', 'sollet', 'extension']}
@@ -62,4 +62,4 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
     </ClickAwayListener>
   )
 }
-export default DropdownHeaderButton
+export default ChangeWalletButton

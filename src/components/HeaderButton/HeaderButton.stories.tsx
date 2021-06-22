@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
 import HeaderButton from './HeaderButton'
-import DropdownHeaderButton from './DropdownHeaderButton'
+import ChangeWalletButton from './ChangeWalletButton'
 import { toBlur } from '@consts/uiUtils'
 import { Typography } from '@material-ui/core'
 import { colors } from '@static/theme'
@@ -17,7 +17,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('headerToOverlay', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <DropdownHeaderButton name='Open Dropdown' />
+      <ChangeWalletButton name='Open Dropdown' />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>

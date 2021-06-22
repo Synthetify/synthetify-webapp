@@ -6,7 +6,7 @@ import useStyles from './style'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/HeaderButton/HeaderButton'
-import DropdownHeaderButton from '@components/HeaderButton/DropdownHeaderButton'
+import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
 import { MoreHoriz } from '@material-ui/icons'
 import PhantomIcon from '@static/png/phantom.png'
 
@@ -53,7 +53,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             {address === DEFAULT_PUBLICKEY ? (
               <HeaderButton name='Connect a wallet' onClick={() => setSelectTokenOpen(true)} />
             ) : (
-              <DropdownHeaderButton
+              <ChangeWalletButton
                 onClick={() => setSelectTokenOpen(true)}
                 startIcon={
                   typeOfWallet === 'phantom' ? (

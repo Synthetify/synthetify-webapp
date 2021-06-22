@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: colors.gray.veryLight
     }
   },
-  dropdownHeaderButtonText: {
+  ChangeWalletButtonText: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     textTransform: 'none',
     fontSize: 16
   },
-  dropdownHeaderButton: {
+  ChangeWalletButton: {
     background: colors.gray.upperMid,
     color: colors.gray.C7C9D1,
     lineHeight: '40px',
