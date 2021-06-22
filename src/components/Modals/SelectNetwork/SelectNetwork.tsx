@@ -2,18 +2,17 @@ import React from 'react'
 import { Typography, Modal, Grid } from '@material-ui/core'
 import useStyles from './style'
 
-interface IConnectWalletModalWallet {
+interface ISelectNetwork {
   name: string
   network: string
 }
-
-export interface IConnectWalletModal {
-  networks: IConnectWalletModalWallet[]
+export interface ISelectNetworkModal {
+  networks: ISelectNetwork[]
   open: boolean
   handleClose: () => void
   onSelect: (wallet: string) => void
 }
-export const SelectNetwork: React.FC<IConnectWalletModal> = ({
+export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
   networks,
   open,
   handleClose,
