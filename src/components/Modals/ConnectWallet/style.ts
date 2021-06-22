@@ -34,23 +34,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '24px',
     float: 'left'
-  },
-  logout: {
-    fill: colors.gray.C7C9D1,
-    float: 'right',
-    padding: 3,
-    margin: 0,
-    height: 26,
-    width: 26,
-
-    '&:hover': {
-      background: colors.gray.light
-    }
-  },
-  logoutIcon: {
-    fill: colors.gray.C7C9D1,
-    height: 20,
-    width: 20
   }
 }))
 

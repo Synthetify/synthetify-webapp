@@ -1,12 +1,6 @@
 import React from 'react'
-import { Typography, Modal, Grid, IconButton } from '@material-ui/core'
+import { Typography, Modal, Grid } from '@material-ui/core'
 import useStyles from './style'
-import { ExitToApp } from '@material-ui/icons'
-
-function isActive(name: string) {
-  if (name === 'extension') return false
-  return true
-}
 
 export interface IConnectWalletModal {
   options: string[]
@@ -41,11 +35,6 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
               onClick={() => onSelect(option)}>
               <img className={classes.icon} src={icon} alt={`${option} icon}`} />
               <Typography className={classes.name}>{option}</Typography>
-              {isActive(option) ? (
-                <IconButton className={classes.logout}>
-                  <ExitToApp className={classes.logoutIcon} />
-                </IconButton>
-              ) : null}
             </Grid>
           )
         })}
