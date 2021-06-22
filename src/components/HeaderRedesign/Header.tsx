@@ -13,16 +13,18 @@ import PhantomIcon from '@static/png/phantom.png'
 export interface IHeader {
   address: PublicKey
   network: string
-  current: string
+  landing: string
   typeOfWallet?: 'phantom'
 }
 export const HeaderRedesign: React.FC<IHeader> = ({
   address,
   network,
-  current,
+  landing,
   typeOfWallet = ''
 }) => {
   const classes = useStyles()
+
+  const [activePath, setActive] = React.useState(landing)
 
   return (
     <>
@@ -32,7 +34,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
         <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
           {['staking', 'stats', 'exchange'].map(path => (
             <Grid item>
-              <NavbarButton name={path} onClick={() => {}} active={path === current} />
+              <NavbarButton name={path} onClick={() => {setActive(path)}} active={path === activePath} />
             </Grid>
           ))}
         </Grid>

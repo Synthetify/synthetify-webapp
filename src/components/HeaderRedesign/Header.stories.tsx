@@ -9,8 +9,8 @@ import { withKnobs } from '@storybook/addon-knobs'
 storiesOf('ui/HeaderRedesign', module)
   .addDecorator(withKnobs)
   .add('default', () => {
-    return <Header address={DEFAULT_PUBLICKEY} network='Mainnet' current='staking'/>
+    return <Header address={DEFAULT_PUBLICKEY} network='Mainnet' landing='staking'/>
   })
   .add('connected', () => {
-    return <Header address={new PublicKey(42)} typeOfWallet='phantom' current='staking' network='Mainnet'/>
+    return <Header address={new PublicKey(42)} typeOfWallet='phantom' landing='staking' network='Mainnet'/>
   })
