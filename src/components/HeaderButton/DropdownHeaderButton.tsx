@@ -44,7 +44,7 @@ export const DropdownHeaderButton: React.FC<IProps> = ({
         onClick={handleClick}
         startIcon={startIcon}
         endIcon={<ExpandMoreIcon />}>
-        {name}
+        <Typography className={classes.dropdownHeaderButtonText}>{name}</Typography>
       </Button>
       <Popover
         open={open}
