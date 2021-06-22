@@ -2,11 +2,12 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
-import HeaderButton from './HeaderButton'
-import ChangeWalletButton from './ChangeWalletButton'
 import { toBlur } from '@consts/uiUtils'
 import { Typography } from '@material-ui/core'
 import { colors } from '@static/theme'
+import HeaderButton from './HeaderButton'
+import SelectNetworkButton from './SelectNetworkButton'
+import ChangeWalletButton from './ChangeWalletButton'
 
 storiesOf('buttons/HeaderButton', module)
   .addDecorator(withKnobs)
@@ -26,5 +27,13 @@ storiesOf('buttons/HeaderButton', module)
           ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </Typography>
       </div>
+    </div>
+  ))
+  .add('selectNetwork', () => (
+    <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
+      <SelectNetworkButton
+        name='Mainnet'
+        onClick={(chosen: string) => action(`chosen: ${chosen}`)}
+      />
     </div>
   ))
