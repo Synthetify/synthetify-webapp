@@ -51,10 +51,13 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             <SelectNetworkButton
               name={network}
               networks={[
-                { name: 'testnet', network: 'https://api.solana.com/' },
-                { name: 'localnet', network: 'https://127.0.0.1:8898/' }
+                { name: 'Testnet', network: 'https://api.solana.com/' },
+                { name: 'Localnet', network: 'https://127.0.0.1:8898/' }
               ]}
-              onSelect={onNetworkSelect}
+              onSelect={(chosen: string) => {
+                onNetworkSelect(chosen)
+                setNetwork(chosen)
+              }}
             />
           </Grid>
           <Grid item>
