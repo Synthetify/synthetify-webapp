@@ -65,14 +65,19 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             />
           </Grid>
           <Grid item>
-            {walletConnected ? (
-              <HeaderButton name='Connect a wallet' onClick={() => {}} />
+            {!walletConnected ? (
+              <ChangeWalletButton
+                name='Connect a wallet'
+                options={['phantom', 'sollet', 'extension']}
+                onSelect={onWalletSelect}
+                connected={walletConnected}
+              />
             ) : (
               <ChangeWalletButton
                 name={address.toString()}
                 options={['phantom', 'sollet', 'extension']}
                 onSelect={onWalletSelect}
-                connected={true}
+                connected={walletConnected}
                 startIcon={
                   typeOfWallet === 'phantom' ? (
                     <CardMedia
