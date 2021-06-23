@@ -6,7 +6,7 @@ export interface IRoutesModal {
   routes: string[]
   open: boolean
   handleClose: () => void
-  onSelect: (wallet: string) => void
+  onSelect: (selected: string) => void
   current?: string
 }
 export const RoutesModal: React.FC<IRoutesModal> = ({

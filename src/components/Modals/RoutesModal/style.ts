@@ -5,14 +5,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.gray.component,
     width: 200,
-    borderRadius: '0 0 10px',
+    borderRadius: 10,
     margin: 20,
     padding: '10px 0'
   },
   listItem: {
     color: colors.gray.C7C9D1,
     borderRadius: 10,
-    paddingLeft: 14,
     padding: 10,
     minWidth: 160,
     margin: 2,
