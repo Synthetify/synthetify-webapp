@@ -39,6 +39,7 @@ export const colors = {
     mid: '#4C4C67', // v2.0
     upperMid: '#343446', // v2.0
     dark: '#1E202E', // v2.0 background
+    background: '#1C1C29', // v2.0
     component: '#272735' // v2.0
   },
   green: {
