@@ -16,11 +16,11 @@ const exampleItems: IMenuItem = {
 }
 
 const actionContents: IActionContents = {
-  burn: 'burn',
-  deposit: 'deposit',
   mint: 'mint',
-  rewards: 'rewards',
-  withdraw: 'withdraw'
+  deposit: 'deposit',
+  withdraw: 'withdraw',
+  burn: 'burn',
+  rewards: 'rewards'
 }
 
 storiesOf('menu/switchMenu', module)

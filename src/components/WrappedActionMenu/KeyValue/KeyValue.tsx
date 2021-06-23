@@ -1,6 +1,6 @@
 import React from 'react'
 import { printBN } from '@consts/utils'
-import { Grid, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import BN from 'bn.js'
 import classNames from 'classnames'
 import useStyles from './style'

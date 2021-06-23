@@ -1,13 +1,9 @@
 import React from 'react'
-import { Grid, Card, CardContent, Typography, Divider } from '@material-ui/core'
-import ActionMenu from '@components/SwitchMenu/ActionMenu'
-import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
-import MaxButton from '@components/CommonButton/MaxButton'
-import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { Grid, Card, CardContent } from '@material-ui/core'
+import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
-import BN from 'bn.js'
+import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -16,62 +12,19 @@ export interface IProps {
 export const WrappedActionMenu: React.FC<IProps> = ({ maxWidth }) => {
   const classes = useStyles()
 
-  const mint = (
-    <Grid
-      container
-      justify='space-around'
-      alignItems='flex-start'
-      direction='column'
-      style={{ height: 200 }}>
-      <Grid
-        container
-        item
-        direction='row'
-        wrap='nowrap'
-        justify='space-between'
-        alignItems='flex-end'>
-        <Grid item>
-          <AmountInputWithLabel
-            setValue={(value: string) => value}
-            currency={'xUSD'}
-            style={{ maxWidth: 375 }}
-          />
-        </Grid>
-        <Grid item>
-          <MaxButton />
-        </Grid>
-        <Grid item alignItems='center'>
-          <Divider orientation='vertical' className={classes.divider} />
-        </Grid>
-        <Grid item alignItems='center' className={classes.available}>
-          <KeyValue
-            keyName='Available to withdraw'
-            value={new BN(51640189)}
-            decimal={4}
-            unit='xUSD'
-          />
-        </Grid>
-      </Grid>
-      <Grid item>
-        <OutlinedButton name='Mint' color='secondary' padding='11px 40px' />
-      </Grid>
-    </Grid>
-  )
+  const actionContents: IActionContents = {
+    mint: <ActionTemplate action='mint' onClick={() => {}} />,
+    deposit: <ActionTemplate action='deposit' onClick={() => {}} />,
+    withdraw: <ActionTemplate action='withdraw' onClick={() => {}} />,
+    burn: <ActionTemplate action='burn' onClick={() => {}} />,
+    rewards: 'TODO'
+  }
 
   return (
     <Card className={classes.card} style={{ maxWidth }}>
       <CardContent>
         <Grid container justify='space-around' alignItems='flex-start' direction='column'>
-          <ActionMenu
-            actionContents={{
-              mint,
-              deposit: mint,
-              withdraw: mint,
-              burn: mint,
-              rewards: mint
-            }}
-            onChange={() => {}}
-          />
+          <ActionMenu actionContents={actionContents} onChange={() => {}} />
         </Grid>
       </CardContent>
     </Card>
