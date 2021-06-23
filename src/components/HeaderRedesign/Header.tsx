@@ -1,14 +1,6 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import {
-  Grid,
-  CardMedia,
-  IconButton,
-  Divider,
-  Hidden,
-  ClickAwayListener,
-  Box
-} from '@material-ui/core'
+import { Grid, CardMedia, IconButton, Divider, Hidden, ClickAwayListener } from '@material-ui/core'
 import useStyles from './style'
 import { MoreHoriz, Menu } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
