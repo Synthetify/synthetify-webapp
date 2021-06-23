@@ -9,13 +9,15 @@ export interface IProps {
   name: string
   disabled?: boolean
   onClick?: () => void
+  connected: boolean
   startIcon?: JSX.Element
 }
 export const ChangeWalletButton: React.FC<IProps> = ({
   name,
   disabled = false,
-  startIcon,
-  onClick = () => {}
+  onClick = () => {},
+  connected,
+  startIcon
 }) => {
   const classes = useStyles()
 
@@ -57,6 +59,8 @@ export const ChangeWalletButton: React.FC<IProps> = ({
           anchorEl={anchorEl}
           handleClose={handleClose}
           onSelect={() => {}}
+          callDisconect={() => {}}
+          connected={connected}
         />
       </div>
     </ClickAwayListener>

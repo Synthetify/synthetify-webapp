@@ -11,6 +11,7 @@ storiesOf('modals/connectWallet', module)
       handleClose={() => {}}
       callDisconect={action('disconnect')}
       connected={false}
+      anchorEl={null}
       onSelect={(wallet: string) => action('chosen: ' + wallet)()}
     />
   ))
@@ -21,6 +22,7 @@ storiesOf('modals/connectWallet', module)
       handleClose={() => {}}
       callDisconect={action('disconnect')}
       connected={true}
+      anchorEl={null}
       onSelect={(wallet: string) => action('chosen: ' + wallet)()}
     />
   ))

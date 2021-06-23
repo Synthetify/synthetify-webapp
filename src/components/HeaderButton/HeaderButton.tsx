@@ -1,9 +1,7 @@
 import React from 'react'
-import { Button, ClickAwayListener } from '@material-ui/core'
+import { Button, ClickAwayListener, Popper, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
-import SelectNetwork from '@components/Modals/SelectNetwork/SelectNetwork'
-
 export interface IProps {
   name: string
   onClick: (chosen: string) => void
@@ -41,15 +39,9 @@ export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false
           onClick={handleClick}>
           {name}
         </Button>
-        <SelectNetwork
-          networks={[
-            { name: 'testnet', network: 'https://api.solana.com/' },
-            { name: 'localnet', network: 'https://127.0.0.1:8898/' }
-          ]}
-          open={open}
-          anchorEl={anchorEl}
-          onSelect={() => {}}
-        />
+        <Popper transition open={open} anchorEl={anchorEl} placement='bottom'>
+          <Typography variant='h2'>Sample Popper</Typography>
+        </Popper>
       </div>
     </ClickAwayListener>
   )

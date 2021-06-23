@@ -9,6 +9,9 @@ import HeaderButton from './HeaderButton'
 import SelectNetworkButton from './SelectNetworkButton'
 import ChangeWalletButton from './ChangeWalletButton'
 
+const loremIpsum =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+
 storiesOf('buttons/HeaderButton', module)
   .addDecorator(withKnobs)
   .add('headerDefault', () => (
@@ -18,14 +21,19 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('headerToOverlay', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton name='Open Dropdown' />
+      <ChangeWalletButton name='Open Dropdown' connected={false} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
-        <Typography variant='body2'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </Typography>
+        <Typography variant='body2'>{loremIpsum}</Typography>
+      </div>
+    </div>
+  ))
+  .add('withDisconnect', () => (
+    <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
+      <ChangeWalletButton name='Open Dropdown' connected={true} />
+      <br />
+      <div id={toBlur} style={{ color: '#00F9BB' }}>
+        <Typography variant='body2'>{loremIpsum}</Typography>
       </div>
     </div>
   ))
@@ -33,6 +41,7 @@ storiesOf('buttons/HeaderButton', module)
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
       <SelectNetworkButton
         name='Mainnet'
+        connected={true}
         onClick={(chosen: string) => action(`chosen: ${chosen}`)}
       />
     </div>
