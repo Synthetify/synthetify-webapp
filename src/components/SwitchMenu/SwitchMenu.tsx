@@ -110,12 +110,14 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) 
   })
 
   return (
-    <Grid className={classes.root} style={{ maxWidth: maxWidth || '100%' }}>
-      <FullHeightIndicatorTabs value={value} onChange={handleChange}>
-        {tabs}
-      </FullHeightIndicatorTabs>
+    <>
+      <Grid className={classes.root} style={{ maxWidth: maxWidth || '100%' }}>
+        <FullHeightIndicatorTabs value={value} onChange={handleChange}>
+          {tabs}
+        </FullHeightIndicatorTabs>
+      </Grid>
       {tabsContent}
-    </Grid>
+    </>
   )
 }
 
