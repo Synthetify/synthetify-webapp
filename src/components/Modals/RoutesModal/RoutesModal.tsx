@@ -22,6 +22,7 @@ export const RoutesModal: React.FC<IRoutesModal> = ({
 
   return (
     <Popover
+      classes={{ paper: classes.paper }}
       open={open}
       anchorEl={anchorEl}
       onClose={handleClose}

@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     fontWeight: 600,
     color: colors.gray.veryLight
+  },
+  paper: {
+    background: 'transparent',
+    boxShadow: 'none'
   }
 }))
 
