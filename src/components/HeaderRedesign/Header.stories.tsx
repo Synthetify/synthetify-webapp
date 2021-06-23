@@ -15,6 +15,10 @@ storiesOf('ui/HeaderRedesign', module)
         onNetworkSelect={(chosen: string) => {
           action(`network changed to: ${chosen}`)()
         }}
+        onWalletSelect={(chosen: string) => {
+          action(`wallet changed to: ${chosen}`)()
+        }}
+        walletConnected={false}
         landing='staking'
       />
     )
@@ -23,9 +27,14 @@ storiesOf('ui/HeaderRedesign', module)
     return (
       <Header
         address={new PublicKey(42)}
-        typeOfWallet='phantom'
+        onNetworkSelect={(chosen: string) => {
+          action(`network changed to: ${chosen}`)()
+        }}
+        onWalletSelect={(chosen: string) => {
+          action(`wallet changed to: ${chosen}`)()
+        }}
+        walletConnected={true}
         landing='staking'
-        network='Mainnet'
       />
     )
   })

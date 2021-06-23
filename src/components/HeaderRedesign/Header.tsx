@@ -1,10 +1,10 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
 import useStyles from './style'
 import { MoreHoriz } from '@material-ui/icons'
-import PhantomIcon from '@static/png/phantom.png'
+import PhantomIcon from '@static/svg/phantom.svg'
+import SolletIcon from '@static/svg/sollet.svg'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/HeaderButton/HeaderButton'
@@ -14,14 +14,18 @@ import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
 export interface IHeader {
   address: PublicKey
   onNetworkSelect: (chosen: string) => void
+  onWalletSelect: (chosen: string) => void
+  walletConnected: boolean
   landing: string
-  typeOfWallet?: 'phantom'
+  typeOfWallet?: 'phantom' | 'sollet'
 }
 export const HeaderRedesign: React.FC<IHeader> = ({
   address,
   onNetworkSelect,
+  onWalletSelect,
+  walletConnected,
   landing,
-  typeOfWallet = ''
+  typeOfWallet = 'phantom'
 }) => {
   const classes = useStyles()
 
@@ -61,20 +65,27 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             />
           </Grid>
           <Grid item>
-            {address === DEFAULT_PUBLICKEY ? (
+            {walletConnected ? (
               <HeaderButton name='Connect a wallet' onClick={() => {}} />
             ) : (
               <ChangeWalletButton
-                onClick={() => {}}
+                name={address.toString()}
+                options={['phantom', 'sollet', 'extension']}
+                onSelect={onWalletSelect}
+                connected={true}
                 startIcon={
                   typeOfWallet === 'phantom' ? (
                     <CardMedia
                       style={{ width: 21, height: 21, marginRight: 5 }}
                       image={PhantomIcon}
                     />
-                  ) : undefined
+                  ) : (
+                    <CardMedia
+                      style={{ width: 21, height: 21, marginRight: 5 }}
+                      image={SolletIcon}
+                    />
+                  )
                 }
-                name={address.toString()}
               />
             )}
           </Grid>
