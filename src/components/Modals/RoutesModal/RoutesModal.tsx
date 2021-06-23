@@ -7,12 +7,14 @@ export interface IRoutesModal {
   open: boolean
   handleClose: () => void
   onSelect: (wallet: string) => void
+  current?: string
 }
 export const RoutesModal: React.FC<IRoutesModal> = ({
   routes,
   open,
   handleClose,
-  onSelect
+  onSelect,
+  current
 }) => {
   const classes = useStyles()
 
@@ -25,7 +27,7 @@ export const RoutesModal: React.FC<IRoutesModal> = ({
             className={classes.listItem}
             alignItems='center'
             onClick={() => onSelect(route)}>
-            <Typography className={classes.name}>{route}</Typography>
+            <Typography className={current === route ? classes.current : classes.name}>{route}</Typography>
           </Grid>
         ))}
       </Grid>

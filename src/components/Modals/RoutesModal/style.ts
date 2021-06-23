@@ -4,17 +4,17 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.gray.component,
-    width: 256,
+    width: 220,
     borderRadius: 10,
     margin: 20,
     padding: 20
   },
   listItem: {
-    color: colors.gray.light,
+    color: colors.gray.C7C9D1,
     borderRadius: 10,
-    paddingLeft: 16,
+    paddingLeft: 8,
     padding: 10,
-    minWidth: 220,
+    minWidth: 180,
     margin: 3,
     cursor: 'pointer',
 
@@ -25,13 +25,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   name: {
     textTransform: 'capitalize',
-    fontSize: 16,
-    fontWeight: 700,
-    lineHeight: '24px'
+    fontSize: 22,
+    lineHeight: '40px'
   },
-  network: {
-    fontSize: 16,
-    lineHeight: '22px'
+  current: {
+    textTransform: 'capitalize',
+    fontSize: 22,
+    lineHeight: '40px',
+    fontWeight: 600,
+    color: colors.gray.veryLight
   }
 }))
 
