@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 50,
     marginLeft: 60,
     marginRight: 30
+  },
+  connectedWalletIcon: {
+    width: 21,
+    height: 21,
+    marginRight: 5
   }
 }))
 
