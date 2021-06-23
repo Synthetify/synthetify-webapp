@@ -9,6 +9,7 @@ export interface IProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   color?: PropTypes.Color
   className?: string
+  style?: React.CSSProperties
   disabled?: boolean
   startIcon?: JSX.Element
   fontWeight?: FontWeightProperty
@@ -20,6 +21,7 @@ export const OutlinedButton: React.FC<IProps> = ({
   onClick,
   color = 'primary',
   className,
+  style,
   disabled = false,
   startIcon,
   fontWeight = 'bold',
@@ -36,7 +38,7 @@ export const OutlinedButton: React.FC<IProps> = ({
       type={onClick ? 'button' : 'submit'}
       startIcon={startIcon}
       onClick={onClick}
-      style={{ fontWeight, padding }}>
+      style={{ fontWeight, padding, ...style }}>
       {name}
     </Button>
   )

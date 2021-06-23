@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   available: {
-    maxWidth: 240,
+    minWidth: 202,
     maxHeight: 60,
     overflow: 'hidden',
     '& *': {

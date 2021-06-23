@@ -52,7 +52,13 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
         </Grid>
       </Grid>
       <Grid item>
-        <OutlinedButton name={action} color='secondary' padding='11px 40px' onClick={onClick} />
+        <OutlinedButton
+          name={action}
+          color='secondary'
+          padding='11px 40px'
+          style={{ width: 160 }}
+          onClick={onClick}
+        />
       </Grid>
     </Grid>
   )
