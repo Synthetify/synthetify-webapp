@@ -28,7 +28,7 @@ const TabPanel = ({ children, value, index, ...other }: ITabPanelProps) => {
       aria-labelledby={`tab-${index}`}
       {...other}>
       {value === index && (
-        <Box p={3}>
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -83,7 +83,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
 )((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
 
 const useStyles = makeStyles(() => ({
-  root: {
+  tabs: {
     borderRadius: 10,
     backgroundColor: colors.gray.dark
   }
@@ -110,14 +110,14 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) 
   })
 
   return (
-    <>
-      <Grid className={classes.root} style={{ maxWidth: maxWidth || '100%' }}>
+    <Grid>
+      <Grid className={classes.tabs} style={{ maxWidth: maxWidth || '100%' }}>
         <FullHeightIndicatorTabs value={value} onChange={handleChange}>
           {tabs}
         </FullHeightIndicatorTabs>
       </Grid>
-      {tabsContent}
-    </>
+      <Grid>{tabsContent}</Grid>
+    </Grid>
   )
 }
 
