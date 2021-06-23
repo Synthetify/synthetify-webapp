@@ -41,6 +41,10 @@ storiesOf('buttons/HeaderButton', module)
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
       <SelectNetworkButton
         name='Mainnet'
+        networks={[
+          { name: 'testnet', network: 'https://api.solana.com/' },
+          { name: 'localnet', network: 'https://127.0.0.1:8898/' }
+        ]}
         onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}
       />
     </div>

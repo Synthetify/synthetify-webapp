@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography, Popper, Grid } from '@material-ui/core'
 import useStyles from './style'
 
-interface ISelectNetwork {
+export interface ISelectNetwork {
   name: string
   network: string
 }
