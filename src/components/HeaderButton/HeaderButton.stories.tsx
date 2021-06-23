@@ -21,7 +21,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('selectWallet', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={false} />
+      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={false} onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}/>
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
@@ -30,7 +30,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('withDisconnect', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={true} />
+      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={true} onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}/>
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>

@@ -8,14 +8,14 @@ import ConnectWallet from '@components/Modals/ConnectWallet/ConnectWallet'
 export interface IProps {
   name: string
   options: string[]
-  onClick?: () => void
+  onSelect: (chosen: string) => void
   connected: boolean
   startIcon?: JSX.Element
 }
 export const ChangeWalletButton: React.FC<IProps> = ({
   name,
   options,
-  onClick = () => {},
+  onSelect,
   connected,
   startIcon
 }) => {
@@ -28,7 +28,6 @@ export const ChangeWalletButton: React.FC<IProps> = ({
     setAnchorEl(event.currentTarget)
     // could use rewriting to backdrop-filter when browser support is better
     blurContent()
-    onClick()
     if (open) handleClose()
     else setOpen(true)
   }
@@ -57,7 +56,7 @@ export const ChangeWalletButton: React.FC<IProps> = ({
           open={open}
           anchorEl={anchorEl}
           handleClose={handleClose}
-          onSelect={() => {}}
+          onSelect={onSelect}
           callDisconect={() => {}}
           connected={connected}
         />
