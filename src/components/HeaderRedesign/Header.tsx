@@ -47,7 +47,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           <Grid item>
             <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
-          <Hidden mdUp>
+          <Hidden lgUp>
             <ClickAwayListener
               onClickAway={() => {
                 if (routesModalOpen) {
@@ -85,7 +85,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             </ClickAwayListener>
           </Hidden>
         </Grid>
-        <Hidden smDown>
+        <Hidden mdDown>
           <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
             {routes.map(path => (
               <Grid item key={`path-${path}`}>
@@ -115,7 +115,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               }}
             />
           </Grid>
-          <Hidden smDown>
+          <Hidden mdDown>
             <Grid item>
               {!walletConnected ? (
                 <ChangeWalletButton
@@ -141,7 +141,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               )}
             </Grid>
           </Hidden>
-          <Hidden mdUp>
+          <Hidden lgUp>
             <ChangeWalletButton
               name='My&nbsp;wallet'
               options={['phantom', 'sollet', 'extension']}

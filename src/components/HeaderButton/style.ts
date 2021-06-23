@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     margin: 8,
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 13,
       padding: '0px 12px'
     },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '40px',
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 13
     }
   },

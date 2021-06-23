@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: 0,
     height: 100,
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       height: 60
     }
   },
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 10,
     marginLeft: 50,
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: 0,
       marginLeft: 8
     }
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 40,
     marginRight: 10,
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: 10
     }
   },
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 21,
     height: 21,
     marginRight: 5,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginRight: 25
     }
   },
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 100,
     marginLeft: 50,
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '1px 4px',
       marginRight: 8,
       marginLeft: 10
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   left: {
     maxWidth: 200,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       maxWidth: 140
     }
   }
