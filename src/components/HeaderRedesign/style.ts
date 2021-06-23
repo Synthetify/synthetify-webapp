@@ -58,6 +58,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 38,
     fill: colors.gray.veryLight
   },
+  dotsButton: {
+    borderRadius: 10,
+    padding: '5px 8px',
+    marginRight: 100,
+    marginLeft: 50,
+
+    [theme.breakpoints.down('sm')]: {
+      padding: '1px 4px',
+      marginRight: 5,
+      marginLeft: 15
+    },
+
+    '&:hover': {
+      background: colors.gray.mid
+    }
+  },
   left: {
     maxWidth: 200,
     [theme.breakpoints.down('sm')]: {

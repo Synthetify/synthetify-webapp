@@ -115,7 +115,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             />
           </Hidden>
         </Grid>
-        <IconButton className={classes.dehazeButton} onClick={() => {}}>
+        <IconButton className={classes.dotsButton} onClick={() => {}}>
           <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
         </IconButton>
       </Grid>
