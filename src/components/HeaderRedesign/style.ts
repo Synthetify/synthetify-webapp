@@ -21,20 +21,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: 0
     }
   },
-  dotsIcon: {
-    fill: colors.gray.C7C9D1
-  },
-  iconButton: {
-    marginRight: 90,
-    marginLeft: 50,
-    minWidth: 60,
-
-    '&:hover': {
-      background: colors.blue.bastille,
-      color: colors.gray.skeletonField,
-      fontWeight: 700
-    }
-  },
   divider: {
     width: '100%',
     marginTop: 15,
@@ -67,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   dehazeIcon: {
-    width: 38,
+    width: 45,
     height: 38,
     fill: colors.gray.veryLight
   }
