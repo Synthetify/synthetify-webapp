@@ -67,7 +67,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
   createStyles({
     root: {
       zIndex: 1,
-      textTransform: 'none',
+      textTransform: 'capitalize',
       fontWeight: 400,
       fontSize: 22,
       [theme.breakpoints.down('xs')]: {
