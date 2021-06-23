@@ -3,15 +3,16 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
-    minWidth: '120px',
+    minWidth: 118,
     backgroundColor: 'rgba(0, 0, 0, 0)',
     color: colors.gray.C7C9D1,
-    padding: '2px 20px',
+    padding: '2px 10px',
     lineHeight: '40px',
     borderRadius: 5,
     fontSize: '16px',
     textTransform: 'capitalize',
     boxShadow: 'none',
+    margin: 4,
 
     '&:hover': {
       background: colors.gray.mid,
@@ -21,14 +22,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   active: {
     background: colors.gray.mid,
     color: colors.gray.veryLight,
-    minWidth: '120px',
-    padding: '2px 20px',
+    minWidth: 118,
+    padding: '2px 10px',
     lineHeight: '40px',
     borderRadius: 5,
     fontSize: '16px',
     fontWeight: 700,
     textTransform: 'capitalize',
     boxShadow: 'none',
+    margin: 4,
 
     '&:hover': {
       background: colors.gray.mid,
