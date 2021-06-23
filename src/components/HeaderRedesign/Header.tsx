@@ -48,13 +48,6 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
           <Hidden lgUp>
-            <ClickAwayListener
-              onClickAway={() => {
-                if (routesModalOpen) {
-                  setRoutesModalOpen(false)
-                  unblurContent()
-                }
-              }}>
               <Grid item>
                 <IconButton
                   className={classes.dehazeButton}
@@ -80,9 +73,17 @@ export const HeaderRedesign: React.FC<IHeader> = ({
                     setRoutesModalOpen(false)
                     unblurContent()
                   }}
+                  handleClose={() => {
+                    if (routesModalOpen) {
+                      setRoutesModalOpen(false)
+                      unblurContent()
+                    }
+                    e.stopPropagation()
+                    e.preventDefault()
+                    return false
+                  }}
                 />
               </Grid>
-            </ClickAwayListener>
           </Hidden>
         </Grid>
         <Hidden mdDown>
