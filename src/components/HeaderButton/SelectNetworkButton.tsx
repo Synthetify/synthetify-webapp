@@ -46,6 +46,7 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, networks, onSelect
           open={open}
           anchorEl={anchorEl}
           onSelect={onSelect}
+          handleClose={handleClose}
         />
       </div>
     </ClickAwayListener>

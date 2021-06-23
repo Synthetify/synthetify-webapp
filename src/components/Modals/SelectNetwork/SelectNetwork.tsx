@@ -11,12 +11,14 @@ export interface ISelectNetworkModal {
   open: boolean
   anchorEl: HTMLButtonElement | null
   onSelect: (wallet: string) => void
+  handleClose?: () => {}
 }
 export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
   networks,
   anchorEl,
   open,
-  onSelect
+  onSelect,
+  handleClose = () => {}
 }) => {
   const classes = useStyles()
 
@@ -28,7 +30,10 @@ export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
             item
             className={classes.listItem}
             alignItems='center'
-            onClick={() => onSelect(network)}>
+            onClick={() => {
+              onSelect(network)
+              handleClose()
+            }}>
             <Typography className={classes.name}>{name}</Typography>
             <Typography className={classes.network}>{network}</Typography>
           </Grid>
