@@ -8,10 +8,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 100
   },
   snyLogo: {
-    width: 80,
+    width: 50,
     height: 44,
     margin: 10,
-    marginLeft: 50
+    marginLeft: 50,
+
+    [theme.breakpoints.down('sm')]: {
+      margin: 10
+    }
   },
   dotsIcon: {
     fill: colors.gray.C7C9D1
@@ -37,7 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.light,
     height: 50,
     marginLeft: 60,
-    marginRight: 30
+    marginRight: 30,
+
+    [theme.breakpoints.down('sm')]: {
+      margin: 10
+    }
   },
   connectedWalletIcon: {
     width: 21,
@@ -49,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 4,
 
     '&:hover': {
-      background: 'pink'
+      background: colors.gray.mid
     }
   },
   dehazeIcon: {
