@@ -1,13 +1,14 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
+  text: {
+    fontSize: 20
+  },
   property: {
-    fontSize: 20,
     color: colors.gray.light
   },
   value: {
-    fontSize: 20,
     color: colors.gray.veryLight
   },
   lineHeight: {

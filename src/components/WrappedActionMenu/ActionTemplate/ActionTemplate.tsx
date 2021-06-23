@@ -15,13 +15,20 @@ export interface IProps {
 export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
   const classes = useStyles()
 
+  const capitalize = (str: string) => {
+    if (!str) {
+      return str
+    }
+    return str[0].toUpperCase() + str.substr(1).toLowerCase()
+  }
+
   return (
     <Grid
       container
       justify='space-around'
       alignItems='flex-start'
       direction='column'
-      style={{ height: 200 }}>
+      className={classes.root}>
       <Grid
         container
         item
@@ -31,9 +38,9 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
         alignItems='flex-end'>
         <Grid item>
           <AmountInputWithLabel
+            className={classes.amountInput}
             setValue={(value: string) => value}
             currency={'xUSD'}
-            style={{ maxWidth: 375 }}
           />
         </Grid>
         <Grid item>
@@ -53,7 +60,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
       </Grid>
       <Grid item>
         <OutlinedButton
-          name={action}
+          name={capitalize(action)}
           color='secondary'
           padding='11px 40px'
           style={{ width: 160 }}

@@ -18,10 +18,10 @@ export const KeyValue: React.FC<IProps> = ({ keyName, value, decimal, unit }) =>
 
   return (
     <>
-      <Typography className={classNames(classes.property, classes.lineHeight)}>
+      <Typography className={classNames(classes.text, classes.property, classes.lineHeight)}>
         {keyName}
       </Typography>
-      <Typography className={classNames(classes.value, classes.lineHeight)}>
+      <Typography className={classNames(classes.text, classes.value, classes.lineHeight)}>
         {valueToPrint}
       </Typography>
     </>
