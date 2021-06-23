@@ -17,14 +17,14 @@ export const KeyValue: React.FC<IProps> = ({ keyName, value, decimal, unit }) =>
   const valueToPrint = `${unit} ${printBN(value, decimal)}`
 
   return (
-    <Grid item alignItems='center' className={classes.available}>
+    <>
       <Typography className={classNames(classes.property, classes.lineHeight)}>
         {keyName}
       </Typography>
       <Typography className={classNames(classes.value, classes.lineHeight)}>
         {valueToPrint}
       </Typography>
-    </Grid>
+    </>
   )
 }
 

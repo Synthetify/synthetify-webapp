@@ -4,9 +4,10 @@ import ActionMenu from '@components/SwitchMenu/ActionMenu'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
-import classNames from 'classnames'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
+import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
+import BN from 'bn.js'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -43,12 +44,12 @@ export const WrappedActionMenu: React.FC<IProps> = ({ maxWidth }) => {
           <Divider orientation='vertical' className={classes.divider} />
         </Grid>
         <Grid item alignItems='center' className={classes.available}>
-          <Typography className={classNames(classes.property, classes.lineHeight)}>
-            Available to withdraw
-          </Typography>
-          <Typography className={classNames(classes.value, classes.lineHeight)}>
-            xUSD 5164.0189
-          </Typography>
+          <KeyValue
+            keyName='Available to withdraw'
+            value={new BN(51640189)}
+            decimal={4}
+            unit='xUSD'
+          />
         </Grid>
       </Grid>
       <Grid item>
