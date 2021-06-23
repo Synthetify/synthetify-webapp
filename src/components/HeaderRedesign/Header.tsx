@@ -29,7 +29,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
   const classes = useStyles()
 
   const [activePath, setActive] = React.useState(landing)
-  const [network, setNetwork] = React.useState('mainnet')
+  const [network, setNetwork] = React.useState('Mainnet')
 
   return (
     <>

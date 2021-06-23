@@ -5,7 +5,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
     background: colors.gray.upperMid,
     color: colors.gray.C7C9D1,
-    textTransform: 'capitalize',
+    textTransform: 'none',
+    textOverflow: 'ellipsis',
     fontSize: 16,
     lineHeight: '40px',
     padding: '2px 25px',
@@ -14,24 +15,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       background: colors.gray.mid,
       color: colors.gray.veryLight
-    }
-  },
-  ChangeWalletButtonText: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    textTransform: 'none',
-    fontSize: 16
-  },
-  ChangeWalletButton: {
-    background: colors.gray.upperMid,
-    color: colors.gray.C7C9D1,
-    lineHeight: '40px',
-    padding: '2px 15px',
-    borderRadius: 12,
+    },
 
-    '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 13
     }
   },
   disabled: {

@@ -43,13 +43,13 @@ export const ChangeWalletButton: React.FC<IProps> = ({
     <ClickAwayListener onClickAway={handleClose}>
       <div>
         <Button
-          className={classes.ChangeWalletButton}
+          className={classes.headerButton}
           variant='contained'
           classes={{ disabled: classes.disabled }}
           onClick={handleClick}
           startIcon={startIcon}
           endIcon={connected ? <ExpandMoreIcon /> : undefined}>
-          <Typography className={classes.ChangeWalletButtonText}>{name}</Typography>
+          {name}
         </Button>
         <ConnectWallet
           options={options}
