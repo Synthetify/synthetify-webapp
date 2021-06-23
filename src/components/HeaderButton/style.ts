@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
     background: colors.gray.upperMid,
     color: colors.gray.C7C9D1,
-    textTransform: 'none',
+    textTransform: 'capitalize',
     fontSize: 16,
     lineHeight: '40px',
     padding: '2px 25px',

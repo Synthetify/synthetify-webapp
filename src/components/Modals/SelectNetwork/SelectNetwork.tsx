@@ -31,7 +31,7 @@ export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
             className={classes.listItem}
             alignItems='center'
             onClick={() => {
-              onSelect(network)
+              onSelect(name)
               handleClose()
             }}>
             <Typography className={classes.name}>{name}</Typography>

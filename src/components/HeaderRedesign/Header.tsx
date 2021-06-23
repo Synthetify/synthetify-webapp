@@ -3,29 +3,30 @@ import { PublicKey } from '@solana/web3.js'
 import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import useStyles from './style'
+import { MoreHoriz } from '@material-ui/icons'
+import PhantomIcon from '@static/png/phantom.png'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
 import HeaderButton from '@components/HeaderButton/HeaderButton'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
-import { MoreHoriz } from '@material-ui/icons'
-import PhantomIcon from '@static/png/phantom.png'
+import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
 
 export interface IHeader {
   address: PublicKey
-  network: string
+  onNetworkSelect: (chosen: string) => void
   landing: string
   typeOfWallet?: 'phantom'
 }
 export const HeaderRedesign: React.FC<IHeader> = ({
   address,
-  network,
+  onNetworkSelect,
   landing,
   typeOfWallet = ''
 }) => {
   const classes = useStyles()
 
   const [activePath, setActive] = React.useState(landing)
-  const [selectTokenOpen, setSelectTokenOpen] = React.useState(false)
+  const [network, setNetwork] = React.useState('mainnet')
 
   return (
     <>
@@ -47,14 +48,21 @@ export const HeaderRedesign: React.FC<IHeader> = ({
         </Grid>
         <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
           <Grid item>
-            <HeaderButton name={network} />
+            <SelectNetworkButton
+              name={network}
+              networks={[
+                { name: 'testnet', network: 'https://api.solana.com/' },
+                { name: 'localnet', network: 'https://127.0.0.1:8898/' }
+              ]}
+              onSelect={onNetworkSelect}
+            />
           </Grid>
           <Grid item>
             {address === DEFAULT_PUBLICKEY ? (
-              <HeaderButton name='Connect a wallet' onClick={() => setSelectTokenOpen(true)} />
+              <HeaderButton name='Connect a wallet' onClick={() => {}} />
             ) : (
               <ChangeWalletButton
-                onClick={() => setSelectTokenOpen(true)}
+                onClick={() => {}}
                 startIcon={
                   typeOfWallet === 'phantom' ? (
                     <CardMedia
