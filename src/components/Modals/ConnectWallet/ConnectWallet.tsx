@@ -10,7 +10,7 @@ export interface IConnectWalletModal {
   handleClose: () => void
   callDisconect: () => void
   connected: boolean
-  onSelect: (chosen: string) => void
+  onSelect: (wallet: string) => void
 }
 export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   options,

@@ -22,7 +22,6 @@ export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false
   }
 
   const handleClose = () => {
-    console.log('clck away')
     if (!open) return
     unblurContent()
     setOpen(false)

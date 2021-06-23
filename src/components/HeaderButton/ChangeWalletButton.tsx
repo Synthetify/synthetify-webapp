@@ -35,7 +35,6 @@ export const ChangeWalletButton: React.FC<IProps> = ({
   }
 
   const handleClose = () => {
-    console.log('clck away')
     if (!open) return
     unblurContent()
     setOpen(false)

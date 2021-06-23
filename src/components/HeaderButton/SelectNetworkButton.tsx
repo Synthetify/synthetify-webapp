@@ -24,7 +24,6 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, networks, onSelect
   }
 
   const handleClose = () => {
-    console.log('clck away')
     if (!open) return
     unblurContent()
     setOpen(false)
