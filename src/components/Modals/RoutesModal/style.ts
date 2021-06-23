@@ -7,14 +7,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 200,
     borderRadius: 10,
     margin: 20,
-    padding: '10px 0'
+    padding: 20
   },
   listItem: {
     color: colors.gray.C7C9D1,
     borderRadius: 10,
-    padding: 10,
+    padding: 6,
+    paddingLeft: 12,
     minWidth: 160,
-    margin: 2,
+    margin: 3,
     cursor: 'pointer',
 
     '&:hover': {
