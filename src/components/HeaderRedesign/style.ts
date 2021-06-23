@@ -5,7 +5,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.black.background,
     paddingRight: 0,
-    height: 100
+    height: 100,
+
+    [theme.breakpoints.down('sm')]: {
+      height: 60
+    }
   },
   snyLogo: {
     width: 50,
@@ -14,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 50,
 
     [theme.breakpoints.down('sm')]: {
-      margin: 10
+      margin: 0
     }
   },
   dotsIcon: {
@@ -55,6 +59,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   dehazeButton: {
     borderRadius: 10,
     padding: 4,
+    paddingTop: 1,
+    paddingBottom: 1,
 
     '&:hover': {
       background: colors.gray.mid
