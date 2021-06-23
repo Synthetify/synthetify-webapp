@@ -7,5 +7,22 @@ const routes = ['staking', 'stats', 'exchange']
 
 storiesOf('modals/routesModal', module)
   .add('default', () => (
-    <RoutesModal routes={routes} open={true} handleClose={() => {}} onSelect={(selected: string) => action('chosen: ' + selected)()} />
+    <RoutesModal
+      routes={routes}
+      open={true}
+      handleClose={() => {}}
+      onSelect={(selected: string) => action('chosen: ' + selected)()}
+    />
   ))
+  .add('withMemory', () => {
+    const [current, setCurrent] = React.useState(routes[0])
+    return (
+      <RoutesModal
+        routes={routes}
+        open={true}
+        handleClose={() => {}}
+        onSelect={(selected: string) => setCurrent(selected)}
+        current={current}
+      />
+    )
+  })
