@@ -43,6 +43,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 21,
     height: 21,
     marginRight: 5
+  },
+  dehazeButton: {
+    borderRadius: 10,
+    padding: 4,
+
+    '&:hover': {
+      background: 'pink'
+    }
+  },
+  dehazeIcon: {
+    width: 38,
+    height: 38,
+    fill: colors.gray.veryLight
   }
 }))
 

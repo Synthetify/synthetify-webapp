@@ -1,8 +1,8 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
+import { Grid, CardMedia, IconButton, Divider, Hidden } from '@material-ui/core'
 import useStyles from './style'
-import { MoreHoriz } from '@material-ui/icons'
+import { MoreHoriz, Dehaze } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
 import SolletIcon from '@static/svg/sollet.svg'
 import snyIcon from '@static/icons/sny.png'
@@ -36,19 +36,26 @@ export const HeaderRedesign: React.FC<IHeader> = ({
       <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
         <CardMedia className={classes.snyLogo} image={snyIcon} />
         <Divider orientation='vertical' className={classes.verticalDivider} />
-        <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
-          {['staking', 'stats', 'exchange'].map(path => (
-            <Grid item>
-              <NavbarButton
-                name={path}
-                onClick={() => {
-                  setActive(path)
-                }}
-                active={path === activePath}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <Hidden smDown>
+          <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
+            {['staking', 'stats', 'exchange'].map(path => (
+              <Grid item>
+                <NavbarButton
+                  name={path}
+                  onClick={() => {
+                    setActive(path)
+                  }}
+                  active={path === activePath}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Hidden>
+        <Hidden mdUp>
+          <IconButton className={classes.dehazeButton}>
+            <Dehaze className={classes.dehazeIcon}/>
+          </IconButton>
+        </Hidden>
         <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
           <Grid item>
             <SelectNetworkButton
