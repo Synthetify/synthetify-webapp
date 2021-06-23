@@ -10,10 +10,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'none',
     fontSize: 16,
     lineHeight: '40px',
+    margin: 8,
 
     [theme.breakpoints.down('sm')]: {
       fontSize: 13,
-      padding: '0px 10px'
+      padding: '0px 12px'
     },
 
     '&:hover': {

@@ -65,7 +65,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           </Grid>
         </Hidden>
 
-        <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
+        <Grid container item justify='flex-end' wrap='nowrap' alignItems='center'>
           <Grid item>
             <SelectNetworkButton
               name={network}

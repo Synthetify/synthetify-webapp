@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: '1px 4px',
       marginRight: 5,
-      marginLeft: 15
+      marginLeft: 10
     },
 
     '&:hover': {
