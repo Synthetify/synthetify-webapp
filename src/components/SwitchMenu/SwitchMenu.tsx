@@ -6,8 +6,13 @@ import { colors } from '@static/theme'
 interface IProps {
   items: string[]
   itemContents: React.ReactNode[]
+  menuItems?: IMenuItem
   maxWidth?: number
   onChange: (newValue: number) => void
+}
+
+interface IMenuItem {
+  [item: string]: React.ReactNode
 }
 
 interface ITabPanelProps {
@@ -86,20 +91,34 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SwitchMenu: React.FC<IProps> = ({ items, itemContents, maxWidth, onChange }) => {
+export const SwitchMenu: React.FC<IProps> = ({
+  items,
+  itemContents,
+  menuItems,
+  maxWidth,
+  onChange
+}) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const tabs = items.map((item, index) => <FullHeightIndicatorTab key={index} label={item} />)
-  const tabContents = itemContents.map((content, index) => (
-    <TabPanel value={value} index={index}>
-      {content}
-    </TabPanel>
-  ))
+
+  const menuItemExample: IMenuItem = {
+    option1: 'content1',
+    option2: 'content2'
+  }
 
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
     onChange(newValue)
   }
+
+  const tabContents = Object.keys(menuItemExample).map((key, index) => {
+    return (
+      <TabPanel value={value} index={index}>
+        {menuItemExample[key]}
+      </TabPanel>
+    )
+  })
 
   return (
     <Grid className={classes.root} style={{ maxWidth: maxWidth || '100%' }}>
