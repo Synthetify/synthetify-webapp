@@ -5,17 +5,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
     background: colors.gray.upperMid,
     color: colors.gray.C7C9D1,
-    textTransform: 'none',
-    textOverflow: 'ellipsis',
-    fontSize: 16,
-    lineHeight: '40px',
     padding: '2px 25px',
     borderRadius: 10,
 
     '&:hover': {
       background: colors.gray.mid,
       color: colors.gray.veryLight
-    },
+    }
+  },
+  headerButtonText: {
+    textTransform: 'none',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: 16,
+    lineHeight: '40px',
 
     [theme.breakpoints.down('sm')]: {
       fontSize: 13

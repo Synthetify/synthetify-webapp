@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ClickAwayListener } from '@material-ui/core'
+import { Button, ClickAwayListener, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/SelectNetwork'
@@ -39,7 +39,7 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, networks, onSelect
           classes={{ disabled: classes.disabled }}
           disabled={disabled}
           onClick={handleClick}>
-          {name}
+          <Typography className={classes.headerButtonText}>{name}</Typography>
         </Button>
         <SelectNetwork
           networks={networks}
