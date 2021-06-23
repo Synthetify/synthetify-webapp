@@ -3,15 +3,13 @@ import { Box, Grid, makeStyles, Tab, Tabs, Typography, withStyles } from '@mater
 import { createStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-interface IProps {
-  items: string[]
-  itemContents: React.ReactNode[]
-  menuItems?: IMenuItem
+export interface IProps {
+  menuItems: IMenuItem
   maxWidth?: number
   onChange: (newValue: number) => void
 }
 
-interface IMenuItem {
+export interface IMenuItem {
   [item: string]: React.ReactNode
 }
 
@@ -91,31 +89,22 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SwitchMenu: React.FC<IProps> = ({
-  items,
-  itemContents,
-  menuItems,
-  maxWidth,
-  onChange
-}) => {
+export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
-  const tabs = items.map((item, index) => <FullHeightIndicatorTab key={index} label={item} />)
-
-  const menuItemExample: IMenuItem = {
-    option1: 'content1',
-    option2: 'content2'
-  }
-
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
     onChange(newValue)
   }
 
-  const tabContents = Object.keys(menuItemExample).map((key, index) => {
+  const tabs = Object.keys(menuItems).map((item, index) => (
+    <FullHeightIndicatorTab key={index} label={item} />
+  ))
+
+  const tabsContent = Object.keys(menuItems).map((key, index) => {
     return (
       <TabPanel value={value} index={index}>
-        {menuItemExample[key]}
+        {menuItems[key]}
       </TabPanel>
     )
   })
@@ -125,7 +114,7 @@ export const SwitchMenu: React.FC<IProps> = ({
       <FullHeightIndicatorTabs value={value} onChange={handleChange}>
         {tabs}
       </FullHeightIndicatorTabs>
-      {tabContents}
+      {tabsContent}
     </Grid>
   )
 }
