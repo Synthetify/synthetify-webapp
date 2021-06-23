@@ -11,13 +11,15 @@ export interface IProps {
   onSelect: (chosen: string) => void
   connected: boolean
   startIcon?: JSX.Element
+  hideArrow?: boolean
 }
 export const ChangeWalletButton: React.FC<IProps> = ({
   name,
   options,
   onSelect,
   connected,
-  startIcon
+  startIcon,
+  hideArrow
 }) => {
   const classes = useStyles()
 
@@ -48,7 +50,7 @@ export const ChangeWalletButton: React.FC<IProps> = ({
           classes={{ disabled: classes.disabled }}
           onClick={handleClick}
           startIcon={startIcon}
-          endIcon={connected ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : undefined}>
+          endIcon={connected && !hideArrow ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : undefined}>
           <Typography className={classes.headerButtonTextEllipsis}>{name}</Typography>
         </Button>
         <ConnectWallet

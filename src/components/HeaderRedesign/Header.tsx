@@ -111,12 +111,13 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               options={['phantom', 'sollet', 'extension']}
               onSelect={onWalletSelect}
               connected={walletConnected}
+              hideArrow={true}
             />
           </Hidden>
-          <IconButton className={classes.dehazeButton} onClick={() => {}}>
-            <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
-          </IconButton>
         </Grid>
+        <IconButton className={classes.dehazeButton} onClick={() => {}}>
+          <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
+        </IconButton>
       </Grid>
       <Divider className={classes.divider} />
     </>

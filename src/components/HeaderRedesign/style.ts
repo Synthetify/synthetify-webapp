@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   verticalDivider: {
     background: colors.gray.light,
     height: 50,
-    marginLeft: 60,
-    marginRight: 30,
+    marginLeft: 40,
+    marginRight: 10,
 
     [theme.breakpoints.down('sm')]: {
       margin: 10
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 21,
     height: 21,
     marginRight: 5,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: 25
     }
   },
@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fill: colors.gray.veryLight
   },
   left: {
-    [theme.breakpoints.down('md')]: {
+    maxWidth: 200,
+    [theme.breakpoints.down('sm')]: {
       maxWidth: 140
     }
   }

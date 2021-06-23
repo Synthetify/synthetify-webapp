@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
+      fontSize: 13,
+      padding: '0px 10px'
     },
 
     '&:hover': {
