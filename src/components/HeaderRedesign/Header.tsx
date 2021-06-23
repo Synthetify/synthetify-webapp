@@ -88,7 +88,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
         <Hidden smDown>
           <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
             {routes.map(path => (
-              <Grid item>
+              <Grid item key={`path-${path}`}>
                 <NavbarButton
                   name={path}
                   onClick={() => {

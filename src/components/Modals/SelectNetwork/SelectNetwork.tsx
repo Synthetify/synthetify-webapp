@@ -28,8 +28,8 @@ export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
         {networks.map(({ name, network }) => (
           <Grid
             item
+            key={`networks-${name}`}
             className={classes.listItem}
-            alignItems='center'
             onClick={() => {
               onSelect(name)
               handleClose()

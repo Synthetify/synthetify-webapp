@@ -50,7 +50,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         })}
 
         {connected ? (
-          <Grid item className={classes.listItem} alignItems='center' onClick={callDisconect}>
+          <Grid item className={classes.listItem} onClick={callDisconect}>
             <ExitToApp className={classes.icon} />
             <Typography className={classes.name}>Disconnect</Typography>
           </Grid>

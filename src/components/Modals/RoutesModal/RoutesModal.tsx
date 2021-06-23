@@ -26,8 +26,8 @@ export const RoutesModal: React.FC<IRoutesModal> = ({
         {routes.map(route => (
           <Grid
             item
+            key={`routes-${route}`}
             className={classes.listItem}
-            alignItems='center'
             onClick={() => {
               onSelect(route)
               handleClose()
