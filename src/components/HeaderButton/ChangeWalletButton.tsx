@@ -7,14 +7,14 @@ import ConnectWallet from '@components/Modals/ConnectWallet/ConnectWallet'
 
 export interface IProps {
   name: string
-  disabled?: boolean
+  options: string[]
   onClick?: () => void
   connected: boolean
   startIcon?: JSX.Element
 }
 export const ChangeWalletButton: React.FC<IProps> = ({
   name,
-  disabled = false,
+  options,
   onClick = () => {},
   connected,
   startIcon
@@ -47,14 +47,13 @@ export const ChangeWalletButton: React.FC<IProps> = ({
           className={classes.ChangeWalletButton}
           variant='contained'
           classes={{ disabled: classes.disabled }}
-          disabled={disabled}
           onClick={handleClick}
           startIcon={startIcon}
           endIcon={<ExpandMoreIcon />}>
           <Typography className={classes.ChangeWalletButtonText}>{name}</Typography>
         </Button>
         <ConnectWallet
-          options={['phantom', 'sollet', 'extension']}
+          options={options}
           open={open}
           anchorEl={anchorEl}
           handleClose={handleClose}

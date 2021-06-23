@@ -16,12 +16,12 @@ storiesOf('buttons/HeaderButton', module)
   .addDecorator(withKnobs)
   .add('headerDefault', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <HeaderButton name='Mainnet' onClick={(chosen: string) => action(`chosen: ${chosen}`)} />
+      <HeaderButton name='Click me' onClick={(chosen: string) => action(`chosen: ${chosen}`)} />
     </div>
   ))
   .add('selectWallet', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton name='Open Dropdown' connected={false} />
+      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={false} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
@@ -30,7 +30,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('withDisconnect', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton name='Open Dropdown' connected={true} />
+      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={true} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
