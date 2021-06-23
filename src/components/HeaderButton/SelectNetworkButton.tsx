@@ -6,10 +6,10 @@ import SelectNetwork from '@components/Modals/SelectNetwork/SelectNetwork'
 
 export interface IProps {
   name: string
-  onClick: (chosen: string) => void
+  onSelect: (chosen: string) => void
   disabled?: boolean
 }
-export const SelectNetworkButton: React.FC<IProps> = ({ name, onClick, disabled = false }) => {
+export const SelectNetworkButton: React.FC<IProps> = ({ name, onSelect, disabled = false }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const [open, setOpen] = React.useState<boolean>(false)
@@ -18,7 +18,6 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, onClick, disabled 
     setAnchorEl(event.currentTarget)
     // could use rewriting to backdrop-filter when browser support is better
     blurContent()
-    onClick('idk yet')
     if (open) handleClose()
     else setOpen(true)
   }
@@ -48,7 +47,7 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, onClick, disabled 
           ]}
           open={open}
           anchorEl={anchorEl}
-          onSelect={() => {}}
+          onSelect={onSelect}
         />
       </div>
     </ClickAwayListener>

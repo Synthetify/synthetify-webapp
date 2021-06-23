@@ -19,7 +19,7 @@ storiesOf('buttons/HeaderButton', module)
       <HeaderButton name='Mainnet' onClick={(chosen: string) => action(`chosen: ${chosen}`)} />
     </div>
   ))
-  .add('headerToOverlay', () => (
+  .add('selectWallet', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
       <ChangeWalletButton name='Open Dropdown' connected={false} />
       <br />
@@ -41,8 +41,7 @@ storiesOf('buttons/HeaderButton', module)
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
       <SelectNetworkButton
         name='Mainnet'
-        connected={true}
-        onClick={(chosen: string) => action(`chosen: ${chosen}`)}
+        onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}
       />
     </div>
   ))
