@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
 import SwitchMenu, { IMenuItem } from '@components/SwitchMenu/SwitchMenu'
 import { action } from '@storybook/addon-actions'
+import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import { colors } from '@static/theme'
 
 const exampleItems: IMenuItem = {
@@ -14,6 +15,14 @@ const exampleItems: IMenuItem = {
   option5: 'Content5'
 }
 
+const actionContents: IActionContents = {
+  burn: 'burn',
+  deposit: 'deposit',
+  mint: 'mint',
+  rewards: 'rewards',
+  withdraw: 'withdraw'
+}
+
 storiesOf('menu/switchMenu', module)
   .addDecorator(withKnobs)
   .add('Max width', () => (
@@ -21,8 +30,8 @@ storiesOf('menu/switchMenu', module)
       <SwitchMenu menuItems={exampleItems} onChange={action('switch menu')} />
     </div>
   ))
-// .add('Actions', () => (
-//   <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
-//     <ActionMenu onChange={action('change action')} />
-//   </div>
-// ))
+  .add('Actions', () => (
+    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+      <ActionMenu actionContents={actionContents} onChange={action('change action')} />
+    </div>
+  ))

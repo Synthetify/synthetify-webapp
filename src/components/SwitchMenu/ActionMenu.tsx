@@ -1,18 +1,23 @@
 import React from 'react'
-import SwitchMenu from '@components/SwitchMenu/SwitchMenu'
+import SwitchMenu, { IMenuItem } from '@components/SwitchMenu/SwitchMenu'
 
 export interface IProps {
   onChange: (newValue: number) => void
+  actionContents: IActionContents
 }
-export const ActionMenu: React.FC<IProps> = ({ onChange }) => {
-  return (
-    <SwitchMenu
-      items={['Mint', 'Deposit', 'Withdraw', 'Burn', 'Rewards']}
-      itemContents={['Mint mock', 'Deposit mock', 'Withdraw mock', 'Burn mock', 'Rewards mock']}
-      maxWidth={800}
-      onChange={onChange}
-    />
-  )
+
+export interface IActionContents {
+  mint: React.ReactNode
+  deposit: React.ReactNode
+  withdraw: React.ReactNode
+  burn: React.ReactNode
+  rewards: React.ReactNode
+}
+
+export const ActionMenu: React.FC<IProps> = ({ onChange, actionContents }) => {
+  const actions: IMenuItem = { ...actionContents }
+
+  return <SwitchMenu menuItems={actions} maxWidth={800} onChange={onChange} />
 }
 
 export default ActionMenu
