@@ -33,8 +33,8 @@ export const HeaderRedesign: React.FC<IHeader> = ({
 
   return (
     <>
-      <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
-        <Grid item container wrap='nowrap' alignItems='center'>
+      <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
+        <Grid item container className={classes.left} wrap='nowrap' alignItems='center'>
           <Grid item>
             <CardMedia className={classes.snyLogo} image={snyIcon} />
           </Grid>
@@ -50,7 +50,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           </Hidden>
         </Grid>
         <Hidden smDown>
-          <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
+          <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
             {['staking', 'stats', 'exchange'].map(path => (
               <Grid item>
                 <NavbarButton
@@ -107,7 +107,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           </Hidden>
           <Hidden mdUp>
             <ChangeWalletButton
-              name='My wallet'
+              name='My&nbsp;wallet'
               options={['phantom', 'sollet', 'extension']}
               onSelect={onWalletSelect}
               connected={walletConnected}

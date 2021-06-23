@@ -18,13 +18,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 50,
 
     [theme.breakpoints.down('sm')]: {
-      margin: 0
+      margin: 0,
+      marginLeft: 8
     }
   },
   divider: {
-    width: '100%',
-    marginTop: 15,
-    marginLeft: -17,
     background: colors.gray.light
   },
   verticalDivider: {
@@ -59,6 +57,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 45,
     height: 38,
     fill: colors.gray.veryLight
+  },
+  left: {
+    [theme.breakpoints.down('md')]: {
+      maxWidth: 140
+    }
   }
 }))
 
