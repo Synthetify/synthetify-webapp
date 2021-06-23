@@ -7,7 +7,6 @@ import PhantomIcon from '@static/svg/phantom.svg'
 import SolletIcon from '@static/svg/sollet.svg'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
-import HeaderButton from '@components/HeaderButton/HeaderButton'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
 import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
 
@@ -80,15 +79,9 @@ export const HeaderRedesign: React.FC<IHeader> = ({
                 connected={walletConnected}
                 startIcon={
                   typeOfWallet === 'phantom' ? (
-                    <CardMedia
-                      style={{ width: 21, height: 21, marginRight: 5 }}
-                      image={PhantomIcon}
-                    />
+                    <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
                   ) : (
-                    <CardMedia
-                      style={{ width: 21, height: 21, marginRight: 5 }}
-                      image={SolletIcon}
-                    />
+                    <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
                   )
                 }
               />
