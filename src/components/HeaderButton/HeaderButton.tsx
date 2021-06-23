@@ -37,7 +37,7 @@ export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false
           classes={{ disabled: classes.disabled }}
           disabled={disabled}
           onClick={handleClick}>
-          <Typography className={classes.headerButtonText}>{name}</Typography>
+          {name}
         </Button>
         <Popper transition open={open} anchorEl={anchorEl} placement='bottom'>
           <Typography variant='h2'>Sample Popper</Typography>

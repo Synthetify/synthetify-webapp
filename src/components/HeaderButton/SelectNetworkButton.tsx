@@ -39,7 +39,7 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, networks, onSelect
           classes={{ disabled: classes.disabled }}
           disabled={disabled}
           onClick={handleClick}>
-          <Typography className={classes.headerButtonText}>{name}</Typography>
+          {name}
         </Button>
         <SelectNetwork
           networks={networks}

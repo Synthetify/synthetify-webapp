@@ -49,7 +49,7 @@ export const ChangeWalletButton: React.FC<IProps> = ({
           onClick={handleClick}
           startIcon={startIcon}
           endIcon={connected ? <ExpandMoreIcon /> : undefined}>
-          <Typography className={classes.headerButtonText}>{name}</Typography>
+          <Typography className={classes.headerButtonTextEllipsis}>{name}</Typography>
         </Button>
         <ConnectWallet
           options={options}
