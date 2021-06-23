@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ClickAwayListener, Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/SelectNetwork'
@@ -10,7 +10,12 @@ export interface IProps {
   onSelect: (chosen: string) => void
   disabled?: boolean
 }
-export const SelectNetworkButton: React.FC<IProps> = ({ name, networks, onSelect, disabled = false }) => {
+export const SelectNetworkButton: React.FC<IProps> = ({
+  name,
+  networks,
+  onSelect,
+  disabled = false
+}) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const [open, setOpen] = React.useState<boolean>(false)
@@ -30,25 +35,23 @@ export const SelectNetworkButton: React.FC<IProps> = ({ name, networks, onSelect
   }
 
   return (
-    <ClickAwayListener onClickAway={handleClose}>
-      <div>
-        <Button
-          className={classes.headerButton}
-          variant='contained'
-          classes={{ disabled: classes.disabled }}
-          disabled={disabled}
-          onClick={handleClick}>
-          {name}
-        </Button>
-        <SelectNetwork
-          networks={networks}
-          open={open}
-          anchorEl={anchorEl}
-          onSelect={onSelect}
-          handleClose={handleClose}
-        />
-      </div>
-    </ClickAwayListener>
+    <div>
+      <Button
+        className={classes.headerButton}
+        variant='contained'
+        classes={{ disabled: classes.disabled }}
+        disabled={disabled}
+        onClick={handleClick}>
+        {name}
+      </Button>
+      <SelectNetwork
+        networks={networks}
+        open={open}
+        anchorEl={anchorEl}
+        onSelect={onSelect}
+        handleClose={handleClose}
+      />
+    </div>
   )
 }
 export default SelectNetworkButton

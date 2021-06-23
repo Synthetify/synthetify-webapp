@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   network: {
     fontSize: 16,
     lineHeight: '22px'
+  },
+  paper: {
+    background: 'transparent',
+    boxShadow: 'none'
   }
 }))
 

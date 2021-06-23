@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Popper, Grid } from '@material-ui/core'
+import { Typography, Popover, Grid } from '@material-ui/core'
 import useStyles from './style'
 
 export interface ISelectNetwork {
@@ -11,19 +11,31 @@ export interface ISelectNetworkModal {
   open: boolean
   anchorEl: HTMLButtonElement | null
   onSelect: (wallet: string) => void
-  handleClose?: () => {}
+  handleClose: () => void
 }
 export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
   networks,
   anchorEl,
   open,
   onSelect,
-  handleClose = () => {}
+  handleClose
 }) => {
   const classes = useStyles()
 
   return (
-    <Popper open={open} anchorEl={anchorEl}>
+    <Popover
+      open={open}
+      anchorEl={anchorEl}
+      classes={{ paper: classes.paper }}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}>
       <Grid className={classes.root} container alignContent='space-around' direction='column'>
         {networks.map(({ name, network }) => (
           <Grid
@@ -39,7 +51,7 @@ export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
           </Grid>
         ))}
       </Grid>
-    </Popper>
+    </Popover>
   )
 }
 export default SelectNetwork

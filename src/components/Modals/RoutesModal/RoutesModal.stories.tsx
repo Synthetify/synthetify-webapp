@@ -10,6 +10,7 @@ storiesOf('modals/routesModal', module)
     <RoutesModal
       routes={routes}
       open={true}
+      anchorEl={null}
       handleClose={() => {}}
       onSelect={(selected: string) => action('chosen: ' + selected)()}
     />
