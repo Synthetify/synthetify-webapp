@@ -41,6 +41,13 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           <Grid item>
             <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
+          <Hidden mdUp>
+            <Grid item>
+              <IconButton className={classes.dehazeButton}>
+                <Menu className={classes.dehazeIcon} />
+              </IconButton>
+            </Grid>
+          </Hidden>
         </Grid>
         <Hidden smDown>
           <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
@@ -57,11 +64,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             ))}
           </Grid>
         </Hidden>
-        <Hidden mdUp>
-          <IconButton className={classes.dehazeButton}>
-            <Menu className={classes.dehazeIcon}/>
-          </IconButton>
-        </Hidden>
+
         <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
           <Grid item>
             <SelectNetworkButton
