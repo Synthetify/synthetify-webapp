@@ -79,30 +79,40 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               }}
             />
           </Grid>
-          <Grid item>
-            {!walletConnected ? (
-              <ChangeWalletButton
-                name='Connect a wallet'
-                options={['phantom', 'sollet', 'extension']}
-                onSelect={onWalletSelect}
-                connected={walletConnected}
-              />
-            ) : (
-              <ChangeWalletButton
-                name={address.toString()}
-                options={['phantom', 'sollet', 'extension']}
-                onSelect={onWalletSelect}
-                connected={walletConnected}
-                startIcon={
-                  typeOfWallet === 'phantom' ? (
-                    <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                  ) : (
-                    <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                  )
-                }
-              />
-            )}
-          </Grid>
+          <Hidden smDown>
+            <Grid item>
+              {!walletConnected ? (
+                <ChangeWalletButton
+                  name='Connect a wallet'
+                  options={['phantom', 'sollet', 'extension']}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                />
+              ) : (
+                <ChangeWalletButton
+                  name={address.toString()}
+                  options={['phantom', 'sollet', 'extension']}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  startIcon={
+                    typeOfWallet === 'phantom' ? (
+                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                    ) : (
+                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                    )
+                  }
+                />
+              )}
+            </Grid>
+          </Hidden>
+          <Hidden mdUp>
+            <ChangeWalletButton
+              name='My wallet'
+              options={['phantom', 'sollet', 'extension']}
+              onSelect={onWalletSelect}
+              connected={walletConnected}
+            />
+          </Hidden>
           <IconButton className={classes.dehazeButton} onClick={() => {}}>
             <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
           </IconButton>
