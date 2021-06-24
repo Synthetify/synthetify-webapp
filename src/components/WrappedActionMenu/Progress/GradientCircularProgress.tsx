@@ -4,6 +4,7 @@ import { CircularProgress, makeStyles } from '@material-ui/core'
 export interface IProps {
   firstColor?: string
   secondColor?: string
+  width?: number
 }
 
 const useStyles = makeStyles(() => ({
@@ -14,7 +15,8 @@ const useStyles = makeStyles(() => ({
 
 export const GradientCircularProgress: React.FC<IProps> = ({
   firstColor = '#00F9BB',
-  secondColor = '#627EEA'
+  secondColor = '#627EEA',
+  width = 2
 }) => {
   const classes = useStyles({})
 
@@ -26,7 +28,7 @@ export const GradientCircularProgress: React.FC<IProps> = ({
           <stop offset='90%' stopColor={secondColor} />
         </linearGradient>
       </svg>
-      <CircularProgress thickness={4} classes={{ circle: classes.circle }} />
+      <CircularProgress thickness={width} classes={{ circle: classes.circle }} />
     </>
   )
 }
