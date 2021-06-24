@@ -6,6 +6,7 @@ import { PublicKey } from '@solana/web3.js'
 import { Swap } from '@reducers/exchange'
 import { TokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 
 export interface IExchangeComponent {
   tokens: TokensWithBalance[]
@@ -62,6 +63,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             {'0.00001'} {'ETH'} per {'GOTEN'}
           </Typography>
         </Grid>
+      </Grid>
+      <Grid item>
+        <OutlinedButton name='Swap' color='secondary' className={classes.swapButton} />
       </Grid>
     </Grid>
   )

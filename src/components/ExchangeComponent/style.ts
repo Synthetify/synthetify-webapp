@@ -6,7 +6,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.component,
     borderRadius: 10,
     padding: 32,
-    paddingTop: 23
+    paddingTop: 23,
+    maxWidth: 1000,
+
+    [theme.breakpoints.down('md')]: {
+      padding: 20
+    }
   },
   title: {
     fontSize: 22,
@@ -34,10 +39,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.light,
     height: 57,
     marginLeft: 30,
-    marginRight: 30
+    marginRight: 30,
+
+    [theme.breakpoints.down('md')]: {
+      height: 37,
+      marginLeft: 10,
+      marginRight: 10
+    }
   },
   numbersField: {
-    marginTop: 40
+    marginTop: 40,
+    marginBottom: 30,
+
+    [theme.breakpoints.down('md')]: {
+      marginTop: 20,
+      marginBottom: 20
+    }
   },
   numbersFieldTitle: {
     fontSize: 22,
@@ -58,6 +75,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: 13,
       lineHeight: '15px'
     }
+  },
+  swapButton: {
+    width: '100%'
   }
 }))
 
