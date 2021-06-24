@@ -29,13 +29,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
-      <Grid
-        container
-        item
-        direction='row'
-        wrap='nowrap'
-        justify='space-between'
-        alignItems='flex-end'>
+      <Grid container item className={classes.wrap}>
         <Grid item>
           <AmountInputWithLabel
             className={classes.amountInput}
@@ -43,19 +37,27 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
             currency={'xUSD'}
           />
         </Grid>
-        <Grid item>
-          <MaxButton />
-        </Grid>
-        <Grid item alignItems='center'>
-          <Divider orientation='vertical' className={classes.divider} />
-        </Grid>
-        <Grid item alignItems='center' className={classes.available}>
-          <KeyValue
-            keyName={`Available to ${action}`}
-            value={new BN(51640189)}
-            decimal={4}
-            unit='xUSD'
-          />
+        <Grid
+          item
+          container
+          direction='row'
+          justify='space-around'
+          wrap='nowrap'
+          className={classes.secondHalf}>
+          <Grid item>
+            <MaxButton />
+          </Grid>
+          <Grid item alignItems='center'>
+            <Divider orientation='vertical' className={classes.divider} />
+          </Grid>
+          <Grid item alignItems='center' className={classes.available}>
+            <KeyValue
+              keyName={`Available to ${action}`}
+              value={new BN(51640189)}
+              decimal={4}
+              unit='xUSD'
+            />
+          </Grid>
         </Grid>
       </Grid>
       <Grid item>

@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     height: 200,
     [theme.breakpoints.down('sm')]: {
+      height: 320,
       flexWrap: 'wrap'
     }
   },
@@ -14,13 +15,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
     '& *': {
       margin: 0
+    },
+    [theme.breakpoints.down('xs')]: {
+      minWidth: 165
+    }
+  },
+  wrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
+  },
+  secondHalf: {
+    paddingTop: 22,
+    maxWidth: 400,
+    '& > *': {
+      marginLeft: 5,
+      marginRight: 5
     }
   },
   amountInput: {
-    maxWidth: 375,
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: 310
-    }
+    maxWidth: 375
   },
   divider: {
     backgroundColor: colors.gray.light,
