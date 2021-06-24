@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Divider, Button } from '@material-ui/core'
+import { Grid, Typography, Divider, Button, Box } from '@material-ui/core'
 import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
@@ -7,6 +7,8 @@ import { Swap } from '@reducers/exchange'
 import { TokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import SwapVertIcon from '@material-ui/icons/SwapVert'
+import { colors } from '@static/theme'
 
 export interface IExchangeComponent {
   tokens: TokensWithBalance[]
@@ -35,6 +37,15 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
         </Grid>
       </Grid>
+
+      <Grid item container direction='row' justify='center'>
+        <Grid item>
+          <Box className={classes.swapIconSquare}>
+            <SwapVertIcon style={{ width: 45, height: 45, fill: colors.gray.veryLight }} />
+          </Box>
+        </Grid>
+      </Grid>
+
       <Grid item className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
         <Grid container>

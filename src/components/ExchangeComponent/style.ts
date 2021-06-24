@@ -21,14 +21,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   titleDivider: {
     background: colors.gray.light,
     marginTop: 13,
-    marginBottom: 8
+    marginBottom: 40,
+
+    [theme.breakpoints.down('md')]: {
+      marginBottom: 20
+    }
   },
   tokenComponent: {
     background: colors.gray.upperMid,
     borderRadius: 10,
-    padding: 6,
-    paddingLeft: 22,
-    marginTop: 32
+    padding: 20,
+    paddingTop: 6
   },
   tokenComponentText: {
     color: colors.gray.C7C9D1,
@@ -78,6 +81,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   swapButton: {
     width: '100%'
+  },
+  swapIconSquare: {
+    background: colors.gray.component,
+    position: 'relative',
+    width: 45,
+    height: 45,
+    borderWidth: 1,
+    borderColor: colors.gray.veryLight,
+    borderStyle: 'solid',
+    borderRadius: 10,
+    marginTop: -10,
+    marginBottom: -10,
+    zIndex: 1000
+  },
+  swapIcon: {
+    width: 45,
+    height: 45,
+    fill: colors.gray.veryLight
   }
 }))
 
