@@ -7,7 +7,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 200,
     borderRadius: 10,
     margin: 10,
-    padding: 20
+    padding: 20,
+
+    [theme.breakpoints.down('md')]: {
+      margin: 24
+    }
   },
   listItem: {
     color: colors.gray.C7C9D1,
