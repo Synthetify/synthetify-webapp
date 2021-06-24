@@ -33,7 +33,7 @@ export const colors = {
     manatee: '#898B9C', // v2.0 secondary text color
     balticSea: 'rgba(40, 36, 46, 0.6)', // v2.0 secondary background
     santas: '#9DA0AE', // v2.0 choose-token scrollbar track
-    C7C9D1: '#C7C9D1', // v2.0
+    C7C9D1: '#C7C9D1', // v2.0 navbar text
     veryLight: '#E3E4E8', // v2.0 highlighted font
     light: '#9DA0AE', // v2.0 text
     mid: '#4C4C67', // v2.0

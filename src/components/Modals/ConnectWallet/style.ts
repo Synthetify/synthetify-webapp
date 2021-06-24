@@ -6,8 +6,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.component,
     width: 226,
     borderRadius: 10,
-    margin: 20,
-    padding: 20
+    marginTop: 13,
+    padding: 20,
+
+    [theme.breakpoints.down('md')]: {
+      marginTop: 24
+    }
   },
   listItem: {
     color: colors.gray.light,
@@ -34,6 +38,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '24px',
     float: 'left'
+  },
+  paper: {
+    background: 'transparent',
+    boxShadow: 'none'
   }
 }))
 
