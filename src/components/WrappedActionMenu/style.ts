@@ -1,9 +1,15 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   card: {
     backgroundColor: colors.gray.component
+  },
+  cardContent: {
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 1,
+      paddingRight: 1
+    }
   }
 }))
 
