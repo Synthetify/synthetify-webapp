@@ -20,8 +20,8 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
       return <Close className={classes.failed} />
     }
     return (
-      <Grid className={classes.progress}>
-        <CircularProgress />
+      <Grid className={classes.progressWrapper}>
+        <CircularProgress className={classes.progress} />
       </Grid>
     )
   }
