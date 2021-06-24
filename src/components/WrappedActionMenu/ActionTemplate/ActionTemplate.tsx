@@ -47,10 +47,10 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
           <Grid item>
             <MaxButton />
           </Grid>
-          <Grid item alignItems='center'>
+          <Grid item>
             <Divider orientation='vertical' className={classes.divider} />
           </Grid>
-          <Grid item alignItems='center' className={classes.available}>
+          <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
               value={new BN(51640189)}
