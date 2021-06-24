@@ -42,13 +42,21 @@ interface FullHeightIndicatorTabsProps {
 }
 
 const FullHeightIndicatorTabs = withStyles({
+  root: { overflow: 'visible' },
   indicator: {
-    height: '100%',
+    height: 'calc(100% + 10px)',
     borderRadius: 10,
-    backgroundColor: colors.gray.mid
+    backgroundColor: colors.gray.mid,
+    bottom: -5
+  },
+  scrollable: {
+    overflow: 'visible'
   },
   scrollButtons: {
     color: 'white'
+  },
+  flexContainer: {
+    justifyContent: 'space-around'
   }
 })((props: FullHeightIndicatorTabsProps) => (
   <Tabs
@@ -70,6 +78,11 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       textTransform: 'capitalize',
       fontWeight: 400,
       fontSize: 22,
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 18,
+        minWidth: 100,
+        padding: 5
+      },
       [theme.breakpoints.down('xs')]: {
         fontSize: 13,
         minWidth: 64,

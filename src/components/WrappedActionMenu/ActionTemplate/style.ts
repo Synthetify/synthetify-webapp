@@ -3,9 +3,9 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    height: 200,
+    minHeight: 200,
     [theme.breakpoints.down('sm')]: {
-      height: 320,
+      minHeight: 320,
       flexWrap: 'wrap'
     }
   },
