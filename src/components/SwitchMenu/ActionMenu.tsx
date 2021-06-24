@@ -6,12 +6,10 @@ export interface IProps {
   actionContents: IActionContents
 }
 
-export interface IActionContents {
-  mint: React.ReactNode
-  deposit: React.ReactNode
-  withdraw: React.ReactNode
-  burn: React.ReactNode
-  rewards: React.ReactNode
+export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn' | 'rewards'
+
+export type IActionContents = {
+  [type in ActionType]: React.ReactNode
 }
 
 export const ActionMenu: React.FC<IProps> = ({ onChange, actionContents }) => {
