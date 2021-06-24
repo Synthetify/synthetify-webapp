@@ -1,15 +1,35 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { CircularProgress, Grid, Typography } from '@material-ui/core'
+import { Done, Close } from '@material-ui/icons'
+import useStyles from './style'
+
+export type ProgressState = 'progress' | 'success' | 'failed'
 
 export interface IProps {
-  state: 'progress' | 'success' | 'failed'
+  state: ProgressState
   message: string
 }
 
 export const Progress: React.FC<IProps> = ({ state, message }) => {
+  const classes = useStyles()
+
+  const progressIcon = (state: ProgressState) => {
+    if (state === 'success') {
+      return <Done />
+    } else if (state === 'failed') {
+      return <Close />
+    }
+    return <CircularProgress />
+  }
+
   return (
     <Typography>
-      {state} x {message}
+      <Grid container direction='row'>
+        <Grid item style={{ marginRight: 5 }}>
+          {progressIcon(state)}
+        </Grid>
+        <Grid item>{message}</Grid>
+      </Grid>
     </Typography>
   )
 }
