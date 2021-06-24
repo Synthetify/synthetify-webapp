@@ -108,7 +108,7 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) 
 
   const tabsContent = Object.keys(menuItems).map((key, index) => {
     return (
-      <TabPanel value={value} index={index}>
+      <TabPanel key={index} value={value} index={index}>
         {menuItems[key]}
       </TabPanel>
     )
