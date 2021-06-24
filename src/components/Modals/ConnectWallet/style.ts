@@ -6,11 +6,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.component,
     width: 226,
     borderRadius: 10,
-    margin: 13,
+    marginTop: 13,
     padding: 20,
 
     [theme.breakpoints.down('md')]: {
-      margin: 24
+      marginTop: 24
     }
   },
   listItem: {
