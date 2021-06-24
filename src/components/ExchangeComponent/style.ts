@@ -15,7 +15,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   titleDivider: {
     background: colors.gray.light,
-    marginTop: 13
+    marginTop: 13,
+    marginBottom: 8
+  },
+  tokenComponent: {
+    background: colors.black.background,
+    borderRadius: 10,
+    padding: 6,
+    paddingLeft: 22,
+    marginTop: 32
+  },
+  tokenComponentText: {
+    color: colors.gray.light,
+    fontWeight: 700,
+    fontSize: 16
   }
 }))
 
