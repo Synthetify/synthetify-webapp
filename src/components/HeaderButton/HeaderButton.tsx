@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ClickAwayListener, Popper, Typography } from '@material-ui/core'
+import { Button, ClickAwayListener, Popover, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 export interface IProps {
@@ -38,9 +38,22 @@ export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false
           onClick={handleClick}>
           {name}
         </Button>
-        <Popper transition open={open} anchorEl={anchorEl} placement='bottom'>
-          <Typography variant='h2'>Sample Popper</Typography>
-        </Popper>
+        <Popover
+          classes={{ paper: classes.paper }}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}>
+          {' '}
+          <Typography variant='h2'>Sample Popover Text</Typography>
+        </Popover>
       </div>
     </ClickAwayListener>
   )

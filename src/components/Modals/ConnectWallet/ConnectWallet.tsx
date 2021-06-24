@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Popper, Grid } from '@material-ui/core'
+import { Typography, Popover, Grid } from '@material-ui/core'
 import useStyles from './style'
 import { ExitToApp } from '@material-ui/icons'
 
@@ -24,7 +24,19 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   const classes = useStyles()
 
   return (
-    <Popper transition open={open} anchorEl={anchorEl} placement='bottom'>
+    <Popover
+      classes={{ paper: classes.paper }}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}>
       <Grid className={classes.root} container alignContent='space-around' direction='column'>
         {options.map(option => {
           let icon
@@ -56,7 +68,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
           </Grid>
         ) : null}
       </Grid>
-    </Popper>
+    </Popover>
   )
 }
 export default ConnectWallet

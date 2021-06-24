@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '24px',
     float: 'left'
+  },
+  paper: {
+    background: 'transparent',
+    boxShadow: 'none'
   }
 }))
 

@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   disabled: {
     opacity: 0.5
+  },
+  paper: {
+    background: 'transparent',
+    boxShadow: 'none'
   }
 }))
 
