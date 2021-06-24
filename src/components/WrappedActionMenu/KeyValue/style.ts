@@ -3,7 +3,10 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   text: {
-    fontSize: 20
+    fontSize: 20,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 16
+    }
   },
   property: {
     color: colors.gray.light
