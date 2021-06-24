@@ -1,6 +1,7 @@
 import React from 'react'
-import { CircularProgress, Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { Done, Close } from '@material-ui/icons'
+import GradientCircularProgress from '@components/WrappedActionMenu/Progress/GradientCircularProgress'
 import useStyles from './style'
 
 export type ProgressState = 'progress' | 'success' | 'failed'
@@ -21,7 +22,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
     }
     return (
       <Grid className={classes.progressWrapper}>
-        <CircularProgress className={classes.progress} />
+        <GradientCircularProgress />
       </Grid>
     )
   }
@@ -29,7 +30,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
   return (
     <Typography>
       <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
-        <Grid item style={{ paddingRight: 10, minWidth: 42 }}>
+        <Grid item className={classes.icon}>
           {progressIcon(state)}
         </Grid>
         <Grid item className={classes.text}>

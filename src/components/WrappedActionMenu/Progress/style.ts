@@ -5,12 +5,12 @@ const useStyles = makeStyles(() => ({
   text: {
     color: colors.gray.manatee
   },
+  icon: {
+    paddingRight: 10,
+    minWidth: 42
+  },
   progressWrapper: {
     paddingTop: 10
-  },
-  progress: {
-    color: colors.green.main
-    // color: 'linear-gradient(225deg, #00F9BB -0.21%, #627EEA 100.21%)'
   },
   success: {
     paddingTop: 10,
