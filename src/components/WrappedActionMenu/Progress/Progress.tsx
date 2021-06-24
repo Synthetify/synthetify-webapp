@@ -15,20 +15,26 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
 
   const progressIcon = (state: ProgressState) => {
     if (state === 'success') {
-      return <Done />
+      return <Done className={classes.success} />
     } else if (state === 'failed') {
-      return <Close />
+      return <Close className={classes.failed} />
     }
-    return <CircularProgress />
+    return (
+      <Grid className={classes.progress}>
+        <CircularProgress />
+      </Grid>
+    )
   }
 
   return (
     <Typography>
-      <Grid container direction='row'>
-        <Grid item style={{ marginRight: 5 }}>
+      <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
+        <Grid item style={{ paddingRight: 10, minWidth: 42 }}>
           {progressIcon(state)}
         </Grid>
-        <Grid item>{message}</Grid>
+        <Grid item className={classes.text}>
+          {message}
+        </Grid>
       </Grid>
     </Typography>
   )
