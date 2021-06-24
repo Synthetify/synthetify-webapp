@@ -29,6 +29,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.light,
     fontWeight: 700,
     fontSize: 16
+  },
+  amount: {
+    fontSize: 22,
+    color: colors.gray.veryLight,
+    lineHeight: '40px',
+    fontWeight: 600
+  },
+  amountDivider: {
+    background: colors.gray.light,
+    height: 57,
+    marginLeft: 30,
+    marginRight: 30
+  },
+  numbers: {
+    marginTop: 40
   }
 }))
 

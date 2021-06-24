@@ -27,7 +27,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <Button>Select a token</Button>
           </Grid>
           <Grid item>
-            <AmountInput setValue={ () => {} } currency='xUSD'/>
+            <AmountInput setValue={() => {}} currency='xUSD' />
           </Grid>
           <Grid item>
             <Button>Set to max</Button>
@@ -41,14 +41,28 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <Button>Select a token</Button>
           </Grid>
           <Grid item>
-            <AmountInput setValue={ () => {} } currency='xUSD'/>
+            <AmountInput setValue={() => {}} currency='xUSD' />
           </Grid>
           <Grid item>
             <Button>Set to max</Button>
           </Grid>
         </Grid>
       </Grid>
-
+      <Grid item container className={classes.numbers}>
+        <Grid item>
+          <Typography className={classes.title}>Exchange rate</Typography>
+          <Typography className={classes.amount}>{'3.54'}%</Typography>
+        </Grid>
+        <Grid item>
+          <Divider className={classes.amountDivider} orientation='vertical' />
+        </Grid>
+        <Grid item>
+          <Typography className={classes.title}>Fee</Typography>
+          <Typography className={classes.amount}>
+            {'0.00001'} {'ETH'} per {'GOTEN'}
+          </Typography>
+        </Grid>
+      </Grid>
     </Grid>
   )
 }
