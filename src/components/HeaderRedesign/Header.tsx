@@ -1,6 +1,6 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { Grid, CardMedia, IconButton, Divider, Hidden, ClickAwayListener } from '@material-ui/core'
+import { Grid, CardMedia, IconButton, Divider, Hidden } from '@material-ui/core'
 import useStyles from './style'
 import { MoreHoriz, Menu } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
@@ -48,42 +48,32 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
           <Hidden lgUp>
-              <Grid item>
-                <IconButton
-                  className={classes.dehazeButton}
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                    setRoutesModalAnchor(event.currentTarget)
-                    if (routesModalOpen) {
-                      setRoutesModalOpen(false)
-                      unblurContent()
-                    } else {
-                      setRoutesModalOpen(true)
-                      blurContent()
-                    }
-                  }}>
-                  <Menu className={classes.dehazeIcon} />
-                </IconButton>
-                <RoutesModal
-                  routes={routes}
-                  anchorEl={routesModalAnchor}
-                  open={routesModalOpen}
-                  current={activePath}
-                  onSelect={(selected: string) => {
-                    setActive(selected)
-                    setRoutesModalOpen(false)
-                    unblurContent()
-                  }}
-                  handleClose={() => {
-                    if (routesModalOpen) {
-                      setRoutesModalOpen(false)
-                      unblurContent()
-                    }
-                    e.stopPropagation()
-                    e.preventDefault()
-                    return false
-                  }}
-                />
-              </Grid>
+            <Grid item>
+              <IconButton
+                className={classes.dehazeButton}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  setRoutesModalAnchor(event.currentTarget)
+                  setRoutesModalOpen(true)
+                  blurContent()
+                }}>
+                <Menu className={classes.dehazeIcon} />
+              </IconButton>
+              <RoutesModal
+                routes={routes}
+                anchorEl={routesModalAnchor}
+                open={routesModalOpen}
+                current={activePath}
+                onSelect={(selected: string) => {
+                  setActive(selected)
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+                handleClose={() => {
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+              />
+            </Grid>
           </Hidden>
         </Grid>
         <Hidden mdDown>

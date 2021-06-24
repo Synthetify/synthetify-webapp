@@ -4,7 +4,6 @@ import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 export interface IProps {
   name: string
-  onClick: (chosen: string) => void
   disabled?: boolean
 }
 export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false }) => {
@@ -14,11 +13,8 @@ export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
-    // could use rewriting to backdrop-filter when browser support is better
     blurContent()
-    onClick('idk yet')
-    if (open) handleClose()
-    else setOpen(true)
+    setOpen(true)
   }
 
   const handleClose = () => {

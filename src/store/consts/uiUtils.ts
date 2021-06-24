@@ -1,4 +1,6 @@
 export const toBlur = 'global-blur'
+
+// could use rewriting to backdrop-filter when browser support is better
 export const blurContent = () => {
   const el = document.getElementById(toBlur)
   if (!el) return

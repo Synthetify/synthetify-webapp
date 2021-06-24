@@ -22,14 +22,11 @@ export const SelectNetworkButton: React.FC<IProps> = ({
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
-    // could use rewriting to backdrop-filter when browser support is better
     blurContent()
-    if (open) handleClose()
-    else setOpen(true)
+    setOpen(true)
   }
 
   const handleClose = () => {
-    if (!open) return
     unblurContent()
     setOpen(false)
   }

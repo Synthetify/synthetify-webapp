@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Typography, ClickAwayListener } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
@@ -28,41 +28,36 @@ export const ChangeWalletButton: React.FC<IProps> = ({
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
-    // could use rewriting to backdrop-filter when browser support is better
     blurContent()
-    if (open) handleClose()
-    else setOpen(true)
+    setOpen(true)
   }
 
   const handleClose = () => {
-    if (!open) return
     unblurContent()
     setOpen(false)
   }
 
   return (
-    <ClickAwayListener onClickAway={handleClose}>
-      <div>
-        <Button
-          className={classes.headerButton}
-          variant='contained'
-          classes={{ disabled: classes.disabled }}
-          onClick={handleClick}
-          startIcon={startIcon}
-          endIcon={connected && !hideArrow ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : undefined}>
-          <Typography className={classes.headerButtonTextEllipsis}>{name}</Typography>
-        </Button>
-        <ConnectWallet
-          options={options}
-          open={open}
-          anchorEl={anchorEl}
-          handleClose={handleClose}
-          onSelect={onSelect}
-          callDisconect={() => {}}
-          connected={connected}
-        />
-      </div>
-    </ClickAwayListener>
+    <div>
+      <Button
+        className={classes.headerButton}
+        variant='contained'
+        classes={{ disabled: classes.disabled }}
+        onClick={handleClick}
+        startIcon={startIcon}
+        endIcon={connected && !hideArrow ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : undefined}>
+        <Typography className={classes.headerButtonTextEllipsis}>{name}</Typography>
+      </Button>
+      <ConnectWallet
+        options={options}
+        open={open}
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        onSelect={onSelect}
+        callDisconect={() => {}}
+        connected={connected}
+      />
+    </div>
   )
 }
 export default ChangeWalletButton
