@@ -1,64 +1,150 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { Grid, CardMedia, IconButton, Divider } from '@material-ui/core'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { Grid, CardMedia, IconButton, Divider, Hidden } from '@material-ui/core'
 import useStyles from './style'
+import { MoreHoriz, Menu } from '@material-ui/icons'
+import PhantomIcon from '@static/svg/phantom.svg'
+import SolletIcon from '@static/svg/sollet.svg'
 import snyIcon from '@static/icons/sny.png'
 import NavbarButton from '@components/Navbar/Button'
-import HeaderButton from '@components/HeaderButton/HeaderButton'
-import DropdownHeaderButton from '@components/HeaderButton/DropdownHeaderButton'
-import { MoreHoriz } from '@material-ui/icons'
-import PhantomIcon from '@static/png/phantom.png'
+import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
+import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
+import RoutesModal from '@components/Modals/RoutesModal/RoutesModal'
+import { blurContent, unblurContent } from '@consts/uiUtils'
 
 export interface IHeader {
   address: PublicKey
-  network: string
-  typeOfWallet?: 'phantom'
+  onNetworkSelect: (chosen: string) => void
+  onWalletSelect: (chosen: string) => void
+  walletConnected: boolean
+  landing: string
+  typeOfWallet?: 'phantom' | 'sollet'
 }
-
-export const HeaderRedesign: React.FC<IHeader> = ({ address, network, typeOfWallet = '' }) => {
+export const HeaderRedesign: React.FC<IHeader> = ({
+  address,
+  onNetworkSelect,
+  onWalletSelect,
+  walletConnected,
+  landing,
+  typeOfWallet = 'phantom'
+}) => {
   const classes = useStyles()
+
+  const routes = ['staking', 'stats', 'exchange']
+  const [activePath, setActive] = React.useState(landing)
+  const [network, setNetwork] = React.useState('Mainnet')
+
+  const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
+  const [routesModalAnchor, setRoutesModalAnchor] = React.useState<HTMLButtonElement | null>(null)
 
   return (
     <>
-      <Grid container spacing={4} className={classes.root} wrap='nowrap' alignItems='center'>
-        <CardMedia className={classes.snyLogo} image={snyIcon} />
-        <Grid item container spacing={1} wrap='nowrap' alignItems='center' justify='flex-start'>
+      <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
+        <Grid item container className={classes.left} wrap='nowrap' alignItems='center'>
           <Grid item>
-            <NavbarButton name='Staking' onClick={() => {}} />
+            <CardMedia className={classes.snyLogo} image={snyIcon} />
           </Grid>
           <Grid item>
-            <NavbarButton name='Stats' onClick={() => {}} />
+            <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
-          <Grid item>
-            <NavbarButton name='Exchange' onClick={() => {}} />
-          </Grid>
-        </Grid>
-        <Grid container item justify='flex-end' spacing={2} wrap='nowrap' alignItems='center'>
-          <Grid item>
-            <HeaderButton name={network} />
-          </Grid>
-          <Grid item>
-            {address === DEFAULT_PUBLICKEY ? (
-              <HeaderButton name='Connect a wallet' />
-            ) : (
-              <DropdownHeaderButton
-                startIcon={
-                  typeOfWallet === 'phantom' ? (
-                    <CardMedia
-                      style={{ width: 21, height: 21, marginRight: 5 }}
-                      image={PhantomIcon}
-                    />
-                  ) : undefined
-                }
-                name={address.toString()}
+          <Hidden lgUp>
+            <Grid item>
+              <IconButton
+                className={classes.dehazeButton}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  setRoutesModalAnchor(event.currentTarget)
+                  setRoutesModalOpen(true)
+                  blurContent()
+                }}>
+                <Menu className={classes.dehazeIcon} />
+              </IconButton>
+              <RoutesModal
+                routes={routes}
+                anchorEl={routesModalAnchor}
+                open={routesModalOpen}
+                current={activePath}
+                onSelect={(selected: string) => {
+                  setActive(selected)
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+                handleClose={() => {
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
               />
-            )}
-          </Grid>
-          <IconButton className={classes.iconButton} onClick={() => {}}>
-            <MoreHoriz fontSize='large' className={classes.dotsIcon} />
-          </IconButton>
+            </Grid>
+          </Hidden>
         </Grid>
+        <Hidden mdDown>
+          <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
+            {routes.map(path => (
+              <Grid item key={`path-${path}`}>
+                <NavbarButton
+                  name={path}
+                  onClick={() => {
+                    setActive(path)
+                  }}
+                  active={path === activePath}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Hidden>
+
+        <Grid container item justify='flex-end' wrap='nowrap' alignItems='center'>
+          <Grid item>
+            <SelectNetworkButton
+              name={network}
+              networks={[
+                { name: 'Testnet', network: 'https://api.solana.com/' },
+                { name: 'Localnet', network: 'https://127.0.0.1:8898/' }
+              ]}
+              onSelect={(chosen: string) => {
+                onNetworkSelect(chosen)
+                setNetwork(chosen)
+              }}
+            />
+          </Grid>
+          <Hidden mdDown>
+            <Grid item>
+              {!walletConnected ? (
+                <ChangeWalletButton
+                  name='Connect a wallet'
+                  options={['phantom', 'sollet', 'extension']}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                />
+              ) : (
+                <ChangeWalletButton
+                  name={address.toString()}
+                  options={['phantom', 'sollet', 'extension']}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  startIcon={
+                    typeOfWallet === 'phantom' ? (
+                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                    ) : (
+                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                    )
+                  }
+                />
+              )}
+            </Grid>
+          </Hidden>
+          <Hidden lgUp>
+            <ChangeWalletButton
+              name='My&nbsp;wallet'
+              options={['phantom', 'sollet', 'extension']}
+              onSelect={onWalletSelect}
+              connected={walletConnected}
+              hideArrow={true}
+            />
+          </Hidden>
+        </Grid>
+        <IconButton className={classes.dotsButton} onClick={() => {}}>
+          <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
+        </IconButton>
       </Grid>
       <Divider className={classes.divider} />
     </>

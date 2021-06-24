@@ -1,11 +1,12 @@
 import React from 'react'
-import { Typography, Modal, Grid } from '@material-ui/core'
+import { Typography, Popover, Grid } from '@material-ui/core'
 import useStyles from './style'
 import { ExitToApp } from '@material-ui/icons'
 
 export interface IConnectWalletModal {
   options: string[]
   open: boolean
+  anchorEl: HTMLButtonElement | null
   handleClose: () => void
   callDisconect: () => void
   connected: boolean
@@ -14,6 +15,7 @@ export interface IConnectWalletModal {
 export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   options,
   open,
+  anchorEl,
   handleClose,
   callDisconect,
   connected,
@@ -22,7 +24,19 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   const classes = useStyles()
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Popover
+      classes={{ paper: classes.paper }}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}>
       <Grid className={classes.root} container alignContent='space-around' direction='column'>
         {options.map(option => {
           let icon
@@ -35,9 +49,12 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
           return (
             <Grid
               item
+              key={option}
               className={classes.listItem}
-              alignItems='center'
-              onClick={() => onSelect(option)}>
+              onClick={() => {
+                onSelect(option)
+                handleClose()
+              }}>
               <img className={classes.icon} src={icon} alt={`${option} icon}`} />
               <Typography className={classes.name}>{option}</Typography>
             </Grid>
@@ -45,13 +62,13 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         })}
 
         {connected ? (
-          <Grid item className={classes.listItem} alignItems='center' onClick={callDisconect}>
+          <Grid item className={classes.listItem} onClick={callDisconect}>
             <ExitToApp className={classes.icon} />
             <Typography className={classes.name}>Disconnect</Typography>
           </Grid>
         ) : null}
       </Grid>
-    </Modal>
+    </Popover>
   )
 }
 export default ConnectWallet
