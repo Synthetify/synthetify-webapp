@@ -48,17 +48,17 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container className={classes.numbers}>
+      <Grid item container className={classes.numbersField}>
         <Grid item>
-          <Typography className={classes.title}>Exchange rate</Typography>
-          <Typography className={classes.amount}>{'3.54'}%</Typography>
+          <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
+          <Typography className={classes.numbersFieldAmount}>{'3.54'}%</Typography>
         </Grid>
         <Grid item>
           <Divider className={classes.amountDivider} orientation='vertical' />
         </Grid>
         <Grid item>
-          <Typography className={classes.title}>Fee</Typography>
-          <Typography className={classes.amount}>
+          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+          <Typography className={classes.numbersFieldAmount}>
             {'0.00001'} {'ETH'} per {'GOTEN'}
           </Typography>
         </Grid>

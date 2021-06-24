@@ -19,22 +19,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 8
   },
   tokenComponent: {
-    background: colors.black.background,
+    background: colors.gray.upperMid,
     borderRadius: 10,
     padding: 6,
     paddingLeft: 22,
     marginTop: 32
   },
   tokenComponentText: {
-    color: colors.gray.light,
+    color: colors.gray.C7C9D1,
     fontWeight: 700,
     fontSize: 16
-  },
-  amount: {
-    fontSize: 22,
-    color: colors.gray.veryLight,
-    lineHeight: '40px',
-    fontWeight: 600
   },
   amountDivider: {
     background: colors.gray.light,
@@ -42,8 +36,28 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 30,
     marginRight: 30
   },
-  numbers: {
+  numbersField: {
     marginTop: 40
+  },
+  numbersFieldTitle: {
+    fontSize: 22,
+    color: colors.gray.light,
+    lineHeight: '26px',
+
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16
+    }
+  },
+  numbersFieldAmount: {
+    fontSize: 22,
+    color: colors.gray.veryLight,
+    lineHeight: '40px',
+    fontWeight: 600,
+
+    [theme.breakpoints.down('md')]: {
+      fontSize: 13,
+      lineHeight: '15px'
+    }
   }
 }))
 
