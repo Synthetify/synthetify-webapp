@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Divider, Button, Box } from '@material-ui/core'
+import { Grid, Typography, Divider, Hidden, Box } from '@material-ui/core'
 import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
@@ -25,18 +25,33 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Divider className={classes.titleDivider} />
       </Grid>
 
-      <Grid item className={classes.tokenComponent}>
+      <Grid item container direction='column' className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>From</Typography>
-        <Grid container justify='space-between' alignItems='center'>
-          <Grid item>
-            <OutlinedButton name='Select a token' />
+        <Hidden lgUp>
+          <Grid item container justify='space-around' alignItems='center'>
+            <Grid item>
+              <OutlinedButton name='Select a token' />
+            </Grid>
+            <Grid item>
+              <MaxButton onClick={() => {}} />
+            </Grid>
           </Grid>
+        </Hidden>
+
+        <Grid item container justify='space-between' alignItems='center'>
+          <Hidden mdDown>
+            <Grid item>
+              <OutlinedButton name='Select a token' />
+            </Grid>
+          </Hidden>
           <Grid item>
             <AmountInput setValue={() => {}} currency='xUSD' />
           </Grid>
-          <Grid item>
-            <MaxButton onClick={() => {}}/>
-          </Grid>
+          <Hidden mdDown>
+            <Grid item>
+              <MaxButton onClick={() => {}} />
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
 
@@ -48,18 +63,33 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         </Grid>
       </Grid>
 
-      <Grid item className={classes.tokenComponent}>
+      <Grid item container direction='column' className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
-        <Grid container justify='space-between' alignItems='center'>
-          <Grid item>
-            <OutlinedButton name='Select a token' />
+        <Hidden lgUp>
+          <Grid item container justify='space-around' alignItems='center'>
+            <Grid item>
+              <OutlinedButton name='Select a token' />
+            </Grid>
+            <Grid item>
+              <MaxButton onClick={() => {}} />
+            </Grid>
           </Grid>
+        </Hidden>
+
+        <Grid item container justify='space-between' alignItems='center'>
+          <Hidden mdDown>
+            <Grid item>
+              <OutlinedButton name='Select a token' />
+            </Grid>
+          </Hidden>
           <Grid item>
             <AmountInput setValue={() => {}} currency='xUSD' />
           </Grid>
-          <Grid item>
-            <MaxButton onClick={() => {}}/>
-          </Grid>
+          <Hidden mdDown>
+            <Grid item>
+              <MaxButton onClick={() => {}} />
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
 
