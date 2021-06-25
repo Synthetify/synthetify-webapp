@@ -53,6 +53,7 @@ export const colors = {
   },
   red: {
     main: '#EB5757',
+    error: '#F22F2F',
     neon: '#FF2079',
     pinkish: '#FE53BB'
   },

@@ -78,9 +78,14 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       textTransform: 'capitalize',
       fontWeight: 400,
       fontSize: 22,
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 18,
+        minWidth: 100,
+        padding: 5
+      },
       [theme.breakpoints.down('xs')]: {
         fontSize: 13,
-        minWidth: 62,
+        minWidth: 64,
         padding: 0
       },
       color: colors.gray.manatee
@@ -113,7 +118,7 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) 
 
   const tabsContent = Object.keys(menuItems).map((key, index) => {
     return (
-      <TabPanel value={value} index={index}>
+      <TabPanel key={index} value={value} index={index}>
         {menuItems[key]}
       </TabPanel>
     )
