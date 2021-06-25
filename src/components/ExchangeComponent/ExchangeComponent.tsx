@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Divider, Hidden, Box } from '@material-ui/core'
+import { Grid, Typography, Divider, Hidden, Box, IconButton } from '@material-ui/core'
 import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
@@ -24,10 +24,10 @@ export interface IExchangeComponent {
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapData, onSwap }) => {
   const classes = useStyles()
 
-  const [tokenFrom, setTokenFrom] = React.useState<SymbolAndBalance | null>(null)
+  const [tokenFrom, setTokenFrom] = React.useState<SymbolAndBalance | null>(tokens[0] ?? null)
   const [tokenTo, setTokenTo] = React.useState<SymbolAndBalance | null>(null)
-  const [amountFrom, setAmountFrom] = React.useState<string | null>(null)
-  const [amountTo, setAmountTo] = React.useState<string | null>(null)
+  const [amountFrom, setAmountFrom] = React.useState<string>('')
+  const [amountTo, setAmountTo] = React.useState<string>('')
 
   const tokenNames = tokens.map(token => token.symbol)
 
@@ -52,7 +52,15 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
               />
             </Grid>
             <Grid item>
-              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
+              <MaxButton
+                name='Set to max'
+                className={classes.button}
+                onClick={() => {
+                  if (tokenFrom) {
+                    setAmountFrom(tokenFrom.balance.toString())
+                  }
+                }}
+              />
             </Grid>
           </Grid>
         </Hidden>
@@ -70,11 +78,23 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={value => setAmountFrom(value)} currency={tokenFrom?.symbol} />
+            <AmountInput
+              value={amountFrom}
+              setValue={value => setAmountFrom(value)}
+              currency={tokenFrom?.symbol ?? null}
+            />
           </Grid>
           <Hidden mdDown>
             <Grid item>
-              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
+              <MaxButton
+                name='Set to max'
+                className={classes.button}
+                onClick={() => {
+                  if (tokenFrom) {
+                    setAmountFrom(tokenFrom.balance.toString())
+                  }
+                }}
+              />
             </Grid>
           </Hidden>
         </Grid>
@@ -121,6 +141,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Hidden>
           <Grid item>
             <AmountInput
+              value={amountTo}
               setValue={value => setAmountTo(value)}
               currency={tokenTo?.symbol ?? null}
             />
@@ -132,23 +153,21 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Hidden>
         </Grid>
       </Grid>
-      {tokenFrom == null || tokenTo == null ? null : (
-        <Grid item container className={classes.numbersField}>
-          <Grid item>
-            <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
-            <Typography className={classes.numbersFieldAmount}>{'3.54'}%</Typography>
-          </Grid>
-          <Grid item>
-            <Divider className={classes.amountDivider} orientation='vertical' />
-          </Grid>
-          <Grid item>
-            <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-            <Typography className={classes.numbersFieldAmount}>
-              {'0.00001'} {tokenFrom.symbol} per {tokenTo.symbol}
-            </Typography>
-          </Grid>
+      <Grid item container className={classes.numbersField}>
+        <Grid item>
+          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+          <Typography className={classes.numbersFieldAmount}>
+            {'0.0000'} {tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
+          </Typography>
         </Grid>
-      )}
+        <Grid item>
+          <Divider className={classes.amountDivider} orientation='vertical' />
+        </Grid>
+        <Grid item>
+          <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
+          <Typography className={classes.numbersFieldAmount}>{'3.54'}%</Typography>
+        </Grid>
+      </Grid>
 
       <Grid item>
         <OutlinedButton
@@ -158,7 +177,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           onClick={() => {
             console.log('amountFrom:', amountFrom)
             console.log('amountTo:', amountTo)
-            console.log('tokenFrom:', tokenFrom)
+            console.log('tokenFrom:', tokenFrom?.balance.toString())
             console.log('tokenTo:', tokenTo)
           }}
         />
