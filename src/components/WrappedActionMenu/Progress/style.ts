@@ -3,6 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   text: {
+    fontSize: 16,
     color: colors.gray.manatee
   },
   icon: {

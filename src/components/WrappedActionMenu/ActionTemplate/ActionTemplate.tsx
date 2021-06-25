@@ -4,6 +4,7 @@ import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import BN from 'bn.js'
 import useStyles from './style'
 
@@ -60,14 +61,19 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        <OutlinedButton
-          name={capitalize(action)}
-          color='secondary'
-          padding='11px 40px'
-          style={{ width: 160 }}
-          onClick={onClick}
-        />
+      <Grid item container alignItems='center'>
+        <Grid item style={{ marginRight: 18 }}>
+          <OutlinedButton
+            name={capitalize(action)}
+            color='secondary'
+            padding='11px 40px'
+            style={{ width: 160 }}
+            onClick={onClick}
+          />
+        </Grid>
+        <Grid item>
+          <Progress state='progress' message={`${capitalize(action)} is progress...`} />
+        </Grid>
       </Grid>
     </Grid>
   )
