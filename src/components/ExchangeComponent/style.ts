@@ -92,11 +92,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     marginTop: -10,
     marginBottom: -10,
-    zIndex: 1000
+    zIndex: 2,
+    padding: 1,
+
+    '&:hover': {
+      background: colors.gray.mid
+    }
   },
   swapIcon: {
-    width: 45,
-    height: 45,
+    width: 43,
+    height: 43,
     fill: colors.gray.veryLight
   },
   button: {

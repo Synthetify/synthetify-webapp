@@ -102,9 +102,13 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
       <Grid item container direction='row' justify='center'>
         <Grid item>
-          <Box className={classes.swapIconSquare}>
-            <SwapVertIcon style={{ width: 45, height: 45, fill: colors.gray.veryLight }} />
-          </Box>
+          <IconButton className={classes.swapIconSquare} onClick={() => {
+            if(!tokenTo || !tokenFrom) return
+            setTokenFrom(tokenTo)
+            setTokenTo(tokenFrom)
+          }}>
+            <SwapVertIcon className={classes.swapIcon} />
+          </IconButton>
         </Grid>
       </Grid>
 
