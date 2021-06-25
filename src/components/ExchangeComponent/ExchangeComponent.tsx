@@ -21,6 +21,10 @@ export interface IExchangeComponent {
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapData, onSwap }) => {
   const classes = useStyles()
+
+  const [tokenFrom, setTokenFrom] = React.useState<string | null>(null)
+  const [tokenTo, setTokenTo] = React.useState<string | null>(null)
+
   return (
     <Grid container className={classes.root} direction='column'>
       <Grid item>
@@ -33,10 +37,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Hidden lgUp>
           <Grid item container justify='space-around' alignItems='center'>
             <Grid item>
-              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
+              <SelectToken
+                tokens={tokenNames}
+                current={tokenFrom}
+                onSelect={(chosen: string) => setTokenFrom(chosen)}
+              />
             </Grid>
             <Grid item>
-              <MaxButton onClick={() => {}} />
+              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
             </Grid>
           </Grid>
         </Hidden>
@@ -44,7 +52,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Grid item container justify='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item>
-              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
+              <SelectToken
+                tokens={tokenNames}
+                current={tokenFrom}
+                onSelect={(chosen: string) => setTokenFrom(chosen)}
+              />
             </Grid>
           </Hidden>
           <Grid item>
@@ -52,7 +64,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
           <Hidden mdDown>
             <Grid item>
-              <MaxButton onClick={() => {}} />
+              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
             </Grid>
           </Hidden>
         </Grid>
@@ -71,10 +83,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Hidden lgUp>
           <Grid item container justify='space-around' alignItems='center'>
             <Grid item>
-              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
+              <SelectToken
+                tokens={tokenNames}
+                current={tokenTo}
+                onSelect={(chosen: string) => setTokenTo(chosen)}
+              />
             </Grid>
             <Grid item>
-              <MaxButton onClick={() => {}} />
+              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
             </Grid>
           </Grid>
         </Hidden>
@@ -82,7 +98,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Grid item container justify='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item>
-              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
+              <SelectToken
+                tokens={tokenNames}
+                current={tokenTo}
+                onSelect={(chosen: string) => setTokenTo(chosen)}
+              />
             </Grid>
           </Hidden>
           <Grid item>
@@ -90,7 +110,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
           <Hidden mdDown>
             <Grid item>
-              <MaxButton onClick={() => {}} />
+              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
             </Grid>
           </Hidden>
         </Grid>
