@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
 export const GradientCircularProgress: React.FC<IProps> = ({
   firstColor = '#00F9BB',
   secondColor = '#627EEA',
-  width = 1
+  width = 2
 }) => {
   const classes = useStyles({})
 
