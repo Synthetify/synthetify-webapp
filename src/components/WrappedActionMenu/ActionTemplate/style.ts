@@ -40,6 +40,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     backgroundColor: colors.gray.light,
     height: 60
+  },
+  bottom: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: 15,
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+      alignItems: 'flex-start'
+    }
   }
 }))
 

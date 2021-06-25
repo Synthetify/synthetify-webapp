@@ -61,7 +61,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center'>
+      <Grid item container className={classes.bottom}>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalize(action)}
