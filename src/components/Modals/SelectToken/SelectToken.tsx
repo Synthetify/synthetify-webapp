@@ -63,7 +63,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
               {tokens
                 .filter(token => {
                   if (!value) return true
-                  return token.name.toLowerCase().includes(value.toLowerCase())
+                  return token.toLowerCase().includes(value.toLowerCase())
                 })
                 .map(name => {
                   let icon

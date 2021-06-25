@@ -2,17 +2,32 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    background: colors.gray.component,
+    width: 300,
+    borderRadius: 10,
+    marginTop: 20,
+    margin: 3,
+    padding: 5,
+    paddingTop: 15,
+    paddingBottom: 10
+  },
   tokenList: {
     borderRadius: 10,
     background: colors.black.background,
     height: 360,
     padding: 3,
-    overflowY: 'hidden'
+    overflowY: 'hidden',
+
+    [theme.breakpoints.down('md')]: {
+      height: 250
+    }
   },
   tokenItem: {
     margin: 5,
+    marginLeft: 7,
     borderRadius: 10,
-    width: 258,
+    width: '89%',
     cursor: 'pointer',
 
     '&:hover': {
@@ -28,15 +43,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 20,
     marginLeft: 12,
     marginRight: 14
-  },
-  root: {
-    background: colors.gray.component,
-    width: 350,
-    borderRadius: 10,
-    margin: 20,
-    padding: 0,
-    paddingTop: 15,
-    paddingBottom: 10
   },
   searchIcon: {
     color: colors.gray.light,
