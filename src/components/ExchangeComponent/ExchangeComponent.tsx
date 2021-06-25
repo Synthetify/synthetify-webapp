@@ -66,7 +66,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={value => setAmountFrom(value)} currency='xUSD' />
+            <AmountInput setValue={value => setAmountFrom(value)} currency={tokenFrom} />
           </Grid>
           <Hidden mdDown>
             <Grid item>
@@ -112,7 +112,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={value => setAmountTo(value)} currency='xUSD' />
+            <AmountInput setValue={value => setAmountTo(value)} currency={tokenTo} />
           </Grid>
           <Hidden mdDown>
             <Grid item>
@@ -121,24 +121,34 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Hidden>
         </Grid>
       </Grid>
+      {!tokenFrom || !tokenTo ? null : (
+        <Grid item container className={classes.numbersField}>
+          <Grid item>
+            <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
+            <Typography className={classes.numbersFieldAmount}>{'3.54'}%</Typography>
+          </Grid>
+          <Grid item>
+            <Divider className={classes.amountDivider} orientation='vertical' />
+          </Grid>
+          <Grid item>
+            <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+            <Typography className={classes.numbersFieldAmount}>
+              {'0.00001'} {tokenFrom} per {tokenTo}
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
 
-      <Grid item container className={classes.numbersField}>
-        <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'3.54'}%</Typography>
-        </Grid>
-        <Grid item>
-          <Divider className={classes.amountDivider} orientation='vertical' />
-        </Grid>
-        <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-          <Typography className={classes.numbersFieldAmount}>
-            {'0.00001'} {'ETH'} per {'GOTEN'}
-          </Typography>
-        </Grid>
-      </Grid>
       <Grid item>
-        <OutlinedButton name='Swap' color='secondary' className={classes.swapButton} />
+        <OutlinedButton
+          name='Swap'
+          color='secondary'
+          className={classes.swapButton}
+          onClick={() => {
+            console.log('amountFrom:', amountFrom)
+            console.log('amountTo:', amountTo)
+          }}
+        />
       </Grid>
     </Grid>
   )

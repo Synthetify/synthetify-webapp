@@ -51,12 +51,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   numbersField: {
-    marginTop: 40,
-    marginBottom: 30,
+    marginTop: 30,
 
     [theme.breakpoints.down('md')]: {
-      marginTop: 20,
-      marginBottom: 20
+      marginTop: 20
     }
   },
   numbersFieldTitle: {
@@ -80,7 +78,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   swapButton: {
-    width: '100%'
+    width: '100%',
+    marginTop: 20
   },
   swapIconSquare: {
     background: colors.gray.component,

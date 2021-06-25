@@ -15,7 +15,5 @@ tokens[1].balance = new BN(100)
 storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)
   .add('default', () => (
-    <div style={{ background: '#1B1C2A', padding: 30, paddingTop: 90 }}>
-      <ExchangeComponent tokens={tokens} />
-    </div>
+    <ExchangeComponent tokens={tokens} />
   ))
