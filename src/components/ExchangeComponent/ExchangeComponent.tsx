@@ -12,10 +12,12 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/CommonButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 
-const tokenNames = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ')
-
+interface SymbolAndBalance {
+  symbol: string
+  balance: BN
+}
 export interface IExchangeComponent {
-  tokens: TokensWithBalance[]
+  tokens: SymbolAndBalance[]
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
 }
@@ -24,6 +26,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
   const [tokenFrom, setTokenFrom] = React.useState<string | null>(null)
   const [tokenTo, setTokenTo] = React.useState<string | null>(null)
+  const [amountFrom, setAmountFrom] = React.useState<string | null>(null)
+  const [amountTo, setAmountTo] = React.useState<string | null>(null)
+
+  const tokenNames = tokens.map(token => token.symbol)
 
   return (
     <Grid container className={classes.root} direction='column'>
@@ -35,7 +41,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>From</Typography>
         <Hidden lgUp>
-          <Grid item container justify='space-around' alignItems='center'>
+          <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
             <Grid item>
               <SelectToken
                 tokens={tokenNames}
@@ -49,7 +55,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
         </Hidden>
 
-        <Grid item container justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item>
               <SelectToken
@@ -60,7 +66,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={() => {}} currency='xUSD' />
+            <AmountInput setValue={value => setAmountFrom(value)} currency='xUSD' />
           </Grid>
           <Hidden mdDown>
             <Grid item>
@@ -81,7 +87,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
         <Hidden lgUp>
-          <Grid item container justify='space-around' alignItems='center'>
+          <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
             <Grid item>
               <SelectToken
                 tokens={tokenNames}
@@ -95,7 +101,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
         </Hidden>
 
-        <Grid item container justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item>
               <SelectToken
@@ -106,7 +112,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={() => {}} currency='xUSD' />
+            <AmountInput setValue={value => setAmountTo(value)} currency='xUSD' />
           </Grid>
           <Hidden mdDown>
             <Grid item>

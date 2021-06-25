@@ -75,6 +75,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   return (
                     <Grid
                       container
+                      key={`tokens-${name}`}
                       className={classes.tokenItem}
                       alignItems='center'
                       onClick={() => {
