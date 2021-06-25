@@ -24,8 +24,8 @@ export interface IExchangeComponent {
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapData, onSwap }) => {
   const classes = useStyles()
 
-  const [tokenFrom, setTokenFrom] = React.useState<string | null>(null)
-  const [tokenTo, setTokenTo] = React.useState<string | null>(null)
+  const [tokenFrom, setTokenFrom] = React.useState<SymbolAndBalance | null>(null)
+  const [tokenTo, setTokenTo] = React.useState<SymbolAndBalance | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string | null>(null)
   const [amountTo, setAmountTo] = React.useState<string | null>(null)
 
@@ -45,8 +45,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <Grid item>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenFrom}
-                onSelect={(chosen: string) => setTokenFrom(chosen)}
+                current={tokenFrom?.symbol ?? null}
+                onSelect={(chosen: string) =>
+                  setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
+                }
               />
             </Grid>
             <Grid item>
@@ -60,13 +62,15 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <Grid item>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenFrom}
-                onSelect={(chosen: string) => setTokenFrom(chosen)}
+                current={tokenFrom?.symbol ?? null}
+                onSelect={(chosen: string) =>
+                  setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
+                }
               />
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={value => setAmountFrom(value)} currency={tokenFrom} />
+            <AmountInput setValue={value => setAmountFrom(value)} currency={tokenFrom?.symbol} />
           </Grid>
           <Hidden mdDown>
             <Grid item>
@@ -91,8 +95,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <Grid item>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenTo}
-                onSelect={(chosen: string) => setTokenTo(chosen)}
+                current={tokenTo?.symbol ?? null}
+                onSelect={(chosen: string) =>
+                  setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
+                }
               />
             </Grid>
             <Grid item>
@@ -106,13 +112,18 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <Grid item>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenTo}
-                onSelect={(chosen: string) => setTokenTo(chosen)}
+                current={tokenTo?.symbol ?? null}
+                onSelect={(chosen: string) =>
+                  setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
+                }
               />
             </Grid>
           </Hidden>
           <Grid item>
-            <AmountInput setValue={value => setAmountTo(value)} currency={tokenTo} />
+            <AmountInput
+              setValue={value => setAmountTo(value)}
+              currency={tokenTo?.symbol ?? null}
+            />
           </Grid>
           <Hidden mdDown>
             <Grid item>
@@ -121,7 +132,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Hidden>
         </Grid>
       </Grid>
-      {!tokenFrom || !tokenTo ? null : (
+      {tokenFrom == null || tokenTo == null ? null : (
         <Grid item container className={classes.numbersField}>
           <Grid item>
             <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
@@ -133,7 +144,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           <Grid item>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
             <Typography className={classes.numbersFieldAmount}>
-              {'0.00001'} {tokenFrom} per {tokenTo}
+              {'0.00001'} {tokenFrom.symbol} per {tokenTo.symbol}
             </Typography>
           </Grid>
         </Grid>
@@ -147,6 +158,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           onClick={() => {
             console.log('amountFrom:', amountFrom)
             console.log('amountTo:', amountTo)
+            console.log('tokenFrom:', tokenFrom)
+            console.log('tokenTo:', tokenTo)
           }}
         />
       </Grid>
