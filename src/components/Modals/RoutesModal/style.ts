@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.gray.component,
-    width: 226,
+    width: 200,
     borderRadius: 10,
     marginTop: 13,
     padding: 20,
@@ -14,10 +14,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItem: {
-    color: colors.gray.light,
+    color: colors.gray.C7C9D1,
     borderRadius: 10,
-    padding: 7,
-    width: 188,
+    padding: 6,
+    paddingLeft: 12,
+    minWidth: 160,
     margin: 3,
     cursor: 'pointer',
 
@@ -26,18 +27,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: colors.gray.veryLight
     }
   },
-  icon: {
-    width: 24,
-    height: 24,
-    display: 'inline',
-    float: 'left',
-    marginRight: 10
-  },
   name: {
     textTransform: 'capitalize',
-    fontSize: 16,
-    lineHeight: '24px',
-    float: 'left'
+    fontSize: 22,
+    lineHeight: '40px'
+  },
+  current: {
+    textTransform: 'capitalize',
+    fontSize: 22,
+    lineHeight: '40px',
+    fontWeight: 600,
+    color: colors.gray.veryLight
   },
   paper: {
     background: 'transparent',

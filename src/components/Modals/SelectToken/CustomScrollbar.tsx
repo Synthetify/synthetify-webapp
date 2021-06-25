@@ -4,7 +4,6 @@ import useStyles from './style'
 
 export const SelectToken: React.FC<{}> = props => {
   const classes = useStyles()
-  console.log('classes')
 
   return (
     <Scrollbars

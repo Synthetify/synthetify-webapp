@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, PropTypes } from '@material-ui/core'
-import { FontWeightProperty } from 'csstype'
+import { FontWeightProperty, PaddingProperty } from 'csstype'
 import classNames from 'classnames'
 import useStyles from './style'
 
@@ -9,9 +9,11 @@ export interface IProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   color?: PropTypes.Color
   className?: string
+  style?: React.CSSProperties
   disabled?: boolean
   startIcon?: JSX.Element
   fontWeight?: FontWeightProperty
+  padding?: PaddingProperty<number>
 }
 
 export const OutlinedButton: React.FC<IProps> = ({
@@ -19,9 +21,11 @@ export const OutlinedButton: React.FC<IProps> = ({
   onClick,
   color = 'primary',
   className,
+  style,
   disabled = false,
   startIcon,
-  fontWeight = 'bold'
+  fontWeight = 'bold',
+  padding
 }) => {
   const classes = useStyles()
   return (
@@ -34,7 +38,7 @@ export const OutlinedButton: React.FC<IProps> = ({
       type={onClick ? 'button' : 'submit'}
       startIcon={startIcon}
       onClick={onClick}
-      style={{ fontWeight }}>
+      style={{ fontWeight, padding, ...style }}>
       {name}
     </Button>
   )
