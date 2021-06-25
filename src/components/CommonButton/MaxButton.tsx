@@ -11,7 +11,7 @@ export interface IProps {
   startIcon?: JSX.Element
 }
 export const MaxButton: React.FC<IProps> = ({
-  name = 'Max',
+  name = 'Set to max',
   onClick,
   className,
   disabled = false,

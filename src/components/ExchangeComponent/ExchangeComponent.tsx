@@ -9,6 +9,7 @@ import { BN } from '@project-serum/anchor'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
 import { colors } from '@static/theme'
+import MaxButton from '@components/CommonButton/MaxButton'
 
 export interface IExchangeComponent {
   tokens: TokensWithBalance[]
@@ -23,17 +24,18 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Typography className={classes.title}>Swap</Typography>
         <Divider className={classes.titleDivider} />
       </Grid>
+
       <Grid item className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>From</Typography>
-        <Grid container>
+        <Grid container justify='space-between' alignItems='center'>
           <Grid item>
-            <Button>Select a token</Button>
+            <OutlinedButton name='Select a token' />
           </Grid>
           <Grid item>
             <AmountInput setValue={() => {}} currency='xUSD' />
           </Grid>
           <Grid item>
-            <Button>Set to max</Button>
+            <MaxButton onClick={() => {}}/>
           </Grid>
         </Grid>
       </Grid>
@@ -48,18 +50,19 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
       <Grid item className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
-        <Grid container>
+        <Grid container justify='space-between' alignItems='center'>
           <Grid item>
-            <Button>Select a token</Button>
+            <OutlinedButton name='Select a token' />
           </Grid>
           <Grid item>
             <AmountInput setValue={() => {}} currency='xUSD' />
           </Grid>
           <Grid item>
-            <Button>Set to max</Button>
+            <MaxButton onClick={() => {}}/>
           </Grid>
         </Grid>
       </Grid>
+
       <Grid item container className={classes.numbersField}>
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
