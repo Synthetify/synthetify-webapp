@@ -11,6 +11,34 @@ import SwapVertIcon from '@material-ui/icons/SwapVert'
 import { colors } from '@static/theme'
 import MaxButton from '@components/CommonButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
+import { printBNtoBN, printBN } from '@consts/utils'
+
+export const calculateSwapOutAmount = (
+  assetIn: TokensWithBalance,
+  assetFor: TokensWithBalance,
+  amount: string,
+  effectiveFee: number = 300
+) => {
+  const amountOutBeforeFee = assetIn.price
+    .mul(printBNtoBN(amount, assetIn.decimals))
+    .div(assetFor.price)
+  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
+  if (decimalChange < 1) {
+    return printBN(
+      amountOutBeforeFee
+        .sub(amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000)))
+        .div(new BN(1 / decimalChange)),
+      assetFor.decimals
+    )
+  } else {
+    return printBN(
+      amountOutBeforeFee
+        .sub(amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000)))
+        .mul(new BN(decimalChange)),
+      assetFor.decimals
+    )
+  }
+}
 
 export interface IExchangeComponent {
   tokens: TokensWithBalance[]
@@ -20,10 +48,16 @@ export interface IExchangeComponent {
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapData, onSwap }) => {
   const classes = useStyles()
 
-  const [tokenFrom, setTokenFrom] = React.useState<SymbolAndBalance | null>(tokens[0] ?? null)
-  const [tokenTo, setTokenTo] = React.useState<SymbolAndBalance | null>(null)
+  const [tokenFrom, setTokenFrom] = React.useState<TokensWithBalance | null>(tokens[0] ?? null)
+  const [tokenTo, setTokenTo] = React.useState<TokensWithBalance | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
+
+  const updateEstimatedAmount = (amount: string | null = null) => {
+    if (!!tokenFrom && !!tokenTo) {
+      setAmountTo(calculateSwapOutAmount(tokenFrom, tokenTo, amount ?? amountFrom))
+    }
+  }
 
   const tokenNames = tokens.map(token => token.symbol)
 
@@ -76,7 +110,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           <Grid item>
             <AmountInput
               value={amountFrom}
-              setValue={value => setAmountFrom(value)}
+              setValue={value => {
+                setAmountFrom(value)
+                updateEstimatedAmount(value)
+              }}
               currency={tokenFrom?.symbol ?? null}
             />
           </Grid>
@@ -102,6 +139,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             if(!tokenTo || !tokenFrom) return
             setTokenFrom(tokenTo)
             setTokenTo(tokenFrom)
+            setTimeout(() => updateEstimatedAmount(), 0)
+
           }}>
             <SwapVertIcon style={{ fill: colors.gray.veryLight }} className={classes.swapIcon} />
           </IconButton>
