@@ -12,12 +12,8 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/CommonButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 
-interface SymbolAndBalance {
-  symbol: string
-  balance: BN
-}
 export interface IExchangeComponent {
-  tokens: SymbolAndBalance[]
+  tokens: TokensWithBalance[]
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
 }
@@ -107,7 +103,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             setTokenFrom(tokenTo)
             setTokenTo(tokenFrom)
           }}>
-            <SwapVertIcon className={classes.swapIcon} />
+            <SwapVertIcon style={{ fill: colors.gray.veryLight }} className={classes.swapIcon} />
           </IconButton>
         </Grid>
       </Grid>
