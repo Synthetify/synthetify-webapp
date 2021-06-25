@@ -20,11 +20,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
     } else if (state === 'failed') {
       return <Close className={classes.failed} />
     }
-    return (
-      <Grid className={classes.progressWrapper}>
-        <GradientCircularProgress />
-      </Grid>
-    )
+    return <GradientCircularProgress />
   }
 
   return (

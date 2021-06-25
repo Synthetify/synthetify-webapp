@@ -6,18 +6,16 @@ const useStyles = makeStyles(() => ({
     color: colors.gray.manatee
   },
   icon: {
+    paddingTop: 10,
     paddingRight: 10,
     minWidth: 42
   },
-  progressWrapper: {
-    paddingTop: 10
-  },
   success: {
-    paddingTop: 10,
+    paddingRight: 16,
     color: colors.green.main
   },
   failed: {
-    paddingTop: 10,
+    paddingRight: 16,
     color: colors.red.error
   }
 }))
