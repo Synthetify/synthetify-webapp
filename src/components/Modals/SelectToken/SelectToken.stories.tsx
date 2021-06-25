@@ -11,13 +11,14 @@ const tokens: TokenWithName[] = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO A
     return { name: i, publicKey: new PublicKey(0) }
   })
 
-storiesOf('modals/selectModal', module)
+storiesOf('modals/selectToken', module)
   .addDecorator(withKnobs)
   .add('default', () => (
     <SelectToken
       tokens={tokens}
       open={true}
       handleClose={() => {}}
+      anchorEl={null}
       onSelect={(k: PublicKey) => action('chosen: ' + k.toString())()}
     />
   ))

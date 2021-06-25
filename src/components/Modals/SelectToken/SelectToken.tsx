@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   Typography,
-  Modal,
+  Popover,
   Grid,
   Input,
   CardMedia,
@@ -22,6 +22,7 @@ export interface ISelectTokenModal {
   tokens: TokenWithName[]
   open: boolean
   handleClose: () => void
+  anchorEl: HTMLButtonElement | null
   onSelect: (tokenAddress: PublicKey) => void
 }
 
@@ -29,14 +30,26 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   tokens,
   open,
   handleClose,
+  anchorEl,
   onSelect
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Grid className={classes.root} container alignContent="space-around" direction='column' spacing={2}>
+    <Popover
+      classes={{ paper: classes.paper }}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}>      <Grid className={classes.root} container alignContent="space-around" direction='column' spacing={2}>
         <Grid item>
           <Input
             className={classes.searchInput}
@@ -81,7 +94,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
           </Box>
         </Grid>
       </Grid>
-    </Modal>
+    </Popover>
   )
 }
 export default SelectToken

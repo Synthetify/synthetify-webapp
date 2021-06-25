@@ -2,7 +2,7 @@ import React from 'react'
 import { Scrollbars } from 'rc-scrollbars'
 import useStyles from './style'
 
-export const SelectToken: React.FC<{}> = props => {
+export const CustonScrollbar: React.FC<{}> = props => {
   const classes = useStyles()
 
   return (
@@ -22,4 +22,4 @@ export const SelectToken: React.FC<{}> = props => {
   )
 }
 
-export default SelectToken
+export default CustonScrollbar

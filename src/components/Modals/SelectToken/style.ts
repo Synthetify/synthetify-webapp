@@ -68,6 +68,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 15,
     float: 'right',
     width: 9
+  },
+  paper: {
+    background: 'transparent',
+    boxShadow: 'none'
   }
 }))
 
