@@ -1,6 +1,5 @@
 import React from 'react'
 import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/core'
-import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
@@ -13,7 +12,7 @@ export interface ISelectTokenModal {
   onSelect: (chosen: string) => void
 }
 
-export const SelectToken: React.FC<ISelectTokenModal> = ({
+export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   tokens,
   open,
   handleClose,
@@ -95,4 +94,4 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
     </Popover>
   )
 }
-export default SelectToken
+export default SelectTokenModal
