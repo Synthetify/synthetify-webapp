@@ -1,29 +1,16 @@
 import React from 'react'
-import {
-  Typography,
-  Popover,
-  Grid,
-  Input,
-  CardMedia,
-  Box
-} from '@material-ui/core'
+import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/core'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 
-export interface TokenWithName {
-  name: string,
-  publicKey: PublicKey
-  disabled?: boolean
-}
-
 export interface ISelectTokenModal {
-  tokens: TokenWithName[]
+  tokens: string[]
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
-  onSelect: (tokenAddress: PublicKey) => void
+  onSelect: (chosen: string) => void
 }
 
 export const SelectToken: React.FC<ISelectTokenModal> = ({
@@ -49,7 +36,14 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
       transformOrigin={{
         vertical: 'top',
         horizontal: 'center'
-      }}>      <Grid className={classes.root} container alignContent="space-around" direction='column' spacing={2}>
+      }}>
+      {' '}
+      <Grid
+        className={classes.root}
+        container
+        alignContent='space-around'
+        direction='column'
+        spacing={2}>
         <Grid item>
           <Input
             className={classes.searchInput}
@@ -71,7 +65,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.name.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(({ name, publicKey }) => {
+                .map(name => {
                   let icon
                   try {
                     icon = require(`@static/icons/${name.toLowerCase()}.png`)
@@ -80,7 +74,11 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
                   }
 
                   return (
-                    <Grid container className={classes.tokenItem} alignItems='center' onClick={() => onSelect(publicKey)}>
+                    <Grid
+                      container
+                      className={classes.tokenItem}
+                      alignItems='center'
+                      onClick={() => onSelect(name)}>
                       <Grid item>
                         <CardMedia className={classes.tokenIcon} image={icon} />{' '}
                       </Grid>

@@ -1,15 +1,10 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
-import { SelectToken, TokenWithName } from '@components/Modals/SelectToken/SelectToken'
-import { PublicKey } from '@solana/web3.js'
+import SelectToken from '@components/Modals/SelectToken/SelectToken'
 import { action } from '@storybook/addon-actions'
 
-const tokens: TokenWithName[] = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'
-  .split(' ')
-  .map(i => {
-    return { name: i, publicKey: new PublicKey(0) }
-  })
+const tokens = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ')
 
 storiesOf('modals/selectToken', module)
   .addDecorator(withKnobs)
@@ -19,6 +14,6 @@ storiesOf('modals/selectToken', module)
       open={true}
       handleClose={() => {}}
       anchorEl={null}
-      onSelect={(k: PublicKey) => action('chosen: ' + k.toString())()}
+      onSelect={(chosen: string) => action('chosen: ' + chosen)()}
     />
   ))
