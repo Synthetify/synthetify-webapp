@@ -99,6 +99,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 45,
     height: 45,
     fill: colors.gray.veryLight
+  },
+  button: {
+    textTransform: 'none',
+    boxShadow: 'none',
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 16,
+    lineHeight: '30px',
+    margin: 10
   }
 }))
 

@@ -10,6 +10,9 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
 import { colors } from '@static/theme'
 import MaxButton from '@components/CommonButton/MaxButton'
+import SelectToken from '@components/Inputs/SelectToken/SelectToken'
+
+const tokenNames = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ')
 
 export interface IExchangeComponent {
   tokens: TokensWithBalance[]
@@ -30,7 +33,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Hidden lgUp>
           <Grid item container justify='space-around' alignItems='center'>
             <Grid item>
-              <OutlinedButton name='Select a token' />
+              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
             </Grid>
             <Grid item>
               <MaxButton onClick={() => {}} />
@@ -41,7 +44,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Grid item container justify='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item>
-              <OutlinedButton name='Select a token' />
+              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
             </Grid>
           </Hidden>
           <Grid item>
@@ -68,7 +71,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Hidden lgUp>
           <Grid item container justify='space-around' alignItems='center'>
             <Grid item>
-              <OutlinedButton name='Select a token' />
+              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
             </Grid>
             <Grid item>
               <MaxButton onClick={() => {}} />
@@ -79,7 +82,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Grid item container justify='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item>
-              <OutlinedButton name='Select a token' />
+              <SelectToken tokens={tokenNames} className={classes.button} onSelect={(chosen: string) => chosen} />
             </Grid>
           </Hidden>
           <Grid item>

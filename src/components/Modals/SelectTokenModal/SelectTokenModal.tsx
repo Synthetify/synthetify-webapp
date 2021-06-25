@@ -77,7 +77,10 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                       container
                       className={classes.tokenItem}
                       alignItems='center'
-                      onClick={() => onSelect(name)}>
+                      onClick={() => {
+                        onSelect(name)
+                        handleClose()
+                      }}>
                       <Grid item>
                         <CardMedia className={classes.tokenIcon} image={icon} />{' '}
                       </Grid>
