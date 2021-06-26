@@ -3,8 +3,8 @@
 import React from 'react'
 import { Typography, Grid, CardMedia, Dialog } from '@material-ui/core'
 
-import Loader from '#static/gif/loader.gif'
-import Success from '#static/gif/success.gif'
+import Loader from '#static/svg/swap.svg'
+import Success from '#static/svg/swap.svg'
 import { PublicKey } from '@solana/web3.js'
 import { IAsset } from '#reducers/exchange'
 

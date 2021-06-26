@@ -13,8 +13,8 @@ import { printBNtoBN, printBN } from '#consts/utils'
 import { BN } from '@project-serum/anchor'
 import { Swap } from '#reducers/exchange'
 import { PublicKey } from '@solana/web3.js'
-import Loader from '#static/gif/loader.gif'
-import Success from '#static/gif/success.gif'
+import Loader from '#static/svg/swap.svg'
+import Success from '#static/svg/swap.svg'
 import SwapIcon from '#static/svg/swap.svg'
 
 export interface IExchange {

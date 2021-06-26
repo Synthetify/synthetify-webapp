@@ -7,7 +7,7 @@ import { tokenTicker, userMaxBurnToken } from '#selectors/exchange'
 import { actions } from '#reducers/modals'
 import { BN } from '@project-serum/anchor'
 import { SvgIcon } from '@material-ui/core'
-import { ReactComponent as BurnIcon } from '#static/svg/burn_ic.svg'
+import BurnIcon from '#static/svg/burn_ic.svg'
 import { tokenAccount } from '#selectors/solanaWallet'
 
 export const WithdrawModal = () => {

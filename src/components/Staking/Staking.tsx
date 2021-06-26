@@ -7,10 +7,9 @@ import { transformBN } from '#consts/utils'
 import { TokenAccounts } from '#selectors/solanaWallet'
 import Token from '#containers/Tokens/Token/Token'
 import { PublicKey } from '@solana/web3.js'
-import { ReactComponent as DepositIcon } from '#static/svg/depo_ic.svg'
-import { ReactComponent as MintIcon } from '#static/svg/mint_ic.svg'
-import { ReactComponent as WithdrawIcon } from '#static/svg/withdraw_ic.svg'
-import { openSync } from 'fs'
+import DepositIcon from '#static/svg/depo_ic.svg'
+import MintIcon from '#static/svg/mint_ic.svg'
+import WithdrawIcon from '#static/svg/withdraw_ic.svg'
 import UserStatsTile from './UserStatsTile/UserStatsTile'
 export interface IStaking {
   stakedValue: BN

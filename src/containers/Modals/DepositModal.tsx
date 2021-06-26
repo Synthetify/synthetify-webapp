@@ -8,7 +8,7 @@ import { collateralToken } from '#selectors/exchange'
 import { actions } from '#reducers/modals'
 import { BN } from '@project-serum/anchor'
 import { SvgIcon } from '@material-ui/core'
-import { ReactComponent as DepositIcon } from '#static/svg/depo_ic.svg'
+import DepositIcon from '#static/svg/depo_ic.svg'
 
 export const SendMoneyModal = () => {
   const dispatch = useDispatch()

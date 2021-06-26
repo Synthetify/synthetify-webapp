@@ -7,7 +7,7 @@ import { userMaxWithdraw } from '#selectors/exchange'
 import { actions } from '#reducers/modals'
 import { BN } from '@project-serum/anchor'
 import { SvgIcon } from '@material-ui/core'
-import { ReactComponent as WithdrawIcon } from '#static/svg/withdraw_ic.svg'
+import WithdrawIcon from '#static/svg/withdraw_ic.svg'
 
 export const WithdrawModal = () => {
   const dispatch = useDispatch()
