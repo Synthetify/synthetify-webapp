@@ -11,6 +11,8 @@ interface IProps {
   style?: CSSProperties
 }
 
+type inputString = { target: { value: string } }
+
 export const AmountInput: React.FC<IProps> = ({
   currency,
   initValue = '',
@@ -21,8 +23,8 @@ export const AmountInput: React.FC<IProps> = ({
   const classes = useStyles()
   const [value, setValue] = useState(initValue)
 
-  const allowOnlyDigits = (e: { target: { value: string } }) => {
-    const regex = /^[0-9\b]+$/
+  const allowOnlyDigits = (e: inputString) => {
+    const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || regex.test(e.target.value)) {
       setValue(e.target.value)
     }
