@@ -5,10 +5,9 @@ import useStyles from './style'
 import AmountInput from './AmountInput'
 
 interface IProps {
-  setValue: (value: string) => void
   currency: string
   label?: string
-  value?: string
+  initValue?: string
   error?: string | null
   className?: string
   style?: CSSProperties
