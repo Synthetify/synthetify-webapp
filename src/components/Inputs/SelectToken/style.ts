@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     margin: 10,
     width: 'calc(100% - 20px)',
-    height: 60
+    height: 60,
+    fontWeight: 700
   }
 }))
 

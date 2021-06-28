@@ -194,7 +194,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               setTokenTo(tokenFrom)
               setTimeout(() => updateEstimatedAmount(), 0)
             }}>
-            <SwapVertIcon style={{ fill: colors.gray.veryLight }} className={classes.swapIcon} />
+            <SwapVertIcon style={{ fill: colors.gray.veryLight, height: 43, width: 43 }} className={classes.swapIcon} />
           </IconButton>
         </Grid>
       </Grid>

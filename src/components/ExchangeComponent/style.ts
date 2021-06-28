@@ -111,7 +111,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 10,
     fontSize: 16,
     lineHeight: '30px',
-    margin: 10
+    margin: 10,
+    fontWeight: 'normal'
   }
 }))
 
