@@ -29,7 +29,7 @@ const TabPanel = ({ children, value, index, ...other }: ITabPanelProps) => {
       {...other}>
       {value === index && (
         <Box>
-          <Typography>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
