@@ -22,21 +22,36 @@ export const calculateSwapOutAmount = (
   const amountOutBeforeFee = assetIn.price
     .mul(printBNtoBN(amount, assetIn.decimals))
     .div(assetFor.price)
+
+  const amountAfterFee = amountOutBeforeFee.sub(
+    amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000))
+  )
   const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
+
   if (decimalChange < 1) {
-    return printBN(
-      amountOutBeforeFee
-        .sub(amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000)))
-        .div(new BN(1 / decimalChange)),
-      assetFor.decimals
-    )
+    return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.decimals)
   } else {
-    return printBN(
-      amountOutBeforeFee
-        .sub(amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000)))
-        .mul(new BN(decimalChange)),
-      assetFor.decimals
-    )
+    return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.decimals)
+  }
+}
+
+export const calculateSwapOutAmountReversed = (
+  assetIn: TokensWithBalance,
+  assetFor: TokensWithBalance,
+  amount: string,
+  effectiveFee: number = 300
+) => {
+  const amountAfterFee = printBNtoBN(amount, assetIn.decimals).add(
+    printBNtoBN(amount, assetIn.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
+  )
+  const amountOutBeforeFee = assetFor.price.mul(amountAfterFee).div(assetIn.price)
+
+  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
+
+  if (decimalChange < 1) {
+    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.decimals)
+  } else {
+    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.decimals)
   }
 }
 
@@ -83,6 +98,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
       setAmountTo(calculateSwapOutAmount(tokenFrom, tokenTo, amount ?? amountFrom))
     }
   }
+  const updateFromEstimatedAmount = (amount: string | null = null) => {
+    if (!!tokenFrom && !!tokenTo) {
+      setAmountFrom(calculateSwapOutAmountReversed(tokenFrom, tokenTo, amount ?? amountFrom))
+    }
+  }
 
   const tokenNames = tokens.map(token => token.symbol)
 
@@ -113,6 +133,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
                 onClick={() => {
                   if (tokenFrom) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
+                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
                   }
                 }}
               />
@@ -136,8 +157,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             <AmountInput
               value={amountFrom}
               setValue={value => {
-                setAmountFrom(value)
-                updateEstimatedAmount(value)
+                if (value.match(/^\d*\.?\d*$/)) {
+                  setAmountFrom(value)
+                  updateEstimatedAmount(value)
+                }
               }}
               currency={tokenFrom?.symbol ?? null}
             />
@@ -150,6 +173,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
                 onClick={() => {
                   if (tokenFrom) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
+                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
                   }
                 }}
               />
@@ -207,7 +231,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           <Grid item>
             <AmountInput
               value={amountTo}
-              setValue={value => setAmountTo(value)}
+              setValue={value => {
+                if (value.match(/^\d*\.?\d*$/)) {
+                  setAmountTo(value)
+                  updateFromEstimatedAmount(value)
+                }
+              }}
               currency={tokenTo?.symbol ?? null}
             />
           </Grid>
@@ -220,7 +249,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
       </Grid>
       <Grid item container className={classes.numbersField}>
         <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+          <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
           <Typography className={classes.numbersFieldAmount}>
             {'0.0000'} {tokenFrom?.symbol ?? 'xUSD'}{' '}
             {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
@@ -230,8 +259,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           <Divider className={classes.amountDivider} orientation='vertical' />
         </Grid>
         <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'3.54'}%</Typography>
+          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+          <Typography className={classes.numbersFieldAmount}>{'0.03'}%</Typography>
         </Grid>
       </Grid>
 

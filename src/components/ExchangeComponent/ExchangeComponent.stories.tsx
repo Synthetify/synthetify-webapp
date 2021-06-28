@@ -18,13 +18,14 @@ const defaultAsset: Asset = {
   decimals: 4
 }
 
-const tokens = 'xUSD SNY Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
+const tokens = 'xUSD Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
   .split(' ')
   .map((i): TokensWithBalance => {
     return { symbol: i, balance: new BN(0), ...defaultAsset}
   })
 tokens[0].balance = new BN(100).mul(new BN(10000))
 tokens[1].balance = new BN(10).mul(new BN(10000))
+tokens[1].price = new BN(10)
 
 storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)
