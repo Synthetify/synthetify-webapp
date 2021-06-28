@@ -9,7 +9,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   socialMedia: {
     width: 32,
     height: 32,
-    marginLeft: 9
+    marginLeft: 9,
+    background: 'transparent',
+    cursor: 'pointer',
+
+    '&:hover path': {
+      fill: colors.green.main
+    }
   }
 }))
 
