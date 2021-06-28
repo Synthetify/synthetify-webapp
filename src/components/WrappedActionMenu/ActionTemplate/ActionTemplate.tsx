@@ -5,19 +5,37 @@ import MaxButton from '@components/CommonButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
-import BN from 'bn.js'
+import { printBN } from '@consts/utils'
+import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 
 export interface IProps {
   action: string
   maxAvailable: BN
-  decimal: number
+  maxDecimal: number
   onClick: () => void
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, decimal, onClick }) => {
+type ParsedBN = { BN: BN; decimal: number }
+
+export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
+  const [decimal, setDecimal] = useState(0)
+
+  const stringToDecimalBN = (str: string): ParsedBN => {
+    if (str.includes('.')) {
+      const decimal = str.split('.')[1].length || 0
+      return {
+        BN: new BN(parseInt(str) ** decimal), //TODO: fix parsing
+        decimal
+      }
+    }
+    return {
+      BN: new BN(str),
+      decimal: 0
+    }
+  }
 
   const capitalize = (str: string) => {
     if (!str) {
@@ -36,9 +54,11 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, decimal
       <Grid container item className={classes.wrap}>
         <Grid item>
           <AmountInputWithLabel
-            value={amountBN.toString()}
+            value={printBN(amountBN, decimal)}
             setValue={value => {
-              setAmountBN(new BN(value))
+              const { BN, decimal } = stringToDecimalBN(value)
+              setAmountBN(BN)
+              setDecimal(decimal)
             }}
             className={classes.amountInput}
             currency={'xUSD'}
@@ -55,6 +75,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, decimal
             <MaxButton
               onClick={() => {
                 setAmountBN(maxAvailable)
+                setDecimal(maxDecimal)
               }}
             />
           </Grid>
@@ -64,8 +85,8 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, decimal
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
-              value={new BN(51640189)}
-              decimal={4}
+              value={maxAvailable}
+              decimal={maxDecimal}
               unit='xUSD'
             />
           </Grid>

@@ -10,7 +10,7 @@ storiesOf('WrappedActionMenu/ActionContent', module).add('{template}', () => (
     <ActionTemplate
       action='{template}'
       maxAvailable={new BN(101_999_999)}
-      decimal={6}
+      maxDecimal={6}
       onClick={action('{template}')}
     />
   </div>
