@@ -1,44 +1,46 @@
 import React from 'react'
-import { CardMedia, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import useStyles from './style'
 import { social } from '@static/links'
-import { ReactComponent as Sny } from '@static/svg/sny.svg'
+import linkedin from '@static/svg/linkedin-circle.svg'
+import github from '@static/svg/github-circle.svg'
+import discord from '@static/svg/discord-circle.svg'
+import twitter from '@static/svg/twitter-circle.svg'
 
 export const Footer = () => {
   const classes = useStyles()
-  const discord = require('@static/png/discord-circle.png')
-  const github = require('@static/png/github-circle.png')
-  const linkedin = require('@static/png/linkedin-circle.png')
-  const twitter = require('@static/png/twitter-circle.png')
 
   return (
     <Grid container justify='flex-end' className={classes.container}>
-      <Sny />
       <Grid item>
-        <CardMedia
+        <img
+          src={github}
+          alt={'github'}
           className={classes.socialMedia}
-          image={github}
           onClick={() => window.open(social.github)}
         />
       </Grid>
       <Grid item>
-        <CardMedia
+        <img
+          src={linkedin}
+          alt={'linkedin'}
           className={classes.socialMedia}
-          image={linkedin}
           onClick={() => window.open(social.linkedin)}
         />
       </Grid>
       <Grid item>
-        <CardMedia
+        <img
+          src={twitter}
+          alt={'twitter'}
           className={classes.socialMedia}
-          image={twitter}
           onClick={() => window.open(social.twitter)}
         />
       </Grid>
       <Grid item>
-        <CardMedia
+        <img
+          src={discord}
+          alt={'discord'}
           className={classes.socialMedia}
-          image={discord}
           onClick={() => window.open(social.discord)}
         />
       </Grid>
