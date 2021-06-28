@@ -7,7 +7,8 @@ import AmountInput from './AmountInput'
 interface IProps {
   currency: string
   label?: string
-  initValue?: string
+  value?: string
+  setValue: (value: string) => void
   error?: string | null
   className?: string
   style?: CSSProperties
