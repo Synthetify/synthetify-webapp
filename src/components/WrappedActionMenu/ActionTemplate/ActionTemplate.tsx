@@ -23,7 +23,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
   const [actionAvailable, setActionAvailable] = useState(false)
-  const [endWithDot, setEndWithDot] = useState(false)
+  const [inputSuffix, setInputSuffix] = useState('')
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
@@ -69,9 +69,15 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       <Grid container item className={classes.wrap}>
         <Grid item>
           <AmountInputWithLabel
-            value={`${printBN(amountBN, decimal)}${endWithDot ? '.' : ''}`}
+            value={`${printBN(amountBN, decimal)}${inputSuffix}`}
             setValue={value => {
-              setEndWithDot(value.endsWith('.'))
+              const endZeros = /\.0*$/
+              if (endZeros.test(value)) {
+                const suffix = value.substr(value.indexOf('.'))
+                setInputSuffix(suffix)
+              } else {
+                setInputSuffix('')
+              }
               const { BN, decimal } = stringToDecimalBN(value)
               setAmountBN(BN)
               setDecimal(decimal)
