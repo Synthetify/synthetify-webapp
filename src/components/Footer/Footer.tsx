@@ -2,6 +2,7 @@ import React from 'react'
 import { CardMedia, Grid } from '@material-ui/core'
 import useStyles from './style'
 import { social } from '@static/links'
+import { ReactComponent as Sny } from '@static/svg/sny.svg'
 
 export const Footer = () => {
   const classes = useStyles()
@@ -12,6 +13,7 @@ export const Footer = () => {
 
   return (
     <Grid container justify='flex-end' className={classes.container}>
+      <Sny />
       <Grid item>
         <CardMedia
           className={classes.socialMedia}
