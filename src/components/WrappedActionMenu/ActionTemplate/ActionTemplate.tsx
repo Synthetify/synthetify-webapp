@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Divider, Grid } from '@material-ui/core'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
@@ -22,7 +22,29 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
+  const [state, setState] = useState('none')
   const [endWithDot, setEndWithDot] = useState(false)
+
+  const actionIsAvailable = () => {
+    if (decimal > maxDecimal) {
+      return false
+    }
+
+    const diff = maxDecimal - decimal
+    const isLess = amountBN.muln(10 ** diff).lte(maxAvailable) //TODO: fix to shift
+    if (!isLess) {
+      return false
+    }
+
+    return !amountBN.eqn(0)
+  }
+
+  useEffect(() => {
+    const isAvailable = actionIsAvailable()
+    if (!isAvailable) {
+      setState('failed')
+    }
+  }, [amountBN, decimal])
 
   const stringToDecimalBN = (str: string): ParsedBN => {
     if (str.includes('.')) {
@@ -98,6 +120,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalize(action)}
+            disabled={!actionIsAvailable()}
             color='secondary'
             padding='11px 40px'
             style={{ width: 160 }}
@@ -105,7 +128,8 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           />
         </Grid>
         <Grid item>
-          <Progress state='progress' message={`${capitalize(action)} is progress...`} />
+          {/*<Progress state='progress' message={`${capitalize(action)} is progress...`} />*/}
+          <Progress state='none' />
         </Grid>
       </Grid>
     </Grid>
