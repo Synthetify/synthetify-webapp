@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: -10,
     zIndex: 2,
     padding: 1,
+    lineHeight: 45,
 
     '&:hover': {
       background: colors.gray.mid

@@ -85,7 +85,7 @@ export interface IExchangeComponent {
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
 }
-export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, _swapData, onSwap }) => {
+export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
   const classes = useStyles()
 
   const [tokenFrom, setTokenFrom] = React.useState<TokensWithBalance | null>(tokens[0] ?? null)
@@ -121,9 +121,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, _swapD
               <SelectToken
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
-                onSelect={(chosen: string) =>
+                onSelect={(chosen: string) => {
                   setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
-                }
+                  setTimeout(() => updateEstimatedAmount(), 0)
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -147,9 +148,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, _swapD
               <SelectToken
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
-                onSelect={(chosen: string) =>
+                onSelect={(chosen: string) => {
                   setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
-                }
+                  setTimeout(() => updateEstimatedAmount(), 0)
+                }}
               />
             </Grid>
           </Hidden>
@@ -205,9 +207,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, _swapD
               <SelectToken
                 tokens={tokenNames}
                 current={tokenTo?.symbol ?? null}
-                onSelect={(chosen: string) =>
+                onSelect={(chosen: string) => {
                   setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
-                }
+                  setTimeout(() => updateEstimatedAmount(), 0)
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -231,9 +234,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, _swapD
               <SelectToken
                 tokens={tokenNames}
                 current={tokenTo?.symbol ?? null}
-                onSelect={(chosen: string) =>
+                onSelect={(chosen: string) => {
                   setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
-                }
+                  setTimeout(() => updateEstimatedAmount(), 0)
+                }}
               />
             </Grid>
           </Hidden>
