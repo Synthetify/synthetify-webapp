@@ -211,7 +211,16 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
               />
             </Grid>
             <Grid item>
-              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
+              <MaxButton
+                name='Set to max'
+                className={classes.button}
+                onClick={() => {
+                  if (tokenFrom) {
+                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
+                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
+                  }
+                }}
+              />{' '}
             </Grid>
           </Grid>
         </Hidden>
@@ -242,7 +251,16 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           </Grid>
           <Hidden mdDown>
             <Grid item>
-              <MaxButton name='Set to max' className={classes.button} onClick={() => {}} />
+              <MaxButton
+                name='Set to max'
+                className={classes.button}
+                onClick={() => {
+                  if (tokenFrom && tokenTo) {
+                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
+                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
+                  }
+                }}
+              />{' '}
             </Grid>
           </Hidden>
         </Grid>
@@ -251,8 +269,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
           <Typography className={classes.numbersFieldAmount}>
-            {'0.0000'} {tokenFrom?.symbol ?? 'xUSD'}{' '}
-            {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
+            {(() => {
+              if (!tokenFrom || !tokenTo) return '0.0000'
+              return calculateSwapOutAmount(tokenFrom, tokenTo, '1', 0)
+            })()}{' '}
+            {tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
           </Typography>
         </Grid>
         <Grid item>
