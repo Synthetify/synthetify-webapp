@@ -40,6 +40,31 @@ export const calculateSwapOutAmount = (
   }
 }
 
+const getButtonMessage = (
+  amountFrom: string,
+  tokenFrom: TokensWithBalance | null,
+  amountTo: string,
+  tokenTo: TokensWithBalance | null
+) => {
+  if (!tokenFrom) return ''
+  if (!tokenTo) {
+    return 'Select output token'
+  }
+  if (!amountTo) {
+    return 'Enter value of swap'
+  }
+  if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
+    console.log(
+      printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance),
+      printBNtoBN(amountFrom, tokenFrom.decimals),
+      tokenFrom
+    )
+
+    return 'Invalid swap amount'
+  }
+  return 'Swap'
+}
+
 export interface IExchangeComponent {
   tokens: TokensWithBalance[]
   swapData: Swap
@@ -87,7 +112,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
                 className={classes.button}
                 onClick={() => {
                   if (tokenFrom) {
-                    setAmountFrom(tokenFrom.balance.toString())
+                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
                   }
                 }}
               />
@@ -124,7 +149,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
                 className={classes.button}
                 onClick={() => {
                   if (tokenFrom) {
-                    setAmountFrom(tokenFrom.balance.toString())
+                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
                   }
                 }}
               />
@@ -135,13 +160,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
       <Grid item container direction='row' justify='center'>
         <Grid item>
-          <IconButton className={classes.swapIconSquare} onClick={() => {
-            if(!tokenTo || !tokenFrom) return
-            setTokenFrom(tokenTo)
-            setTokenTo(tokenFrom)
-            setTimeout(() => updateEstimatedAmount(), 0)
-
-          }}>
+          <IconButton
+            className={classes.swapIconSquare}
+            onClick={() => {
+              if (!tokenTo || !tokenFrom) return
+              setTokenFrom(tokenTo)
+              setTokenTo(tokenFrom)
+              setTimeout(() => updateEstimatedAmount(), 0)
+            }}>
             <SwapVertIcon style={{ fill: colors.gray.veryLight }} className={classes.swapIcon} />
           </IconButton>
         </Grid>
@@ -196,7 +222,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Fee</Typography>
           <Typography className={classes.numbersFieldAmount}>
-            {'0.0000'} {tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
+            {'0.0000'} {tokenFrom?.symbol ?? 'xUSD'}{' '}
+            {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
           </Typography>
         </Grid>
         <Grid item>
@@ -210,8 +237,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
       <Grid item>
         <OutlinedButton
-          name='Swap'
+          name={getButtonMessage(amountFrom, tokenFrom, amountTo, tokenTo)}
           color='secondary'
+          disabled={getButtonMessage(amountFrom, tokenFrom, amountTo, tokenTo) !== 'Swap'}
           className={classes.swapButton}
           onClick={() => {
             console.log('amountFrom:', amountFrom)

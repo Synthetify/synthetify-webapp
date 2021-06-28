@@ -23,8 +23,8 @@ const tokens = 'xUSD SNY Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
   .map((i): TokensWithBalance => {
     return { symbol: i, balance: new BN(0), ...defaultAsset}
   })
-tokens[0].balance = new BN(100)
-tokens[1].balance = new BN(10)
+tokens[0].balance = new BN(100).mul(new BN(10000))
+tokens[1].balance = new BN(10).mul(new BN(10000))
 
 storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)
