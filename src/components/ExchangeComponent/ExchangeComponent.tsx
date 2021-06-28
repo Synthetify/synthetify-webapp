@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Divider, Hidden, Box, IconButton } from '@material-ui/core'
+import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core'
 import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
@@ -116,8 +116,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Typography className={classes.tokenComponentText}>From</Typography>
         <Hidden lgUp>
-          <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
-            <Grid item>
+          <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+            <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
@@ -126,7 +126,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
                 }
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
                 className={classes.button}
@@ -143,7 +143,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Hidden mdDown>
-            <Grid item>
+            <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
@@ -153,7 +153,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
               />
             </Grid>
           </Hidden>
-          <Grid item>
+          <Grid item xs={12} style={{ padding: 10 }}>
             <AmountInput
               value={amountFrom}
               setValue={value => {
@@ -166,9 +166,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             />
           </Grid>
           <Hidden mdDown>
-            <Grid item>
+            <Grid item xs={6}>
               <MaxButton
-                name='Set to max'
+                name='Set&nbsp;to&nbsp;max'
                 className={classes.button}
                 onClick={() => {
                   if (tokenFrom) {
@@ -201,7 +201,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
         <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
-            <Grid item>
+            <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
                 current={tokenTo?.symbol ?? null}
@@ -210,12 +210,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
                 }
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
                 className={classes.button}
                 onClick={() => {
-                  if (tokenFrom) {
+                  if (tokenFrom && tokenTo) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
                     updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
                   }
@@ -227,7 +227,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
 
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Hidden mdDown>
-            <Grid item>
+            <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
                 current={tokenTo?.symbol ?? null}
@@ -237,7 +237,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
               />
             </Grid>
           </Hidden>
-          <Grid item>
+          <Grid item xs={12} style={{ padding: 10 }}>
             <AmountInput
               value={amountTo}
               setValue={value => {
@@ -250,9 +250,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
             />
           </Grid>
           <Hidden mdDown>
-            <Grid item>
+            <Grid item xs={6}>
               <MaxButton
-                name='Set to max'
+                name='Set&nbsp;to&nbsp;max'
                 className={classes.button}
                 onClick={() => {
                   if (tokenFrom && tokenTo) {

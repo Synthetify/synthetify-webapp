@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     padding: 32,
     paddingTop: 23,
-    maxWidth: 850,
 
     [theme.breakpoints.down('md')]: {
       padding: 20
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       height: 37,
-      marginLeft: 10,
+      marginLeft: 20,
       marginRight: 10
     }
   },
