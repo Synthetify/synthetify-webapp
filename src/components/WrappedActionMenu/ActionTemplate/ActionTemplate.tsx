@@ -38,16 +38,18 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
     return !amountBN.eqn(0) && isLess
   }
 
-  const stringToDecimalBN = (str: string): ParsedBN => {
-    if (str.includes('.')) {
-      const decimal = str.split('.')[1].length || 0
+  const stringToMinDecimalBN = (value: string): ParsedBN => {
+    if (value.includes('.')) {
+      const [before, after] = value.split('.')
+      const decimal = after.length || 0
+      const bn = new BN(`${before}${after}`).mul(new BN(10).muln(decimal))
       return {
-        BN: new BN(parseFloat(str) * 10 ** decimal), //TODO: fix parsing
+        BN: bn,
         decimal
       }
     }
     return {
-      BN: new BN(str),
+      BN: new BN(value),
       decimal: 0
     }
   }
@@ -71,7 +73,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           <AmountInputWithLabel
             value={inputValue}
             setValue={value => {
-              const { BN, decimal } = stringToDecimalBN(value)
+              const { BN, decimal } = stringToMinDecimalBN(value)
               setAmountBN(BN)
               setDecimal(decimal)
               setInputValue(value)
