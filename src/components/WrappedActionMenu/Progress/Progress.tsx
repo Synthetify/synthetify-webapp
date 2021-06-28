@@ -23,9 +23,8 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
     return <GradientCircularProgress />
   }
 
-  //TODO: Fix empty tag
   return (
-    <Typography>
+    <Typography component={'span'}>
       {state !== 'none' ? (
         <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
           <Grid item className={classes.icon}>
