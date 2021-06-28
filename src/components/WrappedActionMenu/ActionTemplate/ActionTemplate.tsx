@@ -32,11 +32,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
       className={classes.root}>
       <Grid container item className={classes.wrap}>
         <Grid item>
-          <AmountInputWithLabel
-            className={classes.amountInput}
-            setValue={(value: string) => value}
-            currency={'xUSD'}
-          />
+          <AmountInputWithLabel className={classes.amountInput} currency={'xUSD'} />
         </Grid>
         <Grid
           item
