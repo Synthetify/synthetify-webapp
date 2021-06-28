@@ -5,7 +5,8 @@ import classNames from 'classnames'
 
 interface IProps {
   currency: string
-  initValue?: string
+  value?: string
+  setValue: (value: string) => void
   error?: string | null
   className?: string
   style?: CSSProperties
@@ -15,18 +16,19 @@ type inputString = { target: { value: string } }
 
 export const AmountInput: React.FC<IProps> = ({
   currency,
-  initValue = '',
+  value,
+  setValue,
   error,
   className,
   style
 }) => {
   const classes = useStyles()
-  const [value, setValue] = useState(initValue)
 
   const allowOnlyDigits = (e: inputString) => {
     const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || regex.test(e.target.value)) {
-      setValue(e.target.value)
+      value = e.target.value
+      setValue(value)
     }
   }
 
