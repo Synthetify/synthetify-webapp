@@ -56,6 +56,12 @@ export const stringToMinDecimalBN = (value: string): ParsedBN => {
     decimal: 0
   }
 }
+export const capitalizeString = (str: string) => {
+  if (!str) {
+    return str
+  }
+  return str[0].toUpperCase() + str.substr(1).toLowerCase()
+}
 
 export const divUp = (a: BN, b: BN): BN => {
   return a.add(b.subn(1)).div(b)
