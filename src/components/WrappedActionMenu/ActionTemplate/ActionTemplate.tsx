@@ -34,7 +34,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       return false
     }
     const diff = maxDecimal - decimal
-    const isLess = amountBN.muln(10 ** diff).lte(maxAvailable) //TODO: fix to shift
+    const isLess = amountBN.mul(new BN(10).pow(new BN(diff))).lte(maxAvailable)
     return !amountBN.eqn(0) && isLess
   }
 
