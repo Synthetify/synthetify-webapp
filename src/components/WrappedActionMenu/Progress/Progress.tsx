@@ -4,11 +4,11 @@ import { Done, Close } from '@material-ui/icons'
 import GradientCircularProgress from '@components/WrappedActionMenu/Progress/GradientCircularProgress'
 import useStyles from './style'
 
-export type ProgressState = 'progress' | 'success' | 'failed'
+export type ProgressState = 'progress' | 'success' | 'failed' | 'none'
 
 export interface IProps {
   state: ProgressState
-  message: string
+  message?: string
 }
 
 export const Progress: React.FC<IProps> = ({ state, message }) => {
@@ -23,16 +23,21 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
     return <GradientCircularProgress />
   }
 
+  //TODO: Fix empty tag
   return (
     <Typography>
-      <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
-        <Grid item className={classes.icon}>
-          {progressIcon(state)}
+      {state !== 'none' ? (
+        <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
+          <Grid item className={classes.icon}>
+            {progressIcon(state)}
+          </Grid>
+          <Grid item className={classes.text}>
+            {message}
+          </Grid>
         </Grid>
-        <Grid item className={classes.text}>
-          {message}
-        </Grid>
-      </Grid>
+      ) : (
+        <></>
+      )}
     </Typography>
   )
 }
