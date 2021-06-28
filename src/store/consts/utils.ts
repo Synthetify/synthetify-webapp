@@ -46,11 +46,9 @@ export type ParsedBN = { BN: BN; decimal: number }
 export const stringToMinDecimalBN = (value: string): ParsedBN => {
   if (value.includes('.')) {
     const [before, after] = value.split('.')
-    const decimal = after.length || 0
-    const bn = new BN(`${before}${after}`).mul(new BN(10).muln(decimal))
     return {
-      BN: bn,
-      decimal
+      BN: new BN(`${before}${after}`),
+      decimal: after.length || 0
     }
   }
   return {
