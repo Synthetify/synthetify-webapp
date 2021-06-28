@@ -1,10 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Divider, Grid } from '@material-ui/core'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
-import { Progress, ProgressState } from '@components/WrappedActionMenu/Progress/Progress'
+import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { printBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
@@ -22,9 +22,12 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
-  const [state, setState] = useState('none' as ProgressState)
-  const [message, setMessage] = useState('')
+  const [actionAvailable, setActionAvailable] = useState(false)
   const [endWithDot, setEndWithDot] = useState(false)
+
+  useEffect(() => {
+    setActionAvailable(checkActionIsAvailable())
+  }, [amountBN, decimal])
 
   const checkActionIsAvailable = () => {
     if (decimal > maxDecimal) {
@@ -34,16 +37,6 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
     const isLess = amountBN.muln(10 ** diff).lte(maxAvailable) //TODO: fix to shift
     return !amountBN.eqn(0) && isLess
   }
-
-  useEffect(() => {
-    const isAvailable = checkActionIsAvailable()
-    if (!isAvailable) {
-      setState('failed')
-      setMessage('Incorrect value!')
-    } else {
-      setState('none')
-    }
-  }, [amountBN, decimal])
 
   const stringToDecimalBN = (str: string): ParsedBN => {
     if (str.includes('.')) {
@@ -127,7 +120,10 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           />
         </Grid>
         <Grid item>
-          <Progress state={state} message={message} />
+          <Progress
+            state={actionAvailable ? 'none' : 'failed'}
+            message={actionAvailable ? '' : 'incorrect value!'}
+          />
         </Grid>
       </Grid>
     </Grid>
