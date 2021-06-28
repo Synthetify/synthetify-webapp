@@ -27,8 +27,7 @@ export const AmountInput: React.FC<IProps> = ({
   const allowOnlyDigits = (e: inputString) => {
     const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || regex.test(e.target.value)) {
-      value = e.target.value
-      setValue(value)
+      setValue(e.target.value)
     }
   }
 

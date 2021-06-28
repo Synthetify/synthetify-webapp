@@ -22,12 +22,13 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
+  const [endWithDot, setEndWithDot] = useState(false)
 
   const stringToDecimalBN = (str: string): ParsedBN => {
     if (str.includes('.')) {
       const decimal = str.split('.')[1].length || 0
       return {
-        BN: new BN(parseInt(str) ** decimal), //TODO: fix parsing
+        BN: new BN(parseFloat(str) * 10 ** decimal), //TODO: fix parsing
         decimal
       }
     }
@@ -54,8 +55,9 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       <Grid container item className={classes.wrap}>
         <Grid item>
           <AmountInputWithLabel
-            value={printBN(amountBN, decimal)}
+            value={`${printBN(amountBN, decimal)}${endWithDot ? '.' : ''}`}
             setValue={value => {
+              setEndWithDot(value.endsWith('.'))
               const { BN, decimal } = stringToDecimalBN(value)
               setAmountBN(BN)
               setDecimal(decimal)
