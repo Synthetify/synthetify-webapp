@@ -11,7 +11,7 @@ export const Footer = () => {
   const classes = useStyles()
 
   return (
-    <Grid container justify='flex-end' className={classes.container}>
+    <Grid container className={classes.container}>
       <Grid item>
         <img
           src={github}

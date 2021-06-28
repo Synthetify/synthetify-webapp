@@ -3,8 +3,12 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
+    justifyContent: 'flex-end',
     backgroundColor: colors.gray.background,
-    padding: 12
+    padding: 12,
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center'
+    }
   },
   socialMedia: {
     width: 32,
