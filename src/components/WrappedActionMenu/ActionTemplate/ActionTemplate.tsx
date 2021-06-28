@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Divider, Grid } from '@material-ui/core'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
-import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
+import { Progress, ProgressState } from '@components/WrappedActionMenu/Progress/Progress'
 import { printBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
@@ -22,27 +22,26 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
-  const [state, setState] = useState('none')
+  const [state, setState] = useState('none' as ProgressState)
+  const [message, setMessage] = useState('')
   const [endWithDot, setEndWithDot] = useState(false)
 
-  const actionIsAvailable = () => {
+  const checkActionIsAvailable = () => {
     if (decimal > maxDecimal) {
       return false
     }
-
     const diff = maxDecimal - decimal
     const isLess = amountBN.muln(10 ** diff).lte(maxAvailable) //TODO: fix to shift
-    if (!isLess) {
-      return false
-    }
-
-    return !amountBN.eqn(0)
+    return !amountBN.eqn(0) && isLess
   }
 
   useEffect(() => {
-    const isAvailable = actionIsAvailable()
+    const isAvailable = checkActionIsAvailable()
     if (!isAvailable) {
       setState('failed')
+      setMessage('Incorrect value!')
+    } else {
+      setState('none')
     }
   }, [amountBN, decimal])
 
@@ -120,7 +119,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalize(action)}
-            disabled={!actionIsAvailable()}
+            disabled={!checkActionIsAvailable()}
             color='secondary'
             padding='11px 40px'
             style={{ width: 160 }}
@@ -128,8 +127,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           />
         </Grid>
         <Grid item>
-          {/*<Progress state='progress' message={`${capitalize(action)} is progress...`} />*/}
-          <Progress state='none' />
+          <Progress state={state} message={message} />
         </Grid>
       </Grid>
     </Grid>
