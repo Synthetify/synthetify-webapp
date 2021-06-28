@@ -6,6 +6,14 @@ import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 import { Asset } from '@synthetify/sdk/lib/manager'
 import { TokensWithBalance } from '@selectors/solanaWallet'
+import { Swap } from '@reducers/exchange'
+
+const swap: Swap = {
+  fromToken: new PublicKey(0),
+  toToken: new PublicKey(0),
+  amount: new BN(0),
+  loading: false
+}
 
 const defaultAsset: Asset = {
   feedAddress: new PublicKey(0),
@@ -16,6 +24,10 @@ const defaultAsset: Asset = {
   maxSupply: new BN(1e10),
   settlementSlot: new BN(1),
   decimals: 4
+}
+
+const onSwap = (fromToken: PublicKey, toToken: PublicKey, amount: BN) => {
+  console.log(fromToken, toToken, amount)
 }
 
 const tokens = 'xUSD Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
@@ -30,5 +42,5 @@ tokens[1].price = (new BN(10)).mul(new BN(1000000))
 storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)
   .add('default', () => (
-    <ExchangeComponent tokens={tokens} />
+    <ExchangeComponent tokens={tokens} swapData={swap} onSwap={onSwap} />
   ))

@@ -85,7 +85,7 @@ export interface IExchangeComponent {
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
 }
-export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapData, onSwap }) => {
+export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, _swapData, onSwap }) => {
   const classes = useStyles()
 
   const [tokenFrom, setTokenFrom] = React.useState<TokensWithBalance | null>(tokens[0] ?? null)
@@ -292,10 +292,13 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, swapDa
           disabled={getButtonMessage(amountFrom, tokenFrom, amountTo, tokenTo) !== 'Swap'}
           className={classes.swapButton}
           onClick={() => {
-            console.log('amountFrom:', amountFrom)
-            console.log('amountTo:', amountTo)
-            console.log('tokenFrom:', tokenFrom?.balance.toString())
-            console.log('tokenTo:', tokenTo)
+            if (!tokenFrom || !tokenTo) return
+
+            onSwap(
+              tokenFrom.assetAddress,
+              tokenTo.assetAddress,
+              printBNtoBN(amountFrom, tokenFrom.decimals)
+            )
           }}
         />
       </Grid>
