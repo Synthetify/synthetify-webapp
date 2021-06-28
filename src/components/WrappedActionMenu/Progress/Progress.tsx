@@ -36,7 +36,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
           </Grid>
         </Grid>
       ) : (
-        <></>
+        <Grid style={{ minHeight: 52 }} />
       )}
     </Typography>
   )
