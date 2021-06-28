@@ -5,7 +5,7 @@ import MaxButton from '@components/CommonButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
-import { printBN } from '@consts/utils'
+import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 
@@ -15,8 +15,6 @@ export interface IProps {
   maxDecimal: number
   onClick: () => void
 }
-
-type ParsedBN = { BN: BN; decimal: number }
 
 export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick }) => {
   const classes = useStyles()
@@ -36,22 +34,6 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
     const diff = maxDecimal - decimal
     const isLess = amountBN.mul(new BN(10).pow(new BN(diff))).lte(maxAvailable)
     return !amountBN.eqn(0) && isLess
-  }
-
-  const stringToMinDecimalBN = (value: string): ParsedBN => {
-    if (value.includes('.')) {
-      const [before, after] = value.split('.')
-      const decimal = after.length || 0
-      const bn = new BN(`${before}${after}`).mul(new BN(10).muln(decimal))
-      return {
-        BN: bn,
-        decimal
-      }
-    }
-    return {
-      BN: new BN(value),
-      decimal: 0
-    }
   }
 
   const capitalize = (str: string) => {

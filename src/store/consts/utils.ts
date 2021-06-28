@@ -42,6 +42,23 @@ export const printBNtoBN = (amount: string, decimals: number): BN => {
   }
   return new BN(0)
 }
+export type ParsedBN = { BN: BN; decimal: number }
+export const stringToMinDecimalBN = (value: string): ParsedBN => {
+  if (value.includes('.')) {
+    const [before, after] = value.split('.')
+    const decimal = after.length || 0
+    const bn = new BN(`${before}${after}`).mul(new BN(10).muln(decimal))
+    return {
+      BN: bn,
+      decimal
+    }
+  }
+  return {
+    BN: new BN(value),
+    decimal: 0
+  }
+}
+
 export const divUp = (a: BN, b: BN): BN => {
   return a.add(b.subn(1)).div(b)
 }
