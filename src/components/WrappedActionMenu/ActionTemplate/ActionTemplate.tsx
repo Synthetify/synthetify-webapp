@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Divider, Grid } from '@material-ui/core'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
 import MaxButton from '@components/CommonButton/MaxButton'
@@ -10,11 +10,14 @@ import useStyles from './style'
 
 export interface IProps {
   action: string
+  maxAvailable: BN
+  decimal: number
   onClick: () => void
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
+export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, decimal, onClick }) => {
   const classes = useStyles()
+  const [amountBN, setAmountBN] = useState(new BN(0))
 
   const capitalize = (str: string) => {
     if (!str) {
@@ -32,7 +35,14 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
       className={classes.root}>
       <Grid container item className={classes.wrap}>
         <Grid item>
-          <AmountInputWithLabel className={classes.amountInput} currency={'xUSD'} />
+          <AmountInputWithLabel
+            value={amountBN.toString()}
+            setValue={value => {
+              setAmountBN(new BN(value))
+            }}
+            className={classes.amountInput}
+            currency={'xUSD'}
+          />
         </Grid>
         <Grid
           item
@@ -42,7 +52,11 @@ export const ActionTemplate: React.FC<IProps> = ({ action, onClick }) => {
           wrap='nowrap'
           className={classes.secondHalf}>
           <Grid item>
-            <MaxButton />
+            <MaxButton
+              onClick={() => {
+                setAmountBN(maxAvailable)
+              }}
+            />
           </Grid>
           <Grid item>
             <Divider orientation='vertical' className={classes.divider} />
