@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   maxButton: {
     textTransform: 'none',
     padding: '5px 21px',
-    height: '60px'
+    margin: 10,
+    width: 'calc(100% - 20px)',
+    height: 60,
+    fontWeight: 'normal'
   }
 }))
 

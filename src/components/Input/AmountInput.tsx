@@ -4,9 +4,9 @@ import classNames from 'classnames'
 import useStyles from './style'
 
 interface IProps {
-  currency: string
-  value?: string
   setValue: (value: string) => void
+  currency: string | null
+  value?: string
   error?: string | null
   className?: string
   style?: CSSProperties
@@ -41,9 +41,11 @@ export const AmountInput: React.FC<IProps> = ({
       value={value}
       disableUnderline={true}
       endAdornment={
-        <InputAdornment position='end' className={classes.currency}>
-          |&nbsp;&nbsp;{currency}
-        </InputAdornment>
+        !currency ? null : (
+          <InputAdornment position='end' className={classes.currency}>
+            |&nbsp;&nbsp;{currency}
+          </InputAdornment>
+        )
       }
       onChange={allowOnlyDigits}
     />

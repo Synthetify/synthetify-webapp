@@ -10,7 +10,8 @@ const useStyles = makeStyles(() => ({
     paddingRight: 27,
     height: 60,
     fontSize: 22,
-    minWidth: 250
+    minWidth: 150,
+    width: '100%'
   },
   currency: {
     fontSize: 22,

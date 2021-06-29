@@ -47,34 +47,6 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           <Grid item>
             <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
-          <Hidden lgUp>
-            <Grid item>
-              <IconButton
-                className={classes.dehazeButton}
-                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                  setRoutesModalAnchor(event.currentTarget)
-                  setRoutesModalOpen(true)
-                  blurContent()
-                }}>
-                <Menu className={classes.dehazeIcon} />
-              </IconButton>
-              <RoutesModal
-                routes={routes}
-                anchorEl={routesModalAnchor}
-                open={routesModalOpen}
-                current={activePath}
-                onSelect={(selected: string) => {
-                  setActive(selected)
-                  setRoutesModalOpen(false)
-                  unblurContent()
-                }}
-                handleClose={() => {
-                  setRoutesModalOpen(false)
-                  unblurContent()
-                }}
-              />
-            </Grid>
-          </Hidden>
         </Grid>
         <Hidden mdDown>
           <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
@@ -142,9 +114,44 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             />
           </Hidden>
         </Grid>
-        <IconButton className={classes.dotsButton} onClick={() => {}}>
-          <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
-        </IconButton>
+        <Hidden mdDown>
+          <IconButton className={classes.dotsButton} onClick={() => {}}>
+            <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
+          </IconButton>
+        </Hidden>
+        <Hidden lgUp>
+          <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
+            <Grid item>
+              <Divider orientation='vertical' className={classes.verticalDivider} />
+            </Grid>
+            <Grid item>
+              <IconButton
+                className={classes.dehazeButton}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  setRoutesModalAnchor(event.currentTarget)
+                  setRoutesModalOpen(true)
+                  blurContent()
+                }}>
+                <Menu className={classes.dehazeIcon} />
+              </IconButton>
+              <RoutesModal
+                routes={routes}
+                anchorEl={routesModalAnchor}
+                open={routesModalOpen}
+                current={activePath}
+                onSelect={(selected: string) => {
+                  setActive(selected)
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+                handleClose={() => {
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Hidden>
       </Grid>
       <Divider className={classes.divider} />
     </>
