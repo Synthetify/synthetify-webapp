@@ -3,14 +3,13 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.gray.component,
     '& > *': {
       marginTop: 15
     }
   },
   card: {
-    background: colors.gray.component,
     borderRadius: 10,
+    background: colors.gray.component,
     padding: 32
   },
   header: {

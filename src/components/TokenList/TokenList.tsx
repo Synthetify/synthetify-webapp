@@ -20,8 +20,8 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
   ))
 
   return (
-    <Card>
-      <CardContent className={classes.card}>
+    <Card className={classes.card}>
+      <CardContent>
         <Grid item xs={12} className={classes.root} style={{ overflowX: 'hidden' }}>
           <Grid container justify='space-between' className={classes.header}>
             <Grid item xs={12} sm={8}>
