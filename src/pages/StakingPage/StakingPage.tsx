@@ -2,19 +2,10 @@ import React from 'react'
 import { Grid } from '@material-ui/core'
 import useStyles from './style'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
-import { TokenList } from '@components/TokenList/TokenList'
-import { IToken } from '@components/TokenItem/TokenItem'
 import StakingStats from '@containers/StakingStats/StakingStats'
+import TokenListWrapper from '@containers/TokenListWrapper/TokenListWrapper'
 
-export interface IStakingPage {
-  tokens: IToken[]
-  addAccount: () => void
-}
-
-export const StakingPage: React.FC<IStakingPage> = ({
-  tokens,
-  addAccount
-}) => {
+export const StakingPage: React.FC = () => {
   const classes = useStyles()
 
   return (
@@ -27,7 +18,7 @@ export const StakingPage: React.FC<IStakingPage> = ({
           <WrappedActionMenu />
         </Grid>
         <Grid item className={classes.pageRow} xs={12}>
-          <TokenList tokens={tokens} addAccount={addAccount} />
+          <TokenListWrapper />
         </Grid>
       </Grid>
     </Grid>

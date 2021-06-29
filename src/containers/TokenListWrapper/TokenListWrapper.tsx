@@ -8,7 +8,16 @@ export const TokenListWrapper: React.FC = () => {
   const dispatch = useDispatch()
   const userTokens = useSelector(accountsArray)
 
-  return <TokenList tokens={userTokens} addAccount={() => { dispatch(actions.openModal('createAccount')) }} />
+  return <TokenList
+    tokens={userTokens.map(
+      token => ({
+        ...token,
+        ticker: token.symbol ?? 'token',
+        decimals: 6
+      })
+    )}
+    addAccount={() => { dispatch(actions.openModal('createAccount')) }}
+  />
 }
 
 export default TokenListWrapper

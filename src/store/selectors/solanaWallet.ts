@@ -55,7 +55,10 @@ export const exchangeTokensWithUserBalance = createSelector(
   }
 )
 
-export type TokenAccounts = ITokenAccount & { symbol?: string }
+export type TokenAccounts = ITokenAccount & {
+  symbol?: string,
+  usdValue: BN
+}
 export const accountsArray = createSelector(
   accounts,
   assets,
@@ -64,7 +67,8 @@ export const accountsArray = createSelector(
       if (exchangeAssets[account.programId.toString()]) {
         acc.push({
           ...account,
-          symbol: exchangeAssets[account.programId.toString()].symbol
+          symbol: exchangeAssets[account.programId.toString()].symbol,
+          usdValue: exchangeAssets[account.programId.toString()].price.mul(account.balance)
         })
       }
       return acc
