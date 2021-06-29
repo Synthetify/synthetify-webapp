@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardMedia, Grid, Typography } from '@material-ui/core'
 import BN from 'bn.js'
-import { printBN } from '@consts/utils'
+import { printBN, removeTickerPrefix } from '@consts/utils'
 import useStyles from './style'
 
 export interface IToken {
@@ -17,11 +17,9 @@ export interface IProps {
 
 export const TokenItem: React.FC<IProps> = ({ token }) => {
   const classes = useStyles()
-  const { ticker, balance, decimals, usdValue } = token
 
-  const tickerPrefix = ['x', '$']
-  const deleteFirstLatter = tickerPrefix.some(prefix => ticker.startsWith(prefix))
-  const imgName = deleteFirstLatter ? ticker.substr(1) : ticker
+  const { ticker, balance, decimals, usdValue } = token
+  const imgName = removeTickerPrefix(ticker)
   let icon
   try {
     icon = require(`@static/icons/${imgName.toLowerCase()}.png`)
