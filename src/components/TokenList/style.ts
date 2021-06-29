@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.veryLight
   },
   tokensDividerMargin: {
-    margin: 18
+    margin: '18px 0'
   }
 }))
 
