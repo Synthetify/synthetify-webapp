@@ -8,7 +8,6 @@ import { store } from './store'
 import { theme } from './static/theme'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
-import WelcomePage from '@containers/WelcomePage/WelcomePage'
 import Notifier from '@containers/Notifier/Notifier'
 import { SnackbarProvider } from 'notistack'
 import GlobalLoader from '@containers/GlobalLoader/GlobalLoader'
@@ -18,6 +17,7 @@ import WithdrawModal from '@containers/Modals/WithdrawModal'
 import BurnModal from '@containers/Modals/BurnModal'
 import SendModal from '@containers/Modals/SendModal'
 import CreateAccountModal from '@containers/Modals/CreateAccountModal'
+import PagesRouter from './pages/PagesRouter'
 
 setConfig({
   reloadHooks: false
@@ -35,9 +35,9 @@ const App: React.FC = () => {
             <WithdrawModal />
             <MintModal />
             <DepositModal />
-            <WelcomePage />
             <Notifier />
             <GlobalLoader />
+            <PagesRouter />
           </SnackbarProvider>
         </ThemeProvider>
       </PersistGate>
