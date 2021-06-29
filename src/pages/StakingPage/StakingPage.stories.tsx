@@ -8,6 +8,7 @@ import StakingPage from './StakingPage'
 import { PublicKey } from '@solana/web3.js'
 import Header from '@components/HeaderRedesign/Header'
 import { toBlur } from '@consts/uiUtils'
+import Footer from '@components/Footer/Footer'
 
 const xSNY: IToken = {
   ticker: '$SNY',
@@ -41,28 +42,26 @@ const tokens = [xSNY, xBTC, SOL, FTT]
 
 storiesOf('pages/StakingPage', module)
   .addDecorator(withKnobs)
-  .add(
-    'Example staking page',
-    () => (
-      <div id={toBlur}>
-        <Header
-          address={new PublicKey(42)}
-          onNetworkSelect={(chosen: string) => {
-            action(`network changed to: ${chosen}`)()
-          }}
-          onWalletSelect={(chosen: string) => {
-            action(`wallet changed to: ${chosen}`)()
-          }}
-          walletConnected={true}
-          landing='staking'
-        />
-        <StakingPage
-          stakedValue={new BN(100000000)}
-          currentDebt={new BN(735645)}
-          collateralRatio={501.5}
-          tokens={tokens}
-          addAccount={action('addAccount')}
-        />
-      </div>
-    )
-  )
+  .add('Example staking page', () => (
+    <div id={toBlur}>
+      <Header
+        address={new PublicKey(42)}
+        onNetworkSelect={(chosen: string) => {
+          action(`network changed to: ${chosen}`)()
+        }}
+        onWalletSelect={(chosen: string) => {
+          action(`wallet changed to: ${chosen}`)()
+        }}
+        walletConnected={true}
+        landing='staking'
+      />
+      <StakingPage
+        stakedValue={new BN(100000000)}
+        currentDebt={new BN(735645)}
+        collateralRatio={501.5}
+        tokens={tokens}
+        addAccount={action('addAccount')}
+      />
+      <Footer />
+    </div>
+  ))

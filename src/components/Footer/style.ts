@@ -14,16 +14,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 32,
     height: 32,
     marginLeft: 9,
-    background: 'transparent',
+    backgroundColor: 'transparent',
     cursor: 'pointer',
     '&:hover path': {
       // possible in future
     }
   },
   divider: {
-    backgroundColor: 'transparent',
+    display: 'none',
+    backgroundColor: colors.gray.light,
     [theme.breakpoints.down('xs')]: {
-      backgroundColor: colors.gray.light
+      display: 'block'
     }
   }
 }))
