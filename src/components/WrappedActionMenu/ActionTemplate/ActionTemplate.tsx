@@ -22,6 +22,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
   const [decimal, setDecimal] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const [actionAvailable, setActionAvailable] = useState(false)
+  const [amountInputTouched, setTAmountInputTouched] = useState(false)
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
@@ -47,6 +48,13 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
     setAmountBN(BN)
     setDecimal(decimal)
     setInputValue(value)
+    if (!amountInputTouched) {
+      setTAmountInputTouched(true)
+    }
+  }
+
+  const checkAmountInputError = () => {
+    return !amountInputTouched || actionAvailable
   }
 
   return (
@@ -101,8 +109,8 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
         </Grid>
         <Grid item>
           <Progress
-            state={actionAvailable ? 'none' : 'failed'}
-            message={actionAvailable ? '' : 'incorrect value!'}
+            state={checkAmountInputError() ? 'none' : 'failed'}
+            message={checkAmountInputError() ? '' : 'incorrect value!'}
           />
         </Grid>
       </Grid>
