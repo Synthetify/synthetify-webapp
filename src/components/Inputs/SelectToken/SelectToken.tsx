@@ -9,12 +9,14 @@ import classNames from 'classnames'
 export interface ISelectTokenModal {
   name?: string
   current: string | null
+  centered: boolean
   tokens: string[]
   onSelect: (chosen: string) => void
 }
 export const SelectToken: React.FC<ISelectTokenModal> = ({
   name = 'Select a token',
   current,
+  centered,
   tokens,
   onSelect
 }) => {
@@ -49,13 +51,18 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         color='primary'
         variant='contained'
         onClick={handleClick}
-        startIcon={!current ? null : <CardMedia style={{ width: 32, height: 32, marginRight: 10 }} image={icon} />}
+        startIcon={
+          !current ? null : (
+            <CardMedia style={{ width: 32, height: 32, marginRight: 10 }} image={icon} />
+          )
+        }
         endIcon={<ExpandMoreIcon style={{ minWidth: 20 }} />}>
         {!current ? name : current}
       </Button>
       <SelectTokenModal
         tokens={tokens}
         open={open}
+        centered={centered}
         anchorEl={anchorEl}
         onSelect={onSelect}
         handleClose={handleClose}

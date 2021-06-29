@@ -2,6 +2,10 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  popover: {
+    marginTop: 150,
+    marginLeft: 'calc(50vw - 130px)'
+  },
   root: {
     background: colors.gray.component,
     width: 300,

@@ -7,7 +7,7 @@ import { PublicKey } from '@solana/web3.js'
 import { Asset } from '@synthetify/sdk/lib/manager'
 import { TokensWithBalance } from '@selectors/solanaWallet'
 import { Swap } from '@reducers/exchange'
-import { Box } from '@material-ui/core'
+import { toBlur } from '@consts/uiUtils'
 
 const swap: Swap = {
   fromToken: new PublicKey(0),
@@ -43,7 +43,7 @@ tokens[1].price = (new BN(10)).mul(new BN(1000000))
 storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)
   .add('default', () => (
-    <Box style={{ width: 900 }}>
+    <div style={{ width: 900 }} id={toBlur}>
       <ExchangeComponent tokens={tokens} swapData={swap} onSwap={onSwap} />
-    </Box>
+    </div>
   ))

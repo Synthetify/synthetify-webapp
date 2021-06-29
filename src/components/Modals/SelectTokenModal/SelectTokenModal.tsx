@@ -9,6 +9,7 @@ export interface ISelectTokenModal {
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
+  centered? : boolean
   onSelect: (chosen: string) => void
 }
 
@@ -17,6 +18,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   open,
   handleClose,
   anchorEl,
+  centered = false,
   onSelect
 }) => {
   const classes = useStyles()
@@ -28,6 +30,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
       open={open}
       anchorEl={anchorEl}
       onClose={handleClose}
+      anchorReference={centered ? 'none' : 'anchorEl'}
+      className={classes.popover}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'center'

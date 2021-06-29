@@ -69,12 +69,6 @@ const getButtonMessage = (
     return 'Enter value of swap'
   }
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
-    console.log(
-      printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance),
-      printBNtoBN(amountFrom, tokenFrom.decimals),
-      tokenFrom
-    )
-
     return 'Invalid swap amount'
   }
   return 'Swap'
@@ -121,6 +115,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               <SelectToken
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
+                centered={true}
                 onSelect={(chosen: string) => {
                   setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
                   setTimeout(() => updateEstimatedAmount(), 0)
@@ -148,6 +143,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               <SelectToken
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
+                centered={true}
                 onSelect={(chosen: string) => {
                   setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
                   setTimeout(() => updateEstimatedAmount(), 0)
@@ -207,6 +203,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               <SelectToken
                 tokens={tokenNames}
                 current={tokenTo?.symbol ?? null}
+                centered={true}
                 onSelect={(chosen: string) => {
                   setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
                   setTimeout(() => updateEstimatedAmount(), 0)
@@ -234,6 +231,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               <SelectToken
                 tokens={tokenNames}
                 current={tokenTo?.symbol ?? null}
+                centered={true}
                 onSelect={(chosen: string) => {
                   setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
                   setTimeout(() => updateEstimatedAmount(), 0)
@@ -271,6 +269,13 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
       <Grid item container className={classes.numbersField}>
         <Grid item>
+          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+          <Typography className={classes.numbersFieldAmount}>{'0.03'}%</Typography>
+        </Grid>
+        <Grid item>
+          <Divider className={classes.amountDivider} orientation='vertical' />
+        </Grid>
+        <Grid item>
           <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
           <Typography className={classes.numbersFieldAmount}>
             {(() => {
@@ -279,13 +284,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             })()}{' '}
             {tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
           </Typography>
-        </Grid>
-        <Grid item>
-          <Divider className={classes.amountDivider} orientation='vertical' />
-        </Grid>
-        <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'0.03'}%</Typography>
         </Grid>
       </Grid>
 

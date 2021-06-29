@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '5px 21px',
     margin: 10,
     width: 'calc(100% - 20px)',
-    height: 60
+    height: 60,
+    fontWeight: 'normal'
   }
 }))
 

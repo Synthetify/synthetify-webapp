@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     color: colors.gray.veryLight,
     lineHeight: '40px',
-    fontWeight: 600,
+    fontWeight: 500,
 
     [theme.breakpoints.down('md')]: {
       fontSize: 13,
@@ -78,7 +78,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   swapButton: {
     width: '100%',
-    marginTop: 20
+    marginTop: 20,
+    height: 60,
+    fontWeight: 'normal'
   },
   swapIconSquare: {
     background: colors.gray.component,
