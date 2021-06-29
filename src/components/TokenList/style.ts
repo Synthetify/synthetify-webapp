@@ -10,7 +10,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   card: {
     borderRadius: 10,
     background: colors.gray.component,
-    padding: 32
+    padding: 32,
+    [theme.breakpoints.down('xs')]: {
+      padding: 10
+    }
   },
   header: {
     [theme.breakpoints.down('xs')]: {
