@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: 18
     }
   },
-  ticker: {
+  hideOnXs: {
     [theme.breakpoints.down('xs')]: {
       display: 'none'
     }
