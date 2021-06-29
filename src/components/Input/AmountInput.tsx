@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 interface IProps {
   setValue: (value: string) => void
-  currency: string
+  currency: string | null
   value?: string
   error?: string | null
   className?: string
@@ -31,9 +31,11 @@ export const AmountInput: React.FC<IProps> = ({
       value={value}
       disableUnderline={true}
       endAdornment={
-        <InputAdornment position='end' className={classes.currency}>
-          |&nbsp;&nbsp;{currency}
-        </InputAdornment>
+        !currency ? null : (
+          <InputAdornment position='end' className={classes.currency}>
+            |&nbsp;&nbsp;{currency}
+          </InputAdornment>
+        )
       }
       onChange={e => {
         setValue(e.target.value)
