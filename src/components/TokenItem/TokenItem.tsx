@@ -49,8 +49,8 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
             {printBN(balance, decimals)}
           </Typography>
         </Grid>
-        <Grid container item xs={4}>
-          <Grid item>
+        <Grid container item xs={4} wrap='nowrap'>
+          <Grid item style={{ marginRight: 5 }}>
             <Typography variant='h5' color='textPrimary' className={classes.font}>
               $
             </Typography>
