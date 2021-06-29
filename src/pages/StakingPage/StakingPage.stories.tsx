@@ -57,9 +57,6 @@ storiesOf('pages/StakingPage', module)
           landing='staking'
         />
         <StakingPage
-          stakedValue={new BN(100000000)}
-          currentDebt={new BN(735645)}
-          collateralRatio={501.5}
           tokens={tokens}
           addAccount={action('addAccount')}
         />
