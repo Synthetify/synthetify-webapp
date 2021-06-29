@@ -1,12 +1,7 @@
 import { Input, InputAdornment } from '@material-ui/core'
-import React, { CSSProperties, useEffect } from 'react'
+import React, { CSSProperties } from 'react'
 import classNames from 'classnames'
-import { useForm } from 'react-hook-form'
 import useStyles from './style'
-
-type FormInputs = {
-  amount: string
-}
 
 interface IProps {
   currency: string
@@ -28,11 +23,6 @@ export const AmountInput: React.FC<IProps> = ({
   style
 }) => {
   const classes = useStyles()
-  const { register, formState } = useForm<FormInputs>()
-
-  useEffect(() => {
-    console.log(formState)
-  }, [formState])
 
   const allowOnlyDigits = (e: inputString) => {
     const regex = /^\d*\.?\d*$/
@@ -42,24 +32,21 @@ export const AmountInput: React.FC<IProps> = ({
   }
 
   return (
-    <form>
-      <Input
-        {...register('amount')}
-        error={!!error}
-        className={classNames(classes.amountInput, className)}
-        style={style}
-        color='primary'
-        type={'text'}
-        value={value}
-        disableUnderline={true}
-        endAdornment={
-          <InputAdornment position='end' className={classes.currency}>
-            |&nbsp;&nbsp;{currency}
-          </InputAdornment>
-        }
-        onChange={allowOnlyDigits}
-      />
-    </form>
+    <Input
+      error={!!error}
+      className={classNames(classes.amountInput, className)}
+      style={style}
+      color='primary'
+      type={'text'}
+      value={value}
+      disableUnderline={true}
+      endAdornment={
+        <InputAdornment position='end' className={classes.currency}>
+          |&nbsp;&nbsp;{currency}
+        </InputAdornment>
+      }
+      onChange={allowOnlyDigits}
+    />
   )
 }
 export default AmountInput
