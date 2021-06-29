@@ -77,8 +77,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   left: {
     maxWidth: 200,
     [theme.breakpoints.down('md')]: {
-      maxWidth: 140
+      maxWidth: 80
     }
+  },
+  mobileRight: {
+    maxWidth: 80
   }
 }))
 

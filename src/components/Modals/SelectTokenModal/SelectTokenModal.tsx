@@ -1,42 +1,52 @@
 import React from 'react'
-import {
-  Typography,
-  Modal,
-  Grid,
-  Input,
-  CardMedia,
-  Box
-} from '@material-ui/core'
-import { PublicKey } from '@solana/web3.js'
+import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/core'
 import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 
-export interface TokenWithName {
-  name: string,
-  publicKey: PublicKey
-  disabled?: boolean
-}
-
 export interface ISelectTokenModal {
-  tokens: TokenWithName[]
+  tokens: string[]
   open: boolean
   handleClose: () => void
-  onSelect: (tokenAddress: PublicKey) => void
+  anchorEl: HTMLButtonElement | null
+  centered? : boolean
+  onSelect: (chosen: string) => void
 }
 
-export const SelectToken: React.FC<ISelectTokenModal> = ({
+export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   tokens,
   open,
   handleClose,
+  anchorEl,
+  centered = false,
   onSelect
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Grid className={classes.root} container alignContent="space-around" direction='column' spacing={2}>
+    <Popover
+      classes={{ paper: classes.paper }}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorReference={centered ? 'none' : 'anchorEl'}
+      className={classes.popover}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}>
+      {' '}
+      <Grid
+        className={classes.root}
+        container
+        alignContent='space-around'
+        direction='column'
+        spacing={2}>
         <Grid item>
           <Input
             className={classes.searchInput}
@@ -56,9 +66,9 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
               {tokens
                 .filter(token => {
                   if (!value) return true
-                  return token.name.toLowerCase().includes(value.toLowerCase())
+                  return token.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(({ name, publicKey }) => {
+                .map(name => {
                   let icon
                   try {
                     icon = require(`@static/icons/${name.toLowerCase()}.png`)
@@ -67,7 +77,15 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
                   }
 
                   return (
-                    <Grid container className={classes.tokenItem} alignItems='center' onClick={() => onSelect(publicKey)}>
+                    <Grid
+                      container
+                      key={`tokens-${name}`}
+                      className={classes.tokenItem}
+                      alignItems='center'
+                      onClick={() => {
+                        onSelect(name)
+                        handleClose()
+                      }}>
                       <Grid item>
                         <CardMedia className={classes.tokenIcon} image={icon} />{' '}
                       </Grid>
@@ -81,7 +99,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
           </Box>
         </Grid>
       </Grid>
-    </Modal>
+    </Popover>
   )
 }
-export default SelectToken
+export default SelectTokenModal
