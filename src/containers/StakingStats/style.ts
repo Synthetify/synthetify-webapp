@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:last-child': {
       marginBottom: 0
     },
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       marginLeft: 30,
       marginBottom: 0,
       '&:first-child': {

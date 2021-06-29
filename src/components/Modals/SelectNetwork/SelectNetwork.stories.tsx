@@ -10,5 +10,5 @@ const networks = [
 
 storiesOf('modals/selectNetwork', module)
   .add('default', () => (
-    <SelectNetwork networks={networks} open={true} handleClose={() => {}} onSelect={(selected: string) => action('chosen: ' + selected)()} />
+    <SelectNetwork networks={networks} open={true} handleClose={() => {}} onSelect={(selected: string) => action('chosen: ' + selected)()} anchorEl={null} />
   ))

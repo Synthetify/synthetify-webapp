@@ -6,7 +6,7 @@ export interface IProps {
   name: string
   disabled?: boolean
 }
-export const HeaderButton: React.FC<IProps> = ({ name, onClick, disabled = false }) => {
+export const HeaderButton: React.FC<IProps> = ({ name, disabled = false }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const [open, setOpen] = React.useState<boolean>(false)

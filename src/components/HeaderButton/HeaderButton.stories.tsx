@@ -16,7 +16,7 @@ storiesOf('buttons/HeaderButton', module)
   .addDecorator(withKnobs)
   .add('headerDefault', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <HeaderButton name='Click me' onClick={(chosen: string) => action(`chosen: ${chosen}`)} />
+      <HeaderButton name='Click me' />
     </div>
   ))
   .add('selectWallet', () => (
