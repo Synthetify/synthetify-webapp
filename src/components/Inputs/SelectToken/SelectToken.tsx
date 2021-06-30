@@ -9,7 +9,7 @@ import classNames from 'classnames'
 export interface ISelectTokenModal {
   name?: string
   current: string | null
-  centered: boolean
+  centered?: boolean
   tokens: string[]
   onSelect: (chosen: string) => void
 }

@@ -6,6 +6,7 @@ import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
 import Header from './Header'
 import { toBlur } from '@consts/uiUtils'
+import { WalletType } from '@web3/wallet'
 
 storiesOf('ui/HeaderRedesign', module)
   .addDecorator(withKnobs)
@@ -17,7 +18,7 @@ storiesOf('ui/HeaderRedesign', module)
           onNetworkSelect={(chosen: string) => {
             action(`network changed to: ${chosen}`)()
           }}
-          onWalletSelect={(chosen: string) => {
+          onWalletSelect={(chosen: WalletType) => {
             action(`wallet changed to: ${chosen}`)()
           }}
           walletConnected={false}
@@ -34,7 +35,7 @@ storiesOf('ui/HeaderRedesign', module)
           onNetworkSelect={(chosen: string) => {
             action(`network changed to: ${chosen}`)()
           }}
-          onWalletSelect={(chosen: string) => {
+          onWalletSelect={(chosen: WalletType) => {
             action(`wallet changed to: ${chosen}`)()
           }}
           walletConnected={true}

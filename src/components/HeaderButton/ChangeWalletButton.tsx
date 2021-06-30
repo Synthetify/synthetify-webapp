@@ -4,11 +4,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import ConnectWallet from '@components/Modals/ConnectWallet/ConnectWallet'
+import { WalletType } from '@web3/wallet'
 
 export interface IProps {
   name: string
-  options: string[]
-  onSelect: (chosen: string) => void
+  options: WalletType[]
+  onSelect: (chosen: WalletType) => void
   connected: boolean
   startIcon?: JSX.Element
   hideArrow?: boolean
