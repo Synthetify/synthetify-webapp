@@ -19,11 +19,7 @@ export const WithdrawModal = () => {
         dispatch(actions.withdraw({ amount }))
       }}
       icon={
-        <SvgIcon
-          component={WithdrawIcon}
-          style={{ width: 220, height: 220 }}
-          viewBox='0 0 220 220'
-        />
+        <img src={WithdrawIcon} alt="" style={{ width: 220, height: 220 }} />
       }
       open={modalState.open}
       title='Withdraw'

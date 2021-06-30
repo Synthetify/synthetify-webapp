@@ -28,7 +28,7 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
     <Grid container direction='column' className={classes.root} justify='space-between'>
       <Grid item>
         <Grid item className={classes.logo}>
-          <SynthetifyIconHorizontal onClick={() => {}} />
+          <SynthetifyIconHorizontal onClick={() => { }} />
         </Grid>
         <Grid item style={{ marginTop: 90 }}>
           <Grid
@@ -40,9 +40,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
             <Grid container alignItems='center' style={{ marginLeft: 60 }}>
               <Grid item>
                 {location === UiLocation.Account ? (
-                  <AccountColorIcon></AccountColorIcon>
+                  <img src={AccountColorIcon} alt="" />
                 ) : (
-                  <AccountWhiteIcon></AccountWhiteIcon>
+                  <img src={AccountWhiteIcon} alt="" />
                 )}
               </Grid>
               <Grid item>
@@ -65,9 +65,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
             <Grid container alignItems='center' style={{ marginLeft: 60 }}>
               <Grid item>
                 {location === UiLocation.Staking ? (
-                  <StakeColorIcon></StakeColorIcon>
+                  <img src={StakeColorIcon} alt="" />
                 ) : (
-                  <StakeWhiteIcon></StakeWhiteIcon>
+                  <img src={StakeWhiteIcon} alt="" />
                 )}
               </Grid>
               <Grid item>
@@ -90,9 +90,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
             <Grid container alignItems='center' style={{ marginLeft: 60 }}>
               <Grid item>
                 {location === UiLocation.Exchange ? (
-                  <ExchangeColorIcon></ExchangeColorIcon>
+                  <img src={ExchangeColorIcon} alt="" />
                 ) : (
-                  <ExchangeWhiteIcon></ExchangeWhiteIcon>
+                  <img src={ExchangeWhiteIcon} alt="" />
                 )}
               </Grid>
               <Grid item>
@@ -111,27 +111,16 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
       <Grid item className={classes.socialsDiv}>
         <Grid container>
           <Grid item>
-            <TwitterIcon
-              className={classes.icon}
-              onClick={() => window.open(social.twitter)}></TwitterIcon>
+            <img src={TwitterIcon} style={{ marginLeft: 16 }} className={classes.icon} alt="" onClick={() => window.open(social.twitter)} />
           </Grid>
           <Grid item>
-            <GithubIcon
-              className={classes.icon}
-              style={{ marginLeft: 16 }}
-              onClick={() => window.open(social.github)}></GithubIcon>
+            <img src={GithubIcon} style={{ marginLeft: 16 }} className={classes.icon} alt="" onClick={() => window.open(social.github)} />
           </Grid>
           <Grid item>
-            <DiscordIcon
-              className={classes.icon}
-              style={{ marginLeft: 16 }}
-              onClick={() => window.open(social.discord)}></DiscordIcon>
+            <img src={DiscordIcon} style={{ marginLeft: 16 }} className={classes.icon} alt="" onClick={() => window.open(social.discord)} />
           </Grid>
           <Grid item>
-            <LinkedinIcFooter
-              className={classes.icon}
-              style={{ marginLeft: 16 }}
-              onClick={() => window.open(social.linkedin)}></LinkedinIcFooter>
+            <img src={LinkedinIcFooter} style={{ marginLeft: 16 }} className={classes.icon} alt="" onClick={() => window.open(social.linkedin)} />
           </Grid>
         </Grid>
       </Grid>

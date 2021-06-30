@@ -21,11 +21,7 @@ export const SendMoneyModal = () => {
         dispatch(actions.deposit({ amount }))
       }}
       icon={
-        <SvgIcon
-          component={DepositIcon}
-          style={{ width: 220, height: 220 }}
-          viewBox='0 0 220 220'
-        />
+        <img src={DepositIcon} alt="" style={{ height: 220, width: 220 }} />
       }
       open={modalState.open}
       title='Deposit'

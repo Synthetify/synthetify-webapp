@@ -72,11 +72,7 @@ export const Stacking: React.FC<IStaking> = ({
                       alignItems='center'
                       style={{ height: '100%' }}>
                       <Grid item>
-                        <SvgIcon
-                          component={DepositIcon}
-                          style={{ width: 80, height: 80 }}
-                          viewBox='0 0 220 220'
-                        />
+                        <img src={DepositIcon} alt="" style={{ height: 80, width: 80 }} />
                       </Grid>
                       <Grid item>
                         <Typography variant='body1' className={classes.buttonText}>
@@ -100,11 +96,7 @@ export const Stacking: React.FC<IStaking> = ({
                       alignItems='center'
                       style={{ height: '100%' }}>
                       <Grid item>
-                        <SvgIcon
-                          component={MintIcon}
-                          style={{ width: 80, height: 80 }}
-                          viewBox='0 0 220 220'
-                        />
+                        <img src={MintIcon} alt="" style={{ height: 80, width: 80 }} />
                       </Grid>
                       <Grid item>
                         <Typography variant='body1' className={classes.buttonText}>
@@ -141,11 +133,7 @@ export const Stacking: React.FC<IStaking> = ({
                       alignItems='center'
                       style={{ height: '100%' }}>
                       <Grid item>
-                        <SvgIcon
-                          component={WithdrawIcon}
-                          style={{ width: 80, height: 80 }}
-                          viewBox='0 0 220 220'
-                        />
+                        <img src={WithdrawIcon} alt="" style={{ width: 80, height: 80 }} />
                       </Grid>
                       <Grid item>
                         <Typography variant='body1' className={classes.buttonText}>

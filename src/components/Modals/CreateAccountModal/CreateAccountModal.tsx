@@ -77,9 +77,11 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                 const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                 let icon
                 try {
-                  icon = require(`@static/icons/${image}.png`)
+                  //@ts-ignore
+                  icon = import.meta.globEager(`/@static/icons/${image}.png`).default
                 } catch (error) {
-                  icon = require(`@static/icons/sny.png`)
+                  //@ts-ignore
+                  icon = import.meta.globEager('/@static/icons/sny.png').default
                 }
                 return (
                   <Grid

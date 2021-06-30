@@ -38,9 +38,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
               setLocation(UiLocation.Account)
             }}>
             {location === UiLocation.Account ? (
-              <AccountColorIcon></AccountColorIcon>
+              <img src={AccountColorIcon} alt="" />
             ) : (
-              <AccountWhiteIcon></AccountWhiteIcon>
+              <img src={AccountWhiteIcon} alt="" />
             )}
           </Grid>
           <Grid
@@ -50,9 +50,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
               setLocation(UiLocation.Staking)
             }}>
             {location === UiLocation.Staking ? (
-              <StakeColorIcon></StakeColorIcon>
+              <img src={StakeColorIcon} alt="" />
             ) : (
-              <StakeWhiteIcon></StakeWhiteIcon>
+              <img src={StakeWhiteIcon} alt="" />
             )}
           </Grid>
           <Grid
@@ -62,9 +62,9 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
               setLocation(UiLocation.Exchange)
             }}>
             {location === UiLocation.Exchange ? (
-              <ExchangeColorIcon></ExchangeColorIcon>
+              <img src={ExchangeColorIcon} alt="" />
             ) : (
-              <ExchangeWhiteIcon></ExchangeWhiteIcon>
+              <img src={ExchangeWhiteIcon} alt="" />
             )}
           </Grid>
         </Grid>
@@ -72,24 +72,16 @@ export const SideMenu: React.FC<ISideMenu> = ({ location, setLocation }) => {
       <Grid item className={classes.socialsDiv}>
         <Grid container direction='column' justify='center' alignItems='center'>
           <Grid item>
-            <TwitterIcon
-              className={classes.icon}
-              onClick={() => window.open(social.twitter)}></TwitterIcon>
+            <img src={TwitterIcon} className={classes.icon} onClick={() => window.open(social.twitter)} alt="" />
           </Grid>
           <Grid item>
-            <GithubIcon
-              className={classes.icon}
-              onClick={() => window.open(social.github)}></GithubIcon>
+            <img src={GithubIcon} className={classes.icon} onClick={() => window.open(social.github)} alt="" />
           </Grid>
           <Grid item>
-            <DiscordIcon
-              className={classes.icon}
-              onClick={() => window.open(social.discord)}></DiscordIcon>
+            <img src={DiscordIcon} className={classes.icon} onClick={() => window.open(social.discord)} alt="" />
           </Grid>
           <Grid item>
-            <LinkedinIcFooter
-              className={classes.icon}
-              onClick={() => window.open(social.linkedin)}></LinkedinIcFooter>
+            <img src={LinkedinIcFooter} className={classes.icon} onClick={() => window.open(social.linkedin)} alt="" />
           </Grid>
         </Grid>
       </Grid>

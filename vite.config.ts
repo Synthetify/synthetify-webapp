@@ -4,20 +4,11 @@ import { ViteAliases } from 'vite-aliases'
 export default defineConfig({
   plugins: [
     ViteAliases({
-      find: '@containers',
-      replacement: '${your_project_path}/src/containers',
-      depth: 2,
-      adjustDuplicates: true
+      adjustDuplicates: true,
+      depth: 4
     })
   ],
-  resolve: {
-    alias: {
-      process: 'process/browser',
-      stream: 'stream-browserify',
-      zlib: 'browserify-zlib',
-      util: 'util',
-      http: 'http-browserify',
-      'node-fetch': 'isomorphic-fetch'
-    }
-  }
+  define : {
+    'process.env.NODE_DEBUG' : 'false',
+  },
 })
