@@ -23,7 +23,7 @@ export interface IHeader {
   walletConnected: boolean
   landing: string
   typeOfWallet?: 'phantom' | 'sollet'
-  onAirdrop?: () => void
+  onFaucet?: () => void
 }
 export const HeaderRedesign: React.FC<IHeader> = ({
   address,
@@ -32,7 +32,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
   walletConnected,
   landing,
   typeOfWallet = 'phantom',
-  onAirdrop
+  onFaucet
 }) => {
   const classes = useStyles()
   const buttonClasses = useButtonStyles()
@@ -78,16 +78,18 @@ export const HeaderRedesign: React.FC<IHeader> = ({
         </Hidden>
 
         <Grid container item justify='flex-end' wrap='nowrap' alignItems='center'>
-          <Grid item>
-            <Button
-              className={buttonClasses.headerButton}
-              variant='contained'
-              classes={{ disabled: buttonClasses.disabled }}
-              onClick={onAirdrop}
-            >
-              Airdrop
-            </Button>
-          </Grid>
+          {(network === 'Devnet') && (
+            <Grid item>
+              <Button
+                className={buttonClasses.headerButton}
+                variant='contained'
+                classes={{ disabled: buttonClasses.disabled }}
+                onClick={onFaucet}
+              >
+                Faucet
+              </Button>
+            </Grid>
+          )}
           <Grid item>
             <SelectNetworkButton
               name={network}

@@ -24,7 +24,7 @@ export const HeaderRedesignWrapper: React.FC = () => {
       }}
       landing={location.pathname.substr(1)}
       walletConnected={walletStatus === Status.Initalized}
-      onAirdrop={() => { dispatch(walletActions.airdrop()) }}
+      onFaucet={() => { dispatch(walletActions.airdrop()) }}
     />
   )
 }
