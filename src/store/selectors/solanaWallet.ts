@@ -56,7 +56,7 @@ export const exchangeTokensWithUserBalance = createSelector(
 )
 
 export type TokenAccounts = ITokenAccount & {
-  symbol?: string,
+  symbol: string,
   usdValue: BN
 }
 export const accountsArray = createSelector(

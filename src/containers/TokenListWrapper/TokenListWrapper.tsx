@@ -23,8 +23,7 @@ export const TokenListWrapper: React.FC = () => {
         tokens={userTokens.map(
           token => ({
             ...token,
-            ticker: token.symbol ?? 'token',
-            decimals: 6
+            ticker: token.symbol
           })
         )}
         addAccount={() => {
