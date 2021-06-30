@@ -14,11 +14,12 @@ import { blurContent, unblurContent } from '@consts/uiUtils'
 import { SolanaNetworks } from '@consts/static'
 import useButtonStyles from '../HeaderButton/style'
 import { Link } from 'react-router-dom'
+import { WalletType } from '@web3/wallet'
 
 export interface IHeader {
   address: PublicKey
   onNetworkSelect: (chosen: string) => void
-  onWalletSelect: (chosen: string) => void
+  onWalletSelect: (chosen: WalletType) => void
   walletConnected: boolean
   landing: string
   typeOfWallet?: 'phantom' | 'sollet'
@@ -104,14 +105,14 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               {!walletConnected ? (
                 <ChangeWalletButton
                   name='Connect a wallet'
-                  options={['phantom', 'sollet', 'extension']}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
                 />
               ) : (
                 <ChangeWalletButton
                   name={address.toString()}
-                  options={['phantom', 'sollet', 'extension']}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
                   startIcon={
@@ -128,7 +129,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           <Hidden lgUp>
             <ChangeWalletButton
               name='My&nbsp;wallet'
-              options={['phantom', 'sollet', 'extension']}
+              options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
               onSelect={onWalletSelect}
               connected={walletConnected}
               hideArrow={true}

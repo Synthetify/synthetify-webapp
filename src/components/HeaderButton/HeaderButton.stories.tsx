@@ -8,6 +8,7 @@ import { colors } from '@static/theme'
 import HeaderButton from './HeaderButton'
 import SelectNetworkButton from './SelectNetworkButton'
 import ChangeWalletButton from './ChangeWalletButton'
+import { WalletType } from '@web3/wallet'
 
 const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
@@ -21,7 +22,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('selectWallet', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={false} onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}/>
+      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]} name='Open Dropdown' connected={false} onSelect={(chosen) => action(`chosen: ${chosen}`)()}/>
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
@@ -30,7 +31,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('withDisconnect', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={['phantom', 'sollet', 'extension']} name='Open Dropdown' connected={true} onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}/>
+      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]} name='Open Dropdown' connected={true} onSelect={(chosen) => action(`chosen: ${chosen}`)()}/>
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>

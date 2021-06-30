@@ -2,15 +2,16 @@ import React from 'react'
 import { Typography, Popover, Grid } from '@material-ui/core'
 import useStyles from './style'
 import { ExitToApp } from '@material-ui/icons'
+import { WalletType } from '@web3/wallet'
 
 export interface IConnectWalletModal {
-  options: string[]
+  options: WalletType[]
   open: boolean
   anchorEl: HTMLButtonElement | null
   handleClose: () => void
   callDisconect: () => void
   connected: boolean
-  onSelect: (wallet: string) => void
+  onSelect: (wallet: WalletType) => void
 }
 export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   options,
@@ -22,6 +23,12 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
   onSelect
 }) => {
   const classes = useStyles()
+
+  const names = {
+    [WalletType.PHANTOM]: 'phantom',
+    [WalletType.SOLLET]: 'sollet',
+    [WalletType.SOLLET_EXTENSION]: 'extension'
+  }
 
   return (
     <Popover
@@ -41,7 +48,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         {options.map(option => {
           let icon
           try {
-            icon = require(`@static/svg/${option}.svg`)
+            icon = require(`@static/svg/${names[option]}.svg`)
           } catch (error) {
             icon = require('@static/icons/sny.png')
           }
@@ -56,7 +63,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
                 handleClose()
               }}>
               <img className={classes.icon} src={icon} alt={`${option} icon}`} />
-              <Typography className={classes.name}>{option}</Typography>
+              <Typography className={classes.name}>{names[option]}</Typography>
             </Grid>
           )
         })}
