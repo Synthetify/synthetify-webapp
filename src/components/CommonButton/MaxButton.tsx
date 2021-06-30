@@ -8,6 +8,7 @@ export interface IProps {
   onClick?: () => void
   className?: string
   disabled?: boolean
+  style?: React.CSSProperties
   startIcon?: JSX.Element
 }
 export const MaxButton: React.FC<IProps> = ({
@@ -15,6 +16,7 @@ export const MaxButton: React.FC<IProps> = ({
   onClick,
   className,
   disabled = false,
+  style,
   startIcon
 }) => {
   const classes = useStyles()
@@ -25,6 +27,7 @@ export const MaxButton: React.FC<IProps> = ({
       disabled={disabled}
       onClick={onClick}
       startIcon={startIcon}
+      style={style}
       className={classNames(classes.maxButton, className)}
     />
   )
