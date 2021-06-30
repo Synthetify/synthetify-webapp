@@ -68,7 +68,7 @@ export const accountsArray = createSelector(
         acc.push({
           ...account,
           symbol: exchangeAssets[account.programId.toString()].symbol,
-          usdValue: exchangeAssets[account.programId.toString()].price.mul(account.balance)
+          usdValue: exchangeAssets[account.programId.toString()].price.mul(account.balance).div(new BN(100000000))
         })
       }
       return acc

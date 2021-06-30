@@ -13,6 +13,7 @@ import RoutesModal from '@components/Modals/RoutesModal/RoutesModal'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import { SolanaNetworks } from '@consts/static'
 import useButtonStyles from '../HeaderButton/style'
+import { Link } from 'react-router-dom'
 
 export interface IHeader {
   address: PublicKey
@@ -42,6 +43,10 @@ export const HeaderRedesign: React.FC<IHeader> = ({
   const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
   const [routesModalAnchor, setRoutesModalAnchor] = React.useState<HTMLButtonElement | null>(null)
 
+  React.useEffect(() => { // if there will be no redirects, get rid of this
+    setActive(landing)
+  }, [landing])
+
   return (
     <>
       <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
@@ -57,13 +62,15 @@ export const HeaderRedesign: React.FC<IHeader> = ({
           <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
             {routes.map(path => (
               <Grid item key={`path-${path}`}>
-                <NavbarButton
-                  name={path}
-                  onClick={() => {
-                    setActive(path)
-                  }}
-                  active={path === activePath}
-                />
+                <Link to={`/${path}`} style={{ textDecoration: 'none' }}>
+                  <NavbarButton
+                    name={path}
+                    onClick={() => {
+                      setActive(path)
+                    }}
+                    active={path === activePath}
+                  />
+                </Link>
               </Grid>
             ))}
           </Grid>

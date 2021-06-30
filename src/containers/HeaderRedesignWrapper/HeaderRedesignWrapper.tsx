@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from '@components/HeaderRedesign/Header'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { address, status } from '@selectors/solanaWallet'
 import { actions } from '@reducers/solanaConnection'
 import { SolanaNetworks } from '@consts/static'
@@ -11,6 +12,7 @@ export const HeaderRedesignWrapper: React.FC = () => {
   const dispatch = useDispatch()
   const walletAddress = useSelector(address)
   const walletStatus = useSelector(status)
+  const location = useLocation()
 
   const stringToWalletType = (chosen: string) => {
     if (chosen === 'phantom') {
@@ -29,7 +31,7 @@ export const HeaderRedesignWrapper: React.FC = () => {
       onWalletSelect={(chosen: string) => {
         dispatch(walletActions.connect(stringToWalletType(chosen)))
       }}
-      landing='staking'
+      landing={location.pathname.substr(1)}
       walletConnected={walletStatus === Status.Initalized}
       onAirdrop={() => { dispatch(walletActions.airdrop()) }}
     />
