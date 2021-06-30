@@ -6,6 +6,7 @@ import { themes } from '@storybook/theming'
 import { theme } from '../src/static/theme'
 import { StylesProvider } from '@material-ui/core'
 addDecorator(muiTheme([theme]))
+// IDK why vite complains
 addDecorator(storyFn => <StylesProvider injectFirst>{storyFn()}</StylesProvider>)
 addParameters({
   backgrounds: [
