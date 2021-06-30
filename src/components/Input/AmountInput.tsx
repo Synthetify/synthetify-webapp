@@ -1,7 +1,7 @@
 import { Input, InputAdornment } from '@material-ui/core'
 import React, { CSSProperties } from 'react'
-import useStyles from './style'
 import classNames from 'classnames'
+import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
@@ -12,15 +12,25 @@ interface IProps {
   style?: CSSProperties
 }
 
+type inputString = { target: { value: string } }
+
 export const AmountInput: React.FC<IProps> = ({
-  setValue,
   currency,
   value,
+  setValue,
   error,
   className,
   style
 }) => {
   const classes = useStyles()
+
+  const allowOnlyDigits = (e: inputString) => {
+    const regex = /^\d*\.?\d*$/
+    if (e.target.value === '' || regex.test(e.target.value)) {
+      setValue(e.target.value)
+    }
+  }
+
   return (
     <Input
       error={!!error}
@@ -37,10 +47,7 @@ export const AmountInput: React.FC<IProps> = ({
           </InputAdornment>
         )
       }
-      onChange={e => {
-        setValue(e.target.value)
-        value = e.target.value
-      }}
+      onChange={allowOnlyDigits}
     />
   )
 }
