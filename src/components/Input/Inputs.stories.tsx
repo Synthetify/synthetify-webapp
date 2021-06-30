@@ -10,11 +10,11 @@ storiesOf('inputs/amount', module)
   .addDecorator(withKnobs)
   .add('default', () => (
     <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
-      <AmountInput setValue={(value: string) => value} currency={'xUSD'} />
+      <AmountInput setValue={() => {}} currency={'xUSD'} />
     </div>
   ))
   .add('labeled', () => (
     <div style={{ backgroundColor: colors.gray.component, padding: '30px' }}>
-      <AmountInputWithLabel setValue={(value: string) => value} currency={'xUSD'} />
+      <AmountInputWithLabel setValue={() => {}} currency={'xUSD'} />
     </div>
   ))

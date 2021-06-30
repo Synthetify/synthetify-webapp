@@ -5,38 +5,25 @@ import useStyles from './style'
 import AmountInput from './AmountInput'
 
 interface IProps {
-  setValue: (value: string) => void
   currency: string
   label?: string
   value?: string
+  setValue: (value: string) => void
   error?: string | null
   className?: string
   style?: CSSProperties
 }
 
-export const AmountInputWithLabel: React.FC<IProps> = ({
-  setValue,
-  currency,
-  label = 'Amount',
-  value,
-  error,
-  className,
-  style
-}) => {
+export const AmountInputWithLabel: React.FC<IProps> = props => {
   const classes = useStyles()
+  const label = props.label || 'Amount'
+
   return (
     <div>
       <Typography>
         <label className={classes.inputLabel}>{label}</label>
       </Typography>
-      <AmountInput
-        setValue={setValue}
-        currency={currency}
-        value={value}
-        error={error}
-        className={className}
-        style={style}
-      />
+      <AmountInput {...props} />
     </div>
   )
 }
