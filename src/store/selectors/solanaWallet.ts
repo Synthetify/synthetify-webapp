@@ -4,7 +4,7 @@ import { assets } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import { IAsset } from '@reducers/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
@@ -68,7 +68,12 @@ export const accountsArray = createSelector(
         acc.push({
           ...account,
           symbol: exchangeAssets[account.programId.toString()].symbol,
-          usdValue: exchangeAssets[account.programId.toString()].price.mul(account.balance).div(new BN(100000000))
+          usdValue: exchangeAssets[account.programId.toString()].price
+            .mul(new BN(10 ** 4))
+            .mul(account.balance)
+            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
+            .div(new BN(10 ** exchangeAssets[account.programId.toString()].decimals))
+            .div(new BN(10 ** account.decimals))
         })
       }
       return acc
