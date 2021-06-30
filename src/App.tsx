@@ -36,6 +36,7 @@ const App: React.FC = () => {
             <MintModal />
             <DepositModal />
             <Notifier />
+            <GlobalLoader />
             <PagesRouter />
           </SnackbarProvider>
         </ThemeProvider>

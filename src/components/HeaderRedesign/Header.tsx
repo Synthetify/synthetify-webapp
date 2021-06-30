@@ -1,6 +1,6 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { Grid, CardMedia, IconButton, Divider, Hidden } from '@material-ui/core'
+import { Grid, CardMedia, IconButton, Divider, Hidden, Button } from '@material-ui/core'
 import useStyles from './style'
 import { MoreHoriz, Menu } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
@@ -11,6 +11,8 @@ import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
 import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
 import RoutesModal from '@components/Modals/RoutesModal/RoutesModal'
 import { blurContent, unblurContent } from '@consts/uiUtils'
+import { SolanaNetworks } from '@consts/static'
+import useButtonStyles from '../HeaderButton/style'
 
 export interface IHeader {
   address: PublicKey
@@ -19,6 +21,7 @@ export interface IHeader {
   walletConnected: boolean
   landing: string
   typeOfWallet?: 'phantom' | 'sollet'
+  onAirdrop?: () => void
 }
 export const HeaderRedesign: React.FC<IHeader> = ({
   address,
@@ -26,13 +29,15 @@ export const HeaderRedesign: React.FC<IHeader> = ({
   onWalletSelect,
   walletConnected,
   landing,
-  typeOfWallet = 'phantom'
+  typeOfWallet = 'phantom',
+  onAirdrop
 }) => {
   const classes = useStyles()
+  const buttonClasses = useButtonStyles()
 
   const routes = ['staking', 'stats', 'exchange']
   const [activePath, setActive] = React.useState(landing)
-  const [network, setNetwork] = React.useState('Mainnet')
+  const [network, setNetwork] = React.useState('Devnet')
 
   const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
   const [routesModalAnchor, setRoutesModalAnchor] = React.useState<HTMLButtonElement | null>(null)
@@ -66,11 +71,20 @@ export const HeaderRedesign: React.FC<IHeader> = ({
 
         <Grid container item justify='flex-end' wrap='nowrap' alignItems='center'>
           <Grid item>
+            <Button
+              className={buttonClasses.headerButton}
+              variant='contained'
+              classes={{ disabled: buttonClasses.disabled }}
+              onClick={onAirdrop}
+            >
+              Airdrop
+            </Button>
+          </Grid>
+          <Grid item>
             <SelectNetworkButton
               name={network}
               networks={[
-                { name: 'Testnet', network: 'https://api.solana.com/' },
-                { name: 'Localnet', network: 'https://127.0.0.1:8898/' }
+                { name: 'Devnet', network: SolanaNetworks.DEV }
               ]}
               onSelect={(chosen: string) => {
                 onNetworkSelect(chosen)
