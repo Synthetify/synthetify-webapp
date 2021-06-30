@@ -45,3 +45,10 @@ export const printBNtoBN = (amount: string, decimals: number): BN => {
 export const divUp = (a: BN, b: BN): BN => {
   return a.add(b.subn(1)).div(b)
 }
+export const removeTickerPrefix = (ticker: string, prefix: string[] = ['x', '$']): string => {
+  const index = prefix.findIndex(p => ticker.startsWith(p))
+  if (index && prefix[index]) {
+    return ticker.substring(prefix[index].length)
+  }
+  return ticker
+}
