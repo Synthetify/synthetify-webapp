@@ -31,6 +31,7 @@ export const HeaderRedesignWrapper: React.FC = () => {
       }}
       landing='staking'
       walletConnected={walletStatus === Status.Initalized}
+      onAirdrop={() => { dispatch(walletActions.airdrop()) }}
     />
   )
 }
