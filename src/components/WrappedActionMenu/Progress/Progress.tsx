@@ -1,7 +1,8 @@
 import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
-import { Done, Close } from '@material-ui/icons'
 import GradientCircularProgress from '@components/WrappedActionMenu/Progress/GradientCircularProgress'
+import progressSuccess from '@static/svg/progress-success.svg'
+import progressFailed from '@static/svg/progress-faild.svg'
 import useStyles from './style'
 
 export type ProgressState = 'progress' | 'success' | 'failed' | 'none'
@@ -16,11 +17,11 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
 
   const progressIcon = (state: ProgressState) => {
     if (state === 'success') {
-      return <Done className={classes.success} />
+      return <img src={progressSuccess} alt='success' />
     } else if (state === 'failed') {
-      return <Close className={classes.failed} />
+      return <img src={progressFailed} alt='failed' style={{ marginTop: 10 }} />
     }
-    return <GradientCircularProgress />
+    return <GradientCircularProgress style={{ marginTop: 10 }} />
   }
 
   return (

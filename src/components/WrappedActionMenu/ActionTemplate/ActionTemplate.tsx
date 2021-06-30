@@ -78,10 +78,11 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           container
           direction='row'
           justify='space-around'
+          alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
           <Grid item>
-            <MaxButton onClick={onMaxButtonClick} />
+            <MaxButton style={{ marginBottom: 0 }} onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
             <Divider orientation='vertical' className={classes.divider} />

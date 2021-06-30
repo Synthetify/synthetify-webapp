@@ -7,8 +7,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardContent: {
     [theme.breakpoints.down('xs')]: {
-      paddingLeft: 1,
-      paddingRight: 1
+      paddingLeft: 5,
+      paddingRight: 5
     }
   }
 }))
