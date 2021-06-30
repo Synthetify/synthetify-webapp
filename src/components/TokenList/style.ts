@@ -2,31 +2,20 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    background: colors.gray.component,
-    '& > *': {
-      marginTop: 15
-    }
-  },
   card: {
-    background: colors.gray.component,
     borderRadius: 10,
-    padding: 32
-  },
-  header: {
+    background: colors.gray.component,
+    padding: '20px 32px',
     [theme.breakpoints.down('xs')]: {
-      textAlign: 'center'
+      padding: 10
     }
   },
   ownedTokens: {
     fontWeight: 400,
     color: colors.gray.light,
-    fontSize: 22
-  },
-  addAccountWrapper: {
-    textAlign: 'end',
+    fontSize: 22,
     [theme.breakpoints.down('xs')]: {
-      textAlign: 'center'
+      fontSize: 18
     }
   },
   headerFont: {
@@ -52,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.veryLight
   },
   tokensDividerMargin: {
-    margin: 18
+    margin: '18px 0'
   }
 }))
 
