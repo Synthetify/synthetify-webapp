@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toBlur } from '@consts/uiUtils'
 import StakingPage from './StakingPage/StakingPage'
 import Footer from '@components/Footer/Footer'
 import HeaderRedesignWrapper from '@containers/HeaderRedesignWrapper/HeaderRedesignWrapper'
 import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
+import EventsHandlers from '@containers/EventsHandlers'
+import { Status } from '@reducers/solanaWallet'
+import solanaConnectionSelector from '@selectors/solanaConnection'
 
 export const PagesRouter: React.FC = () => {
   const dispatch = useDispatch()
+
+  const signerStatus = useSelector(solanaConnectionSelector.status)
 
   useEffect(() => {
     // dispatch(providerActions.initProvider())
@@ -17,6 +22,7 @@ export const PagesRouter: React.FC = () => {
   // TODO: add more paths to router later
   return (
     <Router>
+      {signerStatus === Status.Initalized && <EventsHandlers />}
       <div id={toBlur}>
         <HeaderRedesignWrapper />
         <Switch>
