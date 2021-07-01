@@ -13,7 +13,7 @@ export interface IProps {
   action: string
   maxAvailable: BN
   maxDecimal: number
-  onClick: () => void
+  onClick: (amount: BN) => () => void
 }
 
 export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick }) => {
@@ -105,7 +105,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             color='secondary'
             padding='11px 40px'
             style={{ width: 160 }}
-            onClick={onClick}
+            onClick={onClick(amountBN)}
           />
         </Grid>
         <Grid item>

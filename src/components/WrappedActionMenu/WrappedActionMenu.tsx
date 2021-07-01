@@ -8,42 +8,60 @@ import useStyles from './style'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
+  onMint: (amount: BN) => () => void
+  onDeposit: (amount: BN) => () => void
+  onWithdraw: (amount: BN) => () => void
+  onBurn: (amount: BN) => () => void
+  availableToMint: BN
+  availableToDeposit: BN
+  availableToWithdraw: BN
+  availableToBurn: BN
 }
 
-export const WrappedActionMenu: React.FC<IProps> = ({ maxWidth }) => {
+export const WrappedActionMenu: React.FC<IProps> = ({
+  maxWidth,
+  onMint,
+  onDeposit,
+  onWithdraw,
+  onBurn,
+  availableToMint,
+  availableToDeposit,
+  availableToWithdraw,
+  availableToBurn
+}) => {
   const classes = useStyles()
 
   const actionContents: IActionContents = {
     mint: (
       <ActionTemplate
         action='mint'
-        maxAvailable={new BN(198_900_001)}
+        maxAvailable={availableToMint}
         maxDecimal={6}
-        onClick={() => {}}
+        onClick={onMint}
       />
     ),
     deposit: (
       <ActionTemplate
         action='deposit'
-        maxAvailable={new BN(900_000)}
-        maxDecimal={3}
-        onClick={() => {}}
+        maxAvailable={availableToDeposit}
+        maxDecimal={6}
+        onClick={onDeposit}
       />
     ),
     withdraw: (
       <ActionTemplate
         action='withdraw'
-        maxAvailable={new BN(198_900_001)}
+        maxAvailable={availableToWithdraw}
         maxDecimal={6}
-        onClick={() => {}}
+        onClick={onWithdraw}
       />
     ),
     burn: (
       <ActionTemplate
-        maxAvailable={new BN(198_900_001)}
+        maxAvailable={availableToBurn}
         maxDecimal={6}
         action='burn'
-        onClick={() => {}}
+        onClick={onBurn}
       />
     ),
     rewards: 'TODO'

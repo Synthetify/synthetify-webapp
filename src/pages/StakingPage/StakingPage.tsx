@@ -1,9 +1,9 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
 import useStyles from './style'
-import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import StakingStats from '@containers/StakingStats/StakingStats'
 import TokenListWrapper from '@containers/TokenListWrapper/TokenListWrapper'
+import ActionMenuContainer from '@containers/ActionMenuContainer/ActionMenuContainer'
 
 export const StakingPage: React.FC = () => {
   const classes = useStyles()
@@ -15,7 +15,7 @@ export const StakingPage: React.FC = () => {
           <StakingStats />
         </Grid>
         <Grid item className={classes.pageRow} xs={12}>
-          <WrappedActionMenu />
+          <ActionMenuContainer />
         </Grid>
         <Grid item className={classes.pageRow} xs={12}>
           <TokenListWrapper />
