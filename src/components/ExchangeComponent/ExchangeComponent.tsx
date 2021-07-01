@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core'
 import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
@@ -12,6 +12,7 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/CommonButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
+import { useDispatch } from 'react-redux'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -81,11 +82,16 @@ export interface IExchangeComponent {
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
   const [tokenFrom, setTokenFrom] = React.useState<TokensWithBalance | null>(tokens[0] ?? null)
   const [tokenTo, setTokenTo] = React.useState<TokensWithBalance | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
+
+  useEffect(() => {
+    updateEstimatedAmount()
+  }, [tokenTo, tokenFrom, dispatch])
 
   const updateEstimatedAmount = (amount: string | null = null) => {
     if (!!tokenFrom && !!tokenTo) {
@@ -116,10 +122,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
                 centered={true}
-                onSelect={(chosen: string) => {
+                onSelect={(chosen: string) =>
                   setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
-                  setTimeout(() => updateEstimatedAmount(), 0)
-                }}
+                }
               />
             </Grid>
             <Grid item xs={6}>
@@ -144,10 +149,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 tokens={tokenNames}
                 current={tokenFrom?.symbol ?? null}
                 centered={true}
-                onSelect={(chosen: string) => {
+                onSelect={(chosen: string) =>
                   setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
-                  setTimeout(() => updateEstimatedAmount(), 0)
-                }}
+                }
               />
             </Grid>
           </Hidden>
@@ -190,7 +194,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               setTokenTo(tokenFrom)
               setTimeout(() => updateEstimatedAmount(), 0)
             }}>
-            <SwapVertIcon style={{ fill: colors.gray.veryLight, height: 43, width: 43 }} className={classes.swapIcon} />
+            <SwapVertIcon
+              style={{ fill: colors.gray.veryLight, height: 43, width: 43 }}
+              className={classes.swapIcon}
+            />
           </IconButton>
         </Grid>
       </Grid>
