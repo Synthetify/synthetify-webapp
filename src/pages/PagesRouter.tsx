@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import { useDispatch, useSelector } from 'react-redux'
 import { toBlur } from '@consts/uiUtils'
 import StakingPage from './StakingPage/StakingPage'
+import { ExchangePage } from './ExchangePage/ExchangePage'
 import Footer from '@components/Footer/Footer'
 import HeaderRedesignWrapper from '@containers/HeaderRedesignWrapper/HeaderRedesignWrapper'
 import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
@@ -27,6 +28,7 @@ export const PagesRouter: React.FC = () => {
         <HeaderRedesignWrapper />
         <Switch>
           <Route path='/staking' component={StakingPage} />
+          <Route path={'/exchange'} component={ExchangePage} />
           <Route path='*'>
             <Redirect to='/staking'>
               <StakingPage />
