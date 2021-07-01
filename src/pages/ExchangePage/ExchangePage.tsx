@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
-import { WrappedExchangeComponent } from './WrappedExchangeComponent'
+import { WrappedExchangeComponent } from '@containers/WrappedExchangeComponent/WrappedExchangeComponent'
 import useStyles from './style'
 
 export const ExchangePage: React.FC = () => {
