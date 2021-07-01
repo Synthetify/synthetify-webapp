@@ -8,10 +8,10 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
   <div style={{ backgroundColor: colors.gray.background, padding: '10px' }}>
     <WrappedActionMenu
       maxWidth={850}
-      onMint={(_amount: BN) => () => {}}
-      onBurn={(_amount: BN) => () => {}}
-      onDeposit={(_amount: BN) => () => {}}
-      onWithdraw={(_amount: BN) => () => {}}
+      onMint={(_amount: BN, _decimal: number) => () => {}}
+      onBurn={(_amount: BN, _decimal: number) => () => {}}
+      onDeposit={(_amount: BN, _decimal: number) => () => {}}
+      onWithdraw={(_amount: BN, _decimal: number) => () => {}}
       availableToMint={new BN(198_900_001)}
       availableToDeposit={new BN(900_000)}
       availableToWithdraw={new BN(198_900_001)}

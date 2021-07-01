@@ -13,10 +13,11 @@ export interface IProps {
   action: string
   maxAvailable: BN
   maxDecimal: number
-  onClick: (amount: BN) => () => void
+  onClick: (amount: BN, decimals: number) => () => void
+  currency: string
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick }) => {
+export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick, currency }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
@@ -70,7 +71,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             value={inputValue}
             setValue={onAmountInputChange}
             className={classes.amountInput}
-            currency={'xUSD'}
+            currency={currency}
           />
         </Grid>
         <Grid
@@ -92,7 +93,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
               keyName={`Available to ${action}`}
               value={maxAvailable}
               decimal={maxDecimal}
-              unit='xUSD'
+              unit={currency}
             />
           </Grid>
         </Grid>
@@ -105,7 +106,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             color='secondary'
             padding='11px 40px'
             style={{ width: 160 }}
-            onClick={onClick(amountBN)}
+            onClick={onClick(amountBN, decimal)}
           />
         </Grid>
         <Grid item>

@@ -8,10 +8,10 @@ import useStyles from './style'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
-  onMint: (amount: BN) => () => void
-  onDeposit: (amount: BN) => () => void
-  onWithdraw: (amount: BN) => () => void
-  onBurn: (amount: BN) => () => void
+  onMint: (amount: BN, decimals: number) => () => void
+  onDeposit: (amount: BN, decimals: number) => () => void
+  onWithdraw: (amount: BN, decimals: number) => () => void
+  onBurn: (amount: BN, decimals: number) => () => void
   availableToMint: BN
   availableToDeposit: BN
   availableToWithdraw: BN
@@ -38,6 +38,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxAvailable={availableToMint}
         maxDecimal={6}
         onClick={onMint}
+        currency='xUSD'
       />
     ),
     deposit: (
@@ -46,6 +47,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxAvailable={availableToDeposit}
         maxDecimal={6}
         onClick={onDeposit}
+        currency='SNY'
       />
     ),
     withdraw: (
@@ -54,6 +56,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxAvailable={availableToWithdraw}
         maxDecimal={6}
         onClick={onWithdraw}
+        currency='SNY'
       />
     ),
     burn: (
@@ -62,6 +65,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxDecimal={6}
         action='burn'
         onClick={onBurn}
+        currency='xUSD'
       />
     ),
     rewards: 'TODO'

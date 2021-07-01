@@ -138,6 +138,10 @@ const modalsSlice = createSlice({
       state.burn.tokenAddress = action.payload.tokenAddress
       return state
     },
+    setBurnAddress(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
+      state.burn.tokenAddress = action.payload.tokenAddress
+      return state
+    },
     burn(state, action: PayloadAction<Pick<IBurn, 'amount'>>) {
       state.burn.sending = true
       state.burn.amount = action.payload.amount

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/modals'
@@ -13,21 +13,25 @@ export const ActionMenuContainer: React.FC = () => {
   const availableToWithdraw = useSelector(userMaxWithdraw)
   const token = useSelector(collateralToken)
   const { balance } = useSelector(tokenBalance(token))
-  const address = useSelector(xUSDAddress)
-  const availableToBurn = useSelector(userMaxBurnToken(address))
+  const tokenAddress = useSelector(xUSDAddress)
+  const availableToBurn = useSelector(userMaxBurnToken(tokenAddress))
+
+  useEffect(() => {
+    dispatch(actions.setBurnAddress({ tokenAddress }))
+  }, [dispatch, tokenAddress])
 
   return <WrappedActionMenu
-    onMint={(amount) => () => {
-        dispatch(actions.mint({ amount }))
+    onMint={(amount, decimal) => () => {
+        dispatch(actions.mint({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
     }}
-    onBurn={(amount) => () => {
-        dispatch(actions.burn({ amount }))
+    onBurn={(amount, decimal) => () => {
+        dispatch(actions.burn({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
     }}
-    onDeposit={(amount) => () => {
-        dispatch(actions.deposit({ amount }))
+    onDeposit={(amount, decimal) => () => {
+        dispatch(actions.deposit({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
     }}
-    onWithdraw={(amount) => () => {
-        dispatch(actions.withdraw({ amount }))
+    onWithdraw={(amount, decimal) => () => {
+        dispatch(actions.withdraw({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
     }}
     availableToMint={availableToMint}
     availableToDeposit={balance}

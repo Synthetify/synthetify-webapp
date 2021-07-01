@@ -11,7 +11,8 @@ storiesOf('WrappedActionMenu/ActionContent', module).add('{template}', () => (
       action='{template}'
       maxAvailable={new BN(101_999_999)}
       maxDecimal={6}
-      onClick={(_amount: BN) => action('{template}')}
+      onClick={(_amount: BN, _decimal: number) => action('{template}')}
+      currency='xUSD'
     />
   </div>
 ))
