@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: install
         run: npm install
+      - name: install webpack 4
+        run: npm install webpack@4.42.0
       - name: build
         run: npm run build
         env:
