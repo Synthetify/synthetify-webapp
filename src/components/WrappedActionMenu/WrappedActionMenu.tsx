@@ -5,45 +5,84 @@ import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionT
 import { BN } from '@project-serum/anchor'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
+import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/modals'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
+  onMint: (amount: BN, decimals: number) => () => void
+  onDeposit: (amount: BN, decimals: number) => () => void
+  onWithdraw: (amount: BN, decimals: number) => () => void
+  onBurn: (amount: BN, decimals: number) => () => void
+  availableToMint: BN
+  availableToDeposit: BN
+  availableToWithdraw: BN
+  availableToBurn: BN,
+  mintState: Pick<IMint, 'sending' | 'error'>
+  withdrawState: Pick<IWithdraw, 'sending' | 'error'>
+  depositState: Pick<IDeposit, 'sending' | 'error'>
+  burnState: Pick<IBurn, 'sending' | 'error'>
 }
 
-export const WrappedActionMenu: React.FC<IProps> = ({ maxWidth }) => {
+export const WrappedActionMenu: React.FC<IProps> = ({
+  maxWidth,
+  onMint,
+  onDeposit,
+  onWithdraw,
+  onBurn,
+  availableToMint,
+  availableToDeposit,
+  availableToWithdraw,
+  availableToBurn,
+  mintState,
+  withdrawState,
+  burnState,
+  depositState
+}) => {
   const classes = useStyles()
 
   const actionContents: IActionContents = {
     mint: (
       <ActionTemplate
         action='mint'
-        maxAvailable={new BN(198_900_001)}
+        maxAvailable={availableToMint}
         maxDecimal={6}
-        onClick={() => {}}
+        onClick={onMint}
+        currency='xUSD'
+        sending={mintState.sending}
+        hasError={!!mintState.error?.length}
       />
     ),
     deposit: (
       <ActionTemplate
         action='deposit'
-        maxAvailable={new BN(900_000)}
-        maxDecimal={3}
-        onClick={() => {}}
+        maxAvailable={availableToDeposit}
+        maxDecimal={6}
+        onClick={onDeposit}
+        currency='SNY'
+        sending={depositState.sending}
+        hasError={!!depositState.error?.length}
       />
     ),
     withdraw: (
       <ActionTemplate
         action='withdraw'
-        maxAvailable={new BN(198_900_001)}
+        maxAvailable={availableToWithdraw}
         maxDecimal={6}
-        onClick={() => {}}
+        onClick={onWithdraw}
+        currency='SNY'
+        sending={withdrawState.sending}
+        hasError={!!withdrawState.error?.length}
       />
     ),
     burn: (
       <ActionTemplate
-        maxAvailable={new BN(198_900_001)}
+        maxAvailable={availableToBurn}
         maxDecimal={6}
         action='burn'
-        onClick={() => {}}
+        onClick={onBurn}
+        currency='xUSD'
+        sending={burnState.sending}
+        hasError={!!burnState.error?.length}
       />
     ),
     rewards: 'TODO'

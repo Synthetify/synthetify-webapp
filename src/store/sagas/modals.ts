@@ -99,7 +99,7 @@ export function* handleDeposit(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.depositFailed())
+    yield* put(actions.depositFailed({ error: error?.message ?? 'Unknown error' }))
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -124,7 +124,7 @@ export function* handleMint(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.mintFailed())
+    yield* put(actions.mintFailed({ error: error?.message ?? 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -148,7 +148,7 @@ export function* handleWithdraw(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.withdrawFailed())
+    yield* put(actions.withdrawFailed({ error: error?.message ?? 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -172,7 +172,7 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.burnFailed())
+    yield* put(actions.burnFailed({ error: error?.message ?? 'Unknown error' }))
     console.log(error)
     yield put(
       snackbarsActions.add({

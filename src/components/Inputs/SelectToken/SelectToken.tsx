@@ -38,9 +38,9 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   let icon
   if (current) {
     try {
-      icon = require(`@static/icons/${current.toLowerCase()}.png`)
+      icon = require(`@static/icons/${current.toLowerCase()}.svg`)
     } catch (error) {
-      icon = require('@static/icons/sny.png')
+      icon = require('@static/icons/sny.svg')
     }
   }
 

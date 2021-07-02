@@ -22,9 +22,9 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
   const imgName = removeTickerPrefix(ticker)
   let icon
   try {
-    icon = require(`@static/icons/${imgName.toLowerCase()}.png`)
+    icon = require(`@static/icons/${imgName.toLowerCase()}.svg`)
   } catch (error) {
-    icon = require('@static/icons/sny.png')
+    icon = require('@static/icons/sny.svg')
   }
 
   return (

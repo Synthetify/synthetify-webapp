@@ -90,6 +90,17 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
   const [amountTo, setAmountTo] = React.useState<string>('')
 
   useEffect(() => {
+    if (tokenFrom) {
+      const fromIndex = tokens.findIndex(t => t.assetAddress.equals(tokenFrom?.assetAddress))
+      setTokenFrom(tokens[fromIndex])
+    }
+    if (tokenTo) {
+      const toIndex = tokens.findIndex(t => t.assetAddress.equals(tokenTo?.assetAddress))
+      setTokenTo(tokens[toIndex])
+    }
+  }, [tokens])
+
+  useEffect(() => {
     updateEstimatedAmount()
   }, [tokenTo, tokenFrom, dispatch])
 
@@ -114,7 +125,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Typography className={classes.tokenComponentText}>From</Typography>
+        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+          <Typography className={classes.tokenComponentText}>From</Typography>
+          <Typography className={classes.tokenMaxText}>{tokenFrom ? `Balance: ${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}` : ''}</Typography>
+        </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
             <Grid item xs={6}>
@@ -203,7 +217,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+          <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+          <Typography className={classes.tokenMaxText}>{tokenFrom && tokenTo ? `Balance: ${printBN(tokenTo.balance, tokenTo.decimals)} ${tokenTo.symbol}` : ''}</Typography>
+        </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
             <Grid item xs={6}>
