@@ -18,7 +18,7 @@ export const AccountWrapper: React.FC = () => {
     <>
       <Account
         network={currentNetwork}
-        address={userAddress}
+        address={userAddress.toString()}
         balance={userBalance}
         onSend={() => {
           dispatch(modalsActions.openSend({ tokenAddress: DEFAULT_PUBLICKEY }))

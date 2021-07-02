@@ -1,0 +1,43 @@
+import React from 'react'
+import { Grid, Typography } from '@material-ui/core'
+import GradientCircularProgress from '@components/WrappedActionMenu/Progress/GradientCircularProgress'
+import progressSuccess from '@static/svg/progress-success.svg'
+import progressFailed from '@static/svg/progress-faild.svg'
+import useStyles from './style'
+
+export type ProgressState = 'progress' | 'success' | 'failed' | 'none'
+
+export interface IProps {
+  state: ProgressState
+  message?: string
+}
+
+export const Progress: React.FC<IProps> = ({ state, message }) => {
+  const classes = useStyles()
+
+  const progressIcon = (state: ProgressState) => {
+    if (state === 'success') {
+      return <img src={progressSuccess} alt='success' style={{ marginTop: 10 }} />
+    } else if (state === 'failed') {
+      return <img src={progressFailed} alt='failed' style={{ marginTop: 10 }} />
+    }
+    return <GradientCircularProgress style={{ marginTop: 10 }} />
+  }
+
+  return (
+    <Typography component={'span'}>
+      {state !== 'none' ? (
+        <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
+          <Grid item className={classes.icon}>
+            {progressIcon(state)}
+          </Grid>
+          <Grid item className={classes.text}>
+            {message}
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid style={{ minHeight: 52 }} />
+      )}
+    </Typography>
+  )
+}

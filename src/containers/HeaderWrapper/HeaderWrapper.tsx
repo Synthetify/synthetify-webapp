@@ -20,7 +20,7 @@ export const HeaderWrapper: React.FC = () => {
           dispatch(actions.setNetwork(network))
         }
       }}
-      address={walletAddress}
+      address={walletAddress.toString()}
       onConnect={wallet => {
         dispatch(walletActions.connect(wallet))
       }}
