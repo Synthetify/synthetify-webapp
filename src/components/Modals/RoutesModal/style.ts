@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   name: {
     textTransform: 'capitalize',
     fontSize: 22,
-    lineHeight: '40px'
+    lineHeight: '40px',
+    color: colors.gray.C7C9D1
   },
   current: {
     textTransform: 'capitalize',

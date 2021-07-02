@@ -1,5 +1,6 @@
 import React from 'react'
 import { Typography, Popover, Grid } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import useStyles from './style'
 
 export interface IRoutesModal {
@@ -44,9 +45,11 @@ export const RoutesModal: React.FC<IRoutesModal> = ({
               onSelect(route)
               handleClose()
             }}>
-            <Typography className={current === route ? classes.current : classes.name}>
-              {route}
-            </Typography>
+            <Link to={`/${route}`} style={{ textDecoration: 'none' }}>
+              <Typography className={current === route ? classes.current : classes.name}>
+                {route}
+              </Typography>
+            </Link>
           </Grid>
         ))}
       </Grid>
