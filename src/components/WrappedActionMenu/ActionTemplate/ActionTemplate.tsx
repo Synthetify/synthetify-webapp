@@ -9,24 +9,42 @@ import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 
+export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
+
 export interface IProps {
-  action: string
+  action: ActionType
   maxAvailable: BN
   maxDecimal: number
-  onClick: () => void
+  onClick: (amount: BN, decimals: number) => () => void
+  currency: string
+  sending: boolean
+  hasError: boolean
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick }) => {
+export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick, currency, sending, hasError }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const [actionAvailable, setActionAvailable] = useState(false)
   const [amountInputTouched, setTAmountInputTouched] = useState(false)
+  const [showOperationProgressFinale, setShowOperationProgressFinale] = useState(false)
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
   }, [amountBN, decimal])
+
+  useEffect(() => {
+    if (sending) {
+      setShowOperationProgressFinale(true)
+    }
+  }, [sending])
+
+  useEffect(() => {
+    if (showOperationProgressFinale) {
+      setShowOperationProgressFinale(false)
+    }
+  }, [amountBN])
 
   const checkActionIsAvailable = () => {
     if (decimal > maxDecimal) {
@@ -57,6 +75,60 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
     return !amountInputTouched || actionAvailable
   }
 
+  const getProgressState = () => {
+    if (!checkAmountInputError()) {
+      return 'failed'
+    }
+
+    if (sending) {
+      return 'progress'
+    }
+
+    if (showOperationProgressFinale && hasError) {
+      return 'failed'
+    }
+
+    if (showOperationProgressFinale && !hasError) {
+      return 'success'
+    }
+
+    return 'none'
+  }
+
+  const getProgressMessage = () => {
+    if (!checkAmountInputError()) {
+      return 'incorrect value!'
+    }
+
+    const actionToNoun: { [key in ActionType]: string} = {
+      mint: 'Minting',
+      withdraw: 'Withdrawing',
+      burn: 'Burning',
+      deposit: 'Depositing'
+    }
+
+    if (sending) {
+      return `${actionToNoun[action]} in progress`
+    }
+
+    if (showOperationProgressFinale && hasError) {
+      return `${actionToNoun[action]} failed`
+    }
+
+    const actionToPastNoun: { [key in ActionType]: string} = {
+      mint: 'minted',
+      withdraw: 'withdrawn',
+      burn: 'burned',
+      deposit: 'deposited'
+    }
+
+    if (showOperationProgressFinale && !hasError) {
+      return `Successfully ${actionToPastNoun[action]}`
+    }
+
+    return ''
+  }
+
   return (
     <Grid
       container
@@ -70,7 +142,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             value={inputValue}
             setValue={onAmountInputChange}
             className={classes.amountInput}
-            currency={'xUSD'}
+            currency={currency}
           />
         </Grid>
         <Grid
@@ -92,7 +164,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
               keyName={`Available to ${action}`}
               value={maxAvailable}
               decimal={maxDecimal}
-              unit='xUSD'
+              unit={currency}
             />
           </Grid>
         </Grid>
@@ -104,14 +176,14 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             disabled={!actionAvailable}
             color='secondary'
             padding='11px 40px'
-            style={{ width: 160 }}
-            onClick={onClick}
+            style={{ width: 160, marginBlock: 7 }}
+            onClick={onClick(amountBN, decimal)}
           />
         </Grid>
         <Grid item>
           <Progress
-            state={checkAmountInputError() ? 'none' : 'failed'}
-            message={checkAmountInputError() ? '' : 'incorrect value!'}
+            state={getProgressState()}
+            message={getProgressMessage()}
           />
         </Grid>
       </Grid>

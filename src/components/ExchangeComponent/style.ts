@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 700,
     fontSize: 16
   },
+  tokenMaxText: {
+    color: colors.gray.C7C9D1,
+    fontSize: 16
+  },
   amountDivider: {
     background: colors.gray.light,
     height: 57,
