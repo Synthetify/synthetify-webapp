@@ -8,39 +8,26 @@ export interface ICreateAccount {
   tokenAddress: PublicKey
   sending: boolean
   error?: string
-  open: boolean
   txid?: string
 }
 
-export interface ISend {
-  tokenAddress: PublicKey
-  recipient: PublicKey
-  amount: BN
-  txid?: string
-  sending: boolean
-  error?: string
-  open: boolean
-}
 export interface IDeposit {
   amount: BN
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IMint {
   amount: BN
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IWithdraw {
   amount: BN
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IBurn {
   amount: BN
@@ -48,73 +35,48 @@ export interface IBurn {
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
-export interface IModals {
+export interface IStaking {
   createAccount: ICreateAccount
-  send: ISend
   deposit: IDeposit
   mint: IMint
   withdraw: IWithdraw
   burn: IBurn
 }
 
-export const defaultState: IModals = {
+export const defaultState: IStaking = {
   createAccount: {
-    open: false,
     sending: false,
     error: '',
     tokenAddress: DEFAULT_PUBLICKEY
   },
-  send: {
-    amount: new BN(0),
-    recipient: DEFAULT_PUBLICKEY,
-    tokenAddress: DEFAULT_PUBLICKEY,
-    sending: false,
-    open: false
-  },
   deposit: {
     amount: new BN(0),
-    sending: false,
-    open: false
+    sending: false
   },
   mint: {
     amount: new BN(0),
-    sending: false,
-    open: false
+    sending: false
   },
   withdraw: {
     amount: new BN(0),
-    sending: false,
-    open: false
+    sending: false
   },
   burn: {
     amount: new BN(0),
     tokenAddress: DEFAULT_PUBLICKEY,
-    sending: false,
-    open: false
+    sending: false
   }
 }
-export const modalsSliceName = 'modals'
-const modalsSlice = createSlice({
-  name: modalsSliceName,
+export const stakingSliceName = 'staking'
+const stakingSlice = createSlice({
+  name: stakingSliceName,
   initialState: defaultState,
   reducers: {
-    openModal(state, action: PayloadAction<keyof IModals>) {
-      state[action.payload].open = true
-      return state
-    },
-    closeModal(state, action: PayloadAction<keyof IModals>) {
-      state[action.payload].open = false
-      return state
-    },
-    resetModal(state, action: PayloadAction<keyof IModals>) {
+    resetStakingAction(state, action: PayloadAction<keyof IStaking>) {
       switch (action.payload) {
         case 'createAccount':
           state.createAccount = defaultState[action.payload]
-          break
-        case 'send':
-          state.send = defaultState[action.payload]
           break
         case 'mint':
           state.mint = defaultState[action.payload]
@@ -133,11 +95,6 @@ const modalsSlice = createSlice({
       }
       return state
     },
-    openBurn(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
-      state.burn.open = true
-      state.burn.tokenAddress = action.payload.tokenAddress
-      return state
-    },
     setBurnAddress(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
       state.burn.tokenAddress = action.payload.tokenAddress
       return state
@@ -150,28 +107,10 @@ const modalsSlice = createSlice({
     burnDone(state, action: PayloadAction<Pick<IBurn, 'txid'>>) {
       state.burn.sending = false
       state.burn.txid = action.payload.txid
-      state.burn.error = undefined
       return state
     },
-    burnFailed(state, action: PayloadAction<Pick<IBurn, 'error'>>) {
+    burnFailed(state) {
       state.burn.sending = false
-      state.burn.error = action.payload.error
-      return state
-    },
-    openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {
-      state.send.open = true
-      state.send.tokenAddress = action.payload.tokenAddress
-      return state
-    },
-    send(state, action: PayloadAction<Pick<ISend, 'amount' | 'recipient'>>) {
-      state.send.sending = true
-      state.send.amount = action.payload.amount
-      state.send.recipient = action.payload.recipient
-      return state
-    },
-    sendDone(state, action: PayloadAction<{ txid?: string }>) {
-      state.send.sending = false
-      state.send.txid = action.payload.txid
       return state
     },
     deposit(state, action: PayloadAction<Pick<IDeposit, 'amount'>>) {
@@ -182,12 +121,10 @@ const modalsSlice = createSlice({
     depositDone(state, action: PayloadAction<Pick<IDeposit, 'txid'>>) {
       state.deposit.sending = false
       state.deposit.txid = action.payload.txid
-      state.deposit.error = undefined
       return state
     },
-    depositFailed(state, action: PayloadAction<Pick<IDeposit, 'error'>>) {
+    depositFailed(state) {
       state.deposit.sending = false
-      state.deposit.error = action.payload.error
       return state
     },
     mint(state, action: PayloadAction<Pick<IMint, 'amount'>>) {
@@ -198,12 +135,10 @@ const modalsSlice = createSlice({
     mintDone(state, action: PayloadAction<Pick<IMint, 'txid'>>) {
       state.mint.sending = false
       state.mint.txid = action.payload.txid
-      state.mint.error = undefined
       return state
     },
-    mintFailed(state, action: PayloadAction<Pick<IMint, 'error'>>) {
+    mintFailed(state) {
       state.mint.sending = false
-      state.mint.error = action.payload.error
       return state
     },
     withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
@@ -214,12 +149,10 @@ const modalsSlice = createSlice({
     withdrawDone(state, action: PayloadAction<Pick<IWithdraw, 'txid'>>) {
       state.withdraw.sending = false
       state.withdraw.txid = action.payload.txid
-      state.withdraw.error = undefined
       return state
     },
-    withdrawFailed(state, action: PayloadAction<Pick<IWithdraw, 'error'>>) {
+    withdrawFailed(state) {
       state.withdraw.sending = false
-      state.withdraw.error = action.payload.error
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: PublicKey }>) {
@@ -234,6 +167,6 @@ const modalsSlice = createSlice({
     }
   }
 })
-export const actions = modalsSlice.actions
-export const reducer = modalsSlice.reducer
+export const actions = stakingSlice.actions
+export const reducer = stakingSlice.reducer
 export type PayloadTypes = PayloadType<typeof actions>

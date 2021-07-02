@@ -1,21 +1,14 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
-
-import { actions } from '@reducers/modals'
+import { actions } from '@reducers/staking'
 import {
-  send,
   deposit,
   mint,
   withdraw,
   burn,
   createAccount as createAccountRedux
-} from '@selectors/modals'
-import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
+} from '@selectors/staking'
 import { actions as snackbarsActions } from '@reducers/snackbars'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { getConnection } from './connection'
-import { sendSol, sendToken, createAccount } from './wallet'
-
-import { BN } from '@project-serum/anchor'
+import { createAccount } from './wallet'
 import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './exchange'
 
 export function* handleCreateAccount(): Generator {
@@ -38,49 +31,7 @@ export function* handleCreateAccount(): Generator {
     )
   }
 }
-export function* handleSendToken(): Generator {
-  const connection = yield* call(getConnection)
-  const sendData = yield* select(send)
-  try {
-    if (sendData.tokenAddress.equals(DEFAULT_PUBLICKEY)) {
-      const blockHash = yield* call([connection, connection.getRecentBlockhash])
-      const myBalance = yield* select(tokenBalance(sendData.tokenAddress))
-      const transferFee = new BN(blockHash.feeCalculator.lamportsPerSignature)
-      let amountToSend: BN
-      if (sendData.amount.add(transferFee).gt(myBalance.balance)) {
-        amountToSend = myBalance.balance.sub(transferFee)
-      } else {
-        amountToSend = sendData.amount
-      }
-      const txid = yield* call(sendSol, amountToSend, sendData.recipient)
-      yield* put(
-        actions.sendDone({
-          txid: txid
-        })
-      )
-    } else {
-      const tokenAccount = yield* select(walletSelectors.tokenAccount(sendData.tokenAddress))
-      if (!tokenAccount) {
-        return
-      }
-      const txid = yield* call(sendToken, tokenAccount.address, sendData.recipient, sendData.amount)
-      yield* put(
-        actions.sendDone({
-          txid: txid
-        })
-      )
-    }
-  } catch (error) {
-    yield put(
-      snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
-        variant: 'error',
-        persist: false
-      })
-    )
-    yield* put(actions.sendDone({ txid: undefined }))
-  }
-}
+
 export function* handleDeposit(): Generator {
   const depositData = yield* select(deposit)
   try {
@@ -99,7 +50,7 @@ export function* handleDeposit(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.depositFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.depositFailed())
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -124,7 +75,7 @@ export function* handleMint(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.mintFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.mintFailed())
 
     yield put(
       snackbarsActions.add({
@@ -148,7 +99,7 @@ export function* handleWithdraw(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.withdrawFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.withdrawFailed())
 
     yield put(
       snackbarsActions.add({
@@ -172,7 +123,7 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.burnFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.burnFailed())
     console.log(error)
     yield put(
       snackbarsActions.add({
@@ -184,9 +135,6 @@ export function* handleBurn(): Generator {
   }
 }
 
-export function* sendTokenHandler(): Generator {
-  yield takeEvery(actions.send, handleSendToken)
-}
 export function* depositHandler(): Generator {
   yield takeEvery(actions.deposit, handleDeposit)
 }
@@ -203,10 +151,9 @@ export function* createAccountHanlder(): Generator {
   yield takeEvery(actions.createAccount, handleCreateAccount)
 }
 
-export function* modalsSaga(): Generator {
+export function* stakingSaga(): Generator {
   yield all(
     [
-      sendTokenHandler,
       depositHandler,
       mintHandler,
       withdrawHandler,
