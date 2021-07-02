@@ -9,8 +9,10 @@ import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 
+export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
+
 export interface IProps {
-  action: string
+  action: ActionType
   maxAvailable: BN
   maxDecimal: number
   onClick: (amount: BN, decimals: number) => () => void
@@ -115,7 +117,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
 
     const actionToPastNoun: { [key: string]: string} = {
       mint: 'minted',
-      withdraw: 'withdrawed',
+      withdraw: 'withdrawn',
       burn: 'burned',
       deposit: 'deposited'
     }
