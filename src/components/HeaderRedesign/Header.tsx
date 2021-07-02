@@ -24,6 +24,7 @@ export interface IHeader {
   landing: string
   typeOfWallet?: 'phantom' | 'sollet'
   onFaucet?: () => void
+  onDisconnectWallet: () => void
 }
 export const HeaderRedesign: React.FC<IHeader> = ({
   address,
@@ -32,7 +33,8 @@ export const HeaderRedesign: React.FC<IHeader> = ({
   walletConnected,
   landing,
   typeOfWallet = 'phantom',
-  onFaucet
+  onFaucet,
+  onDisconnectWallet
 }) => {
   const classes = useStyles()
   const buttonClasses = useButtonStyles()
@@ -110,6 +112,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
                   options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
+                  onDisconnect={onDisconnectWallet}
                 />
               ) : (
                 <ChangeWalletButton
@@ -117,6 +120,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
                   options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
+                  onDisconnect={onDisconnectWallet}
                   startIcon={
                     typeOfWallet === 'phantom' ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
@@ -135,6 +139,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               onSelect={onWalletSelect}
               connected={walletConnected}
               hideArrow={true}
+              onDisconnect={onDisconnectWallet}
             />
           </Hidden>
         </Grid>
