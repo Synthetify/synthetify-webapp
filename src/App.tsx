@@ -11,8 +11,6 @@ import { persistStore } from 'redux-persist'
 import Notifier from '@containers/Notifier/Notifier'
 import { SnackbarProvider } from 'notistack'
 import GlobalLoader from '@containers/GlobalLoader/GlobalLoader'
-import SendModal from '@containers/Modals/SendModal'
-import CreateAccountModal from '@containers/Modals/CreateAccountModal'
 import PagesRouter from './pages/PagesRouter'
 
 setConfig({
@@ -25,8 +23,6 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <SnackbarProvider maxSnack={99}>
-            <CreateAccountModal />
-            <SendModal />
             <Notifier />
             <GlobalLoader />
             <PagesRouter />
