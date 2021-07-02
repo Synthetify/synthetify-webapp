@@ -127,7 +127,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>From</Typography>
-          <Typography className={classes.tokenMaxText}>{tokenFrom ? `${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}` : ''}</Typography>
+          <Typography className={classes.tokenMaxText}>{tokenFrom ? `Balance: ${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}` : ''}</Typography>
         </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
@@ -219,7 +219,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
-          <Typography className={classes.tokenMaxText}>{tokenFrom && tokenTo ? `Balance: ${calculateSwapOutAmount(tokenFrom, tokenTo, printBN(tokenFrom.balance, tokenFrom.decimals), 0)} ${tokenTo.symbol}` : ''}</Typography>
+          <Typography className={classes.tokenMaxText}>{tokenFrom && tokenTo ? `Balance: ${printBN(tokenTo.balance, tokenTo.decimals)} ${tokenTo.symbol}` : ''}</Typography>
         </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
