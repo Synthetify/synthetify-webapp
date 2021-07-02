@@ -176,7 +176,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             disabled={!actionAvailable}
             color='secondary'
             padding='11px 40px'
-            style={{ width: 160 }}
+            style={{ width: 160, marginBlock: 7 }}
             onClick={onClick(amountBN, decimal)}
           />
         </Grid>

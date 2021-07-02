@@ -17,7 +17,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
 
   const progressIcon = (state: ProgressState) => {
     if (state === 'success') {
-      return <img src={progressSuccess} alt='success' />
+      return <img src={progressSuccess} alt='success' style={{ marginTop: 10 }} />
     } else if (state === 'failed') {
       return <img src={progressFailed} alt='failed' style={{ marginTop: 10 }} />
     }

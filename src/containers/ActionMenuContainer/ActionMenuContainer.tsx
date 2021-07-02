@@ -38,10 +38,10 @@ export const ActionMenuContainer: React.FC = () => {
     onWithdraw={(amount, decimal) => () => {
         dispatch(actions.withdraw({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
     }}
-    availableToMint={availableToMint}
+    availableToMint={availableToMint.muln(0.99)}
     availableToDeposit={balance}
-    availableToWithdraw={availableToWithdraw}
-    availableToBurn={availableToBurn}
+    availableToWithdraw={availableToWithdraw.muln(0.99)}
+    availableToBurn={availableToBurn.muln(0.99)}
     mintState={mintState}
     withdrawState={withdrawState}
     depositState={depositState}
