@@ -12,18 +12,11 @@ import {
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
 import { getSolanaWallet, connectWallet } from '@web3/wallet'
-import {
-  Account,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  sendAndConfirmTransaction
-} from '@solana/web3.js'
+import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token, ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { Status } from '@reducers/solanaConnection'
 import { actions as exchangeActions } from '@reducers/exchange'
-// import { createToken } from './token'
 import { BN } from '@project-serum/anchor'
 import { getCollateralTokenAirdrop } from './exchange'
 import { tou64 } from '@consts/utils'
