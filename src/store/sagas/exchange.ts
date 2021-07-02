@@ -2,32 +2,14 @@
 import { call, put, SagaGenerator, select, all, spawn, takeEvery } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions } from '@reducers/exchange'
-import {
-  collateralAccount,
-  collateralToken,
-  userAccountAddress,
-  xUSDAddress,
-  mintAuthority,
-  swap,
-  exchangeAccount
-} from '@selectors/exchange'
+import { collateralToken, xUSDAddress, swap, exchangeAccount } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import * as anchor from '@project-serum/anchor'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import {
-  Account,
-  TransactionInstruction,
-  PublicKey,
-  Transaction,
-  sendAndConfirmTransaction,
-  SYSVAR_RENT_PUBKEY,
-  SystemProgram,
-  sendAndConfirmRawTransaction
-} from '@solana/web3.js'
+import { PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
-import { createAccount, getToken, getWallet, sleep, signAndSend } from './wallet'
-import { BN, Program } from '@project-serum/anchor'
+import { createAccount, getToken, getWallet, sleep } from './wallet'
+import { BN } from '@project-serum/anchor'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
