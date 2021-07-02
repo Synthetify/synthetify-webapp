@@ -79,7 +79,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                 try {
                   icon = require(`@static/icons/${image}.png`)
                 } catch (error) {
-                  icon = require(`@static/icons/sny.png`)
+                  icon = require('@static/icons/sny.png')
                 }
                 return (
                   <Grid

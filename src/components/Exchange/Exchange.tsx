@@ -115,21 +115,14 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
       setFromToken(tokens[0])
     }
   }, [])
-  const {
-    errors,
-    reset,
-    setValue,
-    handleSubmit,
-    register,
-    getValues,
-    trigger
-  } = useForm<FormFields>({
-    resolver: yupResolver(schema),
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    defaultValues: { amount: '' },
-    shouldFocusError: true
-  })
+  const { errors, reset, setValue, handleSubmit, register, getValues, trigger } =
+    useForm<FormFields>({
+      resolver: yupResolver(schema),
+      mode: 'onChange',
+      reValidateMode: 'onChange',
+      defaultValues: { amount: '' },
+      shouldFocusError: true
+    })
   const submit = (data: FormFields) => {
     if (fromToken && toToken) {
       onSwap(
@@ -381,7 +374,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             try {
                               icon = require(`@static/icons/${image}.png`)
                             } catch (error) {
-                              icon = require(`@static/icons/sny.png`)
+                              icon = require('@static/icons/sny.png')
                             }
                             return (
                               <MenuItem
