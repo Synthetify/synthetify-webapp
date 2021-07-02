@@ -60,7 +60,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                 </Grid>
                 <Grid item className={classes.titleDiv}>
                   <Typography variant='h1' color='textPrimary'>
-                    Transaction successfull
+                    Transaction successful
                   </Typography>
                 </Grid>
                 <Grid item className={classes.helpTextLoaderDiv}>
@@ -72,7 +72,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
             )
           ) : (
             <>
-              {assets.map(asset => {
+              {assets.map((asset, index) => {
                 const ticker = asset.symbol.toString().toLowerCase()
                 const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                 let icon
@@ -83,6 +83,7 @@ export const CreateAccountModal: React.FC<ICreateAccountModal> = ({
                 }
                 return (
                   <Grid
+                    key={index}
                     item
                     className={classes.button}
                     onClick={() => {
