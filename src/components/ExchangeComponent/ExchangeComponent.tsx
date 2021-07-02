@@ -90,11 +90,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
   const [amountTo, setAmountTo] = React.useState<string>('')
 
   useEffect(() => {
-    const updatedTokenFrom = tokens.find(token => token.symbol === tokenFrom?.symbol) ?? null
-    const updatedTokenTo = tokens.find(token => token.symbol === tokenTo?.symbol) ?? null
-
-    setTokenFrom(updatedTokenFrom)
-    setTokenTo(updatedTokenTo)
+    if (tokenFrom) {
+      const fromIndex = tokens.findIndex(t => t.assetAddress.equals(tokenFrom?.assetAddress))
+      setTokenFrom(tokens[fromIndex])
+    }
+    if (tokenTo) {
+      const toIndex = tokens.findIndex(t => t.assetAddress.equals(tokenTo?.assetAddress))
+      setTokenTo(tokens[toIndex])
+    }
   }, [tokens])
 
   useEffect(() => {
