@@ -24,15 +24,17 @@ export interface IHeader {
   landing: string
   typeOfWallet?: 'phantom' | 'sollet'
   onFaucet?: () => void
+  onDisconnectWallet: () => void
 }
-export const HeaderRedesign: React.FC<IHeader> = ({
+export const Header: React.FC<IHeader> = ({
   address,
   onNetworkSelect,
   onWalletSelect,
   walletConnected,
   landing,
   typeOfWallet = 'phantom',
-  onFaucet
+  onFaucet,
+  onDisconnectWallet
 }) => {
   const classes = useStyles()
   const buttonClasses = useButtonStyles()
@@ -106,17 +108,19 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             <Grid item>
               {!walletConnected ? (
                 <ChangeWalletButton
-                  name='Connect a wallet'
+                  name='Connect'
                   options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
+                  onDisconnect={onDisconnectWallet}
                 />
               ) : (
                 <ChangeWalletButton
-                  name={address.toString()}
+                  name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
                   options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
+                  onDisconnect={onDisconnectWallet}
                   startIcon={
                     typeOfWallet === 'phantom' ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
@@ -135,6 +139,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
               onSelect={onWalletSelect}
               connected={walletConnected}
               hideArrow={true}
+              onDisconnect={onDisconnectWallet}
             />
           </Hidden>
         </Grid>
@@ -181,4 +186,4 @@ export const HeaderRedesign: React.FC<IHeader> = ({
     </>
   )
 }
-export default HeaderRedesign
+export default Header
