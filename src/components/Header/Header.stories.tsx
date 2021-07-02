@@ -23,6 +23,7 @@ storiesOf('ui/HeaderRedesign', module)
           }}
           walletConnected={false}
           landing='staking'
+          onDisconnectWallet={action('disconnect')}
         />
       </div>
     )
@@ -40,6 +41,7 @@ storiesOf('ui/HeaderRedesign', module)
           }}
           walletConnected={true}
           landing='staking'
+          onDisconnectWallet={action('disconnect')}
         />
       </div>
     )

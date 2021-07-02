@@ -1,10 +1,10 @@
-import { call, SagaGenerator, select } from 'typed-redux-saga'
+import { call, SagaGenerator } from 'typed-redux-saga'
 
 import { getConnection } from './connection'
-import { PublicKey, TransactionInstruction, Account } from '@solana/web3.js'
+import { Account, PublicKey, TransactionInstruction } from '@solana/web3.js'
 import { MintInfo, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { getWallet } from './wallet'
-import { BN, Program } from '@project-serum/anchor'
+import { BN } from '@project-serum/anchor'
 import { tou64 } from '@consts/utils'
 
 export function* createToken(
@@ -24,8 +24,7 @@ export function* createToken(
     decimals,
     TOKEN_PROGRAM_ID
   )
-  const tokenPubKey = token.publicKey.toString() as string
-  return tokenPubKey
+  return token.publicKey.toString()
 }
 export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
   const connection = yield* call(getConnection)
@@ -35,7 +34,7 @@ export function* getTokenDetails(address: string): SagaGenerator<MintInfo> {
 }
 
 export function* mintToken(tokenAddress: string, recipient: string, amount: number): Generator {
-  const wallet = yield* call(getWallet)
+  yield* call(getWallet)
   const connection = yield* call(getConnection)
   const token = new Token(connection, new PublicKey(tokenAddress), TOKEN_PROGRAM_ID, new Account())
   // This should return txid in future

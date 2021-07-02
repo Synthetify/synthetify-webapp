@@ -1,7 +1,6 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   button: {
     textTransform: 'none',
     boxShadow: 'none',

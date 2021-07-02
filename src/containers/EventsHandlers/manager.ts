@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assets, exchangeAccount, state } from '@selectors/exchange'
+import { state } from '@selectors/exchange'
 import { status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'

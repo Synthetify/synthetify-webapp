@@ -13,6 +13,7 @@ export interface IProps {
   connected: boolean
   startIcon?: JSX.Element
   hideArrow?: boolean
+  onDisconnect: () => void
 }
 export const ChangeWalletButton: React.FC<IProps> = ({
   name,
@@ -20,7 +21,8 @@ export const ChangeWalletButton: React.FC<IProps> = ({
   onSelect,
   connected,
   startIcon,
-  hideArrow
+  hideArrow,
+  onDisconnect
 }) => {
   const classes = useStyles()
 
@@ -34,6 +36,12 @@ export const ChangeWalletButton: React.FC<IProps> = ({
   }
 
   const handleClose = () => {
+    unblurContent()
+    setOpen(false)
+  }
+
+  const handleDisconnect = () => {
+    onDisconnect()
     unblurContent()
     setOpen(false)
   }
@@ -55,7 +63,7 @@ export const ChangeWalletButton: React.FC<IProps> = ({
         anchorEl={anchorEl}
         handleClose={handleClose}
         onSelect={onSelect}
-        callDisconect={() => {}}
+        callDisconect={handleDisconnect}
         connected={connected}
       />
     </div>
