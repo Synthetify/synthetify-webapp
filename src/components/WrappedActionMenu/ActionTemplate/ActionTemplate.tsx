@@ -100,7 +100,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       return 'incorrect value!'
     }
 
-    const actionToNoun: { [key: string]: string} = {
+    const actionToNoun: { [key in ActionType]: string} = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
       burn: 'Burning',
@@ -115,7 +115,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       return `${actionToNoun[action]} failed`
     }
 
-    const actionToPastNoun: { [key: string]: string} = {
+    const actionToPastNoun: { [key in ActionType]: string} = {
       mint: 'minted',
       withdraw: 'withdrawn',
       burn: 'burned',
