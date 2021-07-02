@@ -5,7 +5,7 @@ import { toBlur } from '@consts/uiUtils'
 import StakingPage from './StakingPage/StakingPage'
 import { ExchangePage } from './ExchangePage/ExchangePage'
 import Footer from '@components/Footer/Footer'
-import HeaderRedesignWrapper from '@containers/HeaderRedesignWrapper/HeaderRedesignWrapper'
+import HeaderWrapper from '@containers/HeaderWrapper/HeaderWrapper'
 import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
 import EventsHandlers from '@containers/EventsHandlers'
 import { Status } from '@reducers/solanaWallet'
@@ -25,7 +25,7 @@ export const PagesRouter: React.FC = () => {
     <Router>
       {signerStatus === Status.Initalized && <EventsHandlers />}
       <div id={toBlur}>
-        <HeaderRedesignWrapper />
+        <HeaderWrapper />
         <Switch>
           <Route path='/staking' component={StakingPage} />
           <Route path={'/exchange'} component={ExchangePage} />

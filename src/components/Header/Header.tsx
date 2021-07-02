@@ -1,238 +1,184 @@
-import React, { useState } from 'react'
-import { Button, Drawer, Grid, Typography, CardMedia } from '@material-ui/core'
-// import SynthetifyIconHorizontal from '@components/SynthetifyIconHorizontal/SynthetifyIconHorizontal'
-import CommonButton from '@components/CommonButton/CommonButton'
-import { SolanaNetworks } from '@web3/connection'
-import BlurOnIcon from '@material-ui/icons/BlurOn'
-import PhantomIcon from '@static/png/phantom.png'
-import SolletIcon from '@static/jpg/sollet.jpg'
+import React from 'react'
+import { PublicKey } from '@solana/web3.js'
+import { Grid, CardMedia, IconButton, Divider, Hidden, Button } from '@material-ui/core'
 import useStyles from './style'
+import { MoreHoriz, Menu } from '@material-ui/icons'
+import PhantomIcon from '@static/svg/phantom.svg'
+import SolletIcon from '@static/svg/sollet.svg'
+import snyIcon from '@static/icons/sny.png'
+import NavbarButton from '@components/Navbar/Button'
+import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
+import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
+import RoutesModal from '@components/Modals/RoutesModal/RoutesModal'
+import { blurContent, unblurContent } from '@consts/uiUtils'
+import { SolanaNetworks } from '@consts/static'
+import useButtonStyles from '../HeaderButton/style'
+import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+
 export interface IHeader {
-  onNetworkClick: (network: SolanaNetworks) => void
-  onConnect: (wallet: WalletType) => void
-  address: string
-  network: SolanaNetworks
+  address: PublicKey
+  onNetworkSelect: (chosen: string) => void
+  onWalletSelect: (chosen: WalletType) => void
+  walletConnected: boolean
+  landing: string
+  typeOfWallet?: 'phantom' | 'sollet'
+  onFaucet?: () => void
 }
-export const Header: React.FC<IHeader> = ({ onNetworkClick, network, onConnect, address }) => {
+export const HeaderRedesign: React.FC<IHeader> = ({
+  address,
+  onNetworkSelect,
+  onWalletSelect,
+  walletConnected,
+  landing,
+  typeOfWallet = 'phantom',
+  onFaucet
+}) => {
   const classes = useStyles()
-  const [open, setOpen] = useState(false)
+  const buttonClasses = useButtonStyles()
+
+  const routes = ['staking', 'stats', 'exchange']
+  const [activePath, setActive] = React.useState(landing)
+  const [network, setNetwork] = React.useState('Devnet')
+
+  const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
+  const [routesModalAnchor, setRoutesModalAnchor] = React.useState<HTMLButtonElement | null>(null)
+
+  React.useEffect(() => { // if there will be no redirects, get rid of this
+    setActive(landing)
+  }, [landing])
+
   return (
     <>
-      <Grid container className={classes.root} wrap='nowrap' justify='flex-end' alignItems='center'>
-        <Grid item>
-          <Grid container wrap='nowrap'>
-            {/* <Grid item className={classes.divAirdropButton}>
-              <CommonButton
-                className={classes.buttonAirdrop}
-                name={'Airdrop'}
-                startIcon={<BlurOnIcon style={{ fontSize: 27 }} />}
-                onClick={() => {
-                  setOpen(true)
-                }}></CommonButton>
-            </Grid> */}
-            <Grid item className={classes.divButton}>
-              <CommonButton
-                className={
-                  address === DEFAULT_PUBLICKEY.toString() ? classes.button : classes.buttonAddress
-                }
-                name={
-                  address === DEFAULT_PUBLICKEY.toString() ? 'Connect' : address.substring(0, 10)
-                }
-                startIcon={<BlurOnIcon style={{ fontSize: 27 }} />}
-                onClick={() => {
-                  setOpen(true)
-                }}></CommonButton>
-            </Grid>
+      <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
+        <Grid item container className={classes.left} wrap='nowrap' alignItems='center'>
+          <Grid item>
+            <CardMedia className={classes.snyLogo} image={snyIcon} />
+          </Grid>
+          <Grid item>
+            <Divider orientation='vertical' className={classes.verticalDivider} />
           </Grid>
         </Grid>
-      </Grid>
-      <Drawer
-        anchor='right'
-        open={open}
-        onClose={() => {
-          setOpen(false)
-        }}
-        classes={{ paper: classes.drawer }}>
-        <Grid
-          container
-          direction='column'
-          justify='space-between'
-          wrap='nowrap'
-          style={{ height: '100%', paddingBottom: 50, minHeight: 600 }}>
-          <Grid item>
-            <Grid container direction='column' justify='center' alignItems='center'>
-              <Grid item className={classes.drawerTitleDiv}>
-                <Typography variant='body1' color='textPrimary' className={classes.drawerTitle}>
-                  Connect wallet:
-                </Typography>
+        <Hidden mdDown>
+          <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
+            {routes.map(path => (
+              <Grid item key={`path-${path}`}>
+                <Link to={`/${path}`} style={{ textDecoration: 'none' }}>
+                  <NavbarButton
+                    name={path}
+                    onClick={() => {
+                      setActive(path)
+                    }}
+                    active={path === activePath}
+                  />
+                </Link>
               </Grid>
-              <Grid item className={classes.networkButtonDiv}>
-                <Button
-                  variant='outlined'
-                  onClick={() => {
-                    onConnect(WalletType.PHANTOM)
-                    setOpen(false)
-                  }}
-                  className={classes.walletButton}>
-                  <Grid container alignItems='center'>
-                    <Grid item>
-                      <CardMedia
-                        style={{ width: 32, height: 32, marginRight: 20 }}
-                        image={PhantomIcon}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Typography variant='h4'>Phantom</Typography>
-                    </Grid>
-                  </Grid>
-                </Button>
-              </Grid>
-              <Grid item className={classes.networkButtonDiv}>
-                <Button
-                  variant='outlined'
-                  onClick={() => {
-                    onConnect(WalletType.SOLLET)
-                    setOpen(false)
-                  }}
-                  className={classes.walletButton}>
-                  <Grid container alignItems='center'>
-                    <Grid item>
-                      <CardMedia
-                        style={{ width: 32, height: 32, marginRight: 20, borderRadius: '50%' }}
-                        image={SolletIcon}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Typography variant='h4'>Sollet</Typography>
-                    </Grid>
-                  </Grid>
-                </Button>
-              </Grid>
-              <Grid item className={classes.networkButtonDiv}>
-                <Button
-                  variant='outlined'
-                  onClick={() => {
-                    onConnect(WalletType.SOLLET)
-                    setOpen(false)
-                  }}
-                  className={classes.walletButton}>
-                  <Grid container alignItems='center' wrap='nowrap'>
-                    <Grid item>
-                      <CardMedia
-                        style={{ width: 32, height: 32, marginRight: 20, borderRadius: '50%' }}
-                        image={SolletIcon}
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Typography variant='h4'>Extension</Typography>
-                    </Grid>
-                  </Grid>
-                </Button>
-              </Grid>
-            </Grid>
+            ))}
           </Grid>
+        </Hidden>
+
+        <Grid container item justify='flex-end' wrap='nowrap' alignItems='center'>
+          {(network === 'Devnet') && (
+            <Grid item>
+              <Button
+                className={buttonClasses.headerButton}
+                variant='contained'
+                classes={{ disabled: buttonClasses.disabled }}
+                onClick={onFaucet}
+              >
+                Faucet
+              </Button>
+            </Grid>
+          )}
           <Grid item>
-            <Grid container direction='column' justify='center' alignItems='center'>
-              <Grid item className={classes.drawerTitleDiv}>
-                <Typography variant='body1' color='textPrimary' className={classes.drawerTitle}>
-                  Select network:
-                </Typography>
-              </Grid>
-              {/* <Grid item className={classes.networkButtonDiv}>
-            <Button
-              variant='outlined'
-              onClick={() => {
-                onNetworkClick(SolanaNetworks.MAIN)
-                setOpen(false)
+            <SelectNetworkButton
+              name={network}
+              networks={[
+                { name: 'Devnet', network: SolanaNetworks.DEV }
+              ]}
+              onSelect={(chosen: string) => {
+                onNetworkSelect(chosen)
+                setNetwork(chosen)
               }}
-              className={
-                network === SolanaNetworks.MAIN
-                  ? classes.networkButton
-                  : classes.networkButtonDisabled
-              }>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant='body2'>Mainnet:</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6'>{SolanaNetworks.MAIN}</Typography>
-                </Grid>
-              </Grid>
-            </Button>
-          </Grid> */}
-              {/* <Grid item className={classes.networkButtonDiv}>
-                <Button
-                  variant='outlined'
-                  onClick={() => {
-                    onNetworkClick(SolanaNetworks.TEST)
-                    setOpen(false)
-                  }}
-                  className={
-                    network === SolanaNetworks.TEST
-                      ? classes.networkButton
-                      : classes.networkButtonDisabled
-                  }>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <Typography variant='body2'>Testnet:</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant='h6'>{SolanaNetworks.TEST}</Typography>
-                    </Grid>
-                  </Grid>
-                </Button>
-              </Grid> */}
-              {/* <Grid item className={classes.networkButtonDiv}>
-                <Button
-                  variant='outlined'
-                  onClick={() => {
-                    onNetworkClick(SolanaNetworks.LOCAL)
-                    setOpen(false)
-                  }}
-                  className={
-                    network === SolanaNetworks.LOCAL
-                      ? classes.networkButton
-                      : classes.networkButtonDisabled
-                  }>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <Typography variant='body2'>Localnet:</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant='h6'>{SolanaNetworks.LOCAL}</Typography>
-                    </Grid>
-                  </Grid>
-                </Button>
-              </Grid> */}
-              <Grid item className={classes.networkButtonDiv}>
-                <Button
-                  variant='outlined'
-                  onClick={() => {
-                    onNetworkClick(SolanaNetworks.DEV)
-                    setOpen(false)
-                  }}
-                  className={
-                    network === SolanaNetworks.DEV
-                      ? classes.networkButton
-                      : classes.networkButtonDisabled
-                  }>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <Typography variant='body2'>Devnet:</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant='h6'>{SolanaNetworks.DEV}</Typography>
-                    </Grid>
-                  </Grid>
-                </Button>
-              </Grid>
+            />
+          </Grid>
+          <Hidden mdDown>
+            <Grid item>
+              {!walletConnected ? (
+                <ChangeWalletButton
+                  name='Connect a wallet'
+                  options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                />
+              ) : (
+                <ChangeWalletButton
+                  name={address.toString()}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  startIcon={
+                    typeOfWallet === 'phantom' ? (
+                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                    ) : (
+                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                    )
+                  }
+                />
+              )}
+            </Grid>
+          </Hidden>
+          <Hidden lgUp>
+            <ChangeWalletButton
+              name='My&nbsp;wallet'
+              options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+              onSelect={onWalletSelect}
+              connected={walletConnected}
+              hideArrow={true}
+            />
+          </Hidden>
+        </Grid>
+        <Hidden mdDown>
+          <IconButton className={classes.dotsButton} onClick={() => {}}>
+            <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
+          </IconButton>
+        </Hidden>
+        <Hidden lgUp>
+          <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
+            <Grid item>
+              <Divider orientation='vertical' className={classes.verticalDivider} />
+            </Grid>
+            <Grid item>
+              <IconButton
+                className={classes.dehazeButton}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  setRoutesModalAnchor(event.currentTarget)
+                  setRoutesModalOpen(true)
+                  blurContent()
+                }}>
+                <Menu className={classes.dehazeIcon} />
+              </IconButton>
+              <RoutesModal
+                routes={routes}
+                anchorEl={routesModalAnchor}
+                open={routesModalOpen}
+                current={activePath}
+                onSelect={(selected: string) => {
+                  setActive(selected)
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+                handleClose={() => {
+                  setRoutesModalOpen(false)
+                  unblurContent()
+                }}
+              />
             </Grid>
           </Grid>
-        </Grid>
-      </Drawer>
+        </Hidden>
+      </Grid>
+      <Divider className={classes.divider} />
     </>
   )
 }
-export default Header
+export default HeaderRedesign
