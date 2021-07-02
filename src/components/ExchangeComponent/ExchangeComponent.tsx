@@ -114,7 +114,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Typography className={classes.tokenComponentText}>From</Typography>
+        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+          <Typography className={classes.tokenComponentText}>From</Typography>
+          <Typography className={classes.tokenMaxText}>{tokenFrom ? `${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}` : ''}</Typography>
+        </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
             <Grid item xs={6}>
@@ -203,7 +206,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+          <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+          <Typography className={classes.tokenMaxText}>{tokenFrom && tokenTo ? `${calculateSwapOutAmount(tokenFrom, tokenTo, printBN(tokenFrom.balance, tokenFrom.decimals))} ${tokenTo.symbol}` : ''}</Typography>
+        </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
             <Grid item xs={6}>
