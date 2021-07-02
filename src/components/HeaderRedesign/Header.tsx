@@ -108,7 +108,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
             <Grid item>
               {!walletConnected ? (
                 <ChangeWalletButton
-                  name='Connect a wallet'
+                  name='Connect'
                   options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
@@ -116,7 +116,7 @@ export const HeaderRedesign: React.FC<IHeader> = ({
                 />
               ) : (
                 <ChangeWalletButton
-                  name={address.toString()}
+                  name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
                   options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}

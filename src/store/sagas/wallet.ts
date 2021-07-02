@@ -11,7 +11,7 @@ import {
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
-import { getSolanaWallet, connectWallet } from '@web3/wallet'
+import { getSolanaWallet, connectWallet, disconnectWallet } from '@web3/wallet'
 import {
   Account,
   PublicKey,
@@ -242,9 +242,29 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield* call(init)
   yield* call(connectExchangeWallet)
 }
+
+export function* handleDisconnect(): Generator {
+  try {
+    yield* call(disconnectWallet)
+    yield* put(actions.resetState())
+    yield* put(exchangeActions.setExchangeAccount({
+      address: DEFAULT_PUBLICKEY,
+      collateralShares: new BN(0),
+      debtShares: new BN(0)
+    }))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* connectHandler(): Generator {
   yield takeLatest(actions.connect, handleConnect)
 }
+
+export function* disconnectHandler(): Generator {
+  yield takeLatest(actions.disconnect, handleDisconnect)
+}
+
 export function* airdropSaga(): Generator {
   yield takeLeading(actions.airdrop, handleAirdrop)
 }
@@ -253,5 +273,5 @@ export function* initSaga(): Generator {
   yield takeLeading(actions.initWallet, init)
 }
 export function* walletSaga(): Generator {
-  yield all([initSaga, airdropSaga, connectHandler].map(spawn))
+  yield all([initSaga, airdropSaga, connectHandler, disconnectHandler].map(spawn))
 }

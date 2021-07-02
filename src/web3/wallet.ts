@@ -55,4 +55,10 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
   })
 }
 
-export { getSolanaWallet, connectWallet }
+const disconnectWallet = () => {
+  if (_wallet) {
+    _wallet.disconnect()
+  }
+}
+
+export { getSolanaWallet, connectWallet, disconnectWallet }
