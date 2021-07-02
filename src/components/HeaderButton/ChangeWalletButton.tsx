@@ -40,6 +40,12 @@ export const ChangeWalletButton: React.FC<IProps> = ({
     setOpen(false)
   }
 
+  const handleDisconnect = () => {
+    onDisconnect()
+    unblurContent()
+    setOpen(false)
+  }
+
   return (
     <div>
       <Button
@@ -57,7 +63,7 @@ export const ChangeWalletButton: React.FC<IProps> = ({
         anchorEl={anchorEl}
         handleClose={handleClose}
         onSelect={onSelect}
-        callDisconect={onDisconnect}
+        callDisconect={handleDisconnect}
         connected={connected}
       />
     </div>
