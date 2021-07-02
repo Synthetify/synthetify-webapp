@@ -4,7 +4,6 @@ import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import classNames from 'classnames'
 
 export interface ISelectTokenModal {
   name?: string
