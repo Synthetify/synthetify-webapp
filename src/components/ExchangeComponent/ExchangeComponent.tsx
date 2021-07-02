@@ -90,6 +90,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
   const [amountTo, setAmountTo] = React.useState<string>('')
 
   useEffect(() => {
+    const updatedTokenFrom = tokens.find(token => token.symbol === tokenFrom?.symbol) ?? null
+    const updatedTokenTo = tokens.find(token => token.symbol === tokenTo?.symbol) ?? null
+
+    setTokenFrom(updatedTokenFrom)
+    setTokenTo(updatedTokenTo)
+  }, [tokens])
+
+  useEffect(() => {
     updateEstimatedAmount()
   }, [tokenTo, tokenFrom, dispatch])
 
