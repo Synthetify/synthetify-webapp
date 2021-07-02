@@ -5,6 +5,7 @@ import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionT
 import { BN } from '@project-serum/anchor'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
+import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/modals'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -15,7 +16,11 @@ export interface IProps {
   availableToMint: BN
   availableToDeposit: BN
   availableToWithdraw: BN
-  availableToBurn: BN
+  availableToBurn: BN,
+  mintState: Pick<IMint, 'sending' | 'error'>
+  withdrawState: Pick<IWithdraw, 'sending' | 'error'>
+  depositState: Pick<IDeposit, 'sending' | 'error'>
+  burnState: Pick<IBurn, 'sending' | 'error'>
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -27,7 +32,11 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   availableToMint,
   availableToDeposit,
   availableToWithdraw,
-  availableToBurn
+  availableToBurn,
+  mintState,
+  withdrawState,
+  burnState,
+  depositState
 }) => {
   const classes = useStyles()
 
@@ -39,6 +48,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxDecimal={6}
         onClick={onMint}
         currency='xUSD'
+        sending={mintState.sending}
+        hasError={!!mintState.error?.length}
       />
     ),
     deposit: (
@@ -48,6 +59,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxDecimal={6}
         onClick={onDeposit}
         currency='SNY'
+        sending={depositState.sending}
+        hasError={!!depositState.error?.length}
       />
     ),
     withdraw: (
@@ -57,6 +70,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxDecimal={6}
         onClick={onWithdraw}
         currency='SNY'
+        sending={withdrawState.sending}
+        hasError={!!withdrawState.error?.length}
       />
     ),
     burn: (
@@ -66,6 +81,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         action='burn'
         onClick={onBurn}
         currency='xUSD'
+        sending={burnState.sending}
+        hasError={!!burnState.error?.length}
       />
     ),
     rewards: 'TODO'

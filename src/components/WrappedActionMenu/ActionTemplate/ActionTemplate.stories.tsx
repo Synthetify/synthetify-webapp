@@ -13,6 +13,8 @@ storiesOf('WrappedActionMenu/ActionContent', module).add('{template}', () => (
       maxDecimal={6}
       onClick={(_amount: BN, _decimal: number) => action('{template}')}
       currency='xUSD'
+      sending={false}
+      hasError={false}
     />
   </div>
 ))

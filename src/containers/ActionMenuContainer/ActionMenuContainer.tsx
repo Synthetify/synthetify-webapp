@@ -5,6 +5,7 @@ import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/modals'
 import { userMaxMintUsd, userMaxWithdraw, collateralToken, userMaxBurnToken, xUSDAddress } from '@selectors/exchange'
 import { tokenBalance } from '@selectors/solanaWallet'
+import { mint, deposit, withdraw, burn } from '@selectors/modals'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,10 @@ export const ActionMenuContainer: React.FC = () => {
   const { balance } = useSelector(tokenBalance(token))
   const tokenAddress = useSelector(xUSDAddress)
   const availableToBurn = useSelector(userMaxBurnToken(tokenAddress))
+  const mintState = useSelector(mint)
+  const withdrawState = useSelector(withdraw)
+  const depositState = useSelector(deposit)
+  const burnState = useSelector(burn)
 
   useEffect(() => {
     dispatch(actions.setBurnAddress({ tokenAddress }))
@@ -37,6 +42,10 @@ export const ActionMenuContainer: React.FC = () => {
     availableToDeposit={balance}
     availableToWithdraw={availableToWithdraw}
     availableToBurn={availableToBurn}
+    mintState={mintState}
+    withdrawState={withdrawState}
+    depositState={depositState}
+    burnState={burnState}
   />
 }
 

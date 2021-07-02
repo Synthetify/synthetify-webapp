@@ -150,10 +150,12 @@ const modalsSlice = createSlice({
     burnDone(state, action: PayloadAction<Pick<IBurn, 'txid'>>) {
       state.burn.sending = false
       state.burn.txid = action.payload.txid
+      state.burn.error = undefined
       return state
     },
-    burnFailed(state) {
+    burnFailed(state, action: PayloadAction<Pick<IBurn, 'error'>>) {
       state.burn.sending = false
+      state.burn.error = action.payload.error
       return state
     },
     openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {
@@ -180,10 +182,12 @@ const modalsSlice = createSlice({
     depositDone(state, action: PayloadAction<Pick<IDeposit, 'txid'>>) {
       state.deposit.sending = false
       state.deposit.txid = action.payload.txid
+      state.deposit.error = undefined
       return state
     },
-    depositFailed(state) {
+    depositFailed(state, action: PayloadAction<Pick<IDeposit, 'error'>>) {
       state.deposit.sending = false
+      state.deposit.error = action.payload.error
       return state
     },
     mint(state, action: PayloadAction<Pick<IMint, 'amount'>>) {
@@ -194,10 +198,12 @@ const modalsSlice = createSlice({
     mintDone(state, action: PayloadAction<Pick<IMint, 'txid'>>) {
       state.mint.sending = false
       state.mint.txid = action.payload.txid
+      state.mint.error = undefined
       return state
     },
-    mintFailed(state) {
+    mintFailed(state, action: PayloadAction<Pick<IMint, 'error'>>) {
       state.mint.sending = false
+      state.mint.error = action.payload.error
       return state
     },
     withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
@@ -208,10 +214,12 @@ const modalsSlice = createSlice({
     withdrawDone(state, action: PayloadAction<Pick<IWithdraw, 'txid'>>) {
       state.withdraw.sending = false
       state.withdraw.txid = action.payload.txid
+      state.withdraw.error = undefined
       return state
     },
-    withdrawFailed(state) {
+    withdrawFailed(state, action: PayloadAction<Pick<IWithdraw, 'error'>>) {
       state.withdraw.sending = false
+      state.withdraw.error = action.payload.error
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: PublicKey }>) {

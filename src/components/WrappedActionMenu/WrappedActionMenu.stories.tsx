@@ -16,6 +16,10 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
       availableToDeposit={new BN(900_000)}
       availableToWithdraw={new BN(198_900_001)}
       availableToBurn={new BN(198_900_001)}
+      mintState={{ sending: false }}
+      withdrawState={{ sending: false }}
+      depositState={{ sending: false }}
+      burnState={{ sending: false }}
     />
   </div>
 ))

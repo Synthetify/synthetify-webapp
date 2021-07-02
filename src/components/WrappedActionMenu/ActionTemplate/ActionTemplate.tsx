@@ -15,19 +15,34 @@ export interface IProps {
   maxDecimal: number
   onClick: (amount: BN, decimals: number) => () => void
   currency: string
+  sending: boolean
+  hasError: boolean
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick, currency }) => {
+export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick, currency, sending, hasError }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const [actionAvailable, setActionAvailable] = useState(false)
   const [amountInputTouched, setTAmountInputTouched] = useState(false)
+  const [showOperationProgressFinale, setShowOperationProgressFinale] = useState(false)
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
   }, [amountBN, decimal])
+
+  useEffect(() => {
+    if (sending) {
+      setShowOperationProgressFinale(true)
+    }
+  }, [sending])
+
+  useEffect(() => {
+    if (showOperationProgressFinale) {
+      setShowOperationProgressFinale(false)
+    }
+  }, [amountBN])
 
   const checkActionIsAvailable = () => {
     if (decimal > maxDecimal) {
@@ -56,6 +71,60 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
 
   const checkAmountInputError = () => {
     return !amountInputTouched || actionAvailable
+  }
+
+  const getProgressState = () => {
+    if (!checkAmountInputError()) {
+      return 'failed'
+    }
+
+    if (sending) {
+      return 'progress'
+    }
+
+    if (showOperationProgressFinale && hasError) {
+      return 'failed'
+    }
+
+    if (showOperationProgressFinale && !hasError) {
+      return 'success'
+    }
+
+    return 'none'
+  }
+
+  const getProgressMessage = () => {
+    if (!checkAmountInputError()) {
+      return 'incorrect value!'
+    }
+
+    const actionToNoun: { [key: string]: string} = {
+      mint: 'Minting',
+      withdraw: 'Withdrawing',
+      burn: 'Burning',
+      deposit: 'Depositing'
+    }
+
+    if (sending) {
+      return `${actionToNoun[action]} in progress`
+    }
+
+    if (showOperationProgressFinale && hasError) {
+      return `${actionToNoun[action]} failed`
+    }
+
+    const actionToPastNoun: { [key: string]: string} = {
+      mint: 'minted',
+      withdraw: 'withdrawed',
+      burn: 'burned',
+      deposit: 'deposited'
+    }
+
+    if (showOperationProgressFinale && !hasError) {
+      return `Successfully ${actionToPastNoun[action]}`
+    }
+
+    return ''
   }
 
   return (
@@ -111,8 +180,8 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
         </Grid>
         <Grid item>
           <Progress
-            state={checkAmountInputError() ? 'none' : 'failed'}
-            message={checkAmountInputError() ? '' : 'incorrect value!'}
+            state={getProgressState()}
+            message={getProgressMessage()}
           />
         </Grid>
       </Grid>
