@@ -7,7 +7,6 @@ import * as yup from 'yup'
 import FilledButton from '@components/FilledButton/FilledButton'
 import { useForm, Controller, FieldError } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers'
-import useStyles from './style'
 import { TokensWithBalance } from '@selectors/solanaWallet'
 import { printBNtoBN, printBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
@@ -16,6 +15,8 @@ import { PublicKey } from '@solana/web3.js'
 import Loader from '@static/gif/loader.gif'
 import Success from '@static/gif/success.gif'
 import SwapIcon from '@static/svg/swap.svg'
+import useStyles from './style'
+const modules = import.meta.globEager('/src/static/icons/*.svg')
 
 export interface IExchange {
   tokens: TokensWithBalance[]
@@ -269,9 +270,9 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
                             try {
-                              icon = import.meta.globEager(`/@static/icons/${image}.png`)
+                              icon = modules[`/src/static/icons/${image.toLowerCase()}.svg`].default
                             } catch (error) {
-                              icon = import.meta.globEager(`/@static/icons/sny.png`)
+                              icon = modules['/src/static/icons/sny.svg'].default
                             }
                             return (
                               <MenuItem
@@ -375,15 +376,11 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             const ticker = token?.symbol?.toString().toLowerCase() || 'xBTC'
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
-                            console.log(icon)
-
                             try {
-                              icon = import.meta.globEager(`/@static/icons/${image}.png`)
+                              icon = modules[`/src/static/icons/${image.toLowerCase()}.svg`].default
                             } catch (error) {
-                              icon = import.meta.globEager(`/@static/icons/sny.png`)
-                              console.log(icon)
+                              icon = modules['/src/static/icons/sny.svg'].default
                             }
-                            console.log(icon)
                             return (
                               <MenuItem
                                 value={token.assetAddress.toString()}

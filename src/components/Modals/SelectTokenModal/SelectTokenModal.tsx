@@ -3,7 +3,7 @@ import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/c
 import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
-
+const modules = import.meta.globEager('/src/static/icons/*.svg')
 export interface ISelectTokenModal {
   tokens: string[]
   open: boolean
@@ -71,9 +71,9 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                 .map(name => {
                   let icon
                   try {
-                    icon = import.meta.globEager(`/@static/icons/${name.toLowerCase()}.svg`)
+                    icon = modules[`/src/static/icons/${name.toLowerCase()}.svg`].default
                   } catch (error) {
-                    icon = require('@static/icons/sny.svg')
+                    icon = modules['/src/static/icons/sny.svg'].default
                   }
 
                   return (

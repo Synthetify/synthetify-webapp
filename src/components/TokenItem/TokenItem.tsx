@@ -3,7 +3,8 @@ import { CardMedia, Grid, Typography } from '@material-ui/core'
 import BN from 'bn.js'
 import { printBN, removeTickerPrefix } from '@consts/utils'
 import useStyles from './style'
-const modules = import.meta.globEager('../../static/icons/*.svg')
+const modules = import.meta.globEager('/src/static/icons/*.svg')
+
 export interface IToken {
   ticker: string
   balance: BN
@@ -22,9 +23,9 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
   const imgName = removeTickerPrefix(ticker)
   let icon
   try {
-    icon = modules[`../../static/icons/${imgName.toLowerCase()}.svg`].default
+    icon = modules[`/src/static/icons/${imgName.toLowerCase()}.svg`].default
   } catch (error) {
-    icon = modules['../../static/icons/sny.svg'].default
+    icon = modules['/src/static/icons/sny.svg'].default
   }
   return (
     <Grid container alignItems='center' style={{ flexWrap: 'nowrap' }}>
