@@ -1,37 +1,21 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put, SagaGenerator, select, all, spawn, takeEvery } from 'typed-redux-saga'
+import { call, put, SagaGenerator, select, all, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
-import { actions } from '@reducers/exchange'
-import {
-  collateralAccount,
-  collateralToken,
-  userAccountAddress,
-  xUSDAddress,
-  mintAuthority,
-  swap,
-  exchangeAccount
-} from '@selectors/exchange'
+import { actions, PayloadTypes } from '@reducers/exchange'
+import { collateralToken, xUSDAddress, swap, exchangeAccount } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import * as anchor from '@project-serum/anchor'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import {
-  Account,
-  TransactionInstruction,
-  PublicKey,
-  Transaction,
-  sendAndConfirmTransaction,
-  SYSVAR_RENT_PUBKEY,
-  SystemProgram,
-  sendAndConfirmRawTransaction
-} from '@solana/web3.js'
+import { Account, PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
-import { createAccount, getToken, getWallet, sleep, signAndSend } from './wallet'
-import { BN, Program } from '@project-serum/anchor'
+import { createAccount, getToken, getWallet, sleep } from './wallet'
+import { BN } from '@project-serum/anchor'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection } from './connection'
+import { batch } from 'react-redux'
+import { PayloadAction } from '@reduxjs/toolkit'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -254,7 +238,22 @@ export function* handleSwap(): Generator {
 export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
 }
+const pendingUpdates: { [x: string]: BN } = {}
+export function* handleAssetPrice(): Generator {
+  yield* put(actions.batchSetAssetPrice(pendingUpdates))
+}
+export function* batchAssetsPrices(
+  action: PayloadAction<PayloadTypes['setAssetPrice']>
+): Generator {
+  pendingUpdates[action.payload.token.toString()] = action.payload.price
+}
+export function* assetPriceHandler(): Generator {
+  yield* throttle(3000, actions.setAssetPrice, handleAssetPrice)
+}
+export function* assetPriceBatcher(): Generator {
+  yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
+}
 
 export function* exchangeSaga(): Generator {
-  yield all([swapHandler].map(spawn))
+  yield all([swapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
 }
