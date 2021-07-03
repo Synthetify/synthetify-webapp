@@ -269,9 +269,9 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
                             try {
-                              icon = require(`@static/icons/${image}.png`)
+                              icon = import.meta.globEager(`/@static/icons/${image}.png`)
                             } catch (error) {
-                              icon = require(`@static/icons/sny.png`)
+                              icon = import.meta.globEager(`/@static/icons/sny.png`)
                             }
                             return (
                               <MenuItem
@@ -279,10 +279,7 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                                 className={classes.menuOption}>
                                 <Grid container alignItems='center'>
                                   <Grid item>
-                                    <CardMedia
-                                      style={{ width: 32, height: 32, marginRight: 10 }}
-                                      image={icon}
-                                    />
+                                    <img src={icon} />
                                   </Grid>
                                   <Grid item> {token.symbol}</Grid>
                                 </Grid>
@@ -378,21 +375,22 @@ export const Exchange: React.FC<IExchange> = ({ tokens, swapData, onSwap }) => {
                             const ticker = token?.symbol?.toString().toLowerCase() || 'xBTC'
                             const image = ticker.startsWith('x') ? ticker.substr(1) : ticker
                             let icon
+                            console.log(icon)
+
                             try {
-                              icon = require(`@static/icons/${image}.png`)
+                              icon = import.meta.globEager(`/@static/icons/${image}.png`)
                             } catch (error) {
-                              icon = require(`@static/icons/sny.png`)
+                              icon = import.meta.globEager(`/@static/icons/sny.png`)
+                              console.log(icon)
                             }
+                            console.log(icon)
                             return (
                               <MenuItem
                                 value={token.assetAddress.toString()}
                                 className={classes.menuOption}>
                                 <Grid container alignItems='center'>
                                   <Grid item>
-                                    <CardMedia
-                                      style={{ width: 32, height: 32, marginRight: 10 }}
-                                      image={icon}
-                                    />
+                                    <img src={icon} />
                                   </Grid>
                                   <Grid item> {token.symbol}</Grid>
                                 </Grid>

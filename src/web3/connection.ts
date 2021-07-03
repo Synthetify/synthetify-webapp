@@ -27,6 +27,7 @@ const getSolanaConnection = (url: SolanaNetworks): Connection => {
     return _connection
   }
   _connection = new Connection(url, 'recent')
+  console.log(_connection)
   _network = url
 
   return _connection

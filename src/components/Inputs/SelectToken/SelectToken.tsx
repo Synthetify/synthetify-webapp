@@ -38,7 +38,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   let icon
   if (current) {
     try {
-      icon = require(`@static/icons/${current.toLowerCase()}.svg`)
+      icon = import.meta.globEager(`/@static/icons/${current.toLowerCase()}.svg`)
     } catch (error) {
       icon = require('@static/icons/sny.svg')
     }

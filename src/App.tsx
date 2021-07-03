@@ -11,11 +11,6 @@ import { persistStore } from 'redux-persist'
 import Notifier from '@containers/Notifier/Notifier'
 import { SnackbarProvider } from 'notistack'
 import GlobalLoader from '@containers/GlobalLoader/GlobalLoader'
-import DepositModal from '@containers/Modals/DepositModal'
-import MintModal from '@containers/Modals/MintModal'
-import WithdrawModal from '@containers/Modals/WithdrawModal'
-import BurnModal from '@containers/Modals/BurnModal'
-import SendModal from '@containers/Modals/SendModal'
 import CreateAccountModal from '@containers/Modals/CreateAccountModal'
 import PagesRouter from './pages/PagesRouter'
 
@@ -30,11 +25,6 @@ const App: React.FC = () => {
         <ThemeProvider theme={theme}>
           <SnackbarProvider maxSnack={99}>
             <CreateAccountModal />
-            <SendModal />
-            <BurnModal />
-            <WithdrawModal />
-            <MintModal />
-            <DepositModal />
             <Notifier />
             <GlobalLoader />
             <PagesRouter />

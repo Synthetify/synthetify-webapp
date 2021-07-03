@@ -9,7 +9,7 @@ export interface ISelectTokenModal {
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
-  centered? : boolean
+  centered?: boolean
   onSelect: (chosen: string) => void
 }
 
@@ -71,7 +71,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                 .map(name => {
                   let icon
                   try {
-                    icon = require(`@static/icons/${name.toLowerCase()}.svg`)
+                    icon = import.meta.globEager(`/@static/icons/${name.toLowerCase()}.svg`)
                   } catch (error) {
                     icon = require('@static/icons/sny.svg')
                   }

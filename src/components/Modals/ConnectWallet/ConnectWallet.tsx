@@ -48,9 +48,9 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         {options.map(option => {
           let icon
           try {
-            icon = require(`@static/svg/${names[option]}.svg`)
+            icon = import.meta.globEager(`/@static/svg/${names[option]}.svg`)
           } catch (error) {
-            icon = require('@static/icons/sny.png')
+            icon = import.meta.globEager('/@static/icons/sny.png')
           }
 
           return (
