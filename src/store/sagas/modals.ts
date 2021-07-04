@@ -12,11 +12,11 @@ import {
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { getConnection } from './solana/connection'
-import { sendSol, sendToken, createAccount } from './solana/wallet'
+import { getConnection } from './connection'
+import { sendSol, sendToken, createAccount } from './wallet'
 
 import { BN } from '@project-serum/anchor'
-import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './solana/exchange'
+import { depositCollateral, mintUsd, withdrawCollateral, burnToken } from './exchange'
 
 export function* handleCreateAccount(): Generator {
   const createAccountData = yield* select(createAccountRedux)
@@ -99,7 +99,7 @@ export function* handleDeposit(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.depositFailed())
+    yield* put(actions.depositFailed({ error: error?.message ?? 'Unknown error' }))
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -124,7 +124,7 @@ export function* handleMint(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.mintFailed())
+    yield* put(actions.mintFailed({ error: error?.message ?? 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -148,7 +148,7 @@ export function* handleWithdraw(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.withdrawFailed())
+    yield* put(actions.withdrawFailed({ error: error?.message ?? 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -172,7 +172,7 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.burnFailed())
+    yield* put(actions.burnFailed({ error: error?.message ?? 'Unknown error' }))
     console.log(error)
     yield put(
       snackbarsActions.add({

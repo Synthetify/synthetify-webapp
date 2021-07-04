@@ -7,33 +7,25 @@ import { reducer as solanaConnectionReducer, solanaConnectionSliceName } from '.
 import { reducer as uiReducer, uiSliceName } from './ui'
 import { reducer as exhcangeReducer, exchangeSliceName } from './exchange'
 import { reducer as modalsReducer, modalsSliceName } from './modals'
-import { BN } from '@project-serum/anchor'
-// const authPersistConfig = {
-//   key: solanaWalletSliceName,
-//   storage: storage,
-//   whitelist: ['address', 'governedTokens']
-// }
-const transformExchange = createTransform(
-  (inboundState: any, key) => {
-    return {
-      address: inboundState.address,
-      collateral: inboundState.collateral.toString(),
-      shares: inboundState.shares.toString()
-    }
+import { SolanaNetworks } from '@consts/static'
+
+const transformNetwork = createTransform(
+  (inboundState: any, _key) => {
+    return inboundState
   },
-  (outboundState, key) => {
-    return {
-      address: outboundState.address,
-      collateral: new BN(outboundState.collateral),
-      shares: new BN(outboundState.shares)
+  (outboundState, _key) => {
+    if (Object.values(SolanaNetworks).includes(outboundState)) {
+      return outboundState
+    } else {
+      return SolanaNetworks.DEV
     }
-  },
-  { whitelist: ['userAccount'] }
+  }
 )
 const connectionPersistConfig = {
   key: solanaConnectionSliceName,
   storage: storage,
-  whitelist: ['network']
+  whitelist: ['network'],
+  transforms: [transformNetwork]
 }
 
 const combinedReducers = combineReducers({

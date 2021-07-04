@@ -4,12 +4,9 @@ export const constValue: string = 'constValue'
 
 declare global {
   interface Window {
-    ethereum: any
     solana: any
   }
 }
-window.ethereum = window.ethereum || {}
-window.solana = window.solana || {}
 
 enum SolanaNetworks {
   DEV = 'https://api.devnet.solana.com',
