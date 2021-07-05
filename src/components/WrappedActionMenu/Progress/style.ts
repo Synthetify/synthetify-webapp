@@ -5,9 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   text: {
     fontSize: 16,
     color: colors.gray.manatee,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+    lineHeight: 1.5,
     [theme.breakpoints.down('xs')]: {
       fontSize: 13
     }
