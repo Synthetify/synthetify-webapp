@@ -8,7 +8,7 @@ storiesOf('modals/connectWallet', module)
   .add('default', () => (
     <ConnectWallet
       open={true}
-      options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+      options={[WalletType.PHANTOM, WalletType.SOLLET]}
       handleClose={() => {}}
       callDisconect={action('disconnect')}
       connected={false}
@@ -19,7 +19,7 @@ storiesOf('modals/connectWallet', module)
   .add('withDisconnect', () => (
     <ConnectWallet
       open={true}
-      options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+      options={[WalletType.PHANTOM, WalletType.SOLLET]}
       handleClose={() => {}}
       callDisconect={action('disconnect')}
       connected={true}
