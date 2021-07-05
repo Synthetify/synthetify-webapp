@@ -3,9 +3,10 @@ import { Grid, Card, CardContent } from '@material-ui/core'
 import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { BN } from '@project-serum/anchor'
+import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
+import RewardsMock from '@components/WrappedActionMenu/RewardsMock'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -85,7 +86,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
       />
     ),
-    rewards: 'TODO'
+    rewards: <RewardsMock />
   }
 
   return (
