@@ -1,7 +1,7 @@
-import { IModals, modalsSliceName } from '@reducers/modals'
+import { IStaking, stakingSliceName } from '@reducers/staking'
 import { keySelectors, AnyProps } from './helpers'
 
-const store = (s: AnyProps) => s[modalsSliceName] as IModals
+const store = (s: AnyProps) => s[stakingSliceName] as IStaking
 
 export const { createAccount, send, deposit, mint, withdraw, burn } = keySelectors(store, [
   'createAccount',
@@ -12,7 +12,7 @@ export const { createAccount, send, deposit, mint, withdraw, burn } = keySelecto
   'burn'
 ])
 
-export const modalsSelectors = {
+export const stakingSelectors = {
   createAccount,
   send,
   deposit,
@@ -21,4 +21,4 @@ export const modalsSelectors = {
   burn
 }
 
-export default modalsSelectors
+export default stakingSelectors

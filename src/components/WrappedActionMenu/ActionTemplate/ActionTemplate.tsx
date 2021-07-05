@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Divider, Grid } from '@material-ui/core'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
-import MaxButton from '@components/CommonButton/MaxButton'
+import MaxButton from '@components/MaxButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'

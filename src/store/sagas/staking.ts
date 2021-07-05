@@ -1,6 +1,6 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
 
-import { actions } from '@reducers/modals'
+import { actions } from '@reducers/staking'
 import {
   send,
   deposit,
@@ -8,7 +8,7 @@ import {
   withdraw,
   burn,
   createAccount as createAccountRedux
-} from '@selectors/modals'
+} from '@selectors/staking'
 import walletSelectors, { tokenBalance } from '@selectors/solanaWallet'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -203,7 +203,7 @@ export function* createAccountHanlder(): Generator {
   yield takeEvery(actions.createAccount, handleCreateAccount)
 }
 
-export function* modalsSaga(): Generator {
+export function* stakingSaga(): Generator {
   yield all(
     [
       sendTokenHandler,
