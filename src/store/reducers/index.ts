@@ -6,7 +6,7 @@ import { reducer as solanaWalletReducer, solanaWalletSliceName } from './solanaW
 import { reducer as solanaConnectionReducer, solanaConnectionSliceName } from './solanaConnection'
 import { reducer as uiReducer, uiSliceName } from './ui'
 import { reducer as exhcangeReducer, exchangeSliceName } from './exchange'
-import { reducer as modalsReducer, stakingSliceName } from './staking'
+import { reducer as stakingReducer, stakingSliceName } from './staking'
 import { SolanaNetworks } from '@consts/static'
 
 const transformNetwork = createTransform(
@@ -34,6 +34,6 @@ const combinedReducers = combineReducers({
   [solanaConnectionSliceName]: persistReducer(connectionPersistConfig, solanaConnectionReducer),
   [exchangeSliceName]: exhcangeReducer,
   [solanaWalletSliceName]: solanaWalletReducer,
-  [stakingSliceName]: modalsReducer
+  [stakingSliceName]: stakingReducer
 })
 export default combinedReducers

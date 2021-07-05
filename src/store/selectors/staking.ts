@@ -3,8 +3,9 @@ import { keySelectors, AnyProps } from './helpers'
 
 const store = (s: AnyProps) => s[stakingSliceName] as IStaking
 
-export const { createAccount, deposit, mint, withdraw, burn } = keySelectors(store, [
+export const { createAccount, send, deposit, mint, withdraw, burn } = keySelectors(store, [
   'createAccount',
+  'send',
   'deposit',
   'mint',
   'withdraw',
@@ -13,6 +14,7 @@ export const { createAccount, deposit, mint, withdraw, burn } = keySelectors(sto
 
 export const stakingSelectors = {
   createAccount,
+  send,
   deposit,
   mint,
   withdraw,

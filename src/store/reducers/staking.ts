@@ -11,6 +11,14 @@ export interface ICreateAccount {
   txid?: string
 }
 
+export interface ISend {
+  tokenAddress: PublicKey
+  recipient: PublicKey
+  amount: BN
+  txid?: string
+  sending: boolean
+  error?: string
+}
 export interface IDeposit {
   amount: BN
   txid?: string
@@ -38,6 +46,7 @@ export interface IBurn {
 }
 export interface IStaking {
   createAccount: ICreateAccount
+  send: ISend
   deposit: IDeposit
   mint: IMint
   withdraw: IWithdraw
@@ -49,6 +58,12 @@ export const defaultState: IStaking = {
     sending: false,
     error: '',
     tokenAddress: DEFAULT_PUBLICKEY
+  },
+  send: {
+    amount: new BN(0),
+    recipient: DEFAULT_PUBLICKEY,
+    tokenAddress: DEFAULT_PUBLICKEY,
+    sending: false
   },
   deposit: {
     amount: new BN(0),
@@ -77,6 +92,9 @@ const stakingSlice = createSlice({
       switch (action.payload) {
         case 'createAccount':
           state.createAccount = defaultState[action.payload]
+          break
+        case 'send':
+          state.send = defaultState[action.payload]
           break
         case 'mint':
           state.mint = defaultState[action.payload]
@@ -107,10 +125,27 @@ const stakingSlice = createSlice({
     burnDone(state, action: PayloadAction<Pick<IBurn, 'txid'>>) {
       state.burn.sending = false
       state.burn.txid = action.payload.txid
+      state.burn.error = undefined
       return state
     },
-    burnFailed(state) {
+    burnFailed(state, action: PayloadAction<Pick<IBurn, 'error'>>) {
       state.burn.sending = false
+      state.burn.error = action.payload.error
+      return state
+    },
+    openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {
+      state.send.tokenAddress = action.payload.tokenAddress
+      return state
+    },
+    send(state, action: PayloadAction<Pick<ISend, 'amount' | 'recipient'>>) {
+      state.send.sending = true
+      state.send.amount = action.payload.amount
+      state.send.recipient = action.payload.recipient
+      return state
+    },
+    sendDone(state, action: PayloadAction<{ txid?: string }>) {
+      state.send.sending = false
+      state.send.txid = action.payload.txid
       return state
     },
     deposit(state, action: PayloadAction<Pick<IDeposit, 'amount'>>) {
@@ -121,10 +156,12 @@ const stakingSlice = createSlice({
     depositDone(state, action: PayloadAction<Pick<IDeposit, 'txid'>>) {
       state.deposit.sending = false
       state.deposit.txid = action.payload.txid
+      state.deposit.error = undefined
       return state
     },
-    depositFailed(state) {
+    depositFailed(state, action: PayloadAction<Pick<IDeposit, 'error'>>) {
       state.deposit.sending = false
+      state.deposit.error = action.payload.error
       return state
     },
     mint(state, action: PayloadAction<Pick<IMint, 'amount'>>) {
@@ -135,10 +172,12 @@ const stakingSlice = createSlice({
     mintDone(state, action: PayloadAction<Pick<IMint, 'txid'>>) {
       state.mint.sending = false
       state.mint.txid = action.payload.txid
+      state.mint.error = undefined
       return state
     },
-    mintFailed(state) {
+    mintFailed(state, action: PayloadAction<Pick<IMint, 'error'>>) {
       state.mint.sending = false
+      state.mint.error = action.payload.error
       return state
     },
     withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
@@ -149,10 +188,12 @@ const stakingSlice = createSlice({
     withdrawDone(state, action: PayloadAction<Pick<IWithdraw, 'txid'>>) {
       state.withdraw.sending = false
       state.withdraw.txid = action.payload.txid
+      state.withdraw.error = undefined
       return state
     },
-    withdrawFailed(state) {
+    withdrawFailed(state, action: PayloadAction<Pick<IWithdraw, 'error'>>) {
       state.withdraw.sending = false
+      state.withdraw.error = action.payload.error
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: PublicKey }>) {
