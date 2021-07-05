@@ -15,7 +15,7 @@ export type IActionContents = {
 export const ActionMenu: React.FC<IProps> = ({ onChange, actionContents }) => {
   const actions: IMenuItem = { ...actionContents }
 
-  return <SwitchMenu menuItems={actions} maxWidth={800} onChange={onChange} />
+  return <SwitchMenu menuItems={actions} onChange={onChange} />
 }
 
 export default ActionMenu
