@@ -22,7 +22,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('selectWallet', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]} name='Open Dropdown' connected={false} onSelect={(chosen) => action(`chosen: ${chosen}`)()}/>
+      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]} name='Open Dropdown' connected={false} onSelect={(chosen) => action(`chosen: ${chosen}`)()} onDisconnect={action('disconnect')} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
@@ -31,7 +31,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('withDisconnect', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]} name='Open Dropdown' connected={true} onSelect={(chosen) => action(`chosen: ${chosen}`)()}/>
+      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]} name='Open Dropdown' connected={true} onSelect={(chosen) => action(`chosen: ${chosen}`)()} onDisconnect={action('disconnect')} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>

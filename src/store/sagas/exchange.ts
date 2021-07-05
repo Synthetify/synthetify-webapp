@@ -239,14 +239,16 @@ export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
 }
 const pendingUpdates: { [x: string]: BN } = {}
-export function* handleAssetPrice(): Generator {
-  yield* put(actions.batchSetAssetPrice(pendingUpdates))
-}
+
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
   pendingUpdates[action.payload.token.toString()] = action.payload.price
 }
+export function* handleAssetPrice(): Generator {
+  yield* put(actions.batchSetAssetPrice(pendingUpdates))
+}
+
 export function* assetPriceHandler(): Generator {
   yield* throttle(3000, actions.setAssetPrice, handleAssetPrice)
 }

@@ -17,7 +17,7 @@ const getSolanaWallet = (): WalletAdapter => {
 }
 // Here we will pass wallet type right
 const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
-  return await new Promise((resolve, reject) => {
+  return await new Promise(resolve => {
     switch (wallet) {
       case WalletType.PHANTOM:
         _wallet = new PhantomWalletAdapter()
@@ -55,4 +55,10 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
   })
 }
 
-export { getSolanaWallet, connectWallet }
+const disconnectWallet = () => {
+  if (_wallet) {
+    _wallet.disconnect()
+  }
+}
+
+export { getSolanaWallet, connectWallet, disconnectWallet }

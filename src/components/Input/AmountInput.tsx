@@ -12,7 +12,9 @@ interface IProps {
   style?: CSSProperties
 }
 
-type inputString = { target: { value: string } }
+interface inputString {
+  target: { value: string }
+}
 
 export const AmountInput: React.FC<IProps> = ({
   currency,

@@ -12,7 +12,6 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/CommonButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
-import { useDispatch } from 'react-redux'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -82,7 +81,6 @@ export interface IExchangeComponent {
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
   const [tokenFrom, setTokenFrom] = React.useState<TokensWithBalance | null>(tokens[0] ?? null)
   const [tokenTo, setTokenTo] = React.useState<TokensWithBalance | null>(null)
@@ -102,7 +100,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
 
   useEffect(() => {
     updateEstimatedAmount()
-  }, [tokenTo, tokenFrom, dispatch])
+  }, [tokenTo, tokenFrom])
 
   const updateEstimatedAmount = (amount: string | null = null) => {
     if (!!tokenFrom && !!tokenTo) {

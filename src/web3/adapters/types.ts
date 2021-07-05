@@ -8,5 +8,5 @@ export interface WalletAdapter {
   signAllTransactions: (transaction: Transaction[]) => Promise<Transaction[]>
   connect: () => any
   disconnect: () => any
-  on<T>(event: string, fn: () => void): this
+  on: (event: string, fn: () => void) => this
 }
