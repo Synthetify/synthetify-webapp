@@ -21,7 +21,15 @@ export interface IProps {
   hasError: boolean
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick, currency, sending, hasError }) => {
+export const ActionTemplate: React.FC<IProps> = ({
+  action,
+  maxAvailable,
+  maxDecimal,
+  onClick,
+  currency,
+  sending,
+  hasError
+}) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
@@ -100,7 +108,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       return 'incorrect value!'
     }
 
-    const actionToNoun: { [key in ActionType]: string} = {
+    const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
       burn: 'Burning',
@@ -115,7 +123,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       return `${actionToNoun[action]} failed`
     }
 
-    const actionToPastNoun: { [key in ActionType]: string} = {
+    const actionToPastNoun: { [key in ActionType]: string } = {
       mint: 'minted',
       withdraw: 'withdrawn',
       burn: 'burned',
@@ -169,22 +177,18 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container className={classes.bottom}>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row'>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalizeString(action)}
             disabled={!actionAvailable}
             color='secondary'
-            padding='11px 40px'
-            style={{ width: 160, marginBlock: 7 }}
+            className={classes.actionButton}
             onClick={onClick(amountBN, decimal)}
           />
         </Grid>
         <Grid item>
-          <Progress
-            state={getProgressState()}
-            message={getProgressMessage()}
-          />
+          <Progress state={getProgressState()} message={getProgressMessage()} />
         </Grid>
       </Grid>
     </Grid>

@@ -42,14 +42,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 60
   },
   bottom: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
+    // '& > *': {
+    //   overflow: 'hidden'
+    // }
+    //   display: 'flex',
+    //   alignItems: 'center',
+    //   flexDirection: 'row',
+    //   [theme.breakpoints.down('xs')]: {
+    //     paddingTop: 15,
+    //     flexDirection: 'column',
+    //     justifyContent: 'space-around',
+    //     alignItems: 'flex-start'
+    //   }
+  },
+  actionButton: {
+    padding: '11px 40px',
     [theme.breakpoints.down('xs')]: {
-      paddingTop: 15,
-      flexDirection: 'column',
-      justifyContent: 'space-around',
-      alignItems: 'flex-start'
+      padding: '11px 15px'
     }
   }
 }))
