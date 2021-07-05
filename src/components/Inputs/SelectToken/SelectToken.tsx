@@ -53,7 +53,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         onClick={handleClick}
         startIcon={
           !current ? null : (
-            <CardMedia style={{ width: 32, height: 32, marginRight: 10 }} image={icon} />
+            <CardMedia style={{ minWidth: 32, height: 32, marginRight: 10 }} image={icon} />
           )
         }
         endIcon={<ExpandMoreIcon style={{ minWidth: 20 }} />}>
