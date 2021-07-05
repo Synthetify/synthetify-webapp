@@ -16,7 +16,7 @@ export interface IProps {
   availableToMint: BN
   availableToDeposit: BN
   availableToWithdraw: BN
-  availableToBurn: BN,
+  availableToBurn: BN
   mintState: Pick<IMint, 'sending' | 'error'>
   withdrawState: Pick<IWithdraw, 'sending' | 'error'>
   depositState: Pick<IDeposit, 'sending' | 'error'>
@@ -41,17 +41,6 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   const classes = useStyles()
 
   const actionContents: IActionContents = {
-    mint: (
-      <ActionTemplate
-        action='mint'
-        maxAvailable={availableToMint}
-        maxDecimal={6}
-        onClick={onMint}
-        currency='xUSD'
-        sending={mintState.sending}
-        hasError={!!mintState.error?.length}
-      />
-    ),
     deposit: (
       <ActionTemplate
         action='deposit'
@@ -61,6 +50,17 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='SNY'
         sending={depositState.sending}
         hasError={!!depositState.error?.length}
+      />
+    ),
+    mint: (
+      <ActionTemplate
+        action='mint'
+        maxAvailable={availableToMint}
+        maxDecimal={6}
+        onClick={onMint}
+        currency='xUSD'
+        sending={mintState.sending}
+        hasError={!!mintState.error?.length}
       />
     ),
     withdraw: (
