@@ -3,6 +3,7 @@ import { Typography, Popover, Grid } from '@material-ui/core'
 import useStyles from './style'
 import { ExitToApp } from '@material-ui/icons'
 import { WalletType } from '@web3/wallet'
+const modules = import.meta.globEager('/src/static/svg/*.svg')
 
 export interface IConnectWalletModal {
   options: WalletType[]
@@ -48,9 +49,9 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         {options.map(option => {
           let icon
           try {
-            icon = require(`@static/svg/${names[option]}.svg`)
+            icon = modules[`/src/static/svg/${names[option].toLowerCase()}.svg`].default
           } catch (error) {
-            icon = require('@static/icons/sny.png')
+            icon = ''
           }
 
           return (

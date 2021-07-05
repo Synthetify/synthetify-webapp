@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, CardMedia } from '@material-ui/core'
-import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import useStyles from './style'
+const modules = import.meta.globEager('/src/static/icons/*.svg')
 
 export interface ISelectTokenModal {
   name?: string
@@ -37,9 +38,9 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   let icon
   if (current) {
     try {
-      icon = require(`@static/icons/${current.toLowerCase()}.svg`)
+      icon = modules[`/src/static/icons/${current.toLowerCase()}.svg`].default
     } catch (error) {
-      icon = require('@static/icons/sny.svg')
+      icon = modules['/src/static/icons/sny.svg'].default
     }
   }
 
