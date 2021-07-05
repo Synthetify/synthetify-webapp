@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.gray.component
   },
   cardContent: {
+    paddingTop: 40,
     [theme.breakpoints.down('xs')]: {
       paddingLeft: 10,
       paddingRight: 10
