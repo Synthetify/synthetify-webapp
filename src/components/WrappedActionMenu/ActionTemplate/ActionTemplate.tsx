@@ -105,7 +105,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
   const getProgressMessage = () => {
     if (!checkAmountInputError()) {
-      return 'incorrect value!'
+      return 'Incorrect value!'
     }
 
     const actionToNoun: { [key in ActionType]: string } = {
@@ -177,7 +177,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center' wrap='nowrap' direction='row'>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row' justify='flex-start'>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalizeString(action)}
