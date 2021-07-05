@@ -8,7 +8,6 @@ export interface ICreateAccount {
   tokenAddress: PublicKey
   sending: boolean
   error?: string
-  open: boolean
   txid?: string
 }
 
@@ -19,28 +18,24 @@ export interface ISend {
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IDeposit {
   amount: BN
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IMint {
   amount: BN
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IWithdraw {
   amount: BN
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
 export interface IBurn {
   amount: BN
@@ -48,9 +43,8 @@ export interface IBurn {
   txid?: string
   sending: boolean
   error?: string
-  open: boolean
 }
-export interface IModals {
+export interface IStaking {
   createAccount: ICreateAccount
   send: ISend
   deposit: IDeposit
@@ -59,9 +53,8 @@ export interface IModals {
   burn: IBurn
 }
 
-export const defaultState: IModals = {
+export const defaultState: IStaking = {
   createAccount: {
-    open: false,
     sending: false,
     error: '',
     tokenAddress: DEFAULT_PUBLICKEY
@@ -70,45 +63,32 @@ export const defaultState: IModals = {
     amount: new BN(0),
     recipient: DEFAULT_PUBLICKEY,
     tokenAddress: DEFAULT_PUBLICKEY,
-    sending: false,
-    open: false
+    sending: false
   },
   deposit: {
     amount: new BN(0),
-    sending: false,
-    open: false
+    sending: false
   },
   mint: {
     amount: new BN(0),
-    sending: false,
-    open: false
+    sending: false
   },
   withdraw: {
     amount: new BN(0),
-    sending: false,
-    open: false
+    sending: false
   },
   burn: {
     amount: new BN(0),
     tokenAddress: DEFAULT_PUBLICKEY,
-    sending: false,
-    open: false
+    sending: false
   }
 }
-export const modalsSliceName = 'modals'
-const modalsSlice = createSlice({
-  name: modalsSliceName,
+export const stakingSliceName = 'staking'
+const stakingSlice = createSlice({
+  name: stakingSliceName,
   initialState: defaultState,
   reducers: {
-    openModal(state, action: PayloadAction<keyof IModals>) {
-      state[action.payload].open = true
-      return state
-    },
-    closeModal(state, action: PayloadAction<keyof IModals>) {
-      state[action.payload].open = false
-      return state
-    },
-    resetModal(state, action: PayloadAction<keyof IModals>) {
+    resetStakingAction(state, action: PayloadAction<keyof IStaking>) {
       switch (action.payload) {
         case 'createAccount':
           state.createAccount = defaultState[action.payload]
@@ -133,11 +113,6 @@ const modalsSlice = createSlice({
       }
       return state
     },
-    openBurn(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
-      state.burn.open = true
-      state.burn.tokenAddress = action.payload.tokenAddress
-      return state
-    },
     setBurnAddress(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
       state.burn.tokenAddress = action.payload.tokenAddress
       return state
@@ -159,7 +134,6 @@ const modalsSlice = createSlice({
       return state
     },
     openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {
-      state.send.open = true
       state.send.tokenAddress = action.payload.tokenAddress
       return state
     },
@@ -234,6 +208,6 @@ const modalsSlice = createSlice({
     }
   }
 })
-export const actions = modalsSlice.actions
-export const reducer = modalsSlice.reducer
+export const actions = stakingSlice.actions
+export const reducer = stakingSlice.reducer
 export type PayloadTypes = PayloadType<typeof actions>

@@ -9,7 +9,7 @@ import { BN } from '@project-serum/anchor'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
 import { colors } from '@static/theme'
-import MaxButton from '@components/CommonButton/MaxButton'
+import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
 

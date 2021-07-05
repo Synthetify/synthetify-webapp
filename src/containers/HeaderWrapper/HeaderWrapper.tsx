@@ -1,30 +1,31 @@
 import React from 'react'
-
 import Header from '@components/Header/Header'
 import { useDispatch, useSelector } from 'react-redux'
-import { network } from '@selectors/solanaConnection'
+import { useLocation } from 'react-router-dom'
+import { address, status } from '@selectors/solanaWallet'
 import { actions } from '@reducers/solanaConnection'
-import { actions as walletActions } from '@reducers/solanaWallet'
-import { SolanaNetworks } from '@web3/connection'
-import { address } from '@selectors/solanaWallet'
+import { SolanaNetworks } from '@consts/static'
+import { Status, actions as walletActions } from '@reducers/solanaWallet'
 
 export const HeaderWrapper: React.FC = () => {
   const dispatch = useDispatch()
-  const currentNetwork = useSelector(network)
   const walletAddress = useSelector(address)
+  const walletStatus = useSelector(status)
+  const location = useLocation()
 
   return (
     <Header
-      onNetworkClick={(network: SolanaNetworks) => {
-        if (network !== currentNetwork) {
-          dispatch(actions.setNetwork(network))
-        }
+      address={walletAddress}
+      onNetworkSelect={(chosen: string) => {
+        dispatch(actions.setNetwork(chosen as SolanaNetworks))
       }}
-      address={walletAddress.toString()}
-      onConnect={wallet => {
-        dispatch(walletActions.connect(wallet))
+      onWalletSelect={(chosen) => {
+        dispatch(walletActions.connect(chosen))
       }}
-      network={currentNetwork}
+      landing={location.pathname.substr(1)}
+      walletConnected={walletStatus === Status.Initalized}
+      onFaucet={() => { dispatch(walletActions.airdrop()) }}
+      onDisconnectWallet={() => { dispatch(walletActions.disconnect()) }}
     />
   )
 }
