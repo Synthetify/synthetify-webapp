@@ -46,6 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       padding: '11px 15px'
     }
+  },
+  xsTextAlignCenter: {
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
+    }
   }
 }))
 

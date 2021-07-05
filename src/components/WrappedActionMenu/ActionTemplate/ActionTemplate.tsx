@@ -170,6 +170,8 @@ export const ActionTemplate: React.FC<IProps> = ({
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
+              keyClassName={classes.xsTextAlignCenter}
+              valueClassName={classes.xsTextAlignCenter}
               value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}
