@@ -41,20 +41,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.gray.light,
     height: 60
   },
-  bottom: {
-    // '& > *': {
-    //   overflow: 'hidden'
-    // }
-    //   display: 'flex',
-    //   alignItems: 'center',
-    //   flexDirection: 'row',
-    //   [theme.breakpoints.down('xs')]: {
-    //     paddingTop: 15,
-    //     flexDirection: 'column',
-    //     justifyContent: 'space-around',
-    //     alignItems: 'flex-start'
-    //   }
-  },
   actionButton: {
     padding: '11px 40px',
     [theme.breakpoints.down('xs')]: {
