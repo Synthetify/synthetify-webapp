@@ -5,7 +5,7 @@ import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionT
 import { BN } from '@project-serum/anchor'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/modals'
+import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
