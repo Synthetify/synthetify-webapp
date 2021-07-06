@@ -29,17 +29,17 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
   }
   return (
     <Grid container alignItems='center' style={{ flexWrap: 'nowrap' }}>
-      <Grid container item xs={3} alignItems='center'>
+      <Grid container item xs={4} sm={3} alignItems='center'>
         <Grid item>
           <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icon} />
         </Grid>
-        <Grid item className={classes.hideOnXs}>
+        <Grid item>
           <Typography variant='h5' color='textPrimary' className={classes.font}>
             {ticker}
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={4} sm={5}>
         <Typography variant='h5' color='textPrimary' className={classes.font}>
           {printBN(balance, decimals)}
         </Typography>
