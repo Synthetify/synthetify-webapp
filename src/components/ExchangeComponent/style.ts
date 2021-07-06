@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     padding: 10,
     fontSize: 16,
-    lineHeight: '30px',
+    lineHeight: '40px',
     margin: 10,
     fontWeight: 'normal'
   }

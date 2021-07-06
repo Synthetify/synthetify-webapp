@@ -71,6 +71,9 @@ const getButtonMessage = (
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
   }
+  if (tokenFrom.symbol === tokenTo.symbol) {
+    return 'Choose another token'
+  }
   return 'Swap'
 }
 
@@ -100,6 +103,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
 
   useEffect(() => {
     updateEstimatedAmount()
+
+    if (!!tokenFrom && !tokenTo) {
+      setAmountFrom('0.000000')
+    }
   }, [tokenTo, tokenFrom])
 
   const updateEstimatedAmount = (amount: string | null = null) => {
