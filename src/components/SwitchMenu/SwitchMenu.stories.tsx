@@ -34,6 +34,10 @@ storiesOf('menu/switchMenu', module)
   .add('Actions', () => (
     <div
       style={{ backgroundColor: colors.gray.component, color: colors.white.main, padding: '10px' }}>
-      <ActionMenu actionContents={actionContents} onChange={action('change action')} />
+      <ActionMenu
+        style={{ maxWidth: 800 }}
+        actionContents={actionContents}
+        onChange={action('change action')}
+      />
     </div>
   ))
