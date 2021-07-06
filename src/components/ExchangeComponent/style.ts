@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'normal'
   },
   mdDownButton: {
-    width: '100%'
+    width: 'calc(100% - 20px)'
   }
 }))
 
