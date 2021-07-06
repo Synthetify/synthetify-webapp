@@ -5,7 +5,6 @@ import { colors } from '@static/theme'
 
 export interface IProps {
   menuItems: IMenuItem
-  maxWidth?: number
   onChange: (newValue: number) => void
 }
 
@@ -104,7 +103,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) => {
+export const SwitchMenu: React.FC<IProps> = ({ menuItems, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
@@ -123,10 +122,9 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) 
       </TabPanel>
     )
   })
-
   return (
-    <Grid>
-      <Grid className={classes.tabs} style={{ maxWidth: maxWidth || '100%' }}>
+    <Grid style={{ width: '100%' }}>
+      <Grid className={classes.tabs}>
         <FullHeightIndicatorTabs value={value} onChange={handleChange}>
           {tabs}
         </FullHeightIndicatorTabs>

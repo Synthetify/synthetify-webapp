@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
     color: colors.gray.light,
     borderRadius: 10,
     paddingLeft: 16,
-    paddingRight: 27,
+    paddingRight: 32,
     height: 60,
     fontSize: 22,
     minWidth: 150,

@@ -6,6 +6,7 @@ import SwitchMenu, { IMenuItem } from '@components/SwitchMenu/SwitchMenu'
 import { action } from '@storybook/addon-actions'
 import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import { colors } from '@static/theme'
+import { Grid } from '@material-ui/core'
 
 const exampleItems: IMenuItem = {
   option1: 'Content1',
@@ -34,6 +35,8 @@ storiesOf('menu/switchMenu', module)
   .add('Actions', () => (
     <div
       style={{ backgroundColor: colors.gray.component, color: colors.white.main, padding: '10px' }}>
-      <ActionMenu actionContents={actionContents} onChange={action('change action')} />
+      <Grid style={{ maxWidth: 800 }}>
+        <ActionMenu actionContents={actionContents} onChange={action('change action')} />
+      </Grid>
     </div>
   ))

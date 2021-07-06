@@ -1,6 +1,5 @@
 import React from 'react'
 import SwitchMenu, { IMenuItem } from '@components/SwitchMenu/SwitchMenu'
-
 export interface IProps {
   onChange: (newValue: number) => void
   actionContents: IActionContents
@@ -15,7 +14,7 @@ export type IActionContents = {
 export const ActionMenu: React.FC<IProps> = ({ onChange, actionContents }) => {
   const actions: IMenuItem = { ...actionContents }
 
-  return <SwitchMenu menuItems={actions} maxWidth={800} onChange={onChange} />
+  return <SwitchMenu menuItems={actions} onChange={onChange} />
 }
 
 export default ActionMenu

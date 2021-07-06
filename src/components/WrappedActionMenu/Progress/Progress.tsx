@@ -21,7 +21,18 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
     } else if (state === 'failed') {
       return <img src={progressFailed} alt='failed' style={{ marginTop: 10 }} />
     }
-    return <GradientCircularProgress style={{ marginTop: 10 }} />
+    return (
+      <GradientCircularProgress
+        style={{ marginTop: 10 }}
+        size={{
+          xs: 30,
+          sm: 40,
+          md: 40,
+          lg: 40,
+          xl: 40
+        }}
+      />
+    )
   }
 
   return (
