@@ -4,7 +4,7 @@ import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
-const modules = import.meta.globEager('/src/static/icons/*.svg')
+import icons from '@static/icons'
 
 export interface ISelectTokenModal {
   name?: string
@@ -35,15 +35,6 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
     setOpen(false)
   }
 
-  let icon
-  if (current) {
-    try {
-      icon = modules[`/src/static/icons/${current.toLowerCase()}.svg`].default
-    } catch (error) {
-      icon = modules['/src/static/icons/sny.svg'].default
-    }
-  }
-
   return (
     <div>
       <Button
@@ -53,7 +44,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         onClick={handleClick}
         startIcon={
           !current ? null : (
-            <CardMedia style={{ minWidth: 32, height: 32, marginRight: 10 }} image={icon} />
+            <CardMedia style={{ minWidth: 32, height: 32, marginRight: 10 }} image={icons[current] ?? icons.SNY} />
           )
         }
         endIcon={<ExpandMoreIcon style={{ minWidth: 20 }} />}>

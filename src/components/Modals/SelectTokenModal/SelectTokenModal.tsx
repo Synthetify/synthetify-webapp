@@ -3,7 +3,7 @@ import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/c
 import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
-const modules = import.meta.globEager('/src/static/icons/*.svg')
+import icons from '@static/icons'
 export interface ISelectTokenModal {
   tokens: string[]
   open: boolean
@@ -68,33 +68,24 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(name => {
-                  let icon
-                  try {
-                    icon = modules[`/src/static/icons/${name.toLowerCase()}.svg`].default
-                  } catch (error) {
-                    icon = modules['/src/static/icons/sny.svg'].default
-                  }
-
-                  return (
-                    <Grid
-                      container
-                      key={`tokens-${name}`}
-                      className={classes.tokenItem}
-                      alignItems='center'
-                      onClick={() => {
-                        onSelect(name)
-                        handleClose()
-                      }}>
-                      <Grid item>
-                        <CardMedia className={classes.tokenIcon} image={icon} />{' '}
-                      </Grid>
-                      <Grid item>
-                        <Typography className={classes.tokenName}>{name}</Typography>
-                      </Grid>
+                .map(name => (
+                  <Grid
+                    container
+                    key={`tokens-${name}`}
+                    className={classes.tokenItem}
+                    alignItems='center'
+                    onClick={() => {
+                      onSelect(name)
+                      handleClose()
+                    }}>
+                    <Grid item>
+                      <CardMedia className={classes.tokenIcon} image={icons[name] ?? icons.SNY} />{' '}
                     </Grid>
-                  )
-                })}
+                    <Grid item>
+                      <Typography className={classes.tokenName}>{name}</Typography>
+                    </Grid>
+                  </Grid>
+                ))}
             </CustomScrollbar>
           </Box>
         </Grid>
