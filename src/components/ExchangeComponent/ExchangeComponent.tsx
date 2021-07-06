@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core'
-import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
 import { Swap } from '@reducers/exchange'
@@ -12,6 +11,7 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
+import useStyles from './style'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
