@@ -61,7 +61,7 @@ const getButtonMessage = (
   amountTo: string,
   tokenTo: TokensWithBalance | null
 ) => {
-  if (!tokenFrom) return ''
+  if (!tokenFrom) return 'Select input token'
   if (!tokenTo) {
     return 'Select output token'
   }
