@@ -38,10 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   connectedWalletIcon: {
     minWidth: 21,
     height: 21,
-    marginRight: 5,
-    [theme.breakpoints.down('md')]: {
-      marginRight: 25
-    }
+    marginRight: 5
   },
   dehazeButton: {
     borderRadius: 10,
