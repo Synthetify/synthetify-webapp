@@ -11,6 +11,7 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
+import classNames from 'classnames'
 import useStyles from './style'
 
 export const calculateSwapOutAmount = (
@@ -132,7 +133,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>From</Typography>
-          <Typography className={classes.tokenMaxText}>{tokenFrom ? `Balance: ${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}` : ''}</Typography>
+          <Typography className={classes.tokenMaxText}>
+            {tokenFrom
+              ? `Balance: ${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}`
+              : ''}
+          </Typography>
         </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
@@ -149,7 +154,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
-                className={classes.button}
+                className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFrom) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
@@ -183,6 +188,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   updateEstimatedAmount(value)
                 }
               }}
+              placeholder={'0.0'}
               currency={tokenFrom?.symbol ?? null}
             />
           </Grid>
@@ -224,7 +230,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
-          <Typography className={classes.tokenMaxText}>{tokenFrom && tokenTo ? `Balance: ${printBN(tokenTo.balance, tokenTo.decimals)} ${tokenTo.symbol}` : ''}</Typography>
+          <Typography className={classes.tokenMaxText}>
+            {tokenFrom && tokenTo
+              ? `Balance: ${printBN(tokenTo.balance, tokenTo.decimals)} ${tokenTo.symbol}`
+              : ''}
+          </Typography>
         </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
@@ -242,7 +252,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
-                className={classes.button}
+                className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFrom && tokenTo) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
@@ -277,6 +287,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   updateFromEstimatedAmount(value)
                 }
               }}
+              placeholder={'0.0'}
               currency={tokenTo?.symbol ?? null}
             />
           </Grid>

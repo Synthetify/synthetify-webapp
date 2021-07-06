@@ -11,6 +11,7 @@ interface IProps {
   setValue: (value: string) => void
   error?: string | null
   className?: string
+  placeholder?: string
   style?: CSSProperties
 }
 

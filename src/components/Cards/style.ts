@@ -38,7 +38,8 @@ const useStyles = makeStyles(() => ({
   },
   tooltipArrow: {
     color: colors.gray.mid,
-    width: 12
+    borderColor: colors.gray.mid,
+    width: 13
   }
 }))
 
