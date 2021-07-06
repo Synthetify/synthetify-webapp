@@ -101,8 +101,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 1,
     lineHeight: 45,
 
-    '&:hover': {
-      background: colors.gray.mid
+    '@media(hover: hover) and (pointer: fine)': {
+      '&:hover': {
+        background: colors.gray.mid
+      }
     }
   },
   swapIcon: {
