@@ -43,10 +43,9 @@ interface FullHeightIndicatorTabsProps {
 const FullHeightIndicatorTabs = withStyles({
   root: { overflow: 'visible' },
   indicator: {
-    height: 'calc(100% + 10px)',
+    height: '100%',
     borderRadius: 10,
-    backgroundColor: colors.gray.mid,
-    bottom: -5
+    backgroundColor: colors.gray.mid
   },
   scrollable: {
     overflow: 'visible'
@@ -77,6 +76,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       textTransform: 'capitalize',
       fontWeight: 400,
       fontSize: 22,
+      minHeight: 60,
       [theme.breakpoints.down('sm')]: {
         fontSize: 18,
         minWidth: 100,
