@@ -150,6 +150,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             value={inputValue}
             setValue={onAmountInputChange}
             className={classes.amountInput}
+            placeholder={'0.0'}
             currency={currency}
           />
         </Grid>
