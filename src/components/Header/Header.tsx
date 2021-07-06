@@ -58,7 +58,7 @@ export const Header: React.FC<IHeader> = ({
             <CardMedia className={classes.snyLogo} image={snyIcon} />
           </Grid>
           <Grid item>
-            <Divider orientation='vertical' className={classes.verticalDivider} />
+            <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginRight: 20 }} />
           </Grid>
         </Grid>
         <Hidden mdDown>
@@ -86,6 +86,7 @@ export const Header: React.FC<IHeader> = ({
                 className={buttonClasses.headerButton}
                 variant='contained'
                 classes={{ disabled: buttonClasses.disabled }}
+                style={{ marginLeft: 0 }}
                 onClick={onFaucet}
               >
                 Faucet
@@ -171,7 +172,7 @@ export const Header: React.FC<IHeader> = ({
         <Hidden lgUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Grid item>
-              <Divider orientation='vertical' className={classes.verticalDivider} />
+              <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginLeft: 20 }} />
             </Grid>
             <Grid item>
               <IconButton
