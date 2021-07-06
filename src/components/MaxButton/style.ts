@@ -26,11 +26,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   maxButton: {
     textTransform: 'none',
-    padding: '5px 21px',
-    margin: 10,
-    width: 'calc(100% - 20px)',
+    width: 96,
     height: 60,
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    [theme.breakpoints.down('xs')]: {
+      width: 70
+    }
   }
 }))
 

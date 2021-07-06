@@ -27,8 +27,7 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
 
   const names = {
     [WalletType.PHANTOM]: 'phantom',
-    [WalletType.SOLLET]: 'sollet',
-    [WalletType.SOLLET_EXTENSION]: 'extension'
+    [WalletType.SOLLET]: 'sollet'
   }
 
   return (

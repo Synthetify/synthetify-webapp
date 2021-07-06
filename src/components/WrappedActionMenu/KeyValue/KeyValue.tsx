@@ -10,18 +10,29 @@ export interface IProps {
   value: BN
   decimal: number
   unit: string
+  keyClassName?: string
+  valueClassName?: string
 }
 
-export const KeyValue: React.FC<IProps> = ({ keyName, value, decimal, unit }) => {
+export const KeyValue: React.FC<IProps> = ({
+  keyName,
+  value,
+  decimal,
+  unit,
+  keyClassName,
+  valueClassName
+}) => {
   const classes = useStyles()
   const valueToPrint = `${unit} ${printBN(value, decimal)}`
 
   return (
     <>
-      <Typography className={classNames(classes.text, classes.property, classes.lineHeight)}>
+      <Typography
+        className={classNames(classes.text, classes.property, classes.lineHeight, keyClassName)}>
         {keyName}
       </Typography>
-      <Typography className={classNames(classes.text, classes.value, classes.lineHeight)}>
+      <Typography
+        className={classNames(classes.text, classes.value, classes.lineHeight, valueClassName)}>
         {valueToPrint}
       </Typography>
     </>

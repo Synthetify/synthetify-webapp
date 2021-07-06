@@ -39,7 +39,7 @@ export const Header: React.FC<IHeader> = ({
   const classes = useStyles()
   const buttonClasses = useButtonStyles()
 
-  const routes = ['staking', 'stats', 'exchange']
+  const routes = ['staking', 'exchange']
   const [activePath, setActive] = React.useState(landing)
   const [network, setNetwork] = React.useState('Devnet')
 
@@ -109,7 +109,7 @@ export const Header: React.FC<IHeader> = ({
               {!walletConnected ? (
                 <ChangeWalletButton
                   name='Connect'
-                  options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
                   onDisconnect={onDisconnectWallet}
@@ -117,7 +117,7 @@ export const Header: React.FC<IHeader> = ({
               ) : (
                 <ChangeWalletButton
                   name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
-                  options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
                   onSelect={onWalletSelect}
                   connected={walletConnected}
                   onDisconnect={onDisconnectWallet}
@@ -135,7 +135,7 @@ export const Header: React.FC<IHeader> = ({
           <Hidden lgUp>
             <ChangeWalletButton
               name='My&nbsp;wallet'
-              options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.SOLLET_EXTENSION]}
+              options={[WalletType.PHANTOM, WalletType.SOLLET]}
               onSelect={onWalletSelect}
               connected={walletConnected}
               hideArrow={true}
