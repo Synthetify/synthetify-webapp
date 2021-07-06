@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core'
-import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
 import { Swap } from '@reducers/exchange'
@@ -12,6 +11,7 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
+import useStyles from './style'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -71,6 +71,9 @@ const getButtonMessage = (
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
   }
+  if (tokenFrom.symbol === tokenTo.symbol) {
+    return 'Choose another token'
+  }
   return 'Swap'
 }
 
@@ -100,6 +103,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
 
   useEffect(() => {
     updateEstimatedAmount()
+
+    if (!!tokenFrom && !tokenTo) {
+      setAmountFrom('0.000000')
+    }
   }, [tokenTo, tokenFrom])
 
   const updateEstimatedAmount = (amount: string | null = null) => {

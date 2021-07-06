@@ -101,8 +101,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 1,
     lineHeight: 45,
 
-    '&:hover': {
-      background: colors.gray.mid
+    '@media(hover: hover) and (pointer: fine)': {
+      '&:hover': {
+        background: colors.gray.mid
+      }
+    },
+
+    '@media (hover: none)': {
+      '&:hover': {
+        background: colors.gray.component
+      },
+
+      '&:active': {
+        background: colors.gray.mid
+      }
     }
   },
   swapIcon: {
@@ -111,12 +123,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fill: colors.gray.veryLight
   },
   button: {
+    width: 'calc(100% - 20px)',
     textTransform: 'none',
     boxShadow: 'none',
     borderRadius: 10,
     padding: 10,
     fontSize: 16,
-    lineHeight: '30px',
+    lineHeight: '40px',
     margin: 10,
     fontWeight: 'normal'
   }
