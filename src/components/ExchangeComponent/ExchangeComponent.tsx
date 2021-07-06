@@ -12,6 +12,7 @@ import { colors } from '@static/theme'
 import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
+import classNames from 'classnames'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -146,7 +147,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
-                className={classes.button}
+                className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFrom) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
@@ -244,7 +245,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
-                className={classes.button}
+                className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFrom && tokenTo) {
                     setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))

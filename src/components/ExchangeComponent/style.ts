@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       height: 37,
       marginLeft: 20,
-      marginRight: 10
+      marginRight: 20
     }
   },
   numbersField: {
@@ -119,6 +119,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     margin: 10,
     fontWeight: 'normal'
+  },
+  mdDownButton: {
+    width: '100%'
   }
 }))
 
