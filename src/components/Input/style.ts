@@ -11,7 +11,8 @@ const useStyles = makeStyles(() => ({
     height: 60,
     fontSize: 22,
     minWidth: 150,
-    width: '100%'
+    width: '100%',
+    marginTop: 5
   },
   currency: {
     fontSize: 22,

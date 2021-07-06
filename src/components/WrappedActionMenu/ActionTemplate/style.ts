@@ -3,8 +3,10 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    marginTop: 8,
     minHeight: 200,
     [theme.breakpoints.down('sm')]: {
+      marginTop: -2,
       minHeight: 320,
       flexWrap: 'wrap'
     }
