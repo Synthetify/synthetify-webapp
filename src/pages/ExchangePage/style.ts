@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 855,
     marginTop: 80,
     [theme.breakpoints.down('xs')]: {
-      marginTop: 22
+      marginTop: 22,
+      marginBottom: 60
     }
   }
 }))
