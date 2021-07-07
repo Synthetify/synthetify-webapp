@@ -162,7 +162,7 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     }
     const decimalChange = 10 ** (token.decimals - ACCURACY)
 
-    return debt.mul(new BN(1e4)).muln(decimalChange).div(token.price)
+    return debt.mul(new BN(1e6)).muln(decimalChange).div(token.price)
   })
 export const tokenTicker = (tokenAddress: PublicKey) =>
   createSelector(assets, allAssets => {
