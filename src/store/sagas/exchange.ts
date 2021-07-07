@@ -249,7 +249,7 @@ export function* handleAssetPrice(): Generator {
 }
 
 export function* assetPriceHandler(): Generator {
-  yield* throttle(3000, actions.setAssetPrice, handleAssetPrice)
+  yield* throttle(1000, actions.setAssetPrice, handleAssetPrice)
 }
 export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)

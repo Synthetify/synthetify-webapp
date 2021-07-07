@@ -12,6 +12,7 @@ storiesOf('cards/Value', module)
         hint='Amount of money you’ve deciced to keep on your virtual wallet.'
         value='100.00'
         sign='$'
+        decimals={2}
       />
     </div>
   ))

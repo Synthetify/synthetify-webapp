@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core'
 import BN from 'bn.js'
 import classNames from 'classnames'
 import useStyles from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
 
 export interface IProps {
   keyName: string
@@ -23,7 +24,6 @@ export const KeyValue: React.FC<IProps> = ({
   valueClassName
 }) => {
   const classes = useStyles()
-  const valueToPrint = `${unit} ${printBN(value, decimal)}`
 
   return (
     <>
@@ -33,7 +33,7 @@ export const KeyValue: React.FC<IProps> = ({
       </Typography>
       <Typography
         className={classNames(classes.text, classes.value, classes.lineHeight, valueClassName)}>
-        {valueToPrint}
+        {unit} <AnimatedNumber value={printBN(value, decimal)} duration={300} formatValue={(value: string) => Number(value).toFixed(decimal)}/>
       </Typography>
     </>
   )
