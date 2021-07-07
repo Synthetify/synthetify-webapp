@@ -87,7 +87,7 @@ export interface IExchangeComponent {
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
   const classes = useStyles()
 
-  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens ? 0 : null)
+  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens.length ? 0 : null)
   const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
@@ -311,7 +311,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <AnimatedNumber
               value={(() => {
                 if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
-                return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', 0)
+                return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', 0.03)
               })()}
               duration={300}
               formatValue={(value: string) => Number(value).toFixed(6)}
