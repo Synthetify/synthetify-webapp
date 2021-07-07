@@ -78,6 +78,12 @@ const useStyles = makeStyles(() => ({
   paper: {
     background: 'transparent',
     boxShadow: 'none'
+  },
+  clearIcon: {
+    minWidth: 12,
+    height: 12,
+    marginLeft: 8,
+    cursor: 'pointer'
   }
 }))
 
