@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, CardContent, Typography, Divider, Tooltip, Icon, ClickAwayListener, Hidden } from '@material-ui/core'
-import useStyles from './style'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
+import useStyles from './style'
 
 export interface IProps {
   name: string

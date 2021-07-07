@@ -20,7 +20,7 @@ export const AmountInputWithLabel: React.FC<IProps> = props => {
   const label = props.label || 'Amount'
 
   return (
-    <div>
+    <div className={classes.root}>
       <Typography>
         <label className={classes.inputLabel}>{label}</label>
       </Typography>
