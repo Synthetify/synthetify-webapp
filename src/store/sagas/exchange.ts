@@ -6,7 +6,7 @@ import { collateralToken, xUSDAddress, swap, exchangeAccount } from '@selectors/
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { Account, PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
+import { PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
@@ -14,7 +14,6 @@ import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection } from './connection'
-import { batch } from 'react-redux'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 export function* pullExchangeState(): Generator {
