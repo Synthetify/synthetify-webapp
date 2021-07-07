@@ -13,6 +13,7 @@ import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
 import classNames from 'classnames'
 import useStyles from './style'
+import AnimatedNumber from '@components/AnimatedNumber/AnimatedNumber'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -318,11 +319,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
           <Typography className={classes.numbersFieldAmount}>
-            {(() => {
-              if (!tokenFrom || !tokenTo) return '0.0000'
-              return calculateSwapOutAmount(tokenFrom, tokenTo, '1', 0)
-            })()}{' '}
-            {tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
+            <AnimatedNumber
+              numberToAnimate={(() => {
+                if (!tokenFrom || !tokenTo) return '0.0000'
+                return calculateSwapOutAmount(tokenFrom, tokenTo, '1', 0)
+              })()}
+              showZeroAfterDot
+            />
+            {' '}{tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
           </Typography>
         </Grid>
       </Grid>

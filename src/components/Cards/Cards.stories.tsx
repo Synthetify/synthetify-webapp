@@ -10,7 +10,8 @@ storiesOf('cards/Value', module)
       <ValueCard
         name='Staked Value'
         hint='Amount of money you’ve deciced to keep on your virtual wallet.'
-        value='100.00$'
+        value='100.00'
+        sign='$'
       />
     </div>
   ))
