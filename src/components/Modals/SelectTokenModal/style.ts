@@ -82,7 +82,8 @@ const useStyles = makeStyles(() => ({
   clearIcon: {
     minWidth: 12,
     height: 12,
-    marginLeft: 8
+    marginLeft: 8,
+    cursor: 'pointer'
   }
 }))
 
