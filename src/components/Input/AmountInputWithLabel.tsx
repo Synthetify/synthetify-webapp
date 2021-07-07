@@ -1,8 +1,7 @@
 import React, { CSSProperties } from 'react'
 import { Typography } from '@material-ui/core'
-
-import useStyles from './style'
 import AmountInput from './AmountInput'
+import useStyles from './style'
 
 interface IProps {
   currency: string
@@ -20,7 +19,7 @@ export const AmountInputWithLabel: React.FC<IProps> = props => {
   const label = props.label || 'Amount'
 
   return (
-    <div>
+    <div className={classes.root}>
       <Typography>
         <label className={classes.inputLabel}>{label}</label>
       </Typography>
