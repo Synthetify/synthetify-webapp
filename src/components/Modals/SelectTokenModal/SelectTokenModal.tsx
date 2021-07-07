@@ -24,6 +24,13 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
+  const endAdornment = () => (
+    <>
+      {!!value.length && <img className={classes.clearIcon} src={icons.clear} alt='x' onClick={() => { setValue('') }} />}
+      <Search className={classes.searchIcon} />
+    </>
+  )
+
   return (
     <Popover
       classes={{ paper: classes.paper }}
@@ -50,11 +57,10 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         <Grid item>
           <Input
             className={classes.searchInput}
-            type={'search'}
             value={value}
             disableUnderline={true}
             placeholder='Search a token'
-            endAdornment={<Search className={classes.searchIcon} />}
+            endAdornment={endAdornment()}
             onChange={e => {
               setValue(e.target.value)
             }}

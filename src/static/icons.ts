@@ -8,6 +8,7 @@ import xSRMIcon from './icons/xsrm.svg'
 import xUSDIcon from './icons/xusd.svg'
 import phantomIcon from './svg/phantom.svg'
 import solletIcon from './svg/sollet.svg'
+import clearIcon from './svg/clear.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -19,7 +20,8 @@ const icons: { [key: string]: string } = {
   xSRM: xSRMIcon,
   xUSD: xUSDIcon,
   phantom: phantomIcon,
-  sollet: solletIcon
+  sollet: solletIcon,
+  clear: clearIcon
 }
 
 export default icons
