@@ -150,7 +150,7 @@ export const userMaxWithdraw = createSelector(
       .sub(debt)
       .mul(new BN(collateralLvl))
       .div(new BN(100))
-      .mul(new BN(1e4))
+      .mul(new BN(1e6))
       .div(collateralToken.price)
   }
 )
