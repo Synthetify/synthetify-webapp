@@ -3,7 +3,7 @@ import { CardMedia, Grid, Typography } from '@material-ui/core'
 import BN from 'bn.js'
 import { printBN, removeTickerPrefix } from '@consts/utils'
 import useStyles from './style'
-const modules = import.meta.globEager('/src/static/icons/*.svg')
+import icons from '@static/icons'
 
 export interface IToken {
   ticker: string
@@ -21,17 +21,11 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
 
   const { ticker, balance, decimals, usdValue } = token
   const imgName = removeTickerPrefix(ticker)
-  let icon
-  try {
-    icon = modules[`/src/static/icons/${imgName.toLowerCase()}.svg`].default
-  } catch (error) {
-    icon = modules['/src/static/icons/sny.svg'].default
-  }
   return (
     <Grid container alignItems='center' style={{ flexWrap: 'nowrap' }}>
       <Grid container item xs={4} sm={3} alignItems='center'>
         <Grid item>
-          <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icon} />
+          <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icons[imgName] ?? icons.SNY} />
         </Grid>
         <Grid item>
           <Typography variant='h5' color='textPrimary' className={classes.font}>

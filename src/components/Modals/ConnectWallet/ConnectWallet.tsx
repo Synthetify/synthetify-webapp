@@ -3,7 +3,7 @@ import { Typography, Popover, Grid } from '@material-ui/core'
 import useStyles from './style'
 import { ExitToApp } from '@material-ui/icons'
 import { WalletType } from '@web3/wallet'
-const modules = import.meta.globEager('/src/static/svg/*.svg')
+import icons from '@static/icons'
 
 export interface IConnectWalletModal {
   options: WalletType[]
@@ -45,28 +45,19 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
         horizontal: 'center'
       }}>
       <Grid className={classes.root} container alignContent='space-around' direction='column'>
-        {options.map(option => {
-          let icon
-          try {
-            icon = modules[`/src/static/svg/${names[option].toLowerCase()}.svg`].default
-          } catch (error) {
-            icon = ''
-          }
-
-          return (
-            <Grid
-              item
-              key={option}
-              className={classes.listItem}
-              onClick={() => {
-                onSelect(option)
-                handleClose()
-              }}>
-              <img className={classes.icon} src={icon} alt={`${option} icon}`} />
-              <Typography className={classes.name}>{names[option]}</Typography>
-            </Grid>
-          )
-        })}
+        {options.map(option => (
+          <Grid
+            item
+            key={option}
+            className={classes.listItem}
+            onClick={() => {
+              onSelect(option)
+              handleClose()
+            }}>
+            <img className={classes.icon} src={icons[names[option]]} alt={`${option} icon}`} />
+            <Typography className={classes.name}>{names[option]}</Typography>
+          </Grid>
+        ))}
 
         {connected ? (
           <Grid item className={classes.listItem} onClick={callDisconect}>

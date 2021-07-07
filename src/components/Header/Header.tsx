@@ -58,7 +58,7 @@ export const Header: React.FC<IHeader> = ({
             <CardMedia className={classes.snyLogo} image={snyIcon} />
           </Grid>
           <Grid item>
-            <Divider orientation='vertical' className={classes.verticalDivider} />
+            <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginRight: 20 }} />
           </Grid>
         </Grid>
         <Hidden mdDown>
@@ -86,6 +86,7 @@ export const Header: React.FC<IHeader> = ({
                 className={buttonClasses.headerButton}
                 variant='contained'
                 classes={{ disabled: buttonClasses.disabled }}
+                style={{ marginLeft: 0 }}
                 onClick={onFaucet}
               >
                 Faucet
@@ -133,14 +134,34 @@ export const Header: React.FC<IHeader> = ({
             </Grid>
           </Hidden>
           <Hidden lgUp>
-            <ChangeWalletButton
-              name='My&nbsp;wallet'
-              options={[WalletType.PHANTOM, WalletType.SOLLET]}
-              onSelect={onWalletSelect}
-              connected={walletConnected}
-              hideArrow={true}
-              onDisconnect={onDisconnectWallet}
-            />
+            <Grid item>
+              {!walletConnected ? (
+                <ChangeWalletButton
+                  name='My&nbsp;wallet'
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  hideArrow={true}
+                  onDisconnect={onDisconnectWallet}
+                />
+              ) : (
+                <ChangeWalletButton
+                  name={`${address.toString().substr(0, 3)}...${address.toString().substr(address.toString().length - 3, 3)}`}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  hideArrow={true}
+                  onDisconnect={onDisconnectWallet}
+                  startIcon={
+                    typeOfWallet === 'phantom' ? (
+                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                    ) : (
+                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                    )
+                  }
+                />
+              )}
+            </Grid>
           </Hidden>
         </Grid>
         <Hidden mdDown>
@@ -151,7 +172,7 @@ export const Header: React.FC<IHeader> = ({
         <Hidden lgUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Grid item>
-              <Divider orientation='vertical' className={classes.verticalDivider} />
+              <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginLeft: 20 }} />
             </Grid>
             <Grid item>
               <IconButton
