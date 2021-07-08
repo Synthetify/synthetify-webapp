@@ -8,10 +8,13 @@ const useStyles = makeStyles(() => ({
   },
   tooltip: {
     background: colors.gray.mid,
+    padding: '5px 8px'
+  },
+  hint: {
     color: colors.white.main,
+    fontWeight: 400,
     fontSize: 13,
-    padding: '5px 8px',
-    fontWeight: 400
+    lineHeight: '16px'
   },
   questionMark: {
     height: 17,

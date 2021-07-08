@@ -6,11 +6,24 @@ import useStyles from './style'
 export interface IRewardsLineProps {
   message: string
   hint: string
+  bottomHint?: string
 }
 
-export const RewardsLine: React.FC<IRewardsLineProps> = ({ message, hint }) => {
+export const RewardsLine: React.FC<IRewardsLineProps> = ({ message, hint, bottomHint }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const processedHint = (
+    <>
+      <Typography className={classes.hint}>{hint}</Typography>
+      {bottomHint ? (
+        <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
+          {bottomHint}
+        </Typography>
+      ) : (
+        ''
+      )}
+    </>
+  )
 
   return (
     <Grid container justify='flex-start' alignItems='center'>
@@ -20,7 +33,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({ message, hint }) => {
       <Grid item>
         <Hidden mdDown>
           <Icon>
-            <Tooltip classes={{ tooltip: classes.tooltip }} title={hint} placement='right'>
+            <Tooltip classes={{ tooltip: classes.tooltip }} title={processedHint} placement='right'>
               <img src={HintIcon} alt='' className={classes.questionMark} />
             </Tooltip>
           </Icon>
@@ -30,7 +43,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({ message, hint }) => {
             <Icon onClick={() => setIsPopoverOpen(true)}>
               <Tooltip
                 classes={{ tooltip: classes.tooltip }}
-                title={hint}
+                title={processedHint}
                 placement='bottom'
                 open={isPopoverOpen}
                 onClose={() => setIsPopoverOpen(false)}

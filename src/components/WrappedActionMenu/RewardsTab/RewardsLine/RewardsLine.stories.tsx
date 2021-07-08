@@ -8,6 +8,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards line', () => (
     <RewardsLine
       message='Amount per round: 9999 points (999 SNY)'
       hint='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc imperdiet varius orci.'
+      bottomHint='Time remaining: 10:10:10'
     />
   </div>
 ))
