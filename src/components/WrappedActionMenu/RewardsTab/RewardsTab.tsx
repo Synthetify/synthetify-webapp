@@ -1,15 +1,18 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
+import { Divider, Grid } from '@material-ui/core'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
+import useStyles from './style'
 
 export interface IRewardsProps {
   amountPerRound: number
 }
 
 const loremIpsum =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin. Donec augue risus, dapibus eu nunc lobortis, condimentum pharetra nisl'
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
 
-const rewardsLines: { [index: number]: { message: string; hint: string } } = [
+const rewardsLines: { [index: number]: { message: string; hint: string; bottomHint?: string } } = [
   {
     message: 'Amount per round: 9999 points (999 SNY)',
     hint: loremIpsum
@@ -20,23 +23,40 @@ const rewardsLines: { [index: number]: { message: string; hint: string } } = [
   },
   {
     message: 'Finished round: 9999 points (999 SNY)',
-    hint: loremIpsum
+    hint: loremIpsum,
+    bottomHint: 'Time remaining: 10:10:10'
   }
 ]
 
 export const RewardsTab: React.FC = () => {
+  const classes = useStyles()
+
   const lines = Object.keys(rewardsLines).map((key, index) => {
-    const { message, hint } = rewardsLines[+key]
+    const props = rewardsLines[+key]
     return (
-      <Grid item>
-        <RewardsLine key={index} message={message} hint={hint} />
+      <Grid item key={index}>
+        <RewardsLine {...props} />
+        <Divider className={classes.divider} />
       </Grid>
     )
   })
 
   return (
-    <Grid container direction='column'>
-      {lines}
+    <Grid container direction='column' justify='space-around'>
+      <Grid item>
+        <RewardsAmount />
+      </Grid>
+      <Grid item container justify='space-between' direction='column'>
+        {lines}
+      </Grid>
+      <Grid item container alignItems='center' justify='flex-end'>
+        <Grid item>
+          <OutlinedButton color='secondary' name='Claim' onClick={() => {}} />
+        </Grid>
+        <Grid item style={{ marginLeft: 18 }}>
+          <OutlinedButton color='primary' name='Withdraw' onClick={() => {}} />
+        </Grid>
+      </Grid>
     </Grid>
   )
 }
