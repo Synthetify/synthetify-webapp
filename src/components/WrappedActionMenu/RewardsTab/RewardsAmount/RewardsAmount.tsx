@@ -3,7 +3,7 @@ import { ClickAwayListener, Grid, Hidden, Icon, Tooltip, Typography } from '@mat
 import HintIcon from '@static/svg/questionMarkCircle.svg'
 import useStyles from './style'
 
-export const ClaimAmount: React.FC = () => {
+export const RewardsAmount: React.FC = () => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const hint =
