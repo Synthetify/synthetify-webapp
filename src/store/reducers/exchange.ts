@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset } from '@synthetify/sdk/lib/exchange'
+import { ExchangeState, Asset, CollateralEntry } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 export interface UserAccount {
   address: string // local storage does not handle PublicKeys
@@ -19,7 +19,7 @@ export interface Swap {
 }
 export interface ExchangeAccount {
   address: PublicKey
-  collateralShares: BN
+  collaterals: CollateralEntry[]
   debtShares: BN
 }
 export interface IExchange {
@@ -75,7 +75,7 @@ export const defaultState: IExchange = {
   userAccount: { address: DEFAULT_PUBLICKEY.toString(), collateral: new BN(0), shares: new BN(0) },
   exchangeAccount: {
     address: DEFAULT_PUBLICKEY,
-    collateralShares: new BN(0),
+    collaterals: [],
     debtShares: new BN(0)
   },
   swap: {
@@ -131,7 +131,7 @@ const exchangeSlice = createSlice({
       return state
     },
     setExchangeAccount(state, action: PayloadAction<ExchangeAccount>) {
-      state.exchangeAccount.collateralShares = action.payload.collateralShares
+      state.exchangeAccount.collaterals = action.payload.collaterals
       state.exchangeAccount.debtShares = action.payload.debtShares
       state.exchangeAccount.address = action.payload.address
       return state

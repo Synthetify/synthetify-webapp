@@ -32,7 +32,7 @@ const ExhcangeEvents = () => {
         dispatch(
           actions.setExchangeAccount({
             address: userAccount.address,
-            collateralShares: a.collateralShares,
+            collaterals: a.collaterals,
             debtShares: a.debtShares
           })
         )
@@ -83,7 +83,7 @@ const ExhcangeEvents = () => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
-            actions.setAssetPrice({ token: asset.assetAddress, price: new BN(data.price * 1e6) })
+            actions.setAssetPrice({ token: asset.synthetic.assetAddress, price: new BN(data.price * 1e6) })
           )
         })
       }

@@ -183,7 +183,7 @@ export function* init(): Generator {
     yield* put(
       exchangeActions.setExchangeAccount({
         address: address,
-        collateralShares: account.collateralShares,
+        collaterals: account.collaterals,
         debtShares: account.debtShares
       })
     )
@@ -242,7 +242,7 @@ export function* handleDisconnect(): Generator {
     yield* put(actions.resetState())
     yield* put(exchangeActions.setExchangeAccount({
       address: DEFAULT_PUBLICKEY,
-      collateralShares: new BN(0),
+      collaterals: [],
       debtShares: new BN(0)
     }))
   } catch (error) {

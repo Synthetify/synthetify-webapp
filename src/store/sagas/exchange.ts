@@ -93,7 +93,7 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     yield* put(
       actions.setExchangeAccount({
         address: account,
-        collateralShares: new BN(0),
+        collaterals: [],
         debtShares: new BN(0)
       })
     )
