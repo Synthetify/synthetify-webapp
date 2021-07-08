@@ -7,6 +7,7 @@ import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
 import RewardsMock from '@components/WrappedActionMenu/RewardsMock'
+import RewardsTab from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -86,7 +87,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
       />
     ),
-    rewards: <RewardsMock />
+    rewards: <RewardsTab />
   }
 
   return (

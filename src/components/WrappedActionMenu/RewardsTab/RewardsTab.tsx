@@ -42,7 +42,7 @@ export const RewardsTab: React.FC = () => {
   })
 
   return (
-    <Grid container direction='column' justify='space-around'>
+    <Grid container direction='column' justify='space-around' className={classes.root}>
       <Grid item>
         <RewardsAmount />
       </Grid>
@@ -51,10 +51,20 @@ export const RewardsTab: React.FC = () => {
       </Grid>
       <Grid item container alignItems='center' justify='flex-end'>
         <Grid item>
-          <OutlinedButton color='secondary' name='Claim' onClick={() => {}} />
+          <OutlinedButton
+            color='secondary'
+            name='Claim'
+            className={classes.button}
+            onClick={() => {}}
+          />
         </Grid>
         <Grid item style={{ marginLeft: 18 }}>
-          <OutlinedButton color='primary' name='Withdraw' onClick={() => {}} />
+          <OutlinedButton
+            color='primary'
+            name='Withdraw'
+            className={classes.button}
+            onClick={() => {}}
+          />
         </Grid>
       </Grid>
     </Grid>
