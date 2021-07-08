@@ -45,7 +45,7 @@ export const exchangeTokensWithUserBalance = createSelector(
     return Object.values(exchangeAssets)
       .filter(a => a.symbol !== 'SNY')
       .map(asset => {
-        const userAccount = tokensAccounts[asset.assetAddress.toString()]
+        const userAccount = tokensAccounts[asset.synthetic.assetAddress.toString()]
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return {
           ...asset,
@@ -72,7 +72,7 @@ export const accountsArray = createSelector(
             .mul(new BN(10 ** 4))
             .mul(account.balance)
             .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** exchangeAssets[account.programId.toString()].decimals))
+            .div(new BN(10 ** exchangeAssets[account.programId.toString()].synthetic.decimals))
             .div(new BN(10 ** account.decimals))
         })
       }

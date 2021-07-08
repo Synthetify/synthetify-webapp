@@ -22,18 +22,18 @@ export const calculateSwapOutAmount = (
   effectiveFee: number = 300
 ) => {
   const amountOutBeforeFee = assetIn.price
-    .mul(printBNtoBN(amount, assetIn.decimals))
+    .mul(printBNtoBN(amount, assetIn.synthetic.decimals))
     .div(assetFor.price)
 
   const amountAfterFee = amountOutBeforeFee.sub(
     amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000))
   )
-  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
+  const decimalChange = 10 ** (assetFor.synthetic.decimals - assetIn.synthetic.decimals)
 
   if (decimalChange < 1) {
-    return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.decimals)
+    return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.synthetic.decimals)
   } else {
-    return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.decimals)
+    return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.synthetic.decimals)
   }
 }
 
@@ -43,17 +43,17 @@ export const calculateSwapOutAmountReversed = (
   amount: string,
   effectiveFee: number = 300
 ) => {
-  const amountAfterFee = printBNtoBN(amount, assetIn.decimals).add(
-    printBNtoBN(amount, assetIn.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
+  const amountAfterFee = printBNtoBN(amount, assetIn.synthetic.decimals).add(
+    printBNtoBN(amount, assetIn.synthetic.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
   )
   const amountOutBeforeFee = assetFor.price.mul(amountAfterFee).div(assetIn.price)
 
-  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
+  const decimalChange = 10 ** (assetFor.synthetic.decimals - assetIn.synthetic.decimals)
 
   if (decimalChange < 1) {
-    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.decimals)
+    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.synthetic.decimals)
   } else {
-    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.decimals)
+    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.synthetic.decimals)
   }
 }
 
@@ -70,7 +70,7 @@ const getButtonMessage = (
   if (!amountTo) {
     return 'Enter value of swap'
   }
-  if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
+  if (printBNtoBN(amountFrom, tokenFrom.synthetic.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
   }
   if (tokenFrom.symbol === tokenTo.symbol) {
@@ -129,9 +129,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 <>
                   Balance:{' '}
                   <AnimatedNumber
-                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
+                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].synthetic.decimals)}
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
@@ -157,8 +157,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFromIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
                   }
                 }}
               />
@@ -199,8 +199,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
                   }
                 }}
               />
@@ -236,9 +236,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 <>
                   Balance:{' '}
                   <AnimatedNumber
-                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
+                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].synthetic.decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].synthetic.decimals)}
                   />
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
@@ -265,8 +265,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFromIndex !== null && tokenToIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
                   }
                 }}
               />{' '}
@@ -308,8 +308,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null && tokenToIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
                   }
                 }}
               />{' '}
@@ -351,9 +351,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             if (tokenFromIndex === null || tokenToIndex === null) return
 
             onSwap(
-              tokens[tokenFromIndex].assetAddress,
-              tokens[tokenToIndex].assetAddress,
-              printBNtoBN(amountFrom, tokens[tokenFromIndex].decimals)
+              tokens[tokenFromIndex].synthetic.assetAddress,
+              tokens[tokenToIndex].synthetic.assetAddress,
+              printBNtoBN(amountFrom, tokens[tokenFromIndex].synthetic.decimals)
             )
           }}
         />

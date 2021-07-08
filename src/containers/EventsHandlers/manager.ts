@@ -5,13 +5,13 @@ import { status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { getManagerProgram } from '@web3/programs/manager'
+import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 
 const ManagerEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
   const exchangeState = useSelector(state)
-  const managerProgram = getManagerProgram()
+  const managerProgram = getCurrentExchangeProgram()
   React.useEffect(() => {
     if (
       !managerProgram ||

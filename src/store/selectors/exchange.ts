@@ -48,7 +48,7 @@ export const xUSDAddress = createSelector(assets, allAssets => {
     return b.feedAddress.equals(DEFAULT_PUBLICKEY)
   })
   if (xusd) {
-    return xusd[1].assetAddress
+    return xusd[1].synthetic.assetAddress
   } else {
     return DEFAULT_PUBLICKEY
   }
@@ -93,8 +93,8 @@ export const userDebtValue = createSelector(
     const debt = Object.entries(allAssets).reduce((acc, [_, asset]) => {
       return acc.add(
         divUp(
-          asset.price.mul(asset.supply),
-          new BN(10 ** (asset.decimals + ORACLE_OFFSET - ACCURACY))
+          asset.price.mul(asset.synthetic.supply),
+          new BN(10 ** (asset.synthetic.decimals + ORACLE_OFFSET - ACCURACY))
         )
       )
     }, new BN(0))
@@ -160,7 +160,7 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     if (debt.eq(new BN(0)) || !token) {
       return new BN(0)
     }
-    const decimalChange = 10 ** (token.decimals - ACCURACY)
+    const decimalChange = 10 ** (token.synthetic.decimals - ACCURACY)
 
     return debt.mul(new BN(1e6)).muln(decimalChange).div(token.price)
   })
