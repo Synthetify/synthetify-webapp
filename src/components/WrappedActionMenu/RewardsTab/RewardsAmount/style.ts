@@ -4,6 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   root: {
     width: 'fit-content',
+    marginLeft: 'auto',
     borderRadius: 10,
     padding: '0 16px',
     backgroundColor: colors.black.background
