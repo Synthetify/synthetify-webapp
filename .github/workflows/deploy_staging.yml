@@ -27,6 +27,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "eu-central-1"
       - name: Deploy app to S3 bucket
-        run: aws s3 cp build/artifacts.zip s3://${{ secrets.AWS_BUCKET }}/app-staging/
+        run: aws s3 cp dist/artifacts.zip s3://${{ secrets.AWS_BUCKET }}/app-staging/
       - name: Trigger lambda
         run: aws --region eu-central-1 lambda invoke --function-name ${{ secrets.AWS_STAGING_LAMBDA }} outfile
