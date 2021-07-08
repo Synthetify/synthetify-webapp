@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Divider, Grid } from '@material-ui/core'
 import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
-import MaxButton from '@components/CommonButton/MaxButton'
+import MaxButton from '@components/MaxButton/MaxButton'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
@@ -21,7 +21,15 @@ export interface IProps {
   hasError: boolean
 }
 
-export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDecimal, onClick, currency, sending, hasError }) => {
+export const ActionTemplate: React.FC<IProps> = ({
+  action,
+  maxAvailable,
+  maxDecimal,
+  onClick,
+  currency,
+  sending,
+  hasError
+}) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
@@ -97,10 +105,10 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
 
   const getProgressMessage = () => {
     if (!checkAmountInputError()) {
-      return 'incorrect value!'
+      return 'Incorrect value!'
     }
 
-    const actionToNoun: { [key in ActionType]: string} = {
+    const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
       burn: 'Burning',
@@ -115,7 +123,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
       return `${actionToNoun[action]} failed`
     }
 
-    const actionToPastNoun: { [key in ActionType]: string} = {
+    const actionToPastNoun: { [key in ActionType]: string } = {
       mint: 'minted',
       withdraw: 'withdrawn',
       burn: 'burned',
@@ -142,6 +150,7 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
             value={inputValue}
             setValue={onAmountInputChange}
             className={classes.amountInput}
+            placeholder={'0.0'}
             currency={currency}
           />
         </Grid>
@@ -149,12 +158,12 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           item
           container
           direction='row'
-          justify='space-around'
+          justify='space-between'
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
           <Grid item>
-            <MaxButton style={{ marginBottom: 0 }} onClick={onMaxButtonClick} />
+            <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
             <Divider orientation='vertical' className={classes.divider} />
@@ -162,6 +171,8 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
+              keyClassName={classes.xsTextAlignCenter}
+              valueClassName={classes.xsTextAlignCenter}
               value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}
@@ -169,22 +180,18 @@ export const ActionTemplate: React.FC<IProps> = ({ action, maxAvailable, maxDeci
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container className={classes.bottom}>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row' justify='flex-start'>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalizeString(action)}
             disabled={!actionAvailable}
             color='secondary'
-            padding='11px 40px'
-            style={{ width: 160, marginBlock: 7 }}
+            className={classes.actionButton}
             onClick={onClick(amountBN, decimal)}
           />
         </Grid>
         <Grid item>
-          <Progress
-            state={getProgressState()}
-            message={getProgressMessage()}
-          />
+          <Progress state={getProgressState()} message={getProgressMessage()} />
         </Grid>
       </Grid>
     </Grid>

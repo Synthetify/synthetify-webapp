@@ -4,8 +4,7 @@ import { PhantomWalletAdapter } from './adapters/phantom'
 import Wallet from '@project-serum/sol-wallet-adapter'
 export enum WalletType {
   PHANTOM,
-  SOLLET,
-  SOLLET_EXTENSION
+  SOLLET
 }
 let _wallet: WalletAdapter
 const getSolanaWallet = (): WalletAdapter => {
@@ -17,7 +16,7 @@ const getSolanaWallet = (): WalletAdapter => {
 }
 // Here we will pass wallet type right
 const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
-  return await new Promise((resolve, reject) => {
+  return await new Promise(resolve => {
     switch (wallet) {
       case WalletType.PHANTOM:
         _wallet = new PhantomWalletAdapter()
@@ -29,14 +28,6 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
       case WalletType.SOLLET:
         const providerUrl = 'https://www.sollet.io'
         _wallet = new Wallet(providerUrl) as WalletAdapter
-
-        _wallet.on('connect', () => {
-          resolve(_wallet)
-        })
-        _wallet.connect()
-        break
-      case WalletType.SOLLET_EXTENSION:
-        _wallet = new Wallet((window as any).sollet) as WalletAdapter
 
         _wallet.on('connect', () => {
           resolve(_wallet)
@@ -55,4 +46,10 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
   })
 }
 
-export { getSolanaWallet, connectWallet }
+const disconnectWallet = () => {
+  if (_wallet) {
+    _wallet.disconnect()
+  }
+}
+
+export { getSolanaWallet, connectWallet, disconnectWallet }

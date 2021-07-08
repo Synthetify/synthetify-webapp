@@ -113,8 +113,11 @@ const exchangeSlice = createSlice({
       }
       return state
     },
-    setAssetPrice(state, action: PayloadAction<{ token: PublicKey; price: BN }>) {
-      state.assets[action.payload.token.toString()].price = action.payload.price
+    setAssetPrice(_state, _action: PayloadAction<{ token: PublicKey; price: BN }>) {},
+    batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: BN }>) {
+      for (const [key, value] of Object.entries(action.payload)) {
+        state.assets[key].price = value
+      }
       return state
     },
     setUserAccountAddress(state, action: PayloadAction<PublicKey>) {

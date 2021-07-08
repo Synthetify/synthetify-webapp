@@ -150,7 +150,7 @@ export const userMaxWithdraw = createSelector(
       .sub(debt)
       .mul(new BN(collateralLvl))
       .div(new BN(100))
-      .mul(new BN(1e4))
+      .mul(new BN(1e6))
       .div(collateralToken.price)
   }
 )
@@ -162,10 +162,7 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     }
     const decimalChange = 10 ** (token.decimals - ACCURACY)
 
-    return debt
-      .mul(new BN(10 ** ACCURACY))
-      .muln(decimalChange)
-      .div(token.price)
+    return debt.mul(new BN(1e6)).muln(decimalChange).div(token.price)
   })
 export const tokenTicker = (tokenAddress: PublicKey) =>
   createSelector(assets, allAssets => {

@@ -4,7 +4,7 @@ import { TokenList } from '@components/TokenList/TokenList'
 import { accountsArray, accounts } from '@selectors/solanaWallet'
 import { assets } from '@selectors/exchange'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
-import { actions } from '@reducers/modals'
+import { actions } from '@reducers/staking'
 import { actions as snackbarActions } from '@reducers/snackbars'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 

@@ -3,9 +3,10 @@ import { Grid, Card, CardContent } from '@material-ui/core'
 import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { BN } from '@project-serum/anchor'
+import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/modals'
+import RewardsMock from '@components/WrappedActionMenu/RewardsMock'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -16,7 +17,7 @@ export interface IProps {
   availableToMint: BN
   availableToDeposit: BN
   availableToWithdraw: BN
-  availableToBurn: BN,
+  availableToBurn: BN
   mintState: Pick<IMint, 'sending' | 'error'>
   withdrawState: Pick<IWithdraw, 'sending' | 'error'>
   depositState: Pick<IDeposit, 'sending' | 'error'>
@@ -41,17 +42,6 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   const classes = useStyles()
 
   const actionContents: IActionContents = {
-    mint: (
-      <ActionTemplate
-        action='mint'
-        maxAvailable={availableToMint}
-        maxDecimal={6}
-        onClick={onMint}
-        currency='xUSD'
-        sending={mintState.sending}
-        hasError={!!mintState.error?.length}
-      />
-    ),
     deposit: (
       <ActionTemplate
         action='deposit'
@@ -61,6 +51,17 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='SNY'
         sending={depositState.sending}
         hasError={!!depositState.error?.length}
+      />
+    ),
+    mint: (
+      <ActionTemplate
+        action='mint'
+        maxAvailable={availableToMint}
+        maxDecimal={6}
+        onClick={onMint}
+        currency='xUSD'
+        sending={mintState.sending}
+        hasError={!!mintState.error?.length}
       />
     ),
     withdraw: (
@@ -85,7 +86,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
       />
     ),
-    rewards: 'TODO'
+    rewards: <RewardsMock />
   }
 
   return (

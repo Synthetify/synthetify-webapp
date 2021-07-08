@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core'
-import useStyles from './style'
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
 import { Swap } from '@reducers/exchange'
@@ -9,10 +8,12 @@ import { BN } from '@project-serum/anchor'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
 import { colors } from '@static/theme'
-import MaxButton from '@components/CommonButton/MaxButton'
+import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
-import { useDispatch } from 'react-redux'
+import classNames from 'classnames'
+import useStyles from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -62,7 +63,7 @@ const getButtonMessage = (
   amountTo: string,
   tokenTo: TokensWithBalance | null
 ) => {
-  if (!tokenFrom) return ''
+  if (!tokenFrom) return 'Select input token'
   if (!tokenTo) {
     return 'Select output token'
   }
@@ -71,6 +72,9 @@ const getButtonMessage = (
   }
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
+  }
+  if (tokenFrom.symbol === tokenTo.symbol) {
+    return 'Choose another token'
   }
   return 'Swap'
 }
@@ -82,36 +86,28 @@ export interface IExchangeComponent {
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
-  const [tokenFrom, setTokenFrom] = React.useState<TokensWithBalance | null>(tokens[0] ?? null)
-  const [tokenTo, setTokenTo] = React.useState<TokensWithBalance | null>(null)
+  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens.length ? 0 : null)
+  const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
 
   useEffect(() => {
-    if (tokenFrom) {
-      const fromIndex = tokens.findIndex(t => t.assetAddress.equals(tokenFrom?.assetAddress))
-      setTokenFrom(tokens[fromIndex])
-    }
-    if (tokenTo) {
-      const toIndex = tokens.findIndex(t => t.assetAddress.equals(tokenTo?.assetAddress))
-      setTokenTo(tokens[toIndex])
-    }
-  }, [tokens])
-
-  useEffect(() => {
     updateEstimatedAmount()
-  }, [tokenTo, tokenFrom, dispatch])
+
+    if (tokenFromIndex !== null && tokenToIndex === null) {
+      setAmountFrom('0.000000')
+    }
+  }, [tokenToIndex, tokenFromIndex])
 
   const updateEstimatedAmount = (amount: string | null = null) => {
-    if (!!tokenFrom && !!tokenTo) {
-      setAmountTo(calculateSwapOutAmount(tokenFrom, tokenTo, amount ?? amountFrom))
+    if (tokenFromIndex !== null && tokenToIndex !== null) {
+      setAmountTo(calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], amount ?? amountFrom))
     }
   }
   const updateFromEstimatedAmount = (amount: string | null = null) => {
-    if (!!tokenFrom && !!tokenTo) {
-      setAmountFrom(calculateSwapOutAmountReversed(tokenFrom, tokenTo, amount ?? amountFrom))
+    if (tokenFromIndex !== null && tokenToIndex !== null) {
+      setAmountFrom(calculateSwapOutAmountReversed(tokens[tokenFromIndex], tokens[tokenToIndex], amount ?? amountFrom))
     }
   }
 
@@ -127,28 +123,42 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>From</Typography>
-          <Typography className={classes.tokenMaxText}>{tokenFrom ? `Balance: ${printBN(tokenFrom.balance, tokenFrom.decimals)} ${tokenFrom.symbol}` : ''}</Typography>
+          <Typography className={classes.tokenMaxText}>
+            {tokenFromIndex !== null
+              ? (
+                <>
+                  Balance:{' '}
+                  <AnimatedNumber
+                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
+                    duration={300}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].decimals)}
+                  />
+                  {` ${tokens[tokenFromIndex].symbol}`}
+                </>
+              )
+              : ''}
+          </Typography>
         </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenFrom?.symbol ?? null}
+                current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
-                  setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
+                  setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
                 }
               />
             </Grid>
             <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
-                className={classes.button}
+                className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
-                  if (tokenFrom) {
-                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
-                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
+                  if (tokenFromIndex !== null) {
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />
@@ -161,10 +171,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenFrom?.symbol ?? null}
+                current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
-                  setTokenFrom(tokens.find(t => t.symbol === chosen) ?? null)
+                  setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
                 }
               />
             </Grid>
@@ -178,7 +188,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   updateEstimatedAmount(value)
                 }
               }}
-              currency={tokenFrom?.symbol ?? null}
+              placeholder={'0.0'}
+              currency={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
             />
           </Grid>
           <Hidden mdDown>
@@ -187,9 +198,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 name='Set&nbsp;to&nbsp;max'
                 className={classes.button}
                 onClick={() => {
-                  if (tokenFrom) {
-                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
-                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
+                  if (tokenFromIndex !== null) {
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />
@@ -203,9 +214,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <IconButton
             className={classes.swapIconSquare}
             onClick={() => {
-              if (!tokenTo || !tokenFrom) return
-              setTokenFrom(tokenTo)
-              setTokenTo(tokenFrom)
+              if (tokenToIndex === null || tokenFromIndex === null) return
+              setTokenFromIndex(tokenToIndex)
+              setTokenToIndex(tokenFromIndex)
               setTimeout(() => updateEstimatedAmount(), 0)
             }}>
             <SwapVertIcon
@@ -219,17 +230,31 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
-          <Typography className={classes.tokenMaxText}>{tokenFrom && tokenTo ? `Balance: ${printBN(tokenTo.balance, tokenTo.decimals)} ${tokenTo.symbol}` : ''}</Typography>
+          <Typography className={classes.tokenMaxText}>
+            {tokenFromIndex !== null && tokenToIndex !== null
+              ? (
+                <>
+                  Balance:{' '}
+                  <AnimatedNumber
+                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
+                    duration={300}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].decimals)}
+                  />
+                  {` ${tokens[tokenToIndex].symbol}`}
+                </>
+              )
+              : ''}
+          </Typography>
         </Grid>
         <Hidden lgUp>
           <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenTo?.symbol ?? null}
+                current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
-                  setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
+                  setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
                   setTimeout(() => updateEstimatedAmount(), 0)
                 }}
               />
@@ -237,11 +262,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <MaxButton
                 name='Set to max'
-                className={classes.button}
+                className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
-                  if (tokenFrom && tokenTo) {
-                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
-                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
+                  if (tokenFromIndex !== null && tokenToIndex !== null) {
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />{' '}
@@ -254,10 +279,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
-                current={tokenTo?.symbol ?? null}
+                current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
-                  setTokenTo(tokens.find(t => t.symbol === chosen) ?? null)
+                  setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
                   setTimeout(() => updateEstimatedAmount(), 0)
                 }}
               />
@@ -272,7 +297,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   updateFromEstimatedAmount(value)
                 }
               }}
-              currency={tokenTo?.symbol ?? null}
+              placeholder={'0.0'}
+              currency={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
             />
           </Grid>
           <Hidden mdDown>
@@ -281,9 +307,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 name='Set&nbsp;to&nbsp;max'
                 className={classes.button}
                 onClick={() => {
-                  if (tokenFrom && tokenTo) {
-                    setAmountFrom(printBN(tokenFrom.balance, tokenFrom.decimals))
-                    updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.decimals))
+                  if (tokenFromIndex !== null && tokenToIndex !== null) {
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />{' '}
@@ -302,28 +328,32 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
           <Typography className={classes.numbersFieldAmount}>
-            {(() => {
-              if (!tokenFrom || !tokenTo) return '0.0000'
-              return calculateSwapOutAmount(tokenFrom, tokenTo, '1', 0)
-            })()}{' '}
-            {tokenFrom?.symbol ?? 'xUSD'} {tokenTo == null ? '' : `per ${tokenTo.symbol}`}
+            <AnimatedNumber
+              value={(() => {
+                if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
+                return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', 300)
+              })()}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(6)}
+            />
+            {' '}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'} {tokenToIndex === null ? '' : `per ${tokens[tokenToIndex].symbol}`}
           </Typography>
         </Grid>
       </Grid>
 
       <Grid item>
         <OutlinedButton
-          name={getButtonMessage(amountFrom, tokenFrom, amountTo, tokenTo)}
+          name={getButtonMessage(amountFrom, tokenFromIndex !== null ? tokens[tokenFromIndex] : null, amountTo, tokenToIndex !== null ? tokens[tokenToIndex] : null)}
           color='secondary'
-          disabled={getButtonMessage(amountFrom, tokenFrom, amountTo, tokenTo) !== 'Swap'}
+          disabled={getButtonMessage(amountFrom, tokenFromIndex !== null ? tokens[tokenFromIndex] : null, amountTo, tokenToIndex !== null ? tokens[tokenToIndex] : null) !== 'Swap'}
           className={classes.swapButton}
           onClick={() => {
-            if (!tokenFrom || !tokenTo) return
+            if (tokenFromIndex === null || tokenToIndex === null) return
 
             onSwap(
-              tokenFrom.assetAddress,
-              tokenTo.assetAddress,
-              printBNtoBN(amountFrom, tokenFrom.decimals)
+              tokens[tokenFromIndex].assetAddress,
+              tokens[tokenToIndex].assetAddress,
+              printBNtoBN(amountFrom, tokens[tokenFromIndex].decimals)
             )
           }}
         />

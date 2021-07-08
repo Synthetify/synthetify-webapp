@@ -12,7 +12,7 @@ const xSNY: IToken = {
 }
 
 const xBTC: IToken = {
-  ticker: '$BTC',
+  ticker: 'xBTC',
   balance: new BN(1e6),
   decimals: 6,
   usdValue: new BN(391933000)
@@ -21,4 +21,4 @@ const xBTC: IToken = {
 storiesOf('Tokens/tokenItem', module)
   .addDecorator(withKnobs)
   .add('Synthetify', () => <TokenItem token={xSNY} />)
-  .add('Bitcoin', () => <TokenItem token={xBTC} />)
+  .add('xBTC', () => <TokenItem token={xBTC} />)

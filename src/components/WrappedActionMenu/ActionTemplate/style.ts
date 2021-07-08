@@ -41,15 +41,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.gray.light,
     height: 60
   },
-  bottom: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
+  actionButton: {
+    padding: '11px 40px',
     [theme.breakpoints.down('xs')]: {
-      paddingTop: 15,
-      flexDirection: 'column',
-      justifyContent: 'space-around',
-      alignItems: 'flex-start'
+      padding: '11px 15px'
+    }
+  },
+  xsTextAlignCenter: {
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
     }
   }
 }))

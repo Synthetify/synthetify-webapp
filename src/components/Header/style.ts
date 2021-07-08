@@ -1,123 +1,84 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
-const useStyles = makeStyles(() => ({
-  root: {
-    padding: '25px',
-    paddingRight: 0
-  },
-  divButton: {
-    // marginLeft: 70
-  },
-  divAirdropButton: {
-    marginRight: 20
-  },
 
-  button: {
-    width: 'auto',
-    color: colors.red.pinkish,
-    borderColor: colors.red.pinkish,
-    '&:hover': {
-      borderWidth: 2,
-      backgroundColor: `${colors.red.pinkish}`,
-      borderColor: colors.red.pinkish
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    background: colors.black.background,
+    paddingRight: 0,
+    height: 100,
+
+    [theme.breakpoints.down('md')]: {
+      height: 60
     }
   },
-  buttonAddress: {
-    width: 200,
-    color: colors.red.pinkish,
-    borderColor: colors.red.pinkish,
-    '&:hover': {
-      borderWidth: 2,
-      backgroundColor: `${colors.red.pinkish}`,
-      borderColor: colors.red.pinkish
-    },
-    textTransform: 'none'
-  },
-  buttonAirdrop: {
-    width: 'auto',
-    color: colors.green.main,
-    borderColor: colors.green.main,
-    '&:hover': {
-      borderWidth: 2,
-      backgroundColor: `${colors.green.main}`,
-      borderColor: colors.green.main
+  snyLogo: {
+    width: 50,
+    height: 44,
+    margin: 10,
+    marginLeft: 50,
+
+    [theme.breakpoints.down('md')]: {
+      margin: 0,
+      marginLeft: 8
     }
   },
-  navigationRoot: {
-    background: 'none'
+  divider: {
+    background: colors.gray.light
   },
-  navigationTab: {
-    color: colors.gray.skeletonBackground,
-    width: 150
+  verticalDivider: {
+    background: colors.gray.light,
+    height: 50,
+    marginLeft: 40,
+    marginRight: 10,
+
+    [theme.breakpoints.down('md')]: {
+      margin: 10
+    }
   },
-  navigationTabSelected: {
-    color: colors.green.main,
-    fontSize: '22px !important'
+  connectedWalletIcon: {
+    minWidth: 21,
+    height: 21,
+    marginRight: 5
   },
-  navigationTabLabel: {
-    fontSize: 20
-  },
-  drawer: {
-    backgroundColor: colors.black.background
-  },
-  networkButton: {
-    color: colors.red.pinkish,
-    borderColor: colors.red.pinkish,
-    borderWidth: 2,
+  dehazeButton: {
+    borderRadius: 10,
+    padding: 4,
+    paddingTop: 1,
+    paddingBottom: 1,
+
     '&:hover': {
-      borderWidth: 2,
-      color: colors.black.background,
-      backgroundColor: `${colors.red.pinkish}`,
-      borderColor: colors.red.pinkish
+      background: colors.gray.mid
+    }
+  },
+  dehazeIcon: {
+    width: 45,
+    height: 38,
+    fill: colors.gray.veryLight
+  },
+  dotsButton: {
+    borderRadius: 10,
+    padding: '5px 8px',
+    marginRight: 100,
+    marginLeft: 50,
+
+    [theme.breakpoints.down('md')]: {
+      padding: '1px 4px',
+      marginRight: 8,
+      marginLeft: 10
     },
-    textAlign: 'left',
-    textTransform: 'none',
-    transition: '500ms',
-    borderRadius: 10
-  },
-  networkButtonDiv: {
-    width: '80%',
-    marginTop: 16
-  },
-  drawerTitle: {
-    marginTop: 24,
-    fontWeight: 'bold',
-    textAlign: 'left'
-  },
-  drawerTitleDiv: {
-    width: '80%'
-  },
-  networkButtonDisabled: {
-    color: colors.gray.skeletonBackground,
-    borderColor: colors.gray.skeletonBackground,
-    borderWidth: 2,
+
     '&:hover': {
-      borderWidth: 2,
-      color: colors.black.background,
-      backgroundColor: `${colors.gray.skeletonBackground}`,
-      borderColor: colors.gray.skeletonBackground
-    },
-    textAlign: 'left',
-    textTransform: 'none',
-    transition: '500ms',
-    borderRadius: 10
+      background: colors.gray.mid
+    }
   },
-  walletButton: {
-    width: 200,
-    height: 55,
-    color: colors.gray.skeletonBackground,
-    borderColor: colors.gray.skeletonBackground,
-    borderWidth: 2,
-    '&:hover': {
-      borderWidth: 2,
-      color: colors.black.background,
-      backgroundColor: `${colors.green.pastel}`,
-      borderColor: colors.green.pastel
-    },
-    textAlign: 'left',
-    textTransform: 'none',
-    transition: '500ms',
-    borderRadius: 10
+  left: {
+    maxWidth: 200,
+    [theme.breakpoints.down('md')]: {
+      maxWidth: 80
+    }
+  },
+  mobileRight: {
+    maxWidth: 80
   }
 }))
 

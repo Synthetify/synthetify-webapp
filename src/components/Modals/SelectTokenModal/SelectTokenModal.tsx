@@ -3,13 +3,13 @@ import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/c
 import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
-
+import icons from '@static/icons'
 export interface ISelectTokenModal {
   tokens: string[]
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
-  centered? : boolean
+  centered?: boolean
   onSelect: (chosen: string) => void
 }
 
@@ -23,6 +23,13 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
+
+  const endAdornment = () => (
+    <>
+      {!!value.length && <img className={classes.clearIcon} src={icons.clear} alt='x' onClick={() => { setValue('') }} />}
+      <Search className={classes.searchIcon} />
+    </>
+  )
 
   return (
     <Popover
@@ -50,11 +57,10 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         <Grid item>
           <Input
             className={classes.searchInput}
-            type={'search'}
             value={value}
             disableUnderline={true}
             placeholder='Search a token'
-            endAdornment={<Search className={classes.searchIcon} />}
+            endAdornment={endAdornment()}
             onChange={e => {
               setValue(e.target.value)
             }}
@@ -68,33 +74,24 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(name => {
-                  let icon
-                  try {
-                    icon = require(`@static/icons/${name.toLowerCase()}.svg`)
-                  } catch (error) {
-                    icon = require('@static/icons/sny.svg')
-                  }
-
-                  return (
-                    <Grid
-                      container
-                      key={`tokens-${name}`}
-                      className={classes.tokenItem}
-                      alignItems='center'
-                      onClick={() => {
-                        onSelect(name)
-                        handleClose()
-                      }}>
-                      <Grid item>
-                        <CardMedia className={classes.tokenIcon} image={icon} />{' '}
-                      </Grid>
-                      <Grid item>
-                        <Typography className={classes.tokenName}>{name}</Typography>
-                      </Grid>
+                .map(name => (
+                  <Grid
+                    container
+                    key={`tokens-${name}`}
+                    className={classes.tokenItem}
+                    alignItems='center'
+                    onClick={() => {
+                      onSelect(name)
+                      handleClose()
+                    }}>
+                    <Grid item>
+                      <CardMedia className={classes.tokenIcon} image={icons[name] ?? icons.SNY} />{' '}
                     </Grid>
-                  )
-                })}
+                    <Grid item>
+                      <Typography className={classes.tokenName}>{name}</Typography>
+                    </Grid>
+                  </Grid>
+                ))}
             </CustomScrollbar>
           </Box>
         </Grid>

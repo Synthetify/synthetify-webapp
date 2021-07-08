@@ -1,30 +1,38 @@
-import React from 'react'
-
+import React, { useState } from 'react'
 import Header from '@components/Header/Header'
 import { useDispatch, useSelector } from 'react-redux'
-import { network } from '@selectors/solanaConnection'
+import { useLocation } from 'react-router-dom'
+import { address, status } from '@selectors/solanaWallet'
 import { actions } from '@reducers/solanaConnection'
-import { actions as walletActions } from '@reducers/solanaWallet'
-import { SolanaNetworks } from '@web3/connection'
-import { address } from '@selectors/solanaWallet'
+import { DEFAULT_PUBLICKEY, SolanaNetworks } from '@consts/static'
+import { Status, actions as walletActions } from '@reducers/solanaWallet'
+import { WalletType } from '@web3/wallet'
 
 export const HeaderWrapper: React.FC = () => {
   const dispatch = useDispatch()
-  const currentNetwork = useSelector(network)
   const walletAddress = useSelector(address)
+  const walletStatus = useSelector(status)
+  const location = useLocation()
+  const [typeOfWallet, setTypeOfWallet] = useState<'phantom' | 'sollet'>('phantom')
 
   return (
     <Header
-      onNetworkClick={(network: SolanaNetworks) => {
-        if (network !== currentNetwork) {
-          dispatch(actions.setNetwork(network))
+      address={walletAddress}
+      onNetworkSelect={(chosen: string) => {
+        dispatch(actions.setNetwork(chosen as SolanaNetworks))
+      }}
+      onWalletSelect={(chosen) => {
+        if (walletAddress.equals(DEFAULT_PUBLICKEY)) {
+          setTypeOfWallet(chosen === WalletType.PHANTOM ? 'phantom' : 'sollet')
         }
+
+        dispatch(walletActions.connect(chosen))
       }}
-      address={walletAddress.toString()}
-      onConnect={wallet => {
-        dispatch(walletActions.connect(wallet))
-      }}
-      network={currentNetwork}
+      landing={location.pathname.substr(1)}
+      walletConnected={walletStatus === Status.Initalized}
+      onFaucet={() => { dispatch(walletActions.airdrop()) }}
+      onDisconnectWallet={() => { dispatch(walletActions.disconnect()) }}
+      typeOfWallet={typeOfWallet}
     />
   )
 }
