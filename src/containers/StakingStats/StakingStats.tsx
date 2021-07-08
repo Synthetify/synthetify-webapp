@@ -19,17 +19,27 @@ export const StakingStats: React.FC = () => {
         <ValueCard
           name='Staked Value'
           hint='Amount of money you’ve decided to keep on your virtual wallet.'
-          value={`${transformBN(stakedUserValue)}$`}
+          value={transformBN(stakedUserValue)}
+          sign={'$'}
+          decimals={4}
         />
       </Grid>
       <Grid className={classes.statsTile} item xs={12} lg={4}>
-        <ValueCard name='Current debt' hint='Lorem ipsum' value={`${transformBN(currentDebt)}$`} />
+        <ValueCard
+          name='Current debt'
+          hint='Lorem ipsum'
+          value={transformBN(currentDebt)}
+          sign={'$'}
+          decimals={4}
+        />
       </Grid>
       <Grid className={classes.statsTile} item xs={12} lg={4}>
         <ValueCard
           name='Collateral Ratio'
           hint='Lorem ipsum'
-          value={`${collateralRatio.toString()}%`}
+          value={collateralRatio.toString()}
+          sign={'%'}
+          decimals={1}
         />
       </Grid>
     </>
