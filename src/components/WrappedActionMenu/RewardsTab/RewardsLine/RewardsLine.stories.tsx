@@ -7,7 +7,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards line', () => (
   <div style={{ backgroundColor: colors.gray.background, padding: '10px' }}>
     <RewardsLine
       message='Amount per round: 9999 points (999 SNY)'
-      hint='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin. Donec augue risus, dapibus eu nunc lobortis, condimentum pharetra nisl'
+      hint='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc imperdiet varius orci.'
     />
   </div>
 ))
