@@ -19,7 +19,7 @@ jobs:
         env:
           CI: false
       - name: zip
-        run: cd build && zip -r artifacts.zip *
+        run: cd dist && zip -r artifacts.zip *
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
