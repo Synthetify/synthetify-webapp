@@ -42,7 +42,10 @@ export const printBNtoBN = (amount: string, decimals: number): BN => {
   }
   return new BN(0)
 }
-export type ParsedBN = { BN: BN; decimal: number }
+export interface ParsedBN {
+  BN: BN
+  decimal: number
+}
 export const stringToMinDecimalBN = (value: string): ParsedBN => {
   if (value.includes('.')) {
     const [before, after] = value.split('.')

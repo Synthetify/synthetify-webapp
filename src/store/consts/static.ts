@@ -6,6 +6,9 @@ declare global {
   interface Window {
     solana: any
   }
+  interface ImportMeta {
+    globEager: (x: string) => { [propertyName: string]: { default: string } }
+  }
 }
 
 enum SolanaNetworks {

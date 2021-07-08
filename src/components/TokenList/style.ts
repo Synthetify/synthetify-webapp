@@ -38,7 +38,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 22,
     maxWidth: 500,
-    color: colors.gray.veryLight
+    color: colors.gray.veryLight,
+    [theme.breakpoints.down('xs')]: {
+      '& > *': {
+        fontSize: 18
+      }
+    }
   },
   tokensDividerMargin: {
     margin: '18px 0'

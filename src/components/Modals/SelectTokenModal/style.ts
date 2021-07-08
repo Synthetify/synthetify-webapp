@@ -1,14 +1,14 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   popover: {
     marginTop: 150,
     marginLeft: 'calc(50vw - 130px)'
   },
   root: {
     background: colors.gray.component,
-    width: 300,
+    width: 250,
     borderRadius: 10,
     marginTop: 20,
     margin: 3,
@@ -19,13 +19,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenList: {
     borderRadius: 10,
     background: colors.black.background,
-    height: 360,
+    height: 260,
     padding: 3,
-    overflowY: 'hidden',
-
-    [theme.breakpoints.down('md')]: {
-      height: 250
-    }
+    overflowY: 'hidden'
   },
   tokenItem: {
     margin: 5,
@@ -43,8 +39,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16
   },
   tokenIcon: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     marginLeft: 12,
     marginRight: 14
   },
@@ -82,6 +78,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     background: 'transparent',
     boxShadow: 'none'
+  },
+  clearIcon: {
+    minWidth: 12,
+    height: 12,
+    marginLeft: 8,
+    cursor: 'pointer'
   }
 }))
 

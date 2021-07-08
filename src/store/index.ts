@@ -18,12 +18,12 @@ const configureStore = (initialState = {}): AppStore => {
     initialState,
     composeEnhancers(applyMiddleware(...middleware))
   )
-  if (process.env.NODE_ENV === 'development' && module.hot) {
-    module.hot.accept('./reducers', () => {
-      const newRootReducer = require('./reducers').default
-      store.replaceReducer(newRootReducer)
-    })
-  }
+  // if (process.env.NODE_ENV === 'development' && module.hot) {
+  //   module.hot.accept('./reducers', () => {
+  //     const newRootReducer = require('./reducers').default
+  //     store.replaceReducer(newRootReducer)
+  //   })
+  // }
   return store
 }
 

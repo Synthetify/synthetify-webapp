@@ -21,13 +21,24 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
     } else if (state === 'failed') {
       return <img src={progressFailed} alt='failed' style={{ marginTop: 10 }} />
     }
-    return <GradientCircularProgress style={{ marginTop: 10 }} />
+    return (
+      <GradientCircularProgress
+        style={{ marginTop: 10 }}
+        size={{
+          xs: 30,
+          sm: 40,
+          md: 40,
+          lg: 40,
+          xl: 40
+        }}
+      />
+    )
   }
 
   return (
     <Typography component={'span'}>
       {state !== 'none' ? (
-        <Grid container direction='row' alignItems='center' style={{ minHeight: 52 }}>
+        <Grid container direction='row' alignItems='center' wrap='nowrap' style={{ height: 52 }}>
           <Grid item className={classes.icon}>
             {progressIcon(state)}
           </Grid>
@@ -36,7 +47,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
           </Grid>
         </Grid>
       ) : (
-        <Grid style={{ minHeight: 52 }} />
+        <Grid style={{ height: 52 }} />
       )}
     </Typography>
   )

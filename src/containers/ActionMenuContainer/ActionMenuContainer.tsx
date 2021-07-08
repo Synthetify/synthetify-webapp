@@ -2,10 +2,10 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
-import { actions } from '@reducers/modals'
+import { actions } from '@reducers/staking'
 import { userMaxMintUsd, userMaxWithdraw, collateralToken, userMaxBurnToken, xUSDAddress } from '@selectors/exchange'
 import { tokenBalance } from '@selectors/solanaWallet'
-import { mint, deposit, withdraw, burn } from '@selectors/modals'
+import { mint, deposit, withdraw, burn } from '@selectors/staking'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()

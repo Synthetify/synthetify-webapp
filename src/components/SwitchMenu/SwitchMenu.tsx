@@ -5,7 +5,6 @@ import { colors } from '@static/theme'
 
 export interface IProps {
   menuItems: IMenuItem
-  maxWidth?: number
   onChange: (newValue: number) => void
 }
 
@@ -44,10 +43,9 @@ interface FullHeightIndicatorTabsProps {
 const FullHeightIndicatorTabs = withStyles({
   root: { overflow: 'visible' },
   indicator: {
-    height: 'calc(100% + 10px)',
+    height: '100%',
     borderRadius: 10,
-    backgroundColor: colors.gray.mid,
-    bottom: -5
+    backgroundColor: colors.gray.mid
   },
   scrollable: {
     overflow: 'visible'
@@ -78,6 +76,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       textTransform: 'capitalize',
       fontWeight: 400,
       fontSize: 22,
+      minHeight: 60,
       [theme.breakpoints.down('sm')]: {
         fontSize: 18,
         minWidth: 100,
@@ -104,7 +103,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) => {
+export const SwitchMenu: React.FC<IProps> = ({ menuItems, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
@@ -123,10 +122,9 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, maxWidth, onChange }) 
       </TabPanel>
     )
   })
-
   return (
-    <Grid>
-      <Grid className={classes.tabs} style={{ maxWidth: maxWidth || '100%' }}>
+    <Grid style={{ width: '100%' }}>
+      <Grid className={classes.tabs}>
         <FullHeightIndicatorTabs value={value} onChange={handleChange}>
           {tabs}
         </FullHeightIndicatorTabs>

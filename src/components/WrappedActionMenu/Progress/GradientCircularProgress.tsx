@@ -1,10 +1,13 @@
 import React from 'react'
-import { CircularProgress, makeStyles } from '@material-ui/core'
+import { CircularProgress, makeStyles, withWidth } from '@material-ui/core'
+import { Breakpoint, BreakpointValues } from '@material-ui/core/styles/createBreakpoints'
 
 export interface IProps {
+  size: BreakpointValues
+  width?: Breakpoint
   firstColor?: string
   secondColor?: string
-  width?: number
+  thickness?: number
   style?: React.CSSProperties
 }
 
@@ -17,10 +20,13 @@ const useStyles = makeStyles(() => ({
 export const GradientCircularProgress: React.FC<IProps> = ({
   firstColor = '#00F9BB',
   secondColor = '#627EEA',
-  width = 2,
+  thickness = 2,
+  size,
+  width,
   style
 }) => {
-  const classes = useStyles({})
+  const classes = useStyles()
+  const progressSize = width ? size[width] : 40
 
   return (
     <>
@@ -30,9 +36,14 @@ export const GradientCircularProgress: React.FC<IProps> = ({
           <stop offset='90%' stopColor={secondColor} />
         </linearGradient>
       </svg>
-      <CircularProgress thickness={width} classes={{ circle: classes.circle }} style={style} />
+      <CircularProgress
+        size={progressSize}
+        thickness={thickness}
+        classes={{ circle: classes.circle }}
+        style={style}
+      />
     </>
   )
 }
 
-export default GradientCircularProgress
+export default withWidth()(GradientCircularProgress)

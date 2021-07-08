@@ -9,10 +9,13 @@ interface IProps {
   value?: string
   error?: string | null
   className?: string
+  placeholder?: string
   style?: CSSProperties
 }
 
-type inputString = { target: { value: string } }
+interface inputString {
+  target: { value: string }
+}
 
 export const AmountInput: React.FC<IProps> = ({
   currency,
@@ -20,6 +23,7 @@ export const AmountInput: React.FC<IProps> = ({
   setValue,
   error,
   className,
+  placeholder,
   style
 }) => {
   const classes = useStyles()
@@ -40,6 +44,7 @@ export const AmountInput: React.FC<IProps> = ({
       type={'text'}
       value={value}
       disableUnderline={true}
+      placeholder={placeholder}
       endAdornment={
         !currency ? null : (
           <InputAdornment position='end' className={classes.currency}>

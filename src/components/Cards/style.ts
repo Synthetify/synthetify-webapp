@@ -1,7 +1,7 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   valueCard: {
     background: colors.gray.component,
     borderRadius: 10
@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipArrow: {
     color: colors.gray.mid,
-    width: 12
+    borderColor: colors.gray.mid,
+    width: 13
   }
 }))
 

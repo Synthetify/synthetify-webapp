@@ -9,12 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     [theme.breakpoints.down('xs')]: {
-      fontSize: 18
-    }
-  },
-  hideOnXs: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
+      fontSize: 13
     }
   }
 }))
