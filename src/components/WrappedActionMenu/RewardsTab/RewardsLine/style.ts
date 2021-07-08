@@ -1,10 +1,14 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   text: {
     fontSize: 22,
-    color: colors.gray.veryLight
+    color: colors.gray.veryLight,
+    lineHeight: 1.5,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 16
+    }
   },
   tooltip: {
     background: colors.gray.mid,

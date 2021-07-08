@@ -26,7 +26,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({ message, hint, bottom
   )
 
   return (
-    <Grid container justify='flex-start' alignItems='center'>
+    <Grid container justify='flex-start' alignItems='center' wrap='nowrap'>
       <Grid item style={{ marginRight: 25 }}>
         <Typography className={classes.text}>{message}</Typography>
       </Grid>

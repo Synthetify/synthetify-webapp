@@ -49,7 +49,7 @@ export const RewardsTab: React.FC = () => {
       <Grid item container justify='space-between' direction='column'>
         {lines}
       </Grid>
-      <Grid item container alignItems='center' justify='flex-end'>
+      <Grid item container alignItems='center' justify='flex-end' wrap='nowrap'>
         <Grid item>
           <OutlinedButton
             color='secondary'
