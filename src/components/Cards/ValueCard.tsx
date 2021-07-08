@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { Card, CardContent, Typography, Divider, Tooltip, Icon, ClickAwayListener, Hidden } from '@material-ui/core'
+import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
 import useStyles from './style'
 
 export interface IProps {
   name: string
   value: string
+  sign: string
+  decimals: number
   hint?: string
   onClick?: () => void
 }
-export const ValueCard: React.FC<IProps> = ({ name, value, hint, onClick }) => {
+export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint, onClick }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
@@ -51,7 +54,10 @@ export const ValueCard: React.FC<IProps> = ({ name, value, hint, onClick }) => {
         ) : null}
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} />
-        <Typography className={classes.valueCardAmount}>{value}</Typography>
+        <Typography className={classes.valueCardAmount}>
+          <AnimatedNumber value={value} duration={300} formatValue={(value: string) => Number(value).toFixed(decimals)}/>
+          {sign}
+        </Typography>
       </CardContent>
     </Card>
   )

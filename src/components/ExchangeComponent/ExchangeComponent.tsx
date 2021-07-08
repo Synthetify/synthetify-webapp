@@ -13,6 +13,7 @@ import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
 import classNames from 'classnames'
 import useStyles from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
 
 export const calculateSwapOutAmount = (
   assetIn: TokensWithBalance,
@@ -124,7 +125,17 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Typography className={classes.tokenComponentText}>From</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null
-              ? `Balance: ${printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)} ${tokens[tokenFromIndex].symbol}`
+              ? (
+                <>
+                  Balance:{' '}
+                  <AnimatedNumber
+                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
+                    duration={300}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].decimals)}
+                  />
+                  {` ${tokens[tokenFromIndex].symbol}`}
+                </>
+              )
               : ''}
           </Typography>
         </Grid>
@@ -221,7 +232,17 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null && tokenToIndex !== null
-              ? `Balance: ${printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)} ${tokens[tokenToIndex].symbol}`
+              ? (
+                <>
+                  Balance:{' '}
+                  <AnimatedNumber
+                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
+                    duration={300}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].decimals)}
+                  />
+                  {` ${tokens[tokenToIndex].symbol}`}
+                </>
+              )
               : ''}
           </Typography>
         </Grid>
@@ -307,11 +328,15 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
           <Typography className={classes.numbersFieldAmount}>
-            {(() => {
-              if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
-              return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', 0)
-            })()}{' '}
-            {tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'} {tokenToIndex === null ? '' : `per ${tokens[tokenToIndex].symbol}`}
+            <AnimatedNumber
+              value={(() => {
+                if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
+                return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', 300)
+              })()}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(6)}
+            />
+            {' '}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'} {tokenToIndex === null ? '' : `per ${tokens[tokenToIndex].symbol}`}
           </Typography>
         </Grid>
       </Grid>
