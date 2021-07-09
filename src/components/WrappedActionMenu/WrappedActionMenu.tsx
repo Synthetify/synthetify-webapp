@@ -4,10 +4,9 @@ import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { BN } from '@project-serum/anchor'
 import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
+import RewardsTab from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import RewardsMock from '@components/WrappedActionMenu/RewardsMock'
-import RewardsTab from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>

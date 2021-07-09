@@ -42,14 +42,14 @@ export const RewardsTab: React.FC = () => {
   })
 
   return (
-    <Grid container direction='column' justify='space-around' className={classes.root}>
+    <Grid container direction='column' justifyContent='space-around' className={classes.root}>
       <Grid item>
         <RewardsAmount />
       </Grid>
-      <Grid item container justify='space-between' direction='column'>
+      <Grid item container justifyContent='space-between' direction='column'>
         {lines}
       </Grid>
-      <Grid item container alignItems='center' justify='flex-end' wrap='nowrap'>
+      <Grid item container alignItems='center' justifyContent='flex-end' wrap='nowrap'>
         <Grid item>
           <OutlinedButton
             color='secondary'
