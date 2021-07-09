@@ -40,6 +40,9 @@ export const collateralAccount = createSelector(state, s => {
 export const collateralToken = createSelector(state, s => {
   return s.collateralToken
 })
+export const staking = createSelector(state, s => {
+  return s.staking
+})
 export const userAccountAddress = createSelector(userAccount, userAcc => {
   return new PublicKey(userAcc.address)
 })
