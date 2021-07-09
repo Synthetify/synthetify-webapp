@@ -7,7 +7,6 @@ import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 import { getOracleProgram } from '@web3/programs/oracle'
-import { parseTokenAccountData } from '@web3/data'
 import { getCurrentSolanaConnection } from '@web3/connection'
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
@@ -52,19 +51,6 @@ const ExhcangeEvents = () => {
     }
     connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
-
-  React.useEffect(() => {
-    if (!exchangeProgram || networkStatus !== Status.Initalized) {
-      return
-    }
-    const connectEvents = () => {
-      exchangeProgram.connection.onAccountChange(exchangeState.collateralAccount, accountInfo => {
-        const parsedData = parseTokenAccountData(accountInfo.data)
-        dispatch(actions.setCollateralAccountBalance(parsedData.amount))
-      })
-    }
-    connectEvents()
-  }, [dispatch, exchangeState.collateralAccount.toString(), networkStatus])
 
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()

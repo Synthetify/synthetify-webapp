@@ -84,7 +84,7 @@ export function* handleSendToken(): Generator {
 export function* handleDeposit(): Generator {
   const depositData = yield* select(deposit)
   try {
-    const txid = yield* call(depositCollateral, depositData.amount)
+    const txid = yield* call(depositCollateral, depositData.amount, depositData.tokenAddress)
     yield* put(
       actions.depositDone({
         txid: txid
@@ -138,7 +138,7 @@ export function* handleMint(): Generator {
 export function* handleWithdraw(): Generator {
   const withdrawData = yield* select(withdraw)
   try {
-    const txid = yield* call(withdrawCollateral, withdrawData.amount)
+    const txid = yield* call(withdrawCollateral, withdrawData.amount, withdrawData.tokenAddress)
     yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({

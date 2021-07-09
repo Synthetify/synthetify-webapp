@@ -26,6 +26,7 @@ import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address } from '@selectors/solanaWallet'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { tokenForSymbol } from '@selectors/exchange'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -95,14 +96,17 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  yield* call(getCollateralTokenAirdrop)
-  yield put(
-    snackbarsActions.add({
-      message: 'You will soon receive airdrop',
-      variant: 'success',
-      persist: false
-    })
-  )
+  const snyToken = yield* select(tokenForSymbol('SNY'))
+  if (snyToken?.collateral.collateralAddress) {
+    yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
+    yield put(
+      snackbarsActions.add({
+        message: 'You will soon receive airdrop',
+        variant: 'success',
+        persist: false
+      })
+    )
+  }
 }
 // export function* getTokenProgram(pubKey: PublicKey): SagaGenerator<number> {
 //   const connection = yield* call(getConnection)

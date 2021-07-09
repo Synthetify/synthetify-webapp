@@ -24,7 +24,6 @@ export interface ExchangeAccount {
 }
 export interface IExchange {
   state: ExchangeState
-  collateralAccountBalance: BN
   collateralAccount: PublicKey
   collateralToken: PublicKey
   mintAuthority: PublicKey
@@ -64,7 +63,6 @@ export const defaultState: IExchange = {
     }
   },
   assets: {},
-  collateralAccountBalance: new BN(0),
   collateralAccount: DEFAULT_PUBLICKEY,
   collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
@@ -119,10 +117,6 @@ const exchangeSlice = createSlice({
     },
     setUserAccountAddress(state, action: PayloadAction<PublicKey>) {
       state.userAccount.address = action.payload.toString()
-      return state
-    },
-    setCollateralAccountBalance(state, action: PayloadAction<BN>) {
-      state.collateralAccountBalance = action.payload
       return state
     },
     setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {
