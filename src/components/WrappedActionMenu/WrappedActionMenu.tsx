@@ -4,7 +4,7 @@ import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { BN } from '@project-serum/anchor'
 import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
-import RewardsTab from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
+import RewardsTab, { IRewardsProps } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
 
@@ -22,6 +22,7 @@ export interface IProps {
   withdrawState: Pick<IWithdraw, 'sending' | 'error'>
   depositState: Pick<IDeposit, 'sending' | 'error'>
   burnState: Pick<IBurn, 'sending' | 'error'>
+  stakingData: IRewardsProps
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -37,9 +38,12 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   mintState,
   withdrawState,
   burnState,
-  depositState
+  depositState,
+  stakingData
 }) => {
   const classes = useStyles()
+  const { amountToClaim, currentRoundPoints, finishedRoundPoints, nextRoundPoints, lastUpdate } =
+    stakingData
 
   const actionContents: IActionContents = {
     deposit: (
@@ -86,7 +90,15 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
       />
     ),
-    rewards: <RewardsTab />
+    rewards: (
+      <RewardsTab
+        amountToClaim={amountToClaim}
+        currentRoundPoints={currentRoundPoints}
+        finishedRoundPoints={finishedRoundPoints}
+        nextRoundPoints={nextRoundPoints}
+        lastUpdate={lastUpdate}
+      />
+    )
   }
 
   return (

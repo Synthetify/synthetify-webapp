@@ -20,6 +20,13 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
       withdrawState={{ sending: false }}
       depositState={{ sending: false }}
       burnState={{ sending: false }}
+      stakingData={{
+        nextRoundPoints: new BN(100000000),
+        amountToClaim: new BN(88648),
+        currentRoundPoints: new BN(45415301),
+        finishedRoundPoints: new BN(599353037),
+        lastUpdate: new BN(100000000)
+      }}
     />
   </div>
 ))
