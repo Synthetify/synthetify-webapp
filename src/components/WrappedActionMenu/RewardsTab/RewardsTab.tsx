@@ -3,33 +3,45 @@ import { Divider, Grid } from '@material-ui/core'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
+import BN from 'bn.js'
 import useStyles from './style'
+import { printBN } from '@consts/utils'
 
 export interface IRewardsProps {
-  amountPerRound: number
+  amountToClaim: BN
+  finishedRoundPoints: BN
+  currentRoundPoints: BN
+  nextRoundPoints: BN
+  lastUpdate: BN
 }
 
 const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
 
-const rewardsLines: { [index: number]: { message: string; hint: string; bottomHint?: string } } = [
-  {
-    message: 'Amount per round: 9999 points (999 SNY)',
-    hint: loremIpsum
-  },
-  {
-    message: 'Current round: 9999 points (999 SNY)',
-    hint: loremIpsum
-  },
-  {
-    message: 'Finished round: 9999 points (999 SNY)',
-    hint: loremIpsum,
-    bottomHint: 'Time remaining: 10:10:10'
-  }
-]
-
-export const RewardsTab: React.FC = () => {
+export const RewardsTab: React.FC<IRewardsProps> = ({
+  amountToClaim,
+  nextRoundPoints,
+  currentRoundPoints,
+  finishedRoundPoints
+}) => {
   const classes = useStyles()
+
+  const rewardsLines: { [index: number]: { message: string; hint: string; bottomHint?: string } } =
+    [
+      {
+        message: `Amount per round: ${printBN(nextRoundPoints, 6)} points (SNY)`,
+        hint: loremIpsum
+      },
+      {
+        message: `Current round: ${printBN(currentRoundPoints, 6)} points (SNY)`,
+        hint: loremIpsum
+      },
+      {
+        message: `Finished round: ${printBN(finishedRoundPoints, 6)} points (SNY)`,
+        hint: loremIpsum,
+        bottomHint: 'Time remaining: 10:10:10'
+      }
+    ]
 
   const lines = Object.keys(rewardsLines).map((key, index) => {
     const props = rewardsLines[+key]
@@ -44,7 +56,7 @@ export const RewardsTab: React.FC = () => {
   return (
     <Grid container direction='column' justifyContent='space-around' className={classes.root}>
       <Grid item>
-        <RewardsAmount />
+        <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>
         {lines}
