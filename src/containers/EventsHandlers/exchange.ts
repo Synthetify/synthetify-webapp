@@ -91,6 +91,23 @@ const ExhcangeEvents = () => {
     connectEvents()
   }, [dispatch, Object.values(allAssets).length, networkStatus])
 
+  React.useEffect(() => {
+    if (
+      !exchangeProgram ||
+      networkStatus !== Status.Initalized ||
+      exchangeState.assetsList.equals(DEFAULT_PUBLICKEY)
+    ) {
+      return
+    }
+    const connectEvents = () => {
+      exchangeProgram.onAssetsListChange(exchangeState.assetsList, assets => {
+        // const parsedData = parseTokenAccountData(accountInfo.data)
+        dispatch(actions.mergeAssets(assets.assets))
+      })
+    }
+    connectEvents()
+  }, [dispatch, exchangeState.assetsList.toString(), networkStatus])
+
   return null
 }
 
