@@ -43,6 +43,9 @@ export const collateralToken = createSelector(state, s => {
 export const userAccountAddress = createSelector(userAccount, userAcc => {
   return new PublicKey(userAcc.address)
 })
+export const userStaking = createSelector(exchangeAccount, account => {
+  return account.userStaking
+})
 export const xUSDAddress = createSelector(assets, allAssets => {
   const xusd = Object.entries(allAssets).find(([_, b]) => {
     return b.feedAddress.equals(DEFAULT_PUBLICKEY)
@@ -186,6 +189,7 @@ export const exchangeSelectors = {
   shares,
   userAccount,
   userAccountAddress,
+  userStaking,
   mintAuthority,
   userMaxWithdraw,
   tokenTicker,
