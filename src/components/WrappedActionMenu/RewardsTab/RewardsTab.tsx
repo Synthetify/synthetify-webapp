@@ -11,6 +11,8 @@ export interface IRewardsProps {
   amountPerRound: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
+  onClaim: () => void
+  onWithdraw: () => void
 }
 
 const loremIpsum =
@@ -20,7 +22,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   amountToClaim,
   amountPerRound,
   currentRoundPoints,
-  finishedRoundPoints
+  finishedRoundPoints,
+  onClaim,
+  onWithdraw
 }) => {
   const classes = useStyles()
 
@@ -69,7 +73,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             color='secondary'
             name='Claim'
             className={classes.button}
-            onClick={() => {}}
+            onClick={onClaim}
           />
         </Grid>
         <Grid item style={{ marginLeft: 18 }}>
@@ -77,7 +81,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             color='primary'
             name='Withdraw'
             className={classes.button}
-            onClick={() => {}}
+            onClick={onWithdraw}
           />
         </Grid>
       </Grid>
