@@ -26,22 +26,26 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 }) => {
   const classes = useStyles()
 
-  const rewardsLines: { [index: number]: { message: string; hint: string; bottomHint?: string } } =
-    [
-      {
-        message: `Amount per round: ${printBN(nextRoundPoints, 6)} points (SNY)`,
-        hint: loremIpsum
-      },
-      {
-        message: `Current round: ${printBN(currentRoundPoints, 6)} points (SNY)`,
-        hint: loremIpsum
-      },
-      {
-        message: `Finished round: ${printBN(finishedRoundPoints, 6)} points (SNY)`,
-        hint: loremIpsum,
-        bottomHint: 'Time remaining: 10:10:10'
-      }
-    ]
+  const rewardsLines: {
+    [index: number]: { name: string; points: BN; hint: string; bottomHint?: string }
+  } = [
+    {
+      name: 'Amount per round',
+      points: nextRoundPoints,
+      hint: loremIpsum
+    },
+    {
+      name: 'Current round',
+      points: currentRoundPoints,
+      hint: loremIpsum
+    },
+    {
+      name: 'Finished round',
+      points: finishedRoundPoints,
+      hint: loremIpsum,
+      bottomHint: 'Time remaining: 10:10:10'
+    }
+  ]
 
   const lines = Object.keys(rewardsLines).map((key, index) => {
     const props = rewardsLines[+key]

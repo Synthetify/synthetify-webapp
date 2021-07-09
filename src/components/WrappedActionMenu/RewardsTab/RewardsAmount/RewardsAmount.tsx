@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip, Typography } from '@material-ui/core'
+import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
-import { printBN } from '@consts/utils'
+import { transformBN } from '@consts/utils'
 import BN from 'bn.js'
 import useStyles from './style'
 
@@ -18,7 +19,14 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
   return (
     <Grid container alignItems='center' className={classes.root}>
       <Grid item style={{ marginRight: 15 }}>
-        <Typography className={classes.text}>{printBN(amountToClaim, 6)} points</Typography>
+        <Typography className={classes.text}>
+          <AnimatedNumber
+            value={transformBN(amountToClaim)}
+            duration={300}
+            formatValue={(value: string) => Number(value).toFixed(6)}
+          />{' '}
+          points
+        </Typography>
       </Grid>
       <Grid item>
         <Grid item>
