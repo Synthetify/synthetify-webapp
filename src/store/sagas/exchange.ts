@@ -68,7 +68,8 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       amount,
       exchangeAccount: account,
       userCollateralAccount: userCollateralTokenAccount.address,
-      owner: wallet.publicKey
+      owner: wallet.publicKey,
+      reserveAddress: DEFAULT_PUBLICKEY //todo
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -100,7 +101,8 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       amount,
       exchangeAccount: userExchangeAccount.address,
       userCollateralAccount: userCollateralTokenAccount.address,
-      owner: wallet.publicKey
+      owner: wallet.publicKey,
+      reserveAddress: DEFAULT_PUBLICKEY //todo
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -154,7 +156,8 @@ export function* withdrawCollateral(amount: BN, collateralTokenAddress: PublicKe
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
-    to: collateralAccountAddress?.address
+    userCollateralAccount: collateralAccountAddress?.address,
+    reserveAccount: DEFAULT_PUBLICKEY //todo
   })
   return signature[1]
 }
