@@ -5,7 +5,7 @@ import { actions, PayloadTypes } from '@reducers/exchange'
 import { collateralToken, xUSDAddress, swap, exchangeAccount } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import { PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
@@ -94,7 +94,8 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
       actions.setExchangeAccount({
         address: account,
         collateralShares: new BN(0),
-        debtShares: new BN(0)
+        debtShares: new BN(0),
+        userStaking: DEFAULT_STAKING_DATA
       })
     )
     const signature = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
