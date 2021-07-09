@@ -5,14 +5,12 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
 import useStyles from './style'
-import { printBN } from '@consts/utils'
 
 export interface IRewardsProps {
   amountToClaim: BN
+  amountPerRound: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
-  nextRoundPoints: BN
-  lastUpdate: BN
 }
 
 const loremIpsum =
@@ -20,7 +18,7 @@ const loremIpsum =
 
 export const RewardsTab: React.FC<IRewardsProps> = ({
   amountToClaim,
-  nextRoundPoints,
+  amountPerRound,
   currentRoundPoints,
   finishedRoundPoints
 }) => {
@@ -31,7 +29,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   } = [
     {
       name: 'Amount per round',
-      points: nextRoundPoints,
+      points: amountPerRound,
       hint: loremIpsum
     },
     {

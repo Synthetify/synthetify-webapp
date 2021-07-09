@@ -42,8 +42,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   stakingData
 }) => {
   const classes = useStyles()
-  const { amountToClaim, currentRoundPoints, finishedRoundPoints, nextRoundPoints, lastUpdate } =
-    stakingData
+  const { amountToClaim, currentRoundPoints, finishedRoundPoints, amountPerRound } = stakingData
 
   const actionContents: IActionContents = {
     deposit: (
@@ -95,8 +94,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         amountToClaim={amountToClaim}
         currentRoundPoints={currentRoundPoints}
         finishedRoundPoints={finishedRoundPoints}
-        nextRoundPoints={nextRoundPoints}
-        lastUpdate={lastUpdate}
+        amountPerRound={amountPerRound}
       />
     )
   }

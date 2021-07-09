@@ -8,7 +8,8 @@ import {
   collateralToken,
   userMaxBurnToken,
   xUSDAddress,
-  userStaking
+  userStaking,
+  staking
 } from '@selectors/exchange'
 import { tokenBalance } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
@@ -27,6 +28,7 @@ export const ActionMenuContainer: React.FC = () => {
   const depositState = useSelector(deposit)
   const burnState = useSelector(burn)
   const userStakingState = useSelector(userStaking)
+  const stakingState = useSelector(staking)
 
   useEffect(() => {
     dispatch(actions.setBurnAddress({ tokenAddress }))
@@ -54,7 +56,10 @@ export const ActionMenuContainer: React.FC = () => {
       withdrawState={withdrawState}
       depositState={depositState}
       burnState={burnState}
-      stakingData={userStakingState}
+      stakingData={{
+        ...userStakingState,
+        ...stakingState
+      }}
     />
   )
 }
