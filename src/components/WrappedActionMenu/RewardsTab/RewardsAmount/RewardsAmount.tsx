@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip, Typography } from '@material-ui/core'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
+import { printBN } from '@consts/utils'
+import BN from 'bn.js'
 import useStyles from './style'
 
-export const RewardsAmount: React.FC = () => {
+interface IRewardsAmountProps {
+  amountToClaim: BN
+}
+
+export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const hint =
@@ -12,7 +18,7 @@ export const RewardsAmount: React.FC = () => {
   return (
     <Grid container alignItems='center' className={classes.root}>
       <Grid item style={{ marginRight: 15 }}>
-        <Typography className={classes.text}>999.99 M points</Typography>
+        <Typography className={classes.text}>{printBN(amountToClaim, 6)} points</Typography>
       </Grid>
       <Grid item>
         <Grid item>
