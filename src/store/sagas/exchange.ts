@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put, SagaGenerator, select, all, spawn, takeEvery, throttle } from 'typed-redux-saga'
+import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, PayloadTypes } from '@reducers/exchange'
-import { collateralToken, xUSDAddress, swap, exchangeAccount } from '@selectors/exchange'
+import { collateralToken, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
-import { PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
+import { PublicKey, sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
@@ -182,6 +181,18 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     userTokenAccountBurn: userTokenAccount.address
   })
   return signature[1]
+}
+
+export function* claimRewards(): SagaGenerator<string> {
+  console.log('claimRewards saga')
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const userExchangeAccount = yield* select(exchangeAccount)
+
+  // TODO: handle userExchangeAccount not exist
+  // if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
+
+  // TODO: probably delay is required
+  return yield* call([exchangeProgram, exchangeProgram.claimRewards], userExchangeAccount.address)
 }
 
 export function* handleSwap(): Generator {
