@@ -57,6 +57,8 @@ export const ActionMenuContainer: React.FC = () => {
       depositState={depositState}
       burnState={burnState}
       stakingData={{
+        onClaim: () => dispatch(actions.claimRewards()),
+        onWithdraw: () => console.log('onWithdraw'), // TODO
         ...userStakingState,
         ...stakingState
       }}
