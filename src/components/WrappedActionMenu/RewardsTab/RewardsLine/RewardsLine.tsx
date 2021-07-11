@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip, Typography } from '@material-ui/core'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
-import useStyles from './style'
-import BN from 'bn.js'
 import { transformBN } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
+import BN from 'bn.js'
+import useStyles from './style'
 
 export interface IRewardsLineProps {
   name: string
   points: BN
+  snyTokens?: BN
   hint: string
   bottomHint?: string
 }
 
-export const RewardsLine: React.FC<IRewardsLineProps> = ({ name, points, hint, bottomHint }) => {
+export const RewardsLine: React.FC<IRewardsLineProps> = ({
+  name,
+  points,
+  snyTokens,
+  hint,
+  bottomHint
+}) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const processedHint = (
@@ -23,6 +30,24 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({ name, points, hint, b
         <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
           {bottomHint}
         </Typography>
+      ) : (
+        ''
+      )}
+    </>
+  )
+
+  const processedSnyToken = (
+    <>
+      {snyTokens ? (
+        <>
+          {' ('}
+          <AnimatedNumber
+            value={transformBN(snyTokens)}
+            duration={300}
+            formatValue={(value: string) => Number(value).toFixed(6)}
+          />
+          {'SNY)'}
+        </>
       ) : (
         ''
       )}
@@ -39,6 +64,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({ name, points, hint, b
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />
+          {processedSnyToken}
         </Typography>
       </Grid>
       <Grid item>
