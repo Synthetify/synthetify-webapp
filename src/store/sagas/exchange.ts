@@ -184,14 +184,9 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
 }
 
 export function* claimRewards(): SagaGenerator<string> {
-  console.log('claimRewards saga')
   const exchangeProgram = yield* call(getExchangeProgram)
   const userExchangeAccount = yield* select(exchangeAccount)
 
-  // TODO: handle userExchangeAccount not exist
-  // if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
-
-  // TODO: probably delay is required
   return yield* call([exchangeProgram, exchangeProgram.claimRewards], userExchangeAccount.address)
 }
 

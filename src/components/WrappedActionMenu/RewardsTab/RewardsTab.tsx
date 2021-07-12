@@ -32,7 +32,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 }) => {
   const classes = useStyles()
 
-  const calculateTokensBasedOnPoints = (roundPoints: BN, allPoints: BN, amount: BN) => {
+  const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
+    if (!roundPoints || !allPoints || !amount) {
+      return new BN(0)
+    }
     return roundPoints.mul(amount).div(allPoints)
   }
 
@@ -52,6 +55,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       name: 'Amount per round',
       nonBracket: 'points',
       nonBracketValue: amountPerRound,
+      bracketValue: calculateTokensBasedOnPoints(
+        currentRoundAllPoints,
+        currentRoundAllPoints,
+        amountPerRound
+      ),
+      bracket: 'SNY',
       hint: loremIpsum
     },
     {
@@ -104,6 +113,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           <OutlinedButton
             color='secondary'
             name='Claim'
+            // disabled={!!finishedRoundPoints}
             className={classes.button}
             onClick={onClaim}
           />

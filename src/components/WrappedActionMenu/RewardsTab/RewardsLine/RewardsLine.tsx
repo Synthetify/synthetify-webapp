@@ -9,7 +9,7 @@ import useStyles from './style'
 export interface IRewardsLineProps {
   name: string
   nonBracket: string
-  nonBracketValue: BN
+  nonBracketValue?: BN
   bracket?: string
   bracketValue?: BN
   hint: string
@@ -19,9 +19,9 @@ export interface IRewardsLineProps {
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
   name,
   nonBracket,
-  nonBracketValue,
+  nonBracketValue = new BN(0),
   bracket,
-  bracketValue,
+  bracketValue = new BN(0),
   hint,
   bottomHint
 }) => {
@@ -42,10 +42,10 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
 
   const processedNonBracket = (
     <>
-      {nonBracket && nonBracketValue ? (
+      {nonBracket ? (
         <>
           <AnimatedNumber
-            value={transformBN(nonBracketValue) || new BN(0)}
+            value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />
@@ -59,11 +59,11 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
 
   const processedBracket = (
     <>
-      {bracket && bracketValue ? (
+      {bracket ? (
         <>
           {' ('}
           <AnimatedNumber
-            value={transformBN(bracketValue) || new BN(0)}
+            value={bracketValue ? transformBN(bracketValue) : new BN(0)}
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />
