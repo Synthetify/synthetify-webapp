@@ -11,6 +11,7 @@ import {
   userStaking,
   staking
 } from '@selectors/exchange'
+import { slot } from '@selectors/solanaConnection'
 import { tokenBalance } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 
@@ -29,6 +30,7 @@ export const ActionMenuContainer: React.FC = () => {
   const burnState = useSelector(burn)
   const userStakingState = useSelector(userStaking)
   const stakingState = useSelector(staking)
+  const slotState = useSelector(slot)
 
   useEffect(() => {
     dispatch(actions.setBurnAddress({ tokenAddress }))
@@ -58,6 +60,7 @@ export const ActionMenuContainer: React.FC = () => {
       burnState={burnState}
       stakingData={{
         ...userStakingState,
+        slot: slotState,
         amountPerRound: stakingState.amountPerRound,
         currentRoundAllPoints: stakingState.currentRound.allPoints,
         finishedRoundAllPoints: stakingState.finishedRound.allPoints,
