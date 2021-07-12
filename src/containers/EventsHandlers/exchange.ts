@@ -31,7 +31,7 @@ const ExhcangeEvents = () => {
         dispatch(
           actions.setExchangeAccount({
             address: userAccount.address,
-            collaterals: a.collaterals,
+            collaterals: a.collaterals.filter(collateral => !collateral.collateralAddress.equals(DEFAULT_PUBLICKEY)),
             debtShares: a.debtShares
           })
         )
