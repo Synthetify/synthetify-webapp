@@ -7,6 +7,7 @@ import BN from 'bn.js'
 import useStyles from './style'
 
 export interface IRewardsProps {
+  slot: BN
   amountToClaim: BN
   amountPerRound: BN
   finishedRoundPoints: BN
@@ -113,7 +114,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           <OutlinedButton
             color='secondary'
             name='Claim'
-            // disabled={!!finishedRoundPoints}
+            disabled={!!finishedRoundPoints}
             className={classes.button}
             onClick={onClaim}
           />
