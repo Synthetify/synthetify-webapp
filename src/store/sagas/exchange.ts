@@ -262,6 +262,10 @@ export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
 }
 
+export function* updateSlot(): Generator {
+  yield* takeEvery(actions.setAssetPrice, updateSlot)
+}
+
 export function* exchangeSaga(): Generator {
   yield all([swapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
 }
