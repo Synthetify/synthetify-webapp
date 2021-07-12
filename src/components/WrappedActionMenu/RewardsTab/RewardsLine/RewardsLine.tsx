@@ -36,6 +36,23 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     </>
   )
 
+  const processedPoints = (
+    <>
+      {snyTokens ? (
+        <>
+          <AnimatedNumber
+            value={transformBN(points)}
+            duration={300}
+            formatValue={(value: string) => Number(value).toFixed(6)}
+          />
+          {' points'}
+        </>
+      ) : (
+        ''
+      )}
+    </>
+  )
+
   const processedSnyToken = (
     <>
       {snyTokens ? (
@@ -46,7 +63,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />
-          {'SNY)'}
+          {' SNY)'}
         </>
       ) : (
         ''
@@ -58,12 +75,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     <Grid container justifyContent='flex-start' alignItems='center' wrap='nowrap'>
       <Grid item style={{ marginRight: 25 }}>
         <Typography className={classes.text}>
-          {name}:{' '}
-          <AnimatedNumber
-            value={transformBN(points)}
-            duration={300}
-            formatValue={(value: string) => Number(value).toFixed(6)}
-          />
+          {processedPoints}
           {processedSnyToken}
         </Typography>
       </Grid>
