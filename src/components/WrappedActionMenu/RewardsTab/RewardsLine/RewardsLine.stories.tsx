@@ -12,7 +12,8 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
     <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
       <RewardsLine
         name='Amount per round'
-        points={new BN(1e8)}
+        nonBracket='points'
+        nonBracketValue={new BN(1e8)}
         hint={loremHint}
         bottomHint='Time remaining: 10:10:10'
       />
@@ -22,8 +23,10 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
     <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
       <RewardsLine
         name='Current round'
-        points={new BN(14 * 1e5)}
-        snyTokens={new BN(28 * 1e5)}
+        nonBracket='points'
+        bracket={'SNY'}
+        nonBracketValue={new BN(14 * 1e5)}
+        bracketValue={new BN(28 * 1e5)}
         hint={loremHint}
       />
     </div>
