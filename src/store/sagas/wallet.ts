@@ -25,7 +25,7 @@ import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchan
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address } from '@selectors/solanaWallet'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -184,7 +184,8 @@ export function* init(): Generator {
       exchangeActions.setExchangeAccount({
         address: address,
         collateralShares: account.collateralShares,
-        debtShares: account.debtShares
+        debtShares: account.debtShares,
+        userStaking: account.userStakingData
       })
     )
   } catch (error) {}
@@ -240,11 +241,14 @@ export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
     yield* put(actions.resetState())
-    yield* put(exchangeActions.setExchangeAccount({
-      address: DEFAULT_PUBLICKEY,
-      collateralShares: new BN(0),
-      debtShares: new BN(0)
-    }))
+    yield* put(
+      exchangeActions.setExchangeAccount({
+        address: DEFAULT_PUBLICKEY,
+        collateralShares: new BN(0),
+        debtShares: new BN(0),
+        userStaking: DEFAULT_STAKING_DATA
+      })
+    )
   } catch (error) {
     console.log(error)
   }

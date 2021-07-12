@@ -4,9 +4,9 @@ import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { BN } from '@project-serum/anchor'
 import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
+import RewardsTab, { IRewardsProps } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import RewardsMock from '@components/WrappedActionMenu/RewardsMock'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -22,6 +22,7 @@ export interface IProps {
   withdrawState: Pick<IWithdraw, 'sending' | 'error'>
   depositState: Pick<IDeposit, 'sending' | 'error'>
   burnState: Pick<IBurn, 'sending' | 'error'>
+  stakingData: IRewardsProps
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -37,7 +38,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   mintState,
   withdrawState,
   burnState,
-  depositState
+  depositState,
+  stakingData
 }) => {
   const classes = useStyles()
 
@@ -86,7 +88,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
       />
     ),
-    rewards: <RewardsMock />
+    rewards: <RewardsTab {...stakingData} />
   }
 
   return (

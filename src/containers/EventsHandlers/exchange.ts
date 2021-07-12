@@ -33,7 +33,8 @@ const ExhcangeEvents = () => {
           actions.setExchangeAccount({
             address: userAccount.address,
             collateralShares: a.collateralShares,
-            debtShares: a.debtShares
+            debtShares: a.debtShares,
+            userStaking: a.userStakingData
           })
         )
       })
