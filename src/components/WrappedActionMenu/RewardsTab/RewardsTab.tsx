@@ -23,27 +23,42 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   amountPerRound,
   currentRoundPoints,
   finishedRoundPoints,
+  // currentRoundAllPoints,
+  // finishedRoundAllPoints,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
 
   const rewardsLines: {
-    [index: number]: { name: string; points: BN; hint: string; bottomHint?: string }
+    [index: number]: {
+      name: string
+      bracket?: string
+      bracketValue?: BN
+      nonBracket: string
+      nonBracketValue: BN
+      hint: string
+      bottomHint?: string
+    }
   } = [
     {
       name: 'Amount per round',
-      points: amountPerRound,
+      nonBracket: 'points',
+      nonBracketValue: amountPerRound,
       hint: loremIpsum
     },
+    // TODO: add SNY calculation
     {
       name: 'Current round',
-      points: currentRoundPoints,
+      nonBracketValue: currentRoundPoints,
+      nonBracket: 'points',
       hint: loremIpsum
     },
+    // TODO: add SNY calculation
     {
       name: 'Finished round',
-      points: finishedRoundPoints,
+      nonBracketValue: finishedRoundPoints,
+      nonBracket: 'points',
       hint: loremIpsum,
       bottomHint: 'Time remaining: 10:10:10'
     }
