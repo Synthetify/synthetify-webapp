@@ -2,7 +2,7 @@
 import { call, put, SagaGenerator, select, all, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, PayloadTypes } from '@reducers/exchange'
-import { xUSDAddress, swap, exchangeAccount } from '@selectors/exchange'
+import { xUSDAddress, swap, exchangeAccount, assets } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -59,6 +59,7 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
+  const allAssets = yield* select(assets)
   if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
     const { account, ix } = yield* call(
       [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
@@ -69,7 +70,7 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       exchangeAccount: account,
       userCollateralAccount: userCollateralTokenAccount.address,
       owner: wallet.publicKey,
-      reserveAddress: DEFAULT_PUBLICKEY //todo
+      reserveAddress: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -102,7 +103,7 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       exchangeAccount: userExchangeAccount.address,
       userCollateralAccount: userCollateralTokenAccount.address,
       owner: wallet.publicKey,
-      reserveAddress: DEFAULT_PUBLICKEY //todo
+      reserveAddress: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -152,12 +153,13 @@ export function* withdrawCollateral(amount: BN, collateralTokenAddress: PublicKe
   if (!collateralAccountAddress) {
     throw new Error('Collateral token account not found')
   }
+  const allAssets = yield* select(assets)
   const signature = yield* call([exchangeProgram, exchangeProgram.withdraw], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
     userCollateralAccount: collateralAccountAddress?.address,
-    reserveAccount: DEFAULT_PUBLICKEY //todo
+    reserveAccount: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
   })
   return signature[1]
 }

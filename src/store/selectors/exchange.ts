@@ -56,14 +56,11 @@ export const stakedValue = createSelector(
 
     let val: BN = new BN(0)
 
-    for (const asset of Object.values(allAssets)) {
-      if (asset.collateral.isCollateral) {
-        const accountCollateral = account.collaterals.find(col => col.collateralAddress === asset.collateral.collateralAddress)
-        const toAdd: BN = (accountCollateral?.amount ?? new BN(0))
-          .mul(asset.price)
-          .div(new BN(1e6))
-        val = val.add(toAdd)
-      }
+    for (const collateral of Object.values(account.collaterals)) {
+      const toAdd: BN = collateral.amount
+        .mul(allAssets[collateral.collateralAddress.toString()].price)
+        .div(new BN(1e6))
+      val = val.add(toAdd)
     }
 
     return val
@@ -101,7 +98,7 @@ export const userMaxDebtValue = createSelector(
     if (userStakedValue.eq(new BN(0))) {
       return new BN(0)
     }
-    return userStakedValue.mul(new BN(100)).mul(new BN(healthFactor)).div(new BN(100))
+    return userStakedValue.mul(new BN(healthFactor)).div(new BN(100))
   }
 )
 
@@ -126,7 +123,8 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) => createSele
   userDebtValue,
   userMaxDebtValue,
   assets,
-  (debt, maxUsd, allAssets) => {
+  healthFactor,
+  (debt, maxUsd, allAssets, factor) => {
     if (
       maxUsd.eq(new BN(0)) ||
       debt.gte(maxUsd) ||
@@ -138,8 +136,8 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) => createSele
     const collateralToken = allAssets[collateralTokenAddress.toString()]
     return maxUsd
       .sub(debt)
-      // .mul(new BN(collateralLvl))
-      .div(new BN(100)) //todo
+      .mul(new BN(100))
+      .div(new BN(factor))
       .mul(new BN(1e6))
       .div(collateralToken.price)
   }
