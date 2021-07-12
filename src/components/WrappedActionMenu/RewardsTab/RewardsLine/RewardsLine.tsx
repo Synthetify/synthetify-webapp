@@ -8,16 +8,20 @@ import useStyles from './style'
 
 export interface IRewardsLineProps {
   name: string
-  points: BN
-  snyTokens?: BN
+  nonBracket: string
+  nonBracketValue: BN
+  bracket?: string
+  bracketValue?: BN
   hint: string
   bottomHint?: string
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
   name,
-  points,
-  snyTokens,
+  nonBracket,
+  nonBracketValue,
+  bracket,
+  bracketValue,
   hint,
   bottomHint
 }) => {
@@ -36,16 +40,16 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     </>
   )
 
-  const processedPoints = (
+  const processedNonBracket = (
     <>
-      {snyTokens ? (
+      {nonBracket ? (
         <>
           <AnimatedNumber
-            value={transformBN(points)}
+            value={transformBN(nonBracketValue)}
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />
-          {' points'}
+          {` ${nonBracket}`}
         </>
       ) : (
         ''
@@ -53,17 +57,17 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     </>
   )
 
-  const processedSnyToken = (
+  const processedBracket = (
     <>
-      {snyTokens ? (
+      {bracket && bracketValue ? (
         <>
           {' ('}
           <AnimatedNumber
-            value={transformBN(snyTokens)}
+            value={transformBN(bracketValue)}
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />
-          {' SNY)'}
+          {` ${bracket})`}
         </>
       ) : (
         ''
@@ -75,8 +79,10 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     <Grid container justifyContent='flex-start' alignItems='center' wrap='nowrap'>
       <Grid item style={{ marginRight: 25 }}>
         <Typography className={classes.text}>
-          {processedPoints}
-          {processedSnyToken}
+          {name}
+          {': '}
+          {processedNonBracket}
+          {processedBracket}
         </Typography>
       </Grid>
       <Grid item>
