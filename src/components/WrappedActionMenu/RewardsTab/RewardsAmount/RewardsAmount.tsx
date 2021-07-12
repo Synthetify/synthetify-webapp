@@ -21,7 +21,7 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
       <Grid item style={{ marginRight: 15 }}>
         <Typography className={classes.text}>
           <AnimatedNumber
-            value={transformBN(amountToClaim)}
+            value={transformBN(amountToClaim || new BN(0))}
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(6)}
           />{' '}
