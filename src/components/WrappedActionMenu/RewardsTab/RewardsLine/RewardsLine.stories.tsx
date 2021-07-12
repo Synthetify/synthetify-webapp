@@ -24,7 +24,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
       <RewardsLine
         name='Current round'
         nonBracket='points'
-        bracket={'SNY'}
+        bracket='SNY'
         nonBracketValue={new BN(14 * 1e5)}
         bracketValue={new BN(28 * 1e5)}
         hint={loremHint}

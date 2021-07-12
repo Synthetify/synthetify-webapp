@@ -11,6 +11,8 @@ export interface IRewardsProps {
   amountPerRound: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
+  currentRoundAllPoints: BN
+  finishedRoundAllPoints: BN
   onClaim: () => void
   onWithdraw: () => void
 }
@@ -23,13 +25,18 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   amountPerRound,
   currentRoundPoints,
   finishedRoundPoints,
-  // currentRoundAllPoints,
-  // finishedRoundAllPoints,
+  currentRoundAllPoints,
+  finishedRoundAllPoints,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
 
+  const calculateTokensBasedOnPoints = (roundPoints: BN, allPoints: BN, amount: BN) => {
+    return roundPoints.mul(amount).div(allPoints)
+  }
+
+  //  TODO: replace amountPerRound
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -47,18 +54,28 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracketValue: amountPerRound,
       hint: loremIpsum
     },
-    // TODO: add SNY calculation
     {
       name: 'Current round',
       nonBracketValue: currentRoundPoints,
       nonBracket: 'points',
+      bracketValue: calculateTokensBasedOnPoints(
+        currentRoundPoints,
+        currentRoundAllPoints,
+        amountPerRound
+      ),
+      bracket: 'SNY',
       hint: loremIpsum
     },
-    // TODO: add SNY calculation
     {
       name: 'Finished round',
       nonBracketValue: finishedRoundPoints,
       nonBracket: 'points',
+      bracketValue: calculateTokensBasedOnPoints(
+        finishedRoundPoints,
+        finishedRoundAllPoints,
+        amountPerRound
+      ),
+      bracket: 'SNY',
       hint: loremIpsum,
       bottomHint: 'Time remaining: 10:10:10'
     }

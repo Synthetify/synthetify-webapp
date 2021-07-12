@@ -12,6 +12,8 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
       amountToClaim={new BN(88648)}
       currentRoundPoints={new BN(45415301)}
       finishedRoundPoints={new BN(599353037)}
+      currentRoundAllPoints={new BN(1e10)}
+      finishedRoundAllPoints={new BN(1e10)}
       onWithdraw={() => action('withdraw')}
       onClaim={() => action('claim')}
     />

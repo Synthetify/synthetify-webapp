@@ -59,6 +59,8 @@ export const ActionMenuContainer: React.FC = () => {
       stakingData={{
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => console.log('onWithdraw'), // TODO
+        currentRoundAllPoints: stakingState.currentRound.allPoints,
+        finishedRoundAllPoints: stakingState.finishedRound.allPoints,
         ...userStakingState,
         ...stakingState
       }}
