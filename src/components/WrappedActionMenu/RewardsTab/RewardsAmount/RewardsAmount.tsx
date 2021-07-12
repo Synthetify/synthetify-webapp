@@ -23,7 +23,7 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
           <AnimatedNumber
             value={transformBN(amountToClaim || new BN(0))}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(6)}
+            formatValue={(value: string) => Number(value).toFixed(4)}
           />{' '}
           points
         </Typography>

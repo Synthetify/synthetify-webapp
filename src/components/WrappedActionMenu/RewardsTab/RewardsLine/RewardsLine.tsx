@@ -47,7 +47,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           <AnimatedNumber
             value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(6)}
+            formatValue={(value: string) => Number(value).toFixed(4)}
           />
           {` ${nonBracket}`}
         </>
@@ -65,7 +65,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           <AnimatedNumber
             value={bracketValue ? transformBN(bracketValue) : new BN(0)}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(6)}
+            formatValue={(value: string) => Number(value).toFixed(4)}
           />
           {` ${bracket})`}
         </>
