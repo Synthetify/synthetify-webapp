@@ -51,6 +51,11 @@ export interface IClaimRewards {
   sending: boolean
   error?: string
 }
+export interface IWithdrawRewards {
+  txid?: string
+  sending: boolean
+  error?: string
+}
 export interface IStaking {
   createAccount: ICreateAccount
   send: ISend
@@ -59,6 +64,7 @@ export interface IStaking {
   withdraw: IWithdraw
   burn: IBurn
   claimRewards: IClaimRewards
+  withdrawRewards: IWithdrawRewards
 }
 
 export const defaultState: IStaking = {
@@ -93,6 +99,9 @@ export const defaultState: IStaking = {
     sending: false
   },
   claimRewards: {
+    sending: false
+  },
+  withdrawRewards: {
     sending: false
   }
 }
@@ -227,6 +236,21 @@ const stakingSlice = createSlice({
     claimRewardsFailed(state, action: PayloadAction<Pick<IClaimRewards, 'error'>>) {
       state.claimRewards.sending = false
       state.claimRewards.error = action.payload.error
+      return state
+    },
+    withdrawRewards(state) {
+      state.withdrawRewards.sending = true
+      return state
+    },
+    withdrawRewardsDone(state, action: PayloadAction<Pick<IWithdrawRewards, 'txid'>>) {
+      state.withdrawRewards.sending = false
+      state.withdrawRewards.txid = action.payload.txid
+      state.withdrawRewards.error = undefined
+      return state
+    },
+    withdrawRewardsFailed(state, action: PayloadAction<Pick<IWithdrawRewards, 'error'>>) {
+      state.withdrawRewards.sending = false
+      state.withdrawRewards.error = action.payload.error
       return state
     },
     createAccount(state, action: PayloadAction<{ tokenAddress: PublicKey }>) {

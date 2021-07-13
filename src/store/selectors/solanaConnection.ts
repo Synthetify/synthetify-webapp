@@ -3,8 +3,8 @@ import { keySelectors, AnyProps } from './helpers'
 
 const store = (s: AnyProps) => s[solanaConnectionSliceName] as ISolanaConnectionStore
 
-export const { network, status } = keySelectors(store, ['network', 'status'])
+export const { network, status, slot } = keySelectors(store, ['network', 'status', 'slot'])
 
-export const solanaConnectionSelectors = { network, status }
+export const solanaConnectionSelectors = { network, status, slot }
 
 export default solanaConnectionSelectors

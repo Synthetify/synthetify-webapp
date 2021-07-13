@@ -7,12 +7,15 @@ import BN from 'bn.js'
 import useStyles from './style'
 
 export interface IRewardsProps {
+  slot?: BN
   amountToClaim: BN
   amountPerRound: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
   currentRoundAllPoints: BN
   finishedRoundAllPoints: BN
+  currentRoundStart: BN
+  roundLength: number
   onClaim: () => void
   onWithdraw: () => void
 }
@@ -21,25 +24,39 @@ const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
 
 export const RewardsTab: React.FC<IRewardsProps> = ({
+  slot = new BN(0),
   amountToClaim,
   amountPerRound,
   currentRoundPoints,
   finishedRoundPoints,
   currentRoundAllPoints,
   finishedRoundAllPoints,
+  currentRoundStart,
+  roundLength,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
 
+  const isClaimDisabled = () => {
+    const noPoints = finishedRoundPoints.eqn(0)
+    const roundFinishSlot = currentRoundStart.addn(roundLength)
+    const roundNotOver = !slot.gt(roundFinishSlot)
+
+    return noPoints && roundNotOver
+  }
+
+  const isWithdrawDisabled = () => {
+    return amountToClaim.eqn(0)
+  }
+
   const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
-    if (!roundPoints || !allPoints || !amount) {
+    if (!roundPoints || !allPoints || allPoints.eqn(0) || !amount) {
       return new BN(0)
     }
     return roundPoints.mul(amount).div(allPoints)
   }
 
-  //  TODO: replace amountPerRound
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -113,7 +130,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           <OutlinedButton
             color='secondary'
             name='Claim'
-            // disabled={!!finishedRoundPoints}
+            disabled={isClaimDisabled()}
             className={classes.button}
             onClick={onClaim}
           />
@@ -122,6 +139,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           <OutlinedButton
             color='primary'
             name='Withdraw'
+            disabled={isWithdrawDisabled()}
             className={classes.button}
             onClick={onWithdraw}
           />

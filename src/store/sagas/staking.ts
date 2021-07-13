@@ -14,7 +14,14 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { BN } from '@project-serum/anchor'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getConnection } from './connection'
-import { depositCollateral, mintUsd, withdrawCollateral, burnToken, claimRewards } from './exchange'
+import {
+  depositCollateral,
+  mintUsd,
+  withdrawCollateral,
+  burnToken,
+  claimRewards,
+  withdrawRewards
+} from './exchange'
 import { sendSol, sendToken, createAccount } from './wallet'
 
 export function* handleCreateAccount(): Generator {
@@ -208,6 +215,31 @@ export function* handleClaimRewards(): Generator {
   }
 }
 
+export function* handleWithdrawRewards(): Generator {
+  try {
+    const txid = yield* call(withdrawRewards)
+    yield* put(actions.withdrawRewardsDone({ txid }))
+
+    yield put(
+      snackbarsActions.add({
+        message: 'Successfully withdrawn rewards',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    yield* put(actions.withdrawRewardsFailed({ error: error?.message ?? 'Unknown error' }))
+
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
+
 export function* sendTokenHandler(): Generator {
   yield takeEvery(actions.send, handleSendToken)
 }
@@ -226,6 +258,9 @@ export function* burnHandler(): Generator {
 export function* claimRewardsHandler(): Generator {
   yield takeEvery(actions.claimRewards, handleClaimRewards)
 }
+export function* withdrawRewardsHandler(): Generator {
+  yield takeEvery(actions.withdrawRewards, handleWithdrawRewards)
+}
 export function* createAccountHanlder(): Generator {
   yield takeEvery(actions.createAccount, handleCreateAccount)
 }
@@ -239,6 +274,7 @@ export function* stakingSaga(): Generator {
       withdrawHandler,
       burnHandler,
       claimRewardsHandler,
+      withdrawRewardsHandler,
       createAccountHanlder
     ].map(spawn)
   )
