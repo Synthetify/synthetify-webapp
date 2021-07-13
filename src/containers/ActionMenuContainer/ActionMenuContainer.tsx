@@ -67,7 +67,7 @@ export const ActionMenuContainer: React.FC = () => {
         roundLength: stakingState.roundLength,
         currentRoundStart: stakingState.currentRound.start,
         onClaim: () => dispatch(actions.claimRewards()),
-        onWithdraw: () => console.log('onWithdraw') // TODO
+        onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
     />
   )
