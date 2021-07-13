@@ -47,13 +47,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
-    if (!roundPoints || !allPoints || !amount) {
+    if (!roundPoints || !allPoints || allPoints.eqn(0) || !amount) {
       return new BN(0)
     }
     return roundPoints.mul(amount).div(allPoints)
   }
 
-  //  TODO: replace amountPerRound
   const rewardsLines: {
     [index: number]: {
       name: string
