@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put, SagaGenerator, select, all, spawn, takeEvery, throttle } from 'typed-redux-saga'
+import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, PayloadTypes } from '@reducers/exchange'
-import { xUSDAddress, swap, exchangeAccount, assets } from '@selectors/exchange'
+import { assets, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
+import { PublicKey, sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
@@ -91,7 +90,8 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       actions.setExchangeAccount({
         address: account,
         collaterals: [],
-        debtShares: new BN(0)
+        debtShares: new BN(0),
+        userStaking: DEFAULT_STAKING_DATA
       })
     )
     const signature = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
@@ -180,6 +180,13 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     userTokenAccountBurn: userTokenAccount.address
   })
   return signature[1]
+}
+
+export function* claimRewards(): SagaGenerator<string> {
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const userExchangeAccount = yield* select(exchangeAccount)
+
+  return yield* call([exchangeProgram, exchangeProgram.claimRewards], userExchangeAccount.address)
 }
 
 export function* handleSwap(): Generator {

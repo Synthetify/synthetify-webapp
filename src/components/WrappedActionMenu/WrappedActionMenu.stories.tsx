@@ -1,4 +1,5 @@
 import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import React from 'react'
 import { colors } from '@static/theme'
@@ -20,6 +21,14 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
       withdrawState={{ sending: false }}
       depositState={{ sending: false }}
       burnState={{ sending: false }}
+      stakingData={{
+        amountPerRound: new BN(100000000),
+        amountToClaim: new BN(88648),
+        currentRoundPoints: new BN(45415301),
+        finishedRoundPoints: new BN(599353037),
+        onWithdraw: () => action('withdraw'),
+        onClaim: () => action('claim')
+      }}
     />
   </div>
 ))

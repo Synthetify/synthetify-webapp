@@ -1,4 +1,4 @@
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
@@ -17,10 +17,18 @@ export interface Swap {
   loading: boolean
   txid?: string
 }
+export interface UserStaking {
+  amountToClaim: BN
+  finishedRoundPoints: BN
+  currentRoundPoints: BN
+  nextRoundPoints: BN
+  lastUpdate: BN
+}
 export interface ExchangeAccount {
   address: PublicKey
   collaterals: CollateralEntry[]
   debtShares: BN
+  userStaking: UserStaking
 }
 export interface IExchange {
   state: ExchangeState
@@ -74,7 +82,8 @@ export const defaultState: IExchange = {
   exchangeAccount: {
     address: DEFAULT_PUBLICKEY,
     collaterals: [],
-    debtShares: new BN(0)
+    debtShares: new BN(0),
+    userStaking: DEFAULT_STAKING_DATA
   },
   swap: {
     fromToken: DEFAULT_PUBLICKEY,
@@ -128,6 +137,7 @@ const exchangeSlice = createSlice({
       state.exchangeAccount.collaterals = action.payload.collaterals
       state.exchangeAccount.debtShares = action.payload.debtShares
       state.exchangeAccount.address = action.payload.address
+      state.exchangeAccount.userStaking = action.payload.userStaking
       return state
     },
     swap(state, action: PayloadAction<Omit<Swap, 'loading'>>) {
