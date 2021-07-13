@@ -46,6 +46,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return noPoints && roundNotOver
   }
 
+  const isWithdrawDisabled = () => {
+    return amountToClaim.eqn(0)
+  }
+
   const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
     if (!roundPoints || !allPoints || allPoints.eqn(0) || !amount) {
       return new BN(0)
@@ -135,6 +139,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           <OutlinedButton
             color='primary'
             name='Withdraw'
+            disabled={isWithdrawDisabled()}
             className={classes.button}
             onClick={onWithdraw}
           />
