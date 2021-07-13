@@ -31,7 +31,7 @@ const ExhcangeEvents = () => {
         dispatch(
           actions.setExchangeAccount({
             address: userAccount.address,
-            collaterals: a.collaterals.filter(collateral => !collateral.collateralAddress.equals(DEFAULT_PUBLICKEY)),
+            collaterals: a.collaterals.slice(0, a.head),
             debtShares: a.debtShares,
             userStaking: a.userStakingData
           })
@@ -89,7 +89,7 @@ const ExhcangeEvents = () => {
     const connectEvents = () => {
       exchangeProgram.onAssetsListChange(exchangeState.assetsList, assets => {
         // const parsedData = parseTokenAccountData(accountInfo.data)
-        dispatch(actions.mergeAssets(assets.assets))
+        dispatch(actions.mergeAssets(assets.assets.slice(0, assets.head)))
       })
     }
     connectEvents()
