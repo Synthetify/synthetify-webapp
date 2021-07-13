@@ -12,15 +12,23 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
       roundLength={100000}
       amountPerRound={new BN(100000000)}
       amountToClaim={new BN(88648)}
-      finishedRoundStartSlot={new BN(70000000)}
-      nextRoundStartSlot={new BN(60000000)}
-      nextRoundPoints={new BN(45415301)}
-      nextRoundAllPoints={new BN(1e10)}
-      currentRoundStartSlot={new BN(578999)}
-      currentRoundPoints={new BN(45415301)}
-      finishedRoundPoints={new BN(599353037)}
-      currentRoundAllPoints={new BN(1e10)}
-      finishedRoundAllPoints={new BN(1e10)}
+      rounds={{
+        finished: {
+          roundStartSlot: new BN(1000000),
+          roundPoints: new BN(1e6),
+          roundAllPoints: new BN(1e8)
+        },
+        current: {
+          roundStartSlot: new BN(1100000),
+          roundPoints: new BN(1e6),
+          roundAllPoints: new BN(1e8)
+        },
+        next: {
+          roundStartSlot: new BN(1200000),
+          roundPoints: new BN(1e6),
+          roundAllPoints: new BN(1e8)
+        }
+      }}
       onWithdraw={() => action('withdraw')}
       onClaim={() => action('claim')}
     />

@@ -119,7 +119,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         nextRoundAllPoints,
         amountPerRound
       ),
-      bracket: 'SNY',
+      bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
       bottomHint: displayTimeRemaining(nextRoundStartSlot)
     },
@@ -132,7 +132,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         currentRoundAllPoints,
         amountPerRound
       ),
-      bracket: 'SNY',
+      bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
       bottomHint: displayTimeRemaining(currentRoundStartSlot)
     },
@@ -145,7 +145,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         finishedRoundAllPoints,
         amountPerRound
       ),
-      bracket: 'SNY',
+      bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
       bottomHint: displayTimeRemaining(finishedRoundStartSlot)
     }

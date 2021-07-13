@@ -22,12 +22,29 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
       depositState={{ sending: false }}
       burnState={{ sending: false }}
       stakingData={{
+        slot: new BN(300000),
+        roundLength: 160000,
+        rounds: {
+          finished: {
+            roundStartSlot: new BN(1000000),
+            roundPoints: new BN(1e6),
+            roundAllPoints: new BN(1e9)
+          },
+          current: {
+            roundStartSlot: new BN(1100000),
+            roundPoints: new BN(1e6),
+            roundAllPoints: new BN(1e9)
+          },
+          next: {
+            roundStartSlot: new BN(1200000),
+            roundPoints: new BN(1e6),
+            roundAllPoints: new BN(1e9)
+          }
+        },
         amountPerRound: new BN(100000000),
         amountToClaim: new BN(88648),
-        currentRoundPoints: new BN(45415301),
-        finishedRoundPoints: new BN(599353037),
-        onWithdraw: () => action('withdraw'),
-        onClaim: () => action('claim')
+        onWithdraw: () => {},
+        onClaim: () => {}
       }}
     />
   </div>
