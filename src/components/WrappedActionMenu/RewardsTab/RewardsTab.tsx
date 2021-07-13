@@ -7,13 +7,15 @@ import BN from 'bn.js'
 import useStyles from './style'
 
 export interface IRewardsProps {
-  slot: BN
+  slot?: BN
   amountToClaim: BN
   amountPerRound: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
   currentRoundAllPoints: BN
   finishedRoundAllPoints: BN
+  currentRoundStart: BN
+  roundLength: number
   onClaim: () => void
   onWithdraw: () => void
 }
@@ -22,16 +24,27 @@ const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
 
 export const RewardsTab: React.FC<IRewardsProps> = ({
+  slot = new BN(0),
   amountToClaim,
   amountPerRound,
   currentRoundPoints,
   finishedRoundPoints,
   currentRoundAllPoints,
   finishedRoundAllPoints,
+  currentRoundStart,
+  roundLength,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
+
+  const isClaimDisabled = () => {
+    const noPoints = finishedRoundPoints.eqn(0)
+    const roundFinishSlot = currentRoundStart.addn(roundLength)
+    const roundNotOver = !slot.gt(roundFinishSlot)
+
+    return noPoints && roundNotOver
+  }
 
   const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
     if (!roundPoints || !allPoints || !amount) {
@@ -114,7 +127,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           <OutlinedButton
             color='secondary'
             name='Claim'
-            disabled={!!finishedRoundPoints}
+            disabled={isClaimDisabled()}
             className={classes.button}
             onClick={onClaim}
           />

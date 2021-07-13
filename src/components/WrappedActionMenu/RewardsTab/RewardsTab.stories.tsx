@@ -8,6 +8,9 @@ import BN from 'bn.js'
 storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
   <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
     <RewardsTab
+      slot={new BN(578000)}
+      roundLength={100000}
+      currentRoundStart={new BN(578999)}
       amountPerRound={new BN(100000000)}
       amountToClaim={new BN(88648)}
       currentRoundPoints={new BN(45415301)}
