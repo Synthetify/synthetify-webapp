@@ -61,14 +61,25 @@ export const ActionMenuContainer: React.FC = () => {
       stakingData={{
         ...userStakingState,
         slot: slotState,
-        currentRoundStartSlot: stakingState.currentRound.start,
-        nextRoundStartSlot: stakingState.nextRound.start,
-        finishedRoundStartSlot: stakingState.finishedRound.start,
         amountPerRound: stakingState.amountPerRound,
-        currentRoundAllPoints: stakingState.currentRound.allPoints,
-        finishedRoundAllPoints: stakingState.finishedRound.allPoints,
-        nextRoundAllPoints: stakingState.nextRound.allPoints,
         roundLength: stakingState.roundLength,
+        rounds: {
+          next: {
+            roundAllPoints: stakingState.nextRound.allPoints,
+            roundPoints: userStakingState.nextRoundPoints,
+            roundStartSlot: stakingState.nextRound.start
+          },
+          current: {
+            roundAllPoints: stakingState.currentRound.allPoints,
+            roundPoints: userStakingState.currentRoundPoints,
+            roundStartSlot: stakingState.currentRound.start
+          },
+          finished: {
+            roundAllPoints: stakingState.finishedRound.allPoints,
+            roundPoints: userStakingState.finishedRoundPoints,
+            roundStartSlot: stakingState.finishedRound.start
+          }
+        },
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}

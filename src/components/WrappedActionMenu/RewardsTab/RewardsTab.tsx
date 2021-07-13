@@ -6,20 +6,22 @@ import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsA
 import BN from 'bn.js'
 import useStyles from './style'
 
+export type RoundType = 'next' | 'current' | 'finished'
+
+export type RoundData = {
+  [type in RoundType]: {
+    roundPoints: BN
+    roundAllPoints: BN
+    roundStartSlot: BN
+  }
+}
+
 export interface IRewardsProps {
   slot?: BN
   amountToClaim: BN
   amountPerRound: BN
-  nextRoundStartSlot: BN
-  nextRoundPoints: BN
-  finishedRoundStartSlot: BN
-  finishedRoundPoints: BN
-  currentRoundPoints: BN
-  nextRoundAllPoints: BN
-  currentRoundStartSlot: BN
-  currentRoundAllPoints: BN
-  finishedRoundAllPoints: BN
   roundLength: number
+  rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
 }
@@ -31,20 +33,28 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = new BN(0),
   amountToClaim,
   amountPerRound,
-  nextRoundStartSlot,
-  nextRoundPoints,
-  finishedRoundStartSlot,
-  currentRoundPoints,
-  finishedRoundPoints,
-  nextRoundAllPoints,
-  currentRoundAllPoints,
-  finishedRoundAllPoints,
-  currentRoundStartSlot,
   roundLength,
+  rounds,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
+  const { current, finished, next } = rounds
+  const {
+    roundAllPoints: currentRoundAllPoints,
+    roundPoints: currentRoundPoints,
+    roundStartSlot: currentRoundStartSlot
+  } = current
+  const {
+    roundAllPoints: finishedRoundAllPoints,
+    roundPoints: finishedRoundPoints,
+    roundStartSlot: finishedRoundStartSlot
+  } = finished
+  const {
+    roundAllPoints: nextRoundAllPoints,
+    roundPoints: nextRoundPoints,
+    roundStartSlot: nextRoundStartSlot
+  } = next
 
   const isClaimDisabled = () => {
     const noPoints = finishedRoundPoints.eqn(0)
