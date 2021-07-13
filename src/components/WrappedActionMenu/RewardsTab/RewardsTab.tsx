@@ -10,13 +10,15 @@ export interface IRewardsProps {
   slot?: BN
   amountToClaim: BN
   amountPerRound: BN
+  nextRoundStartSlot: BN
   nextRoundPoints: BN
+  finishedRoundStartSlot: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
   nextRoundAllPoints: BN
+  currentRoundStartSlot: BN
   currentRoundAllPoints: BN
   finishedRoundAllPoints: BN
-  currentRoundStart: BN
   roundLength: number
   onClaim: () => void
   onWithdraw: () => void
@@ -29,13 +31,15 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = new BN(0),
   amountToClaim,
   amountPerRound,
+  nextRoundStartSlot,
   nextRoundPoints,
+  finishedRoundStartSlot,
   currentRoundPoints,
   finishedRoundPoints,
   nextRoundAllPoints,
   currentRoundAllPoints,
   finishedRoundAllPoints,
-  currentRoundStart,
+  currentRoundStartSlot,
   roundLength,
   onClaim,
   onWithdraw
@@ -44,7 +48,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const isClaimDisabled = () => {
     const noPoints = finishedRoundPoints.eqn(0)
-    const roundFinishSlot = currentRoundStart.addn(roundLength)
+    const roundFinishSlot = currentRoundStartSlot.addn(roundLength)
     const roundNotOver = !slot.gt(roundFinishSlot)
 
     return noPoints && roundNotOver
@@ -59,6 +63,30 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       return new BN(0)
     }
     return roundPoints.mul(amount).div(allPoints)
+  }
+
+  const calculateTimeRemaining = (roundStart: BN) => {
+    const slotTime = 0.4
+    const roundFinishSlot = roundStart.addn(roundLength)
+    const slotDiff = roundFinishSlot.sub(slot)
+    if (slotDiff.lten(0)) {
+      return new BN(0)
+    }
+    return slotDiff.muln(slotTime)
+  }
+
+  const displayDate = (seconds: number) => {
+    return `
+    ${(seconds / (24 * 3600)).toFixed(0)}
+    :
+    ${((seconds / 60) % 60).toFixed(0)}
+    :
+    ${(seconds % 60).toFixed(0)}`
+  }
+
+  const displayTimeRemaining = (roundStart: BN) => {
+    const timeRemaining = calculateTimeRemaining(roundStart)
+    return `Time remaining: ${displayDate(timeRemaining.toNumber())}`
   }
 
   const rewardsLines: {
@@ -82,7 +110,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: 'SNY',
-      hint: loremIpsum
+      hint: loremIpsum,
+      bottomHint: displayTimeRemaining(nextRoundStartSlot)
     },
     {
       name: 'Current round',
@@ -94,7 +123,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: 'SNY',
-      hint: loremIpsum
+      hint: loremIpsum,
+      bottomHint: displayTimeRemaining(currentRoundStartSlot)
     },
     {
       name: 'Finished round',
@@ -107,7 +137,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: 'SNY',
       hint: loremIpsum,
-      bottomHint: 'Time remaining: 10:10:10'
+      bottomHint: displayTimeRemaining(finishedRoundStartSlot)
     }
   ]
 

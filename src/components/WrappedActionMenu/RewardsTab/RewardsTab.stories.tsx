@@ -10,9 +10,13 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
     <RewardsTab
       slot={new BN(578000)}
       roundLength={100000}
-      currentRoundStart={new BN(578999)}
       amountPerRound={new BN(100000000)}
       amountToClaim={new BN(88648)}
+      finishedRoundStartSlot={new BN(70000000)}
+      nextRoundStartSlot={new BN(60000000)}
+      nextRoundPoints={new BN(45415301)}
+      nextRoundAllPoints={new BN(1e10)}
+      currentRoundStartSlot={new BN(578999)}
       currentRoundPoints={new BN(45415301)}
       finishedRoundPoints={new BN(599353037)}
       currentRoundAllPoints={new BN(1e10)}
