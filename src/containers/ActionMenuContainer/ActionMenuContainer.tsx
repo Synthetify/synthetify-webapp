@@ -64,6 +64,7 @@ export const ActionMenuContainer: React.FC = () => {
         amountPerRound: stakingState.amountPerRound,
         currentRoundAllPoints: stakingState.currentRound.allPoints,
         finishedRoundAllPoints: stakingState.finishedRound.allPoints,
+        nextRoundAllPoints: stakingState.nextRound.allPoints,
         roundLength: stakingState.roundLength,
         currentRoundStart: stakingState.currentRound.start,
         onClaim: () => dispatch(actions.claimRewards()),

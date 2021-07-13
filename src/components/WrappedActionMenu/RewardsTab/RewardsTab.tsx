@@ -10,8 +10,10 @@ export interface IRewardsProps {
   slot?: BN
   amountToClaim: BN
   amountPerRound: BN
+  nextRoundPoints: BN
   finishedRoundPoints: BN
   currentRoundPoints: BN
+  nextRoundAllPoints: BN
   currentRoundAllPoints: BN
   finishedRoundAllPoints: BN
   currentRoundStart: BN
@@ -27,8 +29,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = new BN(0),
   amountToClaim,
   amountPerRound,
+  nextRoundPoints,
   currentRoundPoints,
   finishedRoundPoints,
+  nextRoundAllPoints,
   currentRoundAllPoints,
   finishedRoundAllPoints,
   currentRoundStart,
@@ -69,12 +73,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     }
   } = [
     {
-      name: 'Amount per round',
+      name: 'Next round',
       nonBracket: 'points',
-      nonBracketValue: amountPerRound,
+      nonBracketValue: nextRoundPoints,
       bracketValue: calculateTokensBasedOnPoints(
-        currentRoundAllPoints,
-        currentRoundAllPoints,
+        nextRoundPoints,
+        nextRoundAllPoints,
         amountPerRound
       ),
       bracket: 'SNY',
