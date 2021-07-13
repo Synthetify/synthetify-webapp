@@ -136,9 +136,9 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) => createSele
     const collateralToken = allAssets[collateralTokenAddress.toString()]
     return maxUsd
       .sub(debt)
-      .mul(new BN(100))
+      .mul(new BN(10000))
+      .div(new BN(collateralToken.collateral.collateralRatio))
       .div(new BN(factor))
-      .mul(new BN(1e6))
       .div(collateralToken.price)
   }
 )
