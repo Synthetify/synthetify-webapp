@@ -4,7 +4,7 @@ import { actions, PayloadTypes } from '@reducers/exchange'
 import { collateralToken, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA, SNY_DEV_TOKEN } from '@consts/static'
 import { PublicKey, sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
@@ -190,6 +190,23 @@ export function* claimRewards(): SagaGenerator<string> {
   return yield* call([exchangeProgram, exchangeProgram.claimRewards], userExchangeAccount.address)
 }
 
+export function* withdrawRewards(): SagaGenerator<string> {
+  const exchangeProgram = yield* call(getExchangeProgram)
+
+  const userTokenAccount = yield* select(tokenAccount(new PublicKey(SNY_DEV_TOKEN)))
+  if (!userTokenAccount) {
+    return ''
+  }
+  const wallet = yield* call(getWallet)
+  const userExchangeAccount = yield* select(exchangeAccount)
+
+  return yield* call([exchangeProgram, exchangeProgram.withdrawRewards], {
+    exchangeAccount: userExchangeAccount.address,
+    owner: wallet.publicKey,
+    userTokenAccount: userTokenAccount.address
+  })
+}
+
 export function* handleSwap(): Generator {
   const swapData = yield* select(swap)
 
@@ -260,6 +277,10 @@ export function* assetPriceHandler(): Generator {
 }
 export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
+}
+
+export function* updateSlot(): Generator {
+  yield* takeEvery(actions.setAssetPrice, updateSlot)
 }
 
 export function* exchangeSaga(): Generator {
