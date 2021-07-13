@@ -1,5 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
+import { displayDate } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -83,15 +84,6 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       return new BN(0)
     }
     return slotDiff.muln(slotTime)
-  }
-
-  const displayDate = (seconds: number) => {
-    return `
-    ${(seconds / (24 * 3600)).toFixed(0)}
-    :
-    ${((seconds / 60) % 60).toFixed(0)}
-    :
-    ${(seconds % 60).toFixed(0)}`
   }
 
   const displayTimeRemaining = (roundStart: BN) => {
