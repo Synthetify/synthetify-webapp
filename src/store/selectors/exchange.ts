@@ -64,8 +64,8 @@ export const stakedValue = createSelector(
 
     for (const collateral of Object.values(account.collaterals)) {
       const toAdd: BN = collateral.amount
-        .mul(allAssets[collateral.collateralAddress.toString()].price)
-        .div(new BN(1e6))
+        .mul(Object.values(allAssets)[collateral.index].price)
+        .div(new BN(10 ** (Object.values(allAssets)[collateral.index].collateral.decimals + ORACLE_OFFSET - ACCURACY)))
       val = val.add(toAdd)
     }
 
@@ -97,14 +97,28 @@ export const userDebtValue = createSelector(
     return userDebt
   }
 )
+
 export const userMaxDebtValue = createSelector(
-  stakedValue,
+  exchangeAccount,
+  assets,
   healthFactor,
-  (userStakedValue, healthFactor) => {
-    if (userStakedValue.eq(new BN(0))) {
+  (account, allAssets, factor) => {
+    if (account.address.equals(DEFAULT_PUBLICKEY)) {
       return new BN(0)
     }
-    return userStakedValue.mul(new BN(healthFactor)).div(new BN(100))
+
+    let val: BN = new BN(0)
+
+    for (const collateral of Object.values(account.collaterals)) {
+      const toAdd: BN = Object.values(allAssets)[collateral.index].price
+        .mul(collateral.amount)
+        .mul(new BN(Object.values(allAssets)[collateral.index].collateral.collateralRatio))
+        .div(new BN(100))
+        .div(new BN(10 ** Object.values(allAssets)[collateral.index].collateral.decimals + ORACLE_OFFSET - ACCURACY))
+      val = val.add(toAdd)
+    }
+
+    return val.mul(new BN(factor)).div(new BN(100))
   }
 )
 
@@ -143,21 +157,12 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) => createSele
     return maxUsd
       .sub(debt)
       .mul(new BN(10000))
+      .mul(new BN(10 ** collateralToken.collateral.decimals + ORACLE_OFFSET - ACCURACY))
       .div(new BN(collateralToken.collateral.collateralRatio))
       .div(new BN(factor))
-      .div(collateralToken.price)
+      .div(new BN(collateralToken.price))
   }
 )
-export const userMaxBurnToken = (assetAddress: PublicKey) =>
-  createSelector(userDebtValue, assets, (debt, allAssets) => {
-    const token = allAssets[assetAddress.toString()]
-    if (debt.eq(new BN(0)) || !token) {
-      return new BN(0)
-    }
-    const decimalChange = 10 ** (token.synthetic.decimals - ACCURACY)
-
-    return debt.mul(new BN(1e6)).muln(decimalChange).div(token.price)
-  })
 export const tokenTicker = (tokenAddress: PublicKey) =>
   createSelector(assets, allAssets => {
     const token = allAssets[tokenAddress.toString()]
@@ -182,7 +187,6 @@ export const exchangeSelectors = {
   mintAuthority,
   userMaxWithdraw,
   tokenTicker,
-  userMaxBurnToken,
   swap,
   tokenForSymbol
 }

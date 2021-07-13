@@ -5,13 +5,12 @@ import { actions } from '@reducers/staking'
 import {
   userMaxMintUsd,
   userMaxWithdraw,
-  userMaxBurnToken,
   xUSDAddress,
   tokenForSymbol,
   userStaking,
   staking
 } from '@selectors/exchange'
-import { tokenBalance } from '@selectors/solanaWallet'
+import { tokenBalance, userMaxBurnToken } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
@@ -55,10 +54,10 @@ export const ActionMenuContainer: React.FC = () => {
           tokenAddress: snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY
         }))
       }}
-      availableToMint={availableToMint.muln(0.99)}
+      availableToMint={availableToMint.muln(99).divn(100)}
       availableToDeposit={balance}
-      availableToWithdraw={availableToWithdraw.muln(0.99)}
-      availableToBurn={availableToBurn.muln(0.99)}
+      availableToWithdraw={availableToWithdraw.muln(99).divn(100)}
+      availableToBurn={availableToBurn.muln(99).divn(100)}
       mintState={mintState}
       withdrawState={withdrawState}
       depositState={depositState}

@@ -1,6 +1,6 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { assets } from '@selectors/exchange'
+import { assets, userDebtValue } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
@@ -80,6 +80,20 @@ export const accountsArray = createSelector(
     }, [] as TokenAccounts[])
   }
 )
+export const userMaxBurnToken = (assetAddress: PublicKey) =>
+  createSelector(userDebtValue, assets, tokenAccount(assetAddress), (debt, allAssets, account) => {
+    const token = allAssets[assetAddress.toString()]
+    if (debt.eq(new BN(0)) || !token) {
+      return new BN(0)
+    }
+    const decimalChange = 10 ** (token.synthetic.decimals + ORACLE_OFFSET - ACCURACY)
+
+    const assetToBurnBalance = account ? token.price.mul(account.balance).divn(decimalChange) : new BN(0)
+
+    const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
+
+    return val.muln(decimalChange).div(token.price)
+  })
 export const solanaWalletSelectors = {
   address,
   balance,
@@ -87,6 +101,7 @@ export const solanaWalletSelectors = {
   status,
   accountsArray,
   tokenAccount,
-  exchangeTokensWithUserBalance
+  exchangeTokensWithUserBalance,
+  userMaxBurnToken
 }
 export default solanaWalletSelectors
