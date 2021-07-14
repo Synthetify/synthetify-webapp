@@ -48,7 +48,7 @@ export const AmountInput: React.FC<IProps> = ({
       endAdornment={
         !currency ? null : (
           <InputAdornment position='end' className={classes.currency}>
-            |&nbsp;&nbsp;{currency}
+            |&nbsp;{currency}
           </InputAdornment>
         )
       }

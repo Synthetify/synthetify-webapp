@@ -9,9 +9,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 40,
     boxSizing: 'border-box',
     width: '100%',
+    paddingInline: 20,
     [theme.breakpoints.down('xs')]: {
-      paddingLeft: 10,
-      paddingRight: 10
+      paddingInline: 15
     }
   }
 }))
