@@ -67,7 +67,7 @@ const getButtonMessage = (
   if (!tokenTo) {
     return 'Select output token'
   }
-  if (!amountTo) {
+  if (amountTo.match(/^0\.0*$/)) {
     return 'Enter value of swap'
   }
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
