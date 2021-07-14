@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { call, put, SagaGenerator, select, all, spawn, takeEvery, throttle } from 'typed-redux-saga'
+import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, PayloadTypes } from '@reducers/exchange'
-import { collateralToken, xUSDAddress, swap, exchangeAccount } from '@selectors/exchange'
+import { assets, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { PublicKey, Transaction, sendAndConfirmRawTransaction } from '@solana/web3.js'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA, SNY_DEV_TOKEN } from '@consts/static'
+import { PublicKey, sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
@@ -20,14 +19,10 @@ export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
   const state = yield* call([exchangeProgram, exchangeProgram.getState])
   yield* put(actions.setState(state))
-  const token = yield* call(getToken, state.collateralToken)
-  const accountInfo = yield* call([token, token.getAccountInfo], state.collateralAccount)
-  yield* put(actions.setCollateralAccountBalance(accountInfo.amount))
   yield* call(pullAssetPrices)
 }
-export function* getCollateralTokenAirdrop(): Generator {
+export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): Generator {
   const wallet = yield* call(getWallet)
-  const collateralTokenAddress = yield* select(collateralToken)
   const tokensAccounts = yield* select(accounts)
   const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
   let accountAddress = tokensAccounts[collateralTokenAddress.toString()]
@@ -57,13 +52,13 @@ export function* getCollateralTokenAirdrop(): Generator {
 
   console.log('Token Airdroped')
 }
-export function* depositCollateral(amount: BN): SagaGenerator<string> {
-  const collateralTokenAddress = yield* select(collateralToken)
+export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey): SagaGenerator<string> {
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()]
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
+  const allAssets = yield* select(assets)
   if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
     const { account, ix } = yield* call(
       [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
@@ -73,7 +68,8 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
       amount,
       exchangeAccount: account,
       userCollateralAccount: userCollateralTokenAccount.address,
-      owner: wallet.publicKey
+      owner: wallet.publicKey,
+      reserveAddress: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -93,8 +89,9 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
     yield* put(
       actions.setExchangeAccount({
         address: account,
-        collateralShares: new BN(0),
-        debtShares: new BN(0)
+        collaterals: [],
+        debtShares: new BN(0),
+        userStaking: DEFAULT_STAKING_DATA
       })
     )
     const signature = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
@@ -105,7 +102,8 @@ export function* depositCollateral(amount: BN): SagaGenerator<string> {
       amount,
       exchangeAccount: userExchangeAccount.address,
       userCollateralAccount: userCollateralTokenAccount.address,
-      owner: wallet.publicKey
+      owner: wallet.publicKey,
+      reserveAddress: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -146,8 +144,7 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
   })
   return signature[1]
 }
-export function* withdrawCollateral(amount: BN): SagaGenerator<string> {
-  const collateralTokenAddress = yield* select(collateralToken)
+export function* withdrawCollateral(amount: BN, collateralTokenAddress: PublicKey): SagaGenerator<string> {
   const collateralAccountAddress = yield* select(tokenAccount(collateralTokenAddress))
 
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -156,11 +153,13 @@ export function* withdrawCollateral(amount: BN): SagaGenerator<string> {
   if (!collateralAccountAddress) {
     throw new Error('Collateral token account not found')
   }
+  const allAssets = yield* select(assets)
   const signature = yield* call([exchangeProgram, exchangeProgram.withdraw], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
-    to: collateralAccountAddress?.address
+    userCollateralAccount: collateralAccountAddress?.address,
+    reserveAccount: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
   })
   return signature[1]
 }
@@ -181,6 +180,30 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     userTokenAccountBurn: userTokenAccount.address
   })
   return signature[1]
+}
+
+export function* claimRewards(): SagaGenerator<string> {
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const userExchangeAccount = yield* select(exchangeAccount)
+
+  return yield* call([exchangeProgram, exchangeProgram.claimRewards], userExchangeAccount.address)
+}
+
+export function* withdrawRewards(): SagaGenerator<string> {
+  const exchangeProgram = yield* call(getExchangeProgram)
+
+  const userTokenAccount = yield* select(tokenAccount(new PublicKey(SNY_DEV_TOKEN)))
+  if (!userTokenAccount) {
+    return ''
+  }
+  const wallet = yield* call(getWallet)
+  const userExchangeAccount = yield* select(exchangeAccount)
+
+  return yield* call([exchangeProgram, exchangeProgram.withdrawRewards], {
+    exchangeAccount: userExchangeAccount.address,
+    owner: wallet.publicKey,
+    userTokenAccount: userTokenAccount.address
+  })
 }
 
 export function* handleSwap(): Generator {
@@ -253,6 +276,10 @@ export function* assetPriceHandler(): Generator {
 }
 export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
+}
+
+export function* updateSlot(): Generator {
+  yield* takeEvery(actions.setAssetPrice, updateSlot)
 }
 
 export function* exchangeSaga(): Generator {

@@ -1,10 +1,9 @@
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState } from '@synthetify/sdk/lib/exchange'
-import { Asset } from '@synthetify/sdk/lib/manager'
+import { ExchangeState, Asset, CollateralEntry } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 export interface UserAccount {
   address: string // local storage does not handle PublicKeys
@@ -18,14 +17,21 @@ export interface Swap {
   loading: boolean
   txid?: string
 }
+export interface UserStaking {
+  amountToClaim: BN
+  finishedRoundPoints: BN
+  currentRoundPoints: BN
+  nextRoundPoints: BN
+  lastUpdate: BN
+}
 export interface ExchangeAccount {
   address: PublicKey
-  collateralShares: BN
+  collaterals: CollateralEntry[]
   debtShares: BN
+  userStaking: UserStaking
 }
 export interface IExchange {
   state: ExchangeState
-  collateralAccountBalance: BN
   collateralAccount: PublicKey
   collateralToken: PublicKey
   mintAuthority: PublicKey
@@ -44,19 +50,17 @@ export const defaultState: IExchange = {
   state: {
     admin: DEFAULT_PUBLICKEY,
     assetsList: DEFAULT_PUBLICKEY,
-    collateralAccount: DEFAULT_PUBLICKEY,
-    collateralShares: new BN(0),
     debtShares: new BN(0),
-    collateralToken: DEFAULT_PUBLICKEY,
-    collateralizationLevel: 1000,
     fee: 30,
-    liquidationAccount: DEFAULT_PUBLICKEY,
-    liquidationPenalty: 15,
-    liquidationThreshold: 200,
     maxDelay: 10,
     nonce: 255,
     halted: false,
     liquidationBuffer: 0,
+    healthFactor: 0,
+    liquidationRate: 0,
+    penaltyToExchange: 0,
+    penaltyToLiquidator: 0,
+    accountVersion: 1,
     staking: {
       amountPerRound: new BN(0),
       currentRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
@@ -67,7 +71,6 @@ export const defaultState: IExchange = {
     }
   },
   assets: {},
-  collateralAccountBalance: new BN(0),
   collateralAccount: DEFAULT_PUBLICKEY,
   collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
@@ -78,8 +81,9 @@ export const defaultState: IExchange = {
   userAccount: { address: DEFAULT_PUBLICKEY.toString(), collateral: new BN(0), shares: new BN(0) },
   exchangeAccount: {
     address: DEFAULT_PUBLICKEY,
-    collateralShares: new BN(0),
-    debtShares: new BN(0)
+    collaterals: [],
+    debtShares: new BN(0),
+    userStaking: DEFAULT_STAKING_DATA
   },
   swap: {
     fromToken: DEFAULT_PUBLICKEY,
@@ -106,8 +110,8 @@ const exchangeSlice = createSlice({
     },
     mergeAssets(state, action: PayloadAction<Asset[]>) {
       for (const asset of action.payload) {
-        state.assets[asset.assetAddress.toString()] = R.merge(
-          state.assets[asset.assetAddress.toString()],
+        state.assets[asset.synthetic.assetAddress.toString()] = R.merge(
+          state.assets[asset.synthetic.assetAddress.toString()],
           asset
         )
       }
@@ -124,19 +128,16 @@ const exchangeSlice = createSlice({
       state.userAccount.address = action.payload.toString()
       return state
     },
-    setCollateralAccountBalance(state, action: PayloadAction<BN>) {
-      state.collateralAccountBalance = action.payload
-      return state
-    },
     setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {
       state.userAccount.collateral = action.payload.collateral
       state.userAccount.shares = action.payload.shares
       return state
     },
     setExchangeAccount(state, action: PayloadAction<ExchangeAccount>) {
-      state.exchangeAccount.collateralShares = action.payload.collateralShares
+      state.exchangeAccount.collaterals = action.payload.collaterals
       state.exchangeAccount.debtShares = action.payload.debtShares
       state.exchangeAccount.address = action.payload.address
+      state.exchangeAccount.userStaking = action.payload.userStaking
       return state
     },
     swap(state, action: PayloadAction<Omit<Swap, 'loading'>>) {
