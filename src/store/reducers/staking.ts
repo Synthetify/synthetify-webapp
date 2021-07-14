@@ -24,6 +24,7 @@ export interface IDeposit {
   txid?: string
   sending: boolean
   error?: string
+  tokenAddress: PublicKey
 }
 export interface IMint {
   amount: BN
@@ -36,6 +37,7 @@ export interface IWithdraw {
   txid?: string
   sending: boolean
   error?: string
+  tokenAddress: PublicKey
 }
 export interface IBurn {
   amount: BN
@@ -79,6 +81,7 @@ export const defaultState: IStaking = {
   },
   deposit: {
     amount: new BN(0),
+    tokenAddress: DEFAULT_PUBLICKEY,
     sending: false
   },
   mint: {
@@ -87,6 +90,7 @@ export const defaultState: IStaking = {
   },
   withdraw: {
     amount: new BN(0),
+    tokenAddress: DEFAULT_PUBLICKEY,
     sending: false
   },
   burn: {
@@ -134,13 +138,10 @@ const stakingSlice = createSlice({
       }
       return state
     },
-    setBurnAddress(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
-      state.burn.tokenAddress = action.payload.tokenAddress
-      return state
-    },
-    burn(state, action: PayloadAction<Pick<IBurn, 'amount'>>) {
+    burn(state, action: PayloadAction<Pick<IBurn, 'amount' | 'tokenAddress'>>) {
       state.burn.sending = true
       state.burn.amount = action.payload.amount
+      state.burn.tokenAddress = action.payload.tokenAddress
       return state
     },
     burnDone(state, action: PayloadAction<Pick<IBurn, 'txid'>>) {
@@ -169,9 +170,10 @@ const stakingSlice = createSlice({
       state.send.txid = action.payload.txid
       return state
     },
-    deposit(state, action: PayloadAction<Pick<IDeposit, 'amount'>>) {
+    deposit(state, action: PayloadAction<Pick<IDeposit, 'amount' | 'tokenAddress'>>) {
       state.deposit.sending = true
       state.deposit.amount = action.payload.amount
+      state.deposit.tokenAddress = action.payload.tokenAddress
       return state
     },
     depositDone(state, action: PayloadAction<Pick<IDeposit, 'txid'>>) {
@@ -201,9 +203,10 @@ const stakingSlice = createSlice({
       state.mint.error = action.payload.error
       return state
     },
-    withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount'>>) {
+    withdraw(state, action: PayloadAction<Pick<IWithdraw, 'amount' | 'tokenAddress'>>) {
       state.withdraw.sending = true
       state.withdraw.amount = action.payload.amount
+      state.withdraw.tokenAddress = action.payload.tokenAddress
       return state
     },
     withdrawDone(state, action: PayloadAction<Pick<IWithdraw, 'txid'>>) {

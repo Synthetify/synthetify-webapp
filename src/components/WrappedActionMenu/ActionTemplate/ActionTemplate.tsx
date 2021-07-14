@@ -40,7 +40,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
-  }, [amountBN, decimal])
+  }, [amountBN, decimal, maxAvailable, maxDecimal])
 
   useEffect(() => {
     if (sending) {
@@ -84,10 +84,6 @@ export const ActionTemplate: React.FC<IProps> = ({
   }
 
   const getProgressState = () => {
-    if (!checkAmountInputError()) {
-      return 'failed'
-    }
-
     if (sending) {
       return 'progress'
     }
@@ -100,14 +96,14 @@ export const ActionTemplate: React.FC<IProps> = ({
       return 'success'
     }
 
+    if (!checkAmountInputError()) {
+      return 'failed'
+    }
+
     return 'none'
   }
 
   const getProgressMessage = () => {
-    if (!checkAmountInputError()) {
-      return 'Incorrect value!'
-    }
-
     const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
@@ -132,6 +128,10 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     if (showOperationProgressFinale && !hasError) {
       return `Successfully ${actionToPastNoun[action]}`
+    }
+
+    if (!checkAmountInputError()) {
+      return 'Incorrect value!'
     }
 
     return ''

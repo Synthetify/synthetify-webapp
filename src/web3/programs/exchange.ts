@@ -6,7 +6,6 @@ import {
 } from '@web3/connection'
 import { getSolanaWallet } from '@web3/wallet'
 import { PublicKey } from '@solana/web3.js'
-import { getManagerProgram } from './manager'
 let _exchange: Exchange
 const exchangeProgramId: PublicKey = new PublicKey('4pzefKJgV5aSAhvzgv3Su7THyrxTkcUCU58fmXNHxh9Z')
 export const getCurrentExchangeProgram = (): Exchange => {
@@ -22,7 +21,6 @@ export const getExchangeProgram = async (): Promise<Exchange> => {
     getSolanaConnection(solanaNetwork),
     net,
     getSolanaWallet(),
-    getManagerProgram(),
     // new PublicKey('4MbnceNy8kjVFGYTaSLvk5vn4gLR9h3oNzgXByZcnVRe'),
     new PublicKey('Bn5Pi8MmJhe99XAVA5rCDCYYhb4RvrdrtejFQce5uEtF'),
     exchangeProgramId
@@ -36,7 +34,6 @@ export const connectExchangeWallet = async (): Promise<Exchange> => {
     getSolanaConnection(solanaNetwork),
     net,
     getSolanaWallet(),
-    getManagerProgram(),
     // new PublicKey('4MbnceNy8kjVFGYTaSLvk5vn4gLR9h3oNzgXByZcnVRe'),
     new PublicKey('Bn5Pi8MmJhe99XAVA5rCDCYYhb4RvrdrtejFQce5uEtF'),
     exchangeProgramId
