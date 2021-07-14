@@ -25,6 +25,7 @@ import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchan
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address } from '@selectors/solanaWallet'
+import { assets } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -95,14 +96,18 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  yield* call(getCollateralTokenAirdrop)
-  yield put(
-    snackbarsActions.add({
-      message: 'You will soon receive airdrop',
-      variant: 'success',
-      persist: false
-    })
-  )
+  const allAssets = yield* select(assets)
+  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
+  if (snyToken?.collateral.collateralAddress) {
+    yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
+    yield put(
+      snackbarsActions.add({
+        message: 'You will soon receive airdrop',
+        variant: 'success',
+        persist: false
+      })
+    )
+  }
 }
 // export function* getTokenProgram(pubKey: PublicKey): SagaGenerator<number> {
 //   const connection = yield* call(getConnection)
@@ -183,7 +188,7 @@ export function* init(): Generator {
     yield* put(
       exchangeActions.setExchangeAccount({
         address: address,
-        collateralShares: account.collateralShares,
+        collaterals: account.collaterals,
         debtShares: account.debtShares,
         userStaking: account.userStakingData
       })
@@ -241,13 +246,12 @@ export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
     yield* put(actions.resetState())
-    yield* put(
-      exchangeActions.setExchangeAccount({
-        address: DEFAULT_PUBLICKEY,
-        collateralShares: new BN(0),
-        debtShares: new BN(0),
-        userStaking: DEFAULT_STAKING_DATA
-      })
+    yield* put(exchangeActions.setExchangeAccount({
+      address: DEFAULT_PUBLICKEY,
+      collaterals: [],
+      debtShares: new BN(0),
+      userStaking: DEFAULT_STAKING_DATA
+    })
     )
   } catch (error) {
     console.log(error)

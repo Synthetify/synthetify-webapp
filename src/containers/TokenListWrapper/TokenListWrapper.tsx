@@ -37,7 +37,7 @@ export const TokenListWrapper: React.FC = () => {
         centered={true}
         anchorEl={null}
         onSelect={(chosen) => {
-          const tokenAddress = Object.values(allTokens).find(token => token.symbol === chosen)?.assetAddress
+          const tokenAddress = Object.values(allTokens).find(token => token.symbol === chosen)?.synthetic.assetAddress
           if (userAccounts[chosen]) {
             dispatch(
               snackbarActions.add({
