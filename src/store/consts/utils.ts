@@ -81,7 +81,8 @@ const displayTwoFixed = (num: number): string => {
   return zeroPad(num.toFixed(0), 2)
 }
 export const displayDate = (seconds: number) => {
-  return `${displayTwoFixed(seconds / (24 * 3600))}:${displayTwoFixed(
-    (seconds / 60) % 60
-  )}:${displayTwoFixed(seconds % 60)}`
+  return `
+  ${displayTwoFixed(seconds / 3600)}:${displayTwoFixed((seconds / 60) % 60)}:${displayTwoFixed(
+    seconds % 60
+  )}`
 }

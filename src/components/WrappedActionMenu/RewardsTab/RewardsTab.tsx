@@ -18,7 +18,7 @@ export type RoundData = {
 }
 
 export interface IRewardsProps {
-  slot?: BN
+  slot: number
   amountToClaim: BN
   amountPerRound: BN
   roundLength: number
@@ -31,7 +31,7 @@ const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
 
 export const RewardsTab: React.FC<IRewardsProps> = ({
-  slot = new BN(0),
+  slot = 0,
   amountToClaim,
   amountPerRound,
   roundLength,
@@ -60,7 +60,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const isClaimDisabled = () => {
     const noPoints = finishedRoundPoints.eqn(0)
     const roundFinishSlot = currentRoundStartSlot.addn(roundLength)
-    const roundNotOver = !slot.gt(roundFinishSlot)
+    const roundNotOver = roundFinishSlot.gtn(slot)
 
     return noPoints && roundNotOver
   }
@@ -79,7 +79,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const calculateTimeRemaining = (roundStart: BN) => {
     const slotTime = 0.4
     const roundFinishSlot = roundStart.addn(roundLength)
-    const slotDiff = roundFinishSlot.sub(slot)
+    const slotDiff = roundFinishSlot.sub(new BN(slot))
     if (slotDiff.lten(0)) {
       return new BN(0)
     }

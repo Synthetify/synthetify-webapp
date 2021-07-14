@@ -1,11 +1,10 @@
 import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import React from 'react'
 import { colors } from '@static/theme'
 import { BN } from '@project-serum/anchor'
 
-storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
+storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
   <div style={{ backgroundColor: colors.gray.background, padding: '10px' }}>
     <WrappedActionMenu
       maxWidth={850}
@@ -22,7 +21,7 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
       depositState={{ sending: false }}
       burnState={{ sending: false }}
       stakingData={{
-        slot: new BN(300000),
+        slot: 300000,
         roundLength: 160000,
         rounds: {
           finished: {
@@ -41,7 +40,7 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
             roundAllPoints: new BN(1e9)
           }
         },
-        amountPerRound: new BN(100000000),
+        amountPerRound: new BN(1e10),
         amountToClaim: new BN(88648),
         onWithdraw: () => {},
         onClaim: () => {}
