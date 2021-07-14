@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/staking'
@@ -6,9 +6,9 @@ import {
   userMaxMintUsd,
   userMaxWithdraw,
   xUSDAddress,
-  tokenForSymbol,
   userStaking,
-  staking
+  staking,
+  assets
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import { tokenBalance, userMaxBurnToken } from '@selectors/solanaWallet'
@@ -19,7 +19,10 @@ export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
   const availableToMint = useSelector(userMaxMintUsd)
-  const snyToken = useSelector(tokenForSymbol('SNY'))
+  const allAssets = useSelector(assets)
+
+  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
+
   const { balance } = useSelector(tokenBalance(snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY))
   const availableToWithdraw = useSelector(userMaxWithdraw(snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY))
   const xUSDTokenAddress = useSelector(xUSDAddress)
@@ -32,17 +35,16 @@ export const ActionMenuContainer: React.FC = () => {
   const stakingState = useSelector(staking)
   const slotState = useSelector(slot)
 
-  useEffect(() => {
-    dispatch(actions.setBurnAddress({ tokenAddress: xUSDTokenAddress }))
-  }, [dispatch, xUSDTokenAddress])
-
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
         dispatch(actions.mint({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
       }}
       onBurn={(amount, decimal) => () => {
-        dispatch(actions.burn({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
+        dispatch(actions.burn({
+          amount: amount.muln(10 ** 6).divn(10 ** decimal),
+          tokenAddress: xUSDTokenAddress
+        }))
       }}
       onDeposit={(amount, decimal) => () => {
         dispatch(actions.deposit({

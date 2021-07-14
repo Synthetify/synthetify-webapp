@@ -25,7 +25,7 @@ import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchan
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address } from '@selectors/solanaWallet'
-import { tokenForSymbol } from '@selectors/exchange'
+import { assets } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -96,7 +96,8 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  const snyToken = yield* select(tokenForSymbol('SNY'))
+  const allAssets = yield* select(assets)
+  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
   if (snyToken?.collateral.collateralAddress) {
     yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
     yield put(

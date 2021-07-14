@@ -51,7 +51,6 @@ export const xUSDAddress = createSelector(assets, allAssets => {
     return DEFAULT_PUBLICKEY
   }
 })
-export const tokenForSymbol = (symbol: string) => createSelector(assets, allAssets => Object.values(allAssets).find(token => token.symbol === symbol))
 export const stakedValue = createSelector(
   exchangeAccount,
   assets,
@@ -187,8 +186,7 @@ export const exchangeSelectors = {
   mintAuthority,
   userMaxWithdraw,
   tokenTicker,
-  swap,
-  tokenForSymbol
+  swap
 }
 
 export default exchangeSelectors

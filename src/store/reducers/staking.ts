@@ -138,13 +138,10 @@ const stakingSlice = createSlice({
       }
       return state
     },
-    setBurnAddress(state, action: PayloadAction<Pick<IBurn, 'tokenAddress'>>) {
-      state.burn.tokenAddress = action.payload.tokenAddress
-      return state
-    },
-    burn(state, action: PayloadAction<Pick<IBurn, 'amount'>>) {
+    burn(state, action: PayloadAction<Pick<IBurn, 'amount' | 'tokenAddress'>>) {
       state.burn.sending = true
       state.burn.amount = action.payload.amount
+      state.burn.tokenAddress = action.payload.tokenAddress
       return state
     },
     burnDone(state, action: PayloadAction<Pick<IBurn, 'txid'>>) {
