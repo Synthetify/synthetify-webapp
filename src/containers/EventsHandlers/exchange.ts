@@ -7,7 +7,6 @@ import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 import { getOracleProgram } from '@web3/programs/oracle'
-import { parseTokenAccountData } from '@web3/data'
 import { getCurrentSolanaConnection } from '@web3/connection'
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
@@ -32,7 +31,7 @@ const ExhcangeEvents = () => {
         dispatch(
           actions.setExchangeAccount({
             address: userAccount.address,
-            collateralShares: a.collateralShares,
+            collaterals: a.collaterals.slice(0, a.head),
             debtShares: a.debtShares,
             userStaking: a.userStakingData
           })
@@ -55,19 +54,6 @@ const ExhcangeEvents = () => {
   }, [dispatch, exchangeProgram, networkStatus])
 
   React.useEffect(() => {
-    if (!exchangeProgram || networkStatus !== Status.Initalized) {
-      return
-    }
-    const connectEvents = () => {
-      exchangeProgram.connection.onAccountChange(exchangeState.collateralAccount, accountInfo => {
-        const parsedData = parseTokenAccountData(accountInfo.data)
-        dispatch(actions.setCollateralAccountBalance(parsedData.amount))
-      })
-    }
-    connectEvents()
-  }, [dispatch, exchangeState.collateralAccount.toString(), networkStatus])
-
-  React.useEffect(() => {
     const oracleProgram = getOracleProgram()
     const connection = getCurrentSolanaConnection()
 
@@ -84,13 +70,30 @@ const ExhcangeEvents = () => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
-            actions.setAssetPrice({ token: asset.assetAddress, price: new BN(data.price * 1e6) })
+            actions.setAssetPrice({ token: asset.synthetic.assetAddress, price: new BN(data.price * 1e6) })
           )
         })
       }
     }
     connectEvents()
   }, [dispatch, Object.values(allAssets).length, networkStatus])
+
+  React.useEffect(() => {
+    if (
+      !exchangeProgram ||
+      networkStatus !== Status.Initalized ||
+      exchangeState.assetsList.equals(DEFAULT_PUBLICKEY)
+    ) {
+      return
+    }
+    const connectEvents = () => {
+      exchangeProgram.onAssetsListChange(exchangeState.assetsList, assets => {
+        // const parsedData = parseTokenAccountData(accountInfo.data)
+        dispatch(actions.mergeAssets(assets.assets.slice(0, assets.head)))
+      })
+    }
+    connectEvents()
+  }, [dispatch, exchangeState.assetsList.toString(), networkStatus])
 
   return null
 }
