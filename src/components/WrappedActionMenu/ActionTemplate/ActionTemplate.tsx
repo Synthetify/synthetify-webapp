@@ -158,11 +158,10 @@ export const ActionTemplate: React.FC<IProps> = ({
           item
           container
           direction='row'
-          justify='space-between'
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid item>
+          <Grid className={classes.xsItemCenter} item>
             <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>

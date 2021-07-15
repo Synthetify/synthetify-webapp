@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: 0
     },
     [theme.breakpoints.down('xs')]: {
-      minWidth: 165
+      minWidth: 'unset',
+      width: 'calc(100% - 111px)'
     }
   },
   wrap: {
@@ -28,10 +29,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   secondHalf: {
     paddingTop: 22,
-    maxWidth: 400,
-    '& > *': {
-      marginLeft: 5,
-      marginRight: 5
+    maxWidth: 375,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: 400,
+      justifyContent: 'space-between',
+      '& > *': {
+        marginLeft: 5,
+        marginRight: 5
+      }
     }
   },
   amountInput: {
@@ -50,6 +55,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   xsTextAlignCenter: {
     [theme.breakpoints.down('xs')]: {
       textAlign: 'center'
+    }
+  },
+  xsItemCenter: {
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 110,
+      '& > *': {
+        marginInline: 20
+      }
     }
   }
 }))
