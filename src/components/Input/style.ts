@@ -18,7 +18,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     minWidth: 150,
     width: '100%',
-    marginTop: 5
+    marginTop: 5,
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: 24
+    }
   },
   currency: {
     fontSize: 22,
