@@ -107,7 +107,19 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  yield* call(getCollateralTokenAirdrop)
+  try {
+    yield* call(getCollateralTokenAirdrop)
+  } catch (error) {
+    if (error.message === 'Signature request denied') return
+    console.error(error)
+    return put(
+      snackbarsActions.add({
+        message: 'Airdrop failed',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
   yield put(
     snackbarsActions.add({
       message: 'You will soon receive airdrop',
