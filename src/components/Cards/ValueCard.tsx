@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { Card, CardContent, Typography, Divider, Tooltip, Icon, ClickAwayListener, Hidden } from '@material-ui/core'
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Tooltip,
+  Icon,
+  ClickAwayListener,
+  Hidden
+} from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
 import useStyles from './style'
@@ -15,7 +24,6 @@ export interface IProps {
 export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint, onClick }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent>
@@ -33,14 +41,22 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
               </Icon>
             </Hidden>
             <Hidden lgUp>
-              <ClickAwayListener onClickAway={() => { setIsPopoverOpen(false) }}>
-                <Icon onClick={() => { setIsPopoverOpen(true) }}>
+              <ClickAwayListener
+                onClickAway={() => {
+                  setIsPopoverOpen(false)
+                }}>
+                <Icon
+                  onClick={() => {
+                    setIsPopoverOpen(true)
+                  }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
                     title={hint}
                     placement='top-end'
                     open={isPopoverOpen}
-                    onClose={() => { setIsPopoverOpen(false) }}
+                    onClose={() => {
+                      setIsPopoverOpen(false)
+                    }}
                     disableFocusListener
                     disableHoverListener
                     disableTouchListener
@@ -55,7 +71,11 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} />
         <Typography className={classes.valueCardAmount}>
-          <AnimatedNumber value={value} duration={300} formatValue={(value: string) => Number(value).toFixed(decimals)}/>
+          <AnimatedNumber
+            value={value}
+            duration={300}
+            formatValue={(value: string) => Number(value).toFixed(decimals)}
+          />
           {sign}
         </Typography>
       </CardContent>

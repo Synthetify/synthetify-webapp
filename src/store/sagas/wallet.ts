@@ -25,7 +25,8 @@ import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchan
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { assets } from '@selectors/exchange'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -107,26 +108,18 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  try {
-    yield* call(getCollateralTokenAirdrop)
-  } catch (error) {
-    if (error.message === 'Signature request denied') return
-    console.error(error)
-    return put(
+  const allAssets = yield* select(assets)
+  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
+  if (snyToken?.collateral.collateralAddress) {
+    yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
+    yield put(
       snackbarsActions.add({
-        message: 'Airdrop failed',
-        variant: 'error',
+        message: 'You will soon receive airdrop',
+        variant: 'success',
         persist: false
       })
     )
   }
-  yield put(
-    snackbarsActions.add({
-      message: 'You will soon receive airdrop',
-      variant: 'success',
-      persist: false
-    })
-  )
 }
 // export function* getTokenProgram(pubKey: PublicKey): SagaGenerator<number> {
 //   const connection = yield* call(getConnection)
@@ -207,8 +200,9 @@ export function* init(): Generator {
     yield* put(
       exchangeActions.setExchangeAccount({
         address: address,
-        collateralShares: account.collateralShares,
-        debtShares: account.debtShares
+        collaterals: account.collaterals,
+        debtShares: account.debtShares,
+        userStaking: account.userStakingData
       })
     )
   } catch (error) {}
@@ -267,8 +261,9 @@ export function* handleDisconnect(): Generator {
     yield* put(
       exchangeActions.setExchangeAccount({
         address: DEFAULT_PUBLICKEY,
-        collateralShares: new BN(0),
-        debtShares: new BN(0)
+        collaterals: [],
+        debtShares: new BN(0),
+        userStaking: DEFAULT_STAKING_DATA
       })
     )
   } catch (error) {
