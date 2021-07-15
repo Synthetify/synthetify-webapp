@@ -24,7 +24,7 @@ import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { address } from '@selectors/solanaWallet'
+import { address, status } from '@selectors/solanaWallet'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -75,6 +75,18 @@ export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
 }
 
 export function* handleAirdrop(): Generator {
+  const walletStatus = yield* select(status)
+  if (walletStatus !== Status.Initalized) {
+    yield put(
+      snackbarsActions.add({
+        message: 'Connect your wallet first',
+        variant: 'warning',
+        persist: false
+      })
+    )
+    return
+  }
+
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   let balance = yield* call([connection, connection.getBalance], wallet.publicKey)
@@ -240,11 +252,13 @@ export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
     yield* put(actions.resetState())
-    yield* put(exchangeActions.setExchangeAccount({
-      address: DEFAULT_PUBLICKEY,
-      collateralShares: new BN(0),
-      debtShares: new BN(0)
-    }))
+    yield* put(
+      exchangeActions.setExchangeAccount({
+        address: DEFAULT_PUBLICKEY,
+        collateralShares: new BN(0),
+        debtShares: new BN(0)
+      })
+    )
   } catch (error) {
     console.log(error)
   }
