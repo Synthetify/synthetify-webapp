@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     minHeight: 200,
     [theme.breakpoints.down('sm')]: {
-      minHeight: 320,
+      paddingTop: 20,
       flexWrap: 'wrap'
     }
   },
@@ -46,9 +46,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 60
   },
   actionButton: {
-    padding: '11px 40px',
-    [theme.breakpoints.down('xs')]: {
-      padding: '11px 15px'
+    paddingBlock: 11,
+    width: 186,
+    marginTop: 32,
+    [theme.breakpoints.down('sm')]: {
+      width: 136,
+      marginTop: 25
     }
   },
   xsTextAlignCenter: {

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: 20,
     paddingRight: 36,
     [theme.breakpoints.down('xs')]: {
-      paddingInline: 15
+      padding: 15
     }
   }
 }))
