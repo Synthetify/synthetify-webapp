@@ -140,7 +140,7 @@ export const ActionTemplate: React.FC<IProps> = ({
   return (
     <Grid
       container
-      justify='space-around'
+      justifyContent='space-around'
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
@@ -158,7 +158,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           item
           container
           direction='row'
-          justify='space-between'
+          justifyContent='space-between'
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
@@ -180,7 +180,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center' wrap='nowrap' direction='row' justify='flex-start'>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row' justifyContent='flex-start'>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalizeString(action)}
