@@ -9,7 +9,8 @@ const useStyles = makeStyles(() => ({
     borderLeftWidth: 10,
     borderColor: colors.green.snackbar,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    margin: 2
   },
   error: {
     backgroundColor: colors.gray.component,
@@ -19,7 +20,8 @@ const useStyles = makeStyles(() => ({
     borderColor: colors.red.snackbar,
     color: colors.red.snackbar,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    margin: 2
   },
   info: {
     backgroundColor: colors.gray.component,
@@ -28,7 +30,8 @@ const useStyles = makeStyles(() => ({
     borderLeftWidth: 10,
     borderColor: colors.blue.astel,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    margin: 2
   },
   warning: {
     backgroundColor: colors.gray.component,
@@ -37,7 +40,8 @@ const useStyles = makeStyles(() => ({
     borderLeftWidth: 10,
     borderColor: colors.yellow.neon,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    margin: 2
   }
 }))
 
