@@ -4,13 +4,14 @@ import { Grid } from '@material-ui/core'
 import useStyles from './style'
 import ValueCard from '@components/Cards/ValueCard'
 import { transformBN } from '@consts/utils'
-import { stakedValue, userDebtValue, userMaxDebtValue } from '@selectors/exchange'
+import { collateralValue, stakedValue, userDebtValue, userMaxDebtValue } from '@selectors/exchange'
 import ProgressCard from '@components/Cards/ProgressCard'
 
 export const StakingStats: React.FC = () => {
   const classes = useStyles()
 
   const stakedUserValue = useSelector(stakedValue)
+  const collateralUserValue = useSelector(collateralValue)
   const currentDebt = useSelector(userDebtValue)
   const maxDebt = useSelector(userMaxDebtValue)
 
@@ -28,10 +29,11 @@ export const StakingStats: React.FC = () => {
       <Grid className={classes.statsTile} item xs={12} md={8} lg={8}>
         <ProgressCard
           name='Debt status'
-          hint='Lorem ipsum'
+          hint='Current value of your debt in comparison to your collateral value and max borrow'
           current={+transformBN(currentDebt)}
           sign={'$'}
-          max={+transformBN(maxDebt)}
+          max={+transformBN(collateralUserValue)}
+          currentDescription={ `Current debt: ${transformBN(currentDebt)}$`}
         />
       </Grid>
     </>

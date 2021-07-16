@@ -46,23 +46,32 @@ const useStyles = makeStyles(() => ({
 
 export const useProgressStyles = makeStyles<Theme, { max: number; current: number }>((theme: Theme) => ({
   progressContent: {
-    paddingBottom: 0,
+    paddingBottom: 13,
     '&:last-child': {
-      paddingBottom: 0
+      paddingBottom: 13
     }
   },
   minMaxDebt: {
     fontSize: 13,
-    lineHeight: '40px',
     fontWeight: 700,
+    lineHeight: 'unset',
     [theme.breakpoints.down('sm')]: {
       fontSize: 16
     }
   },
+  progressContainer: {
+    width: '100%',
+    marginTop: 35,
+    marginBottom: 17
+  },
   progressRoot: {
+    width: '100%',
     height: 16,
     borderRadius: 10,
     background: colors.black.background
+  },
+  popper: {
+    zIndex: 1
   },
   bar: ({ max, current }) => ({
     borderRadius: 10,
