@@ -59,7 +59,7 @@ const FullHeightIndicatorTabs = withStyles({
 })((props: FullHeightIndicatorTabsProps) => (
   <Tabs
     variant='scrollable'
-    scrollButtons='auto'
+    scrollButtons='off'
     TabIndicatorProps={{ children: <span /> }}
     {...props}
   />

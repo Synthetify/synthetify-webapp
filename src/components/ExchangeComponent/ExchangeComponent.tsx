@@ -67,7 +67,7 @@ const getButtonMessage = (
   if (!tokenTo) {
     return 'Select output token'
   }
-  if (!amountTo) {
+  if (amountTo.match(/^0\.0*$/)) {
     return 'Enter value of swap'
   }
   if (printBNtoBN(amountFrom, tokenFrom.synthetic.decimals).gt(tokenFrom.balance)) {
@@ -121,7 +121,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>From</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null
@@ -135,12 +135,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
-              )
+                )
               : ''}
           </Typography>
         </Grid>
         <Hidden lgUp>
-          <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+          <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
@@ -166,7 +166,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           </Grid>
         </Hidden>
 
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
@@ -209,7 +209,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         </Grid>
       </Grid>
 
-      <Grid item container direction='row' justify='center'>
+      <Grid item container direction='row' justifyContent='center'>
         <Grid item>
           <IconButton
             className={classes.swapIconSquare}
@@ -228,7 +228,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null && tokenToIndex !== null
@@ -247,7 +247,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           </Typography>
         </Grid>
         <Hidden lgUp>
-          <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
+          <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
@@ -274,7 +274,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           </Grid>
         </Hidden>
 
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken

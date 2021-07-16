@@ -12,7 +12,7 @@ import { BN } from '@project-serum/anchor'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
-import { getConnection } from './connection'
+import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 export function* pullExchangeState(): Generator {
@@ -20,6 +20,7 @@ export function* pullExchangeState(): Generator {
   const state = yield* call([exchangeProgram, exchangeProgram.getState])
   yield* put(actions.setState(state))
   yield* call(pullAssetPrices)
+  yield* call(updateSlot)
 }
 export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): Generator {
   const wallet = yield* call(getWallet)
@@ -277,11 +278,6 @@ export function* assetPriceHandler(): Generator {
 export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
 }
-
-export function* updateSlot(): Generator {
-  yield* takeEvery(actions.setAssetPrice, updateSlot)
-}
-
 export function* exchangeSaga(): Generator {
   yield all([swapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
 }

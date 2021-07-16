@@ -94,7 +94,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   return (
     <Card className={classes.card} style={{ maxWidth }}>
       <CardContent className={classes.cardContent}>
-        <Grid container justify='space-around' alignItems='flex-start' direction='column'>
+        <Grid container justifyContent='space-around' alignItems='flex-start' direction='column'>
           <ActionMenu actionContents={actionContents} onChange={() => {}} />
         </Grid>
       </CardContent>
