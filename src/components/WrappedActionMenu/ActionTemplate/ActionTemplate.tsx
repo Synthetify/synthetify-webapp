@@ -139,6 +139,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
   return (
     <Grid
+      container
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
@@ -177,7 +178,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center' wrap='nowrap' direction='row' justify='flex-start'>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row' justifyContent='flex-start'>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalizeString(action)}

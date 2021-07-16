@@ -23,7 +23,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
     <Card className={classes.card}>
       <CardContent style={{ margin: 0, padding: 0 }}>
         <Grid item xs={12} style={{ overflowX: 'hidden' }}>
-          <Grid container justify='space-between' alignItems='center'>
+          <Grid container justifyContent='space-between' alignItems='center'>
             <Grid item>
               <Typography className={classes.ownedTokens}>Owned tokens</Typography>
             </Grid>
