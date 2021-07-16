@@ -28,7 +28,7 @@ export const StakingStats: React.FC = () => {
       <Grid className={classes.statsTile} item xs={12} md={8} lg={8}>
         <ProgressCard
           name='Debt status'
-          hint='Current value of your debt in comparison to max possible value of it'
+          hint='Lorem ipsum'
           current={+transformBN(currentDebt)}
           sign={'$'}
           max={+transformBN(maxDebt)}
