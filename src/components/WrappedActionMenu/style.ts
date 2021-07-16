@@ -3,15 +3,17 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    backgroundColor: colors.gray.component
+    backgroundColor: colors.gray.component,
+    borderRadius: 10
   },
   cardContent: {
     paddingTop: 40,
     boxSizing: 'border-box',
     width: '100%',
+    paddingLeft: 20,
+    paddingRight: 36,
     [theme.breakpoints.down('xs')]: {
-      paddingLeft: 10,
-      paddingRight: 10
+      padding: 15
     }
   }
 }))

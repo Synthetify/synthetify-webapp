@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     minHeight: 200,
     [theme.breakpoints.down('sm')]: {
-      minHeight: 320,
+      paddingTop: 20,
       flexWrap: 'wrap'
     }
   },
@@ -16,8 +16,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& *': {
       margin: 0
     },
+    [theme.breakpoints.down('sm')]: {
+      marginBlock: 'auto'
+    },
     [theme.breakpoints.down('xs')]: {
-      minWidth: 165
+      minWidth: 'unset',
+      width: 'calc(100% - 111px)'
     }
   },
   wrap: {
@@ -28,10 +32,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   secondHalf: {
     paddingTop: 22,
-    maxWidth: 400,
-    '& > *': {
-      marginLeft: 5,
-      marginRight: 5
+    maxWidth: 375,
+    [theme.breakpoints.up('sm')]: {
+      justifyContent: 'space-between',
+      '& > *': {
+        marginLeft: 5,
+        marginRight: 5
+      }
     }
   },
   amountInput: {
@@ -42,14 +49,31 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 60
   },
   actionButton: {
-    padding: '11px 40px',
-    [theme.breakpoints.down('xs')]: {
-      padding: '11px 15px'
+    paddingBlock: 11,
+    width: 186,
+    marginTop: 32,
+    [theme.breakpoints.down('sm')]: {
+      width: 136,
+      marginTop: 25
     }
   },
   xsTextAlignCenter: {
     [theme.breakpoints.down('xs')]: {
       textAlign: 'center'
+    }
+  },
+  xsItemCenter: {
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 110,
+      '& > *': {
+        marginInline: 20
+      }
+    }
+  },
+  progress: {
+    marginTop: 32,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 25
     }
   }
 }))
