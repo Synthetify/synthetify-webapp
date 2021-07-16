@@ -139,8 +139,6 @@ export const ActionTemplate: React.FC<IProps> = ({
 
   return (
     <Grid
-      container
-      justify='space-around'
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
@@ -158,11 +156,10 @@ export const ActionTemplate: React.FC<IProps> = ({
           item
           container
           direction='row'
-          justify='space-between'
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid item>
+          <Grid className={classes.xsItemCenter} item>
             <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
@@ -190,7 +187,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             onClick={onClick(amountBN, decimal)}
           />
         </Grid>
-        <Grid item>
+        <Grid className={classes.progress} item>
           <Progress state={getProgressState()} message={getProgressMessage()} />
         </Grid>
       </Grid>
