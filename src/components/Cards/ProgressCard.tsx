@@ -7,28 +7,28 @@ import {
   Tooltip,
   Icon,
   ClickAwayListener,
-  Hidden
+  Hidden,
+  LinearProgress,
+  Grid
 } from '@material-ui/core'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
-import useStyles from './style'
-import { BN } from '@project-serum/anchor'
-
+import useStyles, { useProgressStyles } from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
 export interface IProps {
   name: string
   sign: string
   hint?: string
   onClick?: () => void
-  max: BN
-  maxDecimal: number
-  current: BN
-  currentDecimal: number
+  max: number
+  current: number
 }
-export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max, maxDecimal, current, currentDecimal }) => {
+export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max, current }) => {
   const classes = useStyles()
+  const progressClasses = useProgressStyles({ max, current })
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <Card className={classes.valueCard} onClick={onClick}>
-      <CardContent>
+      <CardContent className={progressClasses.progressContent}>
         {hint ? (
           <>
             <Hidden mdDown>
@@ -72,8 +72,25 @@ export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max,
         ) : null}
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} />
-        <Typography className={classes.valueCardAmount}>
-        </Typography>
+        <LinearProgress
+          classes={{
+            root: progressClasses.progressRoot,
+            bar: progressClasses.bar
+          }}
+          variant='determinate'
+          value={max !== 0 ? (current / max) * 100 : 0}
+        />
+        <Grid container direction='row' justifyContent='space-between'>
+          <Typography className={progressClasses.minMaxDebt}>0{sign}</Typography>
+          <Typography className={progressClasses.minMaxDebt}>
+            <AnimatedNumber
+              value={max}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(2)}
+            />
+            {sign}
+          </Typography>
+        </Grid>
       </CardContent>
     </Card>
   )

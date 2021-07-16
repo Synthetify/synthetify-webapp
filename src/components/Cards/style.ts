@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
@@ -40,14 +40,33 @@ const useStyles = makeStyles(() => ({
     color: colors.gray.mid,
     borderColor: colors.gray.mid,
     width: 13
-  },
-  progressCard: {
-    background: colors.gray.component,
-    paddingBottom: 15
-  },
-  progressWrapper: {
-    height: 72
   }
+}))
+
+export const useProgressStyles = makeStyles<Theme, { max: number; current: number }>((theme: Theme) => ({
+  progressContent: {
+    paddingBottom: 0,
+    '&:last-child': {
+      paddingBottom: 0
+    }
+  },
+  minMaxDebt: {
+    fontSize: 13,
+    lineHeight: '40px',
+    fontWeight: 700,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 16
+    }
+  },
+  progressRoot: {
+    height: 16,
+    borderRadius: 10,
+    background: colors.black.background
+  },
+  bar: ({ max, current }) => ({
+    borderRadius: 10,
+    background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? (current / max) * 100 : 0)}%, #C34848 ${200 - (max !== 0 ? (current / max) * 100 : 0)}%)`
+  })
 }))
 
 export default useStyles
