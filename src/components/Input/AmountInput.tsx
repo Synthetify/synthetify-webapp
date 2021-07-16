@@ -1,4 +1,4 @@
-import { Input, InputAdornment } from '@material-ui/core'
+import { Divider, Input, InputAdornment } from '@material-ui/core'
 import React, { CSSProperties } from 'react'
 import classNames from 'classnames'
 import useStyles from './style'
@@ -48,7 +48,8 @@ export const AmountInput: React.FC<IProps> = ({
       endAdornment={
         !currency ? null : (
           <InputAdornment position='end' className={classes.currency}>
-            |&nbsp;{currency}
+            <Divider orientation='vertical' className={classes.divider} />
+            {currency}
           </InputAdornment>
         )
       }

@@ -187,7 +187,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             onClick={onClick(amountBN, decimal)}
           />
         </Grid>
-        <Grid item>
+        <Grid className={classes.progress} item>
           <Progress state={getProgressState()} message={getProgressMessage()} />
         </Grid>
       </Grid>

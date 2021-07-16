@@ -13,20 +13,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.gray.light,
     borderRadius: 10,
     paddingLeft: 16,
-    paddingRight: 32,
+    paddingRight: 16,
     height: 60,
     fontSize: 22,
     minWidth: 150,
     width: '100%',
-    marginTop: 5,
-    [theme.breakpoints.down('xs')]: {
-      paddingRight: 24
-    }
+    marginTop: 5
   },
   currency: {
     fontSize: 22,
     color: colors.gray.light,
-    width: 70
+    width: 80,
+    height: '100%',
+    marginLeft: -4
   },
   inputLabel: {
     color: colors.gray.veryLight,
@@ -37,6 +36,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       marginTop: -4
     }
+  },
+  divider: {
+    backgroundColor: colors.gray.light,
+    height: 40,
+    marginRight: 7
   }
 }))
 

@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& *': {
       margin: 0
     },
+    [theme.breakpoints.down('sm')]: {
+      marginBlock: 'auto'
+    },
     [theme.breakpoints.down('xs')]: {
       minWidth: 'unset',
       width: 'calc(100% - 111px)'
@@ -65,6 +68,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       '& > *': {
         marginInline: 20
       }
+    }
+  },
+  progress: {
+    marginTop: 32,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 25
     }
   }
 }))
