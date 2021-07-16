@@ -139,6 +139,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
   return (
     <Grid
+      container
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
