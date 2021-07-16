@@ -46,7 +46,8 @@ export const colors = {
     main: '#00F9BB',
     button: '#40BFA0',
     hover: 'rgba(0,249,187,0.15)',
-    pastel: '#8AF7E4'
+    pastel: '#8AF7E4',
+    snackbar: '#4BB724'
   },
   white: {
     main: '#FFFFFF'
