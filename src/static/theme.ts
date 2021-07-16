@@ -56,7 +56,8 @@ export const colors = {
     main: '#EB5757',
     error: '#F22F2F',
     neon: '#FF2079',
-    pinkish: '#FE53BB'
+    pinkish: '#FE53BB',
+    snackbar: '#DE3232'
   },
   purple: {
     magenta: '#A1045A',

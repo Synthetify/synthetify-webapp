@@ -28,10 +28,10 @@ const App: React.FC = () => {
           <SnackbarProvider
             maxSnack={99}
             classes={{
-              variantSuccess: classes.success
-              // variantError: classes.error,
-              // variantWarning: classes.warning,
-              // variantInfo: classes.info
+              variantSuccess: classes.success,
+              variantError: classes.error,
+              variantWarning: classes.warning,
+              variantInfo: classes.info
             }}>
             <Notifier />
             <GlobalLoader />
