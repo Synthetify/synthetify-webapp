@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
 
 export const colors = {
   black: {
@@ -66,7 +66,7 @@ export const colors = {
     neon: '#F5D300'
   }
 }
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: colors.gray.mid, // v2.0
