@@ -40,6 +40,13 @@ const useStyles = makeStyles(() => ({
     color: colors.gray.mid,
     borderColor: colors.gray.mid,
     width: 13
+  },
+  progressCard: {
+    background: colors.gray.component,
+    paddingBottom: 15
+  },
+  progressWrapper: {
+    height: 72
   }
 }))
 
