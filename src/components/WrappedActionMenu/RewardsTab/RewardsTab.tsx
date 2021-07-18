@@ -42,7 +42,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const classes = useStyles()
 
   const estimateRounds = (): RoundData => {
-    const { current, finished, next } = rounds
+    const { current, next } = rounds
     if (next.roundStartSlot.gten(slot)) {
       return rounds
     }
@@ -63,15 +63,43 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         }
       }
       case 2: {
-        return rounds
+        return {
+          finished: next,
+          current: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: amountPerRound
+          },
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: amountPerRound
+          }
+        }
       }
       default: {
-        return rounds
+        return {
+          finished: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: amountPerRound
+          },
+          current: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: amountPerRound
+          },
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: amountPerRound
+          }
+        }
       }
     }
   }
 
-  const { current, finished, next } = estimateRounds()
+  const { finished, current, next } = estimateRounds()
   const {
     roundAllPoints: currentRoundAllPoints,
     roundPoints: currentRoundPoints,
