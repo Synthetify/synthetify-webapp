@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
-import { displayDate } from '@consts/utils'
+import { displayDate, divUpNumber } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -40,7 +40,38 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   onWithdraw
 }) => {
   const classes = useStyles()
-  const { current, finished, next } = rounds
+
+  const estimateRounds = (): RoundData => {
+    const { current, finished, next } = rounds
+    if (next.roundStartSlot.gten(slot)) {
+      return rounds
+    }
+    const slotDiff = slot - next.roundStartSlot.toNumber()
+    const roundDiff = divUpNumber(slotDiff, roundLength)
+
+    // TODO replace: next.roundAllPoints with fetching debt_shares
+    switch (roundDiff) {
+      case 1: {
+        return {
+          finished: current,
+          current: next,
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: amountPerRound
+          }
+        }
+      }
+      case 2: {
+        return rounds
+      }
+      default: {
+        return rounds
+      }
+    }
+  }
+
+  const { current, finished, next } = estimateRounds()
   const {
     roundAllPoints: currentRoundAllPoints,
     roundPoints: currentRoundPoints,
