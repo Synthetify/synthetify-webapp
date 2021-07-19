@@ -146,8 +146,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return slotDiff.muln(slotTime)
   }
 
-  const displayTimeRemaining = (roundStart: BN) => {
-    const timeRemaining = calculateTimeRemaining(roundStart)
+  const displayTimeRemaining = (roundStart: BN, roundLength: number) => {
+    const timeRemaining = calculateTimeRemaining(roundStart.addn(roundLength))
     return `Time remaining: ${displayDate(timeRemaining.toNumber())}`
   }
 
@@ -173,7 +173,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      bottomHint: displayTimeRemaining(nextRoundStartSlot)
+      bottomHint: displayTimeRemaining(nextRoundStartSlot, roundLength)
     },
     {
       name: 'Current round',
@@ -186,7 +186,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      bottomHint: displayTimeRemaining(currentRoundStartSlot)
+      bottomHint: displayTimeRemaining(currentRoundStartSlot, roundLength)
     },
     {
       name: 'Finished round',
@@ -199,7 +199,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      bottomHint: displayTimeRemaining(finishedRoundStartSlot)
+      bottomHint: displayTimeRemaining(finishedRoundStartSlot, roundLength)
     }
   ]
 
