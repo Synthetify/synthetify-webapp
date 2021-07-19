@@ -46,7 +46,8 @@ export const colors = {
     main: '#00F9BB',
     button: '#40BFA0',
     hover: 'rgba(0,249,187,0.15)',
-    pastel: '#8AF7E4'
+    pastel: '#8AF7E4',
+    snackbar: '#4BB724'
   },
   white: {
     main: '#FFFFFF'
@@ -55,7 +56,8 @@ export const colors = {
     main: '#EB5757',
     error: '#F22F2F',
     neon: '#FF2079',
-    pinkish: '#FE53BB'
+    pinkish: '#FE53BB',
+    snackbar: '#DE3232'
   },
   purple: {
     magenta: '#A1045A',
