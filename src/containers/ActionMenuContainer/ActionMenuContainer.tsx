@@ -42,13 +42,6 @@ export const ActionMenuContainer: React.FC = () => {
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(connectionActions.updateSlot())
-    }, 10000)
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
