@@ -103,15 +103,15 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const { finished, current, next } = estimateRounds()
   const {
-    roundAllPoints: currentRoundAllPoints,
-    roundPoints: currentRoundPoints,
-    roundStartSlot: currentRoundStartSlot
-  } = current
-  const {
     roundAllPoints: finishedRoundAllPoints,
     roundPoints: finishedRoundPoints,
     roundStartSlot: finishedRoundStartSlot
   } = finished
+  const {
+    roundAllPoints: currentRoundAllPoints,
+    roundPoints: currentRoundPoints,
+    roundStartSlot: currentRoundStartSlot
+  } = current
   const {
     roundAllPoints: nextRoundAllPoints,
     roundPoints: nextRoundPoints,
