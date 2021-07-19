@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.gray.mid,
     color: colors.gray.veryLight,
     fontSize: 13,
-    padding: '5px 8px',
+    padding: '7px 16px',
     fontWeight: 400,
     marginBlock: 5
   }
