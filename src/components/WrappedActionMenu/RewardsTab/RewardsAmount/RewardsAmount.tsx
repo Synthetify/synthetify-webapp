@@ -25,7 +25,7 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
             duration={300}
             formatValue={(value: string) => Number(value).toFixed(4)}
           />{' '}
-          points
+          SNY
         </Typography>
       </Grid>
       <Grid item>
