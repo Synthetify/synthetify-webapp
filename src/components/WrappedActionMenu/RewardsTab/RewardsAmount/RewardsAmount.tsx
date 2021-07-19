@@ -13,8 +13,7 @@ interface IRewardsAmountProps {
 export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const hint =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
+  const hint = 'Amount of SNY tokens you can withdraw'
 
   return (
     <Grid container alignItems='center' className={classes.root}>

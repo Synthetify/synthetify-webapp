@@ -28,9 +28,6 @@ export interface IRewardsProps {
   onWithdraw: () => void
 }
 
-const loremIpsum =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
-
 export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
@@ -157,7 +154,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: loremIpsum,
+      hint: 'The round has not yet started',
       timeRemainingEndSlot: nextRoundStartSlot
     },
     {
@@ -170,7 +167,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: loremIpsum,
+      hint: 'To get more points in the current round, increase the amount of your debt',
       timeRemainingEndSlot: nextRoundStartSlot
     },
     {
@@ -183,7 +180,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: loremIpsum,
+      hint: 'This round has been finished. Now you can claim your tokens',
       timeRemainingEndSlot: nextRoundStartSlot
     }
   ]
