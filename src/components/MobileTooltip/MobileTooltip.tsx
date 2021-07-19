@@ -19,12 +19,14 @@ type Placement =
 
 export interface IMobileTooltip {
   hint: ReactChild
+  onOpen?: () => {}
   mobilePlacement?: Placement
   desktopPlacement?: Placement
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
   hint,
+  onOpen,
   mobilePlacement = 'bottom',
   desktopPlacement = 'right'
 }) => {
@@ -35,7 +37,11 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
     <Grid item>
       <Hidden mdDown>
         <Icon>
-          <Tooltip classes={{ tooltip: classes.tooltip }} title={hint} placement={desktopPlacement}>
+          <Tooltip
+            onOpen={onOpen}
+            classes={{ tooltip: classes.tooltip }}
+            title={hint}
+            placement={desktopPlacement}>
             <img src={HintIcon} alt='' className={classes.questionMark} />
           </Tooltip>
         </Icon>
@@ -44,6 +50,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
+              onOpen={onOpen}
               classes={{ tooltip: classes.tooltip }}
               title={hint}
               placement={mobilePlacement}

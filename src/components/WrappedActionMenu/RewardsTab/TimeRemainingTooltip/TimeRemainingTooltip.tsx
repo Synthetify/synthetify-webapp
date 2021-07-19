@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import BN from 'bn.js'
 import { displayDate } from '@consts/utils'
+import { useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
+import { actions } from '@reducers/solanaConnection'
+import useStyles from './style'
 
 export interface ITimeRemainingTooltipInterface {
   roundStart: BN
@@ -17,6 +20,8 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
   slot,
   hint
 }) => {
+  const classes = useStyles()
+
   const calculateTimeRemaining = (roundStart: BN, roundLength: number): BN => {
     const slotTime = 0.4
     const roundFinishSlot = roundStart.addn(roundLength)
@@ -47,10 +52,16 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    setTimeRemaining(calculateTimeRemaining(roundStart, roundLength))
+  }, [slot])
+
   return (
     <>
-      <Typography>{hint}</Typography>
-      <Typography>{displayTimeRemaining()}</Typography>
+      <Typography className={classes.hint}>{hint}</Typography>
+      <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
+        {displayTimeRemaining()}
+      </Typography>
     </>
   )
 }
@@ -61,8 +72,11 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
   slot,
   hint
 }) => {
+  const dispatch = useDispatch()
+
   return (
     <MobileTooltip
+      onOpen={() => dispatch(actions.updateSlot())}
       hint={<CountDown roundLength={roundLength} roundStart={roundStart} slot={slot} hint={hint} />}
     />
   )
