@@ -39,7 +39,7 @@ export interface IExchange {
   shares: BN
   fee: number
   collateralizationLevel: number
-  assets: { [key in string]: IAsset }
+  assets: IAsset[]
   synthetics: { [key in string]: Synthetic }
   collaterals: { [key in string]: Collateral }
   userAccount: UserAccount
@@ -72,7 +72,7 @@ export const defaultState: IExchange = {
       roundLength: 0
     }
   },
-  assets: {},
+  assets: [],
   synthetics: {},
   collaterals: {},
   collateralAccount: DEFAULT_PUBLICKEY,
@@ -108,7 +108,7 @@ const exchangeSlice = createSlice({
       state.state = action.payload
       return state
     },
-    setAssets(state, action: PayloadAction<{ [key in string]: IAsset }>) {
+    setAssets(state, action: PayloadAction<IAsset[]>) {
       state.assets = action.payload
       return state
     },
@@ -117,12 +117,12 @@ const exchangeSlice = createSlice({
       return state
     },
     mergeAssets(state, action: PayloadAction<Asset[]>) {
-      for (const asset of action.payload) {
-        state.assets[asset.feedAddress.toString()] = R.merge(
-          state.assets[asset.feedAddress.toString()],
+      action.payload.forEach((asset, index) => {
+        state.assets[index] = R.merge(
+          state.assets[index],
           asset
         )
-      }
+      })
       return state
     },
     mergeSynthetics(state, action: PayloadAction<Synthetic[]>) {

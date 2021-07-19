@@ -13,10 +13,10 @@ export function* pullAssetPrices(): Generator {
     [exchangeProgram, exchangeProgram.getAssetsList],
     stateExchange.assetsList
   )
-  let assets: { [key in string]: IAsset } = {}
+  let assets: IAsset[] = []
   assets = assetsList.synthetics.reduce((acc, asset) => {
     // TODO add parsing address to symbol
-    acc[assetsList.assets[asset.assetIndex].feedAddress.toString()] = {
+    acc[asset.assetIndex] = {
       ...assetsList.assets[asset.assetIndex],
       symbol: addressToAssetSymbol[asset.assetAddress.toString()] || 'XYZ'
     }
@@ -24,7 +24,7 @@ export function* pullAssetPrices(): Generator {
   }, assets)
   assets = assetsList.collaterals.reduce((acc, asset) => {
     // TODO add parsing address to symbol
-    acc[assetsList.assets[asset.assetIndex].feedAddress.toString()] = {
+    acc[asset.assetIndex] = {
       ...assetsList.assets[asset.assetIndex],
       symbol: addressToAssetSymbol[asset.collateralAddress.toString()] || 'XYZ'
     }

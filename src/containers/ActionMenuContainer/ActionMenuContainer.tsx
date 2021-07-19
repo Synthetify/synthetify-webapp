@@ -22,7 +22,7 @@ export const ActionMenuContainer: React.FC = () => {
   const availableToMint = useSelector(userMaxMintUsd)
   const allAssets = useSelector(assets)
 
-  const snyToken = Object.values(allAssets).find((token) => token.symbol === 'SNY')
+  const snyToken = allAssets.find((token) => token.symbol === 'SNY')
 
   const { balance } = useSelector(
     tokenBalance(snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY)

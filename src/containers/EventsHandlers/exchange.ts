@@ -60,7 +60,7 @@ const ExhcangeEvents = () => {
     const connection = getCurrentSolanaConnection()
 
     if (
-      Object.values(allAssets).length === 0 ||
+      allAssets.length === 0 ||
       !oracleProgram ||
       networkStatus !== Status.Initalized ||
       !connection
@@ -69,7 +69,7 @@ const ExhcangeEvents = () => {
     }
     const connectEvents = () => {
       for (const asset of Object.values(allSynthetics)) {
-        connection.onAccountChange(Object.values(allAssets)[asset.assetIndex].feedAddress, accountInfo => {
+        connection.onAccountChange(allAssets[asset.assetIndex].feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
             actions.setAssetPrice({ token: asset.assetAddress, price: new BN(data.price * 1e6) })
@@ -77,7 +77,7 @@ const ExhcangeEvents = () => {
         })
       }
       for (const asset of Object.values(allCollaterals)) {
-        connection.onAccountChange(Object.values(allAssets)[asset.assetIndex].feedAddress, accountInfo => {
+        connection.onAccountChange(allAssets[asset.assetIndex].feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
             actions.setAssetPrice({ token: asset.collateralAddress, price: new BN(data.price * 1e6) })
@@ -86,7 +86,7 @@ const ExhcangeEvents = () => {
       }
     }
     connectEvents()
-  }, [dispatch, Object.values(allAssets).length, networkStatus])
+  }, [dispatch, allAssets.length, networkStatus])
 
   React.useEffect(() => {
     if (

@@ -69,8 +69,8 @@ export const accountsArray = createSelector(
       if (allSynthetics[account.programId.toString()]) {
         acc.push({
           ...account,
-          symbol: Object.values(exchangeAssets)[allSynthetics[account.programId.toString()].assetIndex].symbol,
-          usdValue: Object.values(exchangeAssets)[allSynthetics[account.programId.toString()].assetIndex].price
+          symbol: exchangeAssets[allSynthetics[account.programId.toString()].assetIndex].symbol,
+          usdValue: exchangeAssets[allSynthetics[account.programId.toString()].assetIndex].price
             .mul(new BN(10 ** 4))
             .mul(account.balance)
             .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
@@ -80,8 +80,8 @@ export const accountsArray = createSelector(
       } else if (allCollaterals[account.programId.toString()]) {
         acc.push({
           ...account,
-          symbol: Object.values(exchangeAssets)[allCollaterals[account.programId.toString()].assetIndex].symbol,
-          usdValue: Object.values(exchangeAssets)[allCollaterals[account.programId.toString()].assetIndex].price
+          symbol: exchangeAssets[allCollaterals[account.programId.toString()].assetIndex].symbol,
+          usdValue: exchangeAssets[allCollaterals[account.programId.toString()].assetIndex].price
             .mul(new BN(10 ** 4))
             .mul(account.balance)
             .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
@@ -101,11 +101,11 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     }
     const decimalChange = 10 ** (token.decimals + ORACLE_OFFSET - ACCURACY)
 
-    const assetToBurnBalance = account ? Object.values(allAssets)[token.assetIndex].price.mul(account.balance).divn(decimalChange) : new BN(0)
+    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.mul(account.balance).divn(decimalChange) : new BN(0)
 
     const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
 
-    return val.muln(decimalChange).div(Object.values(allAssets)[token.assetIndex].price)
+    return val.muln(decimalChange).div(allAssets[token.assetIndex].price)
   })
 export const solanaWalletSelectors = {
   address,

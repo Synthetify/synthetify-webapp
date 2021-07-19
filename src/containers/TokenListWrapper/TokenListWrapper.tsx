@@ -32,7 +32,7 @@ export const TokenListWrapper: React.FC = () => {
         }}
       />
       <SelectTokenModal
-        tokens={Object.values(allTokens).map(token => token.symbol)}
+        tokens={allTokens.map(token => token.symbol)}
         open={open}
         centered={true}
         anchorEl={null}
