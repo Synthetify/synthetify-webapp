@@ -22,6 +22,7 @@ export interface IRewardsProps {
   amountToClaim: BN
   amountPerRound: BN
   roundLength: number
+  userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
@@ -35,6 +36,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   amountToClaim,
   amountPerRound,
   roundLength,
+  userDebtShares,
   rounds,
   onClaim,
   onWithdraw
@@ -50,7 +52,6 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     const slotDiff = slot - next.roundStartSlot.toNumber()
     const roundDiff = divUpNumber(slotDiff, roundLength)
 
-    // TODO replace: next.roundPoints with fetching debt_shares
     switch (roundDiff) {
       case 1: {
         return {
@@ -59,7 +60,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: next.roundPoints
+            roundPoints: userDebtShares
           }
         }
       }
@@ -69,12 +70,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           current: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: next.roundPoints
+            roundPoints: userDebtShares
           },
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: next.roundPoints
+            roundPoints: userDebtShares
           }
         }
       }
@@ -83,17 +84,17 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           finished: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: next.roundPoints
+            roundPoints: userDebtShares
           },
           current: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: next.roundPoints
+            roundPoints: userDebtShares
           },
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: next.roundPoints
+            roundPoints: userDebtShares
           }
         }
       }
