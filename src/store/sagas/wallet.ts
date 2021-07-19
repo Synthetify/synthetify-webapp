@@ -25,7 +25,7 @@ import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchan
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
-import { assets } from '@selectors/exchange'
+import { assets, collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -109,10 +109,11 @@ export function* handleAirdrop(): Generator {
   }
 
   const allAssets = yield* select(assets)
-  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
-  if (snyToken?.collateral.collateralAddress) {
+  const allCollaterals = yield* select(collaterals)
+  const snyToken = Object.values(allCollaterals).find(token => Object.values(allAssets)[token.assetIndex].symbol === 'SNY')
+  if (snyToken?.collateralAddress) {
     try {
-      yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
+      yield* call(getCollateralTokenAirdrop, snyToken?.collateralAddress)
     } catch (error) {
       if (error.message === 'Signature request denied') return
       console.error(error)

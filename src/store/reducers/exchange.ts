@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset, CollateralEntry } from '@synthetify/sdk/lib/exchange'
+import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 export interface UserAccount {
   address: string // local storage does not handle PublicKeys
@@ -40,6 +40,8 @@ export interface IExchange {
   fee: number
   collateralizationLevel: number
   assets: { [key in string]: IAsset }
+  synthetics: { [key in string]: Synthetic }
+  collaterals: { [key in string]: Collateral }
   userAccount: UserAccount
   exchangeAccount: ExchangeAccount
   swap: Swap
@@ -71,6 +73,8 @@ export const defaultState: IExchange = {
     }
   },
   assets: {},
+  synthetics: {},
+  collaterals: {},
   collateralAccount: DEFAULT_PUBLICKEY,
   collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
@@ -108,10 +112,32 @@ const exchangeSlice = createSlice({
       state.assets = action.payload
       return state
     },
+    setSynthetics(state, action: PayloadAction<{ [key in string]: Synthetic }>) {
+      state.synthetics = action.payload
+      return state
+    },
     mergeAssets(state, action: PayloadAction<Asset[]>) {
       for (const asset of action.payload) {
-        state.assets[asset.synthetic.assetAddress.toString()] = R.merge(
-          state.assets[asset.synthetic.assetAddress.toString()],
+        state.assets[asset.feedAddress.toString()] = R.merge(
+          state.assets[asset.feedAddress.toString()],
+          asset
+        )
+      }
+      return state
+    },
+    mergeSynthetics(state, action: PayloadAction<Synthetic[]>) {
+      for (const asset of action.payload) {
+        state.synthetics[asset.assetAddress.toString()] = R.merge(
+          state.synthetics[asset.assetAddress.toString()],
+          asset
+        )
+      }
+      return state
+    },
+    mergeCollateral(state, action: PayloadAction<Collateral[]>) {
+      for (const asset of action.payload) {
+        state.collaterals[asset.collateralAddress.toString()] = R.merge(
+          state.collaterals[asset.collateralAddress.toString()],
           asset
         )
       }

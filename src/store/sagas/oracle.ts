@@ -13,16 +13,24 @@ export function* pullAssetPrices(): Generator {
     [exchangeProgram, exchangeProgram.getAssetsList],
     stateExchange.assetsList
   )
+  let assets: { [key in string]: IAsset } = {}
+  assets = assetsList.synthetics.reduce((acc, asset) => {
+    // TODO add parsing address to symbol
+    acc[assetsList.assets[asset.assetIndex].feedAddress.toString()] = {
+      ...assetsList.assets[asset.assetIndex],
+      symbol: addressToAssetSymbol[asset.assetAddress.toString()] || 'XYZ'
+    }
+    return acc
+  }, assets)
+  assets = assetsList.collaterals.reduce((acc, asset) => {
+    // TODO add parsing address to symbol
+    acc[assetsList.assets[asset.assetIndex].feedAddress.toString()] = {
+      ...assetsList.assets[asset.assetIndex],
+      symbol: addressToAssetSymbol[asset.collateralAddress.toString()] || 'XYZ'
+    }
+    return acc
+  }, assets)
   yield* put(
-    actions.setAssets(
-      assetsList.assets.reduce((acc, asset) => {
-        // TODO add parsing address to symbol
-        acc[asset.synthetic.assetAddress.toString()] = {
-          ...asset,
-          symbol: addressToAssetSymbol[asset.synthetic.assetAddress.toString()] || 'XYZ'
-        }
-        return acc
-      }, {} as { [key in string]: IAsset })
-    )
+    actions.setAssets(assets)
   )
 }

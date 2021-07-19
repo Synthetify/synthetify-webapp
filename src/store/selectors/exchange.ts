@@ -10,6 +10,8 @@ const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
 export const {
   assets,
+  synthetics,
+  collaterals,
   debt,
   fee,
   shares,
@@ -20,6 +22,8 @@ export const {
   exchangeAccount
 } = keySelectors(store, [
   'assets',
+  'synthetics',
+  'collaterals',
   'debt',
   'fee',
   'shares',
@@ -44,17 +48,17 @@ export const userDebtShares = createSelector(exchangeAccount, (account) => {
 export const userStaking = createSelector(exchangeAccount, (account) => {
   return account.userStaking
 })
-export const xUSDAddress = createSelector(assets, (allAssets) => {
-  const xusd = Object.entries(allAssets).find(([_, b]) => {
-    return b.feedAddress.equals(DEFAULT_PUBLICKEY)
+export const xUSDAddress = createSelector(synthetics, assets, (allSynthetics, allAssets) => {
+  const xusd = Object.entries(allSynthetics).find(([_, b]) => {
+    return Object.values(allAssets)[b.assetIndex].feedAddress.equals(DEFAULT_PUBLICKEY)
   })
   if (xusd) {
-    return xusd[1].synthetic.assetAddress
+    return xusd[1].assetAddress
   } else {
     return DEFAULT_PUBLICKEY
   }
 })
-export const stakedValue = createSelector(exchangeAccount, assets, (account, allAssets) => {
+export const stakedValue = createSelector(exchangeAccount, collaterals, assets, (account, allCollaterals, allAssets) => {
   if (account.address.equals(DEFAULT_PUBLICKEY)) {
     return new BN(0)
   }
@@ -67,7 +71,7 @@ export const stakedValue = createSelector(exchangeAccount, assets, (account, all
       .div(
         new BN(
           10 **
-            (Object.values(allAssets)[collateral.index].collateral.decimals +
+            (allCollaterals[collateral.collateralAddress.toString()].decimals +
               ORACLE_OFFSET -
               ACCURACY)
         )
@@ -80,8 +84,9 @@ export const stakedValue = createSelector(exchangeAccount, assets, (account, all
 
 export const collateralValue = createSelector(
   exchangeAccount,
+  collaterals,
   assets,
-  (account, allAssets) => {
+  (account, allCollaterals, allAssets) => {
     if (account.address.equals(DEFAULT_PUBLICKEY)) {
       return new BN(0)
     }
@@ -91,9 +96,9 @@ export const collateralValue = createSelector(
     for (const collateral of Object.values(account.collaterals)) {
       const toAdd: BN = collateral.amount
         .mul(Object.values(allAssets)[collateral.index].price)
-        .mul(new BN(Object.values(allAssets)[collateral.index].collateral.collateralRatio))
+        .mul(new BN(allCollaterals[collateral.collateralAddress.toString()].collateralRatio))
         .div(new BN(100))
-        .div(new BN(10 ** (Object.values(allAssets)[collateral.index].collateral.decimals + ORACLE_OFFSET - ACCURACY)))
+        .div(new BN(10 ** (allCollaterals[collateral.collateralAddress.toString()].decimals + ORACLE_OFFSET - ACCURACY)))
       val = val.add(toAdd)
     }
 
@@ -103,9 +108,10 @@ export const collateralValue = createSelector(
 
 export const userDebtValue = createSelector(
   exchangeAccount,
-  assets,
+  synthetics,
   state,
-  (account, allAssets, exchangeState) => {
+  assets,
+  (account, allSynthetics, exchangeState, allAssets) => {
     if (
       account.address.equals(DEFAULT_PUBLICKEY) ||
       !account.collaterals.some((col) => !col.amount.eq(new BN(0))) ||
@@ -114,11 +120,11 @@ export const userDebtValue = createSelector(
     ) {
       return new BN(0)
     }
-    const debt = Object.entries(allAssets).reduce((acc, [_, asset]) => {
+    const debt = Object.entries(allSynthetics).reduce((acc, [_, synthetic]) => {
       return acc.add(
         divUp(
-          asset.price.mul(asset.synthetic.supply),
-          new BN(10 ** (asset.synthetic.decimals + ORACLE_OFFSET - ACCURACY))
+          Object.values(allAssets)[synthetic.assetIndex].price.mul(synthetic.supply),
+          new BN(10 ** (synthetic.decimals + ORACLE_OFFSET - ACCURACY))
         )
       )
     }, new BN(0))
@@ -156,25 +162,26 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
   createSelector(
     userDebtValue,
     userMaxDebtValue,
-    assets,
+    collaterals,
     healthFactor,
-    (debt, maxUsd, allAssets, factor) => {
+    assets,
+    (debt, maxUsd, allCollaterals, factor, allAssets) => {
       if (
         maxUsd.eq(new BN(0)) ||
         debt.gte(maxUsd) ||
         collateralTokenAddress.equals(DEFAULT_PUBLICKEY) ||
-        !allAssets[collateralTokenAddress.toString()]
+        !allCollaterals[collateralTokenAddress.toString()]
       ) {
         return new BN(0)
       }
-      const collateralToken = allAssets[collateralTokenAddress.toString()]
+      const collateralToken = allCollaterals[collateralTokenAddress.toString()]
       return maxUsd
         .sub(debt)
         .mul(new BN(10000))
-        .mul(new BN(10 ** collateralToken.collateral.decimals + ORACLE_OFFSET - ACCURACY))
-        .div(new BN(collateralToken.collateral.collateralRatio))
+        .mul(new BN(10 ** collateralToken.decimals + ORACLE_OFFSET - ACCURACY))
+        .div(new BN(collateralToken.collateralRatio))
         .div(new BN(factor))
-        .div(new BN(collateralToken.price))
+        .div(new BN(Object.values(allAssets)[collateralToken.assetIndex].price))
     }
   )
 export const tokenTicker = (tokenAddress: PublicKey) =>

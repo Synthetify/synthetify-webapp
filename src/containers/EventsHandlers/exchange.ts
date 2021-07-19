@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assets, exchangeAccount, state } from '@selectors/exchange'
+import { assets, collaterals, exchangeAccount, state, synthetics } from '@selectors/exchange'
 import { status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'
@@ -17,6 +17,8 @@ const ExhcangeEvents = () => {
   const exchangeState = useSelector(state)
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
+  const allSynthetics = useSelector(synthetics)
+  const allCollaterals = useSelector(collaterals)
   const exchangeProgram = getCurrentExchangeProgram()
   React.useEffect(() => {
     if (
@@ -66,11 +68,19 @@ const ExhcangeEvents = () => {
       return
     }
     const connectEvents = () => {
-      for (const asset of Object.values(allAssets)) {
-        connection.onAccountChange(asset.feedAddress, accountInfo => {
+      for (const asset of Object.values(allSynthetics)) {
+        connection.onAccountChange(Object.values(allAssets)[asset.assetIndex].feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
-            actions.setAssetPrice({ token: asset.synthetic.assetAddress, price: new BN(data.price * 1e6) })
+            actions.setAssetPrice({ token: asset.assetAddress, price: new BN(data.price * 1e6) })
+          )
+        })
+      }
+      for (const asset of Object.values(allCollaterals)) {
+        connection.onAccountChange(Object.values(allAssets)[asset.assetIndex].feedAddress, accountInfo => {
+          const data = parsePriceData(accountInfo.data)
+          dispatch(
+            actions.setAssetPrice({ token: asset.collateralAddress, price: new BN(data.price * 1e6) })
           )
         })
       }
@@ -89,7 +99,9 @@ const ExhcangeEvents = () => {
     const connectEvents = () => {
       exchangeProgram.onAssetsListChange(exchangeState.assetsList, assets => {
         // const parsedData = parseTokenAccountData(accountInfo.data)
-        dispatch(actions.mergeAssets(assets.assets.slice(0, assets.head)))
+        dispatch(actions.mergeAssets(assets.assets.slice(0, assets.headAssets)))
+        dispatch(actions.mergeSynthetics(assets.synthetics.slice(0, assets.headSynthetics)))
+        dispatch(actions.mergeCollateral(assets.collaterals.slice(0, assets.headCollaterals)))
       })
     }
     connectEvents()
