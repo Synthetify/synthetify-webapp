@@ -88,6 +88,10 @@ export function* updateSlot(): Generator {
   yield* put(actions.setSlot(slot))
 }
 
+export function* updateSlotSaga(): Generator {
+  yield takeLeading(actions.updateSlot, updateSlot)
+}
+
 export function* networkChangeSaga(): Generator {
   yield takeLeading(actions.setNetwork, handleNetworkChange)
 }
@@ -95,5 +99,5 @@ export function* initConnectionSaga(): Generator {
   yield takeLeading(actions.initSolanaConnection, initConnection)
 }
 export function* connectionSaga(): Generator {
-  yield* all([networkChangeSaga, initConnectionSaga].map(spawn))
+  yield* all([networkChangeSaga, initConnectionSaga, updateSlotSaga].map(spawn))
 }
