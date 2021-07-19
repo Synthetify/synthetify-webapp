@@ -1,11 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Grid } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import useStyles from './style'
 import ValueCard from '@components/Cards/ValueCard'
 import { transformBN } from '@consts/utils'
 import { collateralValue, stakedValue, userDebtValue, userMaxDebtValue } from '@selectors/exchange'
 import ProgressCard from '@components/Cards/ProgressCard'
+import AnimatedNumber from '@components/AnimatedNumber'
 
 export const StakingStats: React.FC = () => {
   const classes = useStyles()
@@ -33,7 +34,30 @@ export const StakingStats: React.FC = () => {
           current={+transformBN(currentDebt)}
           sign={'$'}
           max={+transformBN(collateralUserValue)}
-          currentDescription={ `Current debt: ${transformBN(currentDebt)}$`}
+          topIndicator={(
+            <Typography className={classes.indicator}>
+              Current debt:{' '}
+              <AnimatedNumber
+                value={+transformBN(currentDebt)}
+                duration={300}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
+              $
+            </Typography>
+          )}
+          topIndicatorValue={!collateralUserValue.eqn(0) ? (+transformBN(currentDebt) / +transformBN(collateralUserValue)) * 100 : 0}
+          bottomIndicator={(
+            <Typography className={classes.indicator}>
+              Max borrow:{' '}
+              <AnimatedNumber
+                value={+transformBN(maxDebt)}
+                duration={300}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
+              $
+            </Typography>
+          )}
+          bottomIndicatorValue={!collateralUserValue.eqn(0) ? (+transformBN(maxDebt) / +transformBN(collateralUserValue)) * 100 : 0}
         />
       </Grid>
     </>

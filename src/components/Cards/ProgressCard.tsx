@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactChild, useState } from 'react'
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   Grid
 } from '@material-ui/core'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
-import useStyles, { useProgressStyles } from './style'
+import useStyles, { useStylesWithProps } from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 export interface IProps {
   name: string
@@ -21,15 +21,29 @@ export interface IProps {
   onClick?: () => void
   max: number
   current: number
-  currentDescription?: string
+  topIndicator: string | ReactChild
+  topIndicatorValue: number
+  bottomIndicator: string | ReactChild
+  bottomIndicatorValue: number
 }
-export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max, current, currentDescription }) => {
+export const ProgressCard: React.FC<IProps> = ({
+  name,
+  sign,
+  hint,
+  onClick,
+  max,
+  current,
+  topIndicator,
+  topIndicatorValue,
+  bottomIndicator,
+  bottomIndicatorValue
+}) => {
   const classes = useStyles()
-  const progressClasses = useProgressStyles({ max, current })
+  const proppedClasses = useStylesWithProps({ max, current })
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <Card className={classes.valueCard} onClick={onClick}>
-      <CardContent className={progressClasses.progressContent}>
+      <CardContent className={classes.progressContent}>
         {hint ? (
           <>
             <Hidden mdDown>
@@ -73,12 +87,12 @@ export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max,
         ) : null}
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} style={{ marginBottom: 0 }} />
-        <Grid className={progressClasses.progressContainer} container direction='row' alignItems='center'>
-          <Typography className={progressClasses.minMaxDebt}>0{sign}</Typography>
+        <Grid className={classes.progressContainer} container direction='row' alignItems='center'>
+          <Typography className={classes.minMaxDebt}>0{sign}</Typography>
           <Grid item style={{ flexGrow: 1, paddingInline: 7 }}>
             <Tooltip
-              classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow, popper: progressClasses.popper }}
-              title={currentDescription ?? ''}
+              classes={{ tooltip: classes.progressTooltip, arrow: classes.tooltipArrow, popper: classes.popper }}
+              title={topIndicator}
               placement='top'
               open
               disableFocusListener
@@ -86,19 +100,19 @@ export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max,
               disableTouchListener
               arrow
             >
-              <div style={{ width: 0.1, height: 0.1, marginLeft: `${max !== 0 ? (current / max) * 100 : 0}%` }} />
+              <div style={{ width: 0.1, height: 0.1, marginLeft: `${topIndicatorValue}%`, transition: 'transform 0.2s linear', transformOrigin: 'left' }} />
             </Tooltip>
             <LinearProgress
               classes={{
-                root: progressClasses.progressRoot,
-                bar: progressClasses.bar
+                root: classes.progressRoot,
+                bar: proppedClasses.bar
               }}
               variant='determinate'
               value={max !== 0 ? (current / max) * 100 : 0}
             />
             <Tooltip
-              classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow, popper: progressClasses.popper }}
-              title={currentDescription ?? ''}
+              classes={{ tooltip: classes.progressTooltip, arrow: classes.tooltipArrow, popper: classes.popper }}
+              title={bottomIndicator}
               placement='bottom'
               open
               disableFocusListener
@@ -106,10 +120,10 @@ export const ProgressCard: React.FC<IProps> = ({ name, sign, hint, onClick, max,
               disableTouchListener
               arrow
             >
-              <div style={{ width: 0.1, height: 0.1 }} />
+              <div style={{ width: 0.1, height: 0.1, marginLeft: `${bottomIndicatorValue}%`, transition: 'transform 0.2s linear', transformOrigin: 'left' }} />
             </Tooltip>
           </Grid>
-          <Typography className={progressClasses.minMaxDebt}>
+          <Typography className={classes.minMaxDebt}>
             <AnimatedNumber
               value={max}
               duration={300}

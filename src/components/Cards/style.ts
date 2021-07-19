@@ -1,7 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   valueCard: {
     background: colors.gray.component,
     borderRadius: 10
@@ -41,10 +41,7 @@ const useStyles = makeStyles(() => ({
     borderColor: colors.gray.mid,
     width: 13,
     marginBlock: '-0.67em !important'
-  }
-}))
-
-export const useProgressStyles = makeStyles<Theme, { max: number; current: number }>((theme: Theme) => ({
+  },
   progressContent: {
     paddingBottom: 13,
     '&:last-child': {
@@ -71,8 +68,19 @@ export const useProgressStyles = makeStyles<Theme, { max: number; current: numbe
     background: colors.black.background
   },
   popper: {
-    zIndex: 1
+    zIndex: 0
   },
+  progressTooltip: {
+    background: colors.gray.mid,
+    color: colors.gray.veryLight,
+    fontSize: 13,
+    padding: '5px 8px',
+    fontWeight: 400,
+    marginBlock: 5
+  }
+}))
+
+export const useStylesWithProps = makeStyles<Theme, { max: number; current: number }>(() => ({
   bar: ({ max, current }) => ({
     borderRadius: 10,
     background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? (current / max) * 100 : 0)}%, #C34848 ${200 - (max !== 0 ? (current / max) * 100 : 0)}%)`
