@@ -69,6 +69,9 @@ export const capitalizeString = (str: string) => {
 export const divUp = (a: BN, b: BN): BN => {
   return a.add(b.subn(1)).div(b)
 }
+export const divUpNumber = (a: number, b: number): number => {
+  return Math.floor(a / b)
+}
 export const removeTickerPrefix = (ticker: string, prefix: string[] = ['x', '$']): string => {
   const index = prefix.findIndex(p => ticker.startsWith(p))
   if (index && prefix[index]) {

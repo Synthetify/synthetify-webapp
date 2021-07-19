@@ -22,6 +22,7 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
       burnState={{ sending: false }}
       stakingData={{
         slot: 300000,
+        userDebtShares: new BN(1e6),
         roundLength: 160000,
         rounds: {
           finished: {

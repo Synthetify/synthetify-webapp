@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
-import { displayDate } from '@consts/utils'
+import { displayDate, divUpNumber } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -22,6 +22,7 @@ export interface IRewardsProps {
   amountToClaim: BN
   amountPerRound: BN
   roundLength: number
+  userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
@@ -35,12 +36,72 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   amountToClaim,
   amountPerRound,
   roundLength,
+  userDebtShares,
   rounds,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
-  const { current, finished, next } = rounds
+
+  const estimateRounds = (): RoundData => {
+    const { current, next } = rounds
+
+    if (next.roundStartSlot.toNumber() >= slot) {
+      return rounds
+    }
+    const slotDiff = slot - next.roundStartSlot.toNumber()
+    const roundDiff = divUpNumber(slotDiff, roundLength)
+
+    switch (roundDiff) {
+      case 1: {
+        return {
+          finished: current,
+          current: next,
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          }
+        }
+      }
+      case 2: {
+        return {
+          finished: next,
+          current: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          },
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          }
+        }
+      }
+      default: {
+        return {
+          finished: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          },
+          current: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          },
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          }
+        }
+      }
+    }
+  }
+
+  const { finished, current, next } = estimateRounds()
   const {
     roundAllPoints: currentRoundAllPoints,
     roundPoints: currentRoundPoints,
@@ -59,10 +120,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const isClaimDisabled = () => {
     const noPoints = finishedRoundPoints.eqn(0)
-    const roundFinishSlot = currentRoundStartSlot.addn(roundLength)
-    const roundNotOver = roundFinishSlot.gtn(slot)
+    const finishedRoundOver = currentRoundStartSlot.gtn(slot)
 
-    return noPoints && roundNotOver
+    return noPoints || !finishedRoundOver
   }
 
   const isWithdrawDisabled = () => {
