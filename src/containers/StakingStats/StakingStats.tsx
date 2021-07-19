@@ -45,7 +45,7 @@ export const StakingStats: React.FC = () => {
               $
             </Typography>
           )}
-          topIndicatorValue={!collateralUserValue.eqn(0) ? (+transformBN(currentDebt) / +transformBN(collateralUserValue)) * 100 : 0}
+          topIndicatorValue={+transformBN(currentDebt)}
           bottomIndicator={(
             <Typography className={classes.indicator}>
               Max borrow:{' '}
@@ -57,7 +57,7 @@ export const StakingStats: React.FC = () => {
               $
             </Typography>
           )}
-          bottomIndicatorValue={!collateralUserValue.eqn(0) ? (+transformBN(maxDebt) / +transformBN(collateralUserValue)) * 100 : 0}
+          bottomIndicatorValue={+transformBN(maxDebt)}
         />
       </Grid>
     </>

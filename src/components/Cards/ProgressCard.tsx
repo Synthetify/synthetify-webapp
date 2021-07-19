@@ -39,10 +39,12 @@ export const ProgressCard: React.FC<IProps> = ({
   bottomIndicatorValue
 }) => {
   const classes = useStyles()
-  const proppedClasses = useStylesWithProps({ max, current })
+  const proppedClasses = useStylesWithProps({ max, current, topIndicatorValue, bottomIndicatorValue })
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [areIndicatorsOpen, setAreIndicatorsOpen] = useState(false)
+
   return (
-    <Card className={classes.valueCard} onClick={onClick}>
+    <Card className={classes.valueCard} onClick={onClick} onMouseEnter={() => setAreIndicatorsOpen(true)} onMouseLeave={() => setAreIndicatorsOpen(false)}>
       <CardContent className={classes.progressContent}>
         {hint ? (
           <>
@@ -94,13 +96,13 @@ export const ProgressCard: React.FC<IProps> = ({
               classes={{ tooltip: classes.progressTooltip, arrow: classes.tooltipArrow, popper: classes.popper }}
               title={topIndicator}
               placement='top'
-              open
+              open={areIndicatorsOpen}
               disableFocusListener
               disableHoverListener
               disableTouchListener
               arrow
             >
-              <div style={{ width: 0.1, height: 0.1, marginLeft: `${topIndicatorValue}%`, transition: 'transform 0.2s linear', transformOrigin: 'left' }} />
+              <div className={proppedClasses.topIndicator} />
             </Tooltip>
             <LinearProgress
               classes={{
@@ -114,13 +116,13 @@ export const ProgressCard: React.FC<IProps> = ({
               classes={{ tooltip: classes.progressTooltip, arrow: classes.tooltipArrow, popper: classes.popper }}
               title={bottomIndicator}
               placement='bottom'
-              open
+              open={areIndicatorsOpen}
               disableFocusListener
               disableHoverListener
               disableTouchListener
               arrow
             >
-              <div style={{ width: 0.1, height: 0.1, marginLeft: `${bottomIndicatorValue}%`, transition: 'transform 0.2s linear', transformOrigin: 'left' }} />
+              <div className={proppedClasses.bottomIndicator} />
             </Tooltip>
           </Grid>
           <Typography className={classes.minMaxDebt}>

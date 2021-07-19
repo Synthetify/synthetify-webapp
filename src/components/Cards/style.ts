@@ -80,10 +80,25 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export const useStylesWithProps = makeStyles<Theme, { max: number; current: number }>(() => ({
+export const useStylesWithProps = makeStyles<Theme, {
+  max: number
+  current: number
+  topIndicatorValue: number
+  bottomIndicatorValue: number
+}>(() => ({
   bar: ({ max, current }) => ({
     borderRadius: 10,
     background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? (current / max) * 100 : 0)}%, #C34848 ${200 - (max !== 0 ? (current / max) * 100 : 0)}%)`
+  }),
+  topIndicator: ({ max, topIndicatorValue }) => ({
+    width: 0.1,
+    height: 0.1,
+    marginLeft: `${max !== 0 ? (topIndicatorValue / max) * 100 : 0}%`
+  }),
+  bottomIndicator: ({ max, bottomIndicatorValue }) => ({
+    width: 0.1,
+    height: 0.1,
+    marginLeft: `${max !== 0 ? (bottomIndicatorValue / max) * 100 : 0}%`
   })
 }))
 
