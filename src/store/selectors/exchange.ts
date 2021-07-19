@@ -38,8 +38,8 @@ export const staking = createSelector(state, (s) => {
 export const userAccountAddress = createSelector(userAccount, (userAcc) => {
   return new PublicKey(userAcc.address)
 })
-export const userDebtShares = createSelector(userAccount, (account) => {
-  return account.shares
+export const userDebtShares = createSelector(exchangeAccount, (account) => {
+  return account.debtShares
 })
 export const userStaking = createSelector(exchangeAccount, (account) => {
   return account.userStaking
@@ -196,6 +196,7 @@ export const exchangeSelectors = {
   userAccount,
   userAccountAddress,
   userStaking,
+  userDebtShares,
   mintAuthority,
   userMaxWithdraw,
   tokenTicker,
