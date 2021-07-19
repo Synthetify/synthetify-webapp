@@ -120,10 +120,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const isClaimDisabled = () => {
     const noPoints = finishedRoundPoints.eqn(0)
-    const roundFinishSlot = currentRoundStartSlot.addn(roundLength)
-    const roundNotOver = roundFinishSlot.gtn(slot)
+    const finishedRoundOver = currentRoundStartSlot.gtn(slot)
 
-    return noPoints && roundNotOver
+    return noPoints || !finishedRoundOver
   }
 
   const isWithdrawDisabled = () => {
