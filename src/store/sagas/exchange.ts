@@ -266,7 +266,7 @@ const pendingUpdates: { [x: string]: BN } = {}
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
-  pendingUpdates[action.payload.token.toString()] = action.payload.price
+  pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
 }
 export function* handleAssetPrice(): Generator {
   yield* put(actions.batchSetAssetPrice(pendingUpdates))

@@ -67,7 +67,7 @@ export const stakedValue = createSelector(exchangeAccount, collaterals, assets, 
 
   for (const collateral of Object.values(account.collaterals)) {
     const toAdd: BN = collateral.amount
-      .mul(allAssets[collateral.index].price)
+      .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
       .div(
         new BN(
           10 **
@@ -95,7 +95,7 @@ export const collateralValue = createSelector(
 
     for (const collateral of Object.values(account.collaterals)) {
       const toAdd: BN = collateral.amount
-        .mul(allAssets[collateral.index].price)
+        .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
         .mul(new BN(allCollaterals[collateral.collateralAddress.toString()].collateralRatio))
         .div(new BN(100))
         .div(new BN(10 ** (allCollaterals[collateral.collateralAddress.toString()].decimals + ORACLE_OFFSET - ACCURACY)))

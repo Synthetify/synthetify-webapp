@@ -6,6 +6,7 @@ import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import { IAsset } from '@reducers/exchange'
+import { Synthetic } from '@synthetify/sdk/lib/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -37,7 +38,7 @@ export const tokenAccount = (tokenAddress: PublicKey) =>
     }
   })
 
-export type TokensWithBalance = IAsset & { balance: BN }
+export type ExchangeTokensWithBalance = IAsset & Synthetic & { balance: BN }
 export const exchangeTokensWithUserBalance = createSelector(
   accounts,
   synthetics,
@@ -49,8 +50,9 @@ export const exchangeTokensWithUserBalance = createSelector(
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return {
           ...exchangeAssets[allSynthetics[asset.assetAddress.toString()].assetIndex],
+          ...allSynthetics[asset.assetAddress.toString()],
           balance: userAccount ? userAccount.balance : new BN(0)
-        } as TokensWithBalance
+        } as ExchangeTokensWithBalance
       })
   }
 )

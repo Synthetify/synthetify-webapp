@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assets, collaterals, exchangeAccount, state, synthetics } from '@selectors/exchange'
+import { assets, exchangeAccount, state } from '@selectors/exchange'
 import { status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'
@@ -17,8 +17,6 @@ const ExhcangeEvents = () => {
   const exchangeState = useSelector(state)
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
-  const allSynthetics = useSelector(synthetics)
-  const allCollaterals = useSelector(collaterals)
   const exchangeProgram = getCurrentExchangeProgram()
   React.useEffect(() => {
     if (
@@ -68,22 +66,14 @@ const ExhcangeEvents = () => {
       return
     }
     const connectEvents = () => {
-      for (const asset of Object.values(allSynthetics)) {
-        connection.onAccountChange(allAssets[asset.assetIndex].feedAddress, accountInfo => {
+      allAssets.forEach((asset, index) => {
+        connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
-            actions.setAssetPrice({ token: asset.assetAddress, price: new BN(data.price * 1e6) })
+            actions.setAssetPrice({ tokenIndex: index, price: new BN(data.price * 1e6) })
           )
         })
-      }
-      for (const asset of Object.values(allCollaterals)) {
-        connection.onAccountChange(allAssets[asset.assetIndex].feedAddress, accountInfo => {
-          const data = parsePriceData(accountInfo.data)
-          dispatch(
-            actions.setAssetPrice({ token: asset.collateralAddress, price: new BN(data.price * 1e6) })
-          )
-        })
-      }
+      })
     }
     connectEvents()
   }, [dispatch, allAssets.length, networkStatus])
