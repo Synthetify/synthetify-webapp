@@ -159,8 +159,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      roundStart: nextRoundStartSlot,
-      roundLength: roundLength
+      roundStart: currentRoundStartSlot,
+      roundLength: nextRoundStartSlot.sub(currentRoundStartSlot).toNumber()
     },
     {
       name: 'Current round',
@@ -187,8 +187,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      roundStart: finishedRoundStartSlot,
-      roundLength: currentRoundStartSlot.sub(finishedRoundStartSlot).toNumber()
+      roundStart: currentRoundStartSlot,
+      roundLength: nextRoundStartSlot.sub(currentRoundStartSlot).toNumber()
     }
   ]
 
