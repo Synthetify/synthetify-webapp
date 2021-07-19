@@ -14,8 +14,7 @@ export interface IRewardsLineProps {
   bracketValue?: BN
   hint: string
   bottomHint?: string
-  roundStart: BN
-  roundLength: number
+  timeRemainingEndSlot: BN
   slot: number
 }
 
@@ -25,8 +24,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   nonBracketValue = new BN(0),
   bracket,
   bracketValue = new BN(0),
-  roundStart,
-  roundLength,
+  timeRemainingEndSlot,
   slot,
   hint
 }) => {
@@ -77,12 +75,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           {processedBracket}
         </Typography>
       </Grid>
-      <TimeRemainingTooltip
-        roundLength={roundLength}
-        roundStart={roundStart}
-        slot={slot}
-        hint={hint}
-      />
+      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />
     </Grid>
   )
 }

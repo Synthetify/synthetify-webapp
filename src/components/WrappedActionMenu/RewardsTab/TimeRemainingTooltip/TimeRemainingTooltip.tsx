@@ -8,24 +8,21 @@ import { actions } from '@reducers/solanaConnection'
 import useStyles from './style'
 
 export interface ITimeRemainingTooltipInterface {
-  roundStart: BN
-  roundLength: number
+  timeRemainingEndSlot: BN
   slot: number
   hint: string
 }
 
 export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
-  roundStart,
-  roundLength,
+  timeRemainingEndSlot,
   slot,
   hint
 }) => {
   const classes = useStyles()
 
-  const calculateTimeRemaining = (roundStart: BN, roundLength: number): BN => {
+  const calculateTimeRemaining = (): BN => {
     const slotTime = 0.4
-    const roundFinishSlot = roundStart.addn(roundLength)
-    const slotDiff = roundFinishSlot.sub(new BN(slot))
+    const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
     if (slotDiff.lten(0)) {
       return new BN(0)
     }
@@ -36,9 +33,7 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
     return `Time remaining: ${displayDate(timeRemaining.toNumber())}`
   }
 
-  const [timeRemaining, setTimeRemaining] = useState(
-    calculateTimeRemaining(roundStart, roundLength)
-  )
+  const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining())
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -53,7 +48,7 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
   }, [])
 
   useEffect(() => {
-    setTimeRemaining(calculateTimeRemaining(roundStart, roundLength))
+    setTimeRemaining(calculateTimeRemaining())
   }, [slot])
 
   return (
@@ -67,8 +62,7 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
 }
 
 export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
-  roundStart,
-  roundLength,
+  timeRemainingEndSlot,
   slot,
   hint
 }) => {
@@ -77,7 +71,7 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
   return (
     <MobileTooltip
       onOpen={() => dispatch(actions.updateSlot())}
-      hint={<CountDown roundLength={roundLength} roundStart={roundStart} slot={slot} hint={hint} />}
+      hint={<CountDown timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />}
     />
   )
 }

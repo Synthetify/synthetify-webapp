@@ -144,8 +144,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: string
       nonBracketValue: BN
       hint: string
-      roundStart: BN
-      roundLength: number
+      timeRemainingEndSlot: BN
     }
   } = [
     {
@@ -159,8 +158,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      roundStart: currentRoundStartSlot,
-      roundLength: nextRoundStartSlot.sub(currentRoundStartSlot).toNumber()
+      timeRemainingEndSlot: nextRoundStartSlot
     },
     {
       name: 'Current round',
@@ -173,8 +171,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      roundStart: currentRoundStartSlot,
-      roundLength: nextRoundStartSlot.sub(currentRoundStartSlot).toNumber()
+      timeRemainingEndSlot: nextRoundStartSlot
     },
     {
       name: 'Finished round',
@@ -187,8 +184,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
       hint: loremIpsum,
-      roundStart: currentRoundStartSlot,
-      roundLength: nextRoundStartSlot.sub(currentRoundStartSlot).toNumber()
+      timeRemainingEndSlot: nextRoundStartSlot
     }
   ]
 
