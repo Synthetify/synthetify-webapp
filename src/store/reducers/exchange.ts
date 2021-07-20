@@ -116,6 +116,10 @@ const exchangeSlice = createSlice({
       state.synthetics = action.payload
       return state
     },
+    setCollaterals(state, action: PayloadAction<{ [key in string]: Collateral }>) {
+      state.collaterals = action.payload
+      return state
+    },
     mergeAssets(state, action: PayloadAction<Asset[]>) {
       action.payload.forEach((asset, index) => {
         state.assets[index] = R.merge(
