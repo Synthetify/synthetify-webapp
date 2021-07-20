@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/staking'
-import { actions as connectionActions } from '@reducers/solanaConnection'
 import {
   userMaxMintUsd,
   userMaxWithdraw,
