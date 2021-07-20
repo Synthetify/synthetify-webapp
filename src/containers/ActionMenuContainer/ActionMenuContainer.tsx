@@ -8,7 +8,6 @@ import {
   xUSDAddress,
   userStaking,
   staking,
-  assets,
   userDebtShares,
   collaterals
 } from '@selectors/exchange'
@@ -21,11 +20,9 @@ export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
   const availableToMint = useSelector(userMaxMintUsd)
-  const allAssets = useSelector(assets)
   const allCollaterals = useSelector(collaterals)
 
-  const snyTokenIndex = allAssets.findIndex((token) => token.symbol === 'SNY')
-  const snyToken = Object.values(allCollaterals).find((collateral) => collateral.assetIndex === snyTokenIndex)
+  const snyToken = Object.values(allCollaterals)[0]
 
   const { balance } = useSelector(
     tokenBalance(snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY)

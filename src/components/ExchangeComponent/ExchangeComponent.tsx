@@ -217,7 +217,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               if (tokenToIndex === null || tokenFromIndex === null) return
               setTokenFromIndex(tokenToIndex)
               setTokenToIndex(tokenFromIndex)
-              setTimeout(() => updateEstimatedAmount(), 0)
             }}>
             <SwapVertIcon
               style={{ fill: colors.gray.veryLight, height: 43, width: 43 }}
