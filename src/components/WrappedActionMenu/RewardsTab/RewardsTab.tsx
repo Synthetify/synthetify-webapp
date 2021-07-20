@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
-import { displayDate, divUpNumber } from '@consts/utils'
+import { divUpNumber } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -27,9 +27,6 @@ export interface IRewardsProps {
   onClaim: () => void
   onWithdraw: () => void
 }
-
-const loremIpsum =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
 
 export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
@@ -102,16 +99,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const { finished, current, next } = estimateRounds()
+  const { roundAllPoints: finishedRoundAllPoints, roundPoints: finishedRoundPoints } = finished
   const {
     roundAllPoints: currentRoundAllPoints,
     roundPoints: currentRoundPoints,
     roundStartSlot: currentRoundStartSlot
   } = current
-  const {
-    roundAllPoints: finishedRoundAllPoints,
-    roundPoints: finishedRoundPoints,
-    roundStartSlot: finishedRoundStartSlot
-  } = finished
   const {
     roundAllPoints: nextRoundAllPoints,
     roundPoints: nextRoundPoints,
@@ -136,21 +129,6 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return roundPoints.mul(amount).div(allPoints)
   }
 
-  const calculateTimeRemaining = (roundStart: BN) => {
-    const slotTime = 0.4
-    const roundFinishSlot = roundStart.addn(roundLength)
-    const slotDiff = roundFinishSlot.sub(new BN(slot))
-    if (slotDiff.lten(0)) {
-      return new BN(0)
-    }
-    return slotDiff.muln(slotTime)
-  }
-
-  const displayTimeRemaining = (roundStart: BN) => {
-    const timeRemaining = calculateTimeRemaining(roundStart)
-    return `Time remaining: ${displayDate(timeRemaining.toNumber())}`
-  }
-
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -159,7 +137,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: string
       nonBracketValue: BN
       hint: string
-      bottomHint?: string
+      timeRemainingEndSlot: BN
     }
   } = [
     {
@@ -172,8 +150,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: loremIpsum,
-      bottomHint: displayTimeRemaining(nextRoundStartSlot)
+      hint: 'The round has not yet started',
+      timeRemainingEndSlot: nextRoundStartSlot
     },
     {
       name: 'Current round',
@@ -185,8 +163,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: loremIpsum,
-      bottomHint: displayTimeRemaining(currentRoundStartSlot)
+      hint: 'To get more points in the current round, increase the amount of your debt',
+      timeRemainingEndSlot: nextRoundStartSlot
     },
     {
       name: 'Finished round',
@@ -198,8 +176,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: loremIpsum,
-      bottomHint: displayTimeRemaining(finishedRoundStartSlot)
+      hint: 'This round has been finished. Now you can claim your tokens',
+      timeRemainingEndSlot: nextRoundStartSlot
     }
   ]
 
@@ -207,7 +185,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     const props = rewardsLines[+key]
     return (
       <Grid item key={index}>
-        <RewardsLine {...props} />
+        <RewardsLine {...props} slot={slot} />
         <Divider className={classes.divider} />
       </Grid>
     )

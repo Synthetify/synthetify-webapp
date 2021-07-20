@@ -2,7 +2,7 @@ import React from 'react'
 import { transformBN } from '@consts/utils'
 import { Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeRemainingTooltip/TimeRemainingTooltip'
 import BN from 'bn.js'
 import useStyles from './style'
 
@@ -14,6 +14,8 @@ export interface IRewardsLineProps {
   bracketValue?: BN
   hint: string
   bottomHint?: string
+  timeRemainingEndSlot: BN
+  slot: number
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -22,22 +24,11 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   nonBracketValue = new BN(0),
   bracket,
   bracketValue = new BN(0),
-  hint,
-  bottomHint
+  timeRemainingEndSlot,
+  slot,
+  hint
 }) => {
   const classes = useStyles()
-  const processedHint = (
-    <>
-      <Typography className={classes.hint}>{hint}</Typography>
-      {bottomHint ? (
-        <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
-          {bottomHint}
-        </Typography>
-      ) : (
-        ''
-      )}
-    </>
-  )
 
   const processedNonBracket = (
     <>
@@ -84,7 +75,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           {processedBracket}
         </Typography>
       </Grid>
-      <MobileTooltip hint={processedHint} />
+      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />
     </Grid>
   )
 }
