@@ -336,7 +336,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               duration={300}
               formatValue={(value: string) => Number(value).toFixed(6)}
             />
-            {' '}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'} {tokenToIndex === null ? '' : `per ${tokens[tokenToIndex].symbol}`}
+            {' '}{tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} per `}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'}
           </Typography>
         </Grid>
       </Grid>
