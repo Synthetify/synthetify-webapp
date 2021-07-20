@@ -134,7 +134,7 @@ const exchangeSlice = createSlice({
       }
       return state
     },
-    mergeCollateral(state, action: PayloadAction<Collateral[]>) {
+    mergeCollaterals(state, action: PayloadAction<Collateral[]>) {
       for (const asset of action.payload) {
         state.collaterals[asset.collateralAddress.toString()] = R.merge(
           state.collaterals[asset.collateralAddress.toString()],

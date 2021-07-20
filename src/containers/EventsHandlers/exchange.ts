@@ -91,7 +91,7 @@ const ExhcangeEvents = () => {
         // const parsedData = parseTokenAccountData(accountInfo.data)
         dispatch(actions.mergeAssets(assets.assets.slice(0, assets.headAssets)))
         dispatch(actions.mergeSynthetics(assets.synthetics.slice(0, assets.headSynthetics)))
-        dispatch(actions.mergeCollateral(assets.collaterals.slice(0, assets.headCollaterals)))
+        dispatch(actions.mergeCollaterals(assets.collaterals.slice(0, assets.headCollaterals)))
       })
     }
     connectEvents()
