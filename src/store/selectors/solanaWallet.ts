@@ -68,26 +68,22 @@ export const accountsArray = createSelector(
   assets,
   (tokensAccounts, allSynthetics, allCollaterals, exchangeAssets): TokenAccounts[] => {
     return Object.values(tokensAccounts).reduce((acc, account) => {
+      let asset
       if (allSynthetics[account.programId.toString()]) {
-        acc.push({
-          ...account,
-          symbol: exchangeAssets[allSynthetics[account.programId.toString()].assetIndex].symbol,
-          usdValue: exchangeAssets[allSynthetics[account.programId.toString()].assetIndex].price
-            .mul(new BN(10 ** 4))
-            .mul(account.balance)
-            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** allSynthetics[account.programId.toString()].decimals))
-            .div(new BN(10 ** account.decimals))
-        })
+        asset = allSynthetics[account.programId.toString()]
       } else if (allCollaterals[account.programId.toString()]) {
+        asset = allCollaterals[account.programId.toString()]
+      }
+
+      if (asset) {
         acc.push({
           ...account,
-          symbol: exchangeAssets[allCollaterals[account.programId.toString()].assetIndex].symbol,
-          usdValue: exchangeAssets[allCollaterals[account.programId.toString()].assetIndex].price
+          symbol: exchangeAssets[asset.assetIndex].symbol,
+          usdValue: exchangeAssets[asset.assetIndex].price
             .mul(new BN(10 ** 4))
             .mul(account.balance)
             .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** allCollaterals[account.programId.toString()].decimals))
+            .div(new BN(10 ** asset.decimals))
             .div(new BN(10 ** account.decimals))
         })
       }
