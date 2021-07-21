@@ -15,7 +15,7 @@
     "@pythnetwork/client": "^2.1.0",
     "@reduxjs/toolkit": "^1.4.0",
     "@solana/spl-token": "^0.1.6",
-    "@synthetify/sdk": "0.2.1",
+    "@synthetify/sdk": "0.2.2",
     "@solana/spl-token-registry": "^0.2.55",
     "@solana/web3.js": "^1.20.2",
     "@types/redux-persist": "^4.3.1",
