@@ -31,7 +31,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
               <OutlinedButton
                 name='Add account'
                 fontWeight='normal'
-                style={{ fontSize: 17 }}
+                style={{ fontSize: 17, padding: '7px 32px' }}
                 onClick={addAccount}
               />
             </Grid>

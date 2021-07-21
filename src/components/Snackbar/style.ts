@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   success: {
-    backgroundColor: colors.gray.component,
+    backgroundColor: colors.navy.navButton,
     borderStyle: 'solid',
     borderWidth: 0,
     borderLeftWidth: 10,
@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
     margin: 2
   },
   error: {
-    backgroundColor: colors.gray.component,
+    backgroundColor: colors.navy.navButton,
     borderStyle: 'solid',
     borderWidth: 0,
     borderLeftWidth: 10,
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     margin: 2
   },
   info: {
-    backgroundColor: colors.gray.component,
+    backgroundColor: colors.navy.navButton,
     borderStyle: 'solid',
     borderWidth: 0,
     borderLeftWidth: 10,
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
     margin: 2
   },
   warning: {
-    backgroundColor: colors.gray.component,
+    backgroundColor: colors.navy.navButton,
     borderStyle: 'solid',
     borderWidth: 0,
     borderLeftWidth: 10,

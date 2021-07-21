@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.black.background,
+    background: colors.navy.background,
     paddingRight: 0,
     height: 100,
 
@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   divider: {
-    background: colors.gray.light
+    background: colors.navy.grey
   },
   verticalDivider: {
-    background: colors.gray.light,
+    background: colors.navy.grey,
     height: 50,
     marginLeft: 40,
     marginRight: 10,
@@ -47,13 +47,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: 1,
 
     '&:hover': {
-      background: colors.gray.mid
+      background: colors.navy.navButton
     }
   },
   dehazeIcon: {
     width: 45,
     height: 38,
-    fill: colors.gray.veryLight
+    fill: colors.navy.navBar
   },
   dotsButton: {
     borderRadius: 10,
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover': {
-      background: colors.gray.mid
+      background: colors.navy.navButton
     }
   },
   left: {

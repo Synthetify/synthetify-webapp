@@ -10,7 +10,7 @@ import {
   Hidden
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import HintIcon from '@static/svg/questionMarkCircle.svg'
+import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
 import useStyles from './style'
 
 export interface IProps {
@@ -27,7 +27,8 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent>
-        {hint ? (
+        {hint
+          ? (
           <>
             <Hidden mdDown>
               <Icon>
@@ -67,7 +68,9 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
               </ClickAwayListener>
             </Hidden>
           </>
-        ) : null}
+            )
+          : null
+        }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} />
         <Typography className={classes.valueCardAmount}>

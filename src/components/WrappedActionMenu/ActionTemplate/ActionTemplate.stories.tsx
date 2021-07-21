@@ -6,7 +6,7 @@ import { colors } from '@static/theme'
 import BN from 'bn.js'
 
 storiesOf('WrappedActionMenu/ActionContent', module).add('{template}', () => (
-  <div style={{ maxWidth: 800, backgroundColor: colors.gray.component, padding: '30px' }}>
+  <div style={{ maxWidth: 800, backgroundColor: colors.navy.component, padding: '30px' }}>
     <ActionTemplate
       action='mint'
       maxAvailable={new BN(101_999_999)}

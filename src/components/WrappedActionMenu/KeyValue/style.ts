@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   property: {
-    color: colors.gray.light
+    color: colors.navy.grey
   },
   value: {
-    color: colors.gray.veryLight
+    color: colors.navy.lightGrey
   },
   lineHeight: {
     lineHeight: 1.5

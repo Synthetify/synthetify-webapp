@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    backgroundColor: colors.gray.component,
+    backgroundColor: colors.navy.component,
     borderRadius: 10
   },
   cardContent: {

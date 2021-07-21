@@ -9,12 +9,12 @@ import { colors } from '@static/theme'
 storiesOf('inputs/amount', module)
   .addDecorator(withKnobs)
   .add('default', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <AmountInput setValue={() => {}} currency={'xUSD'} placeholder={'0.0'} />
     </div>
   ))
   .add('labeled', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '30px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '30px' }}>
       <AmountInputWithLabel setValue={() => {}} currency={'xUSD'} placeholder={'0.0'} />
     </div>
   ))

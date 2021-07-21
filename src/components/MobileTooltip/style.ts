@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tooltip: {
-    background: colors.gray.mid,
+    background: colors.navy.info,
     padding: '5px 8px'
   },
   hint: {

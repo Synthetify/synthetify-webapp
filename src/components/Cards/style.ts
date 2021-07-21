@@ -3,17 +3,17 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   valueCard: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     borderRadius: 10
   },
   valueCardTitle: {
-    color: colors.gray.light,
+    color: colors.navy.lightGrey,
     fontSize: '22px',
     lineHeight: '40px',
-    fontWeight: 400
+    fontWeight: 600
   },
   valueCardAmount: {
-    color: colors.gray.veryLight,
+    color: colors.navy.veryLightGrey,
     fontSize: 32,
     fontWeight: 700,
     lineHeight: '40px'
@@ -22,23 +22,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 139,
     marginTop: 6,
     marginBottom: 15,
-    background: colors.gray.light
+    background: colors.navy.lightGrey
   },
   questionMark: {
-    height: 17,
-    width: 17,
+    height: 21,
+    width: 20,
     float: 'right'
   },
   tooltip: {
-    background: colors.gray.mid,
-    color: colors.gray.veryLight,
+    background: colors.navy.navButton,
+    color: colors.navy.lightGrey,
     fontSize: 13,
     padding: '5px 8px',
     fontWeight: 400
   },
   tooltipArrow: {
-    color: colors.gray.mid,
-    borderColor: colors.gray.mid,
+    color: colors.navy.navButton,
+    borderColor: colors.navy.navButton,
     width: 13,
     marginBlock: '-0.67em !important'
   },
@@ -65,14 +65,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: 16,
     borderRadius: 10,
-    background: colors.black.background
+    background: colors.navy.background
   },
   popper: {
     zIndex: 0
   },
   progressTooltip: {
-    background: colors.gray.mid,
-    color: colors.gray.veryLight,
+    background: colors.navy.navButton,
+    color: colors.navy.veryLightGrey,
     fontSize: 13,
     padding: '7px 16px',
     fontWeight: 400,

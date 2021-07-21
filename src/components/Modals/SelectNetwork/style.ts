@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     width: 300,
     borderRadius: 10,
     marginTop: 13,
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItem: {
-    color: colors.gray.light,
+    color: colors.navy.grey,
     borderRadius: 10,
     paddingLeft: 16,
     padding: 10,
@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.navButton,
+      color: colors.navy.veryLightGrey
     }
   },
   name: {

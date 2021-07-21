@@ -7,14 +7,14 @@ const useStyles = makeStyles(() => ({
     marginLeft: 'auto',
     borderRadius: 10,
     padding: '0 16px',
-    backgroundColor: colors.black.background
+    backgroundColor: colors.navy.background
   },
   text: {
     fontSize: 16,
-    color: colors.gray.C7C9D1
+    color: colors.navy.grey
   },
   tooltip: {
-    background: colors.gray.mid,
+    background: colors.navy.info,
     color: colors.white.main,
     fontWeight: 400,
     fontSize: 13,

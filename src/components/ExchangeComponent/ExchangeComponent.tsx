@@ -319,7 +319,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container className={classes.numbersField}>
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'0.03'}%</Typography>
+          <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
         </Grid>
         <Grid item>
           <Divider className={classes.amountDivider} orientation='vertical' />

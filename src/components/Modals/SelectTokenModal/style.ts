@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
     marginLeft: 'calc(50vw - 130px)'
   },
   root: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     width: 250,
     borderRadius: 10,
     marginTop: 20,
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
   tokenList: {
     borderRadius: 10,
-    background: colors.black.background,
+    background: colors.navy.dark,
     height: 260,
     padding: 3,
     overflowY: 'hidden'
@@ -31,11 +31,11 @@ const useStyles = makeStyles(() => ({
     cursor: 'pointer',
 
     '&:hover': {
-      background: colors.gray.mid
+      background: colors.navy.navButton
     }
   },
   tokenName: {
-    color: colors.gray.veryLight,
+    color: colors.navy.veryLightGrey,
     fontSize: 16
   },
   tokenIcon: {
@@ -45,12 +45,12 @@ const useStyles = makeStyles(() => ({
     marginRight: 14
   },
   searchIcon: {
-    color: colors.gray.light,
+    color: colors.navy.grey,
     margin: 8
   },
   searchInput: {
-    background: colors.black.background,
-    color: colors.gray.light,
+    background: colors.navy.dark,
+    color: colors.navy.grey,
     height: 40,
     lineHeight: 40,
     paddingLeft: 16,
@@ -68,7 +68,7 @@ const useStyles = makeStyles(() => ({
     width: 9
   },
   scrollbarTrack: {
-    background: colors.gray.mid,
+    background: colors.navy.navButton,
     borderRadius: 10,
     height: 'calc(100% - 30px)',
     margin: 15,

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 375
   },
   divider: {
-    backgroundColor: colors.gray.light,
+    backgroundColor: colors.navy.grey,
     height: 60
   },
   actionButton: {
