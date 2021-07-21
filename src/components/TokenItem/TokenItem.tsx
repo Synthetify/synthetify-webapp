@@ -10,7 +10,8 @@ export interface IToken {
   ticker: string
   balance: BN
   decimals: number
-  usdValue: BN
+  usdValue: BN,
+  assetDecimals: number
 }
 
 export interface IProps {
@@ -20,7 +21,7 @@ export interface IProps {
 export const TokenItem: React.FC<IProps> = ({ token }) => {
   const classes = useStyles()
 
-  const { ticker, balance, decimals, usdValue } = token
+  const { ticker, balance, decimals, usdValue, assetDecimals } = token
   const imgName = removeTickerPrefix(ticker)
   return (
     <Grid container alignItems='center' style={{ flexWrap: 'nowrap' }}>
@@ -36,7 +37,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
       </Grid>
       <Grid item xs={4} sm={5}>
         <Typography variant='h5' color='textPrimary' className={classes.font}>
-          <AnimatedNumber value={printBN(balance, decimals)} duration={300} formatValue={(value: string) => Number(value).toFixed(decimals)}/>
+          <AnimatedNumber value={printBN(balance, assetDecimals)} duration={300} formatValue={(value: string) => Number(value).toFixed(assetDecimals)}/>
         </Typography>
       </Grid>
       <Grid container item xs={4} wrap='nowrap'>
@@ -47,7 +48,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
         </Grid>
         <Grid item>
           <Typography variant='h5' color='textPrimary' className={classes.font}>
-            <AnimatedNumber value={printBN(usdValue, 4)} duration={300} formatValue={(value: string) => Number(value).toFixed(4)}/>
+            <AnimatedNumber value={printBN(usdValue, decimals)} duration={300} formatValue={(value: string) => Number(value).toFixed(4)}/>
           </Typography>
         </Grid>
       </Grid>

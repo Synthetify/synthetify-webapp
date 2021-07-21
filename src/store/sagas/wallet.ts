@@ -25,7 +25,7 @@ import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchan
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
-import { assets } from '@selectors/exchange'
+import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -108,30 +108,28 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  const allAssets = yield* select(assets)
-  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
-  if (snyToken?.collateral.collateralAddress) {
-    try {
-      yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
-    } catch (error) {
-      if (error.message === 'Signature request denied') return
-      console.error(error)
-      return put(
-        snackbarsActions.add({
-          message: 'Airdrop failed',
-          variant: 'error',
-          persist: false
-        })
-      )
-    }
-    yield put(
+  const allCollaterals = yield* select(collaterals)
+  const snyToken = Object.values(allCollaterals)[0]
+  try {
+    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress)
+  } catch (error) {
+    if (error.message === 'Signature request denied') return
+    console.error(error)
+    return put(
       snackbarsActions.add({
-        message: 'You will soon receive airdrop',
-        variant: 'success',
+        message: 'Airdrop failed',
+        variant: 'error',
         persist: false
       })
     )
   }
+  yield put(
+    snackbarsActions.add({
+      message: 'You will soon receive airdrop',
+      variant: 'success',
+      persist: false
+    })
+  )
 }
 // export function* getTokenProgram(pubKey: PublicKey): SagaGenerator<number> {
 //   const connection = yield* call(getConnection)
