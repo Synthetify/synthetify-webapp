@@ -77,19 +77,16 @@ export const accountsArray = createSelector(
       }
 
       if (asset) {
-        let usdValue = exchangeAssets[asset.assetIndex].price
-            .mul(account.balance)
-            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** 6))
-
-        usdValue = account.decimals > asset.decimals
-          ? usdValue.mul(new BN(10 ** asset.decimals))
-          : usdValue.mul(new BN(10 ** account.decimals)).div(new BN(10 ** asset.decimals))
         acc.push({
           ...account,
           symbol: exchangeAssets[asset.assetIndex].symbol,
           assetDecimals: asset.decimals,
-          usdValue
+          usdValue: exchangeAssets[asset.assetIndex].price
+            .mul(account.balance)
+            .mul(new BN(10 ** account.decimals))
+            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
+            .div(new BN(10 ** 6))
+            .div(new BN(10 ** asset.decimals))
         })
       }
       return acc
