@@ -5,11 +5,17 @@ import { collaterals, exchangeAccount, swap, xUSDAddress } from '@selectors/exch
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA, SNY_DEV_TOKEN } from '@consts/static'
-import { PublicKey, sendAndConfirmRawTransaction, Transaction } from '@solana/web3.js'
+import {
+  Keypair,
+  PublicKey,
+  sendAndConfirmRawTransaction,
+  SystemProgram,
+  Transaction
+} from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
-import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import { NATIVE_MINT, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
@@ -53,7 +59,10 @@ export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): G
 
   console.log('Token Airdroped')
 }
-export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey): SagaGenerator<string> {
+export function* depositCollateral(
+  amount: BN,
+  collateralTokenAddress: PublicKey
+): SagaGenerator<string> {
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()]
   const userExchangeAccount = yield* select(exchangeAccount)
@@ -124,6 +133,70 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
     return signature
   }
 }
+export function* depositCollateralWSOL(amount: BN): SagaGenerator<string> {
+  const userExchangeAccount = yield* select(exchangeAccount)
+  const wallet = yield* call(getWallet)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const allCollaterals = yield* select(collaterals)
+  const connection = yield* call(getConnection)
+
+  const wrappedSolAccount = Keypair.generate()
+  const createIx = SystemProgram.createAccount({
+    fromPubkey: wallet.publicKey,
+    newAccountPubkey: wrappedSolAccount.publicKey,
+    lamports: yield* call(Token.getMinBalanceRentForExemptAccount, connection),
+    space: 165,
+    programId: TOKEN_PROGRAM_ID
+  })
+  const transferIx = SystemProgram.transfer({
+    fromPubkey: wallet.publicKey,
+    toPubkey: wrappedSolAccount.publicKey,
+    lamports: amount.toNumber()
+  })
+  const initIx = Token.createInitAccountInstruction(
+    TOKEN_PROGRAM_ID,
+    NATIVE_MINT,
+    wrappedSolAccount.publicKey,
+    wallet.publicKey
+  )
+  const depositIx = yield* call([exchangeProgram, exchangeProgram.depositInstruction], {
+    amount,
+    exchangeAccount: userExchangeAccount.address,
+    userCollateralAccount: wrappedSolAccount.publicKey,
+    owner: wallet.publicKey,
+    reserveAddress: allCollaterals[NATIVE_MINT.toString()].reserveAddress
+  })
+  const approveIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    wrappedSolAccount.publicKey,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(amount)
+  )
+  const unwrapIx = Token.createCloseAccountInstruction(
+    TOKEN_PROGRAM_ID,
+    wrappedSolAccount.publicKey,
+    wallet.publicKey,
+    wallet.publicKey,
+    []
+  )
+  const tx = new Transaction()
+    .add(createIx)
+    .add(transferIx)
+    .add(initIx)
+    .add(approveIx)
+    .add(depositIx)
+    .add(unwrapIx)
+  const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  tx.feePayer = wallet.publicKey
+  tx.recentBlockhash = blockhash.blockhash
+  const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+
+  signedTx.partialSign(wrappedSolAccount)
+  const signature = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
+  return signature
+}
 
 export function* mintUsd(amount: BN): SagaGenerator<string> {
   const usdTokenAddress = yield* select(xUSDAddress)
@@ -145,7 +218,10 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
   })
   return signature[1]
 }
-export function* withdrawCollateral(amount: BN, collateralTokenAddress: PublicKey): SagaGenerator<string> {
+export function* withdrawCollateral(
+  amount: BN,
+  collateralTokenAddress: PublicKey
+): SagaGenerator<string> {
   const collateralAccountAddress = yield* select(tokenAccount(collateralTokenAddress))
 
   const exchangeProgram = yield* call(getExchangeProgram)
