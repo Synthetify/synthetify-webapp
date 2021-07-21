@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { TokenList } from '@components/TokenList/TokenList'
 import { accountsArray, accounts } from '@selectors/solanaWallet'
-import { assets } from '@selectors/exchange'
+import { assets, collaterals, synthetics } from '@selectors/exchange'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import { actions } from '@reducers/staking'
 import { actions as snackbarActions } from '@reducers/snackbars'
@@ -15,6 +15,8 @@ export const TokenListWrapper: React.FC = () => {
 
   const userTokens = useSelector(accountsArray)
   const allTokens = useSelector(assets)
+  const allSynthetics = useSelector(synthetics)
+  const allCollaterals = useSelector(collaterals)
   const userAccounts = useSelector(accounts)
 
   return (
@@ -32,12 +34,13 @@ export const TokenListWrapper: React.FC = () => {
         }}
       />
       <SelectTokenModal
-        tokens={Object.values(allTokens).map(token => token.symbol)}
+        tokens={allTokens.map(token => token.symbol)}
         open={open}
         centered={true}
         anchorEl={null}
         onSelect={(chosen) => {
-          const tokenAddress = Object.values(allTokens).find(token => token.symbol === chosen)?.synthetic.assetAddress
+          const syntheticTokenAddress = Object.values(allSynthetics).find((synthetic) => allTokens[synthetic.assetIndex].symbol === chosen)?.assetAddress
+          const collateralTokenAddress = Object.values(allCollaterals).find((collateral) => allTokens[collateral.assetIndex].symbol === chosen)?.collateralAddress
           if (userAccounts[chosen]) {
             dispatch(
               snackbarActions.add({
@@ -46,8 +49,10 @@ export const TokenListWrapper: React.FC = () => {
                 persist: false
               })
             )
-          } else if (tokenAddress) {
-            dispatch(actions.createAccount({ tokenAddress }))
+          } else if (syntheticTokenAddress) {
+            dispatch(actions.createAccount({ tokenAddress: syntheticTokenAddress }))
+          } else if (collateralTokenAddress) {
+            dispatch(actions.createAccount({ tokenAddress: collateralTokenAddress }))
           }
         }}
         handleClose={() => {

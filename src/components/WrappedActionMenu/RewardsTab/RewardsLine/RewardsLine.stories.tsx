@@ -15,7 +15,8 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         nonBracket='points'
         nonBracketValue={new BN(1e8)}
         hint={loremHint}
-        bottomHint='Time remaining: 10:10:10'
+        timeRemainingEndSlot={new BN(1e7)}
+        slot={1e7 - 300}
       />
     </div>
   ))
@@ -28,6 +29,8 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         nonBracketValue={new BN(14 * 1e5)}
         bracketValue={new BN(28 * 1e5)}
         hint={loremHint}
+        timeRemainingEndSlot={new BN(1e7)}
+        slot={1e7 - 300}
       />
     </div>
   ))

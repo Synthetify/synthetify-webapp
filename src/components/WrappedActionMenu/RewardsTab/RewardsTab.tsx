@@ -1,49 +1,121 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
+import { divUpNumber } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
 import useStyles from './style'
 
+export type RoundType = 'next' | 'current' | 'finished'
+
+export type RoundData = {
+  [type in RoundType]: {
+    roundPoints: BN
+    roundAllPoints: BN
+    roundStartSlot: BN
+  }
+}
+
 export interface IRewardsProps {
-  slot?: BN
+  slot: number
   amountToClaim: BN
   amountPerRound: BN
-  finishedRoundPoints: BN
-  currentRoundPoints: BN
-  currentRoundAllPoints: BN
-  finishedRoundAllPoints: BN
-  currentRoundStart: BN
   roundLength: number
+  userDebtShares: BN
+  rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
 }
 
-const loremIpsum =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque posuere neque et laoreet sollicitudin.'
-
 export const RewardsTab: React.FC<IRewardsProps> = ({
-  slot = new BN(0),
+  slot = 0,
   amountToClaim,
   amountPerRound,
-  currentRoundPoints,
-  finishedRoundPoints,
-  currentRoundAllPoints,
-  finishedRoundAllPoints,
-  currentRoundStart,
   roundLength,
+  userDebtShares,
+  rounds,
   onClaim,
   onWithdraw
 }) => {
   const classes = useStyles()
 
+  const estimateRounds = (): RoundData => {
+    const { current, next } = rounds
+
+    if (next.roundStartSlot.toNumber() >= slot) {
+      return rounds
+    }
+    const slotDiff = slot - next.roundStartSlot.toNumber()
+    const roundDiff = divUpNumber(slotDiff, roundLength)
+
+    switch (roundDiff) {
+      case 1: {
+        return {
+          finished: current,
+          current: next,
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          }
+        }
+      }
+      case 2: {
+        return {
+          finished: next,
+          current: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          },
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          }
+        }
+      }
+      default: {
+        return {
+          finished: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          },
+          current: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          },
+          next: {
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
+            roundAllPoints: next.roundAllPoints,
+            roundPoints: userDebtShares
+          }
+        }
+      }
+    }
+  }
+
+  const { finished, current, next } = estimateRounds()
+  const { roundAllPoints: finishedRoundAllPoints, roundPoints: finishedRoundPoints } = finished
+  const {
+    roundAllPoints: currentRoundAllPoints,
+    roundPoints: currentRoundPoints,
+    roundStartSlot: currentRoundStartSlot
+  } = current
+  const {
+    roundAllPoints: nextRoundAllPoints,
+    roundPoints: nextRoundPoints,
+    roundStartSlot: nextRoundStartSlot
+  } = next
+
   const isClaimDisabled = () => {
     const noPoints = finishedRoundPoints.eqn(0)
-    const roundFinishSlot = currentRoundStart.addn(roundLength)
-    const roundNotOver = !slot.gt(roundFinishSlot)
+    const finishedRoundOver = currentRoundStartSlot.gtn(slot)
 
-    return noPoints && roundNotOver
+    return noPoints || !finishedRoundOver
   }
 
   const isWithdrawDisabled = () => {
@@ -65,20 +137,21 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: string
       nonBracketValue: BN
       hint: string
-      bottomHint?: string
+      timeRemainingEndSlot: BN
     }
   } = [
     {
-      name: 'Amount per round',
+      name: 'Next round',
       nonBracket: 'points',
-      nonBracketValue: amountPerRound,
+      nonBracketValue: nextRoundPoints,
       bracketValue: calculateTokensBasedOnPoints(
-        currentRoundAllPoints,
-        currentRoundAllPoints,
+        nextRoundPoints,
+        nextRoundAllPoints,
         amountPerRound
       ),
-      bracket: 'SNY',
-      hint: loremIpsum
+      bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
+      hint: 'The round has not yet started',
+      timeRemainingEndSlot: nextRoundStartSlot
     },
     {
       name: 'Current round',
@@ -89,8 +162,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         currentRoundAllPoints,
         amountPerRound
       ),
-      bracket: 'SNY',
-      hint: loremIpsum
+      bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
+      hint: 'To get more points in the current round, increase the amount of your debt',
+      timeRemainingEndSlot: nextRoundStartSlot
     },
     {
       name: 'Finished round',
@@ -101,9 +175,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         finishedRoundAllPoints,
         amountPerRound
       ),
-      bracket: 'SNY',
-      hint: loremIpsum,
-      bottomHint: 'Time remaining: 10:10:10'
+      bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
+      hint: 'This round has been finished. Now you can claim your tokens',
+      timeRemainingEndSlot: nextRoundStartSlot
     }
   ]
 
@@ -111,7 +185,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     const props = rewardsLines[+key]
     return (
       <Grid item key={index}>
-        <RewardsLine {...props} />
+        <RewardsLine {...props} slot={slot} />
         <Divider className={classes.divider} />
       </Grid>
     )

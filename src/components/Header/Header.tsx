@@ -62,7 +62,7 @@ export const Header: React.FC<IHeader> = ({
           </Grid>
         </Grid>
         <Hidden mdDown>
-          <Grid item container wrap='nowrap' alignItems='center' justify='flex-start'>
+          <Grid item container wrap='nowrap' alignItems='center' justifyContent='flex-start'>
             {routes.map(path => (
               <Grid item key={`path-${path}`}>
                 <Link to={`/${path}`} style={{ textDecoration: 'none' }}>
@@ -79,7 +79,7 @@ export const Header: React.FC<IHeader> = ({
           </Grid>
         </Hidden>
 
-        <Grid container item justify='flex-end' wrap='nowrap' alignItems='center'>
+        <Grid container item justifyContent='flex-end' wrap='nowrap' alignItems='center'>
           {(network === 'Devnet') && (
             <Grid item>
               <Button

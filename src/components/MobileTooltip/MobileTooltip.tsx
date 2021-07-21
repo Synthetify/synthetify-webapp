@@ -1,6 +1,6 @@
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip } from '@material-ui/core'
 import HintIcon from '@static/svg/questionMarkCircle.svg'
-import React, { ReactChild, useState } from 'react'
+import React, { ReactChild, useEffect, useState } from 'react'
 import useStyles from './style'
 
 type Placement =
@@ -19,23 +19,34 @@ type Placement =
 
 export interface IMobileTooltip {
   hint: ReactChild
+  onOpen?: () => void
   mobilePlacement?: Placement
   desktopPlacement?: Placement
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
   hint,
+  onOpen,
   mobilePlacement = 'bottom',
   desktopPlacement = 'right'
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  useEffect(() => {
+    if (isPopoverOpen && onOpen) {
+      onOpen()
+    }
+  }, [isPopoverOpen])
 
   return (
     <Grid item>
       <Hidden mdDown>
         <Icon>
-          <Tooltip classes={{ tooltip: classes.tooltip }} title={hint} placement={desktopPlacement}>
+          <Tooltip
+            onOpen={onOpen}
+            classes={{ tooltip: classes.tooltip }}
+            title={hint}
+            placement={desktopPlacement}>
             <img src={HintIcon} alt='' className={classes.questionMark} />
           </Tooltip>
         </Icon>

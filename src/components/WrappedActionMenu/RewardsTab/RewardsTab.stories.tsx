@@ -8,15 +8,28 @@ import BN from 'bn.js'
 storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
   <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
     <RewardsTab
-      slot={new BN(578000)}
+      slot={578000}
+      userDebtShares={new BN(1e5)}
       roundLength={100000}
-      currentRoundStart={new BN(578999)}
       amountPerRound={new BN(100000000)}
       amountToClaim={new BN(88648)}
-      currentRoundPoints={new BN(45415301)}
-      finishedRoundPoints={new BN(599353037)}
-      currentRoundAllPoints={new BN(1e10)}
-      finishedRoundAllPoints={new BN(1e10)}
+      rounds={{
+        finished: {
+          roundStartSlot: new BN(1000000),
+          roundPoints: new BN(1e6),
+          roundAllPoints: new BN(1e8)
+        },
+        current: {
+          roundStartSlot: new BN(1100000),
+          roundPoints: new BN(1e6),
+          roundAllPoints: new BN(1e8)
+        },
+        next: {
+          roundStartSlot: new BN(1200000),
+          roundPoints: new BN(1e6),
+          roundAllPoints: new BN(1e8)
+        }
+      }}
       onWithdraw={() => action('withdraw')}
       onClaim={() => action('claim')}
     />

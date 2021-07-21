@@ -14,7 +14,7 @@ export const GlobalLoader: React.FC = () => {
       transitionDuration={{ appear: 0, exit: 300 }}
       className={classes.backdrop}
       open={loaderData.open}>
-      <Grid container direction='column' alignItems='center' justify='center' spacing={2}>
+      <Grid container direction='column' alignItems='center' justifyContent='center' spacing={2}>
         <Grid item>
           <CardMedia
             autoPlay

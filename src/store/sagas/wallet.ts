@@ -24,8 +24,8 @@ import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { address } from '@selectors/solanaWallet'
-import { assets } from '@selectors/exchange'
+import { address, status } from '@selectors/solanaWallet'
+import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
@@ -76,6 +76,18 @@ export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
 }
 
 export function* handleAirdrop(): Generator {
+  const walletStatus = yield* select(status)
+  if (walletStatus !== Status.Initalized) {
+    yield put(
+      snackbarsActions.add({
+        message: 'Connect your wallet first',
+        variant: 'warning',
+        persist: false
+      })
+    )
+    return
+  }
+
   const connection = yield* call(getConnection)
   const wallet = yield* call(getWallet)
   let balance = yield* call([connection, connection.getBalance], wallet.publicKey)
@@ -96,18 +108,28 @@ export function* handleAirdrop(): Generator {
     }
   }
 
-  const allAssets = yield* select(assets)
-  const snyToken = Object.values(allAssets).find(token => token.symbol === 'SNY')
-  if (snyToken?.collateral.collateralAddress) {
-    yield* call(getCollateralTokenAirdrop, snyToken?.collateral.collateralAddress)
-    yield put(
+  const allCollaterals = yield* select(collaterals)
+  const snyToken = Object.values(allCollaterals)[0]
+  try {
+    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress)
+  } catch (error) {
+    if (error.message === 'Signature request denied') return
+    console.error(error)
+    return put(
       snackbarsActions.add({
-        message: 'You will soon receive airdrop',
-        variant: 'success',
+        message: 'Airdrop failed',
+        variant: 'error',
         persist: false
       })
     )
   }
+  yield put(
+    snackbarsActions.add({
+      message: 'You will soon receive airdrop',
+      variant: 'success',
+      persist: false
+    })
+  )
 }
 // export function* getTokenProgram(pubKey: PublicKey): SagaGenerator<number> {
 //   const connection = yield* call(getConnection)
@@ -246,12 +268,13 @@ export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
     yield* put(actions.resetState())
-    yield* put(exchangeActions.setExchangeAccount({
-      address: DEFAULT_PUBLICKEY,
-      collaterals: [],
-      debtShares: new BN(0),
-      userStaking: DEFAULT_STAKING_DATA
-    })
+    yield* put(
+      exchangeActions.setExchangeAccount({
+        address: DEFAULT_PUBLICKEY,
+        collaterals: [],
+        debtShares: new BN(0),
+        userStaking: DEFAULT_STAKING_DATA
+      })
     )
   } catch (error) {
     console.log(error)

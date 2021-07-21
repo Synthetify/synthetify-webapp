@@ -1,11 +1,12 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { assets, userDebtValue } from '@selectors/exchange'
+import { assets, collaterals, synthetics, userDebtValue } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import { IAsset } from '@reducers/exchange'
+import { Synthetic } from '@synthetify/sdk/lib/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -37,43 +38,55 @@ export const tokenAccount = (tokenAddress: PublicKey) =>
     }
   })
 
-export type TokensWithBalance = IAsset & { balance: BN }
+export type ExchangeTokensWithBalance = IAsset & Synthetic & { balance: BN }
 export const exchangeTokensWithUserBalance = createSelector(
   accounts,
+  synthetics,
   assets,
-  (tokensAccounts, exchangeAssets) => {
-    return Object.values(exchangeAssets)
-      .filter(a => a.symbol !== 'SNY')
+  (tokensAccounts, allSynthetics, exchangeAssets) => {
+    return Object.values(allSynthetics)
       .map(asset => {
-        const userAccount = tokensAccounts[asset.synthetic.assetAddress.toString()]
+        const userAccount = tokensAccounts[asset.assetAddress.toString()]
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return {
-          ...asset,
+          ...exchangeAssets[allSynthetics[asset.assetAddress.toString()].assetIndex],
+          ...allSynthetics[asset.assetAddress.toString()],
           balance: userAccount ? userAccount.balance : new BN(0)
-        } as TokensWithBalance
+        } as ExchangeTokensWithBalance
       })
   }
 )
 
 export type TokenAccounts = ITokenAccount & {
   symbol: string,
-  usdValue: BN
+  usdValue: BN,
+  assetDecimals: number
 }
 export const accountsArray = createSelector(
   accounts,
+  synthetics,
+  collaterals,
   assets,
-  (tokensAccounts, exchangeAssets): TokenAccounts[] => {
+  (tokensAccounts, allSynthetics, allCollaterals, exchangeAssets): TokenAccounts[] => {
     return Object.values(tokensAccounts).reduce((acc, account) => {
-      if (exchangeAssets[account.programId.toString()]) {
+      let asset
+      if (allSynthetics[account.programId.toString()]) {
+        asset = allSynthetics[account.programId.toString()]
+      } else if (allCollaterals[account.programId.toString()]) {
+        asset = allCollaterals[account.programId.toString()]
+      }
+
+      if (asset) {
         acc.push({
           ...account,
-          symbol: exchangeAssets[account.programId.toString()].symbol,
-          usdValue: exchangeAssets[account.programId.toString()].price
-            .mul(new BN(10 ** 4))
+          symbol: exchangeAssets[asset.assetIndex].symbol,
+          assetDecimals: asset.decimals,
+          usdValue: exchangeAssets[asset.assetIndex].price
             .mul(account.balance)
+            .mul(new BN(10 ** account.decimals))
             .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** exchangeAssets[account.programId.toString()].synthetic.decimals))
-            .div(new BN(10 ** account.decimals))
+            .div(new BN(10 ** 6))
+            .div(new BN(10 ** asset.decimals))
         })
       }
       return acc
@@ -81,18 +94,18 @@ export const accountsArray = createSelector(
   }
 )
 export const userMaxBurnToken = (assetAddress: PublicKey) =>
-  createSelector(userDebtValue, assets, tokenAccount(assetAddress), (debt, allAssets, account) => {
-    const token = allAssets[assetAddress.toString()]
+  createSelector(userDebtValue, synthetics, assets, tokenAccount(assetAddress), (debt, allSynthetics, allAssets, account) => {
+    const token = allSynthetics[assetAddress.toString()]
     if (debt.eq(new BN(0)) || !token) {
       return new BN(0)
     }
-    const decimalChange = 10 ** (token.synthetic.decimals + ORACLE_OFFSET - ACCURACY)
+    const decimalChange = 10 ** (token.decimals + ORACLE_OFFSET - ACCURACY)
 
-    const assetToBurnBalance = account ? token.price.mul(account.balance).divn(decimalChange) : new BN(0)
+    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.mul(account.balance).divn(decimalChange) : new BN(0)
 
     const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
 
-    return val.muln(decimalChange).div(token.price)
+    return val.muln(decimalChange).div(allAssets[token.assetIndex].price)
   })
 export const solanaWalletSelectors = {
   address,

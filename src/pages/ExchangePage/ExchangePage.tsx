@@ -7,7 +7,7 @@ export const ExchangePage: React.FC = () => {
   const classes = useStyles()
 
   return (
-    <Grid container className={classes.root} justify='center'>
+    <Grid container className={classes.root} justifyContent='center'>
       <Grid item className={classes.exchange}>
         <WrappedExchangeComponent />
       </Grid>

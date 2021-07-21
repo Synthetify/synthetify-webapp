@@ -69,10 +69,23 @@ export const capitalizeString = (str: string) => {
 export const divUp = (a: BN, b: BN): BN => {
   return a.add(b.subn(1)).div(b)
 }
+export const divUpNumber = (a: number, b: number): number => {
+  return Math.ceil(a / b)
+}
 export const removeTickerPrefix = (ticker: string, prefix: string[] = ['x', '$']): string => {
-  const index = prefix.findIndex(p => ticker.startsWith(p))
+  const index = prefix.findIndex((p) => ticker.startsWith(p))
   if (index && prefix[index]) {
     return ticker.substring(prefix[index].length)
   }
   return ticker
+}
+const zeroPad = (num: string, places: number) => num.padStart(places, '0')
+const displayTwoFixed = (num: number): string => {
+  return zeroPad(num.toFixed(0), 2)
+}
+export const displayDate = (seconds: number) => {
+  return `
+  ${displayTwoFixed(seconds / 3600)}:${displayTwoFixed((seconds / 60) % 60)}:${displayTwoFixed(
+    seconds % 60
+  )}`
 }

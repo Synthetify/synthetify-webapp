@@ -3,7 +3,7 @@ import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core
 import AmountInput from '@components/Input/AmountInput'
 import { PublicKey } from '@solana/web3.js'
 import { Swap } from '@reducers/exchange'
-import { TokensWithBalance } from '@selectors/solanaWallet'
+import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
@@ -16,61 +16,61 @@ import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 
 export const calculateSwapOutAmount = (
-  assetIn: TokensWithBalance,
-  assetFor: TokensWithBalance,
+  assetIn: ExchangeTokensWithBalance,
+  assetFor: ExchangeTokensWithBalance,
   amount: string,
   effectiveFee: number = 300
 ) => {
   const amountOutBeforeFee = assetIn.price
-    .mul(printBNtoBN(amount, assetIn.synthetic.decimals))
+    .mul(printBNtoBN(amount, assetIn.decimals))
     .div(assetFor.price)
 
   const amountAfterFee = amountOutBeforeFee.sub(
     amountOutBeforeFee.mul(new BN(effectiveFee)).div(new BN(100000))
   )
-  const decimalChange = 10 ** (assetFor.synthetic.decimals - assetIn.synthetic.decimals)
+  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
 
   if (decimalChange < 1) {
-    return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.synthetic.decimals)
+    return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.decimals)
   } else {
-    return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.synthetic.decimals)
+    return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.decimals)
   }
 }
 
 export const calculateSwapOutAmountReversed = (
-  assetIn: TokensWithBalance,
-  assetFor: TokensWithBalance,
+  assetIn: ExchangeTokensWithBalance,
+  assetFor: ExchangeTokensWithBalance,
   amount: string,
   effectiveFee: number = 300
 ) => {
-  const amountAfterFee = printBNtoBN(amount, assetIn.synthetic.decimals).add(
-    printBNtoBN(amount, assetIn.synthetic.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
+  const amountAfterFee = printBNtoBN(amount, assetIn.decimals).add(
+    printBNtoBN(amount, assetIn.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
   )
   const amountOutBeforeFee = assetFor.price.mul(amountAfterFee).div(assetIn.price)
 
-  const decimalChange = 10 ** (assetFor.synthetic.decimals - assetIn.synthetic.decimals)
+  const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
 
   if (decimalChange < 1) {
-    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.synthetic.decimals)
+    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.decimals)
   } else {
-    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.synthetic.decimals)
+    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.decimals)
   }
 }
 
 const getButtonMessage = (
   amountFrom: string,
-  tokenFrom: TokensWithBalance | null,
+  tokenFrom: ExchangeTokensWithBalance | null,
   amountTo: string,
-  tokenTo: TokensWithBalance | null
+  tokenTo: ExchangeTokensWithBalance | null
 ) => {
   if (!tokenFrom) return 'Select input token'
   if (!tokenTo) {
     return 'Select output token'
   }
-  if (!amountTo) {
+  if (amountTo.match(/^0\.0*$/)) {
     return 'Enter value of swap'
   }
-  if (printBNtoBN(amountFrom, tokenFrom.synthetic.decimals).gt(tokenFrom.balance)) {
+  if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
   }
   if (tokenFrom.symbol === tokenTo.symbol) {
@@ -80,7 +80,7 @@ const getButtonMessage = (
 }
 
 export interface IExchangeComponent {
-  tokens: TokensWithBalance[]
+  tokens: ExchangeTokensWithBalance[]
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
 }
@@ -121,7 +121,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>From</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null
@@ -129,18 +129,18 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 <>
                   Balance:{' '}
                   <AnimatedNumber
-                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals)}
+                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].synthetic.decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].decimals)}
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
-              )
+                )
               : ''}
           </Typography>
         </Grid>
         <Hidden lgUp>
-          <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+          <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
@@ -157,8 +157,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFromIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />
@@ -166,7 +166,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           </Grid>
         </Hidden>
 
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
@@ -199,8 +199,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />
@@ -209,7 +209,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         </Grid>
       </Grid>
 
-      <Grid item container direction='row' justify='center'>
+      <Grid item container direction='row' justifyContent='center'>
         <Grid item>
           <IconButton
             className={classes.swapIconSquare}
@@ -217,7 +217,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               if (tokenToIndex === null || tokenFromIndex === null) return
               setTokenFromIndex(tokenToIndex)
               setTokenToIndex(tokenFromIndex)
-              setTimeout(() => updateEstimatedAmount(), 0)
             }}>
             <SwapVertIcon
               style={{ fill: colors.gray.veryLight, height: 43, width: 43 }}
@@ -228,7 +227,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null && tokenToIndex !== null
@@ -236,18 +235,18 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 <>
                   Balance:{' '}
                   <AnimatedNumber
-                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].synthetic.decimals)}
+                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].synthetic.decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].decimals)}
                   />
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
-              )
+                )
               : ''}
           </Typography>
         </Grid>
         <Hidden lgUp>
-          <Grid item container wrap='nowrap' justify='space-around' alignItems='center'>
+          <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokenNames}
@@ -265,8 +264,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classNames(classes.button, classes.mdDownButton)}
                 onClick={() => {
                   if (tokenFromIndex !== null && tokenToIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />{' '}
@@ -274,7 +273,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           </Grid>
         </Hidden>
 
-        <Grid item container wrap='nowrap' justify='space-between' alignItems='center'>
+        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
@@ -308,8 +307,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null && tokenToIndex !== null) {
-                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
-                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].synthetic.decimals))
+                    setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
+                    updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
               />{' '}
@@ -336,7 +335,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               duration={300}
               formatValue={(value: string) => Number(value).toFixed(6)}
             />
-            {' '}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'} {tokenToIndex === null ? '' : `per ${tokens[tokenToIndex].symbol}`}
+            {' '}{tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} per `}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'}
           </Typography>
         </Grid>
       </Grid>
@@ -351,9 +350,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
             if (tokenFromIndex === null || tokenToIndex === null) return
 
             onSwap(
-              tokens[tokenFromIndex].synthetic.assetAddress,
-              tokens[tokenToIndex].synthetic.assetAddress,
-              printBNtoBN(amountFrom, tokens[tokenFromIndex].synthetic.decimals)
+              tokens[tokenFromIndex].assetAddress,
+              tokens[tokenToIndex].assetAddress,
+              printBNtoBN(amountFrom, tokens[tokenFromIndex].decimals)
             )
           }}
         />

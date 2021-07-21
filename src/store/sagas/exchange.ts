@@ -1,7 +1,7 @@
 import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, PayloadTypes } from '@reducers/exchange'
-import { assets, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
+import { collaterals, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA, SNY_DEV_TOKEN } from '@consts/static'
@@ -12,7 +12,7 @@ import { BN } from '@project-serum/anchor'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
-import { getConnection } from './connection'
+import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 export function* pullExchangeState(): Generator {
@@ -20,6 +20,7 @@ export function* pullExchangeState(): Generator {
   const state = yield* call([exchangeProgram, exchangeProgram.getState])
   yield* put(actions.setState(state))
   yield* call(pullAssetPrices)
+  yield* call(updateSlot)
 }
 export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): Generator {
   const wallet = yield* call(getWallet)
@@ -58,7 +59,7 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
-  const allAssets = yield* select(assets)
+  const allCollaterals = yield* select(collaterals)
   if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
     const { account, ix } = yield* call(
       [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
@@ -69,7 +70,7 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       exchangeAccount: account,
       userCollateralAccount: userCollateralTokenAccount.address,
       owner: wallet.publicKey,
-      reserveAddress: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
+      reserveAddress: allCollaterals[collateralTokenAddress.toString()].reserveAddress
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -103,7 +104,7 @@ export function* depositCollateral(amount: BN, collateralTokenAddress: PublicKey
       exchangeAccount: userExchangeAccount.address,
       userCollateralAccount: userCollateralTokenAccount.address,
       owner: wallet.publicKey,
-      reserveAddress: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
+      reserveAddress: allCollaterals[collateralTokenAddress.toString()].reserveAddress
     })
     const approveIx = Token.createApproveInstruction(
       TOKEN_PROGRAM_ID,
@@ -153,13 +154,13 @@ export function* withdrawCollateral(amount: BN, collateralTokenAddress: PublicKe
   if (!collateralAccountAddress) {
     throw new Error('Collateral token account not found')
   }
-  const allAssets = yield* select(assets)
+  const allCollaterals = yield* select(collaterals)
   const signature = yield* call([exchangeProgram, exchangeProgram.withdraw], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
     userCollateralAccount: collateralAccountAddress?.address,
-    reserveAccount: allAssets[collateralTokenAddress.toString()].collateral.reserveAddress
+    reserveAccount: allCollaterals[collateralTokenAddress.toString()].reserveAddress
   })
   return signature[1]
 }
@@ -265,7 +266,7 @@ const pendingUpdates: { [x: string]: BN } = {}
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
-  pendingUpdates[action.payload.token.toString()] = action.payload.price
+  pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
 }
 export function* handleAssetPrice(): Generator {
   yield* put(actions.batchSetAssetPrice(pendingUpdates))
@@ -277,11 +278,6 @@ export function* assetPriceHandler(): Generator {
 export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
 }
-
-export function* updateSlot(): Generator {
-  yield* takeEvery(actions.setAssetPrice, updateSlot)
-}
-
 export function* exchangeSaga(): Generator {
   yield all([swapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
 }

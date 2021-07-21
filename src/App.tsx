@@ -9,24 +9,25 @@ import { theme } from './static/theme'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 import Notifier from '@containers/Notifier/Notifier'
-import { SnackbarProvider } from 'notistack'
 import GlobalLoader from '@containers/GlobalLoader/GlobalLoader'
 import PagesRouter from './pages/PagesRouter'
+import Snackbar from '@components/Snackbar/Snackbar'
 
 setConfig({
   reloadHooks: false
 })
 const App: React.FC = () => {
   const persistor = persistStore(store)
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={99}>
+          <Snackbar maxSnack={99}>
             <Notifier />
             <GlobalLoader />
             <PagesRouter />
-          </SnackbarProvider>
+          </Snackbar>
         </ThemeProvider>
       </PersistGate>
     </Provider>
