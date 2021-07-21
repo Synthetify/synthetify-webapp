@@ -46,7 +46,8 @@ export const ProgressCard: React.FC<IProps> = ({
   return (
     <Card className={classes.valueCard} onClick={onClick} onMouseEnter={() => setAreIndicatorsOpen(true)} onMouseLeave={() => setAreIndicatorsOpen(false)}>
       <CardContent className={classes.progressContent}>
-        {hint ? (
+        {hint
+          ? (
           <>
             <Hidden mdDown>
               <Icon>
@@ -86,7 +87,9 @@ export const ProgressCard: React.FC<IProps> = ({
               </ClickAwayListener>
             </Hidden>
           </>
-        ) : null}
+            )
+          : null
+        }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} style={{ marginBottom: 0 }} />
         <Grid className={classes.progressContainer} container direction='row' alignItems='center'>

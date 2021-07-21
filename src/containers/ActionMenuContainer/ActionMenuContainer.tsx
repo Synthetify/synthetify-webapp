@@ -8,8 +8,8 @@ import {
   xUSDAddress,
   userStaking,
   staking,
-  assets,
-  userDebtShares
+  userDebtShares,
+  collaterals
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import { tokenBalance, userMaxBurnToken } from '@selectors/solanaWallet'
@@ -20,15 +20,15 @@ export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
   const availableToMint = useSelector(userMaxMintUsd)
-  const allAssets = useSelector(assets)
+  const allCollaterals = useSelector(collaterals)
 
-  const snyToken = Object.values(allAssets).find((token) => token.symbol === 'SNY')
+  const snyToken = Object.values(allCollaterals)[0]
 
   const { balance } = useSelector(
-    tokenBalance(snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY)
+    tokenBalance(snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY)
   )
   const availableToWithdraw = useSelector(
-    userMaxWithdraw(snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY)
+    userMaxWithdraw(snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY)
   )
   const xUSDTokenAddress = useSelector(xUSDAddress)
   const availableToBurn = useSelector(userMaxBurnToken(xUSDTokenAddress))
@@ -58,7 +58,7 @@ export const ActionMenuContainer: React.FC = () => {
         dispatch(
           actions.deposit({
             amount: amount.muln(10 ** 6).divn(10 ** decimal),
-            tokenAddress: snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY
+            tokenAddress: snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY
           })
         )
       }}
@@ -66,7 +66,7 @@ export const ActionMenuContainer: React.FC = () => {
         dispatch(
           actions.withdraw({
             amount: amount.muln(10 ** 6).divn(10 ** decimal),
-            tokenAddress: snyToken?.collateral.collateralAddress ?? DEFAULT_PUBLICKEY
+            tokenAddress: snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY
           })
         )
       }}

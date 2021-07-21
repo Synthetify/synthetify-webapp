@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset, CollateralEntry } from '@synthetify/sdk/lib/exchange'
+import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 export interface UserAccount {
   address: string // local storage does not handle PublicKeys
@@ -39,7 +39,9 @@ export interface IExchange {
   shares: BN
   fee: number
   collateralizationLevel: number
-  assets: { [key in string]: IAsset }
+  assets: IAsset[]
+  synthetics: { [key in string]: Synthetic }
+  collaterals: { [key in string]: Collateral }
   userAccount: UserAccount
   exchangeAccount: ExchangeAccount
   swap: Swap
@@ -70,7 +72,9 @@ export const defaultState: IExchange = {
       roundLength: 0
     }
   },
-  assets: {},
+  assets: [],
+  synthetics: {},
+  collaterals: {},
   collateralAccount: DEFAULT_PUBLICKEY,
   collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
@@ -104,23 +108,49 @@ const exchangeSlice = createSlice({
       state.state = action.payload
       return state
     },
-    setAssets(state, action: PayloadAction<{ [key in string]: IAsset }>) {
+    setAssets(state, action: PayloadAction<IAsset[]>) {
       state.assets = action.payload
       return state
     },
+    setSynthetics(state, action: PayloadAction<{ [key in string]: Synthetic }>) {
+      state.synthetics = action.payload
+      return state
+    },
+    setCollaterals(state, action: PayloadAction<{ [key in string]: Collateral }>) {
+      state.collaterals = action.payload
+      return state
+    },
     mergeAssets(state, action: PayloadAction<Asset[]>) {
+      action.payload.forEach((asset, index) => {
+        state.assets[index] = R.merge(
+          state.assets[index],
+          asset
+        )
+      })
+      return state
+    },
+    mergeSynthetics(state, action: PayloadAction<Synthetic[]>) {
       for (const asset of action.payload) {
-        state.assets[asset.synthetic.assetAddress.toString()] = R.merge(
-          state.assets[asset.synthetic.assetAddress.toString()],
+        state.synthetics[asset.assetAddress.toString()] = R.merge(
+          state.synthetics[asset.assetAddress.toString()],
           asset
         )
       }
       return state
     },
-    setAssetPrice(_state, _action: PayloadAction<{ token: PublicKey; price: BN }>) {},
+    mergeCollaterals(state, action: PayloadAction<Collateral[]>) {
+      for (const asset of action.payload) {
+        state.collaterals[asset.collateralAddress.toString()] = R.merge(
+          state.collaterals[asset.collateralAddress.toString()],
+          asset
+        )
+      }
+      return state
+    },
+    setAssetPrice(_state, _action: PayloadAction<{ tokenIndex: number; price: BN }>) {},
     batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: BN }>) {
       for (const [key, value] of Object.entries(action.payload)) {
-        state.assets[key].price = value
+        state.assets[+key].price = value
       }
       return state
     },

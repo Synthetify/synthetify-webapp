@@ -58,7 +58,7 @@ const ExhcangeEvents = () => {
     const connection = getCurrentSolanaConnection()
 
     if (
-      Object.values(allAssets).length === 0 ||
+      allAssets.length === 0 ||
       !oracleProgram ||
       networkStatus !== Status.Initalized ||
       !connection
@@ -66,17 +66,17 @@ const ExhcangeEvents = () => {
       return
     }
     const connectEvents = () => {
-      for (const asset of Object.values(allAssets)) {
+      allAssets.forEach((asset, index) => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
-            actions.setAssetPrice({ token: asset.synthetic.assetAddress, price: new BN(data.price * 1e6) })
+            actions.setAssetPrice({ tokenIndex: index, price: new BN(data.price * 1e6) })
           )
         })
-      }
+      })
     }
     connectEvents()
-  }, [dispatch, Object.values(allAssets).length, networkStatus])
+  }, [dispatch, allAssets.length, networkStatus])
 
   React.useEffect(() => {
     if (
@@ -89,7 +89,9 @@ const ExhcangeEvents = () => {
     const connectEvents = () => {
       exchangeProgram.onAssetsListChange(exchangeState.assetsList, assets => {
         // const parsedData = parseTokenAccountData(accountInfo.data)
-        dispatch(actions.mergeAssets(assets.assets.slice(0, assets.head)))
+        dispatch(actions.mergeAssets(assets.assets.slice(0, assets.headAssets)))
+        dispatch(actions.mergeSynthetics(assets.synthetics.slice(0, assets.headSynthetics)))
+        dispatch(actions.mergeCollaterals(assets.collaterals.slice(0, assets.headCollaterals)))
       })
     }
     connectEvents()

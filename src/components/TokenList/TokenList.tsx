@@ -60,9 +60,11 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
               </Grid>
             </Grid>
           </Grid>
-          {items.length > 0 ? (
+          {items.length > 0
+            ? (
             <Grid>{items}</Grid>
-          ) : (
+              )
+            : (
             <Grid>
               <Divider className={classNames(classes.tokensDivider, classes.tokensDividerMargin)} />
               <Grid className={classes.emptyTokens}>
@@ -70,7 +72,8 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
                 <Typography>Please connect an account.</Typography>
               </Grid>
             </Grid>
-          )}
+              )
+          }
         </Grid>
       </CardContent>
     </Card>
