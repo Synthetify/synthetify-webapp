@@ -4,12 +4,13 @@ import useStyles from './style'
 
 interface ISnackbarProps {
   children: JSX.Element[]
+  maxSnack: number
 }
-export const Snackbar: React.FC<ISnackbarProps> = ({ children }) => {
+export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
   const classes = useStyles()
   return (
     <SnackbarProvider
-      maxSnack={99}
+      maxSnack={maxSnack}
       classes={{
         variantSuccess: classes.success,
         variantError: classes.error,

@@ -23,7 +23,7 @@ const App: React.FC = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
-          <Snackbar>
+          <Snackbar maxSnack={99}>
             <Notifier />
             <GlobalLoader />
             <PagesRouter />
