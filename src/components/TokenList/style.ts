@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
     fontWeight: 600,
     fontSize: 22,
+    lineHeight: '26px',
     [theme.breakpoints.down('xs')]: {
       fontSize: 18
     },
