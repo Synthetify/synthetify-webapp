@@ -7,12 +7,12 @@ import { colors } from '@static/theme'
 storiesOf('buttons/CommonButton', module)
   .addDecorator(withKnobs)
   .add('maxButton', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <MaxButton onClick={action('clicked')} />
     </div>
   ))
   .add('maxButton:disabled', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <MaxButton disabled={true} onClick={action('clicked disabled')} />
     </div>
   ))

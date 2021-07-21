@@ -66,6 +66,19 @@ export const colors = {
   },
   yellow: {
     neon: '#F5D300'
+  },
+  navy: {
+    background: '#0C0D2C',
+    dark: '#0E0E2A',
+    component: '#1E1E43',
+    navBar: '#F9F9FB',
+    navButton: '#3D3F72',
+    grey: '#A3A8CE',
+    lightGrey: '#DADCF1',
+    veryLightGrey: '#FBFBFB',
+    button: '#6C6BC7',
+    info: '#6F6EAA',
+    darkGrey: '#353769'
   }
 }
 export const theme = createTheme({

@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     width: 300,
     borderRadius: 10,
     marginTop: 13,

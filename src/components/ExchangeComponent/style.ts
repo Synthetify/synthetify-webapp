@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     borderRadius: 10,
     padding: 32,
     paddingTop: 23,
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'normal'
   },
   swapIconSquare: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     position: 'relative',
     width: 45,
     height: 45,
@@ -110,7 +110,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '@media (hover: none)': {
       '&:hover': {
-        background: colors.gray.component
+        background: colors.navy.component
       },
 
       '&:active': {

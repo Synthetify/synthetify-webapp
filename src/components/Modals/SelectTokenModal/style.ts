@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
     marginLeft: 'calc(50vw - 130px)'
   },
   root: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     width: 250,
     borderRadius: 10,
     marginTop: 20,

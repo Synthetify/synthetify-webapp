@@ -6,7 +6,7 @@ import { colors } from '@static/theme'
 import BN from 'bn.js'
 
 storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
-  <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+  <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
     <RewardsTab
       slot={578000}
       userDebtShares={new BN(1e5)}

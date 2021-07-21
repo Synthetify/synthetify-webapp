@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
     borderRadius: 10,
-    background: colors.gray.component,
+    background: colors.navy.component,
     padding: '20px 32px',
     [theme.breakpoints.down('xs')]: {
       padding: 10
