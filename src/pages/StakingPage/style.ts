@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.black.background,
+    background: colors.navy.background,
     paddingTop: 20,
     paddingBottom: 60,
     [theme.breakpoints.up('md')]: {

@@ -1,5 +1,5 @@
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip } from '@material-ui/core'
-import HintIcon from '@static/svg/questionMarkCircle.svg'
+import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
 import React, { ReactChild, useEffect, useState } from 'react'
 import useStyles from './style'
 

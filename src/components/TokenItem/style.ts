@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   font: {
     fontSize: 22,
     fontWeight: 400,
-    color: colors.gray.veryLight,
+    color: colors.navy.lightGrey,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     [theme.breakpoints.down('xs')]: {

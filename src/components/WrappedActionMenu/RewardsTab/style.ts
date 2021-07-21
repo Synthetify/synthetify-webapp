@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
     }
   },
   divider: {
-    background: colors.gray.mid,
+    background: colors.navy.navButton,
     marginTop: 10,
     marginBottom: 10
   },

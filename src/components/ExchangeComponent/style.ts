@@ -14,11 +14,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     fontSize: 22,
-    color: colors.gray.light,
+    color: colors.navy.grey,
     lineHeight: '26px'
   },
   titleDivider: {
-    background: colors.gray.light,
+    background: colors.navy.grey,
     marginTop: 13,
     marginBottom: 40,
 
@@ -27,22 +27,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tokenComponent: {
-    background: colors.gray.upperMid,
+    background: colors.navy[292956],
     borderRadius: 10,
     padding: 20,
     paddingTop: 6
   },
   tokenComponentText: {
-    color: colors.gray.C7C9D1,
+    color: colors.navy.navBar,
     fontWeight: 700,
     fontSize: 16
   },
   tokenMaxText: {
-    color: colors.gray.C7C9D1,
+    color: colors.navy.grey,
     fontSize: 16
   },
   amountDivider: {
-    background: colors.gray.light,
+    background: colors.navy.grey,
     height: 57,
     marginLeft: 30,
     marginRight: 30,
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   numbersFieldTitle: {
     fontSize: 22,
-    color: colors.gray.light,
+    color: colors.navy.grey,
     lineHeight: '26px',
 
     [theme.breakpoints.down('md')]: {
@@ -72,9 +72,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   numbersFieldAmount: {
     fontSize: 22,
-    color: colors.gray.veryLight,
+    color: colors.navy.veryLightGrey,
     lineHeight: '40px',
-    fontWeight: 500,
+    fontWeight: 600,
 
     [theme.breakpoints.down('md')]: {
       fontSize: 13,
@@ -88,12 +88,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'normal'
   },
   swapIconSquare: {
-    background: colors.navy.component,
+    background: colors.navy.dark,
     position: 'relative',
     width: 45,
     height: 45,
     borderWidth: 1,
-    borderColor: colors.gray.veryLight,
+    borderColor: colors.navy.lightGrey,
     borderStyle: 'solid',
     borderRadius: 10,
     marginTop: -10,
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '@media(hover: hover) and (pointer: fine)': {
       '&:hover': {
-        background: colors.gray.mid
+        background: colors.navy.navButton
       }
     },
 
@@ -114,14 +114,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
 
       '&:active': {
-        background: colors.gray.mid
+        background: colors.navy.navButton
       }
     }
   },
   swapIcon: {
     width: 43,
     height: 43,
-    fill: colors.gray.veryLight
+    fill: colors.navy.veryLightGrey
   },
   button: {
     width: 'calc(100% - 20px)',

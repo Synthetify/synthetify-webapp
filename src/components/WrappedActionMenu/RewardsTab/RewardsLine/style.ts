@@ -4,14 +4,14 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   text: {
     fontSize: 22,
-    color: colors.gray.veryLight,
+    color: colors.navy.lightGrey,
     lineHeight: 1.5,
     [theme.breakpoints.down('xs')]: {
       fontSize: 16
     }
   },
   tooltip: {
-    background: colors.gray.mid,
+    background: colors.navy.info,
     padding: '5px 8px'
   },
   hint: {

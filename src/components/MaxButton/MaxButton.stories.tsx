@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
 import MaxButton from './MaxButton'
 import { colors } from '@static/theme'
-storiesOf('buttons/CommonButton', module)
+storiesOf('buttons/MaxButton', module)
   .addDecorator(withKnobs)
   .add('maxButton', () => (
     <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>

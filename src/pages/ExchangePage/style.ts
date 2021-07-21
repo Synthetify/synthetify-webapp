@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.black.background,
+    background: colors.navy.background,
     minHeight: 'calc(100vh - 161px)',
     paddingInline: 0,
     [theme.breakpoints.down('sm')]: {

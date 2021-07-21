@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   ownedTokens: {
     fontWeight: 400,
-    color: colors.gray.light,
+    color: colors.navy.grey,
     fontSize: 22,
     [theme.breakpoints.down('xs')]: {
       fontSize: 18
@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: 18
     },
-    color: colors.gray.light
+    color: colors.navy.grey
   },
   headerDivider: {
-    background: colors.gray.light
+    background: colors.navy.grey
   },
   tokensDivider: {
-    background: colors.gray.mid
+    background: colors.navy.grey
   },
   emptyTokens: {
     margin: '20px auto',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 22,
     maxWidth: 500,
-    color: colors.gray.veryLight,
+    color: colors.navy.lightGrey,
     [theme.breakpoints.down('xs')]: {
       '& > *': {
         fontSize: 18

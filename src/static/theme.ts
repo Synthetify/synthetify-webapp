@@ -78,18 +78,19 @@ export const colors = {
     veryLightGrey: '#FBFBFB',
     button: '#6C6BC7',
     info: '#6F6EAA',
-    darkGrey: '#353769'
+    darkGrey: '#353769',
+    292956: '#292956'
   }
 }
 export const theme = createTheme({
   palette: {
     primary: {
-      main: colors.gray.mid, // v2.0
-      contrastText: colors.gray.veryLight // v2.0
+      main: colors.navy.button, // v2.0
+      contrastText: colors.navy.veryLightGrey // v2.0
     },
     secondary: {
       main: colors.green.button,
-      contrastText: colors.black.background
+      contrastText: colors.navy.background
     },
     text: {
       primary: '#FFFFFF',

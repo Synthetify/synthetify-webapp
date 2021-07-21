@@ -16,8 +16,8 @@ const useStyles = makeStyles(() => ({
     }
   },
   disabled: {
-    background: `${colors.gray.mid} !important`,
-    color: `${colors.gray.light} !important`,
+    background: `${colors.navy.navButton} !important`,
+    color: `${colors.navy.background} !important`,
     fontWeight: 500
   }
 }))
