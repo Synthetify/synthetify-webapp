@@ -59,7 +59,8 @@ export const exchangeTokensWithUserBalance = createSelector(
 
 export type TokenAccounts = ITokenAccount & {
   symbol: string,
-  usdValue: BN
+  usdValue: BN,
+  assetDecimals: number
 }
 export const accountsArray = createSelector(
   accounts,
@@ -76,15 +77,19 @@ export const accountsArray = createSelector(
       }
 
       if (asset) {
+        let usdValue = exchangeAssets[asset.assetIndex].price
+            .mul(account.balance)
+            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
+            .div(new BN(10 ** 6))
+
+        usdValue = account.decimals > asset.decimals
+          ? usdValue.mul(new BN(10 ** asset.decimals))
+          : usdValue.mul(new BN(10 ** account.decimals)).div(new BN(10 ** asset.decimals))
         acc.push({
           ...account,
           symbol: exchangeAssets[asset.assetIndex].symbol,
-          usdValue: exchangeAssets[asset.assetIndex].price
-            .mul(new BN(10 ** 4))
-            .mul(account.balance)
-            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** asset.decimals))
-            .div(new BN(10 ** account.decimals))
+          assetDecimals: asset.decimals,
+          usdValue
         })
       }
       return acc
