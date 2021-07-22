@@ -86,12 +86,15 @@ export const syntheticAccountsArray = createSelector(
     }, [] as TokenAccounts[])
   }
 )
+
 export const collateralAccountsArray = createSelector(
   accounts,
   collaterals,
   assets,
-  (tokensAccounts, allCollaterals, exchangeAssets): TokenAccounts[] => {
-    return Object.values(tokensAccounts).reduce((acc, account) => {
+  address,
+  balance,
+  (tokensAccounts, allCollaterals, exchangeAssets, wSOLAddress, wSOLBalance): TokenAccounts[] => {
+    const accounts = Object.values(tokensAccounts).reduce((acc, account) => {
       if (allCollaterals[account.programId.toString()]) {
         const asset = allCollaterals[account.programId.toString()]
         acc.push({
@@ -108,6 +111,27 @@ export const collateralAccountsArray = createSelector(
       }
       return acc
     }, [] as TokenAccounts[])
+
+    const wSOL = Object.values(allCollaterals).find(asset => asset.symbol === 'WSOL')
+
+    if (wSOL) {
+      accounts.push({
+        symbol: wSOL?.symbol,
+        assetDecimals: wSOL?.decimals,
+        usdValue: exchangeAssets[wSOL.assetIndex].price
+          .mul(wSOLBalance)
+          .mul(new BN(10 ** wSOL.decimals))
+          .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
+          .div(new BN(10 ** 6))
+          .div(new BN(10 ** wSOL.decimals)),
+        decimals: wSOL.decimals,
+        programId: wSOL.collateralAddress,
+        balance: wSOLBalance,
+        address: wSOLAddress
+      })
+    }
+
+    return accounts
   }
 )
 export const userMaxBurnToken = (assetAddress: PublicKey) =>
@@ -129,7 +153,7 @@ export const solanaWalletSelectors = {
   balance,
   accounts,
   status,
-  accountsArray: syntheticAccountsArray,
+  syntheticAccountsArray,
   tokenAccount,
   exchangeTokensWithUserBalance,
   userMaxBurnToken
