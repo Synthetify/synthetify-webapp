@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   },
   root: {
     background: colors.navy.component,
-    width: 250,
+    width: 350,
     borderRadius: 10,
     marginTop: 20,
     margin: 3,
@@ -43,6 +43,10 @@ const useStyles = makeStyles(() => ({
     height: 22,
     marginLeft: 12,
     marginRight: 14
+  },
+  tokenBalance: {
+    fontSize: 13,
+    color: colors.navy.grey
   },
   searchIcon: {
     color: colors.navy.grey,

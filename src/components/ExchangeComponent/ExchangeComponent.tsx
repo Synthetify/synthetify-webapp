@@ -111,8 +111,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
     }
   }
 
-  const tokenNames = tokens.map(token => token.symbol)
-
   return (
     <Grid container className={classes.root} direction='column'>
       <Grid item>
@@ -143,7 +141,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
@@ -170,7 +168,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
@@ -249,7 +247,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
@@ -277,7 +275,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
