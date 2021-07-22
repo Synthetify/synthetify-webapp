@@ -114,7 +114,7 @@ export const collateralAccountsArray = createSelector(
 
     const wSOL = Object.values(allCollaterals).find(asset => asset.symbol === 'WSOL')
 
-    if (wSOL) {
+    if (wSOL && accounts.length) {
       accounts.push({
         symbol: wSOL?.symbol,
         assetDecimals: wSOL?.decimals,
@@ -147,6 +147,18 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
 
     return val.muln(decimalChange).div(allAssets[token.assetIndex].price)
+  })
+
+export const userMaxDeposit = (assetAddress: PublicKey) =>
+  createSelector(tokenBalance(assetAddress), collaterals, balance, (assetBalance, allCollaterals, wSOLBalance) => {
+    if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
+      return {
+        balance: wSOLBalance.sub(new BN(5 * (10 ** (allCollaterals[assetAddress.toString()].decimals - 4)))),
+        decimals: allCollaterals[assetAddress.toString()].decimals
+      }
+    }
+
+    return assetBalance
   })
 export const solanaWalletSelectors = {
   address,

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   currency: {
     fontSize: 22,
     color: colors.navy.grey,
-    width: 80,
+    width: 100,
     height: '100%',
     marginLeft: -4
   },
