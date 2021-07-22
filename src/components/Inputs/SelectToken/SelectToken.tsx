@@ -48,7 +48,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
             <CardMedia style={{ minWidth: 32, height: 32, marginRight: 2 }} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} />}>
+        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: 8 }} />}>
         {!current ? name : current}
       </Button>
       <SelectTokenModal

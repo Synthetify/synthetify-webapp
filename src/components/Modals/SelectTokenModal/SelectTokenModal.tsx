@@ -54,9 +54,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         className={classes.root}
         container
         alignContent='space-around'
-        direction='column'
-        spacing={2}>
-        <Grid item>
+        direction='column'>
+        <Grid item style={{ width: '100%' }}>
           <Input
             className={classes.searchInput}
             value={value}
@@ -93,7 +92,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
                     </Grid>
                     {(token.balance && token.decimals) && (
-                      <Grid item style={{ marginLeft: 'auto' }}>
+                      <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
                         <Typography className={classes.tokenBalance}>Balance: {printBN(token.balance, token.decimals)}</Typography>
                       </Grid>
                     )}

@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import { BN } from '@project-serum/anchor'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -42,6 +43,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 40,
     marginRight: 7
   }
+}))
+
+export const useStylesWithProps = makeStyles<Theme, {
+  tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
+  onSelectToken?: (chosen: string) => void
+}>(() => ({
+  select: ({ tokens, onSelectToken }) => ({
+    cursor: (tokens?.length && onSelectToken) ? 'pointer' : 'unset'
+  })
 }))
 
 export default useStyles

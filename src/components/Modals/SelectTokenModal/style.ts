@@ -12,22 +12,22 @@ const useStyles = makeStyles(() => ({
     borderRadius: 10,
     marginTop: 20,
     margin: 3,
-    padding: 5,
-    paddingTop: 15,
-    paddingBottom: 10
+    paddingInline: 8,
+    paddingBlock: 20
   },
   tokenList: {
     borderRadius: 10,
     background: colors.navy.dark,
     height: 260,
-    padding: 3,
-    overflowY: 'hidden'
+    paddingBlock: 3,
+    overflowY: 'hidden',
+    width: '100%'
   },
   tokenItem: {
     margin: 5,
     marginLeft: 7,
     borderRadius: 10,
-    width: '89%',
+    width: '98%',
     cursor: 'pointer',
 
     '&:hover': {
@@ -59,7 +59,9 @@ const useStyles = makeStyles(() => ({
     lineHeight: 40,
     paddingLeft: 16,
     fontSize: 16,
-    borderRadius: 10
+    borderRadius: 10,
+    width: '100%',
+    marginBottom: 16
   },
   hideScroll: {
     '& > *:first-child': {
@@ -74,8 +76,8 @@ const useStyles = makeStyles(() => ({
   scrollbarTrack: {
     background: colors.navy.navButton,
     borderRadius: 10,
-    height: 'calc(100% - 30px)',
-    margin: 15,
+    height: '96%',
+    margin: 5,
     float: 'right',
     width: 9
   },

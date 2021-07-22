@@ -7,6 +7,7 @@ import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
 import RewardsTab, { IRewardsProps } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
+import { TokenAccounts } from '@selectors/solanaWallet'
 
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
@@ -23,6 +24,7 @@ export interface IProps {
   depositState: Pick<IDeposit, 'sending' | 'error'>
   burnState: Pick<IBurn, 'sending' | 'error'>
   stakingData: IRewardsProps
+  collaterals: TokenAccounts[]
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -39,7 +41,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   withdrawState,
   burnState,
   depositState,
-  stakingData
+  stakingData,
+  collaterals
 }) => {
   const classes = useStyles()
 
@@ -53,6 +56,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='SNY'
         sending={depositState.sending}
         hasError={!!depositState.error?.length}
+        tokens={collaterals}
+        onSelectToken={(chosen) => {}}
       />
     ),
     mint: (
@@ -75,6 +80,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='SNY'
         sending={withdrawState.sending}
         hasError={!!withdrawState.error?.length}
+        tokens={collaterals}
+        onSelectToken={(chosen) => {}}
       />
     ),
     burn: (

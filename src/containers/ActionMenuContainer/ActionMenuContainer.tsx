@@ -12,7 +12,7 @@ import {
   collaterals
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { tokenBalance, userMaxBurnToken } from '@selectors/solanaWallet'
+import { collateralAccountsArray, tokenBalance, userMaxBurnToken } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
@@ -23,6 +23,8 @@ export const ActionMenuContainer: React.FC = () => {
   const allCollaterals = useSelector(collaterals)
 
   const snyToken = Object.values(allCollaterals)[0]
+
+  const userCollaterals = useSelector(collateralAccountsArray)
 
   const { balance } = useSelector(
     tokenBalance(snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY)
@@ -104,6 +106,7 @@ export const ActionMenuContainer: React.FC = () => {
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
+      collaterals={userCollaterals}
     />
   )
 }
