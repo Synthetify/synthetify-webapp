@@ -88,17 +88,17 @@ export const useStylesWithProps = makeStyles<Theme, {
 }>(() => ({
   bar: ({ max, current }) => ({
     borderRadius: 10,
-    background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? (current / max) * 100 : 0)}%, #C34848 ${200 - (max !== 0 ? (current / max) * 100 : 0)}%)`
+    background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%, #C34848 ${200 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%)`
   }),
   topIndicator: ({ max, topIndicatorValue }) => ({
     width: 0.1,
     height: 0.1,
-    marginLeft: `${max !== 0 ? (topIndicatorValue / max) * 100 : 0}%`
+    marginLeft: `${max !== 0 ? Math.min((topIndicatorValue / max) * 100, 100) : 0}%`
   }),
   bottomIndicator: ({ max, bottomIndicatorValue }) => ({
     width: 0.1,
     height: 0.1,
-    marginLeft: `${max !== 0 ? (bottomIndicatorValue / max) * 100 : 0}%`
+    marginLeft: `${max !== 0 ? Math.min((bottomIndicatorValue / max) * 100, 100) : 0}%`
   })
 }))
 
