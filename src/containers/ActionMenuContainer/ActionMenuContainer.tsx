@@ -113,7 +113,7 @@ export const ActionMenuContainer: React.FC = () => {
         setWithdrawIndex(userCollaterals.findIndex(token => token.symbol === chosen))
       }}
       depositDecimal={depositDecimal}
-      withdrawDecimal={6}
+      withdrawDecimal={userCollaterals[withdrawIndex]?.decimals ?? 6}
     />
   )
 }
