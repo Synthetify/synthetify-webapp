@@ -5,8 +5,8 @@ import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { IAsset } from '@reducers/exchange'
-import { Synthetic } from '@synthetify/sdk/lib/exchange'
+import { ISynthetic } from '@reducers/exchange'
+import { Asset } from '@synthetify/sdk/lib/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -38,7 +38,7 @@ export const tokenAccount = (tokenAddress: PublicKey) =>
     }
   })
 
-export type ExchangeTokensWithBalance = IAsset & Synthetic & { balance: BN }
+export type ExchangeTokensWithBalance = Asset & ISynthetic & { balance: BN }
 export const exchangeTokensWithUserBalance = createSelector(
   accounts,
   synthetics,
@@ -62,24 +62,41 @@ export type TokenAccounts = ITokenAccount & {
   usdValue: BN,
   assetDecimals: number
 }
-export const accountsArray = createSelector(
+export const syntheticAccountsArray = createSelector(
   accounts,
   synthetics,
-  collaterals,
   assets,
-  (tokensAccounts, allSynthetics, allCollaterals, exchangeAssets): TokenAccounts[] => {
+  (tokensAccounts, allSynthetics, exchangeAssets): TokenAccounts[] => {
     return Object.values(tokensAccounts).reduce((acc, account) => {
-      let asset
       if (allSynthetics[account.programId.toString()]) {
-        asset = allSynthetics[account.programId.toString()]
-      } else if (allCollaterals[account.programId.toString()]) {
-        asset = allCollaterals[account.programId.toString()]
-      }
-
-      if (asset) {
+        const asset = allSynthetics[account.programId.toString()]
         acc.push({
           ...account,
-          symbol: exchangeAssets[asset.assetIndex].symbol,
+          symbol: asset.symbol,
+          assetDecimals: asset.decimals,
+          usdValue: exchangeAssets[asset.assetIndex].price
+            .mul(account.balance)
+            .mul(new BN(10 ** account.decimals))
+            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
+            .div(new BN(10 ** 6))
+            .div(new BN(10 ** asset.decimals))
+        })
+      }
+      return acc
+    }, [] as TokenAccounts[])
+  }
+)
+export const collateralAccountsArray = createSelector(
+  accounts,
+  collaterals,
+  assets,
+  (tokensAccounts, allCollaterals, exchangeAssets): TokenAccounts[] => {
+    return Object.values(tokensAccounts).reduce((acc, account) => {
+      if (allCollaterals[account.programId.toString()]) {
+        const asset = allCollaterals[account.programId.toString()]
+        acc.push({
+          ...account,
+          symbol: asset.symbol,
           assetDecimals: asset.decimals,
           usdValue: exchangeAssets[asset.assetIndex].price
             .mul(account.balance)
@@ -112,7 +129,7 @@ export const solanaWalletSelectors = {
   balance,
   accounts,
   status,
-  accountsArray,
+  accountsArray: syntheticAccountsArray,
   tokenAccount,
   exchangeTokensWithUserBalance,
   userMaxBurnToken

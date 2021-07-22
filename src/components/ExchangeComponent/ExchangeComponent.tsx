@@ -135,7 +135,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
-                )
+              )
               : ''}
           </Typography>
         </Grid>
@@ -241,7 +241,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   />
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
-                )
+              )
               : ''}
           </Typography>
         </Grid>
