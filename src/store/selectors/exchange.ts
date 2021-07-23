@@ -65,7 +65,7 @@ export const stakedValue = createSelector(exchangeAccount, collaterals, assets, 
 
   let val: BN = new BN(0)
 
-  for (const collateral of Object.values(account.collaterals)) {
+  for (const collateral of account.collaterals) {
     const toAdd: BN = collateral.amount
       .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
       .div(
@@ -93,7 +93,7 @@ export const collateralValue = createSelector(
 
     let val: BN = new BN(0)
 
-    for (const collateral of Object.values(account.collaterals)) {
+    for (const collateral of account.collaterals) {
       const toAdd: BN = collateral.amount
         .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
         .mul(new BN(allCollaterals[collateral.collateralAddress.toString()].collateralRatio))
@@ -165,7 +165,8 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
     collaterals,
     healthFactor,
     assets,
-    (debt, maxUsd, allCollaterals, factor, allAssets) => {
+    exchangeAccount,
+    (debt, maxUsd, allCollaterals, factor, allAssets, account) => {
       if (
         maxUsd.eq(new BN(0)) ||
         debt.gte(maxUsd) ||
@@ -175,13 +176,15 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
         return new BN(0)
       }
       const collateralToken = allCollaterals[collateralTokenAddress.toString()]
-      return maxUsd
+      const maxWithdraw = maxUsd
         .sub(debt)
         .mul(new BN(10000))
         .mul(new BN(10 ** collateralToken.decimals + ORACLE_OFFSET - ACCURACY))
         .div(new BN(collateralToken.collateralRatio))
         .div(new BN(factor))
         .div(new BN(allAssets[collateralToken.assetIndex].price))
+      const collateralAmount = account.collaterals.find(token => token.collateralAddress.equals(collateralTokenAddress))?.amount ?? new BN(0)
+      return maxWithdraw.lte(collateralAmount) ? maxWithdraw : collateralAmount
     }
   )
 export const exchangeSelectors = {

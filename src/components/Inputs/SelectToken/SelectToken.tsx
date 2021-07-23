@@ -5,12 +5,13 @@ import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenMod
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 import icons from '@static/icons'
+import { BN } from '@project-serum/anchor'
 
 export interface ISelectTokenModal {
   name?: string
   current: string | null
   centered?: boolean
-  tokens: string[]
+  tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
   onSelect: (chosen: string) => void
 }
 export const SelectToken: React.FC<ISelectTokenModal> = ({

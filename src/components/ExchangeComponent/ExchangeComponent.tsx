@@ -111,8 +111,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
     }
   }
 
-  const tokenNames = tokens.map(token => token.symbol)
-
   return (
     <Grid container className={classes.root} direction='column'>
       <Grid item>
@@ -135,7 +133,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
-                )
+              )
               : ''}
           </Typography>
         </Grid>
@@ -143,7 +141,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
@@ -170,7 +168,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
@@ -241,7 +239,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   />
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
-                )
+              )
               : ''}
           </Typography>
         </Grid>
@@ -249,7 +247,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
@@ -277,7 +275,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
           <Hidden mdDown>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokenNames}
+                tokens={tokens}
                 current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
@@ -319,7 +317,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
       <Grid item container className={classes.numbersField}>
         <Grid item>
           <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'0.03'}%</Typography>
+          <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
         </Grid>
         <Grid item>
           <Divider className={classes.amountDivider} orientation='vertical' />

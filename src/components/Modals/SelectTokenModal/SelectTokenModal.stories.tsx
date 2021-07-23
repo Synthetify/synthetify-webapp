@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import { action } from '@storybook/addon-actions'
 
-const tokens = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ')
+const tokens = 'SNY Dogecoin SOL USD FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ').map(symbol => ({ symbol }))
 
 storiesOf('modals/selectToken', module)
   .addDecorator(withKnobs)

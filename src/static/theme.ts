@@ -66,17 +66,31 @@ export const colors = {
   },
   yellow: {
     neon: '#F5D300'
+  },
+  navy: {
+    background: '#0C0D2C',
+    dark: '#0E0E2A',
+    component: '#1E1E43',
+    navBar: '#F9F9FB',
+    navButton: '#3D3F72',
+    grey: '#A3A8CE',
+    lightGrey: '#DADCF1',
+    veryLightGrey: '#FBFBFB',
+    button: '#6C6BC7',
+    info: '#6F6EAA',
+    darkGrey: '#353769',
+    292956: '#292956'
   }
 }
 export const theme = createTheme({
   palette: {
     primary: {
-      main: colors.gray.mid, // v2.0
-      contrastText: colors.gray.veryLight // v2.0
+      main: colors.navy.button, // v2.0
+      contrastText: colors.navy.veryLightGrey // v2.0
     },
     secondary: {
       main: colors.green.button,
-      contrastText: colors.black.background
+      contrastText: colors.navy.background
     },
     text: {
       primary: '#FFFFFF',

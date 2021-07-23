@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    background: colors.gray.component,
+    background: colors.navy.component,
     width: 200,
     borderRadius: 10,
     marginTop: 13,
@@ -23,22 +23,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.navButton,
+      color: colors.navy.veryLightGrey
     }
   },
   name: {
     textTransform: 'capitalize',
     fontSize: 22,
     lineHeight: '40px',
-    color: colors.gray.C7C9D1
+    color: colors.navy.grey
   },
   current: {
     textTransform: 'capitalize',
     fontSize: 22,
     lineHeight: '40px',
     fontWeight: 600,
-    color: colors.gray.veryLight
+    color: colors.navy.veryLightGrey
   },
   paper: {
     background: 'transparent',

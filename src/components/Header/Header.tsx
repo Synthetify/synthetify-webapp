@@ -107,7 +107,8 @@ export const Header: React.FC<IHeader> = ({
           </Grid>
           <Hidden mdDown>
             <Grid item>
-              {!walletConnected ? (
+              {!walletConnected
+                ? (
                 <ChangeWalletButton
                   name='Connect'
                   options={[WalletType.PHANTOM, WalletType.SOLLET]}
@@ -115,7 +116,8 @@ export const Header: React.FC<IHeader> = ({
                   connected={walletConnected}
                   onDisconnect={onDisconnectWallet}
                 />
-              ) : (
+                  )
+                : (
                 <ChangeWalletButton
                   name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
                   options={[WalletType.PHANTOM, WalletType.SOLLET]}
@@ -123,19 +125,22 @@ export const Header: React.FC<IHeader> = ({
                   connected={walletConnected}
                   onDisconnect={onDisconnectWallet}
                   startIcon={
-                    typeOfWallet === 'phantom' ? (
+                    typeOfWallet === 'phantom'
+                      ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                    ) : (
+                        )
+                      : (
                       <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                    )
+                        )
                   }
                 />
-              )}
+                  )}
             </Grid>
           </Hidden>
           <Hidden lgUp>
             <Grid item>
-              {!walletConnected ? (
+              {!walletConnected
+                ? (
                 <ChangeWalletButton
                   name='My&nbsp;wallet'
                   options={[WalletType.PHANTOM, WalletType.SOLLET]}
@@ -144,7 +149,8 @@ export const Header: React.FC<IHeader> = ({
                   hideArrow={true}
                   onDisconnect={onDisconnectWallet}
                 />
-              ) : (
+                  )
+                : (
                 <ChangeWalletButton
                   name={`${address.toString().substr(0, 3)}...${address.toString().substr(address.toString().length - 3, 3)}`}
                   options={[WalletType.PHANTOM, WalletType.SOLLET]}
@@ -153,14 +159,16 @@ export const Header: React.FC<IHeader> = ({
                   hideArrow={true}
                   onDisconnect={onDisconnectWallet}
                   startIcon={
-                    typeOfWallet === 'phantom' ? (
+                    typeOfWallet === 'phantom'
+                      ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                    ) : (
+                        )
+                      : (
                       <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                    )
+                        )
                   }
                 />
-              )}
+                  )}
             </Grid>
           </Hidden>
         </Grid>

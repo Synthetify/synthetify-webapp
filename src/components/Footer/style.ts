@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     justifyContent: 'flex-end',
-    backgroundColor: colors.gray.background,
+    backgroundColor: colors.navy.background,
     padding: 12,
     [theme.breakpoints.down('xs')]: {
       justifyContent: 'center'
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   divider: {
     display: 'none',
-    backgroundColor: colors.gray.light,
+    backgroundColor: colors.navy.lightGrey,
     [theme.breakpoints.down('xs')]: {
       display: 'block'
     }

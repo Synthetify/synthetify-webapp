@@ -5,7 +5,7 @@ const useStyles = makeStyles(() => ({
   button: {
     minWidth: 118,
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    color: colors.gray.C7C9D1,
+    color: colors.navy.navBar,
     padding: '2px 10px',
     lineHeight: '40px',
     borderRadius: 10,
@@ -15,13 +15,13 @@ const useStyles = makeStyles(() => ({
     margin: 4,
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.button,
+      color: colors.navy.veryLightGrey
     }
   },
   active: {
-    background: colors.gray.mid,
-    color: colors.gray.veryLight,
+    background: colors.navy.button,
+    color: colors.navy.veryLightGrey,
     minWidth: 118,
     padding: '2px 10px',
     lineHeight: '40px',
@@ -33,8 +33,8 @@ const useStyles = makeStyles(() => ({
     margin: 4,
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.button,
+      color: colors.navy.veryLightGrey
     }
   },
   disabled: {

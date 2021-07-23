@@ -10,7 +10,7 @@ import {
   Hidden
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import HintIcon from '@static/svg/questionMarkCircle.svg'
+import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
 import useStyles from './style'
 
 export interface IProps {
@@ -27,47 +27,50 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent>
-        {hint ? (
-          <>
-            <Hidden mdDown>
-              <Icon>
-                <Tooltip
-                  classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                  title={hint}
-                  placement='top-end'
-                  arrow>
-                  <img src={HintIcon} alt='' className={classes.questionMark} />
-                </Tooltip>
-              </Icon>
-            </Hidden>
-            <Hidden lgUp>
-              <ClickAwayListener
-                onClickAway={() => {
-                  setIsPopoverOpen(false)
-                }}>
-                <Icon
-                  onClick={() => {
-                    setIsPopoverOpen(true)
-                  }}>
+        {hint
+          ? (
+            <>
+              <Hidden mdDown>
+                <Icon>
                   <Tooltip
                     classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
                     title={hint}
                     placement='top-end'
-                    open={isPopoverOpen}
-                    onClose={() => {
-                      setIsPopoverOpen(false)
-                    }}
-                    disableFocusListener
-                    disableHoverListener
-                    disableTouchListener
                     arrow>
                     <img src={HintIcon} alt='' className={classes.questionMark} />
                   </Tooltip>
                 </Icon>
-              </ClickAwayListener>
-            </Hidden>
-          </>
-        ) : null}
+              </Hidden>
+              <Hidden lgUp>
+                <ClickAwayListener
+                  onClickAway={() => {
+                    setIsPopoverOpen(false)
+                  }}>
+                  <Icon
+                    onClick={() => {
+                      setIsPopoverOpen(true)
+                    }}>
+                    <Tooltip
+                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
+                      title={hint}
+                      placement='top-end'
+                      open={isPopoverOpen}
+                      onClose={() => {
+                        setIsPopoverOpen(false)
+                      }}
+                      disableFocusListener
+                      disableHoverListener
+                      disableTouchListener
+                      arrow>
+                      <img src={HintIcon} alt='' className={classes.questionMark} />
+                    </Tooltip>
+                  </Icon>
+                </ClickAwayListener>
+              </Hidden>
+            </>
+          )
+          : null
+        }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Divider className={classes.divider} />
         <Typography className={classes.valueCardAmount}>

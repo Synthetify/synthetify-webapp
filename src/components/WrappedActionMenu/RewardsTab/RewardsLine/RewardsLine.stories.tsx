@@ -9,7 +9,7 @@ const loremHint =
 
 storiesOf('WrappedActionMenu/RewardsTab', module)
   .add('amount per round line', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <RewardsLine
         name='Amount per round'
         nonBracket='points'
@@ -21,7 +21,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
     </div>
   ))
   .add('current round line', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <RewardsLine
         name='Current round'
         nonBracket='points'

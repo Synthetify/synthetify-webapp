@@ -27,13 +27,13 @@ storiesOf('menu/switchMenu', module)
   .addDecorator(withKnobs)
   .add('Max width', () => (
     <div
-      style={{ backgroundColor: colors.gray.component, color: colors.white.main, padding: '10px' }}>
+      style={{ backgroundColor: colors.navy.component, color: colors.white.main, padding: '10px' }}>
       <SwitchMenu menuItems={exampleItems} onChange={action('switch menu')} />
     </div>
   ))
   .add('Actions', () => (
     <div
-      style={{ backgroundColor: colors.gray.component, color: colors.white.main, padding: '10px' }}>
+      style={{ backgroundColor: colors.navy.component, color: colors.white.main, padding: '10px' }}>
       <Grid style={{ maxWidth: 800 }}>
         <ActionMenu actionContents={actionContents} onChange={action('change action')} />
       </Grid>
