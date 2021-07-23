@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/staking'
@@ -8,27 +8,26 @@ import {
   xUSDAddress,
   userStaking,
   staking,
-  userDebtShares,
-  collaterals
+  userDebtShares
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { tokenBalance, userMaxBurnToken } from '@selectors/solanaWallet'
+import { collateralAccountsArray, userMaxBurnToken, userMaxDeposit } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
+  const [depositIndex, setDepositIndex] = useState(0)
+  const [withdrawIndex, setWithdrawIndex] = useState(0)
+
   const availableToMint = useSelector(userMaxMintUsd)
-  const allCollaterals = useSelector(collaterals)
-
-  const snyToken = Object.values(allCollaterals)[0]
-
-  const { balance } = useSelector(
-    tokenBalance(snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY)
+  const userCollaterals = useSelector(collateralAccountsArray)
+  const { balance, decimals: depositDecimal } = useSelector(
+    userMaxDeposit(userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
   const availableToWithdraw = useSelector(
-    userMaxWithdraw(snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY)
+    userMaxWithdraw(userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
   const xUSDTokenAddress = useSelector(xUSDAddress)
   const availableToBurn = useSelector(userMaxBurnToken(xUSDTokenAddress))
@@ -57,16 +56,16 @@ export const ActionMenuContainer: React.FC = () => {
       onDeposit={(amount, decimal) => () => {
         dispatch(
           actions.deposit({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal),
-            tokenAddress: snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY
+            amount: amount.muln(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal)),
+            tokenAddress: userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
       }}
       onWithdraw={(amount, decimal) => () => {
         dispatch(
           actions.withdraw({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal),
-            tokenAddress: snyToken?.collateralAddress ?? DEFAULT_PUBLICKEY
+            amount: amount.muln(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal)),
+            tokenAddress: userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
       }}
@@ -104,6 +103,17 @@ export const ActionMenuContainer: React.FC = () => {
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
+      collaterals={userCollaterals}
+      depositCurrency={userCollaterals[depositIndex]?.symbol ?? 'SNY'}
+      withdrawCurrency={userCollaterals[withdrawIndex]?.symbol ?? 'SNY'}
+      onSelectDepositToken={(chosen) => {
+        setDepositIndex(userCollaterals.findIndex(token => token.symbol === chosen))
+      }}
+      onSelectWithdrawToken={(chosen) => {
+        setWithdrawIndex(userCollaterals.findIndex(token => token.symbol === chosen))
+      }}
+      depositDecimal={depositDecimal}
+      withdrawDecimal={userCollaterals[withdrawIndex]?.decimals ?? 6}
     />
   )
 }

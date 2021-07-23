@@ -4,8 +4,10 @@ import useStyles from './style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 import icons from '@static/icons'
+import { BN } from '@project-serum/anchor'
+import { printBN } from '@consts/utils'
 export interface ISelectTokenModal {
-  tokens: string[]
+  tokens: Array<{ symbol: string, balance?: BN, decimals?: number }>
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
@@ -52,9 +54,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         className={classes.root}
         container
         alignContent='space-around'
-        direction='column'
-        spacing={2}>
-        <Grid item>
+        direction='column'>
+        <Grid item style={{ width: '100%' }}>
           <Input
             className={classes.searchInput}
             value={value}
@@ -72,24 +73,29 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
               {tokens
                 .filter(token => {
                   if (!value) return true
-                  return token.toLowerCase().includes(value.toLowerCase())
+                  return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(name => (
+                .map((token) => (
                   <Grid
                     container
-                    key={`tokens-${name}`}
+                    key={`tokens-${token.symbol}`}
                     className={classes.tokenItem}
                     alignItems='center'
                     onClick={() => {
-                      onSelect(name)
+                      onSelect(token.symbol)
                       handleClose()
                     }}>
                     <Grid item>
-                      <CardMedia className={classes.tokenIcon} image={icons[name] ?? icons.SNY} />{' '}
+                      <CardMedia className={classes.tokenIcon} image={icons[token.symbol] ?? icons.SNY} />{' '}
                     </Grid>
                     <Grid item>
-                      <Typography className={classes.tokenName}>{name}</Typography>
+                      <Typography className={classes.tokenName}>{token.symbol}</Typography>
                     </Grid>
+                    {(token.balance && token.decimals) && (
+                      <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
+                        <Typography className={classes.tokenBalance}>Balance: {printBN(token.balance, token.decimals)}</Typography>
+                      </Grid>
+                    )}
                   </Grid>
                 ))}
             </CustomScrollbar>

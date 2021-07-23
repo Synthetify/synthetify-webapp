@@ -64,12 +64,16 @@ export function* depositCollateral(
   amount: BN,
   collateralTokenAddress: PublicKey
 ): SagaGenerator<string> {
+  const allCollaterals = yield* select(collaterals)
+  if (allCollaterals[collateralTokenAddress.toString()].symbol === 'WSOL') {
+    return yield* call(depositCollateralWSOL, amount)
+  }
+
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[collateralTokenAddress.toString()]
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
-  const allCollaterals = yield* select(collaterals)
   if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
     const { account, ix } = yield* call(
       [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
@@ -254,6 +258,11 @@ export function* withdrawCollateral(
   amount: BN,
   collateralTokenAddress: PublicKey
 ): SagaGenerator<string> {
+  const allCollaterals = yield* select(collaterals)
+  if (allCollaterals[collateralTokenAddress.toString()].symbol === 'WSOL') {
+    return yield* call(withdrawCollateralWSOL, amount)
+  }
+
   const collateralAccountAddress = yield* select(tokenAccount(collateralTokenAddress))
 
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -262,7 +271,6 @@ export function* withdrawCollateral(
   if (!collateralAccountAddress) {
     throw new Error('Collateral token account not found')
   }
-  const allCollaterals = yield* select(collaterals)
   const signature = yield* call([exchangeProgram, exchangeProgram.withdraw], {
     amount,
     exchangeAccount: userExchangeAccount.address,
