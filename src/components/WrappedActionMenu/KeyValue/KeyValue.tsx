@@ -33,7 +33,7 @@ export const KeyValue: React.FC<IProps> = ({
       </Typography>
       <Typography
         className={classNames(classes.text, classes.value, classes.lineHeight, valueClassName)}>
-        {unit} <AnimatedNumber value={printBN(value, decimal)} duration={300} formatValue={(value: string) => Number(value).toFixed(decimal)}/>
+        {unit} <AnimatedNumber value={printBN(value, decimal)} duration={300} formatValue={(value: string) => Number(value).toFixed(4)}/>
       </Typography>
     </>
   )

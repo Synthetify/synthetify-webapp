@@ -116,8 +116,8 @@ export const collateralAccountsArray = createSelector(
 
     if (wSOL && accounts.length) {
       accounts.push({
-        symbol: wSOL?.symbol,
-        assetDecimals: wSOL?.decimals,
+        symbol: wSOL.symbol,
+        assetDecimals: wSOL.decimals,
         usdValue: exchangeAssets[wSOL.assetIndex].price
           .mul(wSOLBalance)
           .mul(new BN(10 ** wSOL.decimals))
@@ -152,8 +152,15 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
 export const userMaxDeposit = (assetAddress: PublicKey) =>
   createSelector(tokenBalance(assetAddress), collaterals, balance, (assetBalance, allCollaterals, wSOLBalance) => {
     if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
+      const newBalance = wSOLBalance.sub(
+        new BN(21 *
+          (10 **
+            (allCollaterals[assetAddress.toString()].decimals - 4)
+          )
+        )
+      )
       return {
-        balance: wSOLBalance.sub(new BN(5 * (10 ** (allCollaterals[assetAddress.toString()].decimals - 4)))),
+        balance: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
         decimals: allCollaterals[assetAddress.toString()].decimals
       }
     }

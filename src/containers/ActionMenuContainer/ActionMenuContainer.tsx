@@ -56,7 +56,7 @@ export const ActionMenuContainer: React.FC = () => {
       onDeposit={(amount, decimal) => () => {
         dispatch(
           actions.deposit({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal).muln(10 ** ((userCollaterals[depositIndex]?.decimals ?? 6) - 6)),
+            amount: amount.muln(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal)),
             tokenAddress: userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
@@ -64,7 +64,7 @@ export const ActionMenuContainer: React.FC = () => {
       onWithdraw={(amount, decimal) => () => {
         dispatch(
           actions.withdraw({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal).muln(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - 6)),
+            amount: amount.muln(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal)),
             tokenAddress: userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )

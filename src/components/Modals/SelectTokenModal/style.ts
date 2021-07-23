@@ -4,11 +4,11 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   popover: {
     marginTop: 150,
-    marginLeft: 'calc(50vw - 130px)'
+    marginLeft: 'calc(50vw - 178px)'
   },
   root: {
     background: colors.navy.component,
-    width: 350,
+    minWidth: 350,
     borderRadius: 10,
     marginTop: 20,
     margin: 3,
@@ -83,7 +83,8 @@ const useStyles = makeStyles(() => ({
   },
   paper: {
     background: 'transparent',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    maxWidth: '100%'
   },
   clearIcon: {
     minWidth: 12,
