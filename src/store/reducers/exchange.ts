@@ -39,14 +39,16 @@ export interface IExchange {
   shares: BN
   fee: number
   collateralizationLevel: number
-  assets: IAsset[]
-  synthetics: { [key in string]: Synthetic }
-  collaterals: { [key in string]: Collateral }
+  assets: Asset[]
+  synthetics: { [key in string]: ISynthetic }
+  collaterals: { [key in string]: ICollateral }
   userAccount: UserAccount
   exchangeAccount: ExchangeAccount
   swap: Swap
 }
 export type IAsset = Asset & { symbol: string }
+export type ISynthetic = Synthetic & { symbol: string }
+export type ICollateral = Collateral & { symbol: string }
 
 export const defaultState: IExchange = {
   state: {
@@ -108,15 +110,15 @@ const exchangeSlice = createSlice({
       state.state = action.payload
       return state
     },
-    setAssets(state, action: PayloadAction<IAsset[]>) {
+    setAssets(state, action: PayloadAction<Asset[]>) {
       state.assets = action.payload
       return state
     },
-    setSynthetics(state, action: PayloadAction<{ [key in string]: Synthetic }>) {
+    setSynthetics(state, action: PayloadAction<{ [key in string]: ISynthetic }>) {
       state.synthetics = action.payload
       return state
     },
-    setCollaterals(state, action: PayloadAction<{ [key in string]: Collateral }>) {
+    setCollaterals(state, action: PayloadAction<{ [key in string]: ICollateral }>) {
       state.collaterals = action.payload
       return state
     },

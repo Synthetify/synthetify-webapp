@@ -48,46 +48,46 @@ export const ProgressCard: React.FC<IProps> = ({
       <CardContent className={classes.progressContent}>
         {hint
           ? (
-          <>
-            <Hidden mdDown>
-              <Icon>
-                <Tooltip
-                  classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                  title={hint}
-                  placement='top-end'
-                  arrow>
-                  <img src={HintIcon} alt='' className={classes.questionMark} />
-                </Tooltip>
-              </Icon>
-            </Hidden>
-            <Hidden lgUp>
-              <ClickAwayListener
-                onClickAway={() => {
-                  setIsPopoverOpen(false)
-                }}>
-                <Icon
-                  onClick={() => {
-                    setIsPopoverOpen(true)
-                  }}>
+            <>
+              <Hidden mdDown>
+                <Icon>
                   <Tooltip
                     classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
                     title={hint}
                     placement='top-end'
-                    open={isPopoverOpen}
-                    onClose={() => {
-                      setIsPopoverOpen(false)
-                    }}
-                    disableFocusListener
-                    disableHoverListener
-                    disableTouchListener
                     arrow>
                     <img src={HintIcon} alt='' className={classes.questionMark} />
                   </Tooltip>
                 </Icon>
-              </ClickAwayListener>
-            </Hidden>
-          </>
-            )
+              </Hidden>
+              <Hidden lgUp>
+                <ClickAwayListener
+                  onClickAway={() => {
+                    setIsPopoverOpen(false)
+                  }}>
+                  <Icon
+                    onClick={() => {
+                      setIsPopoverOpen(true)
+                    }}>
+                    <Tooltip
+                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
+                      title={hint}
+                      placement='top-end'
+                      open={isPopoverOpen}
+                      onClose={() => {
+                        setIsPopoverOpen(false)
+                      }}
+                      disableFocusListener
+                      disableHoverListener
+                      disableTouchListener
+                      arrow>
+                      <img src={HintIcon} alt='' className={classes.questionMark} />
+                    </Tooltip>
+                  </Icon>
+                </ClickAwayListener>
+              </Hidden>
+            </>
+          )
           : null
         }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
@@ -113,7 +113,10 @@ export const ProgressCard: React.FC<IProps> = ({
                 bar: proppedClasses.bar
               }}
               variant='determinate'
-              value={max !== 0 ? (current / max) * 100 : 0}
+              value={max !== 0
+                ? Math.min((current / max) * 100, 100)
+                : 0
+              }
             />
             <Tooltip
               classes={{ tooltip: classes.progressTooltip, arrow: classes.tooltipArrow, popper: classes.popper }}

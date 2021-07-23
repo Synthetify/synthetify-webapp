@@ -29,46 +29,46 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
       <CardContent>
         {hint
           ? (
-          <>
-            <Hidden mdDown>
-              <Icon>
-                <Tooltip
-                  classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                  title={hint}
-                  placement='top-end'
-                  arrow>
-                  <img src={HintIcon} alt='' className={classes.questionMark} />
-                </Tooltip>
-              </Icon>
-            </Hidden>
-            <Hidden lgUp>
-              <ClickAwayListener
-                onClickAway={() => {
-                  setIsPopoverOpen(false)
-                }}>
-                <Icon
-                  onClick={() => {
-                    setIsPopoverOpen(true)
-                  }}>
+            <>
+              <Hidden mdDown>
+                <Icon>
                   <Tooltip
                     classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
                     title={hint}
                     placement='top-end'
-                    open={isPopoverOpen}
-                    onClose={() => {
-                      setIsPopoverOpen(false)
-                    }}
-                    disableFocusListener
-                    disableHoverListener
-                    disableTouchListener
                     arrow>
                     <img src={HintIcon} alt='' className={classes.questionMark} />
                   </Tooltip>
                 </Icon>
-              </ClickAwayListener>
-            </Hidden>
-          </>
-            )
+              </Hidden>
+              <Hidden lgUp>
+                <ClickAwayListener
+                  onClickAway={() => {
+                    setIsPopoverOpen(false)
+                  }}>
+                  <Icon
+                    onClick={() => {
+                      setIsPopoverOpen(true)
+                    }}>
+                    <Tooltip
+                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
+                      title={hint}
+                      placement='top-end'
+                      open={isPopoverOpen}
+                      onClose={() => {
+                        setIsPopoverOpen(false)
+                      }}
+                      disableFocusListener
+                      disableHoverListener
+                      disableTouchListener
+                      arrow>
+                      <img src={HintIcon} alt='' className={classes.questionMark} />
+                    </Tooltip>
+                  </Icon>
+                </ClickAwayListener>
+              </Hidden>
+            </>
+          )
           : null
         }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
