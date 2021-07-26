@@ -37,23 +37,31 @@ export const AmountInput: React.FC<IProps> = ({
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const allowOnlyDigitsAndTrimUnnecessaryZeroes: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || regex.test(e.target.value)) {
       const startValue = e.target.value
+      const caretPosition = e.target.selectionStart
+
       let parsed = e.target.value
       const zerosRegex = /^0+\d+\.?\d*$/
       if (zerosRegex.test(parsed)) {
         parsed = parsed.replace(/^0+/, '')
       }
 
-      const caretPosition = e.target.selectionStart
+      const dotRegex = /^\.\d*$/
+      if (dotRegex.test(parsed)) {
+        parsed = `0${parsed}`
+      }
+
+      const diff = startValue.length - parsed.length
+
       setValue(parsed)
       if (caretPosition !== null && parsed !== startValue) {
         setTimeout(() => {
           if (inputRef.current) {
-            inputRef.current.selectionStart = caretPosition - 1
-            inputRef.current.selectionEnd = caretPosition - 1
+            inputRef.current.selectionStart = Math.max(caretPosition - diff, 0)
+            inputRef.current.selectionEnd = Math.max(caretPosition - diff, 0)
           }
         }, 0)
       }
@@ -87,7 +95,7 @@ export const AmountInput: React.FC<IProps> = ({
             </InputAdornment>
           )
         }
-        onChange={allowOnlyDigitsAndTrimUnnecessaryZeroes}
+        onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
       />
       {(tokens?.length && onSelectToken)
         ? (
