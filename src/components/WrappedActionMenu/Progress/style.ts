@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   text: {
     fontSize: 16,
-    color: colors.gray.manatee,
+    color: colors.navy.grey,
     lineHeight: 1.5,
     [theme.breakpoints.down('xs')]: {
       fontSize: 13

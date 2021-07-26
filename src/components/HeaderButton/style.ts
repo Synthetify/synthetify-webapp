@@ -3,8 +3,8 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
-    background: colors.gray.upperMid,
-    color: colors.gray.C7C9D1,
+    background: colors.navy.navButton,
+    color: colors.navy.navBar,
     padding: '2px 25px',
     borderRadius: 10,
     textTransform: 'none',
@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.button,
+      color: colors.navy.veryLightGrey
     }
   },
   headerButtonTextEllipsis: {

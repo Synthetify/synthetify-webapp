@@ -4,7 +4,7 @@ import React from 'react'
 import { colors } from '@static/theme'
 import { BN } from '@project-serum/anchor'
 
-storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
+storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
   <div style={{ backgroundColor: colors.gray.background, padding: '10px' }}>
     <WrappedActionMenu
       maxWidth={850}
@@ -20,6 +20,32 @@ storiesOf('WrappedActionMenu/Menu', module).add('mint mock', () => (
       withdrawState={{ sending: false }}
       depositState={{ sending: false }}
       burnState={{ sending: false }}
+      stakingData={{
+        slot: 300000,
+        userDebtShares: new BN(1e6),
+        roundLength: 160000,
+        rounds: {
+          finished: {
+            roundStartSlot: new BN(1000000),
+            roundPoints: new BN(1e6),
+            roundAllPoints: new BN(1e9)
+          },
+          current: {
+            roundStartSlot: new BN(1100000),
+            roundPoints: new BN(1e6),
+            roundAllPoints: new BN(1e9)
+          },
+          next: {
+            roundStartSlot: new BN(1200000),
+            roundPoints: new BN(1e6),
+            roundAllPoints: new BN(1e9)
+          }
+        },
+        amountPerRound: new BN(1e10),
+        amountToClaim: new BN(88648),
+        onWithdraw: () => {},
+        onClaim: () => {}
+      }}
     />
   </div>
 ))

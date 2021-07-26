@@ -23,7 +23,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
     <Card className={classes.card}>
       <CardContent style={{ margin: 0, padding: 0 }}>
         <Grid item xs={12} style={{ overflowX: 'hidden' }}>
-          <Grid container justify='space-between' alignItems='center'>
+          <Grid container justifyContent='space-between' alignItems='center'>
             <Grid item>
               <Typography className={classes.ownedTokens}>Owned tokens</Typography>
             </Grid>
@@ -31,7 +31,7 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
               <OutlinedButton
                 name='Add account'
                 fontWeight='normal'
-                style={{ fontSize: 17 }}
+                style={{ fontSize: 17, padding: '7px 32px' }}
                 onClick={addAccount}
               />
             </Grid>
@@ -60,9 +60,11 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
               </Grid>
             </Grid>
           </Grid>
-          {items.length > 0 ? (
+          {items.length > 0
+            ? (
             <Grid>{items}</Grid>
-          ) : (
+              )
+            : (
             <Grid>
               <Divider className={classNames(classes.tokensDivider, classes.tokensDividerMargin)} />
               <Grid className={classes.emptyTokens}>
@@ -70,7 +72,8 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
                 <Typography>Please connect an account.</Typography>
               </Grid>
             </Grid>
-          )}
+              )
+          }
         </Grid>
       </CardContent>
     </Card>

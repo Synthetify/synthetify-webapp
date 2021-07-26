@@ -5,27 +5,27 @@ const useStyles = makeStyles(() => ({
   button: {
     minWidth: 118,
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    color: colors.gray.C7C9D1,
+    color: colors.navy.navBar,
     padding: '2px 10px',
     lineHeight: '40px',
-    borderRadius: 5,
+    borderRadius: 10,
     fontSize: '16px',
     textTransform: 'capitalize',
     boxShadow: 'none',
     margin: 4,
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.button,
+      color: colors.navy.veryLightGrey
     }
   },
   active: {
-    background: colors.gray.mid,
-    color: colors.gray.veryLight,
+    background: colors.navy.button,
+    color: colors.navy.veryLightGrey,
     minWidth: 118,
     padding: '2px 10px',
     lineHeight: '40px',
-    borderRadius: 5,
+    borderRadius: 10,
     fontSize: '16px',
     fontWeight: 700,
     textTransform: 'capitalize',
@@ -33,8 +33,8 @@ const useStyles = makeStyles(() => ({
     margin: 4,
 
     '&:hover': {
-      background: colors.gray.mid,
-      color: colors.gray.veryLight
+      background: colors.navy.button,
+      color: colors.navy.veryLightGrey
     }
   },
   disabled: {

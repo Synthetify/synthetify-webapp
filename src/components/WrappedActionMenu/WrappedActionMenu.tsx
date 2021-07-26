@@ -4,10 +4,10 @@ import ActionMenu, { IActionContents } from '@components/SwitchMenu/ActionMenu'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { BN } from '@project-serum/anchor'
 import { IBurn, IDeposit, IMint, IWithdraw } from '@reducers/staking'
+import RewardsTab, { IRewardsProps } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { MaxWidthProperty } from 'csstype'
 import useStyles from './style'
-import RewardsMock from '@components/WrappedActionMenu/RewardsMock'
-
+import { TokenAccounts } from '@selectors/solanaWallet'
 export interface IProps {
   maxWidth?: MaxWidthProperty<number>
   onMint: (amount: BN, decimals: number) => () => void
@@ -22,6 +22,14 @@ export interface IProps {
   withdrawState: Pick<IWithdraw, 'sending' | 'error'>
   depositState: Pick<IDeposit, 'sending' | 'error'>
   burnState: Pick<IBurn, 'sending' | 'error'>
+  stakingData: IRewardsProps
+  collaterals: TokenAccounts[]
+  withdrawCurrency: string
+  depositCurrency: string
+  onSelectDepositToken?: (chosen: string) => void
+  onSelectWithdrawToken?: (chosen: string) => void
+  depositDecimal: number
+  withdrawDecimal: number
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -37,7 +45,15 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   mintState,
   withdrawState,
   burnState,
-  depositState
+  depositState,
+  stakingData,
+  collaterals,
+  withdrawCurrency,
+  depositCurrency,
+  onSelectDepositToken,
+  onSelectWithdrawToken,
+  depositDecimal,
+  withdrawDecimal
 }) => {
   const classes = useStyles()
 
@@ -46,11 +62,13 @@ export const WrappedActionMenu: React.FC<IProps> = ({
       <ActionTemplate
         action='deposit'
         maxAvailable={availableToDeposit}
-        maxDecimal={6}
+        maxDecimal={depositDecimal}
         onClick={onDeposit}
-        currency='SNY'
+        currency={depositCurrency}
         sending={depositState.sending}
         hasError={!!depositState.error?.length}
+        tokens={collaterals}
+        onSelectToken={onSelectDepositToken}
       />
     ),
     mint: (
@@ -68,11 +86,13 @@ export const WrappedActionMenu: React.FC<IProps> = ({
       <ActionTemplate
         action='withdraw'
         maxAvailable={availableToWithdraw}
-        maxDecimal={6}
+        maxDecimal={withdrawDecimal}
         onClick={onWithdraw}
-        currency='SNY'
+        currency={withdrawCurrency}
         sending={withdrawState.sending}
         hasError={!!withdrawState.error?.length}
+        tokens={collaterals}
+        onSelectToken={onSelectWithdrawToken}
       />
     ),
     burn: (
@@ -86,13 +106,13 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
       />
     ),
-    rewards: <RewardsMock />
+    rewards: <RewardsTab {...stakingData} />
   }
 
   return (
     <Card className={classes.card} style={{ maxWidth }}>
       <CardContent className={classes.cardContent}>
-        <Grid container justify='space-around' alignItems='flex-start' direction='column'>
+        <Grid container justifyContent='space-around' alignItems='flex-start' direction='column'>
           <ActionMenu actionContents={actionContents} onChange={() => {}} />
         </Grid>
       </CardContent>

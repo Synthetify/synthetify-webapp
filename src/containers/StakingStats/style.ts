@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginLeft: 0
       }
     }
+  },
+  indicator: {
+    fontSize: 10,
+    lineHeight: '12px',
+    fontWeight: 700
   }
 }))
 

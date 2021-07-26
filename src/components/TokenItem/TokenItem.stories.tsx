@@ -8,14 +8,16 @@ const xSNY: IToken = {
   ticker: '$SNY',
   balance: new BN(562830),
   decimals: 6,
-  usdValue: new BN(116579)
+  usdValue: new BN(116579),
+  assetDecimals: 6
 }
 
 const xBTC: IToken = {
   ticker: 'xBTC',
   balance: new BN(1e6),
   decimals: 6,
-  usdValue: new BN(391933000)
+  usdValue: new BN(391933000),
+  assetDecimals: 6
 }
 
 storiesOf('Tokens/tokenItem', module)

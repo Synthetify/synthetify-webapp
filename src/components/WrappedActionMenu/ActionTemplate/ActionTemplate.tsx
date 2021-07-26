@@ -19,6 +19,8 @@ export interface IProps {
   currency: string
   sending: boolean
   hasError: boolean
+  tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
+  onSelectToken?: (chosen: string) => void
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -28,7 +30,9 @@ export const ActionTemplate: React.FC<IProps> = ({
   onClick,
   currency,
   sending,
-  hasError
+  hasError,
+  tokens,
+  onSelectToken
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -40,7 +44,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
-  }, [amountBN, decimal])
+  }, [amountBN, decimal, maxAvailable, maxDecimal])
 
   useEffect(() => {
     if (sending) {
@@ -84,10 +88,6 @@ export const ActionTemplate: React.FC<IProps> = ({
   }
 
   const getProgressState = () => {
-    if (!checkAmountInputError()) {
-      return 'failed'
-    }
-
     if (sending) {
       return 'progress'
     }
@@ -100,14 +100,14 @@ export const ActionTemplate: React.FC<IProps> = ({
       return 'success'
     }
 
+    if (!checkAmountInputError()) {
+      return 'failed'
+    }
+
     return 'none'
   }
 
   const getProgressMessage = () => {
-    if (!checkAmountInputError()) {
-      return 'Incorrect value!'
-    }
-
     const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
@@ -134,13 +134,16 @@ export const ActionTemplate: React.FC<IProps> = ({
       return `Successfully ${actionToPastNoun[action]}`
     }
 
+    if (!checkAmountInputError()) {
+      return 'Incorrect value!'
+    }
+
     return ''
   }
 
   return (
     <Grid
       container
-      justify='space-around'
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
@@ -152,17 +155,18 @@ export const ActionTemplate: React.FC<IProps> = ({
             className={classes.amountInput}
             placeholder={'0.0'}
             currency={currency}
+            tokens={tokens}
+            onSelectToken={onSelectToken}
           />
         </Grid>
         <Grid
           item
           container
           direction='row'
-          justify='space-between'
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid item>
+          <Grid className={classes.xsItemCenter} item>
             <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
@@ -180,7 +184,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center' wrap='nowrap' direction='row' justify='flex-start'>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row' justifyContent='flex-start'>
         <Grid item style={{ marginRight: 18 }}>
           <OutlinedButton
             name={capitalizeString(action)}
@@ -190,7 +194,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             onClick={onClick(amountBN, decimal)}
           />
         </Grid>
-        <Grid item>
+        <Grid className={classes.progress} item>
           <Progress state={getProgressState()} message={getProgressMessage()} />
         </Grid>
       </Grid>

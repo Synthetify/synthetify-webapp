@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
     borderRadius: 10,
-    background: colors.gray.component,
+    background: colors.navy.component,
     padding: '20px 32px',
     [theme.breakpoints.down('xs')]: {
       padding: 10
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   ownedTokens: {
     fontWeight: 400,
-    color: colors.gray.light,
+    color: colors.navy.grey,
     fontSize: 22,
     [theme.breakpoints.down('xs')]: {
       fontSize: 18
@@ -21,16 +21,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
     fontWeight: 600,
     fontSize: 22,
+    lineHeight: '26px',
     [theme.breakpoints.down('xs')]: {
       fontSize: 18
     },
-    color: colors.gray.light
+    color: colors.navy.grey
   },
   headerDivider: {
-    background: colors.gray.light
+    background: colors.navy.grey
   },
   tokensDivider: {
-    background: colors.gray.mid
+    background: colors.navy.grey
   },
   emptyTokens: {
     margin: '20px auto',
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 22,
     maxWidth: 500,
-    color: colors.gray.veryLight,
+    color: colors.navy.lightGrey,
     [theme.breakpoints.down('xs')]: {
       '& > *': {
         fontSize: 18

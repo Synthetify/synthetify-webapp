@@ -8,22 +8,22 @@ import { colors } from '@static/theme'
 storiesOf('buttons/OutlinedButton', module)
   .addDecorator(withKnobs)
   .add('primary', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <OutlinedButton name='Mint' color='primary' onClick={action('clicked')} />
     </div>
   ))
   .add('secondary', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <OutlinedButton name='Mint' color='secondary' onClick={action('clicked')} />
     </div>
   ))
   .add('primary:disabled', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <OutlinedButton name='Mint' disabled={true} color='primary' onClick={action('clicked')} />
     </div>
   ))
   .add('secondary:disabled', () => (
-    <div style={{ backgroundColor: colors.gray.component, padding: '10px' }}>
+    <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <OutlinedButton name='Mint' disabled={true} color='secondary' onClick={action('clicked')} />
     </div>
   ))

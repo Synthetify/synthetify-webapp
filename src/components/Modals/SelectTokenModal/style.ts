@@ -4,38 +4,38 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   popover: {
     marginTop: 150,
-    marginLeft: 'calc(50vw - 130px)'
+    marginLeft: 'calc(50vw - 178px)'
   },
   root: {
-    background: colors.gray.component,
-    width: 250,
+    background: colors.navy.component,
+    minWidth: 350,
     borderRadius: 10,
     marginTop: 20,
     margin: 3,
-    padding: 5,
-    paddingTop: 15,
-    paddingBottom: 10
+    paddingInline: 8,
+    paddingBlock: 20
   },
   tokenList: {
     borderRadius: 10,
-    background: colors.black.background,
+    background: colors.navy.dark,
     height: 260,
-    padding: 3,
-    overflowY: 'hidden'
+    paddingBlock: 3,
+    overflowY: 'hidden',
+    width: '100%'
   },
   tokenItem: {
     margin: 5,
     marginLeft: 7,
     borderRadius: 10,
-    width: '89%',
+    width: '98%',
     cursor: 'pointer',
 
     '&:hover': {
-      background: colors.gray.mid
+      background: colors.navy.navButton
     }
   },
   tokenName: {
-    color: colors.gray.veryLight,
+    color: colors.navy.veryLightGrey,
     fontSize: 16
   },
   tokenIcon: {
@@ -44,18 +44,24 @@ const useStyles = makeStyles(() => ({
     marginLeft: 12,
     marginRight: 14
   },
+  tokenBalance: {
+    fontSize: 13,
+    color: colors.navy.grey
+  },
   searchIcon: {
-    color: colors.gray.light,
+    color: colors.navy.grey,
     margin: 8
   },
   searchInput: {
-    background: colors.black.background,
-    color: colors.gray.light,
+    background: colors.navy.dark,
+    color: colors.navy.grey,
     height: 40,
     lineHeight: 40,
     paddingLeft: 16,
     fontSize: 16,
-    borderRadius: 10
+    borderRadius: 10,
+    width: '100%',
+    marginBottom: 16
   },
   hideScroll: {
     '& > *:first-child': {
@@ -68,16 +74,17 @@ const useStyles = makeStyles(() => ({
     width: 9
   },
   scrollbarTrack: {
-    background: colors.gray.mid,
+    background: colors.navy.navButton,
     borderRadius: 10,
-    height: 'calc(100% - 30px)',
-    margin: 15,
+    height: '96%',
+    margin: 5,
     float: 'right',
     width: 9
   },
   paper: {
     background: 'transparent',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    maxWidth: '100%'
   },
   clearIcon: {
     minWidth: 12,
