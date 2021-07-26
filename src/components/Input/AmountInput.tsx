@@ -17,6 +17,7 @@ interface IProps {
   style?: CSSProperties
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
+  showArrow?: boolean
 }
 
 interface inputString {
@@ -32,7 +33,8 @@ export const AmountInput: React.FC<IProps> = ({
   placeholder,
   style,
   tokens,
-  onSelectToken
+  onSelectToken,
+  showArrow
 }) => {
   const classes = useStyles()
   const proppedClasses = useStylesWithProps({ tokens, onSelectToken })
@@ -68,7 +70,7 @@ export const AmountInput: React.FC<IProps> = ({
             >
               <Divider orientation='vertical' className={classes.divider} />
               {currency}
-              {(tokens?.length && onSelectToken) ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : null}
+              {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
             </InputAdornment>
           )
         }

@@ -25,7 +25,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
   const imgName = removeTickerPrefix(ticker)
   return (
     <Grid container alignItems='center' style={{ flexWrap: 'nowrap' }}>
-      <Grid container item xs={4} sm={3} alignItems='center'>
+      <Grid container item xs={4} alignItems='center'>
         <Grid item>
           <CardMedia style={{ width: 32, height: 32, marginRight: 18 }} image={icons[imgName] ?? icons.SNY} />
         </Grid>
@@ -35,7 +35,7 @@ export const TokenItem: React.FC<IProps> = ({ token }) => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={4} sm={5}>
+      <Grid item xs={4}>
         <Typography variant='h5' color='textPrimary' className={classes.font}>
           <AnimatedNumber value={printBN(balance, assetDecimals)} duration={300} formatValue={(value: string) => Number(value).toFixed(assetDecimals)}/>
         </Typography>

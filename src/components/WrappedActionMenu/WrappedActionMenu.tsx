@@ -69,6 +69,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!depositState.error?.length}
         tokens={collaterals}
         onSelectToken={onSelectDepositToken}
+        showArrowInInput
       />
     ),
     mint: (
@@ -93,6 +94,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!withdrawState.error?.length}
         tokens={collaterals}
         onSelectToken={onSelectWithdrawToken}
+        showArrowInInput
       />
     ),
     burn: (

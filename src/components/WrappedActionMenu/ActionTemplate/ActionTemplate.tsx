@@ -21,6 +21,7 @@ export interface IProps {
   hasError: boolean
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
+  showArrowInInput?: boolean
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -32,7 +33,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   sending,
   hasError,
   tokens,
-  onSelectToken
+  onSelectToken,
+  showArrowInInput
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -157,6 +159,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             currency={currency}
             tokens={tokens}
             onSelectToken={onSelectToken}
+            showArrow={showArrowInInput}
           />
         </Grid>
         <Grid

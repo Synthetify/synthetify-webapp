@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     borderRadius: 10,
     paddingLeft: 16,
-    paddingRight: 16,
+    paddingRight: 10,
     height: 60,
     fontSize: 22,
     minWidth: 150,
@@ -24,9 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   currency: {
     fontSize: 22,
     color: colors.navy.grey,
-    width: 100,
     height: '100%',
-    marginLeft: -4
+    justifyContent: 'flex-end'
   },
   inputLabel: {
     color: colors.navy.lightGrey,
@@ -41,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     backgroundColor: colors.navy.grey,
     height: 40,
-    marginRight: 7
+    marginRight: 10
   }
 }))
 

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.lightGrey
   },
   questionMark: {
-    height: 21,
+    height: 20,
     width: 20,
     float: 'right'
   },

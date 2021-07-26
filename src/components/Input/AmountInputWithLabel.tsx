@@ -15,6 +15,7 @@ interface IProps {
   style?: CSSProperties
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
+  showArrow?: boolean
 }
 
 export const AmountInputWithLabel: React.FC<IProps> = props => {

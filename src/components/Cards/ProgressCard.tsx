@@ -11,7 +11,7 @@ import {
   LinearProgress,
   Grid
 } from '@material-ui/core'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
+import HintIcon from '@static/svg/questionMark.svg'
 import useStyles, { useStylesWithProps } from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 export interface IProps {
