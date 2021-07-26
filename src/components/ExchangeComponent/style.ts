@@ -35,11 +35,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenComponentText: {
     color: colors.navy.navBar,
     fontWeight: 700,
-    fontSize: 16
+    fontSize: 16,
+    whiteSpace: 'nowrap'
   },
   tokenMaxText: {
     color: colors.navy.grey,
-    fontSize: 16
+    fontSize: 16,
+    whiteSpace: 'nowrap',
+
+    [theme.breakpoints.down('md')]: {
+      fontSize: 13
+    }
   },
   amountDivider: {
     background: colors.navy.grey,

@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       fontSize: 13,
-      padding: '0px 12px'
+      padding: '0px 12px',
+      margin: 0
     },
 
     '&:hover': {

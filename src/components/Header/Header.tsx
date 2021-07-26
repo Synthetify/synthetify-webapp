@@ -15,6 +15,7 @@ import { SolanaNetworks } from '@consts/static'
 import useButtonStyles from '../HeaderButton/style'
 import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
+import classNames from 'classnames'
 
 export interface IHeader {
   address: PublicKey
@@ -58,7 +59,7 @@ export const Header: React.FC<IHeader> = ({
             <CardMedia className={classes.snyLogo} image={snyIcon} />
           </Grid>
           <Grid item>
-            <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginRight: 20 }} />
+            <Divider orientation='vertical' className={classNames(classes.verticalDivider, classes.leftDivider)} />
           </Grid>
         </Grid>
         <Hidden mdDown>
@@ -79,7 +80,7 @@ export const Header: React.FC<IHeader> = ({
           </Grid>
         </Hidden>
 
-        <Grid container item justifyContent='flex-end' wrap='nowrap' alignItems='center'>
+        <Grid container item className={classes.buttons} wrap='nowrap' alignItems='center'>
           {(network === 'Devnet') && (
             <Grid item>
               <Button
@@ -109,66 +110,66 @@ export const Header: React.FC<IHeader> = ({
             <Grid item>
               {!walletConnected
                 ? (
-                <ChangeWalletButton
-                  name='Connect'
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  onDisconnect={onDisconnectWallet}
-                />
-                  )
+                  <ChangeWalletButton
+                    name='Connect'
+                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                    onSelect={onWalletSelect}
+                    connected={walletConnected}
+                    onDisconnect={onDisconnectWallet}
+                  />
+                )
                 : (
-                <ChangeWalletButton
-                  name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  onDisconnect={onDisconnectWallet}
-                  startIcon={
-                    typeOfWallet === 'phantom'
-                      ? (
-                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                  <ChangeWalletButton
+                    name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
+                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                    onSelect={onWalletSelect}
+                    connected={walletConnected}
+                    onDisconnect={onDisconnectWallet}
+                    startIcon={
+                      typeOfWallet === 'phantom'
+                        ? (
+                          <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
                         )
-                      : (
-                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                        : (
+                          <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
                         )
-                  }
-                />
-                  )}
+                    }
+                  />
+                )}
             </Grid>
           </Hidden>
           <Hidden lgUp>
             <Grid item>
               {!walletConnected
                 ? (
-                <ChangeWalletButton
-                  name='My&nbsp;wallet'
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  hideArrow={true}
-                  onDisconnect={onDisconnectWallet}
-                />
-                  )
+                  <ChangeWalletButton
+                    name='My&nbsp;wallet'
+                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                    onSelect={onWalletSelect}
+                    connected={walletConnected}
+                    hideArrow={true}
+                    onDisconnect={onDisconnectWallet}
+                  />
+                )
                 : (
-                <ChangeWalletButton
-                  name={`${address.toString().substr(0, 3)}...${address.toString().substr(address.toString().length - 3, 3)}`}
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  hideArrow={true}
-                  onDisconnect={onDisconnectWallet}
-                  startIcon={
-                    typeOfWallet === 'phantom'
-                      ? (
-                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                  <ChangeWalletButton
+                    name={`${address.toString().substr(0, 3)}...${address.toString().substr(address.toString().length - 3, 3)}`}
+                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                    onSelect={onWalletSelect}
+                    connected={walletConnected}
+                    hideArrow={true}
+                    onDisconnect={onDisconnectWallet}
+                    startIcon={
+                      typeOfWallet === 'phantom'
+                        ? (
+                          <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
                         )
-                      : (
-                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                        : (
+                          <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
                         )
-                  }
-                />
-                  )}
+                    }
+                  />
+                )}
             </Grid>
           </Hidden>
         </Grid>
@@ -180,7 +181,7 @@ export const Header: React.FC<IHeader> = ({
         <Hidden lgUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Grid item>
-              <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginLeft: 20 }} />
+              <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginRight: 5 }} />
             </Grid>
             <Grid item>
               <IconButton

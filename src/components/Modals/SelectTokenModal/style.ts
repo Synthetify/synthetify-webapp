@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     minWidth: 350,
     borderRadius: 10,
     marginTop: 20,
-    margin: 3,
+    marginBottom: 3,
     paddingInline: 8,
     paddingBlock: 20
   },

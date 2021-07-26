@@ -32,7 +32,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 10,
 
     [theme.breakpoints.down('md')]: {
-      margin: 10
+      margin: 0
+    }
+  },
+  leftDivider: {
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 5
     }
   },
   connectedWalletIcon: {
@@ -74,11 +79,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   left: {
     maxWidth: 200,
     [theme.breakpoints.down('md')]: {
-      maxWidth: 80
+      maxWidth: 65
     }
   },
   mobileRight: {
-    maxWidth: 80
+    maxWidth: 65
+  },
+  buttons: {
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'space-evenly'
+    }
   }
 }))
 

@@ -159,6 +159,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                     updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
+                style={{ whiteSpace: 'nowrap' }}
               />
             </Grid>
           </Grid>
@@ -266,6 +267,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                     updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
+                style={{ whiteSpace: 'nowrap' }}
               />{' '}
             </Grid>
           </Grid>
