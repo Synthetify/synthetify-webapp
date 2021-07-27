@@ -4,15 +4,21 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.background,
-    paddingTop: 20,
+    paddingTop: 22,
     paddingBottom: 60,
+    [theme.breakpoints.up('sm')]: {
+      paddingBottom: 48
+    },
+    [theme.breakpoints.up('md')]: {
+      paddingBlock: 29
+    },
     [theme.breakpoints.up('lg')]: {
       paddingTop: 80,
       paddingBottom: 0
     }
   },
   innerWrapper: {
-    width: '100%',
+    maxWidth: 890,
     paddingInline: 20,
     [theme.breakpoints.up('md')]: {
       width: 850,
