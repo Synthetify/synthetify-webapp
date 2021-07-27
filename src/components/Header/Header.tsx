@@ -166,14 +166,21 @@ export const Header: React.FC<IHeader> = ({
           </Hidden>
         </Grid>
         <Hidden smDown>
-          <IconButton className={classes.dotsButton} onClick={() => {}}>
-            <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
-          </IconButton>
+          <Grid item container className={classes.right} wrap='nowrap' alignItems='center'>
+            <Grid item>
+              <Divider orientation='vertical' className={classNames(classes.verticalDivider, classes.rightDivider)} />
+            </Grid>
+            <Grid item>
+              <IconButton className={classes.dotsButton} onClick={() => {}}>
+                <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
+              </IconButton>
+            </Grid>
+          </Grid>
         </Hidden>
         <Hidden mdUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Grid item>
-              <Divider orientation='vertical' className={classNames(classes.verticalDivider, classes.rightDivider)} />
+              <Divider orientation='vertical' className={classNames(classes.verticalDivider, classes.mobileRightDivider)} />
             </Grid>
             <Grid item>
               <IconButton

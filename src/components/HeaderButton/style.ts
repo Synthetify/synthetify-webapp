@@ -13,12 +13,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 8,
 
     [theme.breakpoints.down('sm')]: {
-      padding: 0,
+      padding: '2px 0',
       margin: '0px 18px',
       width: 'calc(33% - 36px)'
     },
 
     [theme.breakpoints.down('xs')]: {
+      padding: 0,
       fontSize: 13,
       margin: '0px 3px',
       width: 'calc(33% - 6px)'

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   leftDivider: {
-    [theme.breakpoints.only('md')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 32
     },
 
@@ -75,18 +75,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   dotsButton: {
     borderRadius: 10,
     padding: '5px 8px',
-    marginRight: 100,
-    marginLeft: 50,
-
-    [theme.breakpoints.down('md')]: {
-      marginRight: 30
-    },
-
-    [theme.breakpoints.down('sm')]: {
-      padding: '1px 4px',
-      marginRight: 8,
-      marginLeft: 10
-    },
 
     '&:hover': {
       background: colors.navy.navButton
@@ -104,6 +92,20 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxWidth: 68
     }
   },
+  right: {
+    maxWidth: 259,
+    [theme.breakpoints.down('md')]: {
+      maxWidth: 136
+    }
+  },
+  rightDivider: {
+    marginLeft: 60,
+    marginRight: 50,
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 22,
+      marginRight: 30
+    }
+  },
   mobileRight: {
     maxWidth: 83,
 
@@ -111,7 +113,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxWidth: 65
     }
   },
-  rightDivider: {
+  mobileRightDivider: {
     marginLeft: 20,
 
     [theme.breakpoints.down('xs')]: {
