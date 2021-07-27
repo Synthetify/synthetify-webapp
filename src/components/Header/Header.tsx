@@ -153,7 +153,7 @@ export const Header: React.FC<IHeader> = ({
                 )
                 : (
                   <ChangeWalletButton
-                    name={`${address.toString().substr(0, 3)}...${address.toString().substr(address.toString().length - 3, 3)}`}
+                    name={`${address.toString().substr(0, 2)}...${address.toString().substr(address.toString().length - 2, 2)}`}
                     options={[WalletType.PHANTOM, WalletType.SOLLET]}
                     onSelect={onWalletSelect}
                     connected={walletConnected}

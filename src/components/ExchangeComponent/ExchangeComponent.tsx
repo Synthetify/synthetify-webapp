@@ -129,7 +129,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   <AnimatedNumber
                     value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(3)}
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
@@ -137,7 +137,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               : ''}
           </Typography>
         </Grid>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
@@ -166,7 +166,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         </Hidden>
 
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokens}
@@ -191,10 +191,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               currency={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
             />
           </Grid>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <MaxButton
-                name='Set&nbsp;to&nbsp;max'
+                name='Set to max'
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null) {
@@ -236,7 +236,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   <AnimatedNumber
                     value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(3)}
                   />
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
@@ -244,7 +244,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               : ''}
           </Typography>
         </Grid>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
@@ -274,7 +274,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         </Hidden>
 
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokens}
@@ -300,10 +300,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               currency={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
             />
           </Grid>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <MaxButton
-                name='Set&nbsp;to&nbsp;max'
+                name='Set to max'
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null && tokenToIndex !== null) {

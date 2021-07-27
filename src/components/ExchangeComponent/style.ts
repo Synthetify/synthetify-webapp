@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 32,
     paddingTop: 23,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: 20
     }
   },
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 13,
     marginBottom: 40,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginBottom: 20
     }
   },
@@ -36,14 +36,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.navBar,
     fontWeight: 700,
     fontSize: 16,
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 13
+    }
   },
   tokenMaxText: {
     color: colors.navy.grey,
     fontSize: 16,
     whiteSpace: 'nowrap',
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13
     }
   },
@@ -53,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 30,
     marginRight: 30,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 37,
       marginLeft: 20,
       marginRight: 20,
@@ -63,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   numbersField: {
     marginTop: 30,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: 20
     }
   },
@@ -72,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     lineHeight: '26px',
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 16
     }
   },
@@ -82,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     fontWeight: 600,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13,
       lineHeight: '15px'
     }

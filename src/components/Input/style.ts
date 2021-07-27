@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     color: colors.navy.grey,
     height: '100%',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginLeft: 20
   },
   inputLabel: {
     color: colors.navy.lightGrey,
