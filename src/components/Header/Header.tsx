@@ -62,8 +62,8 @@ export const Header: React.FC<IHeader> = ({
             <Divider orientation='vertical' className={classNames(classes.verticalDivider, classes.leftDivider)} />
           </Grid>
         </Grid>
-        <Hidden mdDown>
-          <Grid item container wrap='nowrap' alignItems='center' justifyContent='flex-start'>
+        <Hidden smDown>
+          <Grid item container wrap='nowrap' alignItems='center' justifyContent='flex-start' style={{ maxWidth: routes.length * 126 }}>
             {routes.map(path => (
               <Grid item key={`path-${path}`}>
                 <Link to={`/${path}`} style={{ textDecoration: 'none' }}>
@@ -82,106 +82,98 @@ export const Header: React.FC<IHeader> = ({
 
         <Grid container item className={classes.buttons} wrap='nowrap' alignItems='center'>
           {(network === 'Devnet') && (
-            <Grid item>
-              <Button
-                className={buttonClasses.headerButton}
-                variant='contained'
-                classes={{ disabled: buttonClasses.disabled }}
-                style={{ marginLeft: 0 }}
-                onClick={onFaucet}
-              >
+            <Button
+              className={buttonClasses.headerButton}
+              variant='contained'
+              classes={{ disabled: buttonClasses.disabled }}
+              style={{ marginLeft: 0 }}
+              onClick={onFaucet}
+            >
                 Faucet
-              </Button>
-            </Grid>
+            </Button>
           )}
-          <Grid item>
-            <SelectNetworkButton
-              name={network}
-              networks={[
-                { name: 'Devnet', network: SolanaNetworks.DEV }
-              ]}
-              onSelect={(chosen: string) => {
-                onNetworkSelect(chosen)
-                setNetwork(chosen)
-              }}
-            />
-          </Grid>
-          <Hidden mdDown>
-            <Grid item>
-              {!walletConnected
-                ? (
-                  <ChangeWalletButton
-                    name='Connect'
-                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                    onSelect={onWalletSelect}
-                    connected={walletConnected}
-                    onDisconnect={onDisconnectWallet}
-                  />
-                )
-                : (
-                  <ChangeWalletButton
-                    name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
-                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                    onSelect={onWalletSelect}
-                    connected={walletConnected}
-                    onDisconnect={onDisconnectWallet}
-                    startIcon={
-                      typeOfWallet === 'phantom'
-                        ? (
-                          <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                        )
-                        : (
-                          <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                        )
-                    }
-                  />
-                )}
-            </Grid>
+          <SelectNetworkButton
+            name={network}
+            networks={[
+              { name: 'Devnet', network: SolanaNetworks.DEV }
+            ]}
+            onSelect={(chosen: string) => {
+              onNetworkSelect(chosen)
+              setNetwork(chosen)
+            }}
+          />
+          <Hidden smDown>
+            {!walletConnected
+              ? (
+                <ChangeWalletButton
+                  name='Connect'
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  onDisconnect={onDisconnectWallet}
+                />
+              )
+              : (
+                <ChangeWalletButton
+                  name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  onDisconnect={onDisconnectWallet}
+                  startIcon={
+                    typeOfWallet === 'phantom'
+                      ? (
+                        <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                      )
+                      : (
+                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                      )
+                  }
+                />
+              )}
           </Hidden>
-          <Hidden lgUp>
-            <Grid item>
-              {!walletConnected
-                ? (
-                  <ChangeWalletButton
-                    name='My&nbsp;wallet'
-                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                    onSelect={onWalletSelect}
-                    connected={walletConnected}
-                    hideArrow={true}
-                    onDisconnect={onDisconnectWallet}
-                  />
-                )
-                : (
-                  <ChangeWalletButton
-                    name={`${address.toString().substr(0, 2)}...${address.toString().substr(address.toString().length - 2, 2)}`}
-                    options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                    onSelect={onWalletSelect}
-                    connected={walletConnected}
-                    hideArrow={true}
-                    onDisconnect={onDisconnectWallet}
-                    startIcon={
-                      typeOfWallet === 'phantom'
-                        ? (
-                          <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                        )
-                        : (
-                          <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                        )
-                    }
-                  />
-                )}
-            </Grid>
+          <Hidden mdUp>
+            {!walletConnected
+              ? (
+                <ChangeWalletButton
+                  name='My&nbsp;wallet'
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  hideArrow={true}
+                  onDisconnect={onDisconnectWallet}
+                />
+              )
+              : (
+                <ChangeWalletButton
+                  name={`${address.toString().substr(0, 2)}...${address.toString().substr(address.toString().length - 2, 2)}`}
+                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                  onSelect={onWalletSelect}
+                  connected={walletConnected}
+                  hideArrow={true}
+                  onDisconnect={onDisconnectWallet}
+                  startIcon={
+                    typeOfWallet === 'phantom'
+                      ? (
+                        <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                      )
+                      : (
+                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                      )
+                  }
+                />
+              )}
           </Hidden>
         </Grid>
-        <Hidden mdDown>
+        <Hidden smDown>
           <IconButton className={classes.dotsButton} onClick={() => {}}>
             <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
           </IconButton>
         </Hidden>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Grid item>
-              <Divider orientation='vertical' className={classes.verticalDivider} style={{ marginRight: 5 }} />
+              <Divider orientation='vertical' className={classNames(classes.verticalDivider, classes.rightDivider)} />
             </Grid>
             <Grid item>
               <IconButton

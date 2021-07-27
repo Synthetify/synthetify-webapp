@@ -12,10 +12,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     margin: 8,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
+      padding: 0,
+      margin: '0px 18px',
+      width: 'calc(33% - 36px)'
+    },
+
+    [theme.breakpoints.down('xs')]: {
       fontSize: 13,
-      padding: '0px 12px',
-      margin: 0
+      margin: '0px 3px',
+      width: 'calc(33% - 6px)'
     },
 
     '&:hover': {
@@ -30,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '40px',
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xs')]: {
       fontSize: 13
     }
   },
@@ -40,6 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     background: 'transparent',
     boxShadow: 'none'
+  },
+  startIcon: {
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 2
+    }
   }
 }))
 

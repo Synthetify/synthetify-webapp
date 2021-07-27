@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: 0,
     height: 100,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 60
     }
   },
@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       margin: 0,
+      marginLeft: 32
+    },
+
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 8
     }
   },
@@ -31,19 +35,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 40,
     marginRight: 10,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       margin: 0
     }
   },
   leftDivider: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.only('md')]: {
+      marginLeft: 32
+    },
+
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 5
     }
   },
   connectedWalletIcon: {
     minWidth: 21,
     height: 21,
-    marginRight: 5
+    marginRight: 5,
+
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 0
+    }
   },
   dehazeButton: {
     borderRadius: 10,
@@ -67,6 +79,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 50,
 
     [theme.breakpoints.down('md')]: {
+      marginRight: 30
+    },
+
+    [theme.breakpoints.down('sm')]: {
       padding: '1px 4px',
       marginRight: 8,
       marginLeft: 10
@@ -79,16 +95,33 @@ const useStyles = makeStyles((theme: Theme) => ({
   left: {
     maxWidth: 200,
     [theme.breakpoints.down('md')]: {
-      maxWidth: 65
+      maxWidth: 140
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 83
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 68
     }
   },
   mobileRight: {
-    maxWidth: 65
+    maxWidth: 83,
+
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 65
+    }
+  },
+  rightDivider: {
+    marginLeft: 20,
+
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 5
+    }
   },
   buttons: {
     justifyContent: 'flex-end',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'space-evenly'
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center'
     }
   }
 }))
