@@ -18,7 +18,7 @@ export const StakingStats: React.FC = () => {
 
   return (
     <>
-      <Grid className={classes.statsTile} item xs={12} md={4} lg={4}>
+      <Grid className={classes.statsTile} item xs={12} sm={6} md={4} lg={4}>
         <ValueCard
           name='Staked value'
           hint='Amount of money you’ve decided to keep on your virtual wallet.'
@@ -27,7 +27,7 @@ export const StakingStats: React.FC = () => {
           decimals={4}
         />
       </Grid>
-      <Grid className={classes.statsTile} item xs={12} md={8} lg={8}>
+      <Grid className={classes.statsTile} item xs={12} sm={6} md={8} lg={8}>
         <ProgressCard
           name='Debt status'
           hint='Current value of your debt in comparison to your collateral value and max borrow'

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:not(:last-child)': {
       marginBottom: 20
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       flexWrap: 'nowrap',
       '&:not(:last-child)': {
         marginBottom: 30

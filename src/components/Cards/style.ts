@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 13,
     fontWeight: 700,
     lineHeight: 'unset',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       fontSize: 16
     }
   },
