@@ -150,7 +150,7 @@ export const ActionTemplate: React.FC<IProps> = ({
       direction='column'
       className={classes.root}>
       <Grid container item className={classes.wrap}>
-        <Grid item>
+        <Grid item className={classes.inputRoot}>
           <AmountInputWithLabel
             value={inputValue}
             setValue={onAmountInputChange}
@@ -169,7 +169,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid className={classes.xsItemCenter} item>
+          <Grid item className={classes.smItemCenter}>
             <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
@@ -178,8 +178,8 @@ export const ActionTemplate: React.FC<IProps> = ({
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
-              keyClassName={classes.xsTextAlignCenter}
-              valueClassName={classes.xsTextAlignCenter}
+              keyClassName={classes.smTextAlignCenter}
+              valueClassName={classes.smTextAlignCenter}
               value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}
