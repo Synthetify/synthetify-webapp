@@ -12,8 +12,10 @@ import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
 import classNames from 'classnames'
-import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
+import HintIcon from '@static/svg/exclamationMark.svg'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import useStyles from './style'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -75,6 +77,9 @@ const getButtonMessage = (
   }
   if (tokenFrom.symbol === tokenTo.symbol) {
     return 'Choose another token'
+  }
+  if (printBNtoBN(amountTo, tokenTo.decimals).gt(tokenTo.maxSupply)) {
+    return 'Supply insufficient to swap'
   }
   return 'Swap'
 }
@@ -227,7 +232,27 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
 
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
-          <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+          <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center' className={classes.toText}>
+            <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+            {(tokenToIndex !== null) && (printBNtoBN(amountTo, tokens[tokenToIndex].decimals).gte(tokens[tokenToIndex].maxSupply))
+              ? (
+                <MobileTooltip
+                  hint={(
+                    <>
+                      <span>Available to trade: </span>
+                      <span>{printBN(tokens[tokenToIndex].maxSupply, tokens[tokenToIndex].decimals)} {tokens[tokenToIndex].symbol}</span>
+                    </>
+                  )}
+                  anchor={<img src={HintIcon} alt='' className={classes.exclamationMark} />}
+                  tooltipClassName={classes.tooltip}
+                  tooltipArrowClassName={classes.tooltipArrow}
+                  mobilePlacement='top-end'
+                  desktopPlacement='top-end'
+                />
+              )
+              : null
+            }
+          </Grid>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null && tokenToIndex !== null
               ? (
