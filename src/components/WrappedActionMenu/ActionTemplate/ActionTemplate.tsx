@@ -24,6 +24,7 @@ export interface IProps {
   showArrowInInput?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void
+  formatMaxAvailable?: (max: BN) => BN
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -38,7 +39,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   onSelectToken,
   showArrowInInput,
   walletConnected,
-  noWalletHandler
+  noWalletHandler,
+  formatMaxAvailable
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -186,7 +188,7 @@ export const ActionTemplate: React.FC<IProps> = ({
               keyName={`Available to ${action}`}
               keyClassName={classes.smTextAlignCenter}
               valueClassName={classes.smTextAlignCenter}
-              value={maxAvailable}
+              value={formatMaxAvailable ? formatMaxAvailable(maxAvailable) : maxAvailable}
               decimal={maxDecimal}
               unit={currency}
             />

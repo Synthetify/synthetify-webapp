@@ -87,6 +87,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={mintState.sending}
         hasError={!!mintState.error?.length}
+        formatMaxAvailable={(max) => max.muln(99).divn(100)}
       />
     ),
     withdraw: (
@@ -103,6 +104,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         showArrowInInput
         walletConnected={walletConnected}
         noWalletHandler={noWalletHandler}
+        formatMaxAvailable={(max) => max.muln(99).divn(100)}
       />
     ),
     burn: (
@@ -114,6 +116,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={burnState.sending}
         hasError={!!burnState.error?.length}
+        formatMaxAvailable={(max) => max.muln(99).divn(100)}
       />
     ),
     rewards: <RewardsTab {...stakingData} />
