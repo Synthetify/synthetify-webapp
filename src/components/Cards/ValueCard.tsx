@@ -1,16 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Card,
   CardContent,
   Typography,
-  Divider,
-  Tooltip,
-  Icon,
-  ClickAwayListener,
-  Hidden
+  Divider
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import useStyles from './style'
 
 export interface IProps {
@@ -23,51 +20,19 @@ export interface IProps {
 }
 export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint, onClick }) => {
   const classes = useStyles()
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent>
         {hint
           ? (
-            <>
-              <Hidden mdDown>
-                <Icon>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                    title={hint}
-                    placement='top-end'
-                    arrow>
-                    <img src={HintIcon} alt='' className={classes.questionMark} />
-                  </Tooltip>
-                </Icon>
-              </Hidden>
-              <Hidden lgUp>
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setIsPopoverOpen(false)
-                  }}>
-                  <Icon
-                    onClick={() => {
-                      setIsPopoverOpen(true)
-                    }}>
-                    <Tooltip
-                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                      title={hint}
-                      placement='top-end'
-                      open={isPopoverOpen}
-                      onClose={() => {
-                        setIsPopoverOpen(false)
-                      }}
-                      disableFocusListener
-                      disableHoverListener
-                      disableTouchListener
-                      arrow>
-                      <img src={HintIcon} alt='' className={classes.questionMark} />
-                    </Tooltip>
-                  </Icon>
-                </ClickAwayListener>
-              </Hidden>
-            </>
+            <MobileTooltip
+              hint={hint}
+              anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+              tooltipClassName={classes.tooltip}
+              tooltipArrowClassName={classes.tooltipArrow}
+              mobilePlacement='top-end'
+              desktopPlacement='top-end'
+            />
           )
           : null
         }

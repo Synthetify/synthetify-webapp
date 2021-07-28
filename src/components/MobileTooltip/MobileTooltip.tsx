@@ -1,6 +1,6 @@
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip } from '@material-ui/core'
-import HintIcon from '@static/svg/questionMark.svg'
-import React, { ReactChild, useEffect, useState } from 'react'
+import classNames from 'classnames'
+import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
 
 type Placement =
@@ -19,16 +19,22 @@ type Placement =
 
 export interface IMobileTooltip {
   hint: ReactChild
+  anchor: ReactElement
   onOpen?: () => void
   mobilePlacement?: Placement
   desktopPlacement?: Placement
+  tooltipClassName?: string
+  tooltipArrowClassName?: string
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
   hint,
+  anchor,
   onOpen,
   mobilePlacement = 'bottom',
-  desktopPlacement = 'right'
+  desktopPlacement = 'right',
+  tooltipClassName,
+  tooltipArrowClassName
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -44,10 +50,11 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <Icon>
           <Tooltip
             onOpen={onOpen}
-            classes={{ tooltip: classes.tooltip }}
+            classes={{ tooltip: classNames(tooltipClassName, classes.tooltip), arrow: tooltipArrowClassName }}
             title={hint}
-            placement={desktopPlacement}>
-            <img src={HintIcon} alt='' className={classes.questionMark} />
+            placement={desktopPlacement}
+            arrow={!!tooltipArrowClassName}>
+            {anchor}
           </Tooltip>
         </Icon>
       </Hidden>
@@ -55,15 +62,16 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
-              classes={{ tooltip: classes.tooltip }}
+              classes={{ tooltip: classNames(tooltipClassName, classes.tooltip), arrow: tooltipArrowClassName }}
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
               onClose={() => setIsPopoverOpen(false)}
               disableFocusListener
               disableHoverListener
-              disableTouchListener>
-              <img src={HintIcon} alt='' className={classes.questionMark} />
+              disableTouchListener
+              arrow={!!tooltipArrowClassName}>
+              {anchor}
             </Tooltip>
           </Icon>
         </ClickAwayListener>
