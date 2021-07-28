@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/staking'
+import { actions as snackbarActions } from '@reducers/snackbars'
 import {
   userMaxMintUsd,
   userMaxWithdraw,
@@ -11,9 +12,10 @@ import {
   userDebtShares
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { collateralAccountsArray, userMaxBurnToken, userMaxDeposit } from '@selectors/solanaWallet'
+import { collateralAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { Status } from '@reducers/solanaWallet'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
@@ -39,6 +41,7 @@ export const ActionMenuContainer: React.FC = () => {
   const stakingState = useSelector(staking)
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
+  const walletStatus = useSelector(status)
 
   return (
     <WrappedActionMenu
@@ -114,6 +117,14 @@ export const ActionMenuContainer: React.FC = () => {
       }}
       depositDecimal={depositDecimal}
       withdrawDecimal={userCollaterals[withdrawIndex]?.decimals ?? 6}
+      walletConnected={walletStatus === Status.Initalized}
+      noWalletHandler={() => dispatch(
+        snackbarActions.add({
+          message: 'Connect your wallet first',
+          variant: 'warning',
+          persist: false
+        })
+      )}
     />
   )
 }

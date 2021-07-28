@@ -22,6 +22,8 @@ export interface IProps {
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
   showArrowInInput?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -34,7 +36,9 @@ export const ActionTemplate: React.FC<IProps> = ({
   hasError,
   tokens,
   onSelectToken,
-  showArrowInInput
+  showArrowInInput,
+  walletConnected,
+  noWalletHandler
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -160,6 +164,8 @@ export const ActionTemplate: React.FC<IProps> = ({
             tokens={tokens}
             onSelectToken={onSelectToken}
             showArrow={showArrowInInput}
+            walletConnected={walletConnected}
+            noWalletHandler={noWalletHandler}
           />
         </Grid>
         <Grid

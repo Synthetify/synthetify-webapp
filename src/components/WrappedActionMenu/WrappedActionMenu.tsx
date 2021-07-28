@@ -30,6 +30,8 @@ export interface IProps {
   onSelectWithdrawToken?: (chosen: string) => void
   depositDecimal: number
   withdrawDecimal: number
+  walletConnected: boolean
+  noWalletHandler: () => void
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -53,7 +55,9 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   onSelectDepositToken,
   onSelectWithdrawToken,
   depositDecimal,
-  withdrawDecimal
+  withdrawDecimal,
+  walletConnected,
+  noWalletHandler
 }) => {
   const classes = useStyles()
 
@@ -70,6 +74,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         tokens={collaterals}
         onSelectToken={onSelectDepositToken}
         showArrowInInput
+        walletConnected={walletConnected}
+        noWalletHandler={noWalletHandler}
       />
     ),
     mint: (
@@ -95,6 +101,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         tokens={collaterals}
         onSelectToken={onSelectWithdrawToken}
         showArrowInInput
+        walletConnected={walletConnected}
+        noWalletHandler={noWalletHandler}
       />
     ),
     burn: (

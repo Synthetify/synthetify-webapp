@@ -16,6 +16,8 @@ interface IProps {
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
   showArrow?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
 }
 
 export const AmountInputWithLabel: React.FC<IProps> = props => {

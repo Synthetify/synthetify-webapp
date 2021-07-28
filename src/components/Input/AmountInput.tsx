@@ -18,6 +18,8 @@ interface IProps {
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
   showArrow?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -30,10 +32,12 @@ export const AmountInput: React.FC<IProps> = ({
   style,
   tokens,
   onSelectToken,
-  showArrow
+  showArrow,
+  walletConnected,
+  noWalletHandler
 }) => {
   const classes = useStyles()
-  const proppedClasses = useStylesWithProps({ tokens, onSelectToken })
+  const proppedClasses = useStylesWithProps({ onSelectToken })
 
   const [open, setOpen] = useState(false)
 
@@ -85,6 +89,11 @@ export const AmountInput: React.FC<IProps> = ({
         endAdornment={
           !currency ? null : (
             <InputAdornment position='end' className={classNames(classes.currency, proppedClasses.select)} onClick={() => {
+              if (!walletConnected && noWalletHandler) {
+                noWalletHandler()
+                return
+              }
+
               if (tokens?.length && onSelectToken) {
                 blurContent()
                 setOpen(true)
