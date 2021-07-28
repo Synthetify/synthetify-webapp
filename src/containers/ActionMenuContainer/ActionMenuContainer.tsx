@@ -69,10 +69,10 @@ export const ActionMenuContainer: React.FC = () => {
           })
         )
       }}
-      availableToMint={availableToMint.muln(99).divn(100)}
+      availableToMint={availableToMint}
       availableToDeposit={balance}
-      availableToWithdraw={availableToWithdraw.muln(99).divn(100)}
-      availableToBurn={availableToBurn.muln(99).divn(100)}
+      availableToWithdraw={availableToWithdraw}
+      availableToBurn={availableToBurn}
       mintState={mintState}
       withdrawState={withdrawState}
       depositState={depositState}
