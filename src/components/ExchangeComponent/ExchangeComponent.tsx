@@ -307,7 +307,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 centered={true}
                 onSelect={(chosen: string) => {
                   setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
-                  setTimeout(() => updateEstimatedAmount(), 0)
+                  updateEstimatedAmount()
                 }}
               />
             </Grid>
