@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
+import HintIcon from '@static/svg/questionMark.svg'
 import { transformBN } from '@consts/utils'
 import BN from 'bn.js'
 import useStyles from './style'

@@ -42,12 +42,12 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
           <Grid container>
             <Grid item xs={12} className={classes.headerFont}>
               <Grid container style={{ flexWrap: 'nowrap' }}>
-                <Grid item xs={4} sm={3}>
+                <Grid item xs={4}>
                   <Typography variant='body1' color='textPrimary' className={classes.headerFont}>
                     Token
                   </Typography>
                 </Grid>
-                <Grid item xs={4} sm={5}>
+                <Grid item xs={4}>
                   <Typography variant='body1' color='textPrimary' className={classes.headerFont}>
                     Balance
                   </Typography>
@@ -62,17 +62,17 @@ export const TokenList: React.FC<IProps> = ({ tokens, addAccount }) => {
           </Grid>
           {items.length > 0
             ? (
-            <Grid>{items}</Grid>
-              )
+              <Grid>{items}</Grid>
+            )
             : (
-            <Grid>
-              <Divider className={classNames(classes.tokensDivider, classes.tokensDividerMargin)} />
-              <Grid className={classes.emptyTokens}>
-                <Typography>No tokens to show.</Typography>
-                <Typography>Please connect an account.</Typography>
+              <Grid>
+                <Divider className={classNames(classes.tokensDivider, classes.tokensDividerMargin)} />
+                <Grid className={classes.emptyTokens}>
+                  <Typography>No tokens to show.</Typography>
+                  <Typography>Please connect an account.</Typography>
+                </Grid>
               </Grid>
-            </Grid>
-              )
+            )
           }
         </Grid>
       </CardContent>

@@ -77,14 +77,13 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       fontWeight: 400,
       fontSize: 22,
       minHeight: 60,
+      minWidth: '20%',
       [theme.breakpoints.down('sm')]: {
         fontSize: 18,
-        minWidth: 100,
         padding: 5
       },
       [theme.breakpoints.down('xs')]: {
         fontSize: 13,
-        minWidth: 64,
         padding: 0
       },
       color: colors.navy.grey

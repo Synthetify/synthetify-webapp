@@ -46,6 +46,13 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
         onWithdraw: () => {},
         onClaim: () => {}
       }}
+      collaterals={[]}
+      withdrawCurrency='SNY'
+      withdrawDecimal={6}
+      depositCurrency='SNY'
+      depositDecimal={6}
+      walletConnected={true}
+      noWalletHandler={() => {}}
     />
   </div>
 ))

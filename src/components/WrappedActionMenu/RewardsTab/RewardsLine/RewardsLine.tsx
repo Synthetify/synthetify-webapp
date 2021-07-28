@@ -34,18 +34,18 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     <>
       {nonBracket
         ? (
-        <>
-          <AnimatedNumber
-            value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
-            duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
-          />
-          {` ${nonBracket}`}
-        </>
-          )
+          <>
+            <AnimatedNumber
+              value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(4)}
+            />
+            {` ${nonBracket}`}
+          </>
+        )
         : (
-            ''
-          )
+          ''
+        )
       }
     </>
   )
@@ -54,25 +54,25 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     <>
       {bracket
         ? (
-        <>
-          {' ('}
-          <AnimatedNumber
-            value={bracketValue ? transformBN(bracketValue) : new BN(0)}
-            duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
-          />
-          {` ${bracket})`}
-        </>
-          )
+          <>
+            {' ('}
+            <AnimatedNumber
+              value={bracketValue ? transformBN(bracketValue) : new BN(0)}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(4)}
+            />
+            {` ${bracket})`}
+          </>
+        )
         : (
-            ''
-          )
+          ''
+        )
       }
     </>
   )
 
   return (
-    <Grid container justifyContent='flex-start' alignItems='center' wrap='nowrap'>
+    <Grid container className={classes.line} alignItems='center' wrap='nowrap'>
       <Grid item style={{ marginRight: 25 }}>
         <Typography className={classes.text}>
           {name}

@@ -17,6 +17,9 @@ interface IProps {
   style?: CSSProperties
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
+  showArrow?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -28,10 +31,13 @@ export const AmountInput: React.FC<IProps> = ({
   placeholder,
   style,
   tokens,
-  onSelectToken
+  onSelectToken,
+  showArrow,
+  walletConnected,
+  noWalletHandler
 }) => {
   const classes = useStyles()
-  const proppedClasses = useStylesWithProps({ tokens, onSelectToken })
+  const proppedClasses = useStylesWithProps({ onSelectToken })
 
   const [open, setOpen] = useState(false)
 
@@ -83,6 +89,11 @@ export const AmountInput: React.FC<IProps> = ({
         endAdornment={
           !currency ? null : (
             <InputAdornment position='end' className={classNames(classes.currency, proppedClasses.select)} onClick={() => {
+              if (!walletConnected && noWalletHandler) {
+                noWalletHandler()
+                return
+              }
+
               if (tokens?.length && onSelectToken) {
                 blurContent()
                 setOpen(true)
@@ -91,7 +102,7 @@ export const AmountInput: React.FC<IProps> = ({
             >
               <Divider orientation='vertical' className={classes.divider} />
               {currency}
-              {(tokens?.length && onSelectToken) ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : null}
+              {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
             </InputAdornment>
           )
         }

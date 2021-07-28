@@ -47,11 +47,11 @@ export const ChangeWalletButton: React.FC<IProps> = ({
   }
 
   return (
-    <div>
+    <>
       <Button
         className={classes.headerButton}
         variant='contained'
-        classes={{ disabled: classes.disabled }}
+        classes={{ disabled: classes.disabled, startIcon: classes.startIcon }}
         onClick={handleClick}
         startIcon={startIcon}
         style={{ marginRight: 0 }}
@@ -67,7 +67,7 @@ export const ChangeWalletButton: React.FC<IProps> = ({
         callDisconect={handleDisconnect}
         connected={connected}
       />
-    </div>
+    </>
   )
 }
 export default ChangeWalletButton

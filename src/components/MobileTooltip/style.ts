@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   questionMark: {
     height: 17,
-    width: 17
+    minWidth: 17
   }
 }))
 

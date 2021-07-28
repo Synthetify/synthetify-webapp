@@ -10,7 +10,7 @@ import {
   Hidden
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
+import HintIcon from '@static/svg/questionMark.svg'
 import useStyles from './style'
 
 export interface IProps {
