@@ -72,11 +72,8 @@ const getButtonMessage = (
   if (amountTo.match(/^0\.0*$/)) {
     return 'Enter value of swap'
   }
-  if (amountFrom.match(`^\\d+\\.\\d{${tokenFrom.decimals + 1},}$`)) {
-    return 'Incorrect input token value'
-  }
   if (amountTo.match(`^\\d+\\.\\d{${tokenTo.decimals + 1},}$`)) {
-    return 'Incorrect output token value'
+    return 'Incorrect output token amount'
   }
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
