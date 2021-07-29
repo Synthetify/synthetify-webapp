@@ -146,6 +146,40 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   mdDownButton: {
     width: 'calc(100% - 20px)'
+  },
+  tooltip: {
+    background: colors.navy.navButton,
+    color: colors.navy.lightGrey,
+    fontSize: 13,
+    fontWeight: 700,
+    padding: '12px 0',
+    width: 258,
+    textAlign: 'center',
+
+    [theme.breakpoints.down('xs')]: {
+      width: 158
+    }
+  },
+  tooltipArrow: {
+    color: colors.navy.navButton,
+    borderColor: colors.navy.navButton,
+    width: 13,
+    marginBlock: '-0.67em !important'
+  },
+  exclamationMark: {
+    height: 16,
+    width: 16
+  },
+  toText: {
+    maxWidth: 160,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 220
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 106
+    }
   }
 }))
 
