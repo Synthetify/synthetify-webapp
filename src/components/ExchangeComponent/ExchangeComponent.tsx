@@ -352,7 +352,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         </Grid>
       </Grid>
       <Grid item container className={classes.numbersField}>
-        <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'auto' } : undefined}>
+        <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'fit-content' } : undefined}>
           <Grid item container justifyContent="space-between" style={{ width: 'auto' }}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
             {typeof nextDiscountPercent !== 'undefined' && (

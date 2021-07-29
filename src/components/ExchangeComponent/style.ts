@@ -174,7 +174,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 700,
 
     [theme.breakpoints.down('xs')]: {
-      width: 158
+      width: 158,
+      padding: '7px 0'
     }
   },
   feeTooltip: {
