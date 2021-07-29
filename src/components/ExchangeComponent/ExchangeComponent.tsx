@@ -355,31 +355,36 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'auto' } : undefined}>
           <Grid item container justifyContent="space-between" style={{ width: 'auto' }}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-            {typeof nextDiscountPercent !== 'undefined' && (<MobileTooltip
-              hint={(
-                <>
-                  Deposit <b>{nextDiscountThreshold} SNY</b> to get <b>{nextDiscountPercent}%</b> discount.
-                </>
-              )}
-              anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-              tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
-              tooltipArrowClassName={classNames(classes.tooltipArrow, classes.feeTooltipArrow)}
-              mobilePlacement='top-start'
-              desktopPlacement='top-end'
-            />)}
+            {typeof nextDiscountPercent !== 'undefined' && (
+              <MobileTooltip
+                hint={(
+                  <>
+                    Deposit <b>{nextDiscountThreshold} SNY</b> to get <b>{nextDiscountPercent}%</b> discount.
+                  </>
+                )}
+                anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
+                tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
+                tooltipArrowClassName={classNames(classes.tooltipArrow, classes.feeTooltipArrow)}
+                mobilePlacement='top-start'
+                desktopPlacement='top-end'
+              />
+            )}
           </Grid>
+
           <Grid item container justifyContent="space-between">
             <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
-            {typeof discountPercent !== 'undefined' && (<Typography
-              className={classes.discount}
-              style={{
-                color: discountPercent === 0
-                  ? colors.navy.grey
-                  : colors.green.main
-              }}
-            >
+            {typeof discountPercent !== 'undefined' && (
+              <Typography
+                className={classes.discount}
+                style={{
+                  color: discountPercent === 0
+                    ? colors.navy.grey
+                    : colors.green.main
+                }}
+              >
               ({discountPercent}%)
-            </Typography>)}
+              </Typography>
+            )}
           </Grid>
         </Grid>
         <Grid item>
