@@ -54,13 +54,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   amountDivider: {
     background: colors.navy.grey,
     height: 57,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 10,
+    marginRight: 18,
 
     [theme.breakpoints.down('sm')]: {
       height: 37,
-      marginLeft: 20,
-      marginRight: 20,
       marginTop: 4
     }
   },
@@ -88,7 +86,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       fontSize: 13,
-      lineHeight: '15px'
+      lineHeight: '16px'
+    }
+  },
+  discount: {
+    fontSize: 22,
+    lineHeight: '40px',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 16,
+      lineHeight: '16px'
+    }
+  },
+  fee: {
+    maxWidth: 140,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 100
     }
   },
   swapButton: {
@@ -148,27 +162,44 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 'calc(100% - 20px)'
   },
   tooltip: {
-    background: colors.navy.navButton,
     color: colors.navy.lightGrey,
     fontSize: 13,
-    fontWeight: 700,
-    padding: '12px 0',
-    width: 258,
     textAlign: 'center',
+    width: 258,
+    padding: '12px 0',
+    marginBottom: 10
+  },
+  supplyTooltip: {
+    background: colors.navy.navButton,
+    fontWeight: 700,
 
     [theme.breakpoints.down('xs')]: {
-      width: 158
+      width: 158,
+      padding: '7px 0'
     }
   },
+  feeTooltip: {
+    background: colors.navy.info
+  },
   tooltipArrow: {
-    color: colors.navy.navButton,
-    borderColor: colors.navy.navButton,
     width: 13,
     marginBlock: '-0.67em !important'
+  },
+  supplyTooltipArrow: {
+    color: colors.navy.navButton,
+    borderColor: colors.navy.navButton
+  },
+  feeTooltipArrow: {
+    color: colors.navy.info,
+    borderColor: colors.navy.info
   },
   exclamationMark: {
     height: 16,
     width: 16
+  },
+  questionMark: {
+    height: 20,
+    width: 20
   },
   toText: {
     maxWidth: 160,

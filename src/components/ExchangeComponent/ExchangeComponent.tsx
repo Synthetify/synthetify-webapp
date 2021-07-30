@@ -13,7 +13,8 @@ import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
 import classNames from 'classnames'
 import AnimatedNumber from '@components/AnimatedNumber'
-import HintIcon from '@static/svg/exclamationMark.svg'
+import ExclamationMark from '@static/svg/exclamationMark.svg'
+import QuestionMark from '@static/svg/questionMark.svg'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import useStyles from './style'
 
@@ -91,8 +92,17 @@ export interface IExchangeComponent {
   tokens: ExchangeTokensWithBalance[]
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
+  discountPercent?: number
+  nextDiscountPercent?: number
+  nextDiscountThreshold?: string
 }
-export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
+export const ExchangeComponent: React.FC<IExchangeComponent> = ({
+  tokens,
+  onSwap,
+  discountPercent,
+  nextDiscountPercent,
+  nextDiscountThreshold
+}) => {
   const classes = useStyles()
 
   const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens.length ? 0 : null)
@@ -246,9 +256,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                       <span>{printBN(tokens[tokenToIndex].maxSupply, tokens[tokenToIndex].decimals)} {tokens[tokenToIndex].symbol}</span>
                     </>
                   )}
-                  anchor={<img src={HintIcon} alt='' className={classes.exclamationMark} />}
-                  tooltipClassName={classes.tooltip}
-                  tooltipArrowClassName={classes.tooltipArrow}
+                  anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
+                  tooltipClassName={classNames(classes.tooltip, classes.supplyTooltip)}
+                  tooltipArrowClassName={classNames(classes.tooltipArrow, classes.supplyTooltipArrow)}
                   mobilePlacement='top-end'
                   desktopPlacement='top-end'
                 />
@@ -345,9 +355,40 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         </Grid>
       </Grid>
       <Grid item container className={classes.numbersField}>
-        <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
+        <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'fit-content' } : undefined}>
+          <Grid item container justifyContent="space-between" style={{ width: 'auto' }}>
+            <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+            {typeof nextDiscountPercent !== 'undefined' && (
+              <MobileTooltip
+                hint={(
+                  <>
+                    Deposit <b>{nextDiscountThreshold} SNY</b> to get <b>{nextDiscountPercent}%</b> discount.
+                  </>
+                )}
+                anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
+                tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
+                tooltipArrowClassName={classNames(classes.tooltipArrow, classes.feeTooltipArrow)}
+                mobilePlacement='top-start'
+                desktopPlacement='top-end'
+              />
+            )}
+          </Grid>
+
+          <Grid item container justifyContent="space-between">
+            <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
+            {typeof discountPercent !== 'undefined' && (
+              <Typography
+                className={classes.discount}
+                style={{
+                  color: discountPercent === 0
+                    ? colors.navy.grey
+                    : colors.green.main
+                }}
+              >
+              ({discountPercent}%)
+              </Typography>
+            )}
+          </Grid>
         </Grid>
         <Grid item>
           <Divider className={classes.amountDivider} orientation='vertical' />
