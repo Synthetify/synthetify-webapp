@@ -49,6 +49,13 @@ storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)
   .add('default', () => (
     <div style={{ width: 900 }} id={toBlur}>
-      <ExchangeComponent tokens={tokens} swapData={swap} onSwap={onSwap} />
+      <ExchangeComponent
+        tokens={tokens}
+        swapData={swap}
+        onSwap={onSwap}
+        discountPercent={-10}
+        nextDiscountPercent={-12}
+        nextDiscountThreshold={'2137'}
+      />
     </div>
   ))
