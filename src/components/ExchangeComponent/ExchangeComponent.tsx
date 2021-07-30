@@ -46,17 +46,17 @@ export const calculateSwapOutAmountReversed = (
   amount: string,
   effectiveFee: number = 300
 ) => {
-  const amountAfterFee = printBNtoBN(amount, assetIn.decimals).add(
-    printBNtoBN(amount, assetIn.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
+  const amountAfterFee = printBNtoBN(amount, assetFor.decimals).add(
+    printBNtoBN(amount, assetFor.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
   )
   const amountOutBeforeFee = assetFor.price.mul(amountAfterFee).div(assetIn.price)
 
   const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
 
   if (decimalChange < 1) {
-    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.decimals)
+    return printBN(amountOutBeforeFee.mul(new BN(1 / decimalChange)), assetIn.decimals)
   } else {
-    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.decimals)
+    return printBN(amountOutBeforeFee.div(new BN(decimalChange)), assetIn.decimals)
   }
 }
 
@@ -72,6 +72,9 @@ const getButtonMessage = (
   }
   if (amountTo.match(/^0\.0*$/)) {
     return 'Enter value of swap'
+  }
+  if (amountTo.match(`^\\d+\\.\\d{${tokenTo.decimals + 1},}$`)) {
+    return 'Incorrect output token amount'
   }
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
