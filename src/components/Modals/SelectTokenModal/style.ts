@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   },
   root: {
     background: colors.navy.component,
-    minWidth: 350,
+    width: 350,
     borderRadius: 10,
     marginTop: 20,
     marginBottom: 3,
@@ -25,9 +25,11 @@ const useStyles = makeStyles(() => ({
   },
   tokenItem: {
     margin: 5,
-    marginLeft: 7,
+    marginLeft: 16,
+    marginBottom: 12,
     borderRadius: 10,
-    width: '98%',
+    width: 296,
+    height: 40,
     cursor: 'pointer',
 
     '&:hover': {
@@ -36,13 +38,19 @@ const useStyles = makeStyles(() => ({
   },
   tokenName: {
     color: colors.navy.veryLightGrey,
-    fontSize: 16
+    fontSize: 16,
+    lineHeight: '16px',
+    marginBottom: 5
+  },
+  tokenDescrpiption: {
+    color: colors.navy.grey,
+    fontSize: 10,
+    lineHeight: '10px'
   },
   tokenIcon: {
-    width: 22,
-    height: 22,
-    marginLeft: 12,
-    marginRight: 14
+    width: 26,
+    height: 26,
+    marginInline: 5
   },
   tokenBalance: {
     fontSize: 13,
@@ -58,7 +66,7 @@ const useStyles = makeStyles(() => ({
     height: 40,
     lineHeight: 40,
     paddingLeft: 16,
-    fontSize: 16,
+    fontSize: 22,
     borderRadius: 10,
     width: '100%',
     marginBottom: 16
@@ -84,7 +92,7 @@ const useStyles = makeStyles(() => ({
   paper: {
     background: 'transparent',
     boxShadow: 'none',
-    maxWidth: '100%'
+    maxWidth: 350
   },
   clearIcon: {
     minWidth: 12,

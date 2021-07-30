@@ -26,6 +26,19 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
+  const descrpitionForSymbol: { [key: string]: string } = {
+    SNY: 'Synthetify',
+    xSNY: 'Synthetify asset',
+    xBNB: 'Binance asset',
+    xBTC: 'Bitcoin asset',
+    xETH: 'Ethereum asset',
+    xFTT: 'FTX asset',
+    xSOL: 'Solana asset',
+    xSRM: 'Serum asset',
+    xUSD: 'USD asset',
+    WSOL: 'Wrapped Solana'
+  }
+
   const endAdornment = () => (
     <>
       {!!value.length && <img className={classes.clearIcon} src={icons.clear} alt='x' onClick={() => { setValue('') }} />}
@@ -90,6 +103,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     </Grid>
                     <Grid item>
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
+                      <Typography className={classes.tokenDescrpiption}>{descrpitionForSymbol[token.symbol] ?? 'Asset'}</Typography>
                     </Grid>
                     {(token.balance && token.decimals) && (
                       <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
