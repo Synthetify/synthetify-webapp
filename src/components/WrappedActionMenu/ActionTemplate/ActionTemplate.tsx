@@ -21,6 +21,10 @@ export interface IProps {
   hasError: boolean
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
+  showArrowInInput?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
+  formatMaxAvailable?: (max: BN) => BN
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -32,7 +36,11 @@ export const ActionTemplate: React.FC<IProps> = ({
   sending,
   hasError,
   tokens,
-  onSelectToken
+  onSelectToken,
+  showArrowInInput,
+  walletConnected,
+  noWalletHandler,
+  formatMaxAvailable
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -148,7 +156,7 @@ export const ActionTemplate: React.FC<IProps> = ({
       direction='column'
       className={classes.root}>
       <Grid container item className={classes.wrap}>
-        <Grid item>
+        <Grid item className={classes.inputRoot}>
           <AmountInputWithLabel
             value={inputValue}
             setValue={onAmountInputChange}
@@ -157,6 +165,9 @@ export const ActionTemplate: React.FC<IProps> = ({
             currency={currency}
             tokens={tokens}
             onSelectToken={onSelectToken}
+            showArrow={showArrowInInput}
+            walletConnected={walletConnected}
+            noWalletHandler={noWalletHandler}
           />
         </Grid>
         <Grid
@@ -166,7 +177,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid className={classes.xsItemCenter} item>
+          <Grid item className={classes.smItemCenter}>
             <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
@@ -175,9 +186,9 @@ export const ActionTemplate: React.FC<IProps> = ({
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
-              keyClassName={classes.xsTextAlignCenter}
-              valueClassName={classes.xsTextAlignCenter}
-              value={maxAvailable}
+              keyClassName={classes.smTextAlignCenter}
+              valueClassName={classes.smTextAlignCenter}
+              value={formatMaxAvailable ? formatMaxAvailable(maxAvailable) : maxAvailable}
               decimal={maxDecimal}
               unit={currency}
             />

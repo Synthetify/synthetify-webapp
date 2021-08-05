@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'flex-end',
     backgroundColor: colors.navy.background,
     padding: 12,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
     }
   },
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     display: 'none',
     backgroundColor: colors.navy.lightGrey,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'block'
     }
   }

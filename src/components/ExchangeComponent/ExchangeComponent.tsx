@@ -12,8 +12,11 @@ import MaxButton from '@components/MaxButton/MaxButton'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import { printBNtoBN, printBN } from '@consts/utils'
 import classNames from 'classnames'
-import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
+import ExclamationMark from '@static/svg/exclamationMark.svg'
+import QuestionMark from '@static/svg/questionMark.svg'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import useStyles from './style'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -43,17 +46,17 @@ export const calculateSwapOutAmountReversed = (
   amount: string,
   effectiveFee: number = 300
 ) => {
-  const amountAfterFee = printBNtoBN(amount, assetIn.decimals).add(
-    printBNtoBN(amount, assetIn.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
+  const amountAfterFee = printBNtoBN(amount, assetFor.decimals).add(
+    printBNtoBN(amount, assetFor.decimals).mul(new BN(effectiveFee)).div(new BN(100000))
   )
   const amountOutBeforeFee = assetFor.price.mul(amountAfterFee).div(assetIn.price)
 
   const decimalChange = 10 ** (assetFor.decimals - assetIn.decimals)
 
   if (decimalChange < 1) {
-    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.decimals)
+    return printBN(amountOutBeforeFee.mul(new BN(1 / decimalChange)), assetIn.decimals)
   } else {
-    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.decimals)
+    return printBN(amountOutBeforeFee.div(new BN(decimalChange)), assetIn.decimals)
   }
 }
 
@@ -70,11 +73,17 @@ const getButtonMessage = (
   if (amountTo.match(/^0\.0*$/)) {
     return 'Enter value of swap'
   }
+  if (amountTo.match(`^\\d+\\.\\d{${tokenTo.decimals + 1},}$`)) {
+    return 'Incorrect output token amount'
+  }
   if (printBNtoBN(amountFrom, tokenFrom.decimals).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
   }
   if (tokenFrom.symbol === tokenTo.symbol) {
     return 'Choose another token'
+  }
+  if (printBNtoBN(amountTo, tokenTo.decimals).gt(tokenTo.maxSupply)) {
+    return 'Supply insufficient to swap'
   }
   return 'Swap'
 }
@@ -83,8 +92,17 @@ export interface IExchangeComponent {
   tokens: ExchangeTokensWithBalance[]
   swapData: Swap
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
+  discountPercent?: number
+  nextDiscountPercent?: number
+  nextDiscountThreshold?: string
 }
-export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap }) => {
+export const ExchangeComponent: React.FC<IExchangeComponent> = ({
+  tokens,
+  onSwap,
+  discountPercent,
+  nextDiscountPercent,
+  nextDiscountThreshold
+}) => {
   const classes = useStyles()
 
   const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens.length ? 0 : null)
@@ -129,7 +147,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   <AnimatedNumber
                     value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenFromIndex].decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(3)}
                   />
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
@@ -137,7 +155,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               : ''}
           </Typography>
         </Grid>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
@@ -159,13 +177,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                     updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
+                style={{ whiteSpace: 'nowrap' }}
               />
             </Grid>
           </Grid>
         </Hidden>
 
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokens}
@@ -190,10 +209,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               currency={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
             />
           </Grid>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <MaxButton
-                name='Set&nbsp;to&nbsp;max'
+                name='Set to max'
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null) {
@@ -226,7 +245,27 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
 
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
-          <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+          <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center' className={classes.toText}>
+            <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+            {(tokenToIndex !== null) && (printBNtoBN(amountTo, tokens[tokenToIndex].decimals).gte(tokens[tokenToIndex].maxSupply))
+              ? (
+                <MobileTooltip
+                  hint={(
+                    <>
+                      <span>Available to trade: </span>
+                      <span>{printBN(tokens[tokenToIndex].maxSupply, tokens[tokenToIndex].decimals)} {tokens[tokenToIndex].symbol}</span>
+                    </>
+                  )}
+                  anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
+                  tooltipClassName={classNames(classes.tooltip, classes.supplyTooltip)}
+                  tooltipArrowClassName={classNames(classes.tooltipArrow, classes.supplyTooltipArrow)}
+                  mobilePlacement='top-end'
+                  desktopPlacement='top-end'
+                />
+              )
+              : null
+            }
+          </Grid>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null && tokenToIndex !== null
               ? (
@@ -235,7 +274,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                   <AnimatedNumber
                     value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(tokens[tokenToIndex].decimals)}
+                    formatValue={(value: string) => Number(value).toFixed(3)}
                   />
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
@@ -243,7 +282,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               : ''}
           </Typography>
         </Grid>
-        <Hidden lgUp>
+        <Hidden mdUp>
           <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
@@ -266,13 +305,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                     updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals))
                   }
                 }}
+                style={{ whiteSpace: 'nowrap' }}
               />{' '}
             </Grid>
           </Grid>
         </Hidden>
 
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <SelectToken
                 tokens={tokens}
@@ -280,7 +320,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
                 centered={true}
                 onSelect={(chosen: string) => {
                   setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
-                  setTimeout(() => updateEstimatedAmount(), 0)
+                  updateEstimatedAmount()
                 }}
               />
             </Grid>
@@ -298,10 +338,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
               currency={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
             />
           </Grid>
-          <Hidden mdDown>
+          <Hidden smDown>
             <Grid item xs={6}>
               <MaxButton
-                name='Set&nbsp;to&nbsp;max'
+                name='Set to max'
                 className={classes.button}
                 onClick={() => {
                   if (tokenFromIndex !== null && tokenToIndex !== null) {
@@ -315,9 +355,40 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({ tokens, onSwap
         </Grid>
       </Grid>
       <Grid item container className={classes.numbersField}>
-        <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-          <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
+        <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'fit-content' } : undefined}>
+          <Grid item container justifyContent="space-between" style={{ width: 'auto' }}>
+            <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+            {typeof nextDiscountPercent !== 'undefined' && (
+              <MobileTooltip
+                hint={(
+                  <>
+                    Deposit <b>{nextDiscountThreshold} SNY</b> to get <b>{nextDiscountPercent}%</b> discount.
+                  </>
+                )}
+                anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
+                tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
+                tooltipArrowClassName={classNames(classes.tooltipArrow, classes.feeTooltipArrow)}
+                mobilePlacement='top-start'
+                desktopPlacement='top-end'
+              />
+            )}
+          </Grid>
+
+          <Grid item container justifyContent="space-between">
+            <Typography className={classes.numbersFieldAmount}>{'0.3'}%</Typography>
+            {typeof discountPercent !== 'undefined' && (
+              <Typography
+                className={classes.discount}
+                style={{
+                  color: discountPercent === 0
+                    ? colors.navy.grey
+                    : colors.green.main
+                }}
+              >
+              ({discountPercent}%)
+              </Typography>
+            )}
+          </Grid>
         </Grid>
         <Grid item>
           <Divider className={classes.amountDivider} orientation='vertical' />

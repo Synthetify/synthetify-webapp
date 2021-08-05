@@ -7,6 +7,10 @@ const useStyles = makeStyles(() => ({
     fontWeight: 400,
     fontSize: 13,
     lineHeight: '16px'
+  },
+  questionMark: {
+    height: 17,
+    minWidth: 17
   }
 }))
 

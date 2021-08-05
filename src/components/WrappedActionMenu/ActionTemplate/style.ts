@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: 0
     },
     [theme.breakpoints.down('sm')]: {
+      minWidth: 132,
       marginBlock: 'auto'
     },
     [theme.breakpoints.down('xs')]: {
@@ -26,15 +27,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   wrap: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     justifyContent: 'space-between',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    [theme.breakpoints.down('xs')]: {
+      flexWrap: 'wrap'
+    }
   },
   secondHalf: {
     paddingTop: 22,
     maxWidth: 375,
     [theme.breakpoints.up('sm')]: {
-      justifyContent: 'space-between',
+      maxWidth: 230,
+      justifyContent: 'space-between'
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 375,
       '& > *': {
         marginLeft: 5,
         marginRight: 5
@@ -42,7 +50,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   amountInput: {
-    maxWidth: 375
+    [theme.breakpoints.up('sm')]: {
+      minWidth: 275
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 375
+    }
+  },
+  inputRoot: {
+    width: '100%'
   },
   divider: {
     backgroundColor: colors.navy.grey,
@@ -57,15 +73,20 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginTop: 25
     }
   },
-  xsTextAlignCenter: {
-    [theme.breakpoints.down('xs')]: {
+  smTextAlignCenter: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: 'center'
     }
   },
-  xsItemCenter: {
+  smItemCenter: {
+    [theme.breakpoints.down('sm')]: {
+      '& > button': {
+        width: 70,
+        marginLeft: 10
+      }
+    },
     [theme.breakpoints.down('xs')]: {
-      maxWidth: 110,
-      '& > *': {
+      '& > button': {
         marginInline: 20
       }
     }

@@ -5,15 +5,14 @@ import {
   Typography,
   Divider,
   Tooltip,
-  Icon,
-  ClickAwayListener,
-  Hidden,
   LinearProgress,
   Grid
 } from '@material-ui/core'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
-import useStyles, { useStylesWithProps } from './style'
+import HintIcon from '@static/svg/questionMark.svg'
 import AnimatedNumber from '@components/AnimatedNumber'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import useStyles, { useStylesWithProps } from './style'
+
 export interface IProps {
   name: string
   sign: string
@@ -40,7 +39,6 @@ export const ProgressCard: React.FC<IProps> = ({
 }) => {
   const classes = useStyles()
   const proppedClasses = useStylesWithProps({ max, current, topIndicatorValue, bottomIndicatorValue })
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [areIndicatorsOpen, setAreIndicatorsOpen] = useState(false)
 
   return (
@@ -48,45 +46,14 @@ export const ProgressCard: React.FC<IProps> = ({
       <CardContent className={classes.progressContent}>
         {hint
           ? (
-            <>
-              <Hidden mdDown>
-                <Icon>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                    title={hint}
-                    placement='top-end'
-                    arrow>
-                    <img src={HintIcon} alt='' className={classes.questionMark} />
-                  </Tooltip>
-                </Icon>
-              </Hidden>
-              <Hidden lgUp>
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setIsPopoverOpen(false)
-                  }}>
-                  <Icon
-                    onClick={() => {
-                      setIsPopoverOpen(true)
-                    }}>
-                    <Tooltip
-                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                      title={hint}
-                      placement='top-end'
-                      open={isPopoverOpen}
-                      onClose={() => {
-                        setIsPopoverOpen(false)
-                      }}
-                      disableFocusListener
-                      disableHoverListener
-                      disableTouchListener
-                      arrow>
-                      <img src={HintIcon} alt='' className={classes.questionMark} />
-                    </Tooltip>
-                  </Icon>
-                </ClickAwayListener>
-              </Hidden>
-            </>
+            <MobileTooltip
+              hint={hint}
+              anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+              tooltipClassName={classes.tooltip}
+              tooltipArrowClassName={classes.tooltipArrow}
+              mobilePlacement='top-end'
+              desktopPlacement='top-end'
+            />
           )
           : null
         }
