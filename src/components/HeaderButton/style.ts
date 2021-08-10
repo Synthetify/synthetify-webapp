@@ -5,24 +5,29 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
     background: colors.navy.navButton,
     color: colors.navy.navBar,
-    padding: '2px 25px',
+    paddingInline: 25,
     borderRadius: 10,
     textTransform: 'none',
     fontSize: 16,
-    lineHeight: '40px',
-    margin: 8,
+    height: 44,
+
+    '&:not(:last-child)': {
+      marginRight: 15
+    },
 
     [theme.breakpoints.down('sm')]: {
-      padding: '2px 0',
-      margin: '0px 18px',
-      width: 'calc(33% - 36px)'
+      paddingInline: 0,
+      width: 110,
+      height: 36,
+      fontSize: 13,
+
+      '&:not(:last-child)': {
+        marginRight: 0
+      }
     },
 
     [theme.breakpoints.down('xs')]: {
-      padding: 0,
-      fontSize: 13,
-      margin: '0px 3px',
-      width: 'calc(33% - 6px)'
+      width: 72
     },
 
     '&:hover': {
@@ -35,9 +40,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     fontSize: 16,
-    lineHeight: '40px',
 
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13
     }
   },
