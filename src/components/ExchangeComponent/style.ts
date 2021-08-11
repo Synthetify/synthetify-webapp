@@ -14,17 +14,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     fontSize: 22,
-    color: colors.navy.grey,
-    lineHeight: '26px'
-  },
-  titleDivider: {
-    background: colors.navy.grey,
-    marginTop: 13,
-    marginBottom: 40,
-
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: 20
-    }
+    color: colors.navy.lightGrey,
+    lineHeight: '40px',
+    fontWeight: 600,
+    marginBottom: 20
   },
   tokenComponent: {
     background: colors.navy[292956],

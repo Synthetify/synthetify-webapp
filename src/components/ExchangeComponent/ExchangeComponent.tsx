@@ -131,10 +131,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
   return (
     <Grid container className={classes.root} direction='column'>
-      <Grid item>
-        <Typography className={classes.title}>Swap</Typography>
-        <Divider className={classes.titleDivider} />
-      </Grid>
+      <Typography className={classes.title}>Swap</Typography>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
@@ -206,7 +203,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 }
               }}
               placeholder={'0.0'}
-              currency={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
+              currency={null}
             />
           </Grid>
           <Hidden smDown>
@@ -334,7 +331,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 }
               }}
               placeholder={'0.0'}
-              currency={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
+              currency={null}
             />
           </Grid>
           <Hidden smDown>
