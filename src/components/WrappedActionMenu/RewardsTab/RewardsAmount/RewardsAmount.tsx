@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { ClickAwayListener, Grid, Hidden, Icon, Tooltip, Typography } from '@material-ui/core'
+import React from 'react'
+import { Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
 import { transformBN } from '@consts/utils'
 import BN from 'bn.js'
 import useStyles from './style'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 
 interface IRewardsAmountProps {
   amountToClaim: BN
@@ -12,7 +13,6 @@ interface IRewardsAmountProps {
 
 export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) => {
   const classes = useStyles()
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const hint = 'Amount of SNY tokens you can withdraw'
 
   return (
@@ -27,34 +27,13 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
           SNY
         </Typography>
       </Grid>
-      <Grid item>
-        <Grid item>
-          <Hidden mdDown>
-            <Icon>
-              <Tooltip classes={{ tooltip: classes.tooltip }} title={hint} placement='bottom'>
-                <img src={HintIcon} alt='' className={classes.questionMark} />
-              </Tooltip>
-            </Icon>
-          </Hidden>
-          <Hidden lgUp>
-            <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
-              <Icon onClick={() => setIsPopoverOpen(true)}>
-                <Tooltip
-                  classes={{ tooltip: classes.tooltip }}
-                  title={hint}
-                  placement='bottom'
-                  open={isPopoverOpen}
-                  onClose={() => setIsPopoverOpen(false)}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener>
-                  <img src={HintIcon} alt='' className={classes.questionMark} />
-                </Tooltip>
-              </Icon>
-            </ClickAwayListener>
-          </Hidden>
-        </Grid>
-      </Grid>
+      <MobileTooltip
+        mobilePlacement='bottom-start'
+        desktopPlacement='bottom-start'
+        hint={hint}
+        anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+        tooltipClassName={classes.tooltip}
+      />
     </Grid>
   )
 }

@@ -166,16 +166,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 13,
     textAlign: 'center',
     width: 258,
-    padding: '12px 0',
     marginBottom: 10
   },
   supplyTooltip: {
-    background: colors.navy.navButton,
     fontWeight: 700,
 
     [theme.breakpoints.down('xs')]: {
-      width: 158,
-      padding: '7px 0'
+      width: 158
     }
   },
   feeTooltip: {

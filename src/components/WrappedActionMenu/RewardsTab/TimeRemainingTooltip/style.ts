@@ -4,7 +4,6 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles(() => ({
   hint: {
     color: colors.white.main,
-    fontWeight: 400,
     fontSize: 13,
     lineHeight: '16px'
   },

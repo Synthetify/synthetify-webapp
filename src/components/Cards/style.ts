@@ -24,11 +24,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     float: 'right'
   },
   tooltip: {
-    background: colors.navy.navButton,
     color: colors.navy.lightGrey,
     fontSize: 13,
-    padding: '5px 8px',
-    fontWeight: 400
+    fontWeight: 500
   },
   tooltipArrow: {
     color: colors.navy.navButton,

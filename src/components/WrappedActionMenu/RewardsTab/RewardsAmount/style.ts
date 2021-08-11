@@ -14,11 +14,10 @@ const useStyles = makeStyles(() => ({
     color: colors.navy.grey
   },
   tooltip: {
-    background: colors.navy.info,
+    background: colors.navy.button,
     color: colors.white.main,
     fontWeight: 400,
     fontSize: 13,
-    padding: '5px 8px',
     lineHeight: '16px'
   },
   questionMark: {
