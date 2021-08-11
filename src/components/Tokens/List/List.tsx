@@ -11,7 +11,7 @@ export const List: React.FC<IProps> = ({ tokens }) => {
   const classes = useStyles()
 
   return (
-    <Grid item xs={12} style={{ overflowX: 'hidden' }}>
+    <Grid item xs={12}>
       <Grid container className={classes.header} wrap='nowrap' alignItems='center'>
         <Grid item xs={4}>
           <Typography className={classes.headerFont}>
