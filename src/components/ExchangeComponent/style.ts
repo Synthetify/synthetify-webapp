@@ -181,18 +181,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   feeTooltip: {
     background: colors.navy.info
   },
-  tooltipArrow: {
-    width: 13,
-    marginBlock: '-0.67em !important'
-  },
-  supplyTooltipArrow: {
-    color: colors.navy.navButton,
-    borderColor: colors.navy.navButton
-  },
-  feeTooltipArrow: {
-    color: colors.navy.info,
-    borderColor: colors.navy.info
-  },
   exclamationMark: {
     height: 16,
     width: 16

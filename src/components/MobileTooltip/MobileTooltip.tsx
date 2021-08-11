@@ -24,7 +24,6 @@ export interface IMobileTooltip {
   mobilePlacement?: Placement
   desktopPlacement?: Placement
   tooltipClassName?: string
-  tooltipArrowClassName?: string
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
@@ -33,8 +32,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   onOpen,
   mobilePlacement = 'bottom',
   desktopPlacement = 'right',
-  tooltipClassName,
-  tooltipArrowClassName
+  tooltipClassName
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -50,10 +48,10 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <Icon>
           <Tooltip
             onOpen={onOpen}
-            classes={{ tooltip: classNames(tooltipClassName, classes.tooltip), arrow: tooltipArrowClassName }}
+            classes={{ tooltip: classNames(tooltipClassName, classes.tooltip) }}
             title={hint}
             placement={desktopPlacement}
-            arrow={!!tooltipArrowClassName}>
+          >
             {anchor}
           </Tooltip>
         </Icon>
@@ -62,7 +60,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
-              classes={{ tooltip: classNames(tooltipClassName, classes.tooltip), arrow: tooltipArrowClassName }}
+              classes={{ tooltip: classNames(tooltipClassName, classes.tooltip) }}
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
@@ -70,7 +68,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
               disableFocusListener
               disableHoverListener
               disableTouchListener
-              arrow={!!tooltipArrowClassName}>
+            >
               {anchor}
             </Tooltip>
           </Icon>

@@ -24,7 +24,6 @@ export const StakingStats: React.FC = () => {
           hint='Amount of money you’ve decided to keep on your virtual wallet.'
           value={transformBN(stakedUserValue)}
           sign={'$'}
-          decimals={4}
         />
       </Grid>
       <Grid className={classes.statsTile} item xs={12} sm={6} md={8} lg={8}>

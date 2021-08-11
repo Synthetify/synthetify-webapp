@@ -2,8 +2,7 @@ import React from 'react'
 import {
   Card,
   CardContent,
-  Typography,
-  Divider
+  Typography
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
@@ -14,11 +13,10 @@ export interface IProps {
   name: string
   value: string
   sign: string
-  decimals: number
   hint?: string
   onClick?: () => void
 }
-export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint, onClick }) => {
+export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }) => {
   const classes = useStyles()
   return (
     <Card className={classes.valueCard} onClick={onClick}>
@@ -29,21 +27,43 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint,
               hint={hint}
               anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
               tooltipClassName={classes.tooltip}
-              tooltipArrowClassName={classes.tooltipArrow}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
             />
           )
           : null
         }
-        <Typography className={classes.valueCardTitle}>{name}</Typography>
-        <Divider className={classes.divider} />
+        <Typography className={classes.valueCardTitle} style={{ marginBottom: 18 }}>{name}</Typography>
         <Typography className={classes.valueCardAmount}>
           <AnimatedNumber
             value={value}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(decimals)}
+            formatValue={(value: string) => {
+              const num = Number(value)
+
+              if (num < 10) {
+                return num.toFixed(4)
+              }
+
+              if (num < 1000) {
+                return num.toFixed(2)
+              }
+
+              if (num < 10000) {
+                return num.toFixed(1)
+              }
+
+              if (num < 1000000) {
+                return (num / 1000).toFixed(2)
+              }
+
+              return (num / 1000000).toFixed(2)
+            }}
           />
+          {Number(value) >= 10000
+            ? 'K'
+            : (Number(value) >= 1000000 ? 'M' : '')
+          }
           {sign}
         </Typography>
       </CardContent>

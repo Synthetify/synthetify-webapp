@@ -14,15 +14,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   valueCardAmount: {
     color: colors.navy.veryLightGrey,
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: 700,
     lineHeight: '40px'
-  },
-  divider: {
-    width: 139,
-    marginTop: 6,
-    marginBottom: 15,
-    background: colors.navy.lightGrey
   },
   questionMark: {
     height: 20,

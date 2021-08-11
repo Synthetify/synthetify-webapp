@@ -258,7 +258,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   )}
                   anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
                   tooltipClassName={classNames(classes.tooltip, classes.supplyTooltip)}
-                  tooltipArrowClassName={classNames(classes.tooltipArrow, classes.supplyTooltipArrow)}
                   mobilePlacement='top-end'
                   desktopPlacement='top-end'
                 />
@@ -367,7 +366,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 )}
                 anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
                 tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
-                tooltipArrowClassName={classNames(classes.tooltipArrow, classes.feeTooltipArrow)}
                 mobilePlacement='top-start'
                 desktopPlacement='top-end'
               />

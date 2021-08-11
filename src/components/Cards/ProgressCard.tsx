@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider,
   Tooltip,
   LinearProgress,
   Grid
@@ -50,7 +49,6 @@ export const ProgressCard: React.FC<IProps> = ({
               hint={hint}
               anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
               tooltipClassName={classes.tooltip}
-              tooltipArrowClassName={classes.tooltipArrow}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
             />
@@ -58,7 +56,6 @@ export const ProgressCard: React.FC<IProps> = ({
           : null
         }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
-        <Divider className={classes.divider} style={{ marginBottom: 0 }} />
         <Grid className={classes.progressContainer} container direction='row' alignItems='center'>
           <Typography className={classes.minMaxDebt}>0{sign}</Typography>
           <Grid item style={{ flexGrow: 1, paddingInline: 7 }}>
