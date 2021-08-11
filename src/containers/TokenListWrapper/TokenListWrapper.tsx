@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { TokenList } from '@components/TokenList/TokenList'
-import { syntheticAccountsArray, accounts } from '@selectors/solanaWallet'
+import Tokens from '@components/Tokens/Tokens'
+import { syntheticAccountsArray, accounts, collateralAccountsArray } from '@selectors/solanaWallet'
 import { synthetics } from '@selectors/exchange'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import { actions } from '@reducers/staking'
@@ -14,13 +14,20 @@ export const TokenListWrapper: React.FC = () => {
   const dispatch = useDispatch()
 
   const userTokens = useSelector(syntheticAccountsArray)
+  const userCollaterals = useSelector(collateralAccountsArray)
   const allSynthetics = useSelector(synthetics)
   const userAccounts = useSelector(accounts)
 
   return (
     <>
-      <TokenList
-        tokens={userTokens.map(
+      <Tokens
+        synthetic={userTokens.map(
+          token => ({
+            ...token,
+            ticker: token.symbol
+          })
+        )}
+        staked={userCollaterals.map(
           token => ({
             ...token,
             ticker: token.symbol
