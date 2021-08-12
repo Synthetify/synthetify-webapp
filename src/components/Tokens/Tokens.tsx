@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { IToken } from './Item/Item'
-import { Grid, Typography, useMediaQuery, useTheme } from '@material-ui/core'
+import { Grid, Typography, useMediaQuery } from '@material-ui/core'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import Switch from './Switch/Switch'
 import List from './List/List'
 import { printBN } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
 import useStyles, { useStylesWithProps } from './style'
+import { theme } from '@static/theme'
 
 export interface IProps {
   synthetic: IToken[]
@@ -15,7 +16,6 @@ export interface IProps {
 }
 
 export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
-  const theme = useTheme()
   const classes = useStyles()
   const [current, setCurrent] = useState(0)
   const [sum, setSum] = useState(staked.reduce((acc, token) => acc + +printBN(token.usdValue, token.decimals), 0))

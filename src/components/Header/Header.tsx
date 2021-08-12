@@ -1,6 +1,6 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { Grid, CardMedia, IconButton, Divider, Hidden, Button } from '@material-ui/core'
+import { Grid, CardMedia, IconButton, Divider, Hidden, Button, useMediaQuery } from '@material-ui/core'
 import { MoreHoriz, Menu } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
 import SolletIcon from '@static/svg/sollet.svg'
@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
 import useButtonStyles from '../HeaderButton/style'
 import useStyles from './style'
+import { theme } from '@static/theme'
 
 export interface IHeader {
   address: PublicKey
@@ -38,6 +39,8 @@ export const Header: React.FC<IHeader> = ({
 }) => {
   const classes = useStyles()
   const buttonClasses = useButtonStyles()
+
+  const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
 
   const routes = ['staking', 'exchange']
   const [activePath, setActive] = React.useState(landing)
@@ -94,68 +97,36 @@ export const Header: React.FC<IHeader> = ({
               setNetwork(chosen)
             }}
           />
-          <Hidden smDown>
-            {!walletConnected
-              ? (
-                <ChangeWalletButton
-                  name='Connect'
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  onDisconnect={onDisconnectWallet}
-                />
-              )
-              : (
-                <ChangeWalletButton
-                  name={`${address.toString().substr(0, 6)}...${address.toString().substr(address.toString().length - 3, 3)}`}
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  onDisconnect={onDisconnectWallet}
-                  startIcon={
-                    typeOfWallet === 'phantom'
-                      ? (
-                        <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                      )
-                      : (
-                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                      )
-                  }
-                />
-              )}
-          </Hidden>
-          <Hidden mdUp>
-            {!walletConnected
-              ? (
-                <ChangeWalletButton
-                  name='My&nbsp;wallet'
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  hideArrow={true}
-                  onDisconnect={onDisconnectWallet}
-                />
-              )
-              : (
-                <ChangeWalletButton
-                  name={`${address.toString().substr(0, 2)}...${address.toString().substr(address.toString().length - 2, 2)}`}
-                  options={[WalletType.PHANTOM, WalletType.SOLLET]}
-                  onSelect={onWalletSelect}
-                  connected={walletConnected}
-                  hideArrow={true}
-                  onDisconnect={onDisconnectWallet}
-                  startIcon={
-                    typeOfWallet === 'phantom'
-                      ? (
-                        <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                      )
-                      : (
-                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                      )
-                  }
-                />
-              )}
-          </Hidden>
+          {!walletConnected
+            ? (
+              <ChangeWalletButton
+                name={isSmDown ? 'My wallet' : 'Connect'}
+                options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                onSelect={onWalletSelect}
+                connected={walletConnected}
+                onDisconnect={onDisconnectWallet}
+                hideArrow={isSmDown}
+              />
+            )
+            : (
+              <ChangeWalletButton
+                name={`${address.toString().substr(0, isSmDown ? 2 : 6)}...${address.toString().substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
+                options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                onSelect={onWalletSelect}
+                connected={walletConnected}
+                hideArrow={isSmDown}
+                onDisconnect={onDisconnectWallet}
+                startIcon={
+                  typeOfWallet === 'phantom'
+                    ? (
+                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
+                    )
+                    : (
+                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                    )
+                }
+              />
+            )}
         </Grid>
         <Hidden smDown>
           <Grid item container className={classes.right} wrap='nowrap' alignItems='center'>
