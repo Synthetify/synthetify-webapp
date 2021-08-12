@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.background,
-    minHeight: 'calc(100vh - 129px)',
+    minHeight: 'calc(100vh - 161px)',
     paddingInline: 55,
     [theme.breakpoints.down('sm')]: {
       paddingInline: 20,
