@@ -45,12 +45,8 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
                 return num.toFixed(4)
               }
 
-              if (num < 1000) {
-                return num.toFixed(2)
-              }
-
               if (num < 10000) {
-                return num.toFixed(1)
+                return num.toFixed(2)
               }
 
               if (num < 1000000) {

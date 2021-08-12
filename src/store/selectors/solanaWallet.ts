@@ -1,6 +1,6 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { assets, collaterals, synthetics, userDebtValue } from '@selectors/exchange'
+import { assets, collaterals, exchangeAccount, synthetics, userDebtValue } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
@@ -128,6 +128,32 @@ export const collateralAccountsArray = createSelector(
         programId: wSOL.collateralAddress,
         balance: wSOLBalance,
         address: wSOLAddress
+      })
+    }
+
+    return accounts
+  }
+)
+export const stakedAccountsArray = createSelector(
+  exchangeAccount,
+  collaterals,
+  assets,
+  address,
+  (account, allCollaterals, allAssets, wSOLAddress): TokenAccounts[] => {
+    const accounts: TokenAccounts[] = []
+
+    for (const collateral of account.collaterals) {
+      const collateralAddress = collateral.collateralAddress.toString()
+      accounts.push({
+        symbol: allCollaterals[collateralAddress].symbol,
+        programId: allCollaterals[collateralAddress].collateralAddress,
+        decimals: allCollaterals[collateralAddress].decimals,
+        address: wSOLAddress,
+        assetDecimals: allCollaterals[collateralAddress].decimals,
+        balance: collateral.amount,
+        usdValue: collateral.amount
+          .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price)
+          .div(new BN(10 ** (allCollaterals[collateralAddress].decimals + ORACLE_OFFSET - ACCURACY)))
       })
     }
 
