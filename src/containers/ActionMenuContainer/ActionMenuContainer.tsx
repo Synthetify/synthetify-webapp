@@ -12,7 +12,7 @@ import {
   userDebtShares
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { collateralAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
+import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { Status } from '@reducers/solanaWallet'
@@ -25,6 +25,7 @@ export const ActionMenuContainer: React.FC = () => {
 
   const availableToMint = useSelector(userMaxMintUsd)
   const userCollaterals = useSelector(collateralAccountsArray)
+  const userStaked = useSelector(stakedAccountsArray)
   const { balance, decimals: depositDecimal } = useSelector(
     userMaxDeposit(userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
@@ -107,6 +108,7 @@ export const ActionMenuContainer: React.FC = () => {
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
       collaterals={userCollaterals}
+      staked={userStaked}
       depositCurrency={userCollaterals[depositIndex]?.symbol ?? 'SNY'}
       withdrawCurrency={userCollaterals[withdrawIndex]?.symbol ?? 'SNY'}
       onSelectDepositToken={(chosen) => {

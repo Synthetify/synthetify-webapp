@@ -24,6 +24,7 @@ export interface IProps {
   burnState: Pick<IBurn, 'sending' | 'error'>
   stakingData: IRewardsProps
   collaterals: TokenAccounts[]
+  staked: TokenAccounts[]
   withdrawCurrency: string
   depositCurrency: string
   onSelectDepositToken?: (chosen: string) => void
@@ -50,6 +51,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   depositState,
   stakingData,
   collaterals,
+  staked,
   withdrawCurrency,
   depositCurrency,
   onSelectDepositToken,
@@ -99,7 +101,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency={withdrawCurrency}
         sending={withdrawState.sending}
         hasError={!!withdrawState.error?.length}
-        tokens={collaterals}
+        tokens={staked}
         onSelectToken={onSelectWithdrawToken}
         showArrowInInput
         walletConnected={walletConnected}

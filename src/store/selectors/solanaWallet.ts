@@ -139,7 +139,8 @@ export const stakedAccountsArray = createSelector(
   collaterals,
   assets,
   address,
-  (account, allCollaterals, allAssets, wSOLAddress): TokenAccounts[] => {
+  accounts,
+  (account, allCollaterals, allAssets, wSOLAddress, tokensAccounts): TokenAccounts[] => {
     const accounts: TokenAccounts[] = []
 
     for (const collateral of account.collaterals) {
@@ -148,7 +149,7 @@ export const stakedAccountsArray = createSelector(
         symbol: allCollaterals[collateralAddress].symbol,
         programId: allCollaterals[collateralAddress].collateralAddress,
         decimals: allCollaterals[collateralAddress].decimals,
-        address: wSOLAddress,
+        address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
         assetDecimals: allCollaterals[collateralAddress].decimals,
         balance: collateral.amount,
         usdValue: collateral.amount
