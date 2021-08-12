@@ -23,10 +23,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 20,
     float: 'right'
   },
-  tooltip: {
-    fontSize: 13,
-    fontWeight: 500
-  },
   tooltipArrow: {
     color: colors.navy.navButton,
     borderColor: colors.navy.navButton,

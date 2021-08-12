@@ -15,7 +15,7 @@ import useStyles, { useStylesWithProps } from './style'
 export interface IProps {
   name: string
   sign: string
-  hint?: string
+  hint?: string | ReactChild
   onClick?: () => void
   max: number
   current: number
@@ -48,7 +48,6 @@ export const ProgressCard: React.FC<IProps> = ({
             <MobileTooltip
               hint={hint}
               anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
-              tooltipClassName={classes.tooltip}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
             />

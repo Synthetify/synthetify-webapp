@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactChild } from 'react'
 import {
   Card,
   CardContent,
@@ -13,7 +13,8 @@ export interface IProps {
   name: string
   value: string
   sign: string
-  hint?: string
+  hint?: string | ReactChild
+  hintTitle?: string
   onClick?: () => void
 }
 export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }) => {
@@ -26,7 +27,6 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
             <MobileTooltip
               hint={hint}
               anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
-              tooltipClassName={classes.tooltip}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
             />

@@ -13,7 +13,6 @@ interface IRewardsAmountProps {
 
 export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) => {
   const classes = useStyles()
-  const hint = 'Amount of SNY tokens you can withdraw'
 
   return (
     <Grid container alignItems='center' className={classes.root}>
@@ -30,7 +29,12 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
       <MobileTooltip
         mobilePlacement='bottom-start'
         desktopPlacement='bottom-start'
-        hint={hint}
+        hint={(
+          <>
+            <Typography className={classes.title}>Rewards</Typography>
+            Amount of SNY tokens you can withdraw
+          </>
+        )}
         anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
         tooltipClassName={classes.tooltip}
       />
