@@ -39,6 +39,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       height: 39,
       paddingLeft: 14
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: 20
+    }
+  },
+  column: {
+    maxWidth: 159,
+
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 75
     }
   }
 }))

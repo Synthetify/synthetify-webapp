@@ -12,18 +12,18 @@ export const List: React.FC<IProps> = ({ tokens }) => {
 
   return (
     <Grid item xs={12}>
-      <Grid container className={classes.header} wrap='nowrap' alignItems='center'>
-        <Grid item xs={4}>
+      <Grid container className={classes.header} wrap='nowrap' alignItems='center' justifyContent='space-between'>
+        <Grid className={classes.column} container item alignItems='center'>
           <Typography className={classes.headerFont}>
                 Token
           </Typography>
         </Grid>
-        <Grid item xs={4}>
+        <Grid className={classes.column} container item alignItems='center'>
           <Typography className={classes.headerFont}>
                 Balance
           </Typography>
         </Grid>
-        <Grid item xs={4}>
+        <Grid className={classes.column} container item alignItems='center'>
           <Typography className={classes.headerFont}>
                 USD value
           </Typography>
