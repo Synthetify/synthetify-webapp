@@ -52,7 +52,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
       return num.toFixed(6)
     }
 
-    if (num < 100) {
+    if (num < 1000) {
       return num.toFixed(4)
     }
 

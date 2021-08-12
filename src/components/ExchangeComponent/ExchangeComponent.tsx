@@ -136,12 +136,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
       return num.toFixed(4)
     }
 
-    if (num < 100) {
+    if (num < 1000) {
       return num.toFixed(2)
     }
 
     if (num < 10000) {
-      return num.toFixed(2)
+      return num.toFixed(1)
     }
 
     if (num < 1000000) {

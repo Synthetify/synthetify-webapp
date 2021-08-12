@@ -24,7 +24,7 @@ export const Item: React.FC<IToken> = ({ ticker, balance, decimals, usdValue, as
       return num.toFixed(6)
     }
 
-    if (num < 100) {
+    if (num < 1000) {
       return num.toFixed(4)
     }
 
