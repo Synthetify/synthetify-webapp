@@ -15,7 +15,6 @@ const useStyles = makeStyles(() => ({
   },
   tooltip: {
     background: colors.navy.button,
-    color: colors.white.main,
     fontWeight: 400,
     fontSize: 13,
     lineHeight: '16px'

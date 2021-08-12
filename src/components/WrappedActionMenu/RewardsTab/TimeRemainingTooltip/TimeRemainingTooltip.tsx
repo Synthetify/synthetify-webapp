@@ -54,10 +54,10 @@ export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon'>> =
 
   return (
     <>
-      <Typography className={classes.hint}>{hint}</Typography>
-      <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
+      <Typography className={classes.title}>
         {displayTimeRemaining()}
       </Typography>
+      {hint}
     </>
   )
 }
@@ -79,6 +79,7 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
       anchor={<img src={icon} alt='' className={classes.icon} />}
       mobilePlacement='left-start'
       desktopPlacement='left-start'
+      tooltipClassName={classes.tooltip}
     />
   )
 }

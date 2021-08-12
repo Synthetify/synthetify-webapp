@@ -155,7 +155,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 'calc(100% - 20px)'
   },
   tooltip: {
-    color: colors.navy.lightGrey,
     fontSize: 13,
     textAlign: 'center',
     width: 258,

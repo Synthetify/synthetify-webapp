@@ -1,15 +1,19 @@
-import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
-  hint: {
-    color: colors.white.main,
+  title: {
     fontSize: 13,
-    lineHeight: '16px'
+    lineHeight: '16px',
+    fontWeight: 700,
+    marginBottom: 10
   },
   icon: {
     height: 20,
     minWidth: 20
+  },
+  tooltip: {
+    backgroundColor: colors.navy.button
   }
 }))
 

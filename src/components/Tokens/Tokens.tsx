@@ -70,7 +70,7 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
                         return num.toFixed(6)
                       }
 
-                      if (num < 100) {
+                      if (num < 1000) {
                         return num.toFixed(4)
                       }
 

@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     float: 'right'
   },
   tooltip: {
-    color: colors.navy.lightGrey,
     fontSize: 13,
     fontWeight: 500
   },
