@@ -94,7 +94,7 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
               : null
             }
           </Grid>
-          <List tokens={current === 0 ? staked : synthetic} />
+          <List tokens={current === 0 ? staked : synthetic} type={current === 0 ? 'Staked' : 'Synthetic'} />
         </Grid>
       </Grid>
     </>

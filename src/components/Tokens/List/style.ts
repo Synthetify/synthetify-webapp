@@ -15,13 +15,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey
   },
   emptyTokens: {
-    margin: '20px auto',
+    paddingBlock: 20,
     textAlign: 'center',
     fontWeight: 400,
     fontSize: 22,
-    maxWidth: 500,
     color: colors.navy.lightGrey,
-    backgroundColor: `${colors.navy.component}80`,
+    backgroundColor: `${colors.navy[292956]}80`,
     [theme.breakpoints.down('xs')]: {
       '& > *': {
         fontSize: 18

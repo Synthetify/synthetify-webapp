@@ -5,9 +5,10 @@ import useStyles from './style'
 
 export interface IProps {
   tokens: IToken[]
+  type: 'Staked' | 'Synthetic'
 }
 
-export const List: React.FC<IProps> = ({ tokens }) => {
+export const List: React.FC<IProps> = ({ tokens, type }) => {
   const classes = useStyles()
 
   return (
@@ -34,9 +35,9 @@ export const List: React.FC<IProps> = ({ tokens }) => {
           <Item key={index} {...token} />
         ))
         : (
-          <Grid className={classes.emptyTokens}>
+          <Grid className={classes.emptyTokens} container direction='column' justifyContent='center'>
             <Typography>No tokens to show.</Typography>
-            <Typography>Please connect an account.</Typography>
+            <Typography>{type === 'Staked' ? 'Please deposit some collaterals.' : 'Please connect an account.'}</Typography>
           </Grid>
         )
       }

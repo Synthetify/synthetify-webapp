@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:nth-of-type(2n)': {
-      backgroundColor: `${colors.navy.component}80`
+      backgroundColor: `${colors.navy[292956]}80`
     },
 
     [theme.breakpoints.down('sm')]: {
