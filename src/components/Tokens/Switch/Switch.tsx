@@ -1,24 +1,27 @@
 import React from 'react'
-import { Grid, makeStyles, Tab, Tabs, withStyles } from '@material-ui/core'
-import { createStyles, Theme } from '@material-ui/core/styles'
+import { Grid, makeStyles, Tab, Tabs } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 export interface IProps {
   onChange: (newValue: number) => void
 }
 
-interface FullHeightIndicatorTabsProps {
-  value?: any
-  onChange: (event: React.ChangeEvent<{}>, newValue: number) => void
-}
+const useStyles = makeStyles(() => ({
+  tabs: {
+    borderRadius: 10,
+    backgroundColor: colors.navy.dark
+  }
+}))
 
-const FullHeightIndicatorTabs = withStyles({
+const useTabsStyles = makeStyles<Theme, { value: number }>(() => ({
   root: { overflow: 'visible' },
-  indicator: {
+  indicator: ({ value }) => ({
     height: '100%',
     borderRadius: 10,
-    backgroundColor: colors.navy.button
-  },
+    backgroundColor: value === 0 ? colors.navy.button : colors.green.button,
+    transition: 'background-color 1s'
+  }),
   scrollable: {
     overflow: 'visible'
   },
@@ -28,55 +31,38 @@ const FullHeightIndicatorTabs = withStyles({
   flexContainer: {
     justifyContent: 'space-around'
   }
-})((props: FullHeightIndicatorTabsProps) => (
-  <Tabs
-    variant='scrollable'
-    scrollButtons='off'
-    TabIndicatorProps={{ children: <span /> }}
-    {...props}
-  />
-))
+}))
 
-interface FullHeightIndicatorTabProps {
-  label: string
-}
-
-const FullHeightIndicatorTab = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      zIndex: 1,
-      textTransform: 'capitalize',
-      fontWeight: 400,
-      fontSize: 22,
-      minHeight: 60,
-      minWidth: '50%',
-      [theme.breakpoints.down('sm')]: {
-        fontSize: 18,
-        padding: 5
-      },
-      [theme.breakpoints.down('xs')]: {
-        fontSize: 13,
-        padding: 0
-      },
-      color: colors.navy.darkGrey
+const useSingleTabStyles = makeStyles<Theme, { value: number }>((theme: Theme) => ({
+  root: {
+    zIndex: 1,
+    textTransform: 'capitalize',
+    fontWeight: 400,
+    fontSize: 22,
+    minHeight: 60,
+    minWidth: '50%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 18,
+      padding: 5
     },
-    selected: {
-      fontWeight: 600,
-      color: colors.white.main
-    }
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 13,
+      padding: 0
+    },
+    color: colors.navy.darkGrey
+  },
+  selected: ({ value }) => ({
+    fontWeight: 600,
+    color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background,
+    transition: 'color 1s'
   })
-)((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
-
-const useStyles = makeStyles(() => ({
-  tabs: {
-    borderRadius: 10,
-    backgroundColor: colors.navy.dark
-  }
 }))
 
 export const Switch: React.FC<IProps> = ({ onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
+  const tabsClasses = useTabsStyles({ value })
+  const singleTabClasses = useSingleTabStyles({ value })
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
     onChange(newValue)
@@ -85,10 +71,17 @@ export const Switch: React.FC<IProps> = ({ onChange }) => {
   return (
     <Grid style={{ maxWidth: 414 }}>
       <Grid className={classes.tabs}>
-        <FullHeightIndicatorTabs value={value} onChange={handleChange}>
-          <FullHeightIndicatorTab label='Staked' />
-          <FullHeightIndicatorTab label='Synthetic' />
-        </FullHeightIndicatorTabs>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant='scrollable'
+          scrollButtons='off'
+          TabIndicatorProps={{ children: <span /> }}
+          classes={tabsClasses}
+        >
+          <Tab disableRipple label='Staked' classes={singleTabClasses} />
+          <Tab disableRipple label='Synthetic' classes={singleTabClasses} />
+        </Tabs>
       </Grid>
     </Grid>
   )

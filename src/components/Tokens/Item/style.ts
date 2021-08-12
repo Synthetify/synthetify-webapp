@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
 
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13
     }
   },
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   row: {
     height: 66,
-    paddingInline: 16,
+    paddingLeft: 16,
 
     '&:nth-of-type(2n+1)': {
       backgroundColor: colors.navy.dark
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       height: 39,
-      paddingInline: 14
+      paddingLeft: 14
     }
   }
 }))

@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     fontWeight: 700,
     marginLeft: 15,
+    paddingInline: 0,
 
     [theme.breakpoints.down('sm')]: {
       height: 30

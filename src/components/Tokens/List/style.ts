@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 16
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       fontSize: 13
     },
     color: colors.navy.grey
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     maxWidth: 500,
     color: colors.navy.lightGrey,
+    backgroundColor: `${colors.navy.component}80`,
     [theme.breakpoints.down('xs')]: {
       '& > *': {
         fontSize: 18
@@ -30,11 +31,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   header: {
     height: 66,
     backgroundColor: colors.navy.dark,
-    paddingInline: 16,
+    paddingLeft: 16,
 
     [theme.breakpoints.down('sm')]: {
       height: 39,
-      paddingInline: 14
+      paddingLeft: 14
     }
   }
 }))
