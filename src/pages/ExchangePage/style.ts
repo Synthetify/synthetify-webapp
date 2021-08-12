@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.background,
     minHeight: 'calc(100vh - 161px)',
-    paddingInline: 55,
+    paddingInline: 0,
     [theme.breakpoints.down('sm')]: {
       paddingInline: 20,
       paddingBottom: 72
