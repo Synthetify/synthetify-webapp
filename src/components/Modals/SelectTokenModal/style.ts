@@ -3,10 +3,11 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   popover: {
-    marginTop: 150,
+    marginTop: 'calc(50vh - 258px)',
     marginLeft: 'calc(50vw - 231px)',
 
     [theme.breakpoints.down('md')]: {
+      marginTop: 'calc(50vh - 213px)',
       marginLeft: 'calc(50vw - 189px)'
     }
   },
