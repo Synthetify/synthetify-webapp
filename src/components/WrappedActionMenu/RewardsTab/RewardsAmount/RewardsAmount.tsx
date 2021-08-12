@@ -21,8 +21,28 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
           <AnimatedNumber
             value={transformBN(amountToClaim || new BN(0))}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
-          />{' '}
+            formatValue={(value: string) => {
+              const num = Number(value)
+
+              if (num < 1000) {
+                return num.toFixed(4)
+              }
+
+              if (num < 10000) {
+                return num.toFixed(3)
+              }
+
+              if (num < 1000000) {
+                return (num / 1000).toFixed(3)
+              }
+
+              return (num / 1000000).toFixed(3)
+            }}
+          />
+          {+transformBN(amountToClaim || new BN(0)) >= 10000
+            ? 'K '
+            : (+transformBN(amountToClaim || new BN(0)) >= 1000000 ? 'M ' : ' ')
+          }
           SNY
         </Typography>
       </Grid>

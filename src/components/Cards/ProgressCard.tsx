@@ -98,8 +98,24 @@ export const ProgressCard: React.FC<IProps> = ({
             <AnimatedNumber
               value={max}
               duration={300}
-              formatValue={(value: string) => Number(value).toFixed(2)}
+              formatValue={(value: string) => {
+                const num = Number(value)
+
+                if (num < 1000) {
+                  return num.toFixed(2)
+                }
+
+                if (num < 1000000) {
+                  return (num / 1000).toFixed(2)
+                }
+
+                return (num / 1000000).toFixed(2)
+              }}
             />
+            {max >= 1000
+              ? 'K'
+              : (max >= 1000000 ? 'M' : '')
+            }
             {sign}
           </Typography>
         </Grid>
