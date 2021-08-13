@@ -6,6 +6,9 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
 import useStyles from './style'
+import Rewards1 from '@static/svg/rewards1.svg'
+import Rewards2 from '@static/svg/rewards2.svg'
+import Rewards3 from '@static/svg/rewards3.svg'
 
 export type RoundType = 'next' | 'current' | 'finished'
 
@@ -138,6 +141,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracketValue: BN
       hint: string
       timeRemainingEndSlot: BN
+      icon: string
     }
   } = [
     {
@@ -151,7 +155,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
       hint: 'The round has not yet started',
-      timeRemainingEndSlot: nextRoundStartSlot
+      timeRemainingEndSlot: nextRoundStartSlot,
+      icon: Rewards1
     },
     {
       name: 'Current round',
@@ -164,7 +169,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
       hint: 'To get more points in the current round, increase the amount of your debt',
-      timeRemainingEndSlot: nextRoundStartSlot
+      timeRemainingEndSlot: nextRoundStartSlot,
+      icon: Rewards2
     },
     {
       name: 'Finished round',
@@ -177,7 +183,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
       hint: 'This round has been finished. Now you can claim your tokens',
-      timeRemainingEndSlot: nextRoundStartSlot
+      timeRemainingEndSlot: nextRoundStartSlot,
+      icon: Rewards3
     }
   ]
 

@@ -5,16 +5,16 @@ import { displayDate } from '@consts/utils'
 import { useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
 import { actions } from '@reducers/solanaConnection'
-import HintIcon from '@static/svg/questionMark.svg'
 import useStyles from './style'
 
 export interface ITimeRemainingTooltipInterface {
   timeRemainingEndSlot: BN
   slot: number
   hint: string
+  icon: string
 }
 
-export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
+export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon'>> = ({
   timeRemainingEndSlot,
   slot,
   hint
@@ -54,10 +54,10 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
 
   return (
     <>
-      <Typography className={classes.hint}>{hint}</Typography>
-      <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
+      <Typography className={classes.title}>
         {displayTimeRemaining()}
       </Typography>
+      {hint}
     </>
   )
 }
@@ -65,7 +65,8 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
 export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
   timeRemainingEndSlot,
   slot,
-  hint
+  hint,
+  icon
 }) => {
   const classes = useStyles()
 
@@ -75,7 +76,9 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
     <MobileTooltip
       onOpen={() => dispatch(actions.updateSlot())}
       hint={<CountDown timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />}
-      anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+      anchor={<img src={icon} alt='' className={classes.icon} />}
+      mobilePlacement='left-start'
+      desktopPlacement='left-start'
     />
   )
 }

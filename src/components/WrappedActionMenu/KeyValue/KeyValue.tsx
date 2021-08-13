@@ -33,7 +33,23 @@ export const KeyValue: React.FC<IProps> = ({
       </Typography>
       <Typography
         className={classNames(classes.text, classes.value, classes.lineHeight, valueClassName)}>
-        {unit} <AnimatedNumber value={printBN(value, decimal)} duration={300} formatValue={(value: string) => Number(value).toFixed(4)}/>
+        {unit} <AnimatedNumber value={printBN(value, decimal)} duration={300} formatValue={(value: string) => {
+          const num = Number(value)
+
+          if (num < 10000) {
+            return num.toFixed(4)
+          }
+
+          if (num < 1000000) {
+            return (num / 1000).toFixed(3)
+          }
+
+          return (num / 1000000).toFixed(3)
+        }}/>
+        {+printBN(value, decimal) >= 10000
+          ? 'K'
+          : (+printBN(value, decimal) >= 1000000 ? 'M' : '')
+        }
       </Typography>
     </>
   )

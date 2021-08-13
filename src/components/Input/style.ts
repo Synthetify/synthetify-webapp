@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   divider: {
-    backgroundColor: colors.navy.grey,
+    backgroundColor: colors.navy.darkGrey,
     height: 40,
     marginRight: 10
   }

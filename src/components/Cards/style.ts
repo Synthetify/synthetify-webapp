@@ -14,27 +14,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   valueCardAmount: {
     color: colors.navy.veryLightGrey,
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: 700,
     lineHeight: '40px'
-  },
-  divider: {
-    width: 139,
-    marginTop: 6,
-    marginBottom: 15,
-    background: colors.navy.lightGrey
   },
   questionMark: {
     height: 20,
     width: 20,
     float: 'right'
-  },
-  tooltip: {
-    background: colors.navy.navButton,
-    color: colors.navy.lightGrey,
-    fontSize: 13,
-    padding: '5px 8px',
-    fontWeight: 400
   },
   tooltipArrow: {
     color: colors.navy.navButton,

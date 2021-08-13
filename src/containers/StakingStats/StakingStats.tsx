@@ -24,13 +24,17 @@ export const StakingStats: React.FC = () => {
           hint='Amount of money you’ve decided to keep on your virtual wallet.'
           value={transformBN(stakedUserValue)}
           sign={'$'}
-          decimals={4}
         />
       </Grid>
       <Grid className={classes.statsTile} item xs={12} sm={6} md={8} lg={8}>
         <ProgressCard
           name='Debt status'
-          hint='Current value of your debt in comparison to your collateral value and max borrow'
+          hint={(
+            <>
+              <Typography className={classes.tooltipTitle}>Debt status</Typography> {/* TODO: this title is placeholder to be switched later with interest rate */}
+              Current value of your debt in comparison to your collateral value and max borrow
+            </>
+          )}
           current={+transformBN(currentDebt)}
           sign={'$'}
           max={+transformBN(collateralUserValue)}

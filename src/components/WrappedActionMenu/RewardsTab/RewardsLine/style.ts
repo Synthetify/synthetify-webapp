@@ -2,12 +2,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  line: {
-    justifyContent: 'flex-start',
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'space-between'
-    }
-  },
   text: {
     fontSize: 22,
     color: colors.navy.lightGrey,
@@ -25,10 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 13,
     lineHeight: '16px'
-  },
-  questionMark: {
-    height: 17,
-    width: 17
   }
 }))
 

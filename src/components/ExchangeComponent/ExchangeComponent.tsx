@@ -129,12 +129,31 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     }
   }
 
+  const formatNumbers = (value: string) => {
+    const num = Number(value)
+
+    if (num < 10) {
+      return num.toFixed(4)
+    }
+
+    if (num < 1000) {
+      return num.toFixed(2)
+    }
+
+    if (num < 10000) {
+      return num.toFixed(1)
+    }
+
+    if (num < 1000000) {
+      return (num / 1000).toFixed(2)
+    }
+
+    return (num / 1000000).toFixed(2)
+  }
+
   return (
     <Grid container className={classes.root} direction='column'>
-      <Grid item>
-        <Typography className={classes.title}>Swap</Typography>
-        <Divider className={classes.titleDivider} />
-      </Grid>
+      <Typography className={classes.title}>Swap</Typography>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
@@ -147,8 +166,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <AnimatedNumber
                     value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(3)}
+                    formatValue={formatNumbers}
                   />
+                  {+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals) >= 10000
+                    ? 'K'
+                    : (+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].decimals) >= 1000000 ? 'M' : '')
+                  }
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
               )
@@ -206,7 +229,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 }
               }}
               placeholder={'0.0'}
-              currency={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
+              currency={null}
             />
           </Grid>
           <Hidden smDown>
@@ -258,7 +281,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   )}
                   anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
                   tooltipClassName={classNames(classes.tooltip, classes.supplyTooltip)}
-                  tooltipArrowClassName={classNames(classes.tooltipArrow, classes.supplyTooltipArrow)}
                   mobilePlacement='top-end'
                   desktopPlacement='top-end'
                 />
@@ -274,8 +296,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <AnimatedNumber
                     value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals)}
                     duration={300}
-                    formatValue={(value: string) => Number(value).toFixed(3)}
+                    formatValue={formatNumbers}
                   />
+                  {+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals) >= 10000
+                    ? 'K'
+                    : (+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals) >= 1000000 ? 'M' : '')
+                  }
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
               )
@@ -335,7 +361,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 }
               }}
               placeholder={'0.0'}
-              currency={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
+              currency={null}
             />
           </Grid>
           <Hidden smDown>
@@ -366,8 +392,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   </>
                 )}
                 anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-                tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
-                tooltipArrowClassName={classNames(classes.tooltipArrow, classes.feeTooltipArrow)}
+                tooltipClassName={classes.tooltip}
                 mobilePlacement='top-start'
                 desktopPlacement='top-end'
               />
