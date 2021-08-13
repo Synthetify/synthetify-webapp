@@ -169,11 +169,11 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     }
     const decimalChange = 10 ** (token.decimals + ORACLE_OFFSET - ACCURACY)
 
-    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.mul(account.balance).divn(decimalChange) : new BN(0)
+    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.mul(account.balance).div(new BN(decimalChange)) : new BN(0)
 
     const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
 
-    return val.muln(decimalChange).div(allAssets[token.assetIndex].price)
+    return val.mul(new BN(decimalChange)).div(allAssets[token.assetIndex].price)
   })
 
 export const userMaxDeposit = (assetAddress: PublicKey) =>

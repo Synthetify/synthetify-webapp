@@ -16,6 +16,7 @@ import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMax
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { Status } from '@reducers/solanaWallet'
+import { BN } from '@project-serum/anchor'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
@@ -47,12 +48,12 @@ export const ActionMenuContainer: React.FC = () => {
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
-        dispatch(actions.mint({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
+        dispatch(actions.mint({ amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)) }))
       }}
       onBurn={(amount, decimal) => () => {
         dispatch(
           actions.burn({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal),
+            amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)),
             tokenAddress: xUSDTokenAddress
           })
         )
@@ -60,7 +61,7 @@ export const ActionMenuContainer: React.FC = () => {
       onDeposit={(amount, decimal) => () => {
         dispatch(
           actions.deposit({
-            amount: amount.muln(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal)),
+            amount: amount.mul(new BN(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal))),
             tokenAddress: userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
@@ -68,7 +69,7 @@ export const ActionMenuContainer: React.FC = () => {
       onWithdraw={(amount, decimal) => () => {
         dispatch(
           actions.withdraw({
-            amount: amount.muln(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal)),
+            amount: amount.mul(new BN(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal))),
             tokenAddress: userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
