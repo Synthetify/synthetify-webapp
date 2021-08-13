@@ -19,8 +19,7 @@ const useTabsStyles = makeStyles<Theme, { value: number }>(() => ({
   indicator: ({ value }) => ({
     height: '100%',
     borderRadius: 10,
-    backgroundColor: value === 0 ? colors.navy.button : colors.green.button,
-    transition: 'background-color 1s'
+    backgroundColor: value === 0 ? colors.navy.button : colors.green.button
   }),
   scrollable: {
     overflow: 'visible'
@@ -54,7 +53,7 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>((theme: Theme) =
   selected: ({ value }) => ({
     fontWeight: 600,
     color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background,
-    transition: 'color 1s'
+    transition: 'color 300ms'
   })
 }))
 
