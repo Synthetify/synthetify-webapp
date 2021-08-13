@@ -1,16 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
-  hint: {
-    color: colors.white.main,
-    fontWeight: 400,
-    fontSize: 13,
-    lineHeight: '16px'
+  title: {
+    fontSize: 16,
+    lineHeight: '16px',
+    fontWeight: 700,
+    marginBottom: 10
   },
-  questionMark: {
-    height: 17,
-    minWidth: 17
+  icon: {
+    height: 20,
+    minWidth: 20
   }
 }))
 

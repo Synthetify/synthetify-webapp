@@ -28,14 +28,13 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
 
   const descrpitionForSymbol: { [key: string]: string } = {
     SNY: 'Synthetify',
-    xSNY: 'Synthetify asset',
-    xBNB: 'Binance asset',
-    xBTC: 'Bitcoin asset',
-    xETH: 'Ethereum asset',
-    xFTT: 'FTX asset',
-    xSOL: 'Solana asset',
-    xSRM: 'Serum asset',
-    xUSD: 'USD asset',
+    xBNB: 'Synthetic Binance Coin',
+    xBTC: 'Synthetic Bitcoin',
+    xETH: 'Synthetic Ethereum',
+    xFTT: 'Synthetic FTT',
+    xSOL: 'Synthetic Solana',
+    xSRM: 'Synthetic Serum',
+    xUSD: 'Synthetic USD',
     WSOL: 'Wrapped Solana'
   }
 
@@ -45,6 +44,28 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
       <Search className={classes.searchIcon} />
     </>
   )
+
+  const formatNumbers = (value: string) => {
+    const num = Number(value)
+
+    if (num < 10) {
+      return num.toFixed(6)
+    }
+
+    if (num < 1000) {
+      return num.toFixed(4)
+    }
+
+    if (num < 10000) {
+      return num.toFixed(2)
+    }
+
+    if (num < 1000000) {
+      return (num / 1000).toFixed(2)
+    }
+
+    return (num / 1000000).toFixed(2)
+  }
 
   return (
     <Popover
@@ -107,7 +128,13 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     </Grid>
                     {(token.balance && token.decimals) && (
                       <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
-                        <Typography className={classes.tokenBalance}>Balance: {printBN(token.balance, token.decimals)}</Typography>
+                        <Typography className={classes.tokenBalance}>
+                          Balance: {formatNumbers(printBN(token.balance, token.decimals))}
+                          {+printBN(token.balance, token.decimals) >= 10000
+                            ? 'K'
+                            : (+printBN(token.balance, token.decimals) >= 1000000 ? 'M' : '')
+                          }
+                        </Typography>
                       </Grid>
                     )}
                   </Grid>

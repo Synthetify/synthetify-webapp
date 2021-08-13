@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider,
   Tooltip,
   LinearProgress,
   Grid
@@ -16,7 +15,7 @@ import useStyles, { useStylesWithProps } from './style'
 export interface IProps {
   name: string
   sign: string
-  hint?: string
+  hint?: string | ReactChild
   onClick?: () => void
   max: number
   current: number
@@ -49,8 +48,6 @@ export const ProgressCard: React.FC<IProps> = ({
             <MobileTooltip
               hint={hint}
               anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
-              tooltipClassName={classes.tooltip}
-              tooltipArrowClassName={classes.tooltipArrow}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
             />
@@ -58,7 +55,6 @@ export const ProgressCard: React.FC<IProps> = ({
           : null
         }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
-        <Divider className={classes.divider} style={{ marginBottom: 0 }} />
         <Grid className={classes.progressContainer} container direction='row' alignItems='center'>
           <Typography className={classes.minMaxDebt}>0{sign}</Typography>
           <Grid item style={{ flexGrow: 1, paddingInline: 7 }}>
@@ -102,8 +98,24 @@ export const ProgressCard: React.FC<IProps> = ({
             <AnimatedNumber
               value={max}
               duration={300}
-              formatValue={(value: string) => Number(value).toFixed(2)}
+              formatValue={(value: string) => {
+                const num = Number(value)
+
+                if (num < 1000) {
+                  return num.toFixed(2)
+                }
+
+                if (num < 1000000) {
+                  return (num / 1000).toFixed(2)
+                }
+
+                return (num / 1000000).toFixed(2)
+              }}
             />
+            {max >= 1000
+              ? 'K'
+              : (max >= 1000000 ? 'M' : '')
+            }
             {sign}
           </Typography>
         </Grid>

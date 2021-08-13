@@ -16,6 +16,7 @@ export interface IRewardsLineProps {
   bottomHint?: string
   timeRemainingEndSlot: BN
   slot: number
+  icon: string
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -26,7 +27,8 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   bracketValue = new BN(0),
   timeRemainingEndSlot,
   slot,
-  hint
+  hint,
+  icon
 }) => {
   const classes = useStyles()
 
@@ -72,8 +74,9 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   )
 
   return (
-    <Grid container className={classes.line} alignItems='center' wrap='nowrap'>
-      <Grid item style={{ marginRight: 25 }}>
+    <Grid container alignItems='center' wrap='nowrap'>
+      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} icon={icon} />
+      <Grid item style={{ marginLeft: 15 }}>
         <Typography className={classes.text}>
           {name}
           {': '}
@@ -81,7 +84,6 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           {processedBracket}
         </Typography>
       </Grid>
-      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />
     </Grid>
   )
 }

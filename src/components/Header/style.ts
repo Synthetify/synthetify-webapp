@@ -5,47 +5,34 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.background,
     paddingRight: 0,
-    height: 100,
+    height: 74,
 
     [theme.breakpoints.down('sm')]: {
       height: 60
     }
   },
   snyLogo: {
-    width: 50,
-    height: 44,
-    margin: 10,
-    marginLeft: 50,
-
-    [theme.breakpoints.down('md')]: {
-      margin: 0,
-      marginLeft: 32
-    },
+    width: 45,
+    height: 38,
+    marginLeft: 25,
 
     [theme.breakpoints.down('sm')]: {
-      marginLeft: 8
+      width: 33,
+      height: 28,
+      marginInline: 16
     }
   },
   divider: {
-    background: colors.navy.grey
+    background: colors.navy.darkGrey
   },
   verticalDivider: {
-    background: colors.navy.grey,
+    background: colors.navy.darkGrey,
     height: 50,
-    marginLeft: 40,
-    marginRight: 10,
+    marginInline: 25,
 
     [theme.breakpoints.down('sm')]: {
+      height: 36,
       margin: 0
-    }
-  },
-  leftDivider: {
-    [theme.breakpoints.down('md')]: {
-      marginLeft: 32
-    },
-
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 5
     }
   },
   connectedWalletIcon: {
@@ -62,6 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 4,
     paddingTop: 1,
     paddingBottom: 1,
+    marginLeft: 5,
 
     '&:hover': {
       background: colors.navy.navButton
@@ -69,61 +57,42 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   dehazeIcon: {
     width: 45,
-    height: 38,
+    height: 'auto',
     fill: colors.navy.navBar
   },
   dotsButton: {
     borderRadius: 10,
-    padding: '5px 8px',
+    padding: '0px 2px',
+    marginRight: 25,
 
     '&:hover': {
       background: colors.navy.navButton
     }
   },
   left: {
-    maxWidth: 200,
-    [theme.breakpoints.down('md')]: {
-      maxWidth: 140
-    },
+    maxWidth: 121,
     [theme.breakpoints.down('sm')]: {
-      maxWidth: 83
-    },
-    [theme.breakpoints.down('xs')]: {
-      maxWidth: 68
+      maxWidth: 66
     }
   },
   right: {
-    maxWidth: 259,
-    [theme.breakpoints.down('md')]: {
-      maxWidth: 136
-    }
-  },
-  rightDivider: {
-    marginLeft: 60,
-    marginRight: 50,
-    [theme.breakpoints.down('md')]: {
-      marginLeft: 22,
-      marginRight: 30
-    }
+    maxWidth: 125
   },
   mobileRight: {
-    maxWidth: 83,
-
-    [theme.breakpoints.down('xs')]: {
-      maxWidth: 65
-    }
-  },
-  mobileRightDivider: {
-    marginLeft: 20,
-
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: 5
-    }
+    maxWidth: 66
   },
   buttons: {
     justifyContent: 'flex-end',
+
     [theme.breakpoints.down('sm')]: {
-      justifyContent: 'center'
+      justifyContent: 'space-evenly'
+    }
+  },
+  link: {
+    textDecoration: 'none',
+
+    '&:not(:last-child)': {
+      marginRight: 15
     }
   }
 }))

@@ -1,8 +1,8 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
-import { TokenList } from '@components/TokenList/TokenList'
-import { IToken } from '@components/TokenItem/TokenItem'
+import { Tokens } from './Tokens'
+import { IToken } from './Item/Item'
 import { BN } from '@project-serum/anchor'
 import { action } from '@storybook/addon-actions'
 
@@ -38,9 +38,10 @@ const FTT: IToken = {
   assetDecimals: 6
 }
 
-const tokens = [xSNY, xBTC, SOL, FTT]
+const synthetic = [xSNY, xBTC]
+const staked = [SOL, FTT]
 
-storiesOf('Tokens/tokenList', module)
+storiesOf('Tokens/Tokens', module)
   .addDecorator(withKnobs)
-  .add('Example token list', () => <TokenList tokens={tokens} addAccount={action('addAccount')} />)
-  .add('Empty token list', () => <TokenList tokens={[]} addAccount={action('addAccount')} />)
+  .add('Example token list', () => <Tokens synthetic={synthetic} staked={staked} addAccount={action('addAccount')} />)
+  .add('Empty token list', () => <Tokens synthetic={[]} staked={[]} addAccount={action('addAccount')} />)

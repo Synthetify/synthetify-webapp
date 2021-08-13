@@ -14,17 +14,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     fontSize: 22,
-    color: colors.navy.grey,
-    lineHeight: '26px'
-  },
-  titleDivider: {
-    background: colors.navy.grey,
-    marginTop: 13,
-    marginBottom: 40,
-
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: 20
-    }
+    color: colors.navy.lightGrey,
+    lineHeight: '40px',
+    fontWeight: 600,
+    marginBottom: 20
   },
   tokenComponent: {
     background: colors.navy[292956],
@@ -162,36 +155,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 'calc(100% - 20px)'
   },
   tooltip: {
-    color: colors.navy.lightGrey,
     fontSize: 13,
     textAlign: 'center',
     width: 258,
-    padding: '12px 0',
     marginBottom: 10
   },
   supplyTooltip: {
-    background: colors.navy.navButton,
     fontWeight: 700,
 
     [theme.breakpoints.down('xs')]: {
-      width: 158,
-      padding: '7px 0'
+      width: 158
     }
-  },
-  feeTooltip: {
-    background: colors.navy.info
-  },
-  tooltipArrow: {
-    width: 13,
-    marginBlock: '-0.67em !important'
-  },
-  supplyTooltipArrow: {
-    color: colors.navy.navButton,
-    borderColor: colors.navy.navButton
-  },
-  feeTooltipArrow: {
-    color: colors.navy.info,
-    borderColor: colors.navy.info
   },
   exclamationMark: {
     height: 16,

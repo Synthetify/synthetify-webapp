@@ -86,7 +86,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
         fontSize: 13,
         padding: 0
       },
-      color: colors.navy.grey
+      color: colors.navy.darkGrey
     },
     selected: {
       fontWeight: 600,

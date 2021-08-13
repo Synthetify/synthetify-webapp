@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.up('lg')]: {
       paddingTop: 80,
-      paddingBottom: 0
+      paddingBottom: 77
     }
   },
   innerWrapper: {
