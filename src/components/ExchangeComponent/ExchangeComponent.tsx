@@ -392,7 +392,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   </>
                 )}
                 anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-                tooltipClassName={classNames(classes.tooltip, classes.feeTooltip)}
+                tooltipClassName={classes.tooltip}
                 mobilePlacement='top-start'
                 desktopPlacement='top-end'
               />

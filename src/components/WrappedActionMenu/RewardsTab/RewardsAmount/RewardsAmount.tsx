@@ -56,7 +56,6 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
           </>
         )}
         anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
-        tooltipClassName={classes.tooltip}
       />
     </Grid>
   )

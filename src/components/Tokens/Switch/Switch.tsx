@@ -37,15 +37,13 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>((theme: Theme) =
     zIndex: 1,
     textTransform: 'capitalize',
     fontWeight: 400,
-    fontSize: 22,
+    fontSize: 19,
     minHeight: 60,
     minWidth: '50%',
     [theme.breakpoints.down('sm')]: {
-      fontSize: 18,
       padding: 5
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 13,
       padding: 0
     },
     color: colors.navy.darkGrey

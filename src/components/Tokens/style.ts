@@ -117,7 +117,7 @@ export const useStylesWithProps = makeStyles<Theme, { current: number }>((theme:
       zIndex: -1,
       background: 'linear-gradient(90deg, #6A6FC5 24.66%, #40BF9F 50%, #40BF9F 78.82%, #6C6BC7 100%)',
       transform: `translateX(${current === 0 ? 0 : -50}%)`,
-      transition: 'transform 1s'
+      transition: 'transform 300ms'
     }
   })
 }))

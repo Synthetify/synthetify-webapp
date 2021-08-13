@@ -13,11 +13,8 @@ const useStyles = makeStyles(() => ({
     fontSize: 16,
     color: colors.navy.grey
   },
-  tooltip: {
-    background: colors.navy.button
-  },
   title: {
-    fontSize: 13,
+    fontSize: 16,
     lineHeight: '16px',
     fontWeight: 700,
     marginBottom: 10

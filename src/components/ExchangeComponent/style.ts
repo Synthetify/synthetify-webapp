@@ -167,9 +167,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: 158
     }
   },
-  feeTooltip: {
-    background: colors.navy.info
-  },
   exclamationMark: {
     height: 16,
     width: 16

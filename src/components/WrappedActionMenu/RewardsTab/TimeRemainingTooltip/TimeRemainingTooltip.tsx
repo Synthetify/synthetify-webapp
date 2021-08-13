@@ -79,7 +79,6 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
       anchor={<img src={icon} alt='' className={classes.icon} />}
       mobilePlacement='left-start'
       desktopPlacement='left-start'
-      tooltipClassName={classes.tooltip}
     />
   )
 }
