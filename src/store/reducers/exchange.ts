@@ -5,11 +5,7 @@ import BN from 'bn.js'
 import { PayloadType } from './types'
 import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
-export interface UserAccount {
-  address: string // local storage does not handle PublicKeys
-  collateral: BN
-  shares: BN
-}
+
 export interface Swap {
   fromToken: PublicKey
   toToken: PublicKey
@@ -32,17 +28,10 @@ export interface ExchangeAccount {
 }
 export interface IExchange {
   state: ExchangeState
-  collateralAccount: PublicKey
-  collateralToken: PublicKey
   mintAuthority: PublicKey
-  debt: BN
-  shares: BN
-  fee: number
-  collateralizationLevel: number
   assets: Asset[]
   synthetics: { [key in string]: ISynthetic }
   collaterals: { [key in string]: ICollateral }
-  userAccount: UserAccount
   exchangeAccount: ExchangeAccount
   swap: Swap
 }
@@ -77,14 +66,7 @@ export const defaultState: IExchange = {
   assets: [],
   synthetics: {},
   collaterals: {},
-  collateralAccount: DEFAULT_PUBLICKEY,
-  collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
-  fee: 30,
-  collateralizationLevel: 500,
-  debt: new BN(0),
-  shares: new BN(0),
-  userAccount: { address: DEFAULT_PUBLICKEY.toString(), collateral: new BN(0), shares: new BN(0) },
   exchangeAccount: {
     address: DEFAULT_PUBLICKEY,
     collaterals: [],
@@ -154,15 +136,6 @@ const exchangeSlice = createSlice({
       for (const [key, value] of Object.entries(action.payload)) {
         state.assets[+key].price = value
       }
-      return state
-    },
-    setUserAccountAddress(state, action: PayloadAction<PublicKey>) {
-      state.userAccount.address = action.payload.toString()
-      return state
-    },
-    setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {
-      state.userAccount.collateral = action.payload.collateral
-      state.userAccount.shares = action.payload.shares
       return state
     },
     setExchangeAccount(state, action: PayloadAction<ExchangeAccount>) {

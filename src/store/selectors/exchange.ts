@@ -12,10 +12,6 @@ export const {
   assets,
   synthetics,
   collaterals,
-  debt,
-  fee,
-  shares,
-  userAccount,
   mintAuthority,
   swap,
   state,
@@ -24,10 +20,6 @@ export const {
   'assets',
   'synthetics',
   'collaterals',
-  'debt',
-  'fee',
-  'shares',
-  'userAccount',
   'mintAuthority',
   'swap',
   'state',
@@ -38,9 +30,6 @@ export const healthFactor = createSelector(state, (s) => {
 })
 export const staking = createSelector(state, (s) => {
   return s.staking
-})
-export const userAccountAddress = createSelector(userAccount, (userAcc) => {
-  return new PublicKey(userAcc.address)
 })
 export const userDebtShares = createSelector(exchangeAccount, (account) => {
   return account.debtShares
@@ -190,11 +179,6 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
 export const exchangeSelectors = {
   assets,
   healthFactor,
-  debt,
-  fee,
-  shares,
-  userAccount,
-  userAccountAddress,
   userStaking,
   userDebtShares,
   mintAuthority,
