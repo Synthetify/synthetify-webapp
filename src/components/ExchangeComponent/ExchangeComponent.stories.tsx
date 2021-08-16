@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import ExchangeComponent from './ExchangeComponent'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Synthetic } from '@synthetify/sdk/lib/exchange'
+import { Asset, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { Swap } from '@reducers/exchange'
 import { toBlur } from '@consts/uiUtils'
@@ -19,17 +19,37 @@ const swap: Swap = {
 const defaultSynthetic: Synthetic = {
   assetIndex: 0,
   assetAddress: new PublicKey(0),
-  supply: new BN(1e6),
-  maxSupply: new BN(1e10),
-  settlementSlot: new BN(1),
-  decimals: 4
+  supply: {
+    val: new BN(1e6),
+    scale: 0
+  },
+  maxSupply: {
+    val: new BN(1e10),
+    scale: 0
+  },
+  settlementSlot: new BN(1)
 }
 
 const defaultAsset: Asset = {
   feedAddress: new PublicKey(0),
   lastUpdate: new BN(1),
-  price: (new BN(1)).mul(new BN(1000000)),
-  confidence: 1
+  price: {
+    val: (new BN(1)).mul(new BN(1000000)),
+    scale: 0
+  },
+  confidence: {
+    val: new BN(1),
+    scale: 0
+  },
+  twap: {
+    val: new BN(1),
+    scale: 0
+  },
+  twac: {
+    val: new BN(1),
+    scale: 0
+  },
+  status: PriceStatus.Trading
 }
 
 const onSwap = (fromToken: PublicKey, toToken: PublicKey, amount: BN) => {
@@ -43,7 +63,10 @@ const tokens = 'xUSD Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
   })
 tokens[0].balance = new BN(100).mul(new BN(10000))
 tokens[1].balance = new BN(10).mul(new BN(10000))
-tokens[1].price = (new BN(10)).mul(new BN(1000000))
+tokens[1].price = {
+  val: (new BN(10)).mul(new BN(1000000)),
+  scale: 4
+}
 
 storiesOf('ui/exchangeComponent', module)
   .addDecorator(withKnobs)

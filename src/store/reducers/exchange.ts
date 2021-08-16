@@ -44,21 +44,76 @@ export const defaultState: IExchange = {
     admin: DEFAULT_PUBLICKEY,
     assetsList: DEFAULT_PUBLICKEY,
     debtShares: new BN(0),
-    fee: 30,
+    fee: {
+      val: new BN(30),
+      scale: 6
+    },
     maxDelay: 10,
     nonce: 255,
     halted: false,
     liquidationBuffer: 0,
-    healthFactor: 0,
-    liquidationRate: 0,
-    penaltyToExchange: 0,
-    penaltyToLiquidator: 0,
-    accountVersion: 1,
+    healthFactor: {
+      val: new BN(0),
+      scale: 6
+    },
+    liquidationRate: {
+      val: new BN(0),
+      scale: 6
+    },
+    penaltyToExchange: {
+      val: new BN(0),
+      scale: 6
+    },
+    penaltyToLiquidator: {
+      val: new BN(0),
+      scale: 6
+    },
+    swapTaxRatio: {
+      val: new BN(0),
+      scale: 6
+    },
+    swapTaxReserve: {
+      val: new BN(0),
+      scale: 6
+    },
+    debtInterestRate: {
+      val: new BN(0),
+      scale: 6
+    },
+    accumulatedDebtInterest: {
+      val: new BN(0),
+      scale: 6
+    },
+    lastDebtAdjustment: new BN(0),
     staking: {
-      amountPerRound: new BN(0),
-      currentRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
-      finishedRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
-      nextRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
+      amountPerRound: {
+        val: new BN(0),
+        scale: 6
+      },
+      currentRound: {
+        allPoints: new BN(0),
+        amount: {
+          val: new BN(0),
+          scale: 6
+        },
+        start: new BN(0)
+      },
+      finishedRound: {
+        allPoints: new BN(0),
+        amount: {
+          val: new BN(0),
+          scale: 6
+        },
+        start: new BN(0)
+      },
+      nextRound: {
+        allPoints: new BN(0),
+        amount: {
+          val: new BN(0),
+          scale: 6
+        },
+        start: new BN(0)
+      },
       fundAccount: DEFAULT_PUBLICKEY,
       roundLength: 0
     }

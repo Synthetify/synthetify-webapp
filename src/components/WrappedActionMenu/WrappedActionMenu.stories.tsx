@@ -47,6 +47,7 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
         onClaim: () => {}
       }}
       collaterals={[]}
+      staked={[]}
       withdrawCurrency='SNY'
       withdrawDecimal={6}
       depositCurrency='SNY'
