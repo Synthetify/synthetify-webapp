@@ -73,7 +73,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             roundPoints: userDebtShares
           },
           next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           }
@@ -82,17 +82,17 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       default: {
         return {
           finished: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           },
           current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           },
           next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           }
