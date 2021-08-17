@@ -21,6 +21,7 @@ import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -432,7 +433,7 @@ export function* handleSwap(): Generator {
 export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
 }
-const pendingUpdates: { [x: string]: BN } = {}
+const pendingUpdates: { [x: string]: Decimal } = {}
 
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
