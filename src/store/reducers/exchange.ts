@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral } from '@synthetify/sdk/lib/exchange'
+import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral, Decimal } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 
 export interface Swap {
@@ -14,7 +14,7 @@ export interface Swap {
   txid?: string
 }
 export interface UserStaking {
-  amountToClaim: BN
+  amountToClaim: Decimal
   finishedRoundPoints: BN
   currentRoundPoints: BN
   nextRoundPoints: BN
