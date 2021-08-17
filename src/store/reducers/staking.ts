@@ -20,7 +20,6 @@ export interface IDeposit {
 }
 export interface IMint {
   amount: BN
-  txid?: string
   sending: boolean
   error?: string
 }
@@ -159,9 +158,8 @@ const stakingSlice = createSlice({
       state.mint.amount = action.payload.amount
       return state
     },
-    mintDone(state, action: PayloadAction<Pick<IMint, 'txid'>>) {
+    mintDone(state) {
       state.mint.sending = false
-      state.mint.txid = action.payload.txid
       state.mint.error = undefined
       return state
     },

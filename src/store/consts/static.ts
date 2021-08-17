@@ -25,7 +25,10 @@ const DEFAULT_PUBLICKEY = new PublicKey(0)
 const ORACLE_OFFSET = 6
 const ACCURACY = 6
 const DEFAULT_STAKING_DATA: UserStaking = {
-  amountToClaim: new BN(0),
+  amountToClaim: {
+    val: new BN(0),
+    scale: 0
+  },
   currentRoundPoints: new BN(0),
   finishedRoundPoints: new BN(0),
   nextRoundPoints: new BN(0),

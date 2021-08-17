@@ -70,8 +70,8 @@ export function* handleDeposit(): Generator {
 export function* handleMint(): Generator {
   const mintData = yield* select(mint)
   try {
-    const txid = yield* call(mintUsd, mintData.amount)
-    yield* put(actions.mintDone({ txid: txid }))
+    yield* call(mintUsd, mintData.amount)
+    yield* put(actions.mintDone())
 
     yield put(
       snackbarsActions.add({

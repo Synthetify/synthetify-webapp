@@ -234,7 +234,7 @@ export function* depositCollateralWSOL(amount: BN): SagaGenerator<string> {
   return signature
 }
 
-export function* mintUsd(amount: BN): SagaGenerator<string> {
+export function* mintUsd(amount: BN): SagaGenerator<void> {
   const usdTokenAddress = yield* select(xUSDAddress)
   const tokensAccounts = yield* select(accounts)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -246,13 +246,12 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
   if (accountAddress == null) {
     accountAddress = yield* call(createAccount, usdTokenAddress)
   }
-  const signature = yield* call([exchangeProgram, exchangeProgram.mint], {
+  yield* call([exchangeProgram, exchangeProgram.mint], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
     to: accountAddress
   })
-  return signature[1]
 }
 export function* withdrawCollateral(
   amount: BN,
