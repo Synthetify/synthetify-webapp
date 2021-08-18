@@ -83,7 +83,7 @@ const getButtonMessage = (
   if (printBNtoBN(amountFrom, tokenFrom.supply.scale).gt(tokenFrom.balance)) {
     return 'Invalid swap amount'
   }
-  if (printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val)) {
+  if (printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))) {
     return 'Supply insufficient to swap'
   }
   return 'Swap'
@@ -279,7 +279,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   hint={(
                     <>
                       <span>Available to trade: </span>
-                      <span>{printBN(tokens[tokenToIndex].maxSupply.val, tokens[tokenToIndex].maxSupply.scale)} {tokens[tokenToIndex].symbol}</span>
+                      <span>{printBN(tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val), tokens[tokenToIndex].maxSupply.scale)} {tokens[tokenToIndex].symbol}</span>
                     </>
                   )}
                   anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
