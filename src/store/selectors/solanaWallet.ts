@@ -73,13 +73,12 @@ export const syntheticAccountsArray = createSelector(
         acc.push({
           ...account,
           symbol: asset.symbol,
-          assetDecimals: asset.decimals,
-          usdValue: exchangeAssets[asset.assetIndex].price
+          assetDecimals: asset.supply.scale,
+          usdValue: exchangeAssets[asset.assetIndex].price.val
             .mul(account.balance)
             .mul(new BN(10 ** account.decimals))
-            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** 6))
-            .div(new BN(10 ** asset.decimals))
+            .div(new BN(10 ** (exchangeAssets[asset.assetIndex].price.scale)))
+            .div(new BN(10 ** asset.supply.scale))
         })
       }
       return acc
@@ -100,13 +99,12 @@ export const collateralAccountsArray = createSelector(
         acc.push({
           ...account,
           symbol: asset.symbol,
-          assetDecimals: asset.decimals,
-          usdValue: exchangeAssets[asset.assetIndex].price
+          assetDecimals: asset.reserveBalance.scale,
+          usdValue: exchangeAssets[asset.assetIndex].price.val
             .mul(account.balance)
             .mul(new BN(10 ** account.decimals))
-            .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-            .div(new BN(10 ** 6))
-            .div(new BN(10 ** asset.decimals))
+            .div(new BN(10 ** (exchangeAssets[asset.assetIndex].price.scale)))
+            .div(new BN(10 ** asset.reserveBalance.scale))
         })
       }
       return acc
@@ -117,14 +115,13 @@ export const collateralAccountsArray = createSelector(
     if (wSOL && accounts.length) {
       accounts.push({
         symbol: wSOL.symbol,
-        assetDecimals: wSOL.decimals,
-        usdValue: exchangeAssets[wSOL.assetIndex].price
+        assetDecimals: wSOL.reserveBalance.scale,
+        usdValue: exchangeAssets[wSOL.assetIndex].price.val
           .mul(wSOLBalance)
-          .mul(new BN(10 ** wSOL.decimals))
-          .div(new BN(10 ** (ORACLE_OFFSET - ACCURACY)))
-          .div(new BN(10 ** 6))
-          .div(new BN(10 ** wSOL.decimals)),
-        decimals: wSOL.decimals,
+          .mul(new BN(10 ** wSOL.reserveBalance.scale))
+          .div(new BN(10 ** (exchangeAssets[wSOL.assetIndex].price.scale)))
+          .div(new BN(10 ** wSOL.reserveBalance.scale)),
+        decimals: wSOL.reserveBalance.scale,
         programId: wSOL.collateralAddress,
         balance: wSOLBalance,
         address: wSOLAddress
@@ -145,17 +142,19 @@ export const stakedAccountsArray = createSelector(
 
     for (const collateral of account.collaterals) {
       const collateralAddress = collateral.collateralAddress.toString()
-      accounts.push({
-        symbol: allCollaterals[collateralAddress].symbol,
-        programId: allCollaterals[collateralAddress].collateralAddress,
-        decimals: allCollaterals[collateralAddress].decimals,
-        address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
-        assetDecimals: allCollaterals[collateralAddress].decimals,
-        balance: collateral.amount,
-        usdValue: collateral.amount
-          .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price)
-          .div(new BN(10 ** (allCollaterals[collateralAddress].decimals + ORACLE_OFFSET - ACCURACY)))
-      })
+      if (allCollaterals[collateralAddress]) {
+        accounts.push({
+          symbol: allCollaterals[collateralAddress].symbol,
+          programId: allCollaterals[collateralAddress].collateralAddress,
+          decimals: allCollaterals[collateralAddress].reserveBalance.scale,
+          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
+          assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
+          balance: collateral.amount,
+          usdValue: collateral.amount
+            .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+            .div(new BN(10 ** (allAssets[allCollaterals[collateralAddress].assetIndex].price.scale)))
+        })
+      }
     }
 
     return accounts
@@ -167,13 +166,13 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
     if (debt.eq(new BN(0)) || !token) {
       return new BN(0)
     }
-    const decimalChange = 10 ** (token.decimals + ORACLE_OFFSET - ACCURACY)
+    const decimalChange = 10 ** (token.supply.scale + ORACLE_OFFSET - ACCURACY)
 
-    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.mul(account.balance).div(new BN(decimalChange)) : new BN(0)
+    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.val.mul(account.balance).div(new BN(decimalChange)) : new BN(0)
 
     const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
 
-    return val.mul(new BN(decimalChange)).div(allAssets[token.assetIndex].price)
+    return val.mul(new BN(decimalChange)).div(allAssets[token.assetIndex].price.val)
   })
 
 export const userMaxDeposit = (assetAddress: PublicKey) =>
@@ -182,18 +181,19 @@ export const userMaxDeposit = (assetAddress: PublicKey) =>
       const newBalance = wSOLBalance.sub(
         new BN(21 *
           (10 **
-            (allCollaterals[assetAddress.toString()].decimals - 4)
+            (allCollaterals[assetAddress.toString()].reserveBalance.scale - 4)
           )
         )
       )
       return {
         balance: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
-        decimals: allCollaterals[assetAddress.toString()].decimals
+        decimals: allCollaterals[assetAddress.toString()].reserveBalance.scale
       }
     }
 
     return assetBalance
   })
+
 export const solanaWalletSelectors = {
   address,
   balance,

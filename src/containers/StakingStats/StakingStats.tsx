@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { Grid, Typography } from '@material-ui/core'
 import useStyles from './style'
 import ValueCard from '@components/Cards/ValueCard'
-import { transformBN } from '@consts/utils'
-import { collateralValue, stakedValue, userDebtValue, userMaxDebtValue } from '@selectors/exchange'
+import { printBN, transformBN } from '@consts/utils'
+import { collateralValue, debtInterestRate, stakedValue, userDebtValue, userMaxDebtValue } from '@selectors/exchange'
 import ProgressCard from '@components/Cards/ProgressCard'
 import AnimatedNumber from '@components/AnimatedNumber'
 
@@ -15,6 +15,7 @@ export const StakingStats: React.FC = () => {
   const collateralUserValue = useSelector(collateralValue)
   const currentDebt = useSelector(userDebtValue)
   const maxDebt = useSelector(userMaxDebtValue)
+  const intrestRate = useSelector(debtInterestRate)
 
   return (
     <>
@@ -31,7 +32,7 @@ export const StakingStats: React.FC = () => {
           name='Debt status'
           hint={(
             <>
-              <Typography className={classes.tooltipTitle}>Debt status</Typography> {/* TODO: this title is placeholder to be switched later with interest rate */}
+              <Typography className={classes.tooltipTitle}>Intrest rate: {Number(printBN(intrestRate.val, intrestRate.scale))}%</Typography>
               Current value of your debt in comparison to your collateral value and max borrow
             </>
           )}

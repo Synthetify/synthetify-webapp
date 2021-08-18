@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 22,
     color: colors.navy.lightGrey,
-    backgroundColor: `${colors.navy[292956]}80`,
+    backgroundColor: '#1F1F41',
     [theme.breakpoints.down('xs')]: {
       '& > *': {
         fontSize: 18
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   header: {
     height: 66,
-    backgroundColor: colors.navy.dark,
+    backgroundColor: '#1F1F4160',
     paddingLeft: 16,
 
     [theme.breakpoints.down('sm')]: {

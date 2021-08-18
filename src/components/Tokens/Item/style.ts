@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: 16,
 
     '&:nth-of-type(2n+1)': {
-      backgroundColor: colors.navy.dark
+      backgroundColor: '#1F1F4160'
     },
 
     '&:nth-of-type(2n)': {
-      backgroundColor: `${colors.navy[292956]}80`
+      backgroundColor: '#1F1F41'
     },
 
     [theme.breakpoints.down('sm')]: {

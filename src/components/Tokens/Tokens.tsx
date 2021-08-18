@@ -36,66 +36,64 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
         <Switch onChange={(newValue) => setCurrent(newValue)} />
       </Grid>
 
-      <Grid container className={classes.wrapper}>
-        <Grid container className={classes.list}>
-          <Grid
-            container
-            alignItems='center'
-            className={proppedClasses.header}
-          >
-            <Typography className={classes.title}>
-              {current === 0 ? 'Staked tokens' : 'Synthetic assets'}
-            </Typography>
-            {
-              current === 1
-                ? (
-                  <OutlinedButton
-                    name='Add account'
-                    className={classes.addAccount}
-                    onClick={addAccount}
-                  />
-                )
-                : ''
-            }
-            {(!isXs || current === 0)
+      <Grid container className={classes.list}>
+        <Grid
+          container
+          alignItems='center'
+          className={proppedClasses.header}
+        >
+          <Typography className={classes.title}>
+            {current === 0 ? 'Staked tokens' : 'Synthetic assets'}
+          </Typography>
+          {
+            current === 1
               ? (
-                <Typography className={classes.sum}>
-                  $ <AnimatedNumber
-                    value={sum}
-                    duration={300}
-                    formatValue={(value: string) => {
-                      const num = Number(value)
-
-                      if (num < 10) {
-                        return num.toFixed(6)
-                      }
-
-                      if (num < 1000) {
-                        return num.toFixed(4)
-                      }
-
-                      if (num < 10000) {
-                        return num.toFixed(2)
-                      }
-
-                      if (num < 1000000) {
-                        return (num / 1000).toFixed(2)
-                      }
-
-                      return (num / 1000000).toFixed(2)
-                    }}
-                  />
-                  {sum >= 10000
-                    ? 'K'
-                    : (sum >= 1000000 ? 'M' : '')
-                  }
-                </Typography>
+                <OutlinedButton
+                  name='Add account'
+                  className={classes.addAccount}
+                  onClick={addAccount}
+                />
               )
-              : null
-            }
-          </Grid>
-          <List tokens={current === 0 ? staked : synthetic} type={current === 0 ? 'Staked' : 'Synthetic'} />
+              : ''
+          }
+          {(!isXs || current === 0)
+            ? (
+              <Typography className={classes.sum}>
+                  $ <AnimatedNumber
+                  value={sum}
+                  duration={300}
+                  formatValue={(value: string) => {
+                    const num = Number(value)
+
+                    if (num < 10) {
+                      return num.toFixed(6)
+                    }
+
+                    if (num < 1000) {
+                      return num.toFixed(4)
+                    }
+
+                    if (num < 10000) {
+                      return num.toFixed(2)
+                    }
+
+                    if (num < 1000000) {
+                      return (num / 1000).toFixed(2)
+                    }
+
+                    return (num / 1000000).toFixed(2)
+                  }}
+                />
+                {sum >= 10000
+                  ? 'K'
+                  : (sum >= 1000000 ? 'M' : '')
+                }
+              </Typography>
+            )
+            : null
+          }
         </Grid>
+        <List tokens={current === 0 ? staked : synthetic} type={current === 0 ? 'Staked' : 'Synthetic'} />
       </Grid>
     </>
   )
