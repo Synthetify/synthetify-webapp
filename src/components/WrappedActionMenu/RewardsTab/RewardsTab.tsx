@@ -130,7 +130,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     if (!roundPoints || !allPoints || allPoints.eqn(0) || !amount) {
       return new BN(0)
     }
-    return roundPoints.mul(amount.val).div(new BN(10 ** amount.scale)).div(allPoints)
+    return roundPoints.mul(amount.val).div(allPoints)
   }
 
   const rewardsLines: {
