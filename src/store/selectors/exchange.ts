@@ -1,8 +1,9 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp } from '@consts/utils'
+import { divUp, discountData } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
+import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 
@@ -33,6 +34,9 @@ export const staking = createSelector(state, (s) => {
 })
 export const debtInterestRate = createSelector(state, (s) => {
   return s.debtInterestRate
+})
+export const fee = createSelector(state, (s) => {
+  return s.fee
 })
 export const userDebtShares = createSelector(exchangeAccount, (account) => {
   return account.debtShares
@@ -170,15 +174,42 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
       return maxWithdraw.lte(collateralAmount) ? maxWithdraw : collateralAmount
     }
   )
+
+export const effectiveFeeData = createSelector(
+  fee,
+  exchangeAccount,
+  (currentFee, exchangeAccount) => {
+    const snyAmount = exchangeAccount.collaterals.find(({ index }) => index === 0)?.amount
+    console.log(currentFee.val.toNumber())
+
+    if (typeof snyAmount !== 'undefined') {
+      return {
+        fee: toEffectiveFee(currentFee, snyAmount),
+        discountData: discountData(snyAmount)
+      }
+    } else {
+      return {
+        fee: currentFee,
+        discountData: {
+          discount: undefined,
+          nextDiscount: undefined,
+          nextThreshold: undefined
+        }
+      }
+    }
+  }
+)
 export const exchangeSelectors = {
   assets,
   healthFactor,
   userStaking,
   debtInterestRate,
+  fee,
   userDebtShares,
   mintAuthority,
   userMaxWithdraw,
-  swap
+  swap,
+  effectiveFee: effectiveFeeData
 }
 
 export default exchangeSelectors

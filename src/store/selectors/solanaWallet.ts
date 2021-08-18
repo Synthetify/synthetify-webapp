@@ -191,6 +191,7 @@ export const userMaxDeposit = (assetAddress: PublicKey) =>
 
     return assetBalance
   })
+
 export const solanaWalletSelectors = {
   address,
   balance,

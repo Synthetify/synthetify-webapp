@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   fee: {
-    maxWidth: 140,
+    maxWidth: 160,
 
     [theme.breakpoints.down('sm')]: {
       maxWidth: 100

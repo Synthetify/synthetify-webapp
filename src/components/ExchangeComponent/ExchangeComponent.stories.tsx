@@ -76,9 +76,10 @@ storiesOf('ui/exchangeComponent', module)
         tokens={tokens}
         swapData={swap}
         onSwap={onSwap}
+        fee={{ val: new BN(3), scale: 6 }}
         discountPercent={-10}
         nextDiscountPercent={-12}
-        nextDiscountThreshold={'2137'}
+        nextDiscountThreshold={2137}
       />
     </div>
   ))
