@@ -41,12 +41,19 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
             roundAllPoints: new BN(1e9)
           }
         },
-        amountPerRound: new BN(1e10),
-        amountToClaim: new BN(88648),
+        amountPerRound: {
+          val: new BN(1e10),
+          scale: 0
+        },
+        amountToClaim: {
+          val: new BN(88648),
+          scale: 0
+        },
         onWithdraw: () => {},
         onClaim: () => {}
       }}
       collaterals={[]}
+      staked={[]}
       withdrawCurrency='SNY'
       withdrawDecimal={6}
       depositCurrency='SNY'

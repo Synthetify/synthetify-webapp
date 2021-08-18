@@ -8,8 +8,10 @@ import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
+import { MAX_U64 } from '@consts/static'
 
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
+export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
 
 export interface IProps {
   action: ActionType
@@ -24,7 +26,7 @@ export interface IProps {
   showArrowInInput?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void
-  formatMaxAvailable?: (max: BN) => BN
+  maxBehavior?: MaxBehavior
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -40,7 +42,7 @@ export const ActionTemplate: React.FC<IProps> = ({
   showArrowInInput,
   walletConnected,
   noWalletHandler,
-  formatMaxAvailable
+  maxBehavior = 'number'
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -72,13 +74,23 @@ export const ActionTemplate: React.FC<IProps> = ({
     }
     const decimalDiff = maxDecimal - decimal
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
-    return !amountBN.eqn(0) && isLessThanMaxAmount
+    return !amountBN.eqn(0) && (isLessThanMaxAmount || ((maxBehavior === 'maxU64') && amountBN.eq(MAX_U64)))
   }
 
   const onMaxButtonClick = () => {
-    setAmountBN(maxAvailable)
-    setDecimal(maxDecimal)
-    setInputValue(printBN(maxAvailable, maxDecimal))
+    if (maxBehavior === 'maxU64') {
+      setAmountBN(MAX_U64)
+      setDecimal(maxDecimal)
+      setInputValue('Max')
+    } else if (maxBehavior === 'inputOnly') {
+      setAmountBN(maxAvailable)
+      setDecimal(maxDecimal)
+      setInputValue('Max')
+    } else {
+      setAmountBN(maxAvailable)
+      setDecimal(maxDecimal)
+      setInputValue(printBN(maxAvailable, maxDecimal))
+    }
   }
 
   const onAmountInputChange = (value: string) => {
@@ -188,7 +200,7 @@ export const ActionTemplate: React.FC<IProps> = ({
               keyName={`Available to ${action}`}
               keyClassName={classes.smTextAlignCenter}
               valueClassName={classes.smTextAlignCenter}
-              value={formatMaxAvailable ? formatMaxAvailable(maxAvailable) : maxAvailable}
+              value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}
             />

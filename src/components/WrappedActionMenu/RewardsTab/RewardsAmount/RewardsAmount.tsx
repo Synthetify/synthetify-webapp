@@ -2,13 +2,14 @@ import React from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
-import { transformBN } from '@consts/utils'
+import { printBN } from '@consts/utils'
 import BN from 'bn.js'
 import useStyles from './style'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 
 interface IRewardsAmountProps {
-  amountToClaim: BN
+  amountToClaim: Decimal
 }
 
 export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) => {
@@ -19,7 +20,7 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
       <Grid item style={{ marginRight: 15 }}>
         <Typography className={classes.text}>
           <AnimatedNumber
-            value={transformBN(amountToClaim || new BN(0))}
+            value={printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0)}
             duration={300}
             formatValue={(value: string) => {
               const num = Number(value)
@@ -39,9 +40,9 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
               return (num / 1000000).toFixed(3)
             }}
           />
-          {+transformBN(amountToClaim || new BN(0)) >= 10000
+          {+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 10000
             ? 'K '
-            : (+transformBN(amountToClaim || new BN(0)) >= 1000000 ? 'M ' : ' ')
+            : (+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 1000000 ? 'M ' : ' ')
           }
           SNY
         </Typography>

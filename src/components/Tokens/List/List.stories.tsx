@@ -41,5 +41,5 @@ const tokens = [xSNY, xBTC, SOL, FTT]
 
 storiesOf('Tokens/List', module)
   .addDecorator(withKnobs)
-  .add('Example token list', () => <List tokens={tokens} />)
-  .add('Empty token list', () => <List tokens={[]} />)
+  .add('Example token list', () => <List type='Staked' tokens={tokens} />)
+  .add('Empty token list', () => <List type='Staked' tokens={[]} />)

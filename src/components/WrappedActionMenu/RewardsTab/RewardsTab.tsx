@@ -9,6 +9,7 @@ import useStyles from './style'
 import Rewards1 from '@static/svg/rewards1.svg'
 import Rewards2 from '@static/svg/rewards2.svg'
 import Rewards3 from '@static/svg/rewards3.svg'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 
 export type RoundType = 'next' | 'current' | 'finished'
 
@@ -22,8 +23,8 @@ export type RoundData = {
 
 export interface IRewardsProps {
   slot: number
-  amountToClaim: BN
-  amountPerRound: BN
+  amountToClaim: Decimal
+  amountPerRound: Decimal
   roundLength: number
   userDebtShares: BN
   rounds: RoundData
@@ -73,7 +74,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             roundPoints: userDebtShares
           },
           next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           }
@@ -82,17 +83,17 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       default: {
         return {
           finished: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           },
           current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           },
           next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           }
@@ -122,14 +123,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const isWithdrawDisabled = () => {
-    return amountToClaim.eqn(0)
+    return amountToClaim.val.eq(new BN(0))
   }
 
-  const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
+  const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: Decimal) => {
     if (!roundPoints || !allPoints || allPoints.eqn(0) || !amount) {
       return new BN(0)
     }
-    return roundPoints.mul(amount).div(allPoints)
+    return roundPoints.mul(amount.val).div(allPoints)
   }
 
   const rewardsLines: {
