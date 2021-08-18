@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export const SNY_DEV_TOKEN = 'EUdH9pgy4GtgYb42sj9MjiRW5i4s7HaEAbcNzwRhuaYa'
+export const SNY_DEV_TOKEN = '9dLGczoMUANNef7Je5qpSYjBxyT8PTh5tEZqo3pJktM9'
 
 enum SolanaNetworks {
   DEV = 'https://api.devnet.solana.com',
