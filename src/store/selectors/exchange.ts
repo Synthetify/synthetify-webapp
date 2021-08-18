@@ -31,6 +31,9 @@ export const healthFactor = createSelector(state, (s) => {
 export const staking = createSelector(state, (s) => {
   return s.staking
 })
+export const debtInterestRate = createSelector(state, (s) => {
+  return s.debtInterestRate
+})
 export const userDebtShares = createSelector(exchangeAccount, (account) => {
   return account.debtShares
 })
@@ -171,6 +174,7 @@ export const exchangeSelectors = {
   assets,
   healthFactor,
   userStaking,
+  debtInterestRate,
   userDebtShares,
   mintAuthority,
   userMaxWithdraw,
