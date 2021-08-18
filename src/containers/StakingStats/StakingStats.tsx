@@ -32,7 +32,7 @@ export const StakingStats: React.FC = () => {
           name='Debt status'
           hint={(
             <>
-              <Typography className={classes.tooltipTitle}>Intrest rate: {Number(printBN(intrestRate.val, intrestRate.scale))}%</Typography> {/* TODO: this title is placeholder to be switched later with interest rate */}
+              <Typography className={classes.tooltipTitle}>Intrest rate: {Number(printBN(intrestRate.val, intrestRate.scale))}%</Typography>
               Current value of your debt in comparison to your collateral value and max borrow
             </>
           )}
