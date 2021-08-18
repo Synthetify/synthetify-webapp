@@ -22,7 +22,7 @@ enum SolanaNetworks {
   LOCAL = 'http://127.0.0.1:8899'
 }
 const DEFAULT_PUBLICKEY = new PublicKey(0)
-const ORACLE_OFFSET = 6
+const ORACLE_OFFSET = 8
 const ACCURACY = 6
 const DEFAULT_STAKING_DATA: UserStaking = {
   amountToClaim: {

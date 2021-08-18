@@ -55,16 +55,11 @@ export const stakedValue = createSelector(exchangeAccount, collaterals, assets, 
   let val: BN = new BN(0)
 
   for (const collateral of account.collaterals) {
+    const collateralAddress = collateral.collateralAddress.toString()
+
     const toAdd: BN = collateral.amount
-      .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
-      .div(
-        new BN(
-          10 **
-            (allCollaterals[collateral.collateralAddress.toString()].decimals +
-              ORACLE_OFFSET -
-              ACCURACY)
-        )
-      )
+      .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+      .div(new BN(10 ** (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
     val = val.add(toAdd)
   }
 
@@ -83,11 +78,12 @@ export const collateralValue = createSelector(
     let val: BN = new BN(0)
 
     for (const collateral of account.collaterals) {
+      const collateralAddress = collateral.collateralAddress.toString()
       const toAdd: BN = collateral.amount
-        .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
-        .mul(new BN(allCollaterals[collateral.collateralAddress.toString()].collateralRatio))
-        .div(new BN(100))
-        .div(new BN(10 ** (allCollaterals[collateral.collateralAddress.toString()].decimals + ORACLE_OFFSET - ACCURACY)))
+        .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+        .mul(allCollaterals[collateralAddress].collateralRatio.val)
+        .div(new BN(10 ** allCollaterals[collateralAddress].collateralRatio.scale))
+        .div(new BN(10 ** (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
       val = val.add(toAdd)
     }
 
@@ -112,8 +108,8 @@ export const userDebtValue = createSelector(
     const debt = Object.entries(allSynthetics).reduce((acc, [_, synthetic]) => {
       return acc.add(
         divUp(
-          allAssets[synthetic.assetIndex].price.mul(synthetic.supply),
-          new BN(10 ** (synthetic.decimals + ORACLE_OFFSET - ACCURACY))
+          allAssets[synthetic.assetIndex].price.val.mul(synthetic.supply.val),
+          new BN(10 ** (synthetic.supply.scale + ORACLE_OFFSET - ACCURACY))
         )
       )
     }, new BN(0))
@@ -126,7 +122,7 @@ export const userMaxDebtValue = createSelector(
   collateralValue,
   healthFactor,
   (value, factor) => {
-    return value.mul(new BN(factor)).div(new BN(100))
+    return value.mul(factor.val).div(new BN(10 ** factor.scale))
   }
 )
 
@@ -140,12 +136,6 @@ export const userMaxMintUsd = createSelector(
     return maxDebt.sub(userDebt)
   }
 )
-export const userCollateralRatio = createSelector(userDebtValue, stakedValue, (debt, stake) => {
-  if (debt.eq(new BN(0)) || stake.eq(new BN(0))) {
-    return new BN(0)
-  }
-  return stake.mul(new BN(1e3)).div(debt).div(new BN(10))
-})
 
 export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
   createSelector(
@@ -167,11 +157,12 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
       const collateralToken = allCollaterals[collateralTokenAddress.toString()]
       const maxWithdraw = maxUsd
         .sub(debt)
-        .mul(new BN(10000))
-        .mul(new BN(10 ** collateralToken.decimals + ORACLE_OFFSET - ACCURACY))
-        .div(new BN(collateralToken.collateralRatio))
-        .div(new BN(factor))
-        .div(new BN(allAssets[collateralToken.assetIndex].price))
+        .mul(new BN(10 ** collateralToken.collateralRatio.scale))
+        .mul(new BN(10 ** factor.scale))
+        .mul(new BN(10 ** (collateralToken.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+        .div(collateralToken.collateralRatio.val)
+        .div(new BN(factor.val))
+        .div(new BN(allAssets[collateralToken.assetIndex].price.val))
       const collateralAmount = account.collaterals.find(token => token.collateralAddress.equals(collateralTokenAddress))?.amount ?? new BN(0)
       return maxWithdraw.lte(collateralAmount) ? maxWithdraw : collateralAmount
     }
