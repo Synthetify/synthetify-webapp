@@ -2,19 +2,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  wrapper: {
-    backgroundColor: colors.navy.component,
-    borderRadius: 10,
-    padding: 20,
-
-    [theme.breakpoints.down('md')]: {
-      paddingBlock: 17
-    },
-
-    [theme.breakpoints.down('sm')]: {
-      paddingBlock: 14
-    }
-  },
   list: {
     borderRadius: 10,
     overflow: 'hidden'

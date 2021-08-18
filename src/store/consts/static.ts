@@ -34,4 +34,5 @@ const DEFAULT_STAKING_DATA: UserStaking = {
   nextRoundPoints: new BN(0),
   lastUpdate: new BN(0)
 }
-export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA }
+const MAX_U64 = new BN('18446744073709551615')
+export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA, MAX_U64 }

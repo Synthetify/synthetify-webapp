@@ -45,7 +45,7 @@ export const AmountInput: React.FC<IProps> = ({
 
   const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const regex = /^\d*\.?\d*$/
-    if (e.target.value === '' || regex.test(e.target.value)) {
+    if (e.target.value === '' || e.target.value === 'Max' || regex.test(e.target.value)) {
       const startValue = e.target.value
       const caretPosition = e.target.selectionStart
 
@@ -71,6 +71,8 @@ export const AmountInput: React.FC<IProps> = ({
           }
         }, 0)
       }
+    } else if (!regex.test(e.target.value)) {
+      setValue('')
     }
   }
 
