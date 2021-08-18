@@ -142,17 +142,19 @@ export const stakedAccountsArray = createSelector(
 
     for (const collateral of account.collaterals) {
       const collateralAddress = collateral.collateralAddress.toString()
-      accounts.push({
-        symbol: allCollaterals[collateralAddress].symbol,
-        programId: allCollaterals[collateralAddress].collateralAddress,
-        decimals: allCollaterals[collateralAddress].reserveBalance.scale,
-        address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
-        assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
-        balance: collateral.amount,
-        usdValue: collateral.amount
-          .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
-          .div(new BN(10 ** (allAssets[allCollaterals[collateralAddress].assetIndex].price.scale)))
-      })
+      if (allCollaterals[collateralAddress]) {
+        accounts.push({
+          symbol: allCollaterals[collateralAddress].symbol,
+          programId: allCollaterals[collateralAddress].collateralAddress,
+          decimals: allCollaterals[collateralAddress].reserveBalance.scale,
+          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
+          assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
+          balance: collateral.amount,
+          usdValue: collateral.amount
+            .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+            .div(new BN(10 ** (allAssets[allCollaterals[collateralAddress].assetIndex].price.scale)))
+        })
+      }
     }
 
     return accounts
