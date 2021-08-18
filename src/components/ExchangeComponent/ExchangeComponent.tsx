@@ -182,7 +182,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokens}
+                tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
                 current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
@@ -210,7 +210,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Hidden smDown>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokens}
+                tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
                 current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) =>
@@ -312,7 +312,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Grid item container wrap='nowrap' justifyContent='space-around' alignItems='center'>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokens}
+                tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
                 current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
@@ -341,7 +341,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Hidden smDown>
             <Grid item xs={6}>
               <SelectToken
-                tokens={tokens}
+                tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
                 current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
                 centered={true}
                 onSelect={(chosen: string) => {
