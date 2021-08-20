@@ -10,7 +10,7 @@ export interface IProps {
 const useStyles = makeStyles(() => ({
   tabs: {
     borderRadius: 10,
-    backgroundColor: colors.navy.dark
+    backgroundColor: '#060620'
   }
 }))
 

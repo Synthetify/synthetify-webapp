@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 20
   },
   tokenComponent: {
-    background: colors.navy[292956],
+    background: colors.navy.darkGrey,
     borderRadius: 10,
     padding: 20,
     paddingTop: 6
