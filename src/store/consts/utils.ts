@@ -111,18 +111,16 @@ export const discountData = (userCollateralBalance: BN) => {
     5000000
   ]
 
-  for (let val = 0; val < 15; val++) {
+  for (let val = 0; val < 16; val++) {
     if (userCollateralBalance.lt(ONE_SNY.mul(new BN(thresholds[val])))) {
       return {
         discount: -val,
-        nextDiscount: -(val + 1),
         nextThreshold: thresholds[val]
       }
     }
   }
   return {
-    discount: undefined,
-    nextDiscount: undefined,
+    discount: 15,
     nextThreshold: undefined
   }
 }

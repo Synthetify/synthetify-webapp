@@ -28,7 +28,6 @@ export const WrappedExchangeComponent: React.FC = () => {
       }}
       fee={feeData.fee}
       discountPercent={feeData.discountData.discount}
-      nextDiscountPercent={feeData.discountData.nextDiscount}
       nextDiscountThreshold={feeData.discountData.nextThreshold}
     />
   )
