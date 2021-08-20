@@ -78,7 +78,8 @@ export const colors = {
     veryLightGrey: '#FBFBFB',
     button: '#6C6BC7',
     info: '#6F6EAA',
-    darkGrey: '#292956'
+    darkGrey: '#292956',
+    '5756B3': '#5756B3'
   }
 }
 export const theme = createTheme({
