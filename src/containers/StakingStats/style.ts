@@ -25,8 +25,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltipTitle: {
     fontSize: 16,
     lineHeight: '16px',
-    fontWeight: 700,
-    marginBottom: 10
+    fontWeight: 700
+  },
+  tooltipIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8
   }
 }))
 

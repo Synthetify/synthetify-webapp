@@ -22,6 +22,12 @@ const useStyles = makeStyles(() => ({
   questionMark: {
     height: 17,
     width: 17
+  },
+  rewardsIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8
   }
 }))
 

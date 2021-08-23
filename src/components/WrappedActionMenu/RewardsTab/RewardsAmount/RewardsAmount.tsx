@@ -4,9 +4,10 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
 import { printBN } from '@consts/utils'
 import BN from 'bn.js'
-import useStyles from './style'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
+import Rewards from '@static/svg/rewards.svg'
+import useStyles from './style'
 
 interface IRewardsAmountProps {
   amountToClaim: Decimal
@@ -52,6 +53,7 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
         desktopPlacement='bottom-start'
         hint={(
           <>
+            <img src={Rewards} alt='' className={classes.rewardsIcon} />
             <Typography className={classes.title}>Rewards</Typography>
             Amount of SNY tokens you can withdraw
           </>

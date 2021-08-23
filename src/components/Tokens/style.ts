@@ -65,15 +65,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     fontWeight: 600,
     position: 'absolute',
-    right: 16,
+    right: 0,
+    minWidth: 159,
 
     [theme.breakpoints.down('sm')]: {
       fontSize: 14
     },
 
     [theme.breakpoints.down('xs')]: {
-      fontSize: 12,
-      right: 11
+      minWidth: 95,
+      fontSize: 12
     }
   }
 }))

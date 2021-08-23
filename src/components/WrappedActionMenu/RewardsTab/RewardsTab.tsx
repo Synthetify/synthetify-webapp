@@ -10,6 +10,7 @@ import Rewards1 from '@static/svg/rewards1.svg'
 import Rewards2 from '@static/svg/rewards2.svg'
 import Rewards3 from '@static/svg/rewards3.svg'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { Placement } from '@components/MobileTooltip/MobileTooltip'
 
 export type RoundType = 'next' | 'current' | 'finished'
 
@@ -143,6 +144,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       hint: string
       timeRemainingEndSlot: BN
       icon: string
+      tooltipPlacement: Placement
     }
   } = [
     {
@@ -155,9 +157,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'The round has not yet started',
+      hint: 'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
-      icon: Rewards1
+      icon: Rewards1,
+      tooltipPlacement: 'left-end'
     },
     {
       name: 'Current round',
@@ -169,9 +172,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'To get more points in the current round, increase the amount of your debt',
+      hint: 'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
-      icon: Rewards2
+      icon: Rewards2,
+      tooltipPlacement: 'left'
     },
     {
       name: 'Finished round',
@@ -183,9 +187,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'This round has been finished. Now you can claim your tokens',
+      hint: 'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
       timeRemainingEndSlot: nextRoundStartSlot,
-      icon: Rewards3
+      icon: Rewards3,
+      tooltipPlacement: 'left-start'
     }
   ]
 

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
 
-type Placement =
+export type Placement =
   | 'bottom-end'
   | 'bottom-start'
   | 'bottom'
@@ -23,7 +23,8 @@ export interface IMobileTooltip {
   onOpen?: () => void
   mobilePlacement?: Placement
   desktopPlacement?: Placement
-  tooltipClassName?: string
+  tooltipClasses?: { [key: string]: string }
+  isInteractive?: boolean
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
@@ -32,7 +33,8 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   onOpen,
   mobilePlacement = 'bottom',
   desktopPlacement = 'right',
-  tooltipClassName
+  tooltipClasses,
+  isInteractive = false
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -48,9 +50,10 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <Icon>
           <Tooltip
             onOpen={onOpen}
-            classes={{ tooltip: classNames(tooltipClassName, classes.tooltip) }}
+            classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
             title={hint}
             placement={desktopPlacement}
+            interactive={isInteractive}
           >
             {anchor}
           </Tooltip>
@@ -60,14 +63,16 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
-              classes={{ tooltip: classNames(tooltipClassName, classes.tooltip) }}
+              classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
+              onOpen={onOpen}
               onClose={() => setIsPopoverOpen(false)}
               disableFocusListener
               disableHoverListener
               disableTouchListener
+              interactive={isInteractive}
             >
               {anchor}
             </Tooltip>

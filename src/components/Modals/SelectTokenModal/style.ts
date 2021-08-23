@@ -80,9 +80,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenIcon: {
     width: 48,
     height: 48,
-    marginInline: 6,
+    marginLeft: 6,
+    marginRight: 14,
 
     [theme.breakpoints.down('md')]: {
+      marginRight: 6,
       width: 44,
       height: 44
     }
