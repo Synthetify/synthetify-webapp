@@ -287,7 +287,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
               tooltipClasses={{ tooltip: classes.tooltip }}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
-              showOnlyOnClick
+              isInteractive
             />
           </Grid>
           <Typography className={classes.tokenMaxText}>
@@ -386,25 +386,27 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'fit-content' } : undefined}>
           <Grid item container justifyContent="space-between" style={{ width: 'auto' }}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-            <MobileTooltip
-              hint={(
-                <>
-                  <img src={Fee} alt='' className={classes.feeIcon} />
-                  <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
-                  <p style={{ marginBlock: 10 }}>
+            {typeof discountPercent !== 'undefined' && (
+              <MobileTooltip
+                hint={(
+                  <>
+                    <img src={Fee} alt='' className={classes.feeIcon} />
+                    <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
+                    <p style={{ marginBlock: 10 }}>
                       You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
                       Your current discount on the fee is <b>{discountPercent}%</b>.
-                    {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{nextDiscountThreshold} SNY</b> more.</>}
-                  </p>
+                      {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.</>}
+                    </p>
                     Find out more about fee tiers in our <a href={docs} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>documentation.</a>
-                </>
-              )}
-              anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-              tooltipClasses={{ tooltip: classes.tooltip }}
-              mobilePlacement='top-start'
-              desktopPlacement='top-end'
-              showOnlyOnClick
-            />
+                  </>
+                )}
+                anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
+                tooltipClasses={{ tooltip: classes.tooltip }}
+                mobilePlacement='top-start'
+                desktopPlacement='top-end'
+                isInteractive
+              />
+            )}
           </Grid>
 
           <Grid item container justifyContent="space-between">
