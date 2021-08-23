@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
 
-type Placement =
+export type Placement =
   | 'bottom-end'
   | 'bottom-start'
   | 'bottom'
@@ -23,7 +23,7 @@ export interface IMobileTooltip {
   onOpen?: () => void
   mobilePlacement?: Placement
   desktopPlacement?: Placement
-  tooltipClassName?: string
+  tooltipClasses?: { [key: string]: string }
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
@@ -32,7 +32,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   onOpen,
   mobilePlacement = 'bottom',
   desktopPlacement = 'right',
-  tooltipClassName
+  tooltipClasses
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -48,7 +48,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <Icon>
           <Tooltip
             onOpen={onOpen}
-            classes={{ tooltip: classNames(tooltipClassName, classes.tooltip) }}
+            classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
             title={hint}
             placement={desktopPlacement}
           >
@@ -60,7 +60,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
-              classes={{ tooltip: classNames(tooltipClassName, classes.tooltip) }}
+              classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
