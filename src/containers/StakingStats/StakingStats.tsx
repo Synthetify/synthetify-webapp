@@ -44,7 +44,7 @@ export const StakingStats: React.FC = () => {
               <Typography className={classes.tooltipTitle}>Debt status</Typography>
               <p style={{ marginBlock: 10 }}>Current value of your debt based on the debt of the platform. Max borrow represents the maximal debt that you can mint. Value at the end of the bar is your liquidation threshold - if your debt increases beyond this value, your position can be liquidated.</p>
               <p style={{ marginBlock: 10 }}>Debt is subject to interest rate</p>
-              <b>Intrest rate: {Number(printBN(intrestRate.val, intrestRate.scale))}%</b>
+              <b>Intrest rate: {Number(printBN(intrestRate.val, intrestRate.scale)) * 100}%</b>
             </>
           )}
           current={+transformBN(currentDebt)}
