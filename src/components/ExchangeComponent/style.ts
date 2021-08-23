@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 20
   },
   tokenComponent: {
-    background: colors.navy[292956],
+    background: colors.navy.darkGrey,
     borderRadius: 10,
     padding: 20,
     paddingTop: 6
@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   fee: {
-    maxWidth: 160,
+    maxWidth: 150,
 
     [theme.breakpoints.down('sm')]: {
       maxWidth: 100
@@ -149,31 +149,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '40px',
     margin: 10,
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    backgroundColor: colors.navy['5756B3']
   },
   mdDownButton: {
     width: 'calc(100% - 20px)'
   },
   tooltip: {
-    fontSize: 13,
-    textAlign: 'center',
-    width: 258,
-    marginBottom: 10
-  },
-  supplyTooltip: {
-    fontWeight: 700,
-
-    [theme.breakpoints.down('xs')]: {
-      width: 158
-    }
+    fontSize: 13
   },
   exclamationMark: {
-    height: 16,
-    width: 16
+    height: 18,
+    width: 18,
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   questionMark: {
     height: 20,
-    width: 20
+    width: 20,
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   toText: {
     maxWidth: 160,
@@ -185,6 +184,28 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       maxWidth: 106
     }
+  },
+  outputIcon: {
+    width: 25,
+    height: 16,
+    position: 'absolute',
+    right: 8
+  },
+  feeIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8
+  },
+  tooltipTitle: {
+    fontSize: 16,
+    lineHeight: '16px',
+    fontWeight: 700
+  },
+  tooltipLink: {
+    fontWeight: 700,
+    color: colors.navy.veryLightGrey,
+    cursor: 'pointer'
   }
 }))
 

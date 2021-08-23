@@ -5,6 +5,7 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeRemainingTooltip/TimeRemainingTooltip'
 import BN from 'bn.js'
 import useStyles from './style'
+import { Placement } from '@components/MobileTooltip/MobileTooltip'
 
 export interface IRewardsLineProps {
   name: string
@@ -17,6 +18,7 @@ export interface IRewardsLineProps {
   timeRemainingEndSlot: BN
   slot: number
   icon: string
+  tooltipPlacement: Placement
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -28,7 +30,8 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   timeRemainingEndSlot,
   slot,
   hint,
-  icon
+  icon,
+  tooltipPlacement
 }) => {
   const classes = useStyles()
 
@@ -75,7 +78,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
 
   return (
     <Grid container alignItems='center' wrap='nowrap'>
-      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} icon={icon} />
+      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} icon={icon} placement={tooltipPlacement} />
       <Grid item style={{ marginLeft: 15 }}>
         <Typography className={classes.text}>
           {name}

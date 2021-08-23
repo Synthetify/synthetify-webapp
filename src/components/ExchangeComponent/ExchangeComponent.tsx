@@ -16,8 +16,11 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
 import QuestionMark from '@static/svg/questionMark.svg'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import Output from '@static/svg/output.svg'
+import Fee from '@static/svg/fee.svg'
 import useStyles from './style'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { docs, pyth } from '@static/links'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -95,7 +98,6 @@ export interface IExchangeComponent {
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
   fee: Decimal
   discountPercent?: number
-  nextDiscountPercent?: number
   nextDiscountThreshold?: number
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({
@@ -103,7 +105,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   onSwap,
   fee,
   discountPercent,
-  nextDiscountPercent,
   nextDiscountThreshold
 }) => {
   const classes = useStyles()
@@ -273,23 +274,21 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center'>
           <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center' className={classes.toText}>
             <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
-            {(tokenToIndex !== null) && (printBNtoBN(amountTo, tokens[tokenToIndex].supply.scale).gte(tokens[tokenToIndex].maxSupply.val))
-              ? (
-                <MobileTooltip
-                  hint={(
-                    <>
-                      <span>Available to trade: </span>
-                      <span>{printBN(tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val), tokens[tokenToIndex].maxSupply.scale)} {tokens[tokenToIndex].symbol}</span>
-                    </>
-                  )}
-                  anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
-                  tooltipClassName={classNames(classes.tooltip, classes.supplyTooltip)}
-                  mobilePlacement='top-end'
-                  desktopPlacement='top-end'
-                />
-              )
-              : null
-            }
+            <MobileTooltip
+              hint={(
+                <>
+                  <img src={Output} alt='' className={classes.outputIcon} />
+                  <Typography className={classes.tooltipTitle}>Estimated output amount</Typography>
+                  <p style={{ marginBlock: 10 }}>Output amount is calculated based on the most up-to-date data from price oracles, so it can change due to the sub-second update intervals of the oracles.</p>
+                  Find out more about oracles on <a href={pyth} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>Pyth Network website.</a>
+                </>
+              )}
+              anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
+              tooltipClasses={{ tooltip: classes.tooltip }}
+              mobilePlacement='top-end'
+              desktopPlacement='top-end'
+              isInteractive
+            />
           </Grid>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null && tokenToIndex !== null
@@ -387,17 +386,25 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         <Grid item container direction="column" className={classes.fee} style={typeof discountPercent === 'undefined' ? { width: 'fit-content' } : undefined}>
           <Grid item container justifyContent="space-between" style={{ width: 'auto' }}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-            {typeof nextDiscountPercent !== 'undefined' && (
+            {typeof discountPercent !== 'undefined' && (
               <MobileTooltip
                 hint={(
                   <>
-                    Deposit <b>{nextDiscountThreshold} SNY</b> to get <b>{nextDiscountPercent}%</b> discount.
+                    <img src={Fee} alt='' className={classes.feeIcon} />
+                    <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
+                    <p style={{ marginBlock: 10 }}>
+                      You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
+                      Your current discount on the fee is <b>{discountPercent}%</b>.
+                      {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.</>}
+                    </p>
+                    Find out more about fee tiers in our <a href={docs} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>documentation.</a>
                   </>
                 )}
                 anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-                tooltipClassName={classes.tooltip}
+                tooltipClasses={{ tooltip: classes.tooltip }}
                 mobilePlacement='top-start'
                 desktopPlacement='top-end'
+                isInteractive
               />
             )}
           </Grid>

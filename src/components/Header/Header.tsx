@@ -61,7 +61,7 @@ export const Header: React.FC<IHeader> = ({
           <Divider orientation='vertical' className={classes.verticalDivider} />
         </Grid>
         <Hidden smDown>
-          <Grid container wrap='nowrap' alignItems='center' style={{ minWidth: (93 * routes.length) + (15 * (routes.length - 1)) }}>
+          <Grid container wrap='nowrap' alignItems='center' style={{ maxWidth: (93 * routes.length) + (15 * (routes.length - 1)) }}>
             {routes.map(path => (
               <Link key={`path-${path}`} to={`/${path}`} className={classes.link}>
                 <NavbarButton

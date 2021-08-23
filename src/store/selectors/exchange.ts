@@ -1,5 +1,5 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp, discountData } from '@consts/utils'
+import { divUp, discountData, printBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -184,19 +184,22 @@ export const effectiveFeeData = createSelector(
   exchangeAccount,
   (currentFee, exchangeAccount) => {
     const snyAmount = exchangeAccount.collaterals.find(({ index }) => index === 0)?.amount
-    console.log(currentFee.val.toNumber())
 
     if (typeof snyAmount !== 'undefined') {
+      const { discount, nextThreshold } = discountData(snyAmount)
+
       return {
         fee: toEffectiveFee(currentFee, snyAmount),
-        discountData: discountData(snyAmount)
+        discountData: {
+          discount,
+          nextThreshold: typeof nextThreshold !== 'undefined' ? nextThreshold - +printBN(snyAmount, 6) : undefined
+        }
       }
     } else {
       return {
         fee: currentFee,
         discountData: {
           discount: undefined,
-          nextDiscount: undefined,
           nextThreshold: undefined
         }
       }

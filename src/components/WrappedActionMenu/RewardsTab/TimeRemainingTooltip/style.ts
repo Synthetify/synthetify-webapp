@@ -10,6 +10,17 @@ const useStyles = makeStyles(() => ({
   icon: {
     height: 20,
     minWidth: 20
+  },
+  clockIcon: {
+    width: 16,
+    height: 16,
+    float: 'right'
+  },
+  tooltipPlacementLeft: {
+    marginRight: 16
+  },
+  tooltipPlacementRight: {
+    marginLeft: 16
   }
 }))
 
