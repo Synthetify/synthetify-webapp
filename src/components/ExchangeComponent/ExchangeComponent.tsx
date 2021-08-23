@@ -20,6 +20,7 @@ import Output from '@static/svg/output.svg'
 import Fee from '@static/svg/fee.svg'
 import useStyles from './style'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { docs, pyth } from '@static/links'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -279,13 +280,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <img src={Output} alt='' className={classes.outputIcon} />
                   <Typography className={classes.tooltipTitle}>Estimated output amount</Typography>
                   <p style={{ marginBlock: 10 }}>Output amount is calculated based on the most up-to-date data from price oracles, so it can change due to the sub-second update intervals of the oracles.</p>
-                  Find out more about oracles on <a href='pyth.network' className={classes.tooltipLink}>Pyth Network website.</a>
+                  Find out more about oracles on <a href={pyth} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>Pyth Network website.</a>
                 </>
               )}
               anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
-              tooltipClassName={classes.tooltip}
+              tooltipClasses={{ tooltip: classes.tooltip }}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
+              showOnlyOnClick
             />
           </Grid>
           <Typography className={classes.tokenMaxText}>
@@ -394,13 +396,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                       Your current discount on the fee is <b>{discountPercent}%</b>.
                     {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{nextDiscountThreshold} SNY</b> more.</>}
                   </p>
-                    Find out more about fee tiers in our <a href='docs.synthetify.io' className={classes.tooltipLink}>documentation.</a>
+                    Find out more about fee tiers in our <a href={docs} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>documentation.</a>
                 </>
               )}
               anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-              tooltipClassName={classes.tooltip}
+              tooltipClasses={{ tooltip: classes.tooltip }}
               mobilePlacement='top-start'
               desktopPlacement='top-end'
+              showOnlyOnClick
             />
           </Grid>
 

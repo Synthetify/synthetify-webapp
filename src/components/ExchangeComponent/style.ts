@@ -159,12 +159,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 13
   },
   exclamationMark: {
-    height: 16,
-    width: 16
+    height: 18,
+    width: 18,
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   questionMark: {
     height: 20,
-    width: 20
+    width: 20,
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   toText: {
     maxWidth: 160,
@@ -196,7 +204,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipLink: {
     fontWeight: 700,
-    color: colors.navy.veryLightGrey
+    color: colors.navy.veryLightGrey,
+    cursor: 'pointer'
   }
 }))
 

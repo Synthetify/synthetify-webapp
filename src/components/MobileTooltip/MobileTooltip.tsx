@@ -24,6 +24,7 @@ export interface IMobileTooltip {
   mobilePlacement?: Placement
   desktopPlacement?: Placement
   tooltipClasses?: { [key: string]: string }
+  showOnlyOnClick?: boolean
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
@@ -32,7 +33,8 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   onOpen,
   mobilePlacement = 'bottom',
   desktopPlacement = 'right',
-  tooltipClasses
+  tooltipClasses,
+  showOnlyOnClick = false
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -44,19 +46,20 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
 
   return (
     <Grid item>
-      <Hidden mdDown>
+      <Hidden mdDown={!showOnlyOnClick} xsUp={showOnlyOnClick}>
         <Icon>
           <Tooltip
             onOpen={onOpen}
             classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
             title={hint}
             placement={desktopPlacement}
+            interactive
           >
             {anchor}
           </Tooltip>
         </Icon>
       </Hidden>
-      <Hidden lgUp>
+      <Hidden lgUp={!showOnlyOnClick}>
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
@@ -64,10 +67,12 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
+              onOpen={onOpen}
               onClose={() => setIsPopoverOpen(false)}
               disableFocusListener
               disableHoverListener
               disableTouchListener
+              interactive
             >
               {anchor}
             </Tooltip>
