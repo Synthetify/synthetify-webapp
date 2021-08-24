@@ -18,6 +18,7 @@ interface IProps {
   showArrow?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void
+  emptyTokensHandler?: () => void
 }
 
 export const AmountInputWithLabel: React.FC<IProps> = props => {

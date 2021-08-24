@@ -27,6 +27,7 @@ export interface IProps {
   walletConnected?: boolean
   noWalletHandler?: () => void
   maxBehavior?: MaxBehavior
+  emptyTokensHandler?: () => void
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -42,7 +43,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   showArrowInInput,
   walletConnected,
   noWalletHandler,
-  maxBehavior = 'number'
+  maxBehavior = 'number',
+  emptyTokensHandler
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -68,13 +70,21 @@ export const ActionTemplate: React.FC<IProps> = ({
     }
   }, [amountBN])
 
+  useEffect(() => {
+    if ((maxBehavior !== 'number') && (inputValue === 'Max')) {
+      setAmountBN(new BN(0))
+      setDecimal(1)
+      setInputValue(printBN(new BN(0), 1))
+    }
+  }, [currency])
+
   const checkActionIsAvailable = () => {
     if (decimal > maxDecimal) {
       return false
     }
     const decimalDiff = maxDecimal - decimal
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
-    return !amountBN.eqn(0) && (isLessThanMaxAmount || ((maxBehavior === 'maxU64') && amountBN.eq(MAX_U64)))
+    return !amountBN.eqn(0) && (isLessThanMaxAmount || ((maxBehavior === 'maxU64') && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)))
   }
 
   const onMaxButtonClick = () => {
@@ -180,6 +190,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             showArrow={showArrowInInput}
             walletConnected={walletConnected}
             noWalletHandler={noWalletHandler}
+            emptyTokensHandler={emptyTokensHandler}
           />
         </Grid>
         <Grid

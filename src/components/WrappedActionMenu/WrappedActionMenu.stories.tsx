@@ -52,14 +52,16 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
         onWithdraw: () => {},
         onClaim: () => {}
       }}
-      collaterals={[]}
-      staked={[]}
+      depositTokens={[]}
+      withdrawTokens={[]}
       withdrawCurrency='SNY'
       withdrawDecimal={6}
       depositCurrency='SNY'
       depositDecimal={6}
       walletConnected={true}
       noWalletHandler={() => {}}
+      emptyDepositTokensHandler={() => {}}
+      emptyWithdrawTokensHandler={() => {}}
     />
   </div>
 ))
