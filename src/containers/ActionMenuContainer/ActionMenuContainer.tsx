@@ -46,7 +46,7 @@ export const ActionMenuContainer: React.FC = () => {
   const walletStatus = useSelector(status)
 
   useEffect(() => {
-    if (walletStatus === Status.Initalized) {
+    if (walletStatus === Status.Uninitialized) {
       setDepositIndex(0)
       setWithdrawIndex(0)
     }
