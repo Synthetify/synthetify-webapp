@@ -27,6 +27,7 @@ export interface IProps {
   walletConnected?: boolean
   noWalletHandler?: () => void
   maxBehavior?: MaxBehavior
+  emptyTokensHandler?: () => void
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -42,7 +43,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   showArrowInInput,
   walletConnected,
   noWalletHandler,
-  maxBehavior = 'number'
+  maxBehavior = 'number',
+  emptyTokensHandler
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -180,6 +182,7 @@ export const ActionTemplate: React.FC<IProps> = ({
             showArrow={showArrowInInput}
             walletConnected={walletConnected}
             noWalletHandler={noWalletHandler}
+            emptyTokensHandler={emptyTokensHandler}
           />
         </Grid>
         <Grid

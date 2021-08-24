@@ -20,6 +20,7 @@ interface IProps {
   showArrow?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void
+  emptyTokensHandler?: () => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -34,7 +35,8 @@ export const AmountInput: React.FC<IProps> = ({
   onSelectToken,
   showArrow,
   walletConnected,
-  noWalletHandler
+  noWalletHandler,
+  emptyTokensHandler
 }) => {
   const classes = useStyles()
   const proppedClasses = useStylesWithProps({ onSelectToken })
@@ -93,6 +95,11 @@ export const AmountInput: React.FC<IProps> = ({
             <InputAdornment position='end' className={classNames(classes.currency, proppedClasses.select)} onClick={() => {
               if (!walletConnected && noWalletHandler) {
                 noWalletHandler()
+                return
+              }
+
+              if (!!walletConnected && !tokens?.length && emptyTokensHandler) {
+                emptyTokensHandler()
                 return
               }
 
