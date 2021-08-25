@@ -54,7 +54,7 @@ export const colors = {
   },
   red: {
     main: '#EB5757',
-    error: '#F22F2F',
+    error: '#C52727',
     neon: '#FF2079',
     pinkish: '#FE53BB',
     snackbar: '#DE3232'
@@ -67,19 +67,21 @@ export const colors = {
   yellow: {
     neon: '#F5D300'
   },
-  navy: {
+  navy: { // colors with suffix "2" on figma
     background: '#0C0D2C',
     dark: '#0E0E2A',
-    component: '#1E1E43',
-    navBar: '#F9F9FB',
+    component: '#1D1D49',
+    navBar: 'rgba(249, 249, 251, 0.76)',
     navButton: '#3D3F72',
     grey: '#A3A8CE',
     lightGrey: '#DADCF1',
     veryLightGrey: '#FBFBFB',
-    button: '#6C6BC7',
-    info: '#6F6EAA',
+    button: '#655ED4',
+    info: '#6261A3',
     darkGrey: '#292956',
-    '5756B3': '#5756B3'
+    tooltip: '#5B54CE',
+    '5756B3': '#5756B3',
+    '807ADC': '#807ADC'
   }
 }
 export const theme = createTheme({

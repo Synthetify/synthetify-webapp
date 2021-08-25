@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   tooltip: {
-    backgroundColor: colors.navy.button,
+    backgroundColor: colors.navy.tooltip,
     padding: 10,
     borderRadius: 10,
     fontSize: 13,
