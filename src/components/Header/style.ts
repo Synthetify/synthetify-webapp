@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 74,
 
     [theme.breakpoints.down('sm')]: {
-      height: 60
+      height: 54
     }
   },
   snyLogo: {
