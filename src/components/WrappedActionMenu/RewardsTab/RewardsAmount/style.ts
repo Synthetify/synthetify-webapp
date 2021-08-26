@@ -6,11 +6,13 @@ const useStyles = makeStyles(() => ({
     width: 'fit-content',
     marginLeft: 'auto',
     borderRadius: 10,
-    padding: '0 16px',
+    paddingBlock: 11,
+    paddingInline: 16,
     backgroundColor: colors.navy.background
   },
   text: {
     fontSize: 16,
+    lineHeight: '16px',
     color: colors.navy.grey
   },
   title: {
@@ -20,8 +22,8 @@ const useStyles = makeStyles(() => ({
     marginBottom: 10
   },
   questionMark: {
-    height: 17,
-    width: 17
+    height: 22,
+    width: 22
   },
   rewardsIcon: {
     width: 16,
