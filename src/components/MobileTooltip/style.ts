@@ -9,7 +9,8 @@ const useStyles = makeStyles(() => ({
     fontSize: 13,
     lineHeight: '16px',
     fontWeight: 500,
-    color: colors.navy.veryLightGrey
+    color: colors.navy.veryLightGrey,
+    boxShadow: '8px 8px 9px 0.1px rgba(0, 0, 0, 0.75)'
   }
 }))
 
