@@ -45,15 +45,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     position: 'absolute',
     right: 24,
-    minWidth: 164,
 
     [theme.breakpoints.down('sm')]: {
-      minWidth: 141,
       right: 20
     },
 
     [theme.breakpoints.down('xs')]: {
-      minWidth: 85,
       fontSize: 13,
       right: 16
     }
