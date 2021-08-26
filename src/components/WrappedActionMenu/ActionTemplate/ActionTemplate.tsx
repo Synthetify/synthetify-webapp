@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Divider, Grid } from '@material-ui/core'
-import AmountInputWithLabel from '@components/Input/AmountInputWithLabel'
-import MaxButton from '@components/MaxButton/MaxButton'
+import { Divider, Grid, Typography } from '@material-ui/core'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
@@ -9,6 +7,7 @@ import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
+import AmountInput from '@components/Input/AmountInput'
 
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
@@ -177,22 +176,23 @@ export const ActionTemplate: React.FC<IProps> = ({
       alignItems='flex-start'
       direction='column'
       className={classes.root}>
-      <Grid container item className={classes.wrap}>
-        <Grid item className={classes.inputRoot}>
-          <AmountInputWithLabel
-            value={inputValue}
-            setValue={onAmountInputChange}
-            className={classes.amountInput}
-            placeholder={'0.0'}
-            currency={currency}
-            tokens={tokens}
-            onSelectToken={onSelectToken}
-            showArrow={showArrowInInput}
-            walletConnected={walletConnected}
-            noWalletHandler={noWalletHandler}
-            emptyTokensHandler={emptyTokensHandler}
-          />
-        </Grid>
+      <Typography className={classes.inputLabel}>
+        Amount
+      </Typography>
+      <Grid container item direction='row' className={classes.wrap}>
+        <AmountInput
+          value={inputValue}
+          setValue={onAmountInputChange}
+          className={classes.amountInput}
+          placeholder={'0.0'}
+          currency={currency}
+          tokens={tokens}
+          onSelectToken={onSelectToken}
+          showArrow={showArrowInInput}
+          walletConnected={walletConnected}
+          noWalletHandler={noWalletHandler}
+          emptyTokensHandler={emptyTokensHandler}
+        />
         <Grid
           item
           container
@@ -200,17 +200,13 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid item className={classes.smItemCenter}>
-            <MaxButton onClick={onMaxButtonClick} />
-          </Grid>
-          <Grid item>
-            <Divider orientation='vertical' className={classes.divider} />
-          </Grid>
+          <OutlinedButton onClick={onMaxButtonClick} className={classes.maxButton} name='Max' />
+          <Divider orientation='vertical' className={classes.divider} />
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
-              keyClassName={classes.smTextAlignCenter}
-              valueClassName={classes.smTextAlignCenter}
+              keyClassName={classes.textCenter}
+              valueClassName={classes.textCenter}
               value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}
@@ -218,19 +214,15 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center' wrap='nowrap' direction='row' justifyContent='flex-start'>
-        <Grid item style={{ marginRight: 18 }}>
-          <OutlinedButton
-            name={capitalizeString(action)}
-            disabled={!actionAvailable}
-            color='secondary'
-            className={classes.actionButton}
-            onClick={onClick(amountBN, decimal)}
-          />
-        </Grid>
-        <Grid className={classes.progress} item>
-          <Progress state={getProgressState()} message={getProgressMessage()} />
-        </Grid>
+      <Grid item container alignItems='center' wrap='nowrap' direction='row' justifyContent='flex-start' className={classes.bottom}>
+        <OutlinedButton
+          name={capitalizeString(action)}
+          disabled={!actionAvailable}
+          color='secondary'
+          className={classes.actionButton}
+          onClick={onClick(amountBN, decimal)}
+        />
+        <Progress state={getProgressState()} message={getProgressMessage()} />
       </Grid>
     </Grid>
   )
