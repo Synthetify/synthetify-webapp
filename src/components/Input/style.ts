@@ -1,13 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    marginTop: 12,
-    [theme.breakpoints.down('sm')]: {
-      marginTop: -4
-    }
-  },
+const useStyles = makeStyles(() => ({
   amountInput: {
     background: colors.navy.dark,
     color: colors.navy.grey,
@@ -17,8 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 60,
     fontSize: 22,
     minWidth: 150,
-    width: '100%',
-    marginTop: 5
+    width: '100%'
   },
   currency: {
     fontSize: 22,
@@ -26,16 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
     justifyContent: 'flex-end',
     marginLeft: 20
-  },
-  inputLabel: {
-    color: colors.navy.lightGrey,
-    fontSize: 22,
-    lineHeight: '26px',
-    fontWeight: 600,
-    marginTop: 12,
-    [theme.breakpoints.down('sm')]: {
-      marginTop: -4
-    }
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,

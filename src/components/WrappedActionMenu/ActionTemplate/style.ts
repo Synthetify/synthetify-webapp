@@ -5,7 +5,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     minHeight: 200,
     [theme.breakpoints.down('sm')]: {
-      paddingTop: 20,
       flexWrap: 'wrap'
     }
   },
@@ -22,22 +21,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       minWidth: 'unset',
-      width: 'calc(100% - 111px)'
+      width: '50%'
     }
   },
   wrap: {
-    flexDirection: 'row',
     flexWrap: 'nowrap',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    marginTop: 22,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 14
+    },
+
     [theme.breakpoints.down('xs')]: {
       flexWrap: 'wrap'
     }
   },
   secondHalf: {
-    paddingTop: 22,
-    maxWidth: 375,
+    paddingTop: 24,
     [theme.breakpoints.up('sm')]: {
+      paddingTop: 0,
       maxWidth: 230,
       justifyContent: 'space-between'
     },
@@ -57,20 +59,38 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxWidth: 375
     }
   },
-  inputRoot: {
-    width: '100%'
+  inputLabel: {
+    color: colors.navy.veryLightGrey,
+    fontSize: 22,
+    lineHeight: '26px',
+    fontWeight: 600,
+    marginTop: 34,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 22
+    }
   },
   divider: {
-    backgroundColor: colors.navy.darkGrey,
-    height: 56.5
+    backgroundColor: 'rgba(163, 168, 206, 0.5)',
+    height: 60
+  },
+  bottom: {
+    marginTop: 36,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 24
+    }
   },
   actionButton: {
     paddingBlock: 11,
-    width: 186,
-    marginTop: 32,
+    width: 136,
+    marginRight: 36,
     [theme.breakpoints.down('sm')]: {
-      width: 136,
-      marginTop: 25
+      marginRight: 24
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingBlock: 15,
+      minWidth: 'calc(50% - 8px)',
+      marginRight: 16
     }
   },
   smTextAlignCenter: {
@@ -78,23 +98,20 @@ const useStyles = makeStyles((theme: Theme) => ({
       textAlign: 'center'
     }
   },
-  smItemCenter: {
+  maxButton: {
+    textTransform: 'none',
+    width: 104,
+    height: 60,
+    fontWeight: 'normal',
     [theme.breakpoints.down('sm')]: {
-      '& > button': {
-        width: 70,
-        marginLeft: 10
-      }
+      width: 74,
+      marginLeft: 12
     },
     [theme.breakpoints.down('xs')]: {
-      '& > button': {
-        marginInline: 20
-      }
-    }
-  },
-  progress: {
-    marginTop: 32,
-    [theme.breakpoints.down('sm')]: {
-      marginTop: 25
+      width: 'calc(50% - 8px)',
+      marginRight: 8,
+      marginLeft: 0,
+      height: 56
     }
   }
 }))
