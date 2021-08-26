@@ -44,11 +44,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       justifyContent: 'space-between'
     },
     [theme.breakpoints.up('md')]: {
-      maxWidth: 375,
-      '& > *': {
-        marginLeft: 5,
-        marginRight: 5
-      }
+      maxWidth: 360,
+      marginLeft: 24
     }
   },
   amountInput: {
@@ -93,10 +90,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginRight: 16
     }
   },
-  smTextAlignCenter: {
-    [theme.breakpoints.down('sm')]: {
-      textAlign: 'center'
-    }
+  textCenter: {
+    textAlign: 'center'
   },
   maxButton: {
     textTransform: 'none',

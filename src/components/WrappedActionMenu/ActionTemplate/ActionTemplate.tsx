@@ -179,7 +179,7 @@ export const ActionTemplate: React.FC<IProps> = ({
       <Typography className={classes.inputLabel}>
         Amount
       </Typography>
-      <Grid container item direction='row' justifyContent='space-between' className={classes.wrap}>
+      <Grid container item direction='row' className={classes.wrap}>
         <AmountInput
           value={inputValue}
           setValue={onAmountInputChange}
@@ -205,8 +205,8 @@ export const ActionTemplate: React.FC<IProps> = ({
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
-              keyClassName={classes.smTextAlignCenter}
-              valueClassName={classes.smTextAlignCenter}
+              keyClassName={classes.textCenter}
+              valueClassName={classes.textCenter}
               value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}
