@@ -10,6 +10,7 @@ import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
 import EventsHandlers from '@containers/EventsHandlers'
 import { Status } from '@reducers/solanaWallet'
 import solanaConnectionSelector from '@selectors/solanaConnection'
+import { StatsPage } from './StatsPage/StatsPage'
 
 export const PagesRouter: React.FC = () => {
   const dispatch = useDispatch()
@@ -29,6 +30,7 @@ export const PagesRouter: React.FC = () => {
         <Switch>
           <Route path='/staking' component={StakingPage} />
           <Route path={'/exchange'} component={ExchangePage} />
+          <Route path={'/stats'} component={StatsPage} />
           <Route path='*'>
             <Redirect to='/staking'>
               <StakingPage />

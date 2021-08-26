@@ -39,7 +39,7 @@ export const Header: React.FC<IHeader> = ({
   const classes = useStyles()
   const buttonClasses = useButtonStyles()
 
-  const routes = ['staking', 'exchange']
+  const routes = ['staking', 'stats', 'exchange']
   const [activePath, setActive] = React.useState(landing)
   const [network, setNetwork] = React.useState('Devnet')
 
