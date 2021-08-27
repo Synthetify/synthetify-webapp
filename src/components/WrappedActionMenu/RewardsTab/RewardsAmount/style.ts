@@ -13,17 +13,21 @@ const useStyles = makeStyles(() => ({
     fontSize: 16,
     color: colors.navy.grey
   },
-  tooltip: {
-    background: colors.navy.info,
-    color: colors.white.main,
-    fontWeight: 400,
-    fontSize: 13,
-    padding: '5px 8px',
-    lineHeight: '16px'
+  title: {
+    fontSize: 16,
+    lineHeight: '16px',
+    fontWeight: 700,
+    marginBottom: 10
   },
   questionMark: {
     height: 17,
     width: 17
+  },
+  rewardsIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8
   }
 }))
 

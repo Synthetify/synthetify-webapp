@@ -70,7 +70,7 @@ const ExhcangeEvents = () => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           dispatch(
-            actions.setAssetPrice({ tokenIndex: index, price: new BN(data.price * 1e6) })
+            actions.setAssetPrice({ tokenIndex: index, price: { val: new BN(data.price * (10 ** asset.price.scale)), scale: asset.price.scale } })
           )
         })
       })

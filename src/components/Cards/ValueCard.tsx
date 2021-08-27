@@ -1,84 +1,65 @@
-import React, { useState } from 'react'
+import React, { ReactChild } from 'react'
 import {
   Card,
   CardContent,
-  Typography,
-  Divider,
-  Tooltip,
-  Icon,
-  ClickAwayListener,
-  Hidden
+  Typography
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
+import HintIcon from '@static/svg/questionMark.svg'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import useStyles from './style'
 
 export interface IProps {
   name: string
   value: string
   sign: string
-  decimals: number
-  hint?: string
+  hint?: string | ReactChild
+  hintTitle?: string
   onClick?: () => void
 }
-export const ValueCard: React.FC<IProps> = ({ name, value, sign, decimals, hint, onClick }) => {
+export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }) => {
   const classes = useStyles()
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent>
         {hint
           ? (
-            <>
-              <Hidden mdDown>
-                <Icon>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                    title={hint}
-                    placement='top-end'
-                    arrow>
-                    <img src={HintIcon} alt='' className={classes.questionMark} />
-                  </Tooltip>
-                </Icon>
-              </Hidden>
-              <Hidden lgUp>
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setIsPopoverOpen(false)
-                  }}>
-                  <Icon
-                    onClick={() => {
-                      setIsPopoverOpen(true)
-                    }}>
-                    <Tooltip
-                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                      title={hint}
-                      placement='top-end'
-                      open={isPopoverOpen}
-                      onClose={() => {
-                        setIsPopoverOpen(false)
-                      }}
-                      disableFocusListener
-                      disableHoverListener
-                      disableTouchListener
-                      arrow>
-                      <img src={HintIcon} alt='' className={classes.questionMark} />
-                    </Tooltip>
-                  </Icon>
-                </ClickAwayListener>
-              </Hidden>
-            </>
+            <MobileTooltip
+              hint={hint}
+              anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+              mobilePlacement='top-end'
+              desktopPlacement='top-end'
+            />
           )
           : null
         }
-        <Typography className={classes.valueCardTitle}>{name}</Typography>
-        <Divider className={classes.divider} />
+        <Typography className={classes.valueCardTitle} style={{ marginBottom: 18 }}>{name}</Typography>
         <Typography className={classes.valueCardAmount}>
           <AnimatedNumber
             value={value}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(decimals)}
+            formatValue={(value: string) => {
+              const num = Number(value)
+
+              if (num < 10) {
+                return num.toFixed(4)
+              }
+
+              if (num < 10000) {
+                return num.toFixed(2)
+              }
+
+              if (num < 1000000) {
+                return (num / 1000).toFixed(2)
+              }
+
+              return (num / 1000000).toFixed(2)
+            }}
           />
+          {Number(value) >= 10000
+            ? 'K'
+            : (Number(value) >= 1000000 ? 'M' : '')
+          }
           {sign}
         </Typography>
       </CardContent>

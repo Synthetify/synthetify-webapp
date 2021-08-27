@@ -1,5 +1,5 @@
 import { Divider, Input, InputAdornment } from '@material-ui/core'
-import React, { CSSProperties, useState } from 'react'
+import React, { CSSProperties, useState, useRef } from 'react'
 import classNames from 'classnames'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import { BN } from '@project-serum/anchor'
@@ -17,10 +17,9 @@ interface IProps {
   style?: CSSProperties
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
-}
-
-interface inputString {
-  target: { value: string }
+  showArrow?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -32,23 +31,55 @@ export const AmountInput: React.FC<IProps> = ({
   placeholder,
   style,
   tokens,
-  onSelectToken
+  onSelectToken,
+  showArrow,
+  walletConnected,
+  noWalletHandler
 }) => {
   const classes = useStyles()
-  const proppedClasses = useStylesWithProps({ tokens, onSelectToken })
+  const proppedClasses = useStylesWithProps({ onSelectToken })
 
   const [open, setOpen] = useState(false)
 
-  const allowOnlyDigits = (e: inputString) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const regex = /^\d*\.?\d*$/
-    if (e.target.value === '' || regex.test(e.target.value)) {
-      setValue(e.target.value)
+    if (e.target.value === '' || e.target.value === 'Max' || regex.test(e.target.value)) {
+      const startValue = e.target.value
+      const caretPosition = e.target.selectionStart
+
+      let parsed = e.target.value
+      const zerosRegex = /^0+\d+\.?\d*$/
+      if (zerosRegex.test(parsed)) {
+        parsed = parsed.replace(/^0+/, '')
+      }
+
+      const dotRegex = /^\.\d*$/
+      if (dotRegex.test(parsed)) {
+        parsed = `0${parsed}`
+      }
+
+      const diff = startValue.length - parsed.length
+
+      setValue(parsed)
+      if (caretPosition !== null && parsed !== startValue) {
+        setTimeout(() => {
+          if (inputRef.current) {
+            inputRef.current.selectionStart = Math.max(caretPosition - diff, 0)
+            inputRef.current.selectionEnd = Math.max(caretPosition - diff, 0)
+          }
+        }, 0)
+      }
+    } else if (!regex.test(e.target.value)) {
+      setValue('')
     }
   }
 
   return (
     <>
       <Input
+        inputRef={inputRef}
         error={!!error}
         className={classNames(classes.amountInput, className)}
         style={style}
@@ -60,6 +91,11 @@ export const AmountInput: React.FC<IProps> = ({
         endAdornment={
           !currency ? null : (
             <InputAdornment position='end' className={classNames(classes.currency, proppedClasses.select)} onClick={() => {
+              if (!walletConnected && noWalletHandler) {
+                noWalletHandler()
+                return
+              }
+
               if (tokens?.length && onSelectToken) {
                 blurContent()
                 setOpen(true)
@@ -68,11 +104,11 @@ export const AmountInput: React.FC<IProps> = ({
             >
               <Divider orientation='vertical' className={classes.divider} />
               {currency}
-              {(tokens?.length && onSelectToken) ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : null}
+              {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
             </InputAdornment>
           )
         }
-        onChange={allowOnlyDigits}
+        onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
       />
       {(tokens?.length && onSelectToken)
         ? (

@@ -1,14 +1,19 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
+  fixedWrapper: {
+    position: 'fixed',
+    width: 'fit-content',
+    marginRight: 22,
+    marginBottom: 22,
+    bottom: 0,
+    right: 0
+  },
   container: {
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     backgroundColor: colors.navy.background,
-    padding: 12,
-    [theme.breakpoints.down('xs')]: {
-      justifyContent: 'center'
-    }
+    padding: 12
   },
   socialMedia: {
     width: 32,
@@ -21,11 +26,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   divider: {
-    display: 'none',
-    backgroundColor: colors.navy.lightGrey,
-    [theme.breakpoints.down('xs')]: {
-      display: 'block'
-    }
+    display: 'block',
+    backgroundColor: colors.navy.lightGrey
   }
 }))
 

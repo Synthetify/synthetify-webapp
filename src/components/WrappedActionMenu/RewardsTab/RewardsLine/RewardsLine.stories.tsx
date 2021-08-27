@@ -2,6 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { colors } from '@static/theme'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
+import Rewards1 from '@static/svg/rewards1.svg'
 import BN from 'bn.js'
 
 const loremHint =
@@ -17,6 +18,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         hint={loremHint}
         timeRemainingEndSlot={new BN(1e7)}
         slot={1e7 - 300}
+        icon={Rewards1}
       />
     </div>
   ))
@@ -31,6 +33,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         hint={loremHint}
         timeRemainingEndSlot={new BN(1e7)}
         slot={1e7 - 300}
+        icon={Rewards1}
       />
     </div>
   ))

@@ -24,7 +24,8 @@ export const NavbarButton: React.FC<IProps> = ({
     <Button
       className={classNames(
         className,
-        !active ? classes.button : classes.active
+        classes.button,
+        active ? classes.active : undefined
       )}
       variant='contained'
       classes={{ disabled: classes.disabled }}

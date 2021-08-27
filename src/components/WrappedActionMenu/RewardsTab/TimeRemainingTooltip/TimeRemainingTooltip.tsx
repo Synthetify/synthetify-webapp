@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import MobileTooltip, { Placement } from '@components/MobileTooltip/MobileTooltip'
 import BN from 'bn.js'
 import { displayDate } from '@consts/utils'
 import { useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
 import { actions } from '@reducers/solanaConnection'
+import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 
 export interface ITimeRemainingTooltipInterface {
   timeRemainingEndSlot: BN
   slot: number
   hint: string
+  icon: string,
+  placement: Placement
 }
 
-export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
+export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement'>> = ({
   timeRemainingEndSlot,
   slot,
   hint
@@ -53,10 +56,11 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
 
   return (
     <>
-      <Typography className={classes.hint}>{hint}</Typography>
-      <Typography className={classes.hint} style={{ fontWeight: 700, marginTop: 8 }}>
+      <img src={Clock} alt='' className={classes.clockIcon} />
+      <Typography className={classes.title}>
         {displayTimeRemaining()}
       </Typography>
+      {hint}
     </>
   )
 }
@@ -64,14 +68,25 @@ export const CountDown: React.FC<ITimeRemainingTooltipInterface> = ({
 export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
   timeRemainingEndSlot,
   slot,
-  hint
+  hint,
+  icon,
+  placement
 }) => {
+  const classes = useStyles()
+
   const dispatch = useDispatch()
 
   return (
     <MobileTooltip
       onOpen={() => dispatch(actions.updateSlot())}
       hint={<CountDown timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />}
+      anchor={<img src={icon} alt='' className={classes.icon} />}
+      mobilePlacement={placement}
+      desktopPlacement={placement}
+      tooltipClasses={{
+        tooltipPlacementLeft: classes.tooltipPlacementLeft,
+        tooltipPlacementRight: classes.tooltipPlacementRight
+      }}
     />
   )
 }

@@ -1,3 +1,4 @@
+import { colors } from '@static/theme'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
@@ -11,7 +12,8 @@ const useStyles = makeStyles(() => ({
     margin: 10,
     width: 'calc(100% - 20px)',
     height: 60,
-    fontWeight: 700
+    fontWeight: 700,
+    backgroundColor: colors.navy['5756B3']
   }
 }))
 

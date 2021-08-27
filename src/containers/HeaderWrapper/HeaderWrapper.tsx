@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '@components/Header/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -14,6 +14,15 @@ export const HeaderWrapper: React.FC = () => {
   const walletStatus = useSelector(status)
   const location = useLocation()
   const [typeOfWallet, setTypeOfWallet] = useState<'phantom' | 'sollet'>('phantom')
+
+  useEffect(() => {
+    const sessionWallet = sessionStorage.getItem('SYNTHETIFY_SESSION_WALLET')
+
+    if (sessionWallet === 'phantom' || sessionWallet === 'sollet') {
+      setTypeOfWallet(sessionWallet)
+      dispatch(walletActions.connect(sessionWallet === 'phantom' ? WalletType.PHANTOM : WalletType.SOLLET))
+    }
+  }, [])
 
   return (
     <Header

@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
-import { IToken, TokenItem } from '@components/TokenItem/TokenItem'
+import { IToken, Item } from './Item'
 import { BN } from '@project-serum/anchor'
 
 const xSNY: IToken = {
@@ -20,7 +20,7 @@ const xBTC: IToken = {
   assetDecimals: 6
 }
 
-storiesOf('Tokens/tokenItem', module)
+storiesOf('Tokens/Item', module)
   .addDecorator(withKnobs)
-  .add('Synthetify', () => <TokenItem token={xSNY} />)
-  .add('xBTC', () => <TokenItem token={xBTC} />)
+  .add('Synthetify', () => <Item {...xSNY} />)
+  .add('xBTC', () => <Item {...xBTC} />)
