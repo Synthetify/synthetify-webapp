@@ -50,9 +50,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   input: {
     marginLeft: 24,
+    width: 'calc(100% - 184px)',
 
     [theme.breakpoints.down('md')]: {
+      width: 'calc(100% - 176px)',
       marginLeft: 16
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      width: 'calc(100% - 126px)'
     }
   },
   swapIconSquare: {
@@ -70,6 +76,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    cursor: 'pointer',
+
+    '&:hover': {
+      borderColor: '#7C76DA'
+    },
+
+    '&:hover $swapIcon': {
+      opacity: 0.85
+    },
 
     [theme.breakpoints.down('xs')]: {
       width: 46,
@@ -81,7 +96,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   swapIcon: {
     backgroundSize: '1841.948px 1925px',
     maxWidth: 40,
-    fill: colors.navy.veryLightGrey,
     transition: 'transform 300ms',
 
     [theme.breakpoints.down('xs')]: {
@@ -98,9 +112,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       maxWidth: 113
     }
-  },
-  tooltip: {
-    fontSize: 13
   },
   exclamationMark: {
     height: 18,
@@ -162,13 +173,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '16px'
     }
   },
-  fee: {
-    maxWidth: 150,
-
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: 100
-    }
-  },
   questionMark: {
     height: 20,
     width: 20,
@@ -194,15 +198,51 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 37
     }
   },
+  arrowsBg: {
+    padding: 5,
+    borderRadius: 3,
+    backgroundColor: colors.navy.navButton,
+    marginLeft: 16,
+    width: 38,
+    height: 22,
+
+    '&:hover': {
+      backgroundColor: '#494C8F'
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 6
+    }
+  },
+  arrowsIcon: {
+    backgroundSize: '4096px 1850px',
+    maxWidth: '100%'
+  },
   swapButton: {
     width: '100%',
     height: 60,
     marginTop: 36,
 
+    '&:hover': {
+      backgroundColor: '#4ADFBA !important'
+    },
+
+    '&:disabled': {
+      pointerEvents: 'auto !important'
+    },
+
+    '&:disabled:hover': {
+      backgroundColor: `${colors.navy.darkGrey} !important`,
+      pointerEvents: 'auto !important'
+    },
+
     [theme.breakpoints.down('xs')]: {
       height: 48,
       marginTop: 24
     }
+  },
+  supplyTooltip: {
+    backgroundColor: colors.red.error
   }
 }))
 

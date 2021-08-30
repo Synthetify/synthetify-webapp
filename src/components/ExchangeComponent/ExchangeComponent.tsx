@@ -6,6 +6,7 @@ import { printBNtoBN, printBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { CardMedia, Divider, Grid, Typography } from '@material-ui/core'
 import Swap from '@static/svg/swap.svg'
+import Arrows from '@static/svg/swapArrows.svg'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
@@ -59,34 +60,6 @@ export const calculateSwapOutAmountReversed = (
   } else {
     return printBN(amountOutBeforeFee.div(new BN(decimalChange)), assetIn.supply.scale)
   }
-}
-
-const getButtonMessage = (
-  amountFrom: string,
-  tokenFrom: ExchangeTokensWithBalance | null,
-  amountTo: string,
-  tokenTo: ExchangeTokensWithBalance | null
-) => {
-  if (!tokenFrom) return 'Select input token'
-  if (!tokenTo) {
-    return 'Select output token'
-  }
-  if (tokenFrom.symbol === tokenTo.symbol) {
-    return 'Choose another token'
-  }
-  if (amountTo.match(/^0\.0*$/)) {
-    return 'Enter value of swap'
-  }
-  if (amountTo.match(`^\\d+\\.\\d{${tokenTo.supply.scale + 1},}$`)) {
-    return 'Incorrect output token amount'
-  }
-  if (printBNtoBN(amountFrom, tokenFrom.supply.scale).gt(tokenFrom.balance)) {
-    return 'Invalid swap amount'
-  }
-  if (printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))) {
-    return 'Supply insufficient to swap'
-  }
-  return 'Swap'
 }
 
 export interface IExchangeComponent {
@@ -151,6 +124,52 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     }
 
     return (num / 1000000).toFixed(2)
+  }
+
+  const getButtonMessage = (
+    amountFrom: string,
+    tokenFrom: ExchangeTokensWithBalance | null,
+    amountTo: string,
+    tokenTo: ExchangeTokensWithBalance | null
+  ) => {
+    if (!tokenFrom) return 'Select input token'
+    if (!tokenTo) {
+      return 'Select output token'
+    }
+    if (tokenFrom.symbol === tokenTo.symbol) {
+      return 'Choose another token'
+    }
+    if (amountTo.match(/^0\.0*$/)) {
+      return 'Enter value of swap'
+    }
+    if (amountTo.match(`^\\d+\\.\\d{${tokenTo.supply.scale + 1},}$`)) {
+      return 'Incorrect output token amount'
+    }
+    if (printBNtoBN(amountFrom, tokenFrom.supply.scale).gt(tokenFrom.balance)) {
+      return 'Invalid swap amount'
+    }
+    if (tokenToIndex !== null && printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))) {
+      return (
+        <>
+          Max supply reached
+          <MobileTooltip
+            hint={(
+              <>
+                <img src={ExclamationMark} alt='' className={classes.feeIcon} />
+                <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>Max supply</Typography>
+                Your amount exceeded current supply of token. Available to trade:
+                <b style={{ wordWrap: 'break-word' }}>{` ${printBN(tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val), tokens[tokenToIndex].supply.scale)} ${tokens[tokenToIndex].symbol}`}</b>
+              </>
+            )}
+            anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} style={{ marginLeft: 16 }} />}
+            tooltipClasses={{ tooltip: classes.supplyTooltip }}
+            mobilePlacement='top-end'
+            desktopPlacement='top-end'
+          />
+        </>
+      )
+    }
+    return 'Swap'
   }
 
   return (
@@ -237,7 +256,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 </>
               )}
               anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
-              tooltipClasses={{ tooltip: classes.tooltip }}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
               isInteractive
@@ -313,7 +331,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 </>
               )}
               anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-              tooltipClasses={{ tooltip: classes.tooltip }}
               mobilePlacement='top-start'
               desktopPlacement='top-end'
               isInteractive
@@ -338,7 +355,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         <Divider className={classes.amountDivider} orientation='vertical' />
 
         <Grid item>
-          <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
+          <Grid container item alignItems='center'>
+            <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
+            <Grid item className={classes.arrowsBg}>
+              <CardMedia className={classes.arrowsIcon} image={Arrows} component='img' />
+            </Grid>
+          </Grid>
           <Typography className={classes.numbersFieldAmount}>
             <AnimatedNumber
               value={(() => {

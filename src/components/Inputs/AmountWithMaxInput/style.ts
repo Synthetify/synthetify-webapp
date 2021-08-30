@@ -11,18 +11,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     fontWeight: 600,
     minWidth: 148,
-    width: 'calc(100% - 184px)',
-
-    [theme.breakpoints.down('md')]: {
-      width: 'calc(100% - 176px)'
-    },
 
     [theme.breakpoints.down('xs')]: {
       height: 48,
       fontSize: 13,
       paddingInline: 8,
-      borderRadius: 6,
-      width: 'calc(100% - 126px)'
+      borderRadius: 6
     }
   },
   maxButton: {
@@ -30,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 64,
     height: 36,
     borderRadius: 5,
+
+    '&:hover': {
+      backgroundColor: '#7C76DA'
+    },
 
     [theme.breakpoints.down('xs')]: {
       minWidth: 48,
