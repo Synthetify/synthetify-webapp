@@ -3,9 +3,9 @@ import { Button, CardMedia } from '@material-ui/core'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import useStyles from './style'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
+import useStyles from './style'
 
 export interface ISelectTokenModal {
   name?: string

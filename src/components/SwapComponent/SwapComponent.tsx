@@ -4,7 +4,6 @@ import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { printBNtoBN, printBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-import useStyles from './style'
 import { CardMedia, Divider, Grid, Typography } from '@material-ui/core'
 import Swap from '@static/svg/swap.svg'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
@@ -18,6 +17,7 @@ import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
 import AmountWithMaxInput from '@components/Inputs/AmountWithMaxInput/AmountWithMaxInput'
+import useStyles from './style'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -299,43 +299,39 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
         <Grid item>
           <Grid container item justifyContent='space-between' alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-            {typeof discountPercent !== 'undefined' && (
-              <MobileTooltip
-                hint={(
-                  <>
-                    <img src={Fee} alt='' className={classes.feeIcon} />
-                    <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
-                    <p style={{ marginBlock: 10 }}>
-                      You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
-                      Your current discount on the fee is <b>{discountPercent}%</b>.
-                      {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.</>}
-                    </p>
+            <MobileTooltip
+              hint={(
+                <>
+                  <img src={Fee} alt='' className={classes.feeIcon} />
+                  <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
+                  <p style={{ marginBlock: 10 }}>
+                    You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
+                    Your current discount on the fee is <b>{discountPercent ?? 0}%</b>.
+                    {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.</>}
+                  </p>
                     Find out more about fee tiers in our <a href={docs} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>documentation.</a>
-                  </>
-                )}
-                anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-                tooltipClasses={{ tooltip: classes.tooltip }}
-                mobilePlacement='top-start'
-                desktopPlacement='top-end'
-                isInteractive
-              />
-            )}
+                </>
+              )}
+              anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
+              tooltipClasses={{ tooltip: classes.tooltip }}
+              mobilePlacement='top-start'
+              desktopPlacement='top-end'
+              isInteractive
+            />
           </Grid>
 
           <Grid container item justifyContent='space-between' alignItems='center'>
-            <Typography className={classes.numbersFieldAmount}>{+printBN(fee.val.mul(new BN(100)), fee.scale)}%</Typography>
-            {typeof discountPercent !== 'undefined' && (
-              <Typography
-                className={classes.discount}
-                style={{
-                  color: discountPercent === 0
-                    ? colors.navy.grey
-                    : colors.green.main
-                }}
-              >
-              ({discountPercent}%)
-              </Typography>
-            )}
+            <Typography className={classes.numbersFieldAmount} style={{ marginRight: 12 }}>{+printBN(fee.val.mul(new BN(100)), fee.scale)}%</Typography>
+            <Typography
+              className={classes.discount}
+              style={{
+                color: !discountPercent
+                  ? colors.navy.grey
+                  : colors.green.main
+              }}
+            >
+              ({discountPercent ?? 0}%)
+            </Typography>
           </Grid>
         </Grid>
 

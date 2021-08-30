@@ -185,13 +185,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   amountDivider: {
     background: colors.navy.grey,
-    height: 57,
-    marginLeft: 10,
-    marginRight: 18,
+    height: 52,
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 4,
 
     [theme.breakpoints.down('sm')]: {
-      height: 37,
-      marginTop: 4
+      height: 37
     }
   },
   swapButton: {

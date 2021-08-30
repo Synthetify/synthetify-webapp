@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'none',
     boxShadow: 'none',
     borderRadius: 10,
-    padding: 10,
     fontSize: 16,
     lineHeight: '25px',
     width: 160,
@@ -22,7 +21,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 48,
       minWidth: 96,
       maxWidth: 110,
-      borderRadius: 6
+      width: 110,
+      borderRadius: 6,
+      paddingInline: 8
     }
   },
   icon: {

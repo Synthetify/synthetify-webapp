@@ -11,13 +11,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     fontWeight: 600,
     minWidth: 148,
-    width: '100%',
+    width: 'calc(100% - 184px)',
+
+    [theme.breakpoints.down('md')]: {
+      width: 'calc(100% - 176px)'
+    },
 
     [theme.breakpoints.down('xs')]: {
       height: 48,
       fontSize: 13,
       paddingInline: 8,
-      borderRadius: 6
+      borderRadius: 6,
+      width: 'calc(100% - 126px)'
     }
   },
   maxButton: {
