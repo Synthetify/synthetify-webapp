@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { exchangeTokensWithUserBalance } from '@selectors/solanaWallet'
 import { effectiveFeeData, swap } from '@selectors/exchange'
 import { actions } from '@reducers/exchange'
-import SwapComponent from '@components/SwapComponent/SwapComponent'
+import ExchangeComponent from '@components/ExchangeComponent/ExchangeComponent'
 
 export const WrappedExchangeComponent: React.FC = () => {
   const tokensWithBalance = useSelector(exchangeTokensWithUserBalance)
@@ -20,7 +20,7 @@ export const WrappedExchangeComponent: React.FC = () => {
     }
   }, [swapData.txid])
   return (
-    <SwapComponent
+    <ExchangeComponent
       tokens={tokensWithBalance}
       onSwap={(fromToken: PublicKey, toToken: PublicKey, amount: BN) => {
         dispatch(actions.swap({ toToken, fromToken, amount }))
