@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.darkGrey,
     borderRadius: 5,
     minWidth: 100,
-    height: 20,
     textAlign: 'center',
     fontFamily: 'Inter',
     fontStyle: 'normal',
@@ -25,18 +24,31 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '16px',
     lineHeight: '25px'
   },
+  menuItem: {
+    margin: 0,
+    width: 100
+  },
+  listItemText: {
+    padding: 0,
+    margin: 0,
+    width: 100
+  },
+  typography: {
+    fontSize: 20,
+    borderRadius: 10
+  },
+  activeTypography: {
+    background: colors.navy.button,
+    fontSize: 20,
+    borderRadius: 10
+  },
   dropdown: {
     borderRadius: '5%',
     backgroundColor: colors.navy.darkGrey,
-    width: '100%',
     maxWidth: 200
   },
-  dropdownItems: {
-    fontSize: 10,
-    alignItems: 'center'
-  },
   icon: {
-    left: 90,
+    right: 10,
     color: 'white'
   },
 

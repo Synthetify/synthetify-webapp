@@ -17,13 +17,14 @@ export const LineChartControllers: React.FC<IProps> = ({
   const classes = useStyles()
   const selectItems: string[] = ['Volument', 'Liquidation', 'Mint', 'Burn', 'User count']
   const buttonItems: string[] = ['day', 'week', 'month', 'year']
+
   return (
     <Grid item container wrap='wrap' justifyContent='space-between' alignItems='center'>
-      <Grid item xs>
+      <Grid item>
         <FormControl>
           <Select
             MenuProps={{
-              classes: { paper: classes.dropdown, list: classes.dropdownItems },
+              classes: { paper: classes.dropdown },
               disablePortal: true
             }}
             classes={{ icon: classes.icon, select: classes.selectBox }}

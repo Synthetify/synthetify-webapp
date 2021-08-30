@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardContent, Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
-import useStyles from './style'
+import useStyles from '../Stats/style'
 
 export interface IProps {
   name: string
@@ -12,7 +12,7 @@ export const StatsCard: React.FC<IProps> = ({ name, value }) => {
   return (
     <Card className={classes.statsCard}>
       <CardContent>
-        <Grid item container justifyContent='space-between' alignItems='center' spacing={1}>
+        <Grid item container justifyContent='space-between' spacing={1}>
           <Typography className={classes.statsCardTitle}>{name}</Typography>
           <Typography className={classes.statsCardSecondTitle} style={{ fontSize: 8 }}>
             last 24h

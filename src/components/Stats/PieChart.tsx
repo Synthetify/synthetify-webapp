@@ -1,4 +1,5 @@
 import { ResponsivePie } from '@nivo/pie'
+import { colors } from '@static/theme'
 import React from 'react'
 import statsColors from './ColorScheme'
 export interface IProps {
@@ -8,7 +9,7 @@ export const PieChart: React.FC<IProps> = ({ data }) => {
   return (
     <ResponsivePie
       data={data}
-      margin={{ top: 10, right: 0, bottom: 10, left: 10 }}
+      margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
       height={350}
       colors={statsColors}
       colorBy='index'
@@ -24,6 +25,14 @@ export const PieChart: React.FC<IProps> = ({ data }) => {
       arcLinkLabelsColor={{ from: 'color' }}
       enableArcLabels={false}
       arcLabelsSkipAngle={10}
+      theme={{
+        tooltip: {
+          container: {
+            color: 'white',
+            background: colors.navy.button
+          }
+        }
+      }}
       arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
       legends={[]}
     />

@@ -15,10 +15,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   pieRoot: {
     background: colors.navy.component,
     borderRadius: 10,
-    padding: 25,
-
+    padding: 25
+  },
+  pieLegend: {
+    background: colors.navy.component,
+    borderRadius: 10,
+    paddingRight: 10,
     [theme.breakpoints.down('sm')]: {
-      padding: 20
+      marginTop: 20
     }
   },
   barRoot: {

@@ -1,15 +1,26 @@
 [
   {
     "xBTC": 3.5,
+    "xBTCColor": "#6372BE",
     "xETH": 5,
+    "xETHColor": "#40BFA0",
     "xSOL": 5.5,
+    "xSOLColor": "#117098",
     "xBNB": 6,
+    "xBNBColor": "#BFB665",
     "xFTT": 6.3,
+    "xFTTColor": "#1F70CF",
     "xUSD": 6.5,
+    "xUSDColor": "#936BC7",
     "xSRM": 7,
+    "xSRMColor": "#39D3F5",
     "xLTC":9,
+    "xLTCColor":"#DADCF1",
     "xAAVE":9.7,
+    "xAAVEColor":"#C76BA2",
     "xDOGE":10,
-    "xLUNA":31.5
+    "xDOGEColor":"#D49347",
+    "xLUNA":31.5,
+    "xLUNAColor":"#DF3C3C"
   }
 ]

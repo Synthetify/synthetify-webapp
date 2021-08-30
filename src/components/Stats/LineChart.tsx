@@ -3,7 +3,7 @@ import React from 'react'
 import { linearGradientDef } from '@nivo/core'
 import { colors } from '@static/theme'
 export interface IProps {
-  activeStat: string,
+  activeStat: string
   data: any
 }
 
@@ -13,15 +13,23 @@ export const LineChart: React.FC<IProps> = ({ activeStat, data }) => {
       <ResponsiveLine
         data={data}
         margin={{ top: 10, right: 10, bottom: 70, left: 10 }}
-        xScale={{ type: 'point' }}
+        xScale={{
+          type: 'time',
+          format: '%Y-%m-%d',
+          useUTC: false,
+          precision: 'day'
+        }}
+        xFormat='time:%Y-%m-%d'
         yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
         curve='basis'
         axisTop={null}
         axisRight={null}
         axisBottom={{
-          tickSize: 3,
+          tickSize: 5,
           tickPadding: 0,
-          tickRotation: 0
+          tickRotation: 0,
+          format: '%m.%d',
+          tickValues: 'every 2 days'
         }}
         defs={[
           linearGradientDef('gradientA', [
@@ -39,9 +47,21 @@ export const LineChart: React.FC<IProps> = ({ activeStat, data }) => {
         pointColor={{ theme: 'background' }}
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor' }}
-        pointLabelYOffset={-12}
+        pointLabelYOffset={0}
         enableArea={true}
         areaBlendMode='normal'
+        theme={{
+          axis: {
+            ticks: {
+              line: {
+                stroke: 'gray'
+              },
+              text: {
+                fill: '#83838D'
+              }
+            }
+          }
+        }}
         fill={[{ match: '*', id: 'gradientA' }]}
         areaOpacity={0.2}
         enableSlices='x'
@@ -56,15 +76,18 @@ export const LineChart: React.FC<IProps> = ({ activeStat, data }) => {
                 borderRadius: '5px',
                 textAlign: 'center'
               }}>
-              <div style={{ color: 'white' }}>{slice.x0}</div>
               {slice.points.map(point => (
-                <div
-                  key={point.id}
-                  style={{
-                    color: point.serieColor,
-                    padding: '3px 0'
-                  }}>
-                  {`$${point.data.yFormatted}`}
+                <div>
+                  <div style={{ color: 'white' }}>{`${point.data.xFormatted}`}</div>
+
+                  <div
+                    key={point.id}
+                    style={{
+                      color: point.serieColor,
+                      padding: '3px 0'
+                    }}>
+                    {`$${point.data.yFormatted}`}
+                  </div>
                 </div>
               ))}
             </div>

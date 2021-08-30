@@ -3,77 +3,77 @@
       "id": "xBTC",
       "label": "xBTC",
       "value": 3.5,
-      "price": 74456654,
-      "color": "hsl(176, 70%, 50%)"
+      "price": 7445665,
+      "color": "#6372BE"
     },
     {
       "id": "xETH",
       "label": "xETH",
       "value": 5,
       "price": 740345546,
-      "color": "hsl(5, 70%, 50%)"
+      "color": "#40BFA0"
     },
     {
       "id": "xSOL",
       "label": "xSOL",
       "value": 5.5,
       "price": 74456,
-      "color": "hsl(200, 70%, 50%)"
+      "color": "#117098"
     },
     {
       "id": "xBNB",
       "label": "xBNB",
       "value": 6,
       "price": 7345,
-      "color": "hsl(150, 70%, 50%)"
+      "color": "#BFB665"
     },
     {
       "id": "xFTT",
       "label": "xFTT",
       "value": 6.3,
       "price": 345,
-      "color": "hsl(80, 70%, 50%)"
+      "color": "#1F70CF"
     },
     {
       "id": "xUSD",
       "label": "xUSD",
       "value": 6.5,
       "price": 45,
-      "color": "hsl(80250, 70%, 50%)"
+      "color": "#936BC7"
     },
     {
       "id": "xSRM",
       "label": "xSRM",
       "value": 7,
       "price": 345,
-      "color": "hsl(540, 70%, 50%)"
+      "color": "#39D3F5"
     },
     {
       "id": "xLTC",
       "label": "xLTC",
       "value": 9,
       "price": 4,
-      "color": "hsl(700, 70%, 50%)"
+      "color": "#DADCF1"
     },
     {
       "id": "xAAVE",
       "label": "xAAVE",
       "value": 9.7,
       "price": 45,
-      "color": "hsl(50, 70%, 50%)"
+      "color": "#C76BA2"
     },
     {
       "id": "xDOGE",
       "label": "xDOGE",
       "value": 10,
       "price": 345,
-      "color": "hsl(40, 70%, 50%)"
+      "color": "#D49347"
     },
     {
       "id": "xLUNA",
       "label": "xLUNA",
       "value": 31.5,
       "price": 7345,
-      "color": "hsl(90, 70%, 50%)"
+      "color": "#DF3C3C"
     }
   ]

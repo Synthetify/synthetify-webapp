@@ -16,7 +16,13 @@ export const CollateralStructureComponent: React.FC = () => {
         <Grid item>
           <Typography className={classes.title}>Collateral Structure</Typography>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: 100 }}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          style={{ height: 100, borderRadius: 10, background: 'black' }}>
           <BarChart data={data} />
         </Grid>
         <Grid container>

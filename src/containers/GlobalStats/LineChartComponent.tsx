@@ -13,8 +13,8 @@ export const LineChartComponent: React.FC = () => {
   function handleButtonChange(newActiveButton: string): void {
     setActiveButton(newActiveButton)
   }
-  function handleStatChange(event: { target: { value: React.SetStateAction<string> } }): void {
-    setActiveStat(event.target.value)
+  function handleStatChange(newActiveStat: string): void {
+    setActiveStat(newActiveStat)
   }
 
   return (
@@ -22,6 +22,7 @@ export const LineChartComponent: React.FC = () => {
       <Grid className={classes.root} xs={12} sm={12} md={12} lg={12}>
         <LineChartControllers
           activeButton={activeButton}
+          activeStat={activeStat}
           onButtonClick={handleButtonChange}
           onStatChange={handleStatChange}
         />

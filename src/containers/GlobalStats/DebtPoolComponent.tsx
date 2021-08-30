@@ -11,20 +11,13 @@ export const DebtPoolComponent: React.FC = () => {
 
   return (
     <Grid container justifyContent='space-between'>
-      <Grid
-        container
-        className={classes.pieRoot}
-        style={{ height: 450 }}
-        xs={12}
-        sm={12}
-        md={12}
-        lg={7}>
+      <Grid className={classes.pieRoot} xs={12} sm={12} md={7} lg={7}>
         <Grid item>
           <Typography className={classes.title}>Debt Pool</Typography>
         </Grid>
         <PieChart data={data}></PieChart>
       </Grid>
-      <Grid className={classes.pieRoot} style={{ height: 400 }} xs={12} sm={12} md={12} lg={4}>
+      <Grid container className={classes.pieLegend} xs={12} sm={12} md={4} lg={4}>
         {data.map((datum, index) => (
           <LegendItem
             name={datum.id}
