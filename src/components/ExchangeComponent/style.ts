@@ -8,26 +8,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 32,
     paddingTop: 23,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       padding: 20
     }
   },
   title: {
     fontSize: 22,
-    color: colors.navy.grey,
-    lineHeight: '26px'
-  },
-  titleDivider: {
-    background: colors.navy.grey,
-    marginTop: 13,
-    marginBottom: 40,
-
-    [theme.breakpoints.down('md')]: {
-      marginBottom: 20
-    }
+    color: colors.navy.lightGrey,
+    lineHeight: '40px',
+    fontWeight: 600,
+    marginBottom: 20
   },
   tokenComponent: {
-    background: colors.navy[292956],
+    background: colors.navy.darkGrey,
     borderRadius: 10,
     padding: 20,
     paddingTop: 6
@@ -35,29 +28,37 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenComponentText: {
     color: colors.navy.navBar,
     fontWeight: 700,
-    fontSize: 16
+    fontSize: 16,
+    whiteSpace: 'nowrap',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 13
+    }
   },
   tokenMaxText: {
     color: colors.navy.grey,
-    fontSize: 16
+    fontSize: 16,
+    whiteSpace: 'nowrap',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 13
+    }
   },
   amountDivider: {
     background: colors.navy.grey,
     height: 57,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 10,
+    marginRight: 18,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 37,
-      marginLeft: 20,
-      marginRight: 20,
       marginTop: 4
     }
   },
   numbersField: {
     marginTop: 30,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: 20
     }
   },
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     lineHeight: '26px',
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 16
     }
   },
@@ -76,9 +77,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     fontWeight: 600,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13,
-      lineHeight: '15px'
+      lineHeight: '16px'
+    }
+  },
+  discount: {
+    fontSize: 22,
+    lineHeight: '40px',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 16,
+      lineHeight: '16px'
+    }
+  },
+  fee: {
+    maxWidth: 150,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 100
     }
   },
   swapButton: {
@@ -132,10 +149,63 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     lineHeight: '40px',
     margin: 10,
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    backgroundColor: colors.navy['5756B3']
   },
   mdDownButton: {
     width: 'calc(100% - 20px)'
+  },
+  tooltip: {
+    fontSize: 13
+  },
+  exclamationMark: {
+    height: 18,
+    width: 18,
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  questionMark: {
+    height: 20,
+    width: 20,
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  toText: {
+    maxWidth: 160,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 220
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 106
+    }
+  },
+  outputIcon: {
+    width: 25,
+    height: 16,
+    position: 'absolute',
+    right: 8
+  },
+  feeIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8
+  },
+  tooltipTitle: {
+    fontSize: 16,
+    lineHeight: '16px',
+    fontWeight: 700
+  },
+  tooltipLink: {
+    fontWeight: 700,
+    color: colors.navy.veryLightGrey,
+    cursor: 'pointer'
   }
 }))
 

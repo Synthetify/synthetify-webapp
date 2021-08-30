@@ -11,14 +11,6 @@ export interface ICreateAccount {
   txid?: string
 }
 
-export interface ISend {
-  tokenAddress: PublicKey
-  recipient: PublicKey
-  amount: BN
-  txid?: string
-  sending: boolean
-  error?: string
-}
 export interface IDeposit {
   amount: BN
   txid?: string
@@ -28,7 +20,6 @@ export interface IDeposit {
 }
 export interface IMint {
   amount: BN
-  txid?: string
   sending: boolean
   error?: string
 }
@@ -58,7 +49,6 @@ export interface IWithdrawRewards {
 }
 export interface IStaking {
   createAccount: ICreateAccount
-  send: ISend
   deposit: IDeposit
   mint: IMint
   withdraw: IWithdraw
@@ -72,12 +62,6 @@ export const defaultState: IStaking = {
     sending: false,
     error: '',
     tokenAddress: DEFAULT_PUBLICKEY
-  },
-  send: {
-    amount: new BN(0),
-    recipient: DEFAULT_PUBLICKEY,
-    tokenAddress: DEFAULT_PUBLICKEY,
-    sending: false
   },
   deposit: {
     amount: new BN(0),
@@ -114,9 +98,6 @@ const stakingSlice = createSlice({
       switch (action.payload) {
         case 'createAccount':
           state.createAccount = defaultState[action.payload]
-          break
-        case 'send':
-          state.send = defaultState[action.payload]
           break
         case 'mint':
           state.mint = defaultState[action.payload]
@@ -155,21 +136,6 @@ const stakingSlice = createSlice({
       state.burn.error = action.payload.error
       return state
     },
-    openSend(state, action: PayloadAction<Pick<ISend, 'tokenAddress'>>) {
-      state.send.tokenAddress = action.payload.tokenAddress
-      return state
-    },
-    send(state, action: PayloadAction<Pick<ISend, 'amount' | 'recipient'>>) {
-      state.send.sending = true
-      state.send.amount = action.payload.amount
-      state.send.recipient = action.payload.recipient
-      return state
-    },
-    sendDone(state, action: PayloadAction<{ txid?: string }>) {
-      state.send.sending = false
-      state.send.txid = action.payload.txid
-      return state
-    },
     deposit(state, action: PayloadAction<Pick<IDeposit, 'amount' | 'tokenAddress'>>) {
       state.deposit.sending = true
       state.deposit.amount = action.payload.amount
@@ -192,9 +158,8 @@ const stakingSlice = createSlice({
       state.mint.amount = action.payload.amount
       return state
     },
-    mintDone(state, action: PayloadAction<Pick<IMint, 'txid'>>) {
+    mintDone(state) {
       state.mint.sending = false
-      state.mint.txid = action.payload.txid
       state.mint.error = undefined
       return state
     },

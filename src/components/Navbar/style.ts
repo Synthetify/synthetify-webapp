@@ -3,16 +3,14 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   button: {
-    minWidth: 118,
+    minWidth: 93,
     backgroundColor: 'rgba(0, 0, 0, 0)',
     color: colors.navy.navBar,
-    padding: '2px 10px',
-    lineHeight: '40px',
-    borderRadius: 10,
-    fontSize: '16px',
+    height: 44,
+    borderRadius: 5,
+    fontSize: 16,
     textTransform: 'capitalize',
     boxShadow: 'none',
-    margin: 4,
 
     '&:hover': {
       background: colors.navy.button,
@@ -22,20 +20,7 @@ const useStyles = makeStyles(() => ({
   active: {
     background: colors.navy.button,
     color: colors.navy.veryLightGrey,
-    minWidth: 118,
-    padding: '2px 10px',
-    lineHeight: '40px',
-    borderRadius: 10,
-    fontSize: '16px',
-    fontWeight: 700,
-    textTransform: 'capitalize',
-    boxShadow: 'none',
-    margin: 4,
-
-    '&:hover': {
-      background: colors.navy.button,
-      color: colors.navy.veryLightGrey
-    }
+    fontWeight: 700
   },
   disabled: {
     opacity: 1

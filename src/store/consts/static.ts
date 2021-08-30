@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export const SNY_DEV_TOKEN = 'EUdH9pgy4GtgYb42sj9MjiRW5i4s7HaEAbcNzwRhuaYa'
+export const SNY_DEV_TOKEN = '9dLGczoMUANNef7Je5qpSYjBxyT8PTh5tEZqo3pJktM9'
 
 enum SolanaNetworks {
   DEV = 'https://api.devnet.solana.com',
@@ -22,13 +22,17 @@ enum SolanaNetworks {
   LOCAL = 'http://127.0.0.1:8899'
 }
 const DEFAULT_PUBLICKEY = new PublicKey(0)
-const ORACLE_OFFSET = 6
+const ORACLE_OFFSET = 8
 const ACCURACY = 6
 const DEFAULT_STAKING_DATA: UserStaking = {
-  amountToClaim: new BN(0),
+  amountToClaim: {
+    val: new BN(0),
+    scale: 0
+  },
   currentRoundPoints: new BN(0),
   finishedRoundPoints: new BN(0),
   nextRoundPoints: new BN(0),
   lastUpdate: new BN(0)
 }
-export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA }
+const MAX_U64 = new BN('18446744073709551615')
+export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA, MAX_U64 }

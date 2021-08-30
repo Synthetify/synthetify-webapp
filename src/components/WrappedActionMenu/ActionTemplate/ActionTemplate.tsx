@@ -8,8 +8,10 @@ import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
+import { MAX_U64 } from '@consts/static'
 
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
+export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
 
 export interface IProps {
   action: ActionType
@@ -21,6 +23,10 @@ export interface IProps {
   hasError: boolean
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
   onSelectToken?: (chosen: string) => void
+  showArrowInInput?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
+  maxBehavior?: MaxBehavior
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -32,7 +38,11 @@ export const ActionTemplate: React.FC<IProps> = ({
   sending,
   hasError,
   tokens,
-  onSelectToken
+  onSelectToken,
+  showArrowInInput,
+  walletConnected,
+  noWalletHandler,
+  maxBehavior = 'number'
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -64,13 +74,23 @@ export const ActionTemplate: React.FC<IProps> = ({
     }
     const decimalDiff = maxDecimal - decimal
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
-    return !amountBN.eqn(0) && isLessThanMaxAmount
+    return !amountBN.eqn(0) && (isLessThanMaxAmount || ((maxBehavior === 'maxU64') && amountBN.eq(MAX_U64)))
   }
 
   const onMaxButtonClick = () => {
-    setAmountBN(maxAvailable)
-    setDecimal(maxDecimal)
-    setInputValue(printBN(maxAvailable, maxDecimal))
+    if (maxBehavior === 'maxU64') {
+      setAmountBN(MAX_U64)
+      setDecimal(maxDecimal)
+      setInputValue('Max')
+    } else if (maxBehavior === 'inputOnly') {
+      setAmountBN(maxAvailable)
+      setDecimal(maxDecimal)
+      setInputValue('Max')
+    } else {
+      setAmountBN(maxAvailable)
+      setDecimal(maxDecimal)
+      setInputValue(printBN(maxAvailable, maxDecimal))
+    }
   }
 
   const onAmountInputChange = (value: string) => {
@@ -148,7 +168,7 @@ export const ActionTemplate: React.FC<IProps> = ({
       direction='column'
       className={classes.root}>
       <Grid container item className={classes.wrap}>
-        <Grid item>
+        <Grid item className={classes.inputRoot}>
           <AmountInputWithLabel
             value={inputValue}
             setValue={onAmountInputChange}
@@ -157,6 +177,9 @@ export const ActionTemplate: React.FC<IProps> = ({
             currency={currency}
             tokens={tokens}
             onSelectToken={onSelectToken}
+            showArrow={showArrowInInput}
+            walletConnected={walletConnected}
+            noWalletHandler={noWalletHandler}
           />
         </Grid>
         <Grid
@@ -166,7 +189,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <Grid className={classes.xsItemCenter} item>
+          <Grid item className={classes.smItemCenter}>
             <MaxButton onClick={onMaxButtonClick} />
           </Grid>
           <Grid item>
@@ -175,8 +198,8 @@ export const ActionTemplate: React.FC<IProps> = ({
           <Grid item className={classes.available}>
             <KeyValue
               keyName={`Available to ${action}`}
-              keyClassName={classes.xsTextAlignCenter}
-              valueClassName={classes.xsTextAlignCenter}
+              keyClassName={classes.smTextAlignCenter}
+              valueClassName={classes.smTextAlignCenter}
               value={maxAvailable}
               decimal={maxDecimal}
               unit={currency}

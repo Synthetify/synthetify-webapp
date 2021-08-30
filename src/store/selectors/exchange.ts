@@ -1,8 +1,9 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp } from '@consts/utils'
+import { divUp, discountData, printBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
+import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 
@@ -12,10 +13,6 @@ export const {
   assets,
   synthetics,
   collaterals,
-  debt,
-  fee,
-  shares,
-  userAccount,
   mintAuthority,
   swap,
   state,
@@ -24,10 +21,6 @@ export const {
   'assets',
   'synthetics',
   'collaterals',
-  'debt',
-  'fee',
-  'shares',
-  'userAccount',
   'mintAuthority',
   'swap',
   'state',
@@ -39,8 +32,11 @@ export const healthFactor = createSelector(state, (s) => {
 export const staking = createSelector(state, (s) => {
   return s.staking
 })
-export const userAccountAddress = createSelector(userAccount, (userAcc) => {
-  return new PublicKey(userAcc.address)
+export const debtInterestRate = createSelector(state, (s) => {
+  return s.debtInterestRate
+})
+export const fee = createSelector(state, (s) => {
+  return s.fee
 })
 export const userDebtShares = createSelector(exchangeAccount, (account) => {
   return account.debtShares
@@ -66,17 +62,14 @@ export const stakedValue = createSelector(exchangeAccount, collaterals, assets, 
   let val: BN = new BN(0)
 
   for (const collateral of account.collaterals) {
-    const toAdd: BN = collateral.amount
-      .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
-      .div(
-        new BN(
-          10 **
-            (allCollaterals[collateral.collateralAddress.toString()].decimals +
-              ORACLE_OFFSET -
-              ACCURACY)
-        )
-      )
-    val = val.add(toAdd)
+    const collateralAddress = collateral.collateralAddress.toString()
+
+    if (allCollaterals[collateralAddress]) {
+      const toAdd: BN = collateral.amount
+        .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+        .div(new BN(10 ** (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+      val = val.add(toAdd)
+    }
   }
 
   return val
@@ -94,12 +87,15 @@ export const collateralValue = createSelector(
     let val: BN = new BN(0)
 
     for (const collateral of account.collaterals) {
-      const toAdd: BN = collateral.amount
-        .mul(allAssets[allCollaterals[collateral.collateralAddress.toString()].assetIndex].price)
-        .mul(new BN(allCollaterals[collateral.collateralAddress.toString()].collateralRatio))
-        .div(new BN(100))
-        .div(new BN(10 ** (allCollaterals[collateral.collateralAddress.toString()].decimals + ORACLE_OFFSET - ACCURACY)))
-      val = val.add(toAdd)
+      const collateralAddress = collateral.collateralAddress.toString()
+      if (allCollaterals[collateralAddress]) {
+        const toAdd: BN = collateral.amount
+          .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+          .mul(allCollaterals[collateralAddress].collateralRatio.val)
+          .div(new BN(10 ** allCollaterals[collateralAddress].collateralRatio.scale))
+          .div(new BN(10 ** (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+        val = val.add(toAdd)
+      }
     }
 
     return val
@@ -123,8 +119,8 @@ export const userDebtValue = createSelector(
     const debt = Object.entries(allSynthetics).reduce((acc, [_, synthetic]) => {
       return acc.add(
         divUp(
-          allAssets[synthetic.assetIndex].price.mul(synthetic.supply),
-          new BN(10 ** (synthetic.decimals + ORACLE_OFFSET - ACCURACY))
+          allAssets[synthetic.assetIndex].price.val.mul(synthetic.supply.val),
+          new BN(10 ** (synthetic.supply.scale + ORACLE_OFFSET - ACCURACY))
         )
       )
     }, new BN(0))
@@ -137,7 +133,7 @@ export const userMaxDebtValue = createSelector(
   collateralValue,
   healthFactor,
   (value, factor) => {
-    return value.mul(new BN(factor)).div(new BN(100))
+    return value.mul(factor.val).div(new BN(10 ** factor.scale))
   }
 )
 
@@ -151,12 +147,6 @@ export const userMaxMintUsd = createSelector(
     return maxDebt.sub(userDebt)
   }
 )
-export const userCollateralRatio = createSelector(userDebtValue, stakedValue, (debt, stake) => {
-  if (debt.eq(new BN(0)) || stake.eq(new BN(0))) {
-    return new BN(0)
-  }
-  return stake.mul(new BN(1e3)).div(debt).div(new BN(10))
-})
 
 export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
   createSelector(
@@ -178,28 +168,55 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
       const collateralToken = allCollaterals[collateralTokenAddress.toString()]
       const maxWithdraw = maxUsd
         .sub(debt)
-        .mul(new BN(10000))
-        .mul(new BN(10 ** collateralToken.decimals + ORACLE_OFFSET - ACCURACY))
-        .div(new BN(collateralToken.collateralRatio))
-        .div(new BN(factor))
-        .div(new BN(allAssets[collateralToken.assetIndex].price))
+        .mul(new BN(10 ** collateralToken.collateralRatio.scale))
+        .mul(new BN(10 ** factor.scale))
+        .mul(new BN(10 ** (collateralToken.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+        .div(collateralToken.collateralRatio.val)
+        .div(new BN(factor.val))
+        .div(new BN(allAssets[collateralToken.assetIndex].price.val))
       const collateralAmount = account.collaterals.find(token => token.collateralAddress.equals(collateralTokenAddress))?.amount ?? new BN(0)
       return maxWithdraw.lte(collateralAmount) ? maxWithdraw : collateralAmount
     }
   )
+
+export const effectiveFeeData = createSelector(
+  fee,
+  exchangeAccount,
+  (currentFee, exchangeAccount) => {
+    const snyAmount = exchangeAccount.collaterals.find(({ index }) => index === 0)?.amount
+
+    if (typeof snyAmount !== 'undefined') {
+      const { discount, nextThreshold } = discountData(snyAmount)
+
+      return {
+        fee: toEffectiveFee(currentFee, snyAmount),
+        discountData: {
+          discount,
+          nextThreshold: typeof nextThreshold !== 'undefined' ? nextThreshold - +printBN(snyAmount, 6) : undefined
+        }
+      }
+    } else {
+      return {
+        fee: currentFee,
+        discountData: {
+          discount: undefined,
+          nextThreshold: undefined
+        }
+      }
+    }
+  }
+)
 export const exchangeSelectors = {
   assets,
   healthFactor,
-  debt,
-  fee,
-  shares,
-  userAccount,
-  userAccountAddress,
   userStaking,
+  debtInterestRate,
+  fee,
   userDebtShares,
   mintAuthority,
   userMaxWithdraw,
-  swap
+  swap,
+  effectiveFee: effectiveFeeData
 }
 
 export default exchangeSelectors

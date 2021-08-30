@@ -1,9 +1,9 @@
 import { ClickAwayListener, Grid, Hidden, Icon, Tooltip } from '@material-ui/core'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
-import React, { ReactChild, useEffect, useState } from 'react'
+import classNames from 'classnames'
+import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
 
-type Placement =
+export type Placement =
   | 'bottom-end'
   | 'bottom-start'
   | 'bottom'
@@ -19,16 +19,22 @@ type Placement =
 
 export interface IMobileTooltip {
   hint: ReactChild
+  anchor: ReactElement
   onOpen?: () => void
   mobilePlacement?: Placement
   desktopPlacement?: Placement
+  tooltipClasses?: { [key: string]: string }
+  isInteractive?: boolean
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
   hint,
+  anchor,
   onOpen,
   mobilePlacement = 'bottom',
-  desktopPlacement = 'right'
+  desktopPlacement = 'right',
+  tooltipClasses,
+  isInteractive = false
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -44,10 +50,12 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <Icon>
           <Tooltip
             onOpen={onOpen}
-            classes={{ tooltip: classes.tooltip }}
+            classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
             title={hint}
-            placement={desktopPlacement}>
-            <img src={HintIcon} alt='' className={classes.questionMark} />
+            placement={desktopPlacement}
+            interactive={isInteractive}
+          >
+            {anchor}
           </Tooltip>
         </Icon>
       </Hidden>
@@ -55,15 +63,18 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <Icon onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
-              classes={{ tooltip: classes.tooltip }}
+              classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
+              onOpen={onOpen}
               onClose={() => setIsPopoverOpen(false)}
               disableFocusListener
               disableHoverListener
-              disableTouchListener>
-              <img src={HintIcon} alt='' className={classes.questionMark} />
+              disableTouchListener
+              interactive={isInteractive}
+            >
+              {anchor}
             </Tooltip>
           </Icon>
         </ClickAwayListener>

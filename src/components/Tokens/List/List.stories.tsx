@@ -1,10 +1,9 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
-import { TokenList } from '@components/TokenList/TokenList'
-import { IToken } from '@components/TokenItem/TokenItem'
+import List from './List'
+import { IToken } from '../Item/Item'
 import { BN } from '@project-serum/anchor'
-import { action } from '@storybook/addon-actions'
 
 const xSNY: IToken = {
   ticker: '$SNY',
@@ -40,7 +39,7 @@ const FTT: IToken = {
 
 const tokens = [xSNY, xBTC, SOL, FTT]
 
-storiesOf('Tokens/tokenList', module)
+storiesOf('Tokens/List', module)
   .addDecorator(withKnobs)
-  .add('Example token list', () => <TokenList tokens={tokens} addAccount={action('addAccount')} />)
-  .add('Empty token list', () => <TokenList tokens={[]} addAccount={action('addAccount')} />)
+  .add('Example token list', () => <List type='Staked' tokens={tokens} />)
+  .add('Empty token list', () => <List type='Staked' tokens={[]} />)

@@ -5,6 +5,7 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeRemainingTooltip/TimeRemainingTooltip'
 import BN from 'bn.js'
 import useStyles from './style'
+import { Placement } from '@components/MobileTooltip/MobileTooltip'
 
 export interface IRewardsLineProps {
   name: string
@@ -16,6 +17,8 @@ export interface IRewardsLineProps {
   bottomHint?: string
   timeRemainingEndSlot: BN
   slot: number
+  icon: string
+  tooltipPlacement: Placement
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -26,7 +29,9 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   bracketValue = new BN(0),
   timeRemainingEndSlot,
   slot,
-  hint
+  hint,
+  icon,
+  tooltipPlacement
 }) => {
   const classes = useStyles()
 
@@ -34,18 +39,18 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     <>
       {nonBracket
         ? (
-        <>
-          <AnimatedNumber
-            value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
-            duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
-          />
-          {` ${nonBracket}`}
-        </>
-          )
+          <>
+            <AnimatedNumber
+              value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(4)}
+            />
+            {` ${nonBracket}`}
+          </>
+        )
         : (
-            ''
-          )
+          ''
+        )
       }
     </>
   )
@@ -54,26 +59,27 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     <>
       {bracket
         ? (
-        <>
-          {' ('}
-          <AnimatedNumber
-            value={bracketValue ? transformBN(bracketValue) : new BN(0)}
-            duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
-          />
-          {` ${bracket})`}
-        </>
-          )
+          <>
+            {' ('}
+            <AnimatedNumber
+              value={bracketValue ? transformBN(bracketValue) : new BN(0)}
+              duration={300}
+              formatValue={(value: string) => Number(value).toFixed(4)}
+            />
+            {` ${bracket})`}
+          </>
+        )
         : (
-            ''
-          )
+          ''
+        )
       }
     </>
   )
 
   return (
-    <Grid container justifyContent='flex-start' alignItems='center' wrap='nowrap'>
-      <Grid item style={{ marginRight: 25 }}>
+    <Grid container alignItems='center' wrap='nowrap'>
+      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} icon={icon} placement={tooltipPlacement} />
+      <Grid item style={{ marginLeft: 15 }}>
         <Typography className={classes.text}>
           {name}
           {': '}
@@ -81,7 +87,6 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           {processedBracket}
         </Typography>
       </Grid>
-      <TimeRemainingTooltip timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />
     </Grid>
   )
 }
