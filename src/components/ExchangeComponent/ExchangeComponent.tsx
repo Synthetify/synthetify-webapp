@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Grid, Typography, Divider, Hidden, IconButton } from '@material-ui/core'
-import AmountInput from '@components/Input/AmountInput'
+import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 import { PublicKey } from '@solana/web3.js'
 import { Swap } from '@reducers/exchange'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'

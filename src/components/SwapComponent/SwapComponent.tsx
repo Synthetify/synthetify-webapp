@@ -17,7 +17,7 @@ import { colors } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
-import AmountInput from '@components/Input/AmountInput'
+import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
