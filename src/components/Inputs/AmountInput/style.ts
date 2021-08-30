@@ -10,7 +10,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     paddingRight: 10,
     height: 60,
     fontSize: 22,
-    minWidth: 148,
+    minWidth: 150,
     width: '100%'
   },
   currency: {

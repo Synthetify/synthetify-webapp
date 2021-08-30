@@ -17,7 +17,7 @@ import { colors } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
-import AmountInput from '@components/Inputs/AmountInput/AmountInput'
+import AmountWithMaxInput from '@components/Inputs/AmountWithMaxInput/AmountWithMaxInput'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -189,7 +189,7 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
             }
           />
 
-          <AmountInput
+          <AmountWithMaxInput
             value={amountFrom}
             setValue={value => {
               if (value.match(/^\d*\.?\d*$/)) {
@@ -198,8 +198,13 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
               }
             }}
             placeholder={'0.0'}
-            currency={null}
             className={classes.input}
+            onMaxClick={() => {
+              if (tokenFromIndex !== null) {
+                setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
+                updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
+              }
+            }}
           />
         </Grid>
       </Grid>
@@ -270,7 +275,7 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
             }}
           />
 
-          <AmountInput
+          <AmountWithMaxInput
             value={amountTo}
             setValue={value => {
               if (value.match(/^\d*\.?\d*$/)) {
@@ -279,8 +284,13 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
               }
             }}
             placeholder={'0.0'}
-            currency={null}
             className={classes.input}
+            onMaxClick={() => {
+              if (tokenFromIndex !== null && tokenToIndex !== null) {
+                setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
+                updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
+              }
+            }}
           />
         </Grid>
       </Grid>

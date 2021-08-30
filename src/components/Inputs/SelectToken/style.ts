@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       height: 48,
       minWidth: 96,
-      maxWidth: 110
+      maxWidth: 110,
+      borderRadius: 6
     }
   },
   icon: {
