@@ -48,6 +48,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: 13
     }
   },
+  input: {
+    marginLeft: 24,
+
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 16
+    }
+  },
   swapIconSquare: {
     background: colors.navy.dark,
     position: 'relative',

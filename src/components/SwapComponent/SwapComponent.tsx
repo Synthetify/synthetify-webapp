@@ -16,6 +16,8 @@ import { docs, pyth } from '@static/links'
 import { colors } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
+import SelectToken from '@components/Inputs/SelectToken/SelectToken'
+import AmountInput from '@components/Input/AmountInput'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -176,6 +178,30 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
               : ''}
           </Typography>
         </Grid>
+
+        <Grid item container wrap='nowrap' alignItems='center'>
+          <SelectToken
+            tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
+            current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
+            centered={true}
+            onSelect={(chosen: string) =>
+              setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+            }
+          />
+
+          <AmountInput
+            value={amountFrom}
+            setValue={value => {
+              if (value.match(/^\d*\.?\d*$/)) {
+                setAmountFrom(value)
+                updateEstimatedAmount(value)
+              }
+            }}
+            placeholder={'0.0'}
+            currency={null}
+            className={classes.input}
+          />
+        </Grid>
       </Grid>
 
       <Grid item container direction='row' justifyContent='center'>
@@ -231,6 +257,31 @@ export const SwapComponent: React.FC<IExchangeComponent> = ({
               )
               : ''}
           </Typography>
+        </Grid>
+
+        <Grid item container wrap='nowrap' alignItems='center'>
+          <SelectToken
+            tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
+            current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
+            centered={true}
+            onSelect={(chosen: string) => {
+              setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+              setTimeout(() => updateEstimatedAmount(), 0)
+            }}
+          />
+
+          <AmountInput
+            value={amountTo}
+            setValue={value => {
+              if (value.match(/^\d*\.?\d*$/)) {
+                setAmountTo(value)
+                updateFromEstimatedAmount(value)
+              }
+            }}
+            placeholder={'0.0'}
+            currency={null}
+            className={classes.input}
+          />
         </Grid>
       </Grid>
 
