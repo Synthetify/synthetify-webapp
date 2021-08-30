@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     padding: 10,
     fontSize: 16,
-    lineHeight: '30px',
+    lineHeight: '25px',
     width: 160,
     height: 56,
     fontWeight: 700,
