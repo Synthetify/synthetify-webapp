@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: '#1D1D49',
     width: 855,
-    height: 327,
+    height: 333,
     borderRadius: 10,
     display: 'flex',
     flexDirection: 'column',
@@ -22,8 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     [theme.breakpoints.down('xs')]: {
       display: 'flex',
-      flexWrap: 'nowrap',
-      width: 265
+      flexWrap: 'nowrap'
     }
   },
   headerWrapper: {
@@ -31,19 +30,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     left: 24,
     top: 12,
-    height: 80
-    // [theme.breakpoints.down('sm')]: {
-    //   top: -7,
-    //   left: 16
-    // }
+    height: 80,
   },
   title: {
     fontSize: '22px',
     lineHeight: '40px',
     fontWeight: 600,
     color: colors.navy.veryLightGrey,
-    position: 'relative',
-    //top: 12
+    position: 'relative'
   },
   subTitle: {
     fontSize: '16px',
@@ -53,10 +47,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     width: 'calc(100% - 16px)',
     top: -8,
-    // [theme.breakpoints.down('sm')]: {
-    //   fontSize: 13,
-    //   lineHeight: '20px'
-    // }
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 13,
+      lineHeight: '20px'
+    }
   },
 
   chartWrapper: {
@@ -66,18 +60,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#0C0D2C',
     borderRadius: 10,
     overflow: 'hidden',
-    [theme.breakpoints.down('md')]: {
-      width: 'calc(100% - 13.8px)',
-      height: 85
+     [theme.breakpoints.down('md')]: {
+       width: 'calc(100% - 13.8px)',
+       height: 85,
+     },
+
+    [theme.breakpoints.down('xs')]: {
+      width: 95,
+      height: 'calc(100% - 10px)'
     },
-    // [theme.breakpoints.down('sm')]: {
-    //   width: 'calc(100% - 12.06px)',
-    //   height: 76
-    // },
-    // [theme.breakpoints.down('sm')]: {
-    //   width: 95,
-    //   height: 'calc(100% - 10px)'
-    // },
+
+    [theme.breakpoints.up('lg')]: {
+      opacity: .2
+    },
+
     '& text': {
       fontWeight: 700,
       fontSize: 15
@@ -85,7 +81,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   border: {
-    // width: 1024,
     width: 'calc(100% - 48px)',
     height: 128,
     backgroundColor: colors.navy.background,
@@ -98,45 +93,42 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 103,
       width: 'calc(100% - 48px)',
       position: 'relative',
-      top: 8,
+      top: 8
     },
-    // [theme.breakpoints.down('sm')]: {
-    //   height: 404,
-    //   width: 103,
-    //   position: 'relative',
-    //   left: 31,
-    //   bottom: 0
-    // }
+    [theme.breakpoints.down('xs')]: {
+      height: 404,
+      width: 103,
+      position: 'relative',
+      left: 2,
+      bottom: 0
+    }
   },
 
   legendWrapper: {
-    padding:0,
-    margin: 0,
-    width: '100%',
     display: 'flex',
-    // justifyContent: 'space-around',
     fontSize: 18,
     flexWrap: 'wrap',
     position: 'relative',
-    left:44,
+    top: -10,
+    height:138,
+    width: 'calc(100% - 48px)',
+    //justifyContent:'space-between',
     alignItems:'center',
-    [theme.breakpoints.down('md')]:{
-      top:28,
+    [theme.breakpoints.down('xs')]: {
+      alignSelf: 'center',
+      height: '100%',
+      width: '40%',
+      position: 'relative',
+      top: 0
     },
-    // [theme.breakpoints.down('sm')]: {
-    //   height: '100%',
-    //   width: '140%',
-    //   position: 'relative',
-    //   top: -25,
-    //   left: 35
-    // },
 
     '& li': {
       marginRight: 35,
-      // [theme.breakpoints.down('sm')]: {
-      //   marginRight: 50,
-      //   margin: '0 0 -5px 0'
-      // }
+      marginBottom: -10,
+
+      [theme.breakpoints.down('xs')]: {
+        margin: '0 10 -5px 10'
+      }
     }
   },
   legendItem: {

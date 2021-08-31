@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import useStyles from './style'
 import { Grid, Typography, Divider, Hidden, IconButton, Container } from '@material-ui/core'
@@ -12,59 +13,59 @@ export const StatsCollateralChart: React.FC = () => {
     {
       name: 'xBTC',
       percent: 20,
-      color: '#6F7ECA'
+      color: 'rgba(111, 126, 202)'
     },
     {
       name: 'xETH',
       percent: 15,
-      color: '#40BFA0'
+      color: 'rgba(64, 191, 160)'
     },
     {
       name: 'xSOL',
       percent: 10,
-      color: '#117098'
+      color: 'rgba(17, 112, 152)'
     },
     {
       name: 'xBNB',
       percent: 7,
-      color: '#BFB665'
+      color: 'rgba(191, 182, 101)'
     },
 
     {
       name: 'xFTT',
       percent: 6.8,
-      color: '#1F70CF'
+      color: 'rgba(96, 169, 255)'
     },
     {
       name: 'xUSD',
       percent: 5,
-      color: '#936BC7'
+      color: 'rgba(204, 175, 241)'
     },
     {
       name: 'xSRM',
       percent: 5,
-      color: '#39D3F5'
+      color: 'rgba(57, 211, 245)'
     },
     {
       name: 'xLTC',
       percent: 4.5,
-      color: '#DADCF1'
+      color: 'rgba(218, 220, 241)'
     },
     {
       name: 'xAAVE',
       percent: 3.3,
-      color: '#C76BA2'
+      color: 'rgba(233, 160, 204)'
     },
 
     {
       name: 'xDOGE',
       percent: 2.9,
-      color: '#D49347'
+      color: 'rgba(250, 199, 139)'
     },
     {
       name: 'xLUNA',
       percent: 2.2,
-      color: '#DF3C3C'
+      color: 'rgba(223, 60, 60)'
     }
   ]
 
@@ -88,19 +89,27 @@ export const StatsCollateralChart: React.FC = () => {
   const handleMouseEnter = (d: any, e: any) => {
     const fill = e.target.getAttribute('fill')
     const stroke = e.target.getAttribute('stroke')
-    let cutStroke = (stroke.slice(4, -1))
+    let cutStroke = (fill.slice(5, -1))
 
     cutStroke = cutStroke.split(',')
-    console.log(cutStroke)
-    cutStroke = cutStroke.map(x => x - (-12))
+
+    cutStroke = cutStroke.map((x: number) => {
+      if (x < 243) {
+        return x - (-12)
+      } else {
+        return x = 255
+      }
+    })
 
     const rgbToHex = (r: number, g: number, b: number) => '#' + [r, g, b].map(x => {
       const hex = x.toString(16)
       return hex.length === 1 ? '0' + hex : hex
     }).join('')
-    // e.target.setAttribute('fill', (rgbToHex(cutStroke[0], cutStroke[1], cutStroke[2])))
-    //  console.log('rgb(196, 223, 255)')
-    // console.log('rgb(208, 235, 267)')
+    e.target.setAttribute('fill', (rgbToHex(cutStroke[0], cutStroke[1], cutStroke[2])))
+  }
+
+  const handleMouseLeave = (d: any, e: any) => {
+    e.target.setAttribute('fill', data.find(x => x.name === d.id).color)
   }
 
   const colorsToBar = data.map(coin => {
@@ -136,6 +145,7 @@ export const StatsCollateralChart: React.FC = () => {
               { layoutVertical
                 ? <ResponsiveBar
                   onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                   data={getNameAndValue(data)}
                   keys={getNameCoins(data)}
                   colors={colorsToBar}
@@ -156,6 +166,7 @@ export const StatsCollateralChart: React.FC = () => {
                 />
                 : <ResponsiveBar
                   onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                   data={getNameAndValue(data)}
                   keys={getNameCoins(data)}
                   colors={colorsToBar}
@@ -179,13 +190,13 @@ export const StatsCollateralChart: React.FC = () => {
             </Grid>
           </div>
           {/* <Grid container> */}
-            {/* <Grid item> */}
-            <ul className={classes.legendWrapper}>
-              {data.map((coin) => (
-                <li className={classes.legendItem} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}>({coin.percent}%)</span></li>
-              ))}
-            </ul>
-            {/* </Grid> */}
+          {/* <Grid item> */}
+          <ul className={classes.legendWrapper}>
+            {data.map((coin) => (
+              <li className={classes.legendItem} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}>({coin.percent}%)</span></li>
+            ))}
+          </ul>
+          {/* </Grid> */}
           {/* </Grid> */}
         </Grid>
       </div>
