@@ -7,7 +7,7 @@ import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
-import AmountInput from '@components/Input/AmountInput'
+import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'

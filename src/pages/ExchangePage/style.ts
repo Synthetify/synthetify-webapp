@@ -29,6 +29,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       marginBottom: 60
     }
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 700,
+    lineHeight: '40px',
+    color: colors.navy.veryLightGrey,
+    marginBottom: 16
   }
 }))
 
