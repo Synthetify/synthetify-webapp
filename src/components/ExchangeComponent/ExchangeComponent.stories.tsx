@@ -20,6 +20,10 @@ const defaultSynthetic: Synthetic = {
     scale: 0
   },
   settlementSlot: new BN(1),
+  borrowedSupply: {
+    val: new BN(1e6),
+    scale: 0
+  },
   swaplineSupply: {
     val: new BN(1e6),
     scale: 0
