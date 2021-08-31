@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import  { LineDiagram, Props } from '../src/LineDiagram';
+import  { LineDiagram, Props } from './LineDiagram';
 
 const meta: Meta = {
   title: 'Line Diagram',

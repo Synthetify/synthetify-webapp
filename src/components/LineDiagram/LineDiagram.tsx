@@ -2,7 +2,7 @@ import React from 'react'
 import { ResponsiveLine} from '@nivo/line'
 import {ScaleSpec} from '@nivo/scales'
 import {AxisProps} from '@nivo/axes'
-import {Idata, data} from './mockedData'
+import {Idata, data} from './../../mockedData'
 
 export interface Props {
     data:Idata[]
