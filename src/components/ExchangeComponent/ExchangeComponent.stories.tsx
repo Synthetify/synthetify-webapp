@@ -27,7 +27,15 @@ const defaultSynthetic: Synthetic = {
     val: new BN(1e10),
     scale: 0
   },
-  settlementSlot: new BN(1)
+  settlementSlot: new BN(1),
+  borrowedSupply: {
+    val: new BN(1e6),
+    scale: 0
+  },
+  swaplineSupply: {
+    val: new BN(1e6),
+    scale: 0
+  }
 }
 
 const defaultAsset: Asset = {
@@ -78,7 +86,6 @@ storiesOf('ui/exchangeComponent', module)
         onSwap={onSwap}
         fee={{ val: new BN(3), scale: 6 }}
         discountPercent={-10}
-        nextDiscountPercent={-12}
         nextDiscountThreshold={2137}
       />
     </div>
