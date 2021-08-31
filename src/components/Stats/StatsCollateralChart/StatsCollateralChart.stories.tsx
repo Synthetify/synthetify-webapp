@@ -5,4 +5,4 @@ import StatsCollateralChart from '@components/Stats/StatsCollateralChart/StatsCo
 
 storiesOf('StatsCollateralChart', module)
   .addDecorator(withKnobs)
-  .add('plain', () => <StatsCollateralChart/>)
+  .add('basic', () => <StatsCollateralChart/>)
