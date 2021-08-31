@@ -5,7 +5,7 @@ import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenMod
 import { BN } from '@project-serum/anchor'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import useStyles, { useStylesWithProps } from './style'
+import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
@@ -38,8 +38,7 @@ export const AmountInput: React.FC<IProps> = ({
   noWalletHandler,
   emptyTokensHandler
 }) => {
-  const classes = useStyles()
-  const proppedClasses = useStylesWithProps({ onSelectToken })
+  const classes = useStyles({ onSelectToken })
 
   const [open, setOpen] = useState(false)
 
@@ -78,6 +77,33 @@ export const AmountInput: React.FC<IProps> = ({
     }
   }
 
+  const currencyAdornment = (
+    <InputAdornment
+      position='end'
+      className={classNames(classes.currency, classes.select)}
+      onClick={() => {
+        if (!walletConnected && noWalletHandler) {
+          noWalletHandler()
+          return
+        }
+
+        if (!!walletConnected && !tokens?.length && emptyTokensHandler) {
+          emptyTokensHandler()
+          return
+        }
+
+        if (tokens?.length && onSelectToken) {
+          blurContent()
+          setOpen(true)
+        }
+      }}
+    >
+      <Divider orientation='vertical' className={classes.divider} />
+      {currency}
+      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
+    </InputAdornment>
+  )
+
   return (
     <>
       <Input
@@ -85,36 +111,11 @@ export const AmountInput: React.FC<IProps> = ({
         error={!!error}
         className={classNames(classes.amountInput, className)}
         style={style}
-        color='primary'
         type={'text'}
         value={value}
         disableUnderline={true}
         placeholder={placeholder}
-        endAdornment={
-          !currency ? null : (
-            <InputAdornment position='end' className={classNames(classes.currency, proppedClasses.select)} onClick={() => {
-              if (!walletConnected && noWalletHandler) {
-                noWalletHandler()
-                return
-              }
-
-              if (!!walletConnected && !tokens?.length && emptyTokensHandler) {
-                emptyTokensHandler()
-                return
-              }
-
-              if (tokens?.length && onSelectToken) {
-                blurContent()
-                setOpen(true)
-              }
-            }}
-            >
-              <Divider orientation='vertical' className={classes.divider} />
-              {currency}
-              {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
-            </InputAdornment>
-          )
-        }
+        endAdornment={!currency ? null : currencyAdornment}
         onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
       />
       {(tokens?.length && onSelectToken)

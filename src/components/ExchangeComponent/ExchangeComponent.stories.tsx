@@ -6,15 +6,7 @@ import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 import { Asset, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
-import { Swap } from '@reducers/exchange'
 import { toBlur } from '@consts/uiUtils'
-
-const swap: Swap = {
-  fromToken: new PublicKey(0),
-  toToken: new PublicKey(0),
-  amount: new BN(0),
-  loading: false
-}
 
 const defaultSynthetic: Synthetic = {
   assetIndex: 0,
@@ -82,9 +74,8 @@ storiesOf('ui/exchangeComponent', module)
     <div style={{ width: 900 }} id={toBlur}>
       <ExchangeComponent
         tokens={tokens}
-        swapData={swap}
         onSwap={onSwap}
-        fee={{ val: new BN(3), scale: 6 }}
+        fee={{ val: new BN(300), scale: 5 }}
         discountPercent={-10}
         nextDiscountThreshold={2137}
       />
