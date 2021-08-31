@@ -44,6 +44,7 @@ export const defaultState: IExchange = {
     admin: DEFAULT_PUBLICKEY,
     assetsList: DEFAULT_PUBLICKEY,
     debtShares: new BN(0),
+    exchangeAuthority: DEFAULT_PUBLICKEY,
     fee: {
       val: new BN(30),
       scale: 6
