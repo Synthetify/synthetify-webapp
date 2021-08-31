@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import DebtPool from './DebtPool'
-import { data } from '@containers/DebtPoolContainer/DataChart'
+import { data } from '@containers/DebtPoolContainer/mockData'
 
 storiesOf('stats/debtPool', module).add('pool', () => (
   <DebtPool

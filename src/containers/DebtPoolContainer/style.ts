@@ -8,11 +8,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
-
     }
   },
   debtcontainer: {
-    // width: '47%',
     width: '589px',
     [theme.breakpoints.down('md')]: {
       width: '520px'
@@ -22,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%'
-
     }
   }
 }))
