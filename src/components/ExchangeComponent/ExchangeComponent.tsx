@@ -12,6 +12,7 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import Output from '@static/svg/output.svg'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
+import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import { docs, pyth } from '@static/links'
 import { colors } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
@@ -155,13 +156,13 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <MobileTooltip
             hint={(
               <>
-                <img src={ExclamationMark} alt='' className={classes.feeIcon} />
+                <img src={ExclamationMark} alt='' className={classes.circleIcon} />
                 <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>Max supply</Typography>
                 Your amount exceeded current supply of token. Available to trade:
                 <b style={{ wordWrap: 'break-word' }}>{` ${printBN(tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val), tokens[tokenToIndex].supply.scale)} ${tokens[tokenToIndex].symbol}`}</b>
               </>
             )}
-            anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} style={{ marginLeft: 16 }} />}
+            anchor={<img src={RedExclamationMark} alt='' className={classes.exclamationMark} style={{ marginLeft: 16 }} />}
             tooltipClasses={{ tooltip: classes.supplyTooltip }}
             mobilePlacement='top-end'
             desktopPlacement='top-end'
@@ -320,7 +321,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             <MobileTooltip
               hint={(
                 <>
-                  <img src={Fee} alt='' className={classes.feeIcon} />
+                  <img src={Fee} alt='' className={classes.circleIcon} />
                   <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
                   <p style={{ marginBlock: 10 }}>
                     You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.

@@ -181,7 +181,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       cursor: 'pointer'
     }
   },
-  feeIcon: {
+  circleIcon: {
     width: 16,
     height: 16,
     position: 'absolute',

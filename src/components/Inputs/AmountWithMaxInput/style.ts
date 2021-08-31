@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 64,
     height: 36,
     borderRadius: 5,
+    marginLeft: 8,
 
     '&:hover': {
       backgroundColor: '#7C76DA'
