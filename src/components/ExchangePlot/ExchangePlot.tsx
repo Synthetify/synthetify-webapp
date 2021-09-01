@@ -6,6 +6,8 @@ import React from 'react'
 import Copy from '@static/svg/copy.svg'
 import { ResponsiveLine } from '@nivo/line'
 import { colors } from '@static/theme'
+// @ts-expect-error
+import { linearGradientDef } from '@nivo/core' // ignore error, this function exists, probably has no ts definition
 import useStyles from './style'
 
 interface IProps {
@@ -14,7 +16,7 @@ interface IProps {
   maxSupply: Decimal
   assetAddress: string
   price: Decimal
-  data: any
+  data: Array<{ x: number, y: number }>
 }
 
 const ExchangePlot: React.FC<IProps> = ({
@@ -31,11 +33,32 @@ const ExchangePlot: React.FC<IProps> = ({
     await navigator.clipboard.writeText(assetAddress)
   }
 
+  const getPlotMin = () => {
+    const values = data.map((point) => point.y)
+    const minValue = Math.min(...values)
+    const maxValue = Math.max(...values)
+
+    return minValue - (maxValue - minValue)
+  }
+
+  const getPlotMax = () => {
+    const values = data.map((point) => point.y)
+    const maxValue = Math.max(...values)
+
+    return maxValue * 1.01
+  }
+
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp)
+
+    return date.toLocaleString('en-GB', { hour12: true, timeStyle: 'short', dateStyle: 'short' })
+  }
+
   return (
     <Grid container className={classes.root}>
       <Grid container item direction='column' className={classes.dataWrapper}>
         <Typography className={classes.title}>{tokenName}</Typography>
-        <Typography className={classes.description}>Info about token you want to get</Typography>
+        <Typography className={classes.description}>Info about token you want to swap to</Typography>
         <Grid container item className={classes.tokenInfo}>
           <Grid container item className={classes.infoPosition} justifyContent='space-between' alignItems='center'>
             <Typography className={classes.positionTitle}>Supply:</Typography>
@@ -79,12 +102,21 @@ const ExchangePlot: React.FC<IProps> = ({
       </Grid>
       <Grid container item className={classes.plotWrapper}>
         <ResponsiveLine
-          data={data}
+          data={[
+            {
+              id: 'plot',
+              data
+            }
+          ]}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
           xScale={{ type: 'point' }}
-          yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+          yScale={{
+            type: 'linear',
+            min: getPlotMin(),
+            max: getPlotMax()
+          }}
           yFormat=" >-.2f"
-          curve="basis"
+          curve="catmullRom"
           axisTop={null}
           axisRight={null}
           axisBottom={null}
@@ -96,16 +128,31 @@ const ExchangePlot: React.FC<IProps> = ({
           useMesh={true}
           colors={[colors.green.main]}
           defs={[
-            {
-              id: 'gradientA',
-              type: 'linearGradient',
-              colors: [
-                { offset: 0, color: 'inherit' },
-                { offset: 100, color: 'inherit', opacity: 0 }
+            linearGradientDef(
+              'plotGradient',
+              [
+                { offset: 0, color: colors.green.main },
+                { offset: 100, color: colors.green.main, opacity: 0 }
               ]
-            }
+            )
           ]}
-          fill={[{ match: '*', id: 'gradientA' }]}
+          fill={[{ match: '*', id: 'plotGradient' }]}
+          tooltip={({ point: { data: { x, y } } }) => (
+            <div className={classes.tooltipRoot}>
+              <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
+              <Typography className={classes.tooltipValue}>${(y as number).toFixed(2)}</Typography>
+            </div>
+          )}
+          theme={{
+            crosshair: {
+              line: {
+                stroke: colors.white.main,
+                strokeDasharray: '0',
+                strokeWidth: 0.5,
+                strokeOpacity: 1
+              }
+            }
+          }}
         />
       </Grid>
     </Grid>
