@@ -122,7 +122,6 @@ export const StatsCollateralChart: React.FC = () => {
     return (coin.color)
   })
 
-
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 600) setLayoutVertical(true)
