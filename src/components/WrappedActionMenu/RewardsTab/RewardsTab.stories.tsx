@@ -11,8 +11,14 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
       slot={578000}
       userDebtShares={new BN(1e5)}
       roundLength={100000}
-      amountPerRound={new BN(100000000)}
-      amountToClaim={new BN(88648)}
+      amountPerRound={{
+        val: new BN(100000000),
+        scale: 0
+      }}
+      amountToClaim={{
+        val: new BN(88648),
+        scale: 0
+      }}
       rounds={{
         finished: {
           roundStartSlot: new BN(1000000),

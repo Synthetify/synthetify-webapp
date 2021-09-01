@@ -24,12 +24,15 @@ export interface IProps {
   burnState: Pick<IBurn, 'sending' | 'error'>
   stakingData: IRewardsProps
   collaterals: TokenAccounts[]
+  staked: TokenAccounts[]
   withdrawCurrency: string
   depositCurrency: string
   onSelectDepositToken?: (chosen: string) => void
   onSelectWithdrawToken?: (chosen: string) => void
   depositDecimal: number
   withdrawDecimal: number
+  walletConnected: boolean
+  noWalletHandler: () => void
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -48,12 +51,15 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   depositState,
   stakingData,
   collaterals,
+  staked,
   withdrawCurrency,
   depositCurrency,
   onSelectDepositToken,
   onSelectWithdrawToken,
   depositDecimal,
-  withdrawDecimal
+  withdrawDecimal,
+  walletConnected,
+  noWalletHandler
 }) => {
   const classes = useStyles()
 
@@ -69,6 +75,9 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!depositState.error?.length}
         tokens={collaterals}
         onSelectToken={onSelectDepositToken}
+        showArrowInInput
+        walletConnected={walletConnected}
+        noWalletHandler={noWalletHandler}
       />
     ),
     mint: (
@@ -80,6 +89,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={mintState.sending}
         hasError={!!mintState.error?.length}
+        maxBehavior='maxU64'
       />
     ),
     withdraw: (
@@ -91,8 +101,12 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency={withdrawCurrency}
         sending={withdrawState.sending}
         hasError={!!withdrawState.error?.length}
-        tokens={collaterals}
+        tokens={staked}
         onSelectToken={onSelectWithdrawToken}
+        showArrowInInput
+        walletConnected={walletConnected}
+        noWalletHandler={noWalletHandler}
+        maxBehavior='maxU64'
       />
     ),
     burn: (
@@ -104,6 +118,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={burnState.sending}
         hasError={!!burnState.error?.length}
+        maxBehavior='inputOnly'
       />
     ),
     rewards: <RewardsTab {...stakingData} />

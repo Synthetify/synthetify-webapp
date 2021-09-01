@@ -5,16 +5,29 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
     background: colors.navy.navButton,
     color: colors.navy.navBar,
-    padding: '2px 25px',
+    paddingInline: 25,
     borderRadius: 10,
     textTransform: 'none',
     fontSize: 16,
-    lineHeight: '40px',
-    margin: 8,
+    height: 44,
 
-    [theme.breakpoints.down('md')]: {
+    '&:not(:last-child)': {
+      marginRight: 15
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      paddingInline: 0,
+      width: 110,
+      height: 36,
       fontSize: 13,
-      padding: '0px 12px'
+
+      '&:not(:last-child)': {
+        marginRight: 0
+      }
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      width: 72
     },
 
     '&:hover': {
@@ -27,9 +40,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     fontSize: 16,
-    lineHeight: '40px',
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 13
     }
   },
@@ -39,6 +51,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     background: 'transparent',
     boxShadow: 'none'
+  },
+  startIcon: {
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 2
+    }
   }
 }))
 

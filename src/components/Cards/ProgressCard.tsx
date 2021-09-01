@@ -3,21 +3,19 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider,
   Tooltip,
-  Icon,
-  ClickAwayListener,
-  Hidden,
   LinearProgress,
   Grid
 } from '@material-ui/core'
-import HintIcon from '@static/svg/whiteQuestionMarkCircle.svg'
-import useStyles, { useStylesWithProps } from './style'
+import HintIcon from '@static/svg/questionMark.svg'
 import AnimatedNumber from '@components/AnimatedNumber'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import useStyles, { useStylesWithProps } from './style'
+
 export interface IProps {
   name: string
   sign: string
-  hint?: string
+  hint?: string | ReactChild
   onClick?: () => void
   max: number
   current: number
@@ -40,7 +38,6 @@ export const ProgressCard: React.FC<IProps> = ({
 }) => {
   const classes = useStyles()
   const proppedClasses = useStylesWithProps({ max, current, topIndicatorValue, bottomIndicatorValue })
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [areIndicatorsOpen, setAreIndicatorsOpen] = useState(false)
 
   return (
@@ -48,50 +45,16 @@ export const ProgressCard: React.FC<IProps> = ({
       <CardContent className={classes.progressContent}>
         {hint
           ? (
-            <>
-              <Hidden mdDown>
-                <Icon>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                    title={hint}
-                    placement='top-end'
-                    arrow>
-                    <img src={HintIcon} alt='' className={classes.questionMark} />
-                  </Tooltip>
-                </Icon>
-              </Hidden>
-              <Hidden lgUp>
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setIsPopoverOpen(false)
-                  }}>
-                  <Icon
-                    onClick={() => {
-                      setIsPopoverOpen(true)
-                    }}>
-                    <Tooltip
-                      classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
-                      title={hint}
-                      placement='top-end'
-                      open={isPopoverOpen}
-                      onClose={() => {
-                        setIsPopoverOpen(false)
-                      }}
-                      disableFocusListener
-                      disableHoverListener
-                      disableTouchListener
-                      arrow>
-                      <img src={HintIcon} alt='' className={classes.questionMark} />
-                    </Tooltip>
-                  </Icon>
-                </ClickAwayListener>
-              </Hidden>
-            </>
+            <MobileTooltip
+              hint={hint}
+              anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+              mobilePlacement='top-end'
+              desktopPlacement='top-end'
+            />
           )
           : null
         }
         <Typography className={classes.valueCardTitle}>{name}</Typography>
-        <Divider className={classes.divider} style={{ marginBottom: 0 }} />
         <Grid className={classes.progressContainer} container direction='row' alignItems='center'>
           <Typography className={classes.minMaxDebt}>0{sign}</Typography>
           <Grid item style={{ flexGrow: 1, paddingInline: 7 }}>
@@ -135,8 +98,24 @@ export const ProgressCard: React.FC<IProps> = ({
             <AnimatedNumber
               value={max}
               duration={300}
-              formatValue={(value: string) => Number(value).toFixed(2)}
+              formatValue={(value: string) => {
+                const num = Number(value)
+
+                if (num < 1000) {
+                  return num.toFixed(2)
+                }
+
+                if (num < 1000000) {
+                  return (num / 1000).toFixed(2)
+                }
+
+                return (num / 1000000).toFixed(2)
+              }}
             />
+            {max >= 1000
+              ? 'K'
+              : (max >= 1000000 ? 'M' : '')
+            }
             {sign}
           </Typography>
         </Grid>

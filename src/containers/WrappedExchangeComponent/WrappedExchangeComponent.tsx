@@ -4,11 +4,12 @@ import React, { useEffect } from 'react'
 import ExchangeComponent from '@components/ExchangeComponent/ExchangeComponent'
 import { useDispatch, useSelector } from 'react-redux'
 import { exchangeTokensWithUserBalance } from '@selectors/solanaWallet'
-import { swap } from '@selectors/exchange'
+import { effectiveFeeData, swap } from '@selectors/exchange'
 import { actions } from '@reducers/exchange'
 
 export const WrappedExchangeComponent: React.FC = () => {
   const tokensWithBalance = useSelector(exchangeTokensWithUserBalance)
+  const feeData = useSelector(effectiveFeeData)
   const swapData = useSelector(swap)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -25,6 +26,9 @@ export const WrappedExchangeComponent: React.FC = () => {
       onSwap={(fromToken: PublicKey, toToken: PublicKey, amount: BN) => {
         dispatch(actions.swap({ toToken, fromToken, amount }))
       }}
+      fee={feeData.fee}
+      discountPercent={feeData.discountData.discount}
+      nextDiscountThreshold={feeData.discountData.nextThreshold}
     />
   )
 }

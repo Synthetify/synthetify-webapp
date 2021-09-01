@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/staking'
+import { actions as snackbarActions } from '@reducers/snackbars'
 import {
   userMaxMintUsd,
   userMaxWithdraw,
@@ -11,9 +12,11 @@ import {
   userDebtShares
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { collateralAccountsArray, userMaxBurnToken, userMaxDeposit } from '@selectors/solanaWallet'
+import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { Status } from '@reducers/solanaWallet'
+import { BN } from '@project-serum/anchor'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
@@ -23,6 +26,7 @@ export const ActionMenuContainer: React.FC = () => {
 
   const availableToMint = useSelector(userMaxMintUsd)
   const userCollaterals = useSelector(collateralAccountsArray)
+  const userStaked = useSelector(stakedAccountsArray)
   const { balance, decimals: depositDecimal } = useSelector(
     userMaxDeposit(userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
@@ -39,16 +43,17 @@ export const ActionMenuContainer: React.FC = () => {
   const stakingState = useSelector(staking)
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
+  const walletStatus = useSelector(status)
 
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
-        dispatch(actions.mint({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
+        dispatch(actions.mint({ amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)) }))
       }}
       onBurn={(amount, decimal) => () => {
         dispatch(
           actions.burn({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal),
+            amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)),
             tokenAddress: xUSDTokenAddress
           })
         )
@@ -56,7 +61,7 @@ export const ActionMenuContainer: React.FC = () => {
       onDeposit={(amount, decimal) => () => {
         dispatch(
           actions.deposit({
-            amount: amount.muln(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal)),
+            amount: amount.mul(new BN(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal))),
             tokenAddress: userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
@@ -64,15 +69,15 @@ export const ActionMenuContainer: React.FC = () => {
       onWithdraw={(amount, decimal) => () => {
         dispatch(
           actions.withdraw({
-            amount: amount.muln(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal)),
+            amount: amount.mul(new BN(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal))),
             tokenAddress: userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
       }}
-      availableToMint={availableToMint.muln(99).divn(100)}
+      availableToMint={availableToMint}
       availableToDeposit={balance}
-      availableToWithdraw={availableToWithdraw.muln(99).divn(100)}
-      availableToBurn={availableToBurn.muln(99).divn(100)}
+      availableToWithdraw={availableToWithdraw}
+      availableToBurn={availableToBurn}
       mintState={mintState}
       withdrawState={withdrawState}
       depositState={depositState}
@@ -104,6 +109,7 @@ export const ActionMenuContainer: React.FC = () => {
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
       collaterals={userCollaterals}
+      staked={userStaked}
       depositCurrency={userCollaterals[depositIndex]?.symbol ?? 'SNY'}
       withdrawCurrency={userCollaterals[withdrawIndex]?.symbol ?? 'SNY'}
       onSelectDepositToken={(chosen) => {
@@ -114,6 +120,14 @@ export const ActionMenuContainer: React.FC = () => {
       }}
       depositDecimal={depositDecimal}
       withdrawDecimal={userCollaterals[withdrawIndex]?.decimals ?? 6}
+      walletConnected={walletStatus === Status.Initalized}
+      noWalletHandler={() => dispatch(
+        snackbarActions.add({
+          message: 'Connect your wallet first',
+          variant: 'warning',
+          persist: false
+        })
+      )}
     />
   )
 }
