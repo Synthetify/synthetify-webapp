@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import { ResponsiveBar } from '@nivo/bar'
@@ -89,7 +88,7 @@ export const StatsCollateralChart: React.FC = () => {
     for (let i = 0; i <= data.length - 1; i++) {
       nameAndValue[data[i].name] = data[i].percent
     }
-    const helperArray :[] = []
+    const helperArray :{}[] = []
     helperArray.push(nameAndValue)
     return helperArray
   }

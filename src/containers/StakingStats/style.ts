@@ -2,19 +2,16 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) => ({
   statsTile: {
-    marginBottom: 20,
+    marginBottom: 24,
     '&:last-child': {
       marginBottom: 0
     },
     [theme.breakpoints.up('sm')]: {
-      marginLeft: 20,
+      marginLeft: 24,
       marginBottom: 0,
       '&:first-child': {
         marginLeft: 0
       }
-    },
-    [theme.breakpoints.up('md')]: {
-      marginLeft: 30
     }
   },
   indicator: {

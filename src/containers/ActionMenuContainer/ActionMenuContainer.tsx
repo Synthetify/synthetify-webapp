@@ -94,7 +94,7 @@ export const ActionMenuContainer: React.FC = () => {
         )
       }}
       availableToMint={availableToMint}
-      availableToDeposit={balance}
+      availableToDeposit={userCollaterals.length ? balance : new BN(0)}
       availableToWithdraw={availableToWithdraw}
       availableToBurn={availableToBurn}
       mintState={mintState}

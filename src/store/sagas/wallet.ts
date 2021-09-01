@@ -113,7 +113,7 @@ export function* handleAirdrop(): Generator {
   try {
     yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress)
   } catch (error) {
-    if (error.message === 'Signature request denied') return
+    if (error instanceof Error && error.message === 'Signature request denied') return
     console.error(error)
     return put(
       snackbarsActions.add({

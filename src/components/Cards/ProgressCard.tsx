@@ -42,7 +42,7 @@ export const ProgressCard: React.FC<IProps> = ({
 
   return (
     <Card className={classes.valueCard} onClick={onClick} onMouseEnter={() => setAreIndicatorsOpen(true)} onMouseLeave={() => setAreIndicatorsOpen(false)}>
-      <CardContent className={classes.progressContent}>
+      <CardContent className={classes.cardContent}>
         {hint
           ? (
             <MobileTooltip
