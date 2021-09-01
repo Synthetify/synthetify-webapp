@@ -1,5 +1,14 @@
 import React from 'react'
-import { Grid, CardContent, Card } from '@material-ui/core'
+import {
+  Grid,
+  CardContent,
+  Card,
+  FormControl,
+  Select,
+  MenuItem,
+  ButtonGroup,
+  Button
+} from '@material-ui/core'
 import { ResponsiveLine } from '@nivo/line'
 import useStyles from './style'
 import { linearGradientDef } from '@nivo/core'
@@ -21,7 +30,28 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
-        <Grid className={classes.pipeCanvasGrid} justifyContent='center'>
+        <Grid container item className={ classes.optionLabel}>
+          <Grid lg={8} md={8} xs={8}>
+            <FormControl className={classes.formControl}>
+              <Select className={classes.select}>
+                <MenuItem className={classes.menuItem} value='valument'>Valument</MenuItem>
+                <MenuItem className={classes.menuItem} value='liquidation'>Liquidation</MenuItem>
+                <MenuItem className={classes.menuItem} value='mint'>Mint</MenuItem>
+                <MenuItem className={classes.menuItem} value='burn'>Burn</MenuItem>
+                <MenuItem className={classes.menuItem} value='userCount'>User count</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid container item lg={4} md={4} xs={4} justifyContent='center'>
+            <ButtonGroup>
+              <Button className={classes.buttonOption}>D</Button>
+              <Button className={classes.buttonOption}>W</Button>
+              <Button className={classes.buttonOption}>M</Button>
+              <Button className={classes.buttonOption}>Y</Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
+        <Grid className={classes.linePlot} justifyContent='center'>
           <ResponsiveLine
             data={data}
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
