@@ -9,12 +9,13 @@ import { colors } from '@static/theme'
 // @ts-expect-error
 import { linearGradientDef } from '@nivo/core' // ignore error, this function exists, probably has no ts definition
 import useStyles from './style'
+import { PublicKey } from '@solana/web3.js'
 
 interface IProps {
   tokenName: string
   supply: Decimal
   maxSupply: Decimal
-  assetAddress: string
+  assetAddress: PublicKey
   price: Decimal
   data: Array<{ x: number, y: number }>
 }
@@ -30,7 +31,7 @@ const ExchangePlot: React.FC<IProps> = ({
   const classes = useStyles()
 
   const copyAddress = async () => {
-    await navigator.clipboard.writeText(assetAddress)
+    await navigator.clipboard.writeText(assetAddress.toString())
   }
 
   const getPlotMin = () => {
@@ -38,12 +39,21 @@ const ExchangePlot: React.FC<IProps> = ({
     const minValue = Math.min(...values)
     const maxValue = Math.max(...values)
 
+    if (minValue === maxValue) {
+      return minValue - 1
+    }
+
     return minValue - (maxValue - minValue)
   }
 
   const getPlotMax = () => {
     const values = data.map((point) => point.y)
+    const minValue = Math.min(...values)
     const maxValue = Math.max(...values)
+
+    if (minValue === maxValue) {
+      return minValue + 1
+    }
 
     return maxValue * 1.01
   }
@@ -84,7 +94,7 @@ const ExchangePlot: React.FC<IProps> = ({
             <Typography className={classes.positionTitle}>Asset address:</Typography>
             <Grid container item direction='row' alignItems='center' className={classes.copy}>
               <img src={Copy} alt='' className={classes.copyIcon} onClick={copyAddress} />
-              <Typography className={classes.positionValue}>{assetAddress.substr(0, 14)}...</Typography>
+              <Typography className={classes.positionValue}>{assetAddress.toString().substr(0, 14)}...</Typography>
             </Grid>
           </Grid>
 

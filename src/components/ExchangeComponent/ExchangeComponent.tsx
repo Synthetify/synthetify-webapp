@@ -69,13 +69,15 @@ export interface IExchangeComponent {
   fee: Decimal
   discountPercent?: number
   nextDiscountThreshold?: number
+  onSelectTokenTo: (index: number | null) => void
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   tokens,
   onSwap,
   fee,
   discountPercent,
-  nextDiscountThreshold
+  nextDiscountThreshold,
+  onSelectTokenTo
 }) => {
   const classes = useStyles()
 
@@ -236,6 +238,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             setRotates(rotates + 1)
             if (tokenToIndex === null || tokenFromIndex === null) return
             setTokenFromIndex(tokenToIndex)
+            onSelectTokenTo(tokenFromIndex)
             setTokenToIndex(tokenFromIndex)
           }}
         >
@@ -289,7 +292,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
             centered={true}
             onSelect={(chosen: string) => {
-              setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+              const index = tokens.findIndex(t => t.symbol === chosen) ?? null
+              setTokenToIndex(index)
+              onSelectTokenTo(index)
               setTimeout(() => updateEstimatedAmount(), 0)
             }}
           />

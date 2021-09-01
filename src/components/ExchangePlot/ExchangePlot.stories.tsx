@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
 import ExchangePlot from './ExchangePlot'
 import { BN } from '@project-serum/anchor'
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 
 storiesOf('ui/exchangePlot', module)
   .addDecorator(withKnobs)
@@ -12,7 +13,7 @@ storiesOf('ui/exchangePlot', module)
         tokenName='xBTC'
         supply={{ val: new BN(123456789), scale: 6 }}
         maxSupply={{ val: new BN(123456789), scale: 6 }}
-        assetAddress='qwertyuiopasdfghjklzxcvbnm'
+        assetAddress={DEFAULT_PUBLICKEY}
         price={{ val: new BN(123456789), scale: 6 }}
         data={[
           { x: 1508328900000, y: 2.1 },
