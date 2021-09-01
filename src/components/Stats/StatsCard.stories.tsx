@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
 import StatsCard from './StatsCard'
 
-storiesOf('cards/Stats', module)
+storiesOf('stats/Card', module)
   .addDecorator(withKnobs)
   .add('default', () => (
     <div style={{ background: '#1B1C2A', padding: 30 }}>

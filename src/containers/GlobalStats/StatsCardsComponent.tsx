@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
-import StatsCard from '@components/Stats/StatsCard'
+import StatsCard from '@components/stats/StatsCard'
 
 export const StatsCardsComponent: React.FC = () => {
   return (
