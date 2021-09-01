@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     margin: 0,
     padding: 0,
+    [theme.breakpoints.down('sm')]: {
+      width: 855,
+      height: 327
+    },
     [theme.breakpoints.down('xs')]: {
       width: 413,
       height: 500
@@ -19,10 +23,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   statsWrapper: {
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
     [theme.breakpoints.down('xs')]: {
-      display: 'flex',
-      flexWrap: 'nowrap'
+      // alignItems:'center',
+      width: '100%',
+      height: 'calc(100% - 50px)',
+      justifyContent: 'center'
     }
   },
   headerWrapper: {
@@ -31,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: 24,
     top: 12,
     height: 80,
+    width: 'calc(100% - 14px)'
   },
   title: {
     fontSize: '22px',
@@ -54,24 +62,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   chartWrapper: {
-    // width: 1006.5,
     width: 'calc(100% - 13.8px)',
-    height: 110.6,
+    height: 85,
     backgroundColor: '#0C0D2C',
     borderRadius: 10,
     overflow: 'hidden',
-     [theme.breakpoints.down('md')]: {
-       width: 'calc(100% - 13.8px)',
-       height: 85,
-     },
 
     [theme.breakpoints.down('xs')]: {
       width: 95,
       height: 'calc(100% - 10px)'
-    },
-
-    [theme.breakpoints.up('lg')]: {
-      opacity: .2
     },
 
     '& text': {
@@ -82,60 +81,65 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   border: {
     width: 'calc(100% - 48px)',
-    height: 128,
+    height: 103,
     backgroundColor: colors.navy.background,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     position: 'relative',
-    [theme.breakpoints.down('md')]: {
-      height: 103,
-      width: 'calc(100% - 48px)',
-      position: 'relative',
-      top: 8
-    },
+    top: 17,
     [theme.breakpoints.down('xs')]: {
       height: 404,
       width: 103,
       position: 'relative',
-      left: 2,
+      top: 0,
+      left: '15%',
       bottom: 0
     }
   },
 
   legendWrapper: {
-    display: 'flex',
+    height: 120,
+    margin: 0,
+    top: 20,
     fontSize: 18,
-    flexWrap: 'wrap',
     position: 'relative',
-    top: -10,
-    height:138,
-    width: 'calc(100% - 48px)',
-    //justifyContent:'space-between',
-    alignItems:'center',
+    width: 'calc(100% - 20px)',
+    alignItems: 'center',
+    display: 'flex',
+
     [theme.breakpoints.down('xs')]: {
-      alignSelf: 'center',
-      height: '100%',
-      width: '40%',
+      top: 0,
+      margin: 0
+    },
+
+    '& ul': {
+      margin: 0,
+      width: '100%',
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       position: 'relative',
-      top: 0
+      [theme.breakpoints.down('xs')]: {
+        left: '13%',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start'
+      }
     },
 
     '& li': {
-      marginRight: 35,
-      marginBottom: -10,
-
+      marginRight: 25,
+      fontSize: 18,
+      lineHeight: '40px',
+      fontFamily: 'Inter',
       [theme.breakpoints.down('xs')]: {
-        margin: '0 10 -5px 10'
+        margin: '0 0px -3px 25px',
+        fontSize: 15
       }
     }
-  },
-  legendItem: {
-    fontWeight: 600,
-    fontSize: 18,
-    lineHeight: '40px',
-    fontFamily: 'Inter'
   }
 }))
 

@@ -1,15 +1,23 @@
 
 import React, { useEffect, useState } from 'react'
-import useStyles from './style'
-import { Grid, Typography, Divider, Hidden, IconButton, Container } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { ResponsiveBar } from '@nivo/bar'
 import { colors } from '@static/theme'
+import useStyles from './style'
 
 export const StatsCollateralChart: React.FC = () => {
   const classes = useStyles()
 
-  const [layoutVertical, setLayoutVertical] = useState(false)
-  const data = [
+  const [layoutVertical, setLayoutVertical] = useState<boolean>(false)
+
+    interface CoinToChart {
+      name: string
+      percent: number
+      color: string
+    }
+ 
+
+  const data: Array<CoinToChart> = [
     {
       name: 'xBTC',
       percent: 20,
@@ -56,7 +64,6 @@ export const StatsCollateralChart: React.FC = () => {
       percent: 3.3,
       color: 'rgba(233, 160, 204)'
     },
-
     {
       name: 'xDOGE',
       percent: 2.9,
@@ -69,31 +76,31 @@ export const StatsCollateralChart: React.FC = () => {
     }
   ]
 
-  const getNameCoins = (data) => {
-    const nameOfCoins = []
+  const getCoinsName = (data: Array<CoinToChart>) => {
+    const nameOfCoins: string[] = []
     data.map(coin => {
       nameOfCoins.push(coin.name)
     })
     return nameOfCoins
   }
 
-  const getNameAndValue = (data) => {
-    const nameAndValue = {}
+  const getNameAndValue = (data: Array<CoinToChart>) => {
+    const nameAndValue :{} = {}
     for (let i = 0; i <= data.length - 1; i++) {
       nameAndValue[data[i].name] = data[i].percent
     }
-    const helperArray = []
+    const helperArray :[] = []
     helperArray.push(nameAndValue)
     return helperArray
   }
+
+  
   const handleMouseEnter = (d: any, e: any) => {
     const fill = e.target.getAttribute('fill')
-    const stroke = e.target.getAttribute('stroke')
     let cutStroke = (fill.slice(5, -1))
-
     cutStroke = cutStroke.split(',')
 
-    cutStroke = cutStroke.map((x: number) => {
+    cutStroke = cutStroke.map((x: number): number => {
       if (x < 243) {
         return x - (-12)
       } else {
@@ -101,7 +108,7 @@ export const StatsCollateralChart: React.FC = () => {
       }
     })
 
-    const rgbToHex = (r: number, g: number, b: number) => '#' + [r, g, b].map(x => {
+    const rgbToHex = (r: number, g: number, b: number) :string => '#' + [r, g, b].map(x => {
       const hex = x.toString(16)
       return hex.length === 1 ? '0' + hex : hex
     }).join('')
@@ -116,11 +123,6 @@ export const StatsCollateralChart: React.FC = () => {
     return (coin.color)
   })
 
-  const returnAllCoin = (data) => {
-    data.map((coin) => {
-      return coin
-    })
-  }
 
   useEffect(() => {
     function handleResize() {
@@ -128,7 +130,7 @@ export const StatsCollateralChart: React.FC = () => {
       if (window.innerWidth >= 600) setLayoutVertical(false)
     }
     window.addEventListener('resize', handleResize)
-  })
+  }, [])
 
   return (
     <>
@@ -141,25 +143,25 @@ export const StatsCollateralChart: React.FC = () => {
         </Grid>
         <Grid container className={classes.statsWrapper}>
           <div className={classes.border}>
-            <Grid container className={classes.chartWrapper}>
+            <Grid item className={classes.chartWrapper}>
               { layoutVertical
                 ? <ResponsiveBar
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   data={getNameAndValue(data)}
-                  keys={getNameCoins(data)}
+                  keys={getCoinsName(data)}
                   colors={colorsToBar}
                   padding={0} // very important without it, bars will not fill whole container!!
                   isInteractive={true}
-                  labelSkipHeight={16}
+                  labelSkipHeight={14}
                   layout="vertical"
                   borderWidth={2}
                   reverse={true}
                   borderColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
-                  margin={{ top: -2, right: -2, bottom: -2, left: -2 }}
+                  margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                   tooltip={() => null}
                   theme={{
-                    fontSize: 16,
+                    fontSize: 10,
                     textColor: colors.navy.background
                   }}
                   valueFormat={v => `${v}%`}
@@ -168,7 +170,7 @@ export const StatsCollateralChart: React.FC = () => {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   data={getNameAndValue(data)}
-                  keys={getNameCoins(data)}
+                  keys={getCoinsName(data)}
                   colors={colorsToBar}
                   padding={0} // very important without it, bars will not fill whole container!!
                   isInteractive={true}
@@ -189,15 +191,13 @@ export const StatsCollateralChart: React.FC = () => {
 
             </Grid>
           </div>
-          {/* <Grid container> */}
-          {/* <Grid item> */}
-          <ul className={classes.legendWrapper}>
-            {data.map((coin) => (
-              <li className={classes.legendItem} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}>({coin.percent}%)</span></li>
-            ))}
-          </ul>
-          {/* </Grid> */}
-          {/* </Grid> */}
+          <Grid item className={classes.legendWrapper}>
+            <ul>
+              {data.map((coin) => (
+                <li key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff'}}><strong>({coin.percent}%)</strong></span></li>
+              ))}
+            </ul>
+          </Grid>
         </Grid>
       </div>
     </>
