@@ -34,13 +34,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   listItemIconName: {
     width: 'max-content',
 
-    paddingRight: 15,
+    paddingRight: 16,
     alignItems: 'center',
     '&> svg': {
-      paddingRight: 6
+      paddingRight: 8
     },
     [theme.breakpoints.down('sm')]: {
-      paddingRight: 6
+      paddingRight: 8
     }
   },
   titleLabel: {
@@ -60,11 +60,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   listItemIconNumber: {
     alignItems: 'center',
     color: '#6261A3',
-    paddingLeft: 10,
+    paddingLeft: 6,
     fontSize: 15,
     fontWeight: 600,
     '&> svg': {
-      paddingRight: 5
+      paddingRight: 8
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: '1.5vw',
