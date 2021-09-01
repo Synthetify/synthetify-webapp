@@ -60,6 +60,22 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                     </div>
                   </div>
                 )}
+                onMouseEnter={event => {
+                  const variable: string = event.id.toString()
+                  var element = document.getElementById(variable)
+                  if (element != null) {
+                    element.style.background = `${colors.navy.navButton}40`
+                    element.style.borderRadius = '10px'
+                  }
+                }}
+                onMouseLeave={event => {
+                  const variable: string = event.id.toString()
+                  var element = document.getElementById(variable)
+                  if (element != null) {
+                    element.style.background = colors.navy.component
+                    element.style.borderRadius = '0px'
+                  }
+                }}
                 legends={[]}
               />
             </Grid>

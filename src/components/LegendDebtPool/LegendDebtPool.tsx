@@ -9,8 +9,8 @@ import {
   Typography
 } from '@material-ui/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import useStyle from './style'
 import NumberFormat from 'react-number-format'
+import useStyle from './style'
 export interface Data {
   id: string
   label: string
@@ -31,7 +31,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
         <Grid container item xs={12} style={{ height: '100%' }}>
           <List className={classes.legend}>
             {data.map(element => (
-              <ListItem className={classes.listItemContainer}>
+              <ListItem className={classes.listItemContainer} id={element.id}>
                 <Grid container item >
                   <ListItemIcon
                     className={classes.listItemIconName}

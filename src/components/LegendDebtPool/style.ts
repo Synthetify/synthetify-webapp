@@ -50,11 +50,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       fontSize: '2.3vw',
-      lineHeight: '28px'
+      lineHeight: '24px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '14px',
-      lineHeight: '24px'
+      fontSize: '18px',
+      lineHeight: '28px'
     }
   },
   listItemIconNumber: {
@@ -68,12 +68,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: '1.5vw',
-      lineHeight: '28px',
+      lineHeight: '24px',
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '11px',
-      lineHeight: '24px',
+      fontSize: '15px',
+      lineHeight: '28px',
       paddingLeft: 3
     }
   },
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: '14px',
-      lineHeight: '24px'
+      lineHeight: '28px'
     }
   }
 }))

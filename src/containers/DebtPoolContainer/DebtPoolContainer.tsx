@@ -15,6 +15,7 @@ export interface Data {
 export interface IProps {
   data: Data[]
 }
+
 export const DebtPoolContainer: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
   return (
