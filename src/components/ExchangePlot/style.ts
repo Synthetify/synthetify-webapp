@@ -65,7 +65,10 @@ const useStyles = makeStyles(() => ({
   copy: {
     width: 'fit-content'
   },
-  plotWrapper: {}
+  plotWrapper: {
+    height: 220,
+    marginTop: 72
+  }
 }))
 
 export default useStyles

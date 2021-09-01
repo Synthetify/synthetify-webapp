@@ -4,6 +4,8 @@ import { Grid, Typography } from '@material-ui/core'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import React from 'react'
 import Copy from '@static/svg/copy.svg'
+import { ResponsiveLine } from '@nivo/line'
+import { colors } from '@static/theme'
 import useStyles from './style'
 
 interface IProps {
@@ -12,6 +14,7 @@ interface IProps {
   maxSupply: Decimal
   assetAddress: string
   price: Decimal
+  data: any
 }
 
 const ExchangePlot: React.FC<IProps> = ({
@@ -19,7 +22,8 @@ const ExchangePlot: React.FC<IProps> = ({
   supply,
   maxSupply,
   assetAddress,
-  price
+  price,
+  data
 }) => {
   const classes = useStyles()
 
@@ -73,7 +77,37 @@ const ExchangePlot: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid container item className={classes.plotWrapper}></Grid>
+      <Grid container item className={classes.plotWrapper}>
+        <ResponsiveLine
+          data={data}
+          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+          xScale={{ type: 'point' }}
+          yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+          yFormat=" >-.2f"
+          curve="basis"
+          axisTop={null}
+          axisRight={null}
+          axisBottom={null}
+          axisLeft={null}
+          enableGridX={false}
+          enableGridY={false}
+          enablePoints={false}
+          crosshairType="bottom"
+          useMesh={true}
+          colors={[colors.green.main]}
+          defs={[
+            {
+              id: 'gradientA',
+              type: 'linearGradient',
+              colors: [
+                { offset: 0, color: 'inherit' },
+                { offset: 100, color: 'inherit', opacity: 0 }
+              ]
+            }
+          ]}
+          fill={[{ match: '*', id: 'gradientA' }]}
+        />
+      </Grid>
     </Grid>
   )
 }
