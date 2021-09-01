@@ -24,7 +24,7 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <Snackbar maxSnack={99}>
-            <Notifier />
+            <Notifier />    
             <GlobalLoader />
             <PagesRouter />
           </Snackbar>
