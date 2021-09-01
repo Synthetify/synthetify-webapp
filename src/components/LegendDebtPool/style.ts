@@ -20,11 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       marginLeft: '0',
-      marginTop: '8px'
+      marginTop: '8px',
+      padding: '8px 0 8px 0'
     }
   },
   statsListCardContent: {
-    padding: '0 0 0 8px',
+    padding: '0 16px 0 16px',
     height: '100%',
     '&:last-child': {
       paddingBottom: '0px'
@@ -36,17 +37,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: 15,
     alignItems: 'center',
     '&> svg': {
-      paddingRight: 5
+      paddingRight: 6
     },
     [theme.breakpoints.down('sm')]: {
-      paddingRight: 1
+      paddingRight: 6
     }
   },
   titleLabel: {
     fontSize: '21px',
     fontWeight: 400,
     lineHeight: '40px',
+
     [theme.breakpoints.down('sm')]: {
+      fontSize: '2.3vw',
+      lineHeight: '28px'
+    },
+    [theme.breakpoints.down('xs')]: {
       fontSize: '14px',
       lineHeight: '24px'
     }
@@ -56,10 +62,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#6261A3',
     paddingLeft: 10,
     fontSize: 15,
+    fontWeight: 600,
     '&> svg': {
       paddingRight: 5
     },
     [theme.breakpoints.down('sm')]: {
+      fontSize: '1.5vw',
+      lineHeight: '28px',
+      paddingLeft: 3
+    },
+    [theme.breakpoints.down('xs')]: {
       fontSize: '11px',
       lineHeight: '24px',
       paddingLeft: 3
@@ -88,7 +100,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 'min-content',
     display: 'flex',
     alignItems: 'center',
+    padding: '0 4px 0 0',
     [theme.breakpoints.down('sm')]: {
+      fontSize: '1.7vw',
+      lineHeight: '28px'
+    },
+    [theme.breakpoints.down('xs')]: {
       fontSize: '14px',
       lineHeight: '24px'
     }

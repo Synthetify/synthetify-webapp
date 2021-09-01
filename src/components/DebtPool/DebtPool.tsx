@@ -2,6 +2,7 @@ import React from 'react'
 import { ResponsivePie } from '@nivo/pie'
 import { Grid, Card, CardContent, Typography } from '@material-ui/core'
 import useStyles from './style'
+import { colors } from '@static/theme'
 
 export interface Data {
   id: string
@@ -40,30 +41,20 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLinkLabelsColor={{ from: 'color' }}
                 enableArcLabels={false}
                 arcLabelsRadiusOffset={0}
-                colors={{ scheme: 'category10' }}
+                colors={{ datum: 'data.color' }}
                 arcLabelsTextColor='#000000'
-                tooltip={({ datum: { id, color } }) => (
+                tooltip={({ datum: { id, color, label } }) => (
                   <div
+                    className={classes.tooltipContainer}
                     style={{
-                      borderRadius: '8px',
-                      filter: 'brightness(120%)',
-                      boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.4)',
-                      background: `${color}`
+                      background: color
                     }}>
                     <div
+                      className={classes.tooltip}
                       style={{
-                        fontSize: '19px',
-                        fontStyle: 'normal',
-                        lineHeight: '40px',
-                        fontWeight: 700,
-                        width: '80px',
-                        height: '36px',
-                        textAlign: 'center',
-                        padding: '1px',
-                        color: '#ffffff',
-                        border: `1px solid ${color}`,
-                        borderRadius: '10px',
-                        filter: 'brightness(170%)'
+                        ...(label === 'xLTC'
+                          ? { color: colors.black.background, borderColor: color }
+                          : { color: ' #ffffff', borderColor: color })
                       }}>
                       {id}
                     </div>
