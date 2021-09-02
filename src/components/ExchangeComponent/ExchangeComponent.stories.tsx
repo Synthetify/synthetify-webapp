@@ -78,6 +78,7 @@ storiesOf('ui/exchangeComponent', module)
         fee={{ val: new BN(300), scale: 5 }}
         discountPercent={-10}
         nextDiscountThreshold={2137}
+        onSelectTokenTo={() => {}}
       />
     </div>
   ))
