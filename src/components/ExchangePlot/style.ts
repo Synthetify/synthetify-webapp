@@ -79,7 +79,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.navy.darkGrey,
     borderRadius: 7,
     border: `0.5px solid ${colors.navy.grey}`,
-    padding: 8
+    padding: 8,
+    position: 'relative',
+    top: -6
   },
   tooltipDate: {
     color: colors.navy.veryLightGrey,
