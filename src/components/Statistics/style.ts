@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: 25,
-      margin: '10.5px 0 10px 0',
+      margin: '10.5px 0 4px 0',
       lineHeight: '28px'
     },
     [theme.breakpoints.down('xs')]: {
@@ -119,7 +119,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       fontSize: 13,
       fontWeight: 400,
-      lineHeight: '24px'
+      lineHeight: '24px',
+      minHeight: '24px',
+      display: 'flex',
+      alignItems: 'center'
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: 9,
@@ -128,10 +131,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 8,
-      lineHeight: '8px',
-      minHeight: '24px',
-      display: 'flex',
-      alignItems: 'center'
+      lineHeight: '8px'
     }
   }
 }))
