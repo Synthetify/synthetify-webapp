@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 0,
     padding: 0,
     [theme.breakpoints.down('sm')]: {
-      width: 855,
       height: 327
     },
     [theme.breakpoints.down('xs')]: {
@@ -26,8 +25,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     [theme.breakpoints.down('xs')]: {
-      // alignItems:'center',
-      width: '100%',
       height: 'calc(100% - 50px)',
       justifyContent: 'center'
     }
@@ -48,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative'
   },
   subTitle: {
-    fontSize: '16px',
+    fontSize: 16,
     lineHeight: '40px',
     fontWeight: 400,
     color: colors.navy.info,
@@ -92,10 +89,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       height: 404,
       width: 103,
-      position: 'relative',
       top: 0,
-      left: '15%',
-      bottom: 0
+      left: '15%'
     }
   },
 
@@ -110,37 +105,36 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
 
     [theme.breakpoints.down('xs')]: {
-      top: 0,
-      margin: 0
-    },
+      top: 0
+    }
+  },
+  legendList: {
+    margin: 0,
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'relative',
+    [theme.breakpoints.down('xs')]: {
+      left: '25%',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start'
+    }
+  },
 
-    '& ul': {
-      margin: 0,
-      width: '100%',
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      position: 'relative',
-      [theme.breakpoints.down('xs')]: {
-        left: '13%',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start'
-      }
-    },
-
-    '& li': {
-      marginRight: 25,
-      fontSize: 18,
-      lineHeight: '40px',
-      fontFamily: 'Inter',
-      [theme.breakpoints.down('xs')]: {
-        margin: '0 0px -3px 25px',
-        fontSize: 15
-      }
+  legendItem: {
+    marginRight: 25,
+    fontSize: 18,
+    lineHeight: '40px',
+    fontFamily: 'Inter',
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: -3,
+      fontSize: 16
     }
   }
+
 }))
 
 export default useStyles
