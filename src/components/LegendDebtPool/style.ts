@@ -9,12 +9,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Inter',
     marginLeft: '12px',
     width: '459px',
+    paddingTop: '4px',
+    paddingBottom: '4px',
 
     [theme.breakpoints.down('md')]: {
       width: '311px'
     },
     [theme.breakpoints.down('sm')]: {
-      width: '46.3%',
+      width: '40%',
       marginLeft: '8px'
     },
     [theme.breakpoints.down('xs')]: {
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   statsListCardContent: {
-    padding: '0 16px 0 16px',
+    padding: '0px 16px 0 16px',
     height: '100%',
     '&:last-child': {
       paddingBottom: '0px'
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: '18px',
-      lineHeight: '28px'
+      lineHeight: '38px'
     }
   },
   listItemIconNumber: {
