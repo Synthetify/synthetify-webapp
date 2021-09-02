@@ -76,6 +76,7 @@ const ExchangePlot: React.FC<IProps> = ({
               <AnimatedNumber
                 value={printBN(supply.val, supply.scale)}
                 duration={300}
+                formatValue={(value: string) => Number(value).toFixed(supply.scale)}
               />
             </Typography>
           </Grid>
@@ -86,15 +87,16 @@ const ExchangePlot: React.FC<IProps> = ({
               <AnimatedNumber
                 value={printBN(maxSupply.val, maxSupply.scale)}
                 duration={300}
+                formatValue={(value: string) => Number(value).toFixed(maxSupply.scale)}
               />
             </Typography>
           </Grid>
 
-          <Grid container item className={classes.infoPosition} justifyContent='space-between' alignItems='center'>
+          <Grid container item className={classes.infoPosition} alignItems='center'>
             <Typography className={classes.positionTitle}>Asset address:</Typography>
             <Grid container item direction='row' alignItems='center' className={classes.copy}>
               <img src={Copy} alt='' className={classes.copyIcon} onClick={copyAddress} />
-              <Typography className={classes.positionValue}>{assetAddress.toString().substr(0, 14)}...</Typography>
+              <Typography className={classes.positionValue} style={{ marginLeft: 'unset' }}>{assetAddress.toString().substr(0, 8)}...</Typography>
             </Grid>
           </Grid>
 
@@ -105,6 +107,7 @@ const ExchangePlot: React.FC<IProps> = ({
               <AnimatedNumber
                 value={printBN(price.val, price.scale)}
                 duration={300}
+                formatValue={(value: string) => Number(value).toFixed(price.scale)}
               />
             </Typography>
           </Grid>

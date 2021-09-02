@@ -7,7 +7,6 @@ import { DEFAULT_PUBLICKEY } from '@consts/static'
 
 const ExchangePlotContainer: React.FC<{ token?: ExchangeTokensWithBalance }> = ({ token }) => {
   const firstTimestamp = Date.now()
-  console.log(firstTimestamp)
   const [data, setData] = useState<Array<{ x: number, y: number }>>(
     [...Array(25).keys()].map((index) => ({
       x: firstTimestamp - (index * 1000 * 60 * 60),
@@ -41,8 +40,7 @@ const ExchangePlotContainer: React.FC<{ token?: ExchangeTokensWithBalance }> = (
         }))
       )
     }).catch(() => {})
-    console.log(token)
-  }, [token])
+  }, [token?.symbol])
 
   return (
     <ExchangePlot

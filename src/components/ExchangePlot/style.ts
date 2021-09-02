@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     fontWeight: 600,
     fontSize: 13,
-    lineHeight: '16px'
+    lineHeight: '16px',
+    marginLeft: 'auto'
   },
   copyIcon: {
     width: 14,
@@ -63,7 +64,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   copy: {
-    width: 'fit-content'
+    width: 'fit-content',
+    marginLeft: 'auto'
   },
   plotWrapper: {
     height: 220,

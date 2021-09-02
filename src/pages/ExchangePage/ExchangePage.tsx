@@ -17,13 +17,17 @@ export const ExchangePage: React.FC = () => {
     <Grid container className={classes.root} justifyContent='center'>
       <Grid item className={classes.exchange}>
         <Typography className={classes.title}>Swap</Typography>
-        <WrappedExchangeComponent
-          tokensWithBalance={tokensWithBalance}
-          onSelectTokenTo={setTokenToIndex}
-        />
-        <ExchangePlotContainer
-          token={tokensWithBalance[tokenToIndex === null ? 0 : tokenToIndex]}
-        />
+        <Grid container direction='row' className={classes.row}>
+          <WrappedExchangeComponent
+            tokensWithBalance={tokensWithBalance}
+            onSelectTokenTo={setTokenToIndex}
+          />
+          <Grid item className={classes.plotWrapper}>
+            <ExchangePlotContainer
+              token={tokensWithBalance[tokenToIndex === null ? 0 : tokenToIndex]}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   )
