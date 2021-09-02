@@ -10,6 +10,7 @@ import { colors } from '@static/theme'
 import { linearGradientDef } from '@nivo/core' // ignore error, this function exists, probably has no ts definition
 import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
+import { MAX_U64 } from '@consts/static'
 
 interface IProps {
   tokenName: string
@@ -88,7 +89,7 @@ const ExchangePlot: React.FC<IProps> = ({
               <AnimatedNumber
                 value={printBN(supply.val, supply.scale)}
                 duration={300}
-                formatValue={(value: string) => Number(value).toFixed(supply.scale)}
+                formatValue={(value: string) => Number(value).toFixed(6)}
               />
             </Typography>
           </Grid>
@@ -96,19 +97,25 @@ const ExchangePlot: React.FC<IProps> = ({
           <Grid container item className={classes.infoPosition} justifyContent='space-between' alignItems='center'>
             <Typography className={classes.positionTitle}>Max supply:</Typography>
             <Typography className={classes.positionValue}>
-              <AnimatedNumber
-                value={printBN(maxSupply.val, maxSupply.scale)}
-                duration={300}
-                formatValue={(value: string) => Number(value).toFixed(maxSupply.scale)}
-              />
+              {
+                !(maxSupply.val.eq(MAX_U64))
+                  ? (
+                    <AnimatedNumber
+                      value={printBN(maxSupply.val, maxSupply.scale)}
+                      duration={300}
+                      formatValue={(value: string) => Number(value).toFixed(6)}
+                    />
+                  )
+                  : '∞'
+              }
             </Typography>
           </Grid>
 
-          <Grid container item className={classes.infoPosition} alignItems='center'>
+          <Grid container item className={classes.infoPosition} justifyContent='space-between' alignItems='center'>
             <Typography className={classes.positionTitle}>Asset address:</Typography>
             <Grid container item direction='row' alignItems='center' className={classes.copy}>
               <img src={Copy} alt='' className={classes.copyIcon} onClick={copyAddress} />
-              <Typography className={classes.positionValue} style={{ marginLeft: 'unset' }}>{assetAddress.toString().substr(0, 8)}...</Typography>
+              <Typography className={classes.positionValue}>{assetAddress.toString().substr(0, 8)}...</Typography>
             </Grid>
           </Grid>
 
@@ -119,7 +126,7 @@ const ExchangePlot: React.FC<IProps> = ({
               <AnimatedNumber
                 value={printBN(price.val, price.scale)}
                 duration={300}
-                formatValue={(value: string) => Number(value).toFixed(price.scale)}
+                formatValue={(value: string) => Number(value).toFixed(6)}
               />
             </Typography>
           </Grid>
