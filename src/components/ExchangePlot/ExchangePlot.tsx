@@ -58,6 +58,18 @@ const ExchangePlot: React.FC<IProps> = ({
     return maxValue * 1.01
   }
 
+  const getGradientEnd = () => {
+    const values = data.map((point) => point.y)
+    const minValue = Math.min(...values)
+    const maxValue = Math.max(...values)
+
+    if (minValue === maxValue) {
+      return 100
+    }
+
+    return (100 - (minValue / maxValue * 100)) * 2
+  }
+
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp)
 
@@ -142,14 +154,14 @@ const ExchangePlot: React.FC<IProps> = ({
           colors={[colors.green.main]}
           defs={[
             linearGradientDef(
-              'plotGradient',
+              'gradientA',
               [
-                { offset: 0, color: colors.green.main },
-                { offset: 100, color: colors.green.main, opacity: 0 }
+                { offset: 0, color: 'inherit' },
+                { offset: getGradientEnd(), color: 'inherit', opacity: 0 }
               ]
             )
           ]}
-          fill={[{ match: '*', id: 'plotGradient' }]}
+          fill={[{ match: '*', id: 'gradientA' }]}
           tooltip={({ point: { data: { x, y } } }) => (
             <div className={classes.tooltipRoot}>
               <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
@@ -160,12 +172,13 @@ const ExchangePlot: React.FC<IProps> = ({
             crosshair: {
               line: {
                 stroke: colors.white.main,
-                strokeDasharray: '0',
+                strokeDasharray: 'none',
                 strokeWidth: 0.5,
                 strokeOpacity: 1
               }
             }
           }}
+          enableArea={true}
         />
       </Grid>
     </Grid>
