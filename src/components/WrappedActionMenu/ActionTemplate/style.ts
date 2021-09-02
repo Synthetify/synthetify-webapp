@@ -81,6 +81,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBlock: 11,
     width: 136,
     marginRight: 36,
+
+    '&:hover': {
+      backgroundColor: '#4ADFBA !important'
+    },
+
+    '&:disabled': {
+      pointerEvents: 'auto !important'
+    },
+
+    '&:disabled:hover': {
+      backgroundColor: `${colors.navy.darkGrey} !important`,
+      pointerEvents: 'auto !important'
+    },
+
     [theme.breakpoints.down('sm')]: {
       marginRight: 24
     },
@@ -98,6 +112,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 104,
     height: 60,
     fontWeight: 'normal',
+    '&:hover': {
+      backgroundColor: '#7C76DA',
+      opacity: 1
+    },
     [theme.breakpoints.down('sm')]: {
       width: 74,
       marginLeft: 12
