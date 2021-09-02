@@ -6,9 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 700,
     fontSize: 22,
     lineHeight: '40px',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 16
-    },
     [theme.breakpoints.down('xs')]: {
       fontSize: 13
     },
@@ -20,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 22,
     color: colors.navy.lightGrey,
-    backgroundColor: '#1F1F41',
+    backgroundColor: colors.navy.component,
     [theme.breakpoints.down('xs')]: {
       '& > *': {
         fontSize: 18
@@ -28,24 +25,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   header: {
-    height: 66,
-    backgroundColor: '#1F1F4160',
-    paddingLeft: 16,
+    height: 69,
+    backgroundColor: colors.navy.background,
+    paddingInline: 24,
 
     [theme.breakpoints.down('sm')]: {
-      height: 39,
-      paddingLeft: 14
+      height: 61,
+      paddingInline: 20
     },
 
     [theme.breakpoints.down('xs')]: {
-      paddingRight: 20
+      paddingInline: 16,
+      height: 45
     }
   },
   column: {
-    maxWidth: 159,
+    maxWidth: 164,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 141
+    },
 
     [theme.breakpoints.down('xs')]: {
-      maxWidth: 75
+      maxWidth: 85
     }
   }
 }))

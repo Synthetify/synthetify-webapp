@@ -19,12 +19,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   innerWrapper: {
-    maxWidth: 890,
-    paddingInline: 20,
-    [theme.breakpoints.up('md')]: {
-      width: 850,
-      paddingInline: 0
-    }
+    maxWidth: 880,
+    paddingInline: 20
   },
   pageRow: {
     '&:not(:last-child)': {

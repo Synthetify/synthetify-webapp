@@ -112,15 +112,13 @@ export const collateralAccountsArray = createSelector(
 
     const wSOL = Object.values(allCollaterals).find(asset => asset.symbol === 'WSOL')
 
-    if (wSOL && accounts.length) {
+    if (wSOL) {
       accounts.push({
         symbol: wSOL.symbol,
         assetDecimals: wSOL.reserveBalance.scale,
         usdValue: exchangeAssets[wSOL.assetIndex].price.val
           .mul(wSOLBalance)
-          .mul(new BN(10 ** wSOL.reserveBalance.scale))
-          .div(new BN(10 ** (exchangeAssets[wSOL.assetIndex].price.scale)))
-          .div(new BN(10 ** wSOL.reserveBalance.scale)),
+          .div(new BN(10 ** (exchangeAssets[wSOL.assetIndex].price.scale))),
         decimals: wSOL.reserveBalance.scale,
         programId: wSOL.collateralAddress,
         balance: wSOLBalance,

@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Button, PropTypes } from '@material-ui/core'
 import { FontWeightProperty, PaddingProperty } from 'csstype'
 import classNames from 'classnames'
 import useStyles from './style'
 
 export interface IProps {
-  name: string
+  name: ReactElement | string
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   color?: PropTypes.Color
   className?: string

@@ -57,7 +57,7 @@ export function* handleDeposit(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.depositFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.depositFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -82,7 +82,7 @@ export function* handleMint(): Generator {
     )
   } catch (error) {
     console.log(error)
-    yield* put(actions.mintFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.mintFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -106,7 +106,7 @@ export function* handleWithdraw(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.withdrawFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.withdrawFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -130,7 +130,7 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.burnFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.burnFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
     console.log(error)
     yield put(
       snackbarsActions.add({
@@ -155,7 +155,7 @@ export function* handleClaimRewards(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.claimRewardsFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.claimRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
@@ -180,7 +180,7 @@ export function* handleWithdrawRewards(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.withdrawRewardsFailed({ error: error?.message ?? 'Unknown error' }))
+    yield* put(actions.withdrawRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({

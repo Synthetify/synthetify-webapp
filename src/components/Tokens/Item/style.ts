@@ -5,51 +5,70 @@ const useStyles = makeStyles((theme: Theme) => ({
   font: {
     fontSize: 22,
     fontWeight: 400,
-    color: colors.navy.lightGrey,
+    color: colors.navy.veryLightGrey,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       fontSize: 13
     }
   },
   icon: {
-    width: 30,
-    height: 30,
-    marginRight: 18,
+    width: 32,
+    height: 32,
+    marginRight: 19,
 
     [theme.breakpoints.down('sm')]: {
-      width: 18,
-      height: 18,
-      marginRight: 8
+      width: 26,
+      height: 26,
+      marginRight: 14
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      width: 19,
+      height: 19,
+      marginRight: 10
     }
   },
   row: {
-    height: 66,
-    paddingLeft: 16,
+    height: 69,
+    paddingInline: 24,
+    borderRadius: 10,
+    transition: 'box-shadow 300ms',
+    position: 'relative',
+
+    '&:hover': {
+      boxShadow: `0px 0px 6px ${colors.navy.button}`,
+      zIndex: 1
+    },
 
     '&:nth-of-type(2n+1)': {
-      backgroundColor: '#1F1F4160'
+      backgroundColor: colors.navy.background
     },
 
     '&:nth-of-type(2n)': {
-      backgroundColor: '#1F1F41'
+      backgroundColor: colors.navy.component
     },
 
     [theme.breakpoints.down('sm')]: {
-      height: 39,
-      paddingLeft: 14
+      height: 61,
+      paddingInline: 20
     },
 
     [theme.breakpoints.down('xs')]: {
-      paddingRight: 20
+      paddingInline: 16,
+      height: 45
     }
   },
   column: {
-    maxWidth: 159,
+    maxWidth: 164,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 141
+    },
 
     [theme.breakpoints.down('xs')]: {
-      maxWidth: 75
+      maxWidth: 85
     }
   }
 }))

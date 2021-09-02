@@ -19,6 +19,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         timeRemainingEndSlot={new BN(1e7)}
         slot={1e7 - 300}
         icon={Rewards1}
+        tooltipPlacement={'left'}
       />
     </div>
   ))
@@ -34,6 +35,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         timeRemainingEndSlot={new BN(1e7)}
         slot={1e7 - 300}
         icon={Rewards1}
+        tooltipPlacement={'left'}
       />
     </div>
   ))

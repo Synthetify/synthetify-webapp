@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: 'rgba(0, 0, 0, 0)',
     color: colors.navy.navBar,
     height: 44,
-    borderRadius: 5,
+    borderRadius: 10,
     fontSize: 16,
     textTransform: 'capitalize',
     boxShadow: 'none',

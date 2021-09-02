@@ -7,13 +7,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10
   },
   cardContent: {
-    paddingTop: 40,
+    padding: 24,
     boxSizing: 'border-box',
     width: '100%',
-    paddingLeft: 20,
-    paddingRight: 36,
     [theme.breakpoints.down('xs')]: {
-      padding: 15
+      padding: 16
     }
   }
 }))
