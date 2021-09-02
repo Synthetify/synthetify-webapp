@@ -35,6 +35,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     xSOL: 'Synthetic Solana',
     xSRM: 'Synthetic Serum',
     xUSD: 'Synthetic USD',
+    stSOL: 'Staked Solana',
     WSOL: 'Wrapped Solana'
   }
 
