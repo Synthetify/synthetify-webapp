@@ -1,6 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
-import { color } from '@storybook/addon-knobs'
 
 const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
@@ -11,15 +10,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   cardContent: {
     padding: 0
   },
-  formControl: {
-    width: '120px',
-    fontWeight: 600,
-    lineHeight: '40px',
-    fontSize: '16px',
-    margin: 16,
-    background: colors.navy.navButton,
-    borderRadius: '10px',
-    padding: '5px 10px 5px 10px'
+
+  formControlContainer: {
+    display: 'flex',
+    alignItems: 'cemnter'
   },
   optionLabel: {
     height: '100px'
@@ -33,8 +27,29 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: colors.navy.info
     }
   },
+  formControl: {
+    width: '120px',
+
+    margin: 16,
+    background: colors.navy.navButton,
+    borderRadius: '10px',
+    padding: '5px 10px 5px 10px',
+    height: 'min-content'
+  },
   select: {
-    color: '#777777'
+    fontSize: '16px',
+    fontWeight: 600,
+    lineHeight: '40px',
+    padding: 0,
+    '&:before': {
+      border: 0
+    },
+    '&> div': {
+      padding: 0,
+      '&:focus': {
+        background: 'none'
+      }
+    }
   },
   // buttonSelect: {
   //   background: colors.navy.button,
@@ -55,19 +70,21 @@ const useStyles = makeStyles((theme: Theme) => ({
   //   }
   // },
   buttonOption: {
-    color: colors.navy.veryLightGrey,
+    color: colors.navy.grey,
+    margin: 'auto',
     padding: '2px 2px',
     minWidth: 40,
     lineHeight: '40px',
-    borderRadius: 10,
+    border: 0,
     fontSize: '20px',
     fontWeight: 400,
     textTransform: 'capitalize',
     boxShadow: 'none',
+    height: 'min-content',
 
     '&:hover': {
-      background: colors.navy.button,
-      color: colors.navy.veryLightGrey
+      color: colors.navy.veryLightGrey,
+      background: 'none'
     }
   },
   linePlot: {
