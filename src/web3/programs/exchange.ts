@@ -25,6 +25,7 @@ export const getExchangeProgram = async (): Promise<Exchange> => {
     new PublicKey('Bn5Pi8MmJhe99XAVA5rCDCYYhb4RvrdrtejFQce5uEtF'),
     exchangeProgramId
   )
+  await _exchange.getState()
   return _exchange
 }
 export const connectExchangeWallet = async (): Promise<Exchange> => {
@@ -38,5 +39,6 @@ export const connectExchangeWallet = async (): Promise<Exchange> => {
     new PublicKey('Bn5Pi8MmJhe99XAVA5rCDCYYhb4RvrdrtejFQce5uEtF'),
     exchangeProgramId
   )
+  await _exchange.getState()
   return _exchange
 }
