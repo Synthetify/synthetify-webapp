@@ -128,7 +128,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 8,
-      lineHeight: '6px'
+      lineHeight: '8px',
+      minHeight: '24px',
+      display: 'flex',
+      alignItems: 'center'
     }
   }
 }))
