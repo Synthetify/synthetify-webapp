@@ -4,7 +4,7 @@ import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { printBNtoBN, printBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-import { CardMedia, Divider, Grid, Typography } from '@material-ui/core'
+import { CardMedia, Divider, Grid, Typography, useMediaQuery } from '@material-ui/core'
 import Swap from '@static/svg/swap.svg'
 import Arrows from '@static/svg/swapArrows.svg'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
@@ -14,7 +14,7 @@ import Output from '@static/svg/output.svg'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
 import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import { docs, pyth } from '@static/links'
-import { colors } from '@static/theme'
+import { colors, theme } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
 import SelectToken from '@components/Inputs/SelectToken/SelectToken'
@@ -69,15 +69,19 @@ export interface IExchangeComponent {
   fee: Decimal
   discountPercent?: number
   nextDiscountThreshold?: number
+  onSelectTokenTo: (index: number | null) => void
 }
 export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   tokens,
   onSwap,
   fee,
   discountPercent,
-  nextDiscountThreshold
+  nextDiscountThreshold,
+  onSelectTokenTo
 }) => {
   const classes = useStyles()
+
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens.length ? 0 : null)
   const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
@@ -125,6 +129,24 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     }
 
     return (num / 1000000).toFixed(2)
+  }
+
+  const formatExchangeRateOnXs = (value: string) => {
+    const num = Number(value)
+
+    if (num < 100) {
+      return num.toFixed(6)
+    }
+
+    if (num < 10000) {
+      return num.toFixed(4)
+    }
+
+    if (num < 100000) {
+      return num.toFixed(2)
+    }
+
+    return (num).toFixed(1)
   }
 
   const getButtonMessage = (
@@ -236,6 +258,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             setRotates(rotates + 1)
             if (tokenToIndex === null || tokenFromIndex === null) return
             setTokenFromIndex(tokenToIndex)
+            onSelectTokenTo(tokenFromIndex)
             setTokenToIndex(tokenFromIndex)
           }}
         >
@@ -289,7 +312,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
             centered={true}
             onSelect={(chosen: string) => {
-              setTokenToIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+              const index = tokens.findIndex(t => t.symbol === chosen) ?? null
+              setTokenToIndex(index)
+              onSelectTokenTo(index)
               setTimeout(() => updateEstimatedAmount(), 0)
             }}
           />
@@ -369,7 +394,11 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', fee)
               })()}
               duration={300}
-              formatValue={(value: string) => Number(value).toFixed(6)}
+              formatValue={
+                isXs
+                  ? formatExchangeRateOnXs
+                  : (value: string) => Number(value).toFixed(6)
+              }
             />
             {' '}{tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} per `}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'}
           </Typography>
