@@ -4,16 +4,16 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
     background: colors.navy.component,
-    borderRadius: 10,
+    borderRadius: 5,
     fontFamily: 'Inter'
   },
   cardContent: {
     padding: 0
   },
 
-  formControlContainer: {
+  selectContainer: {
     display: 'flex',
-    alignItems: 'cemnter'
+    alignItems: 'center'
   },
   optionLabel: {
     height: '100px'
@@ -27,48 +27,63 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: colors.navy.info
     }
   },
-  formControl: {
-    width: '120px',
-
+  buttonSelect: {
+    minWidth: '140px',
     margin: 16,
     background: colors.navy.navButton,
-    borderRadius: '10px',
-    padding: '5px 10px 5px 10px',
-    height: 'min-content'
-  },
-  select: {
+    borderRadius: '5px',
+    textTransform: 'none',
+    height: 'min-content',
     fontSize: '16px',
     fontWeight: 600,
-    lineHeight: '40px',
-    padding: 0,
-    '&:before': {
-      border: 0
-    },
-    '&> div': {
-      padding: 0,
-      '&:focus': {
-        background: 'none'
+    maxHeight: '40px',
+    color: colors.navy.veryLightGrey,
+    '&:hover': {
+      background: colors.navy.info,
+      '& span div': {
+        display: 'block'
+      },
+      '&> span >span': {
+        transform: 'rotate(0.5turn)'
       }
     }
   },
-  // buttonSelect: {
-  //   background: colors.navy.button,
-  //   color: colors.navy.veryLightGrey,
-  //   minWidth: 118,
-  //   padding: '2px 10px',
-  //   lineHeight: '40px',
-  //   borderRadius: 10,
-  //   fontSize: '16px',
-  //   fontWeight: 700,
-  //   textTransform: 'capitalize',
-  //   boxShadow: 'none',
-  //   margin: '4px 4px 4px 15px',
-
-  //   '&:hover': {
-  //     background: colors.navy.button,
-  //     color: colors.navy.veryLightGrey
-  //   }
-  // },
+  arrowIcon: {
+    transform: 'rotate(0.25turn)',
+    width: '10px'
+  },
+  paperMenu: {
+    display: 'none',
+    zIndex: 10,
+    position: 'absolute',
+    top: '40px',
+    left: '0',
+    width: 'inherit',
+    backgroundColor: colors.navy.navButton
+  },
+  options: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: '0 5px 0 5px'
+  },
+  optionItem: {
+    marginTop: '5px',
+    fontSize: '13px',
+    lineHeight: '26px',
+    fontWeight: 'normal',
+    width: '100%',
+    textTransform: 'none',
+    padding: 0,
+    color: colors.navy.grey,
+    '&:hover': {
+      background: colors.navy.info,
+      fontWeight: 'bold',
+      color: colors.navy.veryLightGrey
+    },
+    '&:last-child': {
+      marginBottom: '5px'
+    }
+  },
   buttonOption: {
     color: colors.navy.grey,
     margin: 'auto',
@@ -81,7 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'capitalize',
     boxShadow: 'none',
     height: 'min-content',
-
+    width: '42px',
     '&:hover': {
       color: colors.navy.veryLightGrey,
       background: 'none'
@@ -96,6 +111,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& text': {
       fill: '#6e6565!important'
     }
+  },
+  buttonContainer: {
+    marginRight: 24
   }
 }))
 

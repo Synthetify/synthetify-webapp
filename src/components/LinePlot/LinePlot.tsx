@@ -1,17 +1,9 @@
 import React from 'react'
-import {
-  Grid,
-  CardContent,
-  Card,
-  FormControl,
-  Select,
-  MenuItem,
-  ButtonGroup,
-  Button
-} from '@material-ui/core'
+import { Grid, CardContent, Card, ButtonGroup, Button, Paper } from '@material-ui/core'
 import { ResponsiveLine } from '@nivo/line'
 import { colors } from '@static/theme'
 import { linearGradientDef } from '@nivo/core'
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import useStyles from './style'
 
 interface Point {
@@ -29,33 +21,42 @@ interface IProps {
 }
 export const LinePlot: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
+  const [menuOption, setMenuOption] = React.useState('Volument')
+
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
         <Grid container item className={classes.optionLabel}>
-          <Grid lg={8} md={8} xs={8} className={classes.formControlContainer}>
-            <FormControl className={classes.formControl}>
-              <Select className={classes.select}>
-                <MenuItem className={classes.menuItem} value='valument'>
-                  Valument
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value='liquidation'>
-                  Liquidation
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value='mint'>
-                  Mint
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value='burn'>
-                  Burn
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value='userCount'>
-                  User count
-                </MenuItem>
-              </Select>
-            </FormControl>
+          <Grid lg={8} md={8} xs={8} className={classes.selectContainer}>
+            <Button
+              className={classes.buttonSelect}
+              endIcon={React.cloneElement(<ArrowForwardIosIcon className={classes.arrowIcon} />)}
+              disableFocusRipple
+              disableRipple>
+              {menuOption}
+              <Paper className={classes.paperMenu}>
+                <Grid className={classes.options}>
+                  <Button className={classes.optionItem} onClick={() => setMenuOption('Volument')}>
+                    Volument
+                  </Button>
+                  <Button className={classes.optionItem} onClick={() => setMenuOption('Liquidation')}>
+                    Liquidation
+                  </Button>
+                  <Button className={classes.optionItem} onClick={() => setMenuOption('Mint')}>
+                    Mint
+                  </Button>
+                  <Button className={classes.optionItem} onClick={() => setMenuOption('Burn')}>
+                    Burn
+                  </Button>
+                  <Button className={classes.optionItem} onClick={() => setMenuOption('User count')}>
+                    User count
+                  </Button>
+                </Grid>
+              </Paper>
+            </Button>
           </Grid>
-          <Grid container item lg={4} md={4} xs={4} justifyContent='center'>
-            <ButtonGroup>
+          <Grid container item lg={4} md={4} xs={4} justifyContent='flex-end'>
+            <ButtonGroup className={classes.buttonContainer}>
               <Button className={classes.buttonOption}>D</Button>
               <Button className={classes.buttonOption}>W</Button>
               <Button className={classes.buttonOption}>M</Button>
@@ -85,9 +86,9 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
             areaOpacity={0.2}
             useMesh={true}
             legends={[]}
-            fill={[{ match: { id: 'line' }, id: 'gradientA' }]}
+            fill={[{ match: { id: 'line' }, id: 'gradient' }]}
             defs={[
-              linearGradientDef('gradientA', [
+              linearGradientDef('gradient', [
                 { offset: 0, color: colors.green.main },
                 { offset: 100, color: colors.green.main, opacity: 0 }
               ])
