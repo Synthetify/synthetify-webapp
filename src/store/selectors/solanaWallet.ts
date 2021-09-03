@@ -175,6 +175,13 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
 
 export const userMaxDeposit = (assetAddress: PublicKey) =>
   createSelector(tokenBalance(assetAddress), collaterals, balance, (assetBalance, allCollaterals, wSOLBalance) => {
+    if (!allCollaterals[assetAddress.toString()]) {
+      return {
+        maxDeposit: new BN(0),
+        decimals: 6
+      }
+    }
+
     if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
       let newBalance = wSOLBalance.sub(
         new BN(21 *
