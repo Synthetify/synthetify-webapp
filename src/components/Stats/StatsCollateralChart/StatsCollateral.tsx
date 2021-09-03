@@ -5,14 +5,14 @@ import { Grid, Typography } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 
+interface CoinToChart {
+  name: string
+  percent: number
+  color: string
+}
+
 export const StatsCollateralChart: React.FC = () => {
   const classes = useStyles()
-
-  interface CoinToChart {
-    name: string
-    percent: number
-    color: string
-  }
 
   const data: CoinToChart[] = [
     {
@@ -74,20 +74,15 @@ export const StatsCollateralChart: React.FC = () => {
   ]
 
   const getCoinsName = (data: CoinToChart[]) => {
-    const nameOfCoins: string[] = []
-    data.map(coin => {
-      nameOfCoins.push(coin.name)
-    })
-    return nameOfCoins
+    return data.map(coin => coin.name)
   }
 
   const getNameAndValue = (data: CoinToChart[]) => {
-    const nameAndValue: {[key: string]: number} = {}
-    for (let i = 0; i <= data.length - 1; i++) {
-      nameAndValue[data[i].name] = data[i].percent
-    }
-    const helperArray: Array<{[key: string]: number}> = []
-    helperArray.push(nameAndValue)
+    const helperArray = []
+    helperArray.push(data.reduce((object, { name, percent }) => ({
+      [name]: percent,
+      ...object
+    }), {}))
     return helperArray
   }
 
@@ -107,11 +102,7 @@ export const StatsCollateralChart: React.FC = () => {
     }
 
     const finalColor = hex2rgb(fill).map((x: number): number => {
-      if (x < 243) {
-        return x - (-12)
-      } else {
-        return x = 255
-      }
+      return Math.min(x + 12, 255)
     })
     e.target.setAttribute('fill', `rgba(${finalColor[0]},${finalColor[1]},${finalColor[2]})`)
   }
@@ -152,9 +143,9 @@ export const StatsCollateralChart: React.FC = () => {
                 borderWidth={1}
                 borderColor={{ from: 'color', modifiers: [['brighter', 1.9]] }}
                 tooltip={() => null}
-                reverse={!layoutVertical && true}
+                reverse={!layoutVertical}
                 theme={{
-                  fontSize: 14,
+                  fontSize: layoutVertical ? 14 : 10,
                   textColor: colors.navy.background
                 }}
                 valueFormat={v => `${v}%`}
