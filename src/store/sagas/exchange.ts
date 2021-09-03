@@ -30,7 +30,7 @@ export function* pullExchangeState(): Generator {
   yield* call(pullAssetPrices)
   yield* call(updateSlot)
 }
-export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): Generator {
+export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey, quantity: number): Generator {
   const wallet = yield* call(getWallet)
   const tokensAccounts = yield* select(accounts)
   const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
@@ -46,7 +46,7 @@ export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): G
     accountAddress,
     testAdmin.publicKey,
     [],
-    1e8
+    quantity
   )
   const tx = new Transaction().add(ix)
   const connection = yield* call(getConnection)

@@ -119,7 +119,7 @@ export const userDebtValue = createSelector(
     const debt = Object.entries(allSynthetics).reduce((acc, [_, synthetic]) => {
       return acc.add(
         divUp(
-          allAssets[synthetic.assetIndex].price.val.mul(synthetic.supply.val),
+          allAssets[synthetic.assetIndex].price.val.mul(synthetic.supply.val.sub(synthetic.borrowedSupply.val).sub(synthetic.swaplineSupply.val)),
           new BN(10 ** (synthetic.supply.scale + ORACLE_OFFSET - ACCURACY))
         )
       )

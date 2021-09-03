@@ -27,7 +27,7 @@ export const ActionMenuContainer: React.FC = () => {
   const availableToMint = useSelector(userMaxMintUsd)
   const userCollaterals = useSelector(collateralAccountsArray)
   const userStaked = useSelector(stakedAccountsArray)
-  const { balance, decimals: depositDecimal } = useSelector(
+  const { maxDeposit, decimals: depositDecimal } = useSelector(
     userMaxDeposit(userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
   const availableToWithdraw = useSelector(
@@ -94,7 +94,7 @@ export const ActionMenuContainer: React.FC = () => {
         )
       }}
       availableToMint={availableToMint}
-      availableToDeposit={userCollaterals.length ? balance : new BN(0)}
+      availableToDeposit={userCollaterals.length ? maxDeposit : new BN(0)}
       availableToWithdraw={availableToWithdraw}
       availableToBurn={availableToBurn}
       mintState={mintState}

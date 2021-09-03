@@ -41,6 +41,7 @@ const icons: { [key: string]: string } = {
   xUNI: xUNIIcon,
   xYFI: xYFIIcon,
   WSOL: WSOLIcon,
+  stSOL: WSOLIcon,
   phantom: phantomIcon,
   sollet: solletIcon,
   clear: clearIcon
