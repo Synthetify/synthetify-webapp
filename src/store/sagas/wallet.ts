@@ -11,7 +11,7 @@ import {
 
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
-import { getSolanaWallet, connectWallet, disconnectWallet } from '@web3/wallet'
+import { getSolanaWallet, connectWallet, disconnectWallet, WalletType } from '@web3/wallet'
 import { Account, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { Token, ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { actions as snackbarsActions } from '@reducers/snackbars'
@@ -110,10 +110,15 @@ export function* handleAirdrop(): Generator {
 
   const allCollaterals = yield* select(collaterals)
   const snyToken = Object.values(allCollaterals)[0]
+  const stSolToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'stSOL')
   try {
-    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress)
+    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
+
+    if (stSolToken) {
+      yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
+    }
   } catch (error) {
-    if (error.message === 'Signature request denied') return
+    if (error instanceof Error && error.message === 'Signature request denied') return
     console.error(error)
     return put(
       snackbarsActions.add({
@@ -260,6 +265,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     )
     return
   }
+  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', action.payload === WalletType.PHANTOM ? 'phantom' : 'sollet')
   yield* call(init)
   yield* call(connectExchangeWallet)
 }
@@ -267,6 +273,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
 export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
+    yield call([sessionStorage, sessionStorage.removeItem], 'SYNTHETIFY_SESSION_WALLET')
     yield* put(actions.resetState())
     yield* put(
       exchangeActions.setExchangeAccount({

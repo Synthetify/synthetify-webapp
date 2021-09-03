@@ -7,34 +7,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10
   },
   valueCardTitle: {
-    color: colors.navy.lightGrey,
-    fontSize: '22px',
-    lineHeight: '40px',
+    color: colors.navy.veryLightGrey,
+    fontSize: 22,
+    lineHeight: '22px',
     fontWeight: 600
   },
   valueCardAmount: {
     color: colors.navy.veryLightGrey,
-    fontSize: 32,
+    fontSize: 44,
     fontWeight: 700,
-    lineHeight: '40px'
-  },
-  divider: {
-    width: 139,
-    marginTop: 6,
-    marginBottom: 15,
-    background: colors.navy.lightGrey
+    lineHeight: '44px'
   },
   questionMark: {
     height: 21,
-    width: 20,
-    float: 'right'
-  },
-  tooltip: {
-    background: colors.navy.navButton,
-    color: colors.navy.lightGrey,
-    fontSize: 13,
-    padding: '5px 8px',
-    fontWeight: 400
+    width: 21,
+    position: 'absolute',
+    top: 17,
+    right: 20,
+
+    [theme.breakpoints.down('xs')]: {
+      height: 29,
+      width: 29,
+      top: 14
+    }
   },
   tooltipArrow: {
     color: colors.navy.navButton,
@@ -42,24 +37,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 13,
     marginBlock: '-0.67em !important'
   },
-  progressContent: {
-    paddingBottom: 13,
+  cardContent: {
+    padding: 20,
+    position: 'relative',
     '&:last-child': {
-      paddingBottom: 13
+      paddingBottom: 20
     }
   },
   minMaxDebt: {
     fontSize: 13,
     fontWeight: 700,
-    lineHeight: 'unset',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 16
-    }
+    lineHeight: 'unset'
   },
   progressContainer: {
     width: '100%',
-    marginTop: 35,
-    marginBottom: 17
+    marginTop: 44,
+    marginBottom: 16
   },
   progressRoot: {
     width: '100%',
@@ -73,10 +66,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   progressTooltip: {
     background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
-    fontSize: 13,
-    padding: '7px 16px',
+    fontSize: 10,
+    padding: '7px 9px',
     fontWeight: 400,
-    marginBlock: 5
+    marginBlock: 9
   }
 }))
 

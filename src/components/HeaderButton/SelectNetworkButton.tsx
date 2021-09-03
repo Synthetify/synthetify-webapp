@@ -32,7 +32,7 @@ export const SelectNetworkButton: React.FC<IProps> = ({
   }
 
   return (
-    <div>
+    <>
       <Button
         className={classes.headerButton}
         variant='contained'
@@ -48,7 +48,7 @@ export const SelectNetworkButton: React.FC<IProps> = ({
         onSelect={onSelect}
         handleClose={handleClose}
       />
-    </div>
+    </>
   )
 }
 export default SelectNetworkButton

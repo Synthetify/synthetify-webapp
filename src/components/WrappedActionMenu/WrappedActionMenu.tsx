@@ -23,13 +23,18 @@ export interface IProps {
   depositState: Pick<IDeposit, 'sending' | 'error'>
   burnState: Pick<IBurn, 'sending' | 'error'>
   stakingData: IRewardsProps
-  collaterals: TokenAccounts[]
+  depositTokens: TokenAccounts[]
+  withdrawTokens: TokenAccounts[]
   withdrawCurrency: string
   depositCurrency: string
   onSelectDepositToken?: (chosen: string) => void
   onSelectWithdrawToken?: (chosen: string) => void
   depositDecimal: number
   withdrawDecimal: number
+  walletConnected: boolean
+  noWalletHandler: () => void
+  emptyDepositTokensHandler: () => void
+  emptyWithdrawTokensHandler: () => void
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -47,13 +52,18 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   burnState,
   depositState,
   stakingData,
-  collaterals,
+  depositTokens,
+  withdrawTokens,
   withdrawCurrency,
   depositCurrency,
   onSelectDepositToken,
   onSelectWithdrawToken,
   depositDecimal,
-  withdrawDecimal
+  withdrawDecimal,
+  walletConnected,
+  noWalletHandler,
+  emptyDepositTokensHandler,
+  emptyWithdrawTokensHandler
 }) => {
   const classes = useStyles()
 
@@ -67,8 +77,12 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency={depositCurrency}
         sending={depositState.sending}
         hasError={!!depositState.error?.length}
-        tokens={collaterals}
+        tokens={depositTokens}
         onSelectToken={onSelectDepositToken}
+        showArrowInInput
+        walletConnected={walletConnected}
+        noWalletHandler={noWalletHandler}
+        emptyTokensHandler={emptyDepositTokensHandler}
       />
     ),
     mint: (
@@ -80,6 +94,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={mintState.sending}
         hasError={!!mintState.error?.length}
+        maxBehavior='maxU64'
       />
     ),
     withdraw: (
@@ -91,8 +106,13 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency={withdrawCurrency}
         sending={withdrawState.sending}
         hasError={!!withdrawState.error?.length}
-        tokens={collaterals}
+        tokens={withdrawTokens}
         onSelectToken={onSelectWithdrawToken}
+        showArrowInInput
+        walletConnected={walletConnected}
+        noWalletHandler={noWalletHandler}
+        maxBehavior='maxU64'
+        emptyTokensHandler={emptyWithdrawTokensHandler}
       />
     ),
     burn: (
@@ -104,6 +124,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={burnState.sending}
         hasError={!!burnState.error?.length}
+        maxBehavior='inputOnly'
       />
     ),
     rewards: <RewardsTab {...stakingData} />

@@ -25,7 +25,7 @@ export const HeaderButton: React.FC<IProps> = ({ name, disabled = false }) => {
 
   return (
     <ClickAwayListener onClickAway={handleClose}>
-      <div>
+      <>
         <Button
           className={classes.headerButton}
           variant='contained'
@@ -50,7 +50,7 @@ export const HeaderButton: React.FC<IProps> = ({ name, disabled = false }) => {
           {' '}
           <Typography variant='h2'>Sample Popover Text</Typography>
         </Popover>
-      </div>
+      </>
     </ClickAwayListener>
   )
 }

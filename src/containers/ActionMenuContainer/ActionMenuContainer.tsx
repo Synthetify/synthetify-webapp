@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import WrappedActionMenu from '@components/WrappedActionMenu/WrappedActionMenu'
 import { actions } from '@reducers/staking'
+import { actions as snackbarActions } from '@reducers/snackbars'
 import {
   userMaxMintUsd,
   userMaxWithdraw,
@@ -11,9 +12,11 @@ import {
   userDebtShares
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { collateralAccountsArray, userMaxBurnToken, userMaxDeposit } from '@selectors/solanaWallet'
+import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { Status } from '@reducers/solanaWallet'
+import { BN } from '@project-serum/anchor'
 
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
@@ -23,11 +26,12 @@ export const ActionMenuContainer: React.FC = () => {
 
   const availableToMint = useSelector(userMaxMintUsd)
   const userCollaterals = useSelector(collateralAccountsArray)
-  const { balance, decimals: depositDecimal } = useSelector(
+  const userStaked = useSelector(stakedAccountsArray)
+  const { maxDeposit, decimals: depositDecimal } = useSelector(
     userMaxDeposit(userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
   const availableToWithdraw = useSelector(
-    userMaxWithdraw(userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY)
+    userMaxWithdraw(userStaked[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY)
   )
   const xUSDTokenAddress = useSelector(xUSDAddress)
   const availableToBurn = useSelector(userMaxBurnToken(xUSDTokenAddress))
@@ -39,16 +43,36 @@ export const ActionMenuContainer: React.FC = () => {
   const stakingState = useSelector(staking)
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
+  const walletStatus = useSelector(status)
+
+  useEffect(() => {
+    if (walletStatus === Status.Uninitialized) {
+      setDepositIndex(0)
+      setWithdrawIndex(0)
+    }
+  }, [walletStatus])
+
+  useEffect(() => {
+    if (userCollaterals.length <= depositIndex) {
+      setDepositIndex(0)
+    }
+  }, [userCollaterals, depositIndex])
+
+  useEffect(() => {
+    if (userStaked.length <= withdrawIndex) {
+      setWithdrawIndex(0)
+    }
+  }, [userStaked, withdrawIndex])
 
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
-        dispatch(actions.mint({ amount: amount.muln(10 ** 6).divn(10 ** decimal) }))
+        dispatch(actions.mint({ amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)) }))
       }}
       onBurn={(amount, decimal) => () => {
         dispatch(
           actions.burn({
-            amount: amount.muln(10 ** 6).divn(10 ** decimal),
+            amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)),
             tokenAddress: xUSDTokenAddress
           })
         )
@@ -56,7 +80,7 @@ export const ActionMenuContainer: React.FC = () => {
       onDeposit={(amount, decimal) => () => {
         dispatch(
           actions.deposit({
-            amount: amount.muln(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal)),
+            amount: amount.mul(new BN(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal))),
             tokenAddress: userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
@@ -64,15 +88,15 @@ export const ActionMenuContainer: React.FC = () => {
       onWithdraw={(amount, decimal) => () => {
         dispatch(
           actions.withdraw({
-            amount: amount.muln(10 ** ((userCollaterals[withdrawIndex]?.decimals ?? 6) - decimal)),
-            tokenAddress: userCollaterals[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
+            amount: amount.mul(new BN(10 ** ((userStaked[withdrawIndex]?.decimals ?? 6) - decimal))),
+            tokenAddress: userStaked[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
       }}
-      availableToMint={availableToMint.muln(99).divn(100)}
-      availableToDeposit={balance}
-      availableToWithdraw={availableToWithdraw.muln(99).divn(100)}
-      availableToBurn={availableToBurn.muln(99).divn(100)}
+      availableToMint={availableToMint}
+      availableToDeposit={userCollaterals.length ? maxDeposit : new BN(0)}
+      availableToWithdraw={availableToWithdraw}
+      availableToBurn={availableToBurn}
       mintState={mintState}
       withdrawState={withdrawState}
       depositState={depositState}
@@ -103,17 +127,40 @@ export const ActionMenuContainer: React.FC = () => {
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
-      collaterals={userCollaterals}
-      depositCurrency={userCollaterals[depositIndex]?.symbol ?? 'SNY'}
-      withdrawCurrency={userCollaterals[withdrawIndex]?.symbol ?? 'SNY'}
+      depositTokens={(walletStatus === Status.Initalized) ? userCollaterals : []}
+      withdrawTokens={userStaked}
+      depositCurrency={(walletStatus === Status.Initalized) ? (userCollaterals[depositIndex]?.symbol ?? 'SNY') : 'SNY'}
+      withdrawCurrency={userStaked[withdrawIndex]?.symbol ?? 'SNY'}
       onSelectDepositToken={(chosen) => {
         setDepositIndex(userCollaterals.findIndex(token => token.symbol === chosen))
       }}
       onSelectWithdrawToken={(chosen) => {
-        setWithdrawIndex(userCollaterals.findIndex(token => token.symbol === chosen))
+        setWithdrawIndex(userStaked.findIndex(token => token.symbol === chosen))
       }}
       depositDecimal={depositDecimal}
-      withdrawDecimal={userCollaterals[withdrawIndex]?.decimals ?? 6}
+      withdrawDecimal={userStaked[withdrawIndex]?.decimals ?? 6}
+      walletConnected={walletStatus === Status.Initalized}
+      noWalletHandler={() => dispatch(
+        snackbarActions.add({
+          message: 'Connect your wallet first',
+          variant: 'warning',
+          persist: false
+        })
+      )}
+      emptyDepositTokensHandler={() => dispatch(
+        snackbarActions.add({
+          message: 'You have no tokens to deposit',
+          variant: 'info',
+          persist: false
+        })
+      )}
+      emptyWithdrawTokensHandler={() => dispatch(
+        snackbarActions.add({
+          message: 'You have no tokens to withdraw',
+          variant: 'info',
+          persist: false
+        })
+      )}
     />
   )
 }

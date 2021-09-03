@@ -5,9 +5,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   text: {
     fontSize: 22,
     color: colors.navy.lightGrey,
-    lineHeight: 1.5,
-    [theme.breakpoints.down('xs')]: {
+    lineHeight: 1,
+    [theme.breakpoints.down('sm')]: {
       fontSize: 16
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 13
     }
   },
   tooltip: {
@@ -19,10 +22,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 400,
     fontSize: 13,
     lineHeight: '16px'
-  },
-  questionMark: {
-    height: 17,
-    width: 17
   }
 }))
 

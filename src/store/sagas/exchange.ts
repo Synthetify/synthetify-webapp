@@ -21,6 +21,7 @@ import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -29,7 +30,7 @@ export function* pullExchangeState(): Generator {
   yield* call(pullAssetPrices)
   yield* call(updateSlot)
 }
-export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): Generator {
+export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey, quantity: number): Generator {
   const wallet = yield* call(getWallet)
   const tokensAccounts = yield* select(accounts)
   const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
@@ -45,7 +46,7 @@ export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey): G
     accountAddress,
     testAdmin.publicKey,
     [],
-    1e8
+    quantity
   )
   const tx = new Transaction().add(ix)
   const connection = yield* call(getConnection)
@@ -234,7 +235,7 @@ export function* depositCollateralWSOL(amount: BN): SagaGenerator<string> {
   return signature
 }
 
-export function* mintUsd(amount: BN): SagaGenerator<string> {
+export function* mintUsd(amount: BN): SagaGenerator<void> {
   const usdTokenAddress = yield* select(xUSDAddress)
   const tokensAccounts = yield* select(accounts)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -246,13 +247,12 @@ export function* mintUsd(amount: BN): SagaGenerator<string> {
   if (accountAddress == null) {
     accountAddress = yield* call(createAccount, usdTokenAddress)
   }
-  const signature = yield* call([exchangeProgram, exchangeProgram.mint], {
+  yield* call([exchangeProgram, exchangeProgram.mint], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
     to: accountAddress
   })
-  return signature[1]
 }
 export function* withdrawCollateral(
   amount: BN,
@@ -433,7 +433,7 @@ export function* handleSwap(): Generator {
 export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
 }
-const pendingUpdates: { [x: string]: BN } = {}
+const pendingUpdates: { [x: string]: Decimal } = {}
 
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>

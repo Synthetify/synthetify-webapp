@@ -6,6 +6,11 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
 import useStyles from './style'
+import Rewards1 from '@static/svg/rewards1.svg'
+import Rewards2 from '@static/svg/rewards2.svg'
+import Rewards3 from '@static/svg/rewards3.svg'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { Placement } from '@components/MobileTooltip/MobileTooltip'
 
 export type RoundType = 'next' | 'current' | 'finished'
 
@@ -19,8 +24,8 @@ export type RoundData = {
 
 export interface IRewardsProps {
   slot: number
-  amountToClaim: BN
-  amountPerRound: BN
+  amountToClaim: Decimal
+  amountPerRound: Decimal
   roundLength: number
   userDebtShares: BN
   rounds: RoundData
@@ -70,7 +75,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             roundPoints: userDebtShares
           },
           next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(2)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           }
@@ -79,17 +84,17 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       default: {
         return {
           finished: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 2)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           },
           current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff - 1)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           },
           next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).muln(roundDiff)),
+            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
             roundAllPoints: next.roundAllPoints,
             roundPoints: userDebtShares
           }
@@ -119,14 +124,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const isWithdrawDisabled = () => {
-    return amountToClaim.eqn(0)
+    return amountToClaim.val.eq(new BN(0))
   }
 
-  const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: BN) => {
+  const calculateTokensBasedOnPoints = (roundPoints?: BN, allPoints?: BN, amount?: Decimal) => {
     if (!roundPoints || !allPoints || allPoints.eqn(0) || !amount) {
       return new BN(0)
     }
-    return roundPoints.mul(amount).div(allPoints)
+    return roundPoints.mul(amount.val).div(allPoints)
   }
 
   const rewardsLines: {
@@ -138,10 +143,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracketValue: BN
       hint: string
       timeRemainingEndSlot: BN
+      icon: string
+      tooltipPlacement: Placement
     }
   } = [
     {
-      name: 'Next round',
+      name: 'Subscription round',
       nonBracket: 'points',
       nonBracketValue: nextRoundPoints,
       bracketValue: calculateTokensBasedOnPoints(
@@ -150,11 +157,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'The round has not yet started',
-      timeRemainingEndSlot: nextRoundStartSlot
+      hint: 'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
+      timeRemainingEndSlot: nextRoundStartSlot,
+      icon: Rewards1,
+      tooltipPlacement: 'left-end'
     },
     {
-      name: 'Current round',
+      name: 'Staking round',
       nonBracketValue: currentRoundPoints,
       nonBracket: 'points',
       bracketValue: calculateTokensBasedOnPoints(
@@ -163,11 +172,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'To get more points in the current round, increase the amount of your debt',
-      timeRemainingEndSlot: nextRoundStartSlot
+      hint: 'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
+      timeRemainingEndSlot: nextRoundStartSlot,
+      icon: Rewards2,
+      tooltipPlacement: 'left'
     },
     {
-      name: 'Finished round',
+      name: 'Claiming round',
       nonBracketValue: finishedRoundPoints,
       nonBracket: 'points',
       bracketValue: calculateTokensBasedOnPoints(
@@ -176,15 +187,17 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         amountPerRound
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'This round has been finished. Now you can claim your tokens',
-      timeRemainingEndSlot: nextRoundStartSlot
+      hint: 'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
+      timeRemainingEndSlot: nextRoundStartSlot,
+      icon: Rewards3,
+      tooltipPlacement: 'left-start'
     }
   ]
 
   const lines = Object.keys(rewardsLines).map((key, index) => {
     const props = rewardsLines[+key]
     return (
-      <Grid item key={index}>
+      <Grid item key={index} className={classes.line}>
         <RewardsLine {...props} slot={slot} />
         <Divider className={classes.divider} />
       </Grid>
@@ -192,14 +205,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   })
 
   return (
-    <Grid container direction='column' justifyContent='space-around' className={classes.root}>
-      <Grid item>
+    <Grid container direction='column' justifyContent='space-around'>
+      <Grid item className={classes.amount}>
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>
         {lines}
       </Grid>
-      <Grid item container alignItems='center' justifyContent='flex-end' wrap='nowrap'>
+      <Grid item container alignItems='center' justifyContent='flex-end' wrap='nowrap' className={classes.buttonsWrapper}>
         <Grid item>
           <OutlinedButton
             color='secondary'

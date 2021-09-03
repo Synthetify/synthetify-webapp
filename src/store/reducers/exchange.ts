@@ -3,13 +3,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral } from '@synthetify/sdk/lib/exchange'
+import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral, Decimal } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
-export interface UserAccount {
-  address: string // local storage does not handle PublicKeys
-  collateral: BN
-  shares: BN
-}
+
 export interface Swap {
   fromToken: PublicKey
   toToken: PublicKey
@@ -18,7 +14,7 @@ export interface Swap {
   txid?: string
 }
 export interface UserStaking {
-  amountToClaim: BN
+  amountToClaim: Decimal
   finishedRoundPoints: BN
   currentRoundPoints: BN
   nextRoundPoints: BN
@@ -32,17 +28,10 @@ export interface ExchangeAccount {
 }
 export interface IExchange {
   state: ExchangeState
-  collateralAccount: PublicKey
-  collateralToken: PublicKey
   mintAuthority: PublicKey
-  debt: BN
-  shares: BN
-  fee: number
-  collateralizationLevel: number
   assets: Asset[]
   synthetics: { [key in string]: ISynthetic }
   collaterals: { [key in string]: ICollateral }
-  userAccount: UserAccount
   exchangeAccount: ExchangeAccount
   swap: Swap
 }
@@ -55,21 +44,77 @@ export const defaultState: IExchange = {
     admin: DEFAULT_PUBLICKEY,
     assetsList: DEFAULT_PUBLICKEY,
     debtShares: new BN(0),
-    fee: 30,
+    exchangeAuthority: DEFAULT_PUBLICKEY,
+    fee: {
+      val: new BN(30),
+      scale: 6
+    },
     maxDelay: 10,
     nonce: 255,
     halted: false,
     liquidationBuffer: 0,
-    healthFactor: 0,
-    liquidationRate: 0,
-    penaltyToExchange: 0,
-    penaltyToLiquidator: 0,
-    accountVersion: 1,
+    healthFactor: {
+      val: new BN(0),
+      scale: 6
+    },
+    liquidationRate: {
+      val: new BN(0),
+      scale: 6
+    },
+    penaltyToExchange: {
+      val: new BN(0),
+      scale: 6
+    },
+    penaltyToLiquidator: {
+      val: new BN(0),
+      scale: 6
+    },
+    swapTaxRatio: {
+      val: new BN(0),
+      scale: 6
+    },
+    swapTaxReserve: {
+      val: new BN(0),
+      scale: 6
+    },
+    debtInterestRate: {
+      val: new BN(0),
+      scale: 6
+    },
+    accumulatedDebtInterest: {
+      val: new BN(0),
+      scale: 6
+    },
+    lastDebtAdjustment: new BN(0),
     staking: {
-      amountPerRound: new BN(0),
-      currentRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
-      finishedRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
-      nextRound: { allPoints: new BN(0), amount: new BN(0), start: new BN(0) },
+      amountPerRound: {
+        val: new BN(0),
+        scale: 6
+      },
+      currentRound: {
+        allPoints: new BN(0),
+        amount: {
+          val: new BN(0),
+          scale: 6
+        },
+        start: new BN(0)
+      },
+      finishedRound: {
+        allPoints: new BN(0),
+        amount: {
+          val: new BN(0),
+          scale: 6
+        },
+        start: new BN(0)
+      },
+      nextRound: {
+        allPoints: new BN(0),
+        amount: {
+          val: new BN(0),
+          scale: 6
+        },
+        start: new BN(0)
+      },
       fundAccount: DEFAULT_PUBLICKEY,
       roundLength: 0
     }
@@ -77,14 +122,7 @@ export const defaultState: IExchange = {
   assets: [],
   synthetics: {},
   collaterals: {},
-  collateralAccount: DEFAULT_PUBLICKEY,
-  collateralToken: DEFAULT_PUBLICKEY,
   mintAuthority: DEFAULT_PUBLICKEY,
-  fee: 30,
-  collateralizationLevel: 500,
-  debt: new BN(0),
-  shares: new BN(0),
-  userAccount: { address: DEFAULT_PUBLICKEY.toString(), collateral: new BN(0), shares: new BN(0) },
   exchangeAccount: {
     address: DEFAULT_PUBLICKEY,
     collaterals: [],
@@ -149,20 +187,11 @@ const exchangeSlice = createSlice({
       }
       return state
     },
-    setAssetPrice(_state, _action: PayloadAction<{ tokenIndex: number; price: BN }>) {},
-    batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: BN }>) {
+    setAssetPrice(_state, _action: PayloadAction<{ tokenIndex: number; price: Decimal }>) {},
+    batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: Decimal }>) {
       for (const [key, value] of Object.entries(action.payload)) {
         state.assets[+key].price = value
       }
-      return state
-    },
-    setUserAccountAddress(state, action: PayloadAction<PublicKey>) {
-      state.userAccount.address = action.payload.toString()
-      return state
-    },
-    setUserAccountData(state, action: PayloadAction<Omit<UserAccount, 'address'>>) {
-      state.userAccount.collateral = action.payload.collateral
-      state.userAccount.shares = action.payload.shares
       return state
     },
     setExchangeAccount(state, action: PayloadAction<ExchangeAccount>) {

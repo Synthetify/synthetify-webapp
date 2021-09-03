@@ -89,3 +89,38 @@ export const displayDate = (seconds: number) => {
     seconds % 60
   )}`
 }
+
+export const discountData = (userCollateralBalance: BN) => {
+  // decimals of token = 6
+  const ONE_SNY = new BN(1000000)
+  const thresholds = [
+    100,
+    200,
+    500,
+    1000,
+    2000,
+    5000,
+    10000,
+    25000,
+    50000,
+    100000,
+    250000,
+    500000,
+    1000000,
+    2000000,
+    5000000
+  ]
+
+  for (let val = 0; val < 16; val++) {
+    if (userCollateralBalance.lt(ONE_SNY.mul(new BN(thresholds[val])))) {
+      return {
+        discount: -val,
+        nextThreshold: thresholds[val]
+      }
+    }
+  }
+  return {
+    discount: 15,
+    nextThreshold: undefined
+  }
+}
