@@ -2,10 +2,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  list: {
-    borderRadius: 10,
-    overflow: 'hidden'
-  },
   switch: {
     marginBottom: 8
   },
@@ -64,6 +60,7 @@ export const useStylesWithProps = makeStyles<Theme, { current: number }>((theme:
     overflow: 'hidden',
     height: 69,
     paddingInline: 24,
+    borderRadius: '10px 10px 0 0',
 
     [theme.breakpoints.down('sm')]: {
       height: 61,
