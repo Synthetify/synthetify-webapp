@@ -176,20 +176,36 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
 export const userMaxDeposit = (assetAddress: PublicKey) =>
   createSelector(tokenBalance(assetAddress), collaterals, balance, (assetBalance, allCollaterals, wSOLBalance) => {
     if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
-      const newBalance = wSOLBalance.sub(
+      let newBalance = wSOLBalance.sub(
         new BN(21 *
           (10 **
             (allCollaterals[assetAddress.toString()].reserveBalance.scale - 4)
           )
         )
       )
+      newBalance = newBalance.lt(
+        allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+      )
+        ? newBalance
+        : allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
       return {
-        balance: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
+        maxDeposit: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
         decimals: allCollaterals[assetAddress.toString()].reserveBalance.scale
       }
     }
 
-    return assetBalance
+    return {
+      decimals: assetBalance.decimals,
+      maxDeposit: assetBalance.balance.lt(
+        allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+      )
+        ? assetBalance.balance
+        : allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+    }
   })
 
 export const solanaWalletSelectors = {
