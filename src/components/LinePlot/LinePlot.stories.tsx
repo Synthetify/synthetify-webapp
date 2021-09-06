@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import LinePlot from './LinePlot'
-import { data } from './mockData'
+import { data } from '../LinePlotContainer/mockData'
 
-storiesOf('stats/topplot', module).add('line', () => <LinePlot data={data} />)
+storiesOf('stats/topplot', module).add('line', () => <LinePlot data={data[0]} />)

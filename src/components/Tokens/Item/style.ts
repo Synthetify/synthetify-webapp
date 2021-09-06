@@ -33,6 +33,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   row: {
     height: 69,
     paddingInline: 24,
+    borderRadius: 10,
+    transition: 'box-shadow 300ms',
+    position: 'relative',
+
+    '&:hover': {
+      boxShadow: `0px 0px 6px ${colors.navy.button}`,
+      zIndex: 1
+    },
 
     '&:nth-of-type(2n+1)': {
       backgroundColor: colors.navy.background

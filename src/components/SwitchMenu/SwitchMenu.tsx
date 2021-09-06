@@ -86,11 +86,19 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
         fontSize: 13,
         padding: 0
       },
-      color: colors.navy.darkGrey
+      color: colors.navy.darkGrey,
+
+      '&:hover': {
+        color: colors.navy.info
+      }
     },
     selected: {
       fontWeight: 600,
-      color: colors.white.main
+      color: colors.white.main,
+
+      '&:hover': {
+        color: colors.white.main
+      }
     }
   })
 )((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
