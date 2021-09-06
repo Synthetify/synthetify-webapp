@@ -24,9 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   statsWrapper: {
     width: '100%',
+    height: 'calc(100% - 90px)',
     flexDirection: 'column',
     alignItems: 'center',
-
+    justifyContent: 'space-evenly',
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100% - 50px)',
       justifyContent: 'center',
@@ -95,7 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     borderRadius: 10,
     position: 'relative',
-    top: 12,
+    top: 24,
     [theme.breakpoints.down('sm')]: {
       height: 84,
       width: 'calc(100% - 32px)'
@@ -104,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 404,
       width: 103,
       top: -4,
-      left: '11%'
+      left: '2%'
     }
   },
   legendWrapper: {
@@ -116,36 +117,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 'calc(100% - 20px)',
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-
-    },
     [theme.breakpoints.down('xs')]: {
-      height: '100%',
       top: 0,
-      right: 68,
-      alignItems: 'flex-start'
+      left: -14,
+      width: '43%',
+      alignItems: 'flex-end',
+      height: 377
     }
   },
   legendList: {
-    margin: 0,
-    width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    position: 'relative',
+    position: 'absolute',
     [theme.breakpoints.down('xs')]: {
-      width: '55%',
-      left: 120,
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start'
+      display: 'block',
+      height: '100%',
+      width: '100%',
+      left: -25
     }
   },
 
   legendItem: {
-    marginBottom: -5,
-    marginRight: 25,
+    marginBottom: -10,
+    marginRight: 35,
     fontSize: 18,
     lineHeight: '40px',
     fontFamily: 'Inter',
@@ -153,7 +148,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: 15
     },
     [theme.breakpoints.down('xs')]: {
-      marginBottom: -3,
+      marginBottom: -5,
       fontSize: 16
     }
   }
