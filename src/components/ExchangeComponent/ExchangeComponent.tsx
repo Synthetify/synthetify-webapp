@@ -69,9 +69,10 @@ export const swapOutAmountCurrencyName = (
   tokenFromIndex: number | null,
   tokens: ExchangeTokensWithBalance[]
 ) => {
-  const firstSymbol = tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol}`
-  const secondSymbol = tokenFromIndex === null ? '' : `${tokens[tokenFromIndex].symbol}`
-  return reserved ? `${firstSymbol} per ${secondSymbol}` : `${secondSymbol} per ${firstSymbol}`
+  const per = tokenToIndex === null || tokenFromIndex === null ? '' : 'per'
+  const firstSymbol = tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} `
+  const secondSymbol = tokenFromIndex === null ? '' : `${tokens[tokenFromIndex].symbol} `
+  return reserved ? `${firstSymbol} ${per} ${secondSymbol}` : `${secondSymbol} ${per} ${firstSymbol}`
 }
 
 export interface IExchangeComponent {
