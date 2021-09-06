@@ -216,7 +216,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   arrowsIcon: {
     backgroundSize: '4096px 1850px',
-    maxWidth: '100%'
+    maxWidth: '100%',
+    cursor: 'pointer'
   },
   swapButton: {
     width: '100%',

@@ -63,6 +63,18 @@ export const calculateSwapOutAmountReversed = (
   }
 }
 
+export const swapOutAmountCurrencyName = (
+  reserved: boolean,
+  tokenToIndex: number | null,
+  tokenFromIndex: number | null,
+  tokens: ExchangeTokensWithBalance[]
+) => {
+  const per = tokenToIndex === null || tokenFromIndex === null ? '' : 'per'
+  const firstSymbol = tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} `
+  const secondSymbol = tokenFromIndex === null ? '' : `${tokens[tokenFromIndex].symbol} `
+  return reserved ? `${firstSymbol} ${per} ${secondSymbol}` : `${secondSymbol} ${per} ${firstSymbol}`
+}
+
 export interface IExchangeComponent {
   tokens: ExchangeTokensWithBalance[]
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
@@ -87,6 +99,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
+  const [isReversed, setIsReversed] = React.useState<boolean>(false)
 
   const [rotates, setRotates] = React.useState<number>(0)
 
@@ -338,7 +351,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           />
         </Grid>
       </Grid>
-
       <Grid container item className={classes.numbersField}>
         <Grid item>
           <Grid container item justifyContent='space-between' alignItems='center'>
@@ -384,14 +396,17 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Grid container item alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
             <Grid item className={classes.arrowsBg}>
-              <CardMedia className={classes.arrowsIcon} image={Arrows} component='img' />
+              <CardMedia className={classes.arrowsIcon} image={Arrows} component='img' onClick={() => {
+                setIsReversed(!isReversed)
+              }}/>
             </Grid>
           </Grid>
           <Typography className={classes.numbersFieldAmount}>
             <AnimatedNumber
               value={(() => {
                 if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
-                return calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', fee)
+                const Amountvalue = isReversed ? calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', fee) : calculateSwapOutAmount(tokens[tokenToIndex], tokens[tokenFromIndex], '1', fee)
+                return Amountvalue
               })()}
               duration={300}
               formatValue={
@@ -400,7 +415,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   : (value: string) => Number(value).toFixed(6)
               }
             />
-            {' '}{tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} per `}{tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : 'xUSD'}
+            {' '}{swapOutAmountCurrencyName(isReversed, tokenToIndex, tokenFromIndex, tokens)}
           </Typography>
         </Grid>
       </Grid>
