@@ -3,7 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    backgroundColor: '#1D1D49',
+    backgroundColor: colors.navy.component,
     width: 855,
     height: 333,
     borderRadius: 10,
@@ -35,7 +35,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: 24,
     top: 12,
     height: 80,
-    width: 'calc(100% - 14px)'
+    width: 'calc(100% - 14px)',
+    [theme.breakpoints.down('xs')]: {
+      top: 4
+    }
   },
   title: {
     fontSize: '22px',
@@ -61,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   chartWrapper: {
     width: 'calc(100% - 13.8px)',
     height: 85,
-    backgroundColor: '#0C0D2C',
+    backgroundColor: colors.navy.background,
     borderRadius: 10,
     overflow: 'hidden',
 
@@ -89,11 +92,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       height: 404,
       width: 103,
-      top: 0,
-      left: '15%'
+      top: -4,
+      left: '10%'
+
     }
   },
-
   legendWrapper: {
     height: 120,
     margin: 0,
@@ -101,11 +104,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 18,
     position: 'relative',
     width: 'calc(100% - 20px)',
-    alignItems: 'center',
     display: 'flex',
-
+    alignItems:'center',
     [theme.breakpoints.down('xs')]: {
-      top: 0
+      height: '100%',
+      top: 0,
+      left: -10,
+      alignItems: 'flex-start'
     }
   },
   legendList: {
@@ -117,7 +122,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     position: 'relative',
     [theme.breakpoints.down('xs')]: {
-      left: '2%',
+      left: '22%',
       flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start'

@@ -1,89 +1,30 @@
 import React from 'react'
 import { ResponsiveBar } from '@nivo/bar'
-import { colors } from '@static/theme'
+import { colors, theme } from '@static/theme'
 import { Grid, Typography } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 
-interface CoinToChart {
+export interface CoinToChart {
+  // [index: number]: {
   name: string
   percent: number
   color: string
+  // }
 }
 
-export const StatsCollateralChart: React.FC = () => {
+export const StatsCollateralChart: React.FC = ({ data }) => {
   const classes = useStyles()
-
-  const data: CoinToChart[] = [
-    {
-      name: 'xBTC',
-      percent: 20,
-      color: '#6372BE'
-    },
-    {
-      name: 'xETH',
-      percent: 15,
-      color: '#40BFA0'
-    },
-    {
-      name: 'xSOL',
-      percent: 10,
-      color: '#117098'
-    },
-    {
-      name: 'xBNB',
-      percent: 7,
-      color: '#BFB665'
-    },
-
-    {
-      name: 'xFTT',
-      percent: 6.8,
-      color: '#1F70CF'
-    },
-    {
-      name: 'xUSD',
-      percent: 5,
-      color: '#936BC7'
-    },
-    {
-      name: 'xSRM',
-      percent: 5,
-      color: '#39D3F5'
-    },
-    {
-      name: 'xLTC',
-      percent: 4.5,
-      color: '#DADCF1'
-    },
-    {
-      name: 'xAAVE',
-      percent: 3.3,
-      color: '#C76BA2'
-    },
-    {
-      name: 'xDOGE',
-      percent: 2.9,
-      color: '#D49347'
-    },
-    {
-      name: 'xLUNA',
-      percent: 2.2,
-      color: '#DF3C3C'
-    }
-  ]
 
   const getCoinsName = (data: CoinToChart[]) => {
     return data.map(coin => coin.name)
   }
 
   const getNameAndValue = (data: CoinToChart[]) => {
-    const helperArray = []
-    helperArray.push(data.reduce((object, { name, percent }) => ({
+    return [data.reduce((object, { name, percent }) => ({
       [name]: percent,
       ...object
-    }), {}))
-    return helperArray
+    }), {})]
   }
 
   const handleMouseEnter = (d: any, e: any) => {
@@ -115,7 +56,8 @@ export const StatsCollateralChart: React.FC = () => {
     return (coin.color)
   })
 
-  const layoutVertical = useMediaQuery('(min-width:600px)') // under 600px return false
+  const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs')) // under 600px return false
+
   return (
     <>
       <div className={classes.root}>
