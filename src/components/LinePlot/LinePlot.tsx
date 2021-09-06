@@ -57,7 +57,7 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
   }
 
   return (
-    <Grid className={classes.linePlot} justifyContent='center'>
+    <Grid className={classes.linePlot} >
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
         margin={{ top: 10, right: 0, bottom: 0, left: 0 }}

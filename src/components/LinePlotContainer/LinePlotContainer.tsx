@@ -38,7 +38,6 @@ export const LinePlotContainer: React.FC = () => {
       )
     }
     if (type === 'W') {
-      console.log(timestamp)
       setDataPlot(
         data.data.filter(element => {
           return element.x > timestamp - 604800000
@@ -69,7 +68,7 @@ export const LinePlotContainer: React.FC = () => {
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
         <Grid container item className={classes.optionLabel}>
-          <Grid lg={8} md={8} xs={5} className={classes.selectContainer}>
+          <Grid item lg={8} md={8} xs={5} className={classes.selectContainer}>
             <Grid className={classes.hoverGrid}>
               <Button
                 className={classes.buttonSelect}
