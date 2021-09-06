@@ -19,6 +19,7 @@ export interface IProps {
 }
 export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }) => {
   const classes = useStyles()
+  console.log(Number(value))
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent className={classes.cardContent}>
@@ -57,8 +58,8 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
             }}
           />
           {Number(value) >= 10000
-            ? 'K'
-            : (Number(value) >= 1000000 ? 'M' : '')
+            ? (Number(value) >= 1000000 ? 'M' : 'K')
+            : ''
           }
           {sign}
         </Typography>

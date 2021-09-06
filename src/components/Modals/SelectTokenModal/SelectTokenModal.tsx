@@ -133,8 +133,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                           <Typography className={classes.tokenBalance}>
                           Balance: {formatNumbers(printBN(token.balance, token.decimals))}
                             {+printBN(token.balance, token.decimals) >= 10000
-                              ? 'K'
-                              : (+printBN(token.balance, token.decimals) >= 1000000 ? 'M' : '')
+                              ? (+printBN(token.balance, token.decimals) >= 1000000 ? 'M' : 'K')
+                              : ''
                             }
                           </Typography>
                         </Grid>

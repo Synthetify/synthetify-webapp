@@ -211,8 +211,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                     formatValue={formatNumbers}
                   />
                   {+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 10000
-                    ? 'K'
-                    : (+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 1000000 ? 'M' : '')
+                    ? (+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 1000000 ? 'M' : 'K')
+                    : ''
                   }
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
@@ -296,8 +296,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                     formatValue={formatNumbers}
                   />
                   {+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale) >= 10000
-                    ? 'K'
-                    : (+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale) >= 1000000 ? 'M' : '')
+                    ? (+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale) >= 1000000 ? 'M' : 'K')
+                    : ''
                   }
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>

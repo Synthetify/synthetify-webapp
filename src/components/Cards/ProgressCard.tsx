@@ -113,8 +113,8 @@ export const ProgressCard: React.FC<IProps> = ({
               }}
             />
             {max >= 1000
-              ? 'K'
-              : (max >= 1000000 ? 'M' : '')
+              ? (max >= 1000000 ? 'M' : 'K')
+              : ''
             }
             {sign}
           </Typography>

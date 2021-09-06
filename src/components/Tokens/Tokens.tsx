@@ -85,8 +85,8 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
                   }}
                 />
                 {sum >= 10000
-                  ? 'K'
-                  : (sum >= 1000000 ? 'M' : '')
+                  ? (sum >= 1000000 ? 'M' : 'K')
+                  : ''
                 }
               </Typography>
             )

@@ -51,8 +51,8 @@ export const Item: React.FC<IToken> = ({ ticker, balance, decimals, usdValue, as
         <Typography className={classes.font}>
           <AnimatedNumber value={printBN(balance, assetDecimals)} duration={300} formatValue={formatNumbers}/>
           {+printBN(balance, assetDecimals) >= 10000
-            ? 'K'
-            : (+printBN(balance, assetDecimals) >= 1000000 ? 'M' : '')
+            ? (+printBN(balance, assetDecimals) >= 1000000 ? 'M' : 'K')
+            : ''
           }
         </Typography>
       </Grid>
@@ -60,8 +60,8 @@ export const Item: React.FC<IToken> = ({ ticker, balance, decimals, usdValue, as
         <Typography className={classes.font}>
           $ <AnimatedNumber value={printBN(usdValue, decimals)} duration={300} formatValue={formatNumbers}/>
           {+printBN(usdValue, decimals) >= 10000
-            ? 'K'
-            : (+printBN(usdValue, decimals) >= 1000000 ? 'M' : '')
+            ? (+printBN(usdValue, decimals) >= 1000000 ? 'M' : 'K')
+            : ''
           }
         </Typography>
       </Grid>

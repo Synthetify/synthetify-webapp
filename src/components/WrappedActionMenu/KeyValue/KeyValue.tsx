@@ -47,8 +47,8 @@ export const KeyValue: React.FC<IProps> = ({
           return (num / 1000000).toFixed(3)
         }}/>
         {+printBN(value, decimal) >= 10000
-          ? 'K'
-          : (+printBN(value, decimal) >= 1000000 ? 'M' : '')
+          ? (+printBN(value, decimal) >= 1000000 ? 'M' : 'K')
+          : ''
         }
       </Typography>
     </>
