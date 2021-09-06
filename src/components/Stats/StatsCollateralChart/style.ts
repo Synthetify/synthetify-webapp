@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 0,
     padding: 0,
     [theme.breakpoints.down('sm')]: {
-      height: 327
+      height: 327,
+      width: 855
     },
     [theme.breakpoints.down('xs')]: {
       width: 413,
@@ -22,11 +23,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   statsWrapper: {
+    width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100% - 50px)',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      marginLeft: '10%'
     }
   },
   headerWrapper: {
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: 24,
     top: 12,
     height: 80,
-    width: 'calc(100% - 14px)',
+    width: 'calc(100% - 26px)',
     [theme.breakpoints.down('xs')]: {
       top: 4
     }
@@ -67,7 +71,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.navy.background,
     borderRadius: 10,
     overflow: 'hidden',
-
+    [theme.breakpoints.down('sm')]: {
+      width: 'calc(100% - 8.06px)',
+      height: 'calc(100% - 8px)'
+    },
     [theme.breakpoints.down('xs')]: {
       width: 95,
       height: 'calc(100% - 10px)'
@@ -88,13 +95,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     borderRadius: 10,
     position: 'relative',
-    top: 17,
+    top: 12,
+    [theme.breakpoints.down('sm')]: {
+      height: 84,
+      width: 'calc(100% - 32px)'
+    },
     [theme.breakpoints.down('xs')]: {
       height: 404,
       width: 103,
       top: -4,
-      left: '10%'
-
+      left: '11%'
     }
   },
   legendWrapper: {
@@ -105,11 +115,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     width: 'calc(100% - 20px)',
     display: 'flex',
-    alignItems:'center',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+
+    },
     [theme.breakpoints.down('xs')]: {
       height: '100%',
       top: 0,
-      left: -10,
+      right: 68,
       alignItems: 'flex-start'
     }
   },
@@ -122,7 +135,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     position: 'relative',
     [theme.breakpoints.down('xs')]: {
-      left: '22%',
+      width: '55%',
+      left: 120,
       flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start'
@@ -130,10 +144,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   legendItem: {
+    marginBottom: -5,
     marginRight: 25,
     fontSize: 18,
     lineHeight: '40px',
     fontFamily: 'Inter',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 15
+    },
     [theme.breakpoints.down('xs')]: {
       marginBottom: -3,
       fontSize: 16
