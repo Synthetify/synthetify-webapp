@@ -86,10 +86,10 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
         fontSize: 13,
         padding: 0
       },
-      color: colors.navy.darkGrey,
+      color: colors.navy.info,
 
       '&:hover': {
-        color: colors.navy.info
+        color: colors.navy.grey
       }
     },
     selected: {
