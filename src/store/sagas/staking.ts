@@ -100,7 +100,7 @@ export function* handleWithdraw(): Generator {
     yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Succesfully withdraw collateral.',
+        message: 'Succesfully withdrawn collateral.',
         variant: 'success',
         persist: false
       })

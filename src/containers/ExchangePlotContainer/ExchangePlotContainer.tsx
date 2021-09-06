@@ -11,18 +11,18 @@ const ExchangePlotContainer: React.FC<{ token?: ExchangeTokensWithBalance }> = (
     [...Array(25).keys()].map((index) => ({
       x: firstTimestamp - (index * 1000 * 60 * 60),
       y: 1
-    }))
+    })).reverse()
   )
   const binanceClient = Binance()
 
   useEffect(() => {
+    const timestamp = Date.now()
     if ((!token) || (token.symbol === 'xUSD')) {
-      const timestamp = Date.now()
       setData(
         [...Array(25).keys()].map((index) => ({
           x: timestamp - (index * 1000 * 60 * 60),
           y: 1
-        }))
+        })).reverse()
       )
 
       return
@@ -33,12 +33,12 @@ const ExchangePlotContainer: React.FC<{ token?: ExchangeTokensWithBalance }> = (
       interval: '1h',
       limit: 25
     }).then((candles) => {
-      setData(
-        candles.map((candle) => ({
-          x: candle.closeTime,
-          y: +candle.close
-        }))
-      )
+      const newData = candles.map((candle) => ({
+        x: candle.closeTime,
+        y: +candle.close
+      }))
+      newData[24].x = timestamp // necessary because closeTime on last candle is greater than actual current timestamp
+      setData(newData)
     }).catch(() => {})
   }, [token?.symbol])
 

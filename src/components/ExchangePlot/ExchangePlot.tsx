@@ -21,6 +21,11 @@ interface IProps {
   data: Array<{ x: number, y: number }>
 }
 
+interface IDataItem {
+  x: number,
+  y: number
+}
+
 const ExchangePlot: React.FC<IProps> = ({
   tokenName,
   supply,
@@ -33,6 +38,12 @@ const ExchangePlot: React.FC<IProps> = ({
 
   const copyAddress = async () => {
     await navigator.clipboard.writeText(assetAddress.toString())
+  }
+
+  const isDecreasing = () => {
+    const firstDataValue: IDataItem = [...data].pop() as IDataItem
+    const lastDataValue: IDataItem = [...data].shift() as IDataItem
+    return firstDataValue.y >= lastDataValue.y
   }
 
   const getPlotMin = () => {
@@ -158,7 +169,7 @@ const ExchangePlot: React.FC<IProps> = ({
           enablePoints={false}
           crosshairType="bottom"
           useMesh={true}
-          colors={[colors.green.main]}
+          colors={isDecreasing() ? colors.green.main : colors.red.main }
           defs={[
             linearGradientDef(
               'gradientA',
@@ -172,7 +183,7 @@ const ExchangePlot: React.FC<IProps> = ({
           tooltip={({ point: { data: { x, y } } }) => (
             <div className={classes.tooltipRoot}>
               <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
-              <Typography className={classes.tooltipValue}>${(y as number).toFixed(2)}</Typography>
+              <Typography className={classes.tooltipValue} style={{ color: isDecreasing() ? colors.green.main : colors.red.main }}>${(y as number).toFixed(2)}</Typography>
             </div>
           )}
           theme={{
