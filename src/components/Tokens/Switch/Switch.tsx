@@ -47,10 +47,10 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
     fontSize: 19,
     minHeight: 60,
     minWidth: '50%',
-    color: colors.navy.darkGrey,
+    color: colors.navy.info,
 
     '&:hover': {
-      color: colors.navy.info
+      color: colors.navy.grey
     }
   },
   selected: ({ value }) => ({
