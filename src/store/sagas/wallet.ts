@@ -110,10 +110,15 @@ export function* handleAirdrop(): Generator {
 
   const allCollaterals = yield* select(collaterals)
   const snyToken = Object.values(allCollaterals)[0]
+  const stSolToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'stSOL')
   try {
-    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress)
+    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
+
+    if (stSolToken) {
+      yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
+    }
   } catch (error) {
-    if (error.message === 'Signature request denied') return
+    if (error instanceof Error && error.message === 'Signature request denied') return
     console.error(error)
     return put(
       snackbarsActions.add({

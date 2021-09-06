@@ -112,15 +112,13 @@ export const collateralAccountsArray = createSelector(
 
     const wSOL = Object.values(allCollaterals).find(asset => asset.symbol === 'WSOL')
 
-    if (wSOL && accounts.length) {
+    if (wSOL) {
       accounts.push({
         symbol: wSOL.symbol,
         assetDecimals: wSOL.reserveBalance.scale,
         usdValue: exchangeAssets[wSOL.assetIndex].price.val
           .mul(wSOLBalance)
-          .mul(new BN(10 ** wSOL.reserveBalance.scale))
-          .div(new BN(10 ** (exchangeAssets[wSOL.assetIndex].price.scale)))
-          .div(new BN(10 ** wSOL.reserveBalance.scale)),
+          .div(new BN(10 ** (exchangeAssets[wSOL.assetIndex].price.scale))),
         decimals: wSOL.reserveBalance.scale,
         programId: wSOL.collateralAddress,
         balance: wSOLBalance,
@@ -177,21 +175,44 @@ export const userMaxBurnToken = (assetAddress: PublicKey) =>
 
 export const userMaxDeposit = (assetAddress: PublicKey) =>
   createSelector(tokenBalance(assetAddress), collaterals, balance, (assetBalance, allCollaterals, wSOLBalance) => {
+    if (!allCollaterals[assetAddress.toString()]) {
+      return {
+        maxDeposit: new BN(0),
+        decimals: 6
+      }
+    }
+
     if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
-      const newBalance = wSOLBalance.sub(
+      let newBalance = wSOLBalance.sub(
         new BN(21 *
           (10 **
             (allCollaterals[assetAddress.toString()].reserveBalance.scale - 4)
           )
         )
       )
+      newBalance = newBalance.lt(
+        allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+      )
+        ? newBalance
+        : allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
       return {
-        balance: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
+        maxDeposit: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
         decimals: allCollaterals[assetAddress.toString()].reserveBalance.scale
       }
     }
 
-    return assetBalance
+    return {
+      decimals: assetBalance.decimals,
+      maxDeposit: assetBalance.balance.lt(
+        allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+      )
+        ? assetBalance.balance
+        : allCollaterals[assetAddress.toString()].maxCollateral.val
+          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+    }
   })
 
 export const solanaWalletSelectors = {

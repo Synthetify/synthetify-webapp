@@ -1,21 +1,27 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
-  root: {
-    padding: '0 20px',
-    '& > *': {
-      marginTop: 15
-    }
-  },
+const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     background: colors.navy.navButton,
-    marginTop: 10,
-    marginBottom: 10
+    marginTop: 22
   },
   button: {
     fontSize: 16,
     width: 130
+  },
+  amount: {
+    marginTop: 24,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 16
+    }
+  },
+  buttonsWrapper: {
+    marginTop: 24
+  },
+  line: {
+    marginTop: 22
   }
 }))
 

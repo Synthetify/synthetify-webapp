@@ -35,6 +35,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     xSOL: 'Synthetic Solana',
     xSRM: 'Synthetic Serum',
     xUSD: 'Synthetic USD',
+    stSOL: 'Staked Solana',
     WSOL: 'Wrapped Solana'
   }
 
@@ -126,17 +127,20 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
                       <Typography className={classes.tokenDescrpiption}>{descrpitionForSymbol[token.symbol] ?? 'Asset'}</Typography>
                     </Grid>
-                    {(token.balance && token.decimals) && (
-                      <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
-                        <Typography className={classes.tokenBalance}>
+                    {(token.balance && token.decimals)
+                      ? (
+                        <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
+                          <Typography className={classes.tokenBalance}>
                           Balance: {formatNumbers(printBN(token.balance, token.decimals))}
-                          {+printBN(token.balance, token.decimals) >= 10000
-                            ? 'K'
-                            : (+printBN(token.balance, token.decimals) >= 1000000 ? 'M' : '')
-                          }
-                        </Typography>
-                      </Grid>
-                    )}
+                            {+printBN(token.balance, token.decimals) >= 10000
+                              ? 'K'
+                              : (+printBN(token.balance, token.decimals) >= 1000000 ? 'M' : '')
+                            }
+                          </Typography>
+                        </Grid>
+                      )
+                      : null
+                    }
                   </Grid>
                 ))}
             </CustomScrollbar>

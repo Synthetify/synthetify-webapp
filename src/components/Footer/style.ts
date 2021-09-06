@@ -1,26 +1,33 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   fixedWrapper: {
     position: 'fixed',
     width: 'fit-content',
-    marginRight: 22,
-    marginBottom: 22,
-    bottom: 0,
-    right: 0
+    bottom: 22,
+    right: 22
   },
   container: {
     justifyContent: 'center',
     backgroundColor: colors.navy.background,
-    padding: 12
+    paddingBlock: 12
   },
   socialMedia: {
     width: 32,
     height: 32,
-    marginLeft: 9,
     backgroundColor: 'transparent',
     cursor: 'pointer',
+
+    [theme.breakpoints.only('md')]: {
+      height: 43,
+      width: 43
+    },
+
+    '&:not(:first-child)': {
+      marginLeft: 9
+    },
+
     '&:hover path': {
       // possible in future
     }

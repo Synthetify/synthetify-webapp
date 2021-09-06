@@ -7,10 +7,17 @@ export interface IProps {
   onChange: (newValue: number) => void
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   tabs: {
     borderRadius: 10,
     backgroundColor: '#060620'
+  },
+  wrapper: {
+    maxWidth: 320,
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 414
+    }
   }
 }))
 
@@ -32,7 +39,7 @@ const useTabsStyles = makeStyles<Theme, { value: number }>(() => ({
   }
 }))
 
-const useSingleTabStyles = makeStyles<Theme, { value: number }>((theme: Theme) => ({
+const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
   root: {
     zIndex: 1,
     textTransform: 'capitalize',
@@ -40,18 +47,20 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>((theme: Theme) =
     fontSize: 19,
     minHeight: 60,
     minWidth: '50%',
-    [theme.breakpoints.down('sm')]: {
-      padding: 5
-    },
-    [theme.breakpoints.down('xs')]: {
-      padding: 0
-    },
-    color: colors.navy.darkGrey
+    color: colors.navy.darkGrey,
+
+    '&:hover': {
+      color: colors.navy.info
+    }
   },
   selected: ({ value }) => ({
     fontWeight: 600,
     color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background,
-    transition: 'color 300ms'
+    transition: 'color 300ms',
+
+    '&:hover': {
+      color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background
+    }
   })
 }))
 
@@ -66,7 +75,7 @@ export const Switch: React.FC<IProps> = ({ onChange }) => {
   }
 
   return (
-    <Grid style={{ maxWidth: 414 }}>
+    <Grid className={classes.wrapper}>
       <Grid className={classes.tabs}>
         <Tabs
           value={value}

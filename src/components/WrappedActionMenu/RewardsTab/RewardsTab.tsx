@@ -148,7 +148,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     }
   } = [
     {
-      name: 'Next round',
+      name: 'Subscription round',
       nonBracket: 'points',
       nonBracketValue: nextRoundPoints,
       bracketValue: calculateTokensBasedOnPoints(
@@ -163,7 +163,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       tooltipPlacement: 'left-end'
     },
     {
-      name: 'Current round',
+      name: 'Staking round',
       nonBracketValue: currentRoundPoints,
       nonBracket: 'points',
       bracketValue: calculateTokensBasedOnPoints(
@@ -178,7 +178,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       tooltipPlacement: 'left'
     },
     {
-      name: 'Finished round',
+      name: 'Claiming round',
       nonBracketValue: finishedRoundPoints,
       nonBracket: 'points',
       bracketValue: calculateTokensBasedOnPoints(
@@ -197,7 +197,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const lines = Object.keys(rewardsLines).map((key, index) => {
     const props = rewardsLines[+key]
     return (
-      <Grid item key={index}>
+      <Grid item key={index} className={classes.line}>
         <RewardsLine {...props} slot={slot} />
         <Divider className={classes.divider} />
       </Grid>
@@ -205,14 +205,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   })
 
   return (
-    <Grid container direction='column' justifyContent='space-around' className={classes.root}>
-      <Grid item>
+    <Grid container direction='column' justifyContent='space-around'>
+      <Grid item className={classes.amount}>
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>
         {lines}
       </Grid>
-      <Grid item container alignItems='center' justifyContent='flex-end' wrap='nowrap'>
+      <Grid item container alignItems='center' justifyContent='flex-end' wrap='nowrap' className={classes.buttonsWrapper}>
         <Grid item>
           <OutlinedButton
             color='secondary'

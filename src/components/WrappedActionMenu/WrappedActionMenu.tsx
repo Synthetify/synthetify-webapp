@@ -23,8 +23,8 @@ export interface IProps {
   depositState: Pick<IDeposit, 'sending' | 'error'>
   burnState: Pick<IBurn, 'sending' | 'error'>
   stakingData: IRewardsProps
-  collaterals: TokenAccounts[]
-  staked: TokenAccounts[]
+  depositTokens: TokenAccounts[]
+  withdrawTokens: TokenAccounts[]
   withdrawCurrency: string
   depositCurrency: string
   onSelectDepositToken?: (chosen: string) => void
@@ -33,6 +33,8 @@ export interface IProps {
   withdrawDecimal: number
   walletConnected: boolean
   noWalletHandler: () => void
+  emptyDepositTokensHandler: () => void
+  emptyWithdrawTokensHandler: () => void
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -50,8 +52,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   burnState,
   depositState,
   stakingData,
-  collaterals,
-  staked,
+  depositTokens,
+  withdrawTokens,
   withdrawCurrency,
   depositCurrency,
   onSelectDepositToken,
@@ -59,7 +61,9 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   depositDecimal,
   withdrawDecimal,
   walletConnected,
-  noWalletHandler
+  noWalletHandler,
+  emptyDepositTokensHandler,
+  emptyWithdrawTokensHandler
 }) => {
   const classes = useStyles()
 
@@ -73,11 +77,12 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency={depositCurrency}
         sending={depositState.sending}
         hasError={!!depositState.error?.length}
-        tokens={collaterals}
+        tokens={depositTokens}
         onSelectToken={onSelectDepositToken}
         showArrowInInput
         walletConnected={walletConnected}
         noWalletHandler={noWalletHandler}
+        emptyTokensHandler={emptyDepositTokensHandler}
       />
     ),
     mint: (
@@ -101,12 +106,13 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency={withdrawCurrency}
         sending={withdrawState.sending}
         hasError={!!withdrawState.error?.length}
-        tokens={staked}
+        tokens={withdrawTokens}
         onSelectToken={onSelectWithdrawToken}
         showArrowInInput
         walletConnected={walletConnected}
         noWalletHandler={noWalletHandler}
         maxBehavior='maxU64'
+        emptyTokensHandler={emptyWithdrawTokensHandler}
       />
     ),
     burn: (

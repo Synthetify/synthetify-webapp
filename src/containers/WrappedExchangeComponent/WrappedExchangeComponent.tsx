@@ -1,14 +1,16 @@
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import React, { useEffect } from 'react'
-import ExchangeComponent from '@components/ExchangeComponent/ExchangeComponent'
 import { useDispatch, useSelector } from 'react-redux'
-import { exchangeTokensWithUserBalance } from '@selectors/solanaWallet'
+import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { effectiveFeeData, swap } from '@selectors/exchange'
 import { actions } from '@reducers/exchange'
+import ExchangeComponent from '@components/ExchangeComponent/ExchangeComponent'
 
-export const WrappedExchangeComponent: React.FC = () => {
-  const tokensWithBalance = useSelector(exchangeTokensWithUserBalance)
+export const WrappedExchangeComponent: React.FC<{
+  tokensWithBalance: ExchangeTokensWithBalance[],
+  onSelectTokenTo: (index: number | null) => void
+}> = ({ tokensWithBalance, onSelectTokenTo }) => {
   const feeData = useSelector(effectiveFeeData)
   const swapData = useSelector(swap)
   const dispatch = useDispatch()
@@ -21,7 +23,6 @@ export const WrappedExchangeComponent: React.FC = () => {
   }, [swapData.txid])
   return (
     <ExchangeComponent
-      swapData={swapData}
       tokens={tokensWithBalance}
       onSwap={(fromToken: PublicKey, toToken: PublicKey, amount: BN) => {
         dispatch(actions.swap({ toToken, fromToken, amount }))
@@ -29,6 +30,7 @@ export const WrappedExchangeComponent: React.FC = () => {
       fee={feeData.fee}
       discountPercent={feeData.discountData.discount}
       nextDiscountThreshold={feeData.discountData.nextThreshold}
+      onSelectTokenTo={onSelectTokenTo}
     />
   )
 }

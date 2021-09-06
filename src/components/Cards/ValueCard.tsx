@@ -21,7 +21,7 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
   const classes = useStyles()
   return (
     <Card className={classes.valueCard} onClick={onClick}>
-      <CardContent>
+      <CardContent className={classes.cardContent}>
         {hint
           ? (
             <MobileTooltip
@@ -33,7 +33,7 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
           )
           : null
         }
-        <Typography className={classes.valueCardTitle} style={{ marginBottom: 18 }}>{name}</Typography>
+        <Typography className={classes.valueCardTitle} style={{ marginBottom: 32 }}>{name}</Typography>
         <Typography className={classes.valueCardAmount}>
           <AnimatedNumber
             value={value}

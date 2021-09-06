@@ -51,10 +51,10 @@ export const ChangeWalletButton: React.FC<IProps> = ({
       <Button
         className={classes.headerButton}
         variant='contained'
-        classes={{ disabled: classes.disabled, startIcon: classes.startIcon }}
+        classes={{ disabled: classes.disabled, startIcon: classes.startIcon, endIcon: classes.innerEndIcon }}
         onClick={handleClick}
         startIcon={startIcon}
-        endIcon={connected && !hideArrow ? <ExpandMoreIcon style={{ minWidth: 20 }} /> : undefined}>
+        endIcon={connected && !hideArrow ? <ExpandMoreIcon className={classes.endIcon} /> : undefined}>
         <Typography className={classes.headerButtonTextEllipsis}>{name}</Typography>
       </Button>
       <ConnectWallet

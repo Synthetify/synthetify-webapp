@@ -4,7 +4,7 @@ import { Grid, CardMedia, IconButton, Divider, Hidden, Button, useMediaQuery } f
 import { MoreHoriz, Menu } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
 import SolletIcon from '@static/svg/sollet.svg'
-import snyIcon from '@static/icons/sny.png'
+import snyIcon from '@static/svg/logo-ic-nav.svg'
 import NavbarButton from '@components/Navbar/Button'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
 import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
@@ -13,9 +13,9 @@ import { blurContent, unblurContent } from '@consts/uiUtils'
 import { SolanaNetworks } from '@consts/static'
 import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
+import { theme } from '@static/theme'
 import useButtonStyles from '../HeaderButton/style'
 import useStyles from './style'
-import { theme } from '@static/theme'
 
 export interface IHeader {
   address: PublicKey

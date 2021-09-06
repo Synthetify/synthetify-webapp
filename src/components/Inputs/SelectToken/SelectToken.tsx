@@ -3,9 +3,9 @@ import { Button, CardMedia } from '@material-ui/core'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import useStyles from './style'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
+import useStyles from './style'
 
 export interface ISelectTokenModal {
   name?: string
@@ -37,7 +37,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   }
 
   return (
-    <div>
+    <>
       <Button
         className={classes.button}
         color='primary'
@@ -45,7 +45,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         onClick={handleClick}
         startIcon={
           !current ? null : (
-            <CardMedia style={{ minWidth: 32, height: 32, marginRight: 2 }} image={icons[current] ?? icons.SNY} />
+            <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
         endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} />}>
@@ -59,7 +59,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
         onSelect={onSelect}
         handleClose={handleClose}
       />
-    </div>
+    </>
   )
 }
 export default SelectToken

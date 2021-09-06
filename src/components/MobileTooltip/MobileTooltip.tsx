@@ -1,4 +1,4 @@
-import { ClickAwayListener, Grid, Hidden, Icon, Tooltip } from '@material-ui/core'
+import { ClickAwayListener, Hidden, Tooltip } from '@material-ui/core'
 import classNames from 'classnames'
 import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
@@ -45,23 +45,21 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   }, [isPopoverOpen])
 
   return (
-    <Grid item>
+    <>
       <Hidden mdDown>
-        <Icon>
-          <Tooltip
-            onOpen={onOpen}
-            classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
-            title={hint}
-            placement={desktopPlacement}
-            interactive={isInteractive}
-          >
-            {anchor}
-          </Tooltip>
-        </Icon>
+        <Tooltip
+          onOpen={onOpen}
+          classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
+          title={hint}
+          placement={desktopPlacement}
+          interactive={isInteractive}
+        >
+          {anchor}
+        </Tooltip>
       </Hidden>
       <Hidden lgUp>
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
-          <Icon onClick={() => setIsPopoverOpen(true)}>
+          <div style={{ lineHeight: 1 }} onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
               classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
               title={hint}
@@ -76,10 +74,10 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
             >
               {anchor}
             </Tooltip>
-          </Icon>
+          </div>
         </ClickAwayListener>
       </Hidden>
-    </Grid>
+    </>
   )
 }
 

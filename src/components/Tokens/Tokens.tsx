@@ -36,7 +36,7 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
         <Switch onChange={(newValue) => setCurrent(newValue)} />
       </Grid>
 
-      <Grid container className={classes.list}>
+      <Grid container>
         <Grid
           container
           alignItems='center'
