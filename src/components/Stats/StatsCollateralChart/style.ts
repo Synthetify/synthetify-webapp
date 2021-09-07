@@ -119,8 +119,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     [theme.breakpoints.down('xs')]: {
       top: 0,
-      left: -14,
-      width: '43%',
+      left: 0,
+      width: '50%',
       alignItems: 'flex-end',
       height: 377
     }
