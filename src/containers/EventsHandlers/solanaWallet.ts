@@ -17,7 +17,7 @@ const SolanaWalletEvents = () => {
   // Solana Main Wallet
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
-    if (!publicKey || !connection || networkStatus !== Status.Initalized) {
+    if (!publicKey || !connection || networkStatus !== Status.Initialized) {
       return
     }
     const connectEvents = () => {
@@ -37,7 +37,7 @@ const SolanaWalletEvents = () => {
   const [initializedAccount, setInitializedAccount] = useState<Set<string>>(new Set())
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
-    if (!connection || walletStat !== Status.Initalized || networkStatus !== Status.Initalized) {
+    if (!connection || walletStat !== Status.Initialized || networkStatus !== Status.Initialized) {
       return
     }
     const connectEvents = () => {

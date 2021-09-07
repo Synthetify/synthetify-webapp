@@ -23,7 +23,7 @@ export const PagesRouter: React.FC = () => {
   // TODO: add more paths to router later
   return (
     <Router>
-      {signerStatus === Status.Initalized && <EventsHandlers />}
+      {signerStatus === Status.Initialized && <EventsHandlers />}
       <div id={toBlur}>
         <HeaderWrapper />
         <Switch>

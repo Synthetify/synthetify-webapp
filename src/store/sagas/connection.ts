@@ -34,7 +34,7 @@ export function* initConnection(): Generator {
         persist: false
       })
     )
-    yield* put(actions.setStatus(Status.Initalized))
+    yield* put(actions.setStatus(Status.Initialized))
     // yield* call(depositCollateral, new BN(4 * 1e8))
     // yield* call(mintUsd, new BN(8 * 1e7))
     // yield* call(handleAirdrop)

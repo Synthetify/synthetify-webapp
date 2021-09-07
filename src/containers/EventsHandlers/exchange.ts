@@ -22,7 +22,7 @@ const ExhcangeEvents = () => {
     if (
       userAccount.address.equals(DEFAULT_PUBLICKEY) ||
       !exchangeProgram ||
-      networkStatus !== Status.Initalized
+      networkStatus !== Status.Initialized
     ) {
       return
     }
@@ -42,7 +42,7 @@ const ExhcangeEvents = () => {
   }, [dispatch, userAccount.address.toString(), exchangeProgram, networkStatus])
 
   React.useEffect(() => {
-    if (!exchangeProgram || networkStatus !== Status.Initalized) {
+    if (!exchangeProgram || networkStatus !== Status.Initialized) {
       return
     }
     const connectEvents = () => {
@@ -60,7 +60,7 @@ const ExhcangeEvents = () => {
     if (
       allAssets.length === 0 ||
       !oracleProgram ||
-      networkStatus !== Status.Initalized ||
+      networkStatus !== Status.Initialized ||
       !connection
     ) {
       return
@@ -81,7 +81,7 @@ const ExhcangeEvents = () => {
   React.useEffect(() => {
     if (
       !exchangeProgram ||
-      networkStatus !== Status.Initalized ||
+      networkStatus !== Status.Initialized ||
       exchangeState.assetsList.equals(DEFAULT_PUBLICKEY)
     ) {
       return
