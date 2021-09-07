@@ -16,7 +16,6 @@ export interface IProps {
 }
 export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }) => {
   const classes = useStyles()
-  console.log(Number(value))
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent className={classes.cardContent}>
