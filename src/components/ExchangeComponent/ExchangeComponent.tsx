@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
-import { printBNtoBN, printBN } from '@consts/utils'
+import { printBNtoBN, printBN, showMorK } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { CardMedia, Divider, Grid, Typography, useMediaQuery } from '@material-ui/core'
 import Swap from '@static/svg/swap.svg'
@@ -224,8 +224,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                     formatValue={formatNumbers}
                   />
                   {+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 10000
-                    ? 'K'
-                    : (+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 1000000 ? 'M' : '')
+                    ? (+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 1000000 ? 'M' : 'K')
+                    : ''
                   }
                   {` ${tokens[tokenFromIndex].symbol}`}
                 </>
@@ -308,10 +308,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                     duration={300}
                     formatValue={formatNumbers}
                   />
-                  {+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale) >= 10000
-                    ? 'K'
-                    : (+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale) >= 1000000 ? 'M' : '')
-                  }
+                  {showMorK(+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale))}
                   {` ${tokens[tokenToIndex].symbol}`}
                 </>
               )

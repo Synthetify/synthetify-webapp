@@ -50,7 +50,7 @@ export function* handleDeposit(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: 'Succesfully deposited collateral.',
+        message: 'Successfully deposited collateral.',
         variant: 'success',
         persist: false
       })
@@ -75,7 +75,7 @@ export function* handleMint(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Succesfully minted xUSD.',
+        message: 'Successfully minted xUSD.',
         variant: 'success',
         persist: false
       })
@@ -100,7 +100,7 @@ export function* handleWithdraw(): Generator {
     yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Succesfully withdrawn collateral.',
+        message: 'Successfully withdrawn collateral.',
         variant: 'success',
         persist: false
       })
@@ -124,7 +124,7 @@ export function* handleBurn(): Generator {
     yield* put(actions.burnDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Succesfully burned token.',
+        message: 'Successfully burned token.',
         variant: 'success',
         persist: false
       })
