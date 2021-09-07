@@ -77,7 +77,7 @@ export function* getToken(tokenAddress: PublicKey): SagaGenerator<Token> {
 
 export function* handleAirdrop(): Generator {
   const walletStatus = yield* select(status)
-  if (walletStatus !== Status.Initalized) {
+  if (walletStatus !== Status.Initialized) {
     yield put(
       snackbarsActions.add({
         message: 'Connect your wallet first',
@@ -202,7 +202,7 @@ export function* init(): Generator {
   yield* put(actions.setAddress(wallet.publicKey))
   const balance = yield* call(getBalance, wallet.publicKey)
   yield* put(actions.setBalance(balance))
-  yield* put(actions.setStatus(Status.Initalized))
+  yield* put(actions.setStatus(Status.Initialized))
   yield* call(fetchTokensAccounts)
   const exchangeProgram = yield* call(getExchangeProgram)
   const address = yield* call(

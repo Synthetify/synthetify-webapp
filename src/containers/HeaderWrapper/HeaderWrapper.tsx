@@ -38,7 +38,7 @@ export const HeaderWrapper: React.FC = () => {
         dispatch(walletActions.connect(chosen))
       }}
       landing={location.pathname.substr(1)}
-      walletConnected={walletStatus === Status.Initalized}
+      walletConnected={walletStatus === Status.Initialized}
       onFaucet={() => { dispatch(walletActions.airdrop()) }}
       onDisconnectWallet={() => { dispatch(walletActions.disconnect()) }}
       typeOfWallet={typeOfWallet}
