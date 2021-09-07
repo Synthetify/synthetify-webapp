@@ -127,9 +127,9 @@ export const ActionMenuContainer: React.FC = () => {
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => dispatch(actions.withdrawRewards())
       }}
-      depositTokens={(walletStatus === Status.Initalized) ? userCollaterals : []}
+      depositTokens={(walletStatus === Status.Initialized) ? userCollaterals : []}
       withdrawTokens={userStaked}
-      depositCurrency={(walletStatus === Status.Initalized) ? (userCollaterals[depositIndex]?.symbol ?? 'SNY') : 'SNY'}
+      depositCurrency={(walletStatus === Status.Initialized) ? (userCollaterals[depositIndex]?.symbol ?? 'SNY') : 'SNY'}
       withdrawCurrency={userStaked[withdrawIndex]?.symbol ?? 'SNY'}
       onSelectDepositToken={(chosen) => {
         setDepositIndex(userCollaterals.findIndex(token => token.symbol === chosen))
@@ -139,7 +139,7 @@ export const ActionMenuContainer: React.FC = () => {
       }}
       depositDecimal={depositDecimal}
       withdrawDecimal={userStaked[withdrawIndex]?.decimals ?? 6}
-      walletConnected={walletStatus === Status.Initalized}
+      walletConnected={walletStatus === Status.Initialized}
       noWalletHandler={() => dispatch(
         snackbarActions.add({
           message: 'Connect your wallet first',
