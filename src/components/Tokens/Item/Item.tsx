@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardMedia, Grid, Typography } from '@material-ui/core'
 import BN from 'bn.js'
-import { printBN } from '@consts/utils'
+import { printBN, showMorK } from '@consts/utils'
 import useStyles from './style'
 import icons from '@static/icons'
 import AnimatedNumber from '@components/AnimatedNumber'
@@ -50,19 +50,13 @@ export const Item: React.FC<IToken> = ({ ticker, balance, decimals, usdValue, as
       <Grid className={classes.column} container item alignItems='center'>
         <Typography className={classes.font}>
           <AnimatedNumber value={printBN(balance, assetDecimals)} duration={300} formatValue={formatNumbers}/>
-          {+printBN(balance, assetDecimals) >= 10000
-            ? (+printBN(balance, assetDecimals) >= 1000000 ? 'M' : 'K')
-            : ''
-          }
+          {showMorK(+printBN(balance, assetDecimals))}
         </Typography>
       </Grid>
       <Grid className={classes.column} container item alignItems='center'>
         <Typography className={classes.font}>
           $ <AnimatedNumber value={printBN(usdValue, decimals)} duration={300} formatValue={formatNumbers}/>
-          {+printBN(usdValue, decimals) >= 10000
-            ? (+printBN(usdValue, decimals) >= 1000000 ? 'M' : 'K')
-            : ''
-          }
+          {showMorK(+printBN(usdValue, decimals))}
         </Typography>
       </Grid>
     </Grid>
