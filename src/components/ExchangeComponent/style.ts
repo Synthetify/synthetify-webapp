@@ -1,5 +1,4 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { Brightness1 } from '@material-ui/icons'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -85,7 +84,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover $swapIcon': {
       opacity: 0.9
-
     },
 
     [theme.breakpoints.down('xs')]: {
@@ -206,6 +204,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   arrowsBg: {
     borderRadius: 3,
+    padding: 5,
     backgroundColor: colors.navy.navButton,
     marginLeft: 16,
     width: 38,
@@ -220,10 +219,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   arrowsIcon: {
-    backgroundSize: '4096px 1850px',
+    backgroundSize: '1920px 870px',
     maxWidth: '100%',
-    cursor: 'pointer',
-    height: 'inherit'
+    cursor: 'pointer'
   },
   swapButton: {
     width: '100%',
