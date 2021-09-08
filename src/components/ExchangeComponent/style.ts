@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import { Brightness1 } from '@material-ui/icons'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -83,7 +84,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover $swapIcon': {
-      opacity: 0.85
+      opacity: 0.9
+
     },
 
     [theme.breakpoints.down('xs')]: {
