@@ -179,6 +179,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover': {
       cursor: 'pointer'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: 18,
+      width: 18
     }
   },
   circleIcon: {
