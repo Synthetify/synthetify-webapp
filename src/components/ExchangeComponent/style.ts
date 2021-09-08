@@ -205,7 +205,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   arrowsBg: {
-    padding: 5,
     borderRadius: 3,
     backgroundColor: colors.navy.navButton,
     marginLeft: 16,
@@ -223,7 +222,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   arrowsIcon: {
     backgroundSize: '4096px 1850px',
     maxWidth: '100%',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    height: 'inherit'
   },
   swapButton: {
     width: '100%',
