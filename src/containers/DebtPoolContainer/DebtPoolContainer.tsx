@@ -10,12 +10,11 @@ export interface Data {
   value: number
   color: string
   price: number
-  percent: number
+  percent: string
 }
 export interface IProps {
   data: Data[]
 }
-
 export const DebtPoolContainer: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
   return (

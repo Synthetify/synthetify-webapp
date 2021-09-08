@@ -8,12 +8,15 @@ import useStyles from './style'
 export interface CoinToChart {
   // [index: number]: {
   name: string
-  percent: number
+  percent: string
   color: string
   // }
 }
+export interface IProps {
+  data: CoinToChart[]
+}
 
-export const StatsCollateralChart: React.FC = ({ data }) => {
+export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
 
   const getCoinsName = (data: CoinToChart[]) => {

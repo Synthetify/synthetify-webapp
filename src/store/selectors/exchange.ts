@@ -240,4 +240,28 @@ export const getCollateralStructure = createSelector(
   }
 )
 
+export const getSyntheticsStructure = createSelector(
+  synthetics,
+  assets, (allSynthetics, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allSynthetics).map((item) => {
+      const value = new BN(assets[item.assetIndex].price.val).mul(new BN(item.supply.val)).div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value,
+        symbol: item.symbol,
+        scale: item.supply.scale
+      }
+    })
+    const syntheticStructure = values.map((item) => {
+      return {
+        symbol: item.symbol,
+        percent: item.value.toNumber() / totalVal.toNumber() * 100,
+        price: +printBN(item.value, item.scale)
+      }
+    })
+    return syntheticStructure
+  }
+)
+
 export default exchangeSelectors

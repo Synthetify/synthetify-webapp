@@ -6,8 +6,8 @@ interface IProps {}
 
 export const StatisticsPage: React.FC<IProps> = () => {
   return (
-    <div>
+    <>
       <Statistics />
-    </div>
+    </>
   )
 }

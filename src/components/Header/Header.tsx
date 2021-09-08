@@ -42,7 +42,7 @@ export const Header: React.FC<IHeader> = ({
 
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const routes = ['staking', 'exchange']
+  const routes = ['staking', 'stats', 'exchange']
   const [activePath, setActive] = React.useState(landing)
   const [network, setNetwork] = React.useState('Devnet')
 
