@@ -85,7 +85,6 @@ export const collateralValue = createSelector(
     }
 
     let val: BN = new BN(0)
-
     for (const collateral of account.collaterals) {
       const collateralAddress = collateral.collateralAddress.toString()
       if (allCollaterals[collateralAddress]) {
