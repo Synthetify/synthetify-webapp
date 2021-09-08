@@ -7,6 +7,7 @@ import BN from 'bn.js'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import Rewards from '@static/svg/rewards.svg'
+import { colors } from '@static/theme'
 import useStyles from './style'
 
 interface IRewardsAmountProps {
@@ -55,7 +56,7 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
           <>
             <img src={Rewards} alt='' className={classes.rewardsIcon} />
             <Typography className={classes.title}>Rewards</Typography>
-            Amount of SNY tokens you can withdraw
+            <p style={{ margin: 0, color: colors.navy.lightGrey }}>Amount of SNY tokens you can withdraw </p>
           </>
         )}
         anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}

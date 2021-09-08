@@ -4,7 +4,7 @@ import { ResponsiveLine } from '@nivo/line'
 import { colors } from '@static/theme'
 // @ts-expect-error
 import { linearGradientDef } from '@nivo/core'
-
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import useStyles from './style'
 
 interface Data {
@@ -96,6 +96,7 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
           <div className={classes.tooltipRoot}>
             <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
             <Typography className={classes.tooltipValue}>${(y as number).toFixed(2)}</Typography>
+            <FiberManualRecordIcon className={classes.tooltipPoint}/>
           </div>
         )}
         theme={{
