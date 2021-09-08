@@ -219,4 +219,26 @@ export const exchangeSelectors = {
   effectiveFee: effectiveFeeData
 }
 
+export const getCollateralStructure = createSelector(
+  collaterals,
+  assets, (allColaterals, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allColaterals).map((item) => {
+      const value = new BN(assets[item.assetIndex].price.val).mul(new BN(item.reserveBalance.val)).div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value,
+        symbol: item.symbol
+      }
+    })
+    const collateralStructure = values.map((item) => {
+      return {
+        symbol: item.symbol,
+        percent: item.value.toNumber() / totalVal.toNumber() * 100
+      }
+    })
+    return collateralStructure
+  }
+)
+
 export default exchangeSelectors

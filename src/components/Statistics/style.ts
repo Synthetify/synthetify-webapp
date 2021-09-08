@@ -133,6 +133,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: 8,
       lineHeight: '8px'
     }
+  },
+  collList: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    listStyleType: 'disc'
+  },
+  collItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }))
 
