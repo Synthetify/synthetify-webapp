@@ -1,9 +1,10 @@
-import { Divider, Input, InputAdornment } from '@material-ui/core'
+import { Avatar, Divider, Input, InputAdornment } from '@material-ui/core'
 import React, { CSSProperties, useState, useRef } from 'react'
 import classNames from 'classnames'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import { BN } from '@project-serum/anchor'
 import { blurContent, unblurContent } from '@consts/uiUtils'
+import icons from '@static/icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import useStyles from './style'
 
@@ -99,6 +100,7 @@ export const AmountInput: React.FC<IProps> = ({
       }}
     >
       <Divider orientation='vertical' className={classes.divider} />
+      <Avatar alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
       {currency}
       {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
     </InputAdornment>
