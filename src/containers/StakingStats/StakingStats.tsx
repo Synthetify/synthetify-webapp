@@ -8,6 +8,7 @@ import { printBN, transformBN } from '@consts/utils'
 import { collateralValue, debtInterestRate, stakedValue, userDebtValue, userMaxDebtValue } from '@selectors/exchange'
 import ProgressCard from '@components/Cards/ProgressCard'
 import AnimatedNumber from '@components/AnimatedNumber'
+import { colors } from '@static/theme'
 import useStyles from './style'
 
 export const StakingStats: React.FC = () => {
@@ -28,7 +29,7 @@ export const StakingStats: React.FC = () => {
             <>
               <img src={Star} alt='' className={classes.tooltipIcon} />
               <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>Staked value</Typography>
-              Your current USD denominated value of all deposited collaterals. Prices of collaterals are provided by decentralized Pyth oracles.
+              <p style={{ margin: 0, color: colors.navy.lightGrey }}> Your current USD denominated value of all deposited collaterals. Prices of collaterals are provided by decentralized Pyth oracles.</p>
             </>
           )}
           value={transformBN(stakedUserValue)}
@@ -42,8 +43,8 @@ export const StakingStats: React.FC = () => {
             <>
               <img src={Percent} alt='' className={classes.tooltipIcon} />
               <Typography className={classes.tooltipTitle}>Debt status</Typography>
-              <p style={{ marginBlock: 10 }}>Current value of your debt based on the debt of the platform. Max borrow represents the maximal debt that you can mint. Value at the end of the bar is your liquidation threshold - if your debt increases beyond this value, your position can be liquidated.</p>
-              <p style={{ marginBlock: 10 }}>Debt is subject to interest rate</p>
+              <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>Current value of your debt based on the debt of the platform. Max borrow represents the maximal debt that you can mint. Value at the end of the bar is your liquidation threshold - if your debt increases beyond this value, your position can be liquidated.</p>
+              <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>Debt is subject to interest rate</p>
               <b>Intrest rate: {Number(printBN(intrestRate.val, intrestRate.scale)) * 100}%</b>
             </>
           )}

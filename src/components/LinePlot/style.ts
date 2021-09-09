@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '190px'
   },
   tooltipRoot: {
+    width: 122,
     backgroundColor: colors.navy.darkGrey,
     borderRadius: 7,
     border: `0.5px solid ${colors.navy.grey}`,
@@ -17,15 +18,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     fontSize: 10,
     lineHeight: '12px',
-    fontWeight: 700,
+    fontWeight: 'normal',
     marginBottom: 2,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    textAlign: 'center',
   },
   tooltipValue: {
     color: colors.green.main,
     fontSize: 10,
     lineHeight: '12px',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 700,
+  },
+  tooltipPoint: {
+    height: 5,
+    color: colors.navy.veryLightGrey,
+    zIndex: 2,
+    position: 'absolute',
+    bottom: -23,
+    left: 57
   }
 }))
 
