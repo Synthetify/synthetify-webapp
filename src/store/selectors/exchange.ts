@@ -1,5 +1,5 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp, discountData, printBN } from '@consts/utils'
+import { divUp, discountData, printBN, transformBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -223,17 +223,18 @@ export const getCollateralStructure = createSelector(
   assets, (allColaterals, assets) => {
     let totalVal = new BN(0)
     const values = Object.values(allColaterals).map((item) => {
-      const value = new BN(assets[item.assetIndex].price.val).mul(new BN(item.reserveBalance.val)).div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+      const value = assets[item.assetIndex].price.val.mul(item.reserveBalance.val).div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
       totalVal = totalVal.add(value)
       return {
         value,
-        symbol: item.symbol
+        symbol: item.symbol,
+        scale: item.reserveBalance.scale
       }
     })
     const collateralStructure = values.map((item) => {
       return {
         symbol: item.symbol,
-        percent: item.value.toNumber() / totalVal.toNumber() * 100
+        percent: +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100
       }
     })
     return collateralStructure
@@ -245,9 +246,9 @@ export const getSyntheticsStructure = createSelector(
   assets, (allSynthetics, assets) => {
     let totalVal = new BN(0)
     const values = Object.values(allSynthetics).map((item) => {
-      const value = new BN(assets[item.assetIndex].price.val)
-        .mul(new BN(item.supply.val))
-        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      const value = assets[item.assetIndex].price.val.mul(
+        item.supply.val.sub(item.borrowedSupply.val).sub(item.swaplineSupply.val)
+      ).div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
       totalVal = totalVal.add(value)
       return {
         value,
@@ -258,12 +259,11 @@ export const getSyntheticsStructure = createSelector(
     const syntheticStructure = values.map((item) => {
       return {
         symbol: item.symbol,
-        percent: item.value.toNumber() / totalVal.toNumber() * 100,
-        value: +printBN(item.value, item.scale)
+        percent: +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100,
+        value: +transformBN(item.value)
       }
     })
     return syntheticStructure
   }
 )
-
 export default exchangeSelectors

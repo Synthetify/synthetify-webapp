@@ -83,7 +83,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   listItemContainer: {
     width: '100%',
     padding: 0,
-
     '&:hover': {
       '&> div div span': {
         color: '#7574D6'

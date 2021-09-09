@@ -43,7 +43,10 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsRadiusOffset={0}
                 colors={{ datum: 'data.color' }}
                 arcLabelsTextColor='#000000'
-                tooltip={({ datum: { id, color, label } }) => (
+                onMouseEnter={(e) => {
+                  console.log(e)
+                }}
+                tooltip={({ datum: { color, label } }) => (
                   <div
                     className={classes.tooltipContainer}
                     style={{
@@ -56,7 +59,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                           ? { color: colors.black.background, borderColor: color }
                           : { color: ' #ffffff', borderColor: color })
                       }}>
-                      {id}
+                      {label}
                     </div>
                   </div>
                 )}

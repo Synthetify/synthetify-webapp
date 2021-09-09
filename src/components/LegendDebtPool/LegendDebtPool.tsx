@@ -17,7 +17,7 @@ export interface Data {
   value: number
   color: string
   price: number
-  percent: number
+  percent: string
 }
 
 export interface IProps {
@@ -44,7 +44,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                   <ListItemIcon className={classes.listItemIconNumber}>
                     <FiberManualRecordIcon style={{ width: '8px' }} />
                     <NumberFormat
-                      value={element.price}
+                      value={Number(element.price).toFixed(2)}
                       prefix='$'
                       thousandSeparator=' '
                       displayType='text'
