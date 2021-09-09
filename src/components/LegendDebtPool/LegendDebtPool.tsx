@@ -9,8 +9,8 @@ import {
   Typography
 } from '@material-ui/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import NumberFormat from 'react-number-format'
 import useStyle from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
 export interface Data {
   id: string
   label: string
@@ -43,12 +43,10 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                     className={classes.percentNumber}>{`(${element.percent}%)`}</Typography>
                   <ListItemIcon className={classes.listItemIconNumber}>
                     <FiberManualRecordIcon style={{ width: '8px' }} />
-                    <NumberFormat
-                      value={Number(element.price).toFixed(2)}
-                      prefix='$'
-                      thousandSeparator=' '
-                      displayType='text'
-                    />
+                    <AnimatedNumber
+                      value={element.price.toFixed(2)}
+                      duration={500}
+                    />$
                   </ListItemIcon>
                 </Grid>
               </ListItem>

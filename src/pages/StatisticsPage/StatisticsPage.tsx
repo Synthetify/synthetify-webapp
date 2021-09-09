@@ -1,7 +1,7 @@
 import { Container, Grid } from '@material-ui/core'
 import React from 'react'
 import { StatisticsCollateral } from '../../containers/Statistics/StatisticsCollateral'
-import { StatisticsSynthetic } from '../../containers/Statistics/StatisticsSynthetics'
+import DeptPoolContainer from '@containers/DebtPoolContainer/DebtPoolContainer'
 import useStyles from './style'
 
 export const StatisticsPage: React.FC = () => {
@@ -11,7 +11,7 @@ export const StatisticsPage: React.FC = () => {
       <Container>
         <h1 className={classes.header}>Statistics</h1>
         <Grid item className={classes.gridItem}>
-          <StatisticsSynthetic />
+          <DeptPoolContainer />
         </Grid>
         <Grid item>
           <StatisticsCollateral />
