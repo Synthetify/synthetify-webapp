@@ -9,7 +9,7 @@ import { colors } from '@static/theme'
 // @ts-expect-error
 import { linearGradientDef } from '@nivo/core' // ignore error, this function exists, probably has no ts definition
 import { PublicKey } from '@solana/web3.js'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { MAX_U64 } from '@consts/static'
 import useStyles from './style'
 interface IProps {

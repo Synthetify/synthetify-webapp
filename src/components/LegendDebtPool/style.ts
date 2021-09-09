@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   listItemContainer: {
     width: '100%',
-    padding: 0,
+    padding: '16px 0',
     '&:hover': {
       '&> div div span': {
         color: '#7574D6'
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 0,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-evenly'
+    justifyContent: 'center'
   },
   percentNumber: {
     fontSize: 16,
