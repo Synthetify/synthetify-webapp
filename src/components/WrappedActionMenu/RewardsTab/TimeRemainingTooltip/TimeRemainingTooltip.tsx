@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
 import { actions } from '@reducers/solanaConnection'
 import Clock from '@static/svg/clock.svg'
+import { colors } from '@static/theme'
 import useStyles from './style'
 
 export interface ITimeRemainingTooltipInterface {
@@ -60,7 +61,7 @@ export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon' | '
       <Typography className={classes.title}>
         {displayTimeRemaining()}
       </Typography>
-      {hint}
+      <p style={{ margin: 0, color: colors.navy.lightGrey }}>{hint}</p>
     </>
   )
 }

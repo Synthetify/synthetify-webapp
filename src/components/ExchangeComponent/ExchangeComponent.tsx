@@ -50,7 +50,9 @@ export const calculateSwapOutAmountReversed = (
   effectiveFee: Decimal
 ) => {
   const amountAfterFee = printBNtoBN(amount, assetFor.supply.scale).add(
-    printBNtoBN(amount, assetFor.supply.scale).mul(effectiveFee.val).div(new BN(10 ** effectiveFee.scale))
+    printBNtoBN(amount, assetFor.supply.scale)
+      .mul(effectiveFee.val)
+      .div(new BN(10 ** effectiveFee.scale))
   )
   const amountOutBeforeFee = assetFor.price.val.mul(amountAfterFee).div(assetIn.price.val)
 
@@ -72,7 +74,9 @@ export const swapOutAmountCurrencyName = (
   const per = tokenToIndex === null || tokenFromIndex === null ? '' : 'per'
   const firstSymbol = tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} `
   const secondSymbol = tokenFromIndex === null ? '' : `${tokens[tokenFromIndex].symbol} `
-  return reserved ? `${firstSymbol} ${per} ${secondSymbol}` : `${secondSymbol} ${per} ${firstSymbol}`
+  return reserved
+    ? `${firstSymbol} ${per} ${secondSymbol}`
+    : `${secondSymbol} ${per} ${firstSymbol}`
 }
 
 export interface IExchangeComponent {
@@ -95,7 +99,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
-  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(tokens.length ? 0 : null)
+  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(
+    tokens.length ? 0 : null
+  )
   const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
@@ -113,12 +119,26 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
   const updateEstimatedAmount = (amount: string | null = null) => {
     if (tokenFromIndex !== null && tokenToIndex !== null) {
-      setAmountTo(calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], amount ?? amountFrom, fee))
+      setAmountTo(
+        calculateSwapOutAmount(
+          tokens[tokenFromIndex],
+          tokens[tokenToIndex],
+          amount ?? amountFrom,
+          fee
+        )
+      )
     }
   }
   const updateFromEstimatedAmount = (amount: string | null = null) => {
     if (tokenFromIndex !== null && tokenToIndex !== null) {
-      setAmountFrom(calculateSwapOutAmountReversed(tokens[tokenFromIndex], tokens[tokenToIndex], amount ?? amountFrom, fee))
+      setAmountFrom(
+        calculateSwapOutAmountReversed(
+          tokens[tokenFromIndex],
+          tokens[tokenToIndex],
+          amount ?? amountFrom,
+          fee
+        )
+      )
     }
   }
 
@@ -159,7 +179,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
       return num.toFixed(2)
     }
 
-    return (num).toFixed(1)
+    return num.toFixed(1)
   }
 
   const getButtonMessage = (
@@ -184,20 +204,35 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     if (printBNtoBN(amountFrom, tokenFrom.supply.scale).gt(tokenFrom.balance)) {
       return 'Invalid swap amount'
     }
-    if (tokenToIndex !== null && printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))) {
+    if (
+      tokenToIndex !== null &&
+      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))
+    ) {
       return (
         <>
           Max supply reached
           <MobileTooltip
-            hint={(
+            hint={
               <>
                 <img src={ExclamationMark} alt='' className={classes.circleIcon} />
-                <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>Max supply</Typography>
+                <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
+                  Max supply
+                </Typography>
                 Your amount exceeded current supply of token. Available to trade:
-                <b style={{ wordWrap: 'break-word' }}>{` ${printBN(tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val), tokens[tokenToIndex].supply.scale)} ${tokens[tokenToIndex].symbol}`}</b>
+                <b style={{ wordWrap: 'break-word' }}>{` ${printBN(
+                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val),
+                  tokens[tokenToIndex].supply.scale
+                )} ${tokens[tokenToIndex].symbol}`}</b>
               </>
-            )}
-            anchor={<img src={RedExclamationMark} alt='' className={classes.exclamationMark} style={{ marginLeft: 16 }} />}
+            }
+            anchor={
+              <img
+                src={RedExclamationMark}
+                alt=''
+                className={classes.exclamationMark}
+                style={{ marginLeft: 16 }}
+              />
+            }
             tooltipClasses={{ tooltip: classes.supplyTooltip }}
             mobilePlacement='top-end'
             desktopPlacement='top-end'
@@ -211,32 +246,48 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   return (
     <Grid container className={classes.root} direction='column'>
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center' className={classes.tokenComponentInfo}>
+        <Grid
+          item
+          container
+          wrap='nowrap'
+          justifyContent='space-between'
+          alignItems='center'
+          className={classes.tokenComponentInfo}>
           <Typography className={classes.tokenComponentText}>From</Typography>
           <Typography className={classes.tokenMaxText}>
-            {tokenFromIndex !== null
-              ? (
-                <>
-                  Balance:{' '}
-                  <AnimatedNumber
-                    value={printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)}
-                    duration={300}
-                    formatValue={formatNumbers}
-                  />
-                  {+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 10000
-                    ? (+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >= 1000000 ? 'M' : 'K')
-                    : ''
-                  }
-                  {` ${tokens[tokenFromIndex].symbol}`}
-                </>
-              )
-              : ''}
+            {tokenFromIndex !== null ? (
+              <>
+                Balance:{' '}
+                <AnimatedNumber
+                  value={printBN(
+                    tokens[tokenFromIndex].balance,
+                    tokens[tokenFromIndex].supply.scale
+                  )}
+                  duration={300}
+                  formatValue={formatNumbers}
+                />
+                {+printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >=
+                10000
+                  ? +printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale) >=
+                    1000000
+                    ? 'M'
+                    : 'K'
+                  : ''}
+                {` ${tokens[tokenFromIndex].symbol}`}
+              </>
+            ) : (
+              ''
+            )}
           </Typography>
         </Grid>
 
         <Grid item container wrap='nowrap' alignItems='center'>
           <SelectToken
-            tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
+            tokens={tokens.map(({ symbol, balance, supply }) => ({
+              symbol,
+              balance,
+              decimals: supply.scale
+            }))}
             current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
             centered={true}
             onSelect={(chosen: string) =>
@@ -256,8 +307,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             className={classes.input}
             onMaxClick={() => {
               if (tokenFromIndex !== null) {
-                setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
-                updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
+                setAmountFrom(
+                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+                )
+                updateEstimatedAmount(
+                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+                )
               }
             }}
           />
@@ -273,25 +328,51 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             setTokenFromIndex(tokenToIndex)
             onSelectTokenTo(tokenFromIndex)
             setTokenToIndex(tokenFromIndex)
-          }}
-        >
-          <CardMedia className={classes.swapIcon} image={Swap} component='img' style={{ transform: `rotate(${rotates * 180}deg)` }} />
+          }}>
+          <CardMedia
+            className={classes.swapIcon}
+            image={Swap}
+            component='img'
+            style={{ transform: `rotate(${rotates * 180}deg)` }}
+          />
         </div>
       </Grid>
 
       <Grid item container direction='column' className={classes.tokenComponent}>
-        <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center' className={classes.tokenComponentInfo}>
-          <Grid item container wrap='nowrap' justifyContent='space-between' alignItems='center' className={classes.toText}>
+        <Grid
+          item
+          container
+          wrap='nowrap'
+          justifyContent='space-between'
+          alignItems='center'
+          className={classes.tokenComponentInfo}>
+          <Grid
+            item
+            container
+            wrap='nowrap'
+            justifyContent='space-between'
+            alignItems='center'
+            className={classes.toText}>
             <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
             <MobileTooltip
-              hint={(
+              hint={
                 <>
                   <img src={Output} alt='' className={classes.outputIcon} />
                   <Typography className={classes.tooltipTitle}>Estimated output amount</Typography>
-                  <p style={{ marginBlock: 10 }}>Output amount is calculated based on the most up-to-date data from price oracles, so it can change due to the sub-second update intervals of the oracles.</p>
-                  Find out more about oracles on <a href={pyth} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>Pyth Network website.</a>
+                  <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
+                    Output amount is calculated based on the most up-to-date data from price
+                    oracles, so it can change due to the sub-second update intervals of the oracles.
+                  </p>
+                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>Find out more about oracles on</p>
+                  <a
+                    href={pyth}
+                    className={classes.tooltipLink}
+                    target='_blank'
+                    rel='noopener noreferrer'>
+                    Pyth Network website.
+                  </a>
                 </>
-              )}
+              }
               anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
@@ -299,26 +380,32 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             />
           </Grid>
           <Typography className={classes.tokenMaxText}>
-            {tokenFromIndex !== null && tokenToIndex !== null
-              ? (
-                <>
-                  Balance:{' '}
-                  <AnimatedNumber
-                    value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale)}
-                    duration={300}
-                    formatValue={formatNumbers}
-                  />
-                  {showMorK(+printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale))}
-                  {` ${tokens[tokenToIndex].symbol}`}
-                </>
-              )
-              : ''}
+            {tokenFromIndex !== null && tokenToIndex !== null ? (
+              <>
+                Balance:{' '}
+                <AnimatedNumber
+                  value={printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale)}
+                  duration={300}
+                  formatValue={formatNumbers}
+                />
+                {showMorK(
+                  +printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale)
+                )}
+                {` ${tokens[tokenToIndex].symbol}`}
+              </>
+            ) : (
+              ''
+            )}
           </Typography>
         </Grid>
 
         <Grid item container wrap='nowrap' alignItems='center'>
           <SelectToken
-            tokens={tokens.map(({ symbol, balance, supply }) => ({ symbol, balance, decimals: supply.scale }))}
+            tokens={tokens.map(({ symbol, balance, supply }) => ({
+              symbol,
+              balance,
+              decimals: supply.scale
+            }))}
             current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
             centered={true}
             onSelect={(chosen: string) => {
@@ -341,8 +428,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             className={classes.input}
             onMaxClick={() => {
               if (tokenFromIndex !== null && tokenToIndex !== null) {
-                setAmountFrom(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
-                updateEstimatedAmount(printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale))
+                setAmountFrom(
+                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+                )
+                updateEstimatedAmount(
+                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+                )
               }
             }}
           />
@@ -353,18 +444,33 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Grid container item justifyContent='space-between' alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
             <MobileTooltip
-              hint={(
+              hint={
                 <>
                   <img src={Fee} alt='' className={classes.circleIcon} />
                   <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
-                  <p style={{ marginBlock: 10 }}>
+                  <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
                     You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
                     Your current discount on the fee is <b>{discountPercent ?? 0}%</b>.
-                    {typeof nextDiscountThreshold !== 'undefined' && <> You can lower your fee by depositing <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.</>}
+                    {typeof nextDiscountThreshold !== 'undefined' && (
+                      <>
+                        {' '}
+                        You can lower your fee by depositing{' '}
+                        <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.
+                      </>
+                    )}
                   </p>
-                    Find out more about fee tiers in our <a href={docs} className={classes.tooltipLink} target='_blank' rel='noopener noreferrer'>documentation.</a>
+                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>
+                    Find out more about fee tiers in our
+                  </p>{' '}
+                  <a
+                    href={docs}
+                    className={classes.tooltipLink}
+                    target='_blank'
+                    rel='noopener noreferrer'>
+                    documentation.
+                  </a>
                 </>
-              )}
+              }
               anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
               mobilePlacement='top-start'
               desktopPlacement='top-end'
@@ -373,15 +479,14 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           </Grid>
 
           <Grid container item justifyContent='space-between' alignItems='center'>
-            <Typography className={classes.numbersFieldAmount} style={{ marginRight: 12 }}>{+printBN(fee.val.mul(new BN(100)), fee.scale)}%</Typography>
+            <Typography className={classes.numbersFieldAmount} style={{ marginRight: 12 }}>
+              {+printBN(fee.val.mul(new BN(100)), fee.scale)}%
+            </Typography>
             <Typography
               className={classes.discount}
               style={{
-                color: !discountPercent
-                  ? colors.navy.grey
-                  : colors.green.main
-              }}
-            >
+                color: !discountPercent ? colors.navy.grey : colors.green.main
+              }}>
               ({discountPercent ?? 0}%)
             </Typography>
           </Grid>
@@ -393,34 +498,51 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           <Grid container item alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
             <Grid item className={classes.arrowsBg}>
-              <CardMedia className={classes.arrowsIcon} image={Arrows} component='img' onClick={() => {
-                setIsReversed(!isReversed)
-              }}/>
+              <CardMedia
+                className={classes.arrowsIcon}
+                image={Arrows}
+                component='img'
+                onClick={() => {
+                  setIsReversed(!isReversed)
+                }}
+              />
             </Grid>
           </Grid>
           <Typography className={classes.numbersFieldAmount}>
             <AnimatedNumber
               value={(() => {
                 if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
-                const Amountvalue = isReversed ? calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', fee) : calculateSwapOutAmount(tokens[tokenToIndex], tokens[tokenFromIndex], '1', fee)
+                const Amountvalue = isReversed
+                  ? calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', fee)
+                  : calculateSwapOutAmount(tokens[tokenToIndex], tokens[tokenFromIndex], '1', fee)
                 return Amountvalue
               })()}
               duration={300}
               formatValue={
-                isXs
-                  ? formatExchangeRateOnXs
-                  : (value: string) => Number(value).toFixed(6)
+                isXs ? formatExchangeRateOnXs : (value: string) => Number(value).toFixed(6)
               }
-            />
-            {' '}{swapOutAmountCurrencyName(isReversed, tokenToIndex, tokenFromIndex, tokens)}
+            />{' '}
+            {swapOutAmountCurrencyName(isReversed, tokenToIndex, tokenFromIndex, tokens)}
           </Typography>
         </Grid>
       </Grid>
 
       <OutlinedButton
-        name={getButtonMessage(amountFrom, tokenFromIndex !== null ? tokens[tokenFromIndex] : null, amountTo, tokenToIndex !== null ? tokens[tokenToIndex] : null)}
+        name={getButtonMessage(
+          amountFrom,
+          tokenFromIndex !== null ? tokens[tokenFromIndex] : null,
+          amountTo,
+          tokenToIndex !== null ? tokens[tokenToIndex] : null
+        )}
         color='secondary'
-        disabled={getButtonMessage(amountFrom, tokenFromIndex !== null ? tokens[tokenFromIndex] : null, amountTo, tokenToIndex !== null ? tokens[tokenToIndex] : null) !== 'Swap'}
+        disabled={
+          getButtonMessage(
+            amountFrom,
+            tokenFromIndex !== null ? tokens[tokenFromIndex] : null,
+            amountTo,
+            tokenToIndex !== null ? tokens[tokenToIndex] : null
+          ) !== 'Swap'
+        }
         className={classes.swapButton}
         onClick={() => {
           if (tokenFromIndex === null || tokenToIndex === null) return

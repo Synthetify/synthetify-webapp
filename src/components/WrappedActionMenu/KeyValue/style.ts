@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: 13
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 16
+      fontSize: 14
     }
   },
   property: {
