@@ -152,6 +152,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 16
     }
+
   },
   numbersFieldAmount: {
     fontSize: 22,
@@ -162,6 +163,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 13,
       lineHeight: '16px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 12
     }
   },
   discount: {
