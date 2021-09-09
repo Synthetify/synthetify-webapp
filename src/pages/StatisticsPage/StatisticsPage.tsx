@@ -1,13 +1,22 @@
+import { Container, Grid } from '@material-ui/core'
 import React from 'react'
-import { Statistics } from './../../containers/Statistics/Statistics'
+import { StatisticsCollateral } from '../../containers/Statistics/StatisticsCollateral'
+import { StatisticsSynthetic } from '../../containers/Statistics/StatisticsSynthetics'
+import useStyles from './style'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps {}
-
-export const StatisticsPage: React.FC<IProps> = () => {
+export const StatisticsPage: React.FC = () => {
+  const classes = useStyles()
   return (
     <>
-      <Statistics />
+      <Container>
+        <h1 className={classes.header}>Statistics</h1>
+        <Grid item className={classes.gridItem}>
+          <StatisticsSynthetic />
+        </Grid>
+        <Grid item>
+          <StatisticsCollateral />
+        </Grid>
+      </Container>
     </>
   )
 }

@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((_theme: Theme) => ({
   container: {
     width: '80%',
-    margin: 'o auto',
+    margin: '0 auto',
     padding: '64px 0'
   },
   header: {
