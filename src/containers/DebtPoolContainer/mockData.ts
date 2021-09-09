@@ -4,7 +4,7 @@ export interface Data {
   value: number
   color: string
   price: number
-  percent: number
+  percent: string
 }
 
 export const data: Data[] = [
@@ -14,7 +14,7 @@ export const data: Data[] = [
     value: 1456,
     color: '#6372BE',
     price: 74456654,
-    percent: 8.3
+    percent: '8.3'
   },
   {
     id: 'xETH',
@@ -22,7 +22,7 @@ export const data: Data[] = [
     value: 2456,
     color: '#40BFA0',
     price: 740345546,
-    percent: 3.9
+    percent: '3.9'
   },
   {
     id: 'xSOL',
@@ -30,7 +30,7 @@ export const data: Data[] = [
     value: 6544,
     color: '#117098',
     price: 74456,
-    percent: 18
+    percent: '18'
   },
   {
     id: 'xBNB',
@@ -38,7 +38,7 @@ export const data: Data[] = [
     value: 2374,
     color: '#BFB655',
     price: 7345,
-    percent: 1.69
+    percent: '1.69'
   },
   {
     id: 'xFTT',
@@ -46,7 +46,7 @@ export const data: Data[] = [
     value: 3514,
     color: '#1F70CF',
     price: 345,
-    percent: 8.57
+    percent: '8.57'
   },
   {
     id: 'xUSD',
@@ -54,7 +54,7 @@ export const data: Data[] = [
     value: 2353,
     color: '#936BC7',
     price: 45,
-    percent: 8.51
+    percent: '8.51'
   },
   {
     id: 'xSRM',
@@ -62,7 +62,7 @@ export const data: Data[] = [
     value: 3450,
     color: '#39D3F5',
     price: 4,
-    percent: 52.8
+    percent: '52.8'
   },
   {
     id: 'xLTC',
@@ -70,7 +70,7 @@ export const data: Data[] = [
     value: 5670,
     color: '#DADCF1',
     price: 345,
-    percent: 0.64
+    percent: '0.64'
   },
   {
     id: 'xAAVE',
@@ -78,7 +78,7 @@ export const data: Data[] = [
     value: 4565,
     color: '#C76BA2',
     price: 7345,
-    percent: 2.37
+    percent: '2.37'
   },
   {
     id: 'xDOGE',
@@ -86,7 +86,7 @@ export const data: Data[] = [
     value: 6545,
     color: '#D49347',
     price: 47,
-    percent: 19.6
+    percent: '19.6'
   },
   {
     id: 'xLUNA',
@@ -94,6 +94,6 @@ export const data: Data[] = [
     value: 3756,
     color: '#DF3C3C',
     price: 740345546,
-    percent: 5.7
+    percent: '5.7'
   }
 ]

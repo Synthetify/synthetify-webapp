@@ -31,7 +31,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
         <Grid container item xs={12} style={{ height: '100%' }}>
           <List className={classes.legend}>
             {data.map(element => (
-              <ListItem className={classes.listItemContainer} id={element.id}>
+              <ListItem key={element.id} className={classes.listItemContainer} id={element.id}>
                 <Grid container item >
                   <ListItemIcon
                     className={classes.listItemIconName}

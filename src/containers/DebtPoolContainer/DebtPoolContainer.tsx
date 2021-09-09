@@ -16,12 +16,12 @@ export interface Data {
   percent: string
 }
 export interface IProps {
-  data: Data[]
+  data?: Data[]
 }
-export const DebtPoolContainer: React.FC = () => {
+export const DebtPoolContainer: React.FC<IProps> = () => {
   const synthetics = useSelector(getSyntheticsStructure)
 
-  const SyntheticData = Object.values(synthetics).map((item, index) => {
+  const SyntheticData: Data[] = Object.values(synthetics).map((item, index) => {
     return {
       id: index.toString(),
       label: item.symbol,
