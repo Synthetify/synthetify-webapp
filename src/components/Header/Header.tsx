@@ -57,7 +57,9 @@ export const Header: React.FC<IHeader> = ({
     <>
       <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
         <Grid item container className={classes.left} wrap='nowrap' alignItems='center'>
-          <CardMedia className={classes.snyLogo} image={snyIcon} />
+          <a href='https://synthetify.io/'>
+            <CardMedia className={classes.snyLogo} image={snyIcon} />
+          </a>
           <Divider orientation='vertical' className={classes.verticalDivider} />
         </Grid>
         <Hidden smDown>
