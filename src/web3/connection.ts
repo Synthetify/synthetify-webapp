@@ -16,7 +16,7 @@ export const networkToName = (network: SolanaNetworks) => {
       return 'Localnet'
 
     default:
-      return 'DEVNET'
+      return 'Devnet'
   }
 }
 let _connection: Connection | null = null

@@ -11,3 +11,17 @@ export const unblurContent = () => {
   if (!el) return
   el.style.filter = 'none'
 }
+
+export const colors = [
+  '#DF3C3C',
+  '#6372BE',
+  '#40BFA0',
+  '#117098',
+  '#BFB665',
+  '#1F70CF',
+  '#936BC7',
+  '#39D3F5',
+  '#DADCF1',
+  '#C76BA2',
+  '#D49347'
+]
