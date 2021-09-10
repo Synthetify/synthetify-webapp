@@ -2,7 +2,6 @@ import React from 'react'
 import { StatsCollateralChart } from '@components/Stats/StatsCollateralChart/StatsCollateral'
 import { useSelector } from 'react-redux'
 import { getCollateralStructure } from '@selectors/exchange'
-import { Container } from '@material-ui/core'
 import { colors } from '@consts/uiUtils'
 
 export const StatisticsCollateral: React.FC = () => {
@@ -16,8 +15,8 @@ export const StatisticsCollateral: React.FC = () => {
   })
 
   return (
-    <Container >
+    < >
       <StatsCollateralChart data={CollateralData}/>
-    </Container>
+    </>
   )
 }

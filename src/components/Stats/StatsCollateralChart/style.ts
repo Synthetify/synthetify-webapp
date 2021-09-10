@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       height: 327,
-      width: 855
+      width: '100%'
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%',
