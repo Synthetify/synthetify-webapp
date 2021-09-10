@@ -20,13 +20,18 @@ export const networkToName = (network: SolanaNetworks) => {
       return NetworkType.DEVNET
   }
 }
+let _mainnet: SolanaNetworks
 export const getRandomMainnetRPC = () => {
+  if (_mainnet) {
+    return _mainnet
+  }
   const rand = Math.random()
   let threshold = 0
   for (const rpc of MAINNET_RPCS) {
     threshold += rpc.probability
 
     if (rand <= threshold) {
+      _mainnet = rpc.rpc
       return rpc.rpc
     }
   }
