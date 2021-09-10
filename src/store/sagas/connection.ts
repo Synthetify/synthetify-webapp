@@ -66,7 +66,7 @@ export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetw
   )
   // yield* put(solanaWalletActions.resetState())
   // yield* call(init)
-  yield* delay(3000)
+  yield* delay(1000)
   window.location.reload()
   // yield* put(
   //   uiActions.setLoader({
