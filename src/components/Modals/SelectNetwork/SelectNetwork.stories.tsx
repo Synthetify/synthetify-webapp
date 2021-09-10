@@ -1,11 +1,12 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import SelectNetwork from '@components/Modals/SelectNetwork/SelectNetwork'
+import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/SelectNetwork'
+import { NetworkType, SolanaNetworks } from '@consts/static'
 
-const networks = [
-  { name: 'testnet', network: 'https://api.solana.com/' },
-  { name: 'localnet', network: 'https://127.0.0.1:8898/' }
+const networks: ISelectNetwork[] = [
+  { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
+  { name: NetworkType.LOCALNET, network: SolanaNetworks.LOCAL }
 ]
 
 storiesOf('modals/selectNetwork', module)

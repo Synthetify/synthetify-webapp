@@ -9,6 +9,7 @@ import HeaderButton from './HeaderButton'
 import SelectNetworkButton from './SelectNetworkButton'
 import ChangeWalletButton from './ChangeWalletButton'
 import { WalletType } from '@web3/wallet'
+import { NetworkType, SolanaNetworks } from '@consts/static'
 
 const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
@@ -43,8 +44,8 @@ storiesOf('buttons/HeaderButton', module)
       <SelectNetworkButton
         name='Mainnet'
         networks={[
-          { name: 'testnet', network: 'https://api.solana.com/' },
-          { name: 'localnet', network: 'https://127.0.0.1:8898/' }
+          { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
+          { name: NetworkType.LOCALNET, network: SolanaNetworks.LOCAL }
         ]}
         onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}
       />

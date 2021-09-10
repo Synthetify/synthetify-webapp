@@ -1,22 +1,48 @@
 import { Connection } from '@solana/web3.js'
-import { SolanaNetworks } from '@consts/static'
+import { MAINNET_RPCS, NetworkType, SolanaNetworks } from '@consts/static'
 import { Network } from '@synthetify/sdk'
 
 export const networkToName = (network: SolanaNetworks) => {
   switch (network) {
     case SolanaNetworks.DEV:
-      return 'Devnet'
+      return NetworkType.DEVNET
 
     case SolanaNetworks.TEST:
-      return 'Testnet'
+      return NetworkType.TESTNET
 
     case SolanaNetworks.MAIN:
-      return 'Mainnet'
+    case SolanaNetworks.MAIN_SERUM:
+      return NetworkType.MAINNET
     case SolanaNetworks.LOCAL:
-      return 'Localnet'
+      return NetworkType.LOCALNET
 
     default:
-      return 'Devnet'
+      return NetworkType.DEVNET
+  }
+}
+export const getRandomMainnetRPC = () => {
+  const rand = Math.random()
+  let threshold = 0
+  for (const rpc of MAINNET_RPCS) {
+    threshold += rpc.probability
+
+    if (rand <= threshold) {
+      return rpc.rpc
+    }
+  }
+
+  return SolanaNetworks.MAIN
+}
+export const getNetworkFromType = (type: NetworkType) => {
+  switch (type) {
+    case NetworkType.DEVNET:
+      return SolanaNetworks.DEV
+    case NetworkType.TESTNET:
+      return SolanaNetworks.TEST
+    case NetworkType.LOCALNET:
+      return SolanaNetworks.LOCAL
+    case NetworkType.MAINNET:
+      return getRandomMainnetRPC()
   }
 }
 let _connection: Connection | null = null
@@ -48,6 +74,7 @@ const solanaNetworktoProgramNetwork = (solanaNetwork: SolanaNetworks): Network =
     case SolanaNetworks.TEST:
       return Network.TEST
     case SolanaNetworks.MAIN:
+    case SolanaNetworks.MAIN_SERUM:
       return Network.MAIN
   }
 }

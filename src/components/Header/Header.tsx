@@ -10,22 +10,21 @@ import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
 import SelectNetworkButton from '@components/HeaderButton/SelectNetworkButton'
 import RoutesModal from '@components/Modals/RoutesModal/RoutesModal'
 import { blurContent, unblurContent } from '@consts/uiUtils'
-import { SolanaNetworks } from '@consts/static'
+import { NetworkType, SolanaNetworks } from '@consts/static'
 import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
 import { theme } from '@static/theme'
 import useButtonStyles from '../HeaderButton/style'
 import useStyles from './style'
-import { networkToName } from '@web3/connection'
 
 export interface IHeader {
   address: PublicKey
-  onNetworkSelect: (chosen: SolanaNetworks) => void
+  onNetworkSelect: (chosen: NetworkType) => void
   onWalletSelect: (chosen: WalletType) => void
   walletConnected: boolean
   landing: string
   typeOfWallet?: WalletType
-  typeOfNetwork: SolanaNetworks
+  typeOfNetwork: NetworkType
   onFaucet?: () => void
   onDisconnectWallet: () => void
 }
@@ -81,7 +80,7 @@ export const Header: React.FC<IHeader> = ({
         </Hidden>
 
         <Grid container item className={classes.buttons} wrap='nowrap' alignItems='center'>
-          {(typeOfNetwork === SolanaNetworks.DEV || typeOfNetwork === SolanaNetworks.TEST) && (
+          {(typeOfNetwork === NetworkType.DEVNET || typeOfNetwork === NetworkType.TESTNET) && (
             <Button
               className={buttonClasses.headerButton}
               variant='contained'
@@ -92,12 +91,12 @@ export const Header: React.FC<IHeader> = ({
             </Button>
           )}
           <SelectNetworkButton
-            name={networkToName(typeOfNetwork)}
+            name={typeOfNetwork}
             networks={[
-              { name: 'Devnet', network: SolanaNetworks.DEV },
-              { name: 'Testnet', network: SolanaNetworks.TEST }
+              { name: NetworkType.DEVNET, network: SolanaNetworks.DEV },
+              { name: NetworkType.TESTNET, network: SolanaNetworks.TEST }
             ]}
-            onSelect={(chosen: SolanaNetworks) => {
+            onSelect={(chosen) => {
               onNetworkSelect(chosen)
             }}
           />
