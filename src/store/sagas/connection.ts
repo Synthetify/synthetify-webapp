@@ -64,16 +64,8 @@ export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetw
       message: `Loading ${networkToName(action.payload)} wallet.`
     })
   )
-  // yield* put(solanaWalletActions.resetState())
-  // yield* call(init)
   yield* delay(1000)
   window.location.reload()
-  // yield* put(
-  //   uiActions.setLoader({
-  //     open: false,
-  //     message: ''
-  //   })
-  // )
   yield* put(
     snackbarsActions.add({
       message: `You are on ${networkToName(action.payload)} network.`,
