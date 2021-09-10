@@ -6,7 +6,7 @@ export enum Status {
   Uninitialized = 'uninitialized',
   Init = 'init',
   Error = 'error',
-  Initalized = 'initalized'
+  Initialized = 'initalized'
 }
 export interface ISolanaConnectionStore {
   status: Status

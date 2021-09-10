@@ -1,4 +1,4 @@
-import { all, call, put, SagaGenerator, select, takeLeading, spawn } from 'typed-redux-saga'
+import { all, call, put, SagaGenerator, select, takeLeading, spawn, delay } from 'typed-redux-saga'
 
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
 import { actions as uiActions } from '@reducers/ui'
@@ -34,7 +34,7 @@ export function* initConnection(): Generator {
         persist: false
       })
     )
-    yield* put(actions.setStatus(Status.Initalized))
+    yield* put(actions.setStatus(Status.Initialized))
     // yield* call(depositCollateral, new BN(4 * 1e8))
     // yield* call(mintUsd, new BN(8 * 1e7))
     // yield* call(handleAirdrop)
@@ -64,15 +64,8 @@ export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetw
       message: `Loading ${networkToName(action.payload)} wallet.`
     })
   )
-  // yield* put(solanaWalletActions.resetState())
-  // yield* call(init)
+  yield* delay(1000)
   window.location.reload()
-  yield* put(
-    uiActions.setLoader({
-      open: false,
-      message: ''
-    })
-  )
   yield* put(
     snackbarsActions.add({
       message: `You are on ${networkToName(action.payload)} network.`,

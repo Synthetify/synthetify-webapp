@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, makeStyles, Tab, Tabs, Typography, withStyles } from '@material-ui/core'
+import { Box, Fade, Grid, makeStyles, Tab, Tabs, Typography, withStyles } from '@material-ui/core'
 import { createStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
@@ -86,10 +86,10 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
         fontSize: 13,
         padding: 0
       },
-      color: colors.navy.darkGrey,
+      color: colors.navy.info,
 
       '&:hover': {
-        color: colors.navy.info
+        color: colors.navy.grey
       }
     },
     selected: {
@@ -107,15 +107,36 @@ const useStyles = makeStyles(() => ({
   tabs: {
     borderRadius: 10,
     backgroundColor: colors.navy.dark
+  },
+  '@keyframes slide': {
+    from: {
+      transform: 'translateX(50px)'
+    },
+    to: {
+      transform: 'translateX(0px)'
+    }
+  },
+  slide: {
+    animation: '$slide .2s'
   }
 }))
 
 export const SwitchMenu: React.FC<IProps> = ({ menuItems, onChange }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
+  const [fadeIn, setFadeIn] = React.useState(true)
+  const [slide, setSlide] = React.useState(true)
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue)
-    onChange(newValue)
+    setTimeout(() => {
+      setValue(newValue)
+      onChange(newValue)
+    }, 100)
+    setTimeout(() => {
+      setFadeIn(true)
+      setSlide(true)
+    }, 200)
+    setFadeIn(!fadeIn)
+    setSlide(!slide)
   }
 
   const tabs = Object.keys(menuItems).map((item, index) => (
@@ -136,7 +157,7 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, onChange }) => {
           {tabs}
         </FullHeightIndicatorTabs>
       </Grid>
-      <Grid>{tabsContent}</Grid>
+      <Fade in={fadeIn} ><Grid className={slide ? classes.slide : ''}>{tabsContent}</Grid></Fade>
     </Grid>
   )
 }

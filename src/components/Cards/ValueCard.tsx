@@ -1,12 +1,9 @@
 import React, { ReactChild } from 'react'
-import {
-  Card,
-  CardContent,
-  Typography
-} from '@material-ui/core'
+import { Card, CardContent, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import { showMorK, formatNumbers } from '@consts/utils'
 import useStyles from './style'
 
 export interface IProps {
@@ -22,44 +19,24 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
   return (
     <Card className={classes.valueCard} onClick={onClick}>
       <CardContent className={classes.cardContent}>
-        {hint
-          ? (
-            <MobileTooltip
-              hint={hint}
-              anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
-              mobilePlacement='top-end'
-              desktopPlacement='top-end'
-            />
-          )
-          : null
-        }
-        <Typography className={classes.valueCardTitle} style={{ marginBottom: 32 }}>{name}</Typography>
+        {hint ? (
+          <MobileTooltip
+            hint={hint}
+            anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+            mobilePlacement='top-end'
+            desktopPlacement='top-end'
+          />
+        ) : null}
+        <Typography className={classes.valueCardTitle} style={{ marginBottom: 32 }}>
+          {name}
+        </Typography>
         <Typography className={classes.valueCardAmount}>
           <AnimatedNumber
             value={value}
             duration={300}
-            formatValue={(value: string) => {
-              const num = Number(value)
-
-              if (num < 10) {
-                return num.toFixed(4)
-              }
-
-              if (num < 10000) {
-                return num.toFixed(2)
-              }
-
-              if (num < 1000000) {
-                return (num / 1000).toFixed(2)
-              }
-
-              return (num / 1000000).toFixed(2)
-            }}
+            formatValue={formatNumbers}
           />
-          {Number(value) >= 10000
-            ? 'K'
-            : (Number(value) >= 1000000 ? 'M' : '')
-          }
+          {showMorK(Number(value))}
           {sign}
         </Typography>
       </CardContent>

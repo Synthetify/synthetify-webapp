@@ -8,10 +8,10 @@ import { ResponsiveLine } from '@nivo/line'
 import { colors } from '@static/theme'
 // @ts-expect-error
 import { linearGradientDef } from '@nivo/core' // ignore error, this function exists, probably has no ts definition
-import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { MAX_U64 } from '@consts/static'
-
+import useStyles from './style'
 interface IProps {
   tokenName: string
   supply: Decimal
@@ -184,6 +184,7 @@ const ExchangePlot: React.FC<IProps> = ({
             <div className={classes.tooltipRoot}>
               <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
               <Typography className={classes.tooltipValue} style={{ color: isDecreasing() ? colors.green.main : colors.red.main }}>${(y as number).toFixed(2)}</Typography>
+              <FiberManualRecordIcon className={classes.tooltipPoint}/>
             </div>
           )}
           theme={{

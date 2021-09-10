@@ -9,6 +9,7 @@ import HeaderWrapper from '@containers/HeaderWrapper/HeaderWrapper'
 import { actions as solanaConnectionActions } from '@reducers/solanaConnection'
 import EventsHandlers from '@containers/EventsHandlers'
 import { Status } from '@reducers/solanaWallet'
+import { StatisticsPage } from './StatisticsPage/StatisticsPage'
 import solanaConnectionSelector from '@selectors/solanaConnection'
 
 export const PagesRouter: React.FC = () => {
@@ -23,12 +24,13 @@ export const PagesRouter: React.FC = () => {
   // TODO: add more paths to router later
   return (
     <Router>
-      {signerStatus === Status.Initalized && <EventsHandlers />}
+      {signerStatus === Status.Initialized && <EventsHandlers />}
       <div id={toBlur}>
         <HeaderWrapper />
         <Switch>
           <Route path='/staking' component={StakingPage} />
           <Route path={'/exchange'} component={ExchangePage} />
+          <Route path={'/stats'} component={StatisticsPage} />
           <Route path='*'>
             <Redirect to='/staking'>
               <StakingPage />

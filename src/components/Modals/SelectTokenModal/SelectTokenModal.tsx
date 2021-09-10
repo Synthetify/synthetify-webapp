@@ -5,9 +5,9 @@ import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
-import { printBN } from '@consts/utils'
+import { printBN, showMorK } from '@consts/utils'
 export interface ISelectTokenModal {
-  tokens: Array<{ symbol: string, balance?: BN, decimals?: number }>
+  tokens: Array<{ symbol: string; balance?: BN; decimals?: number }>
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
@@ -41,7 +41,16 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
 
   const endAdornment = () => (
     <>
-      {!!value.length && <img className={classes.clearIcon} src={icons.clear} alt='x' onClick={() => { setValue('') }} />}
+      {!!value.length && (
+        <img
+          className={classes.clearIcon}
+          src={icons.clear}
+          alt='x'
+          onClick={() => {
+            setValue('')
+          }}
+        />
+      )}
       <Search className={classes.searchIcon} />
     </>
   )
@@ -85,11 +94,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         horizontal: 'center'
       }}>
       {' '}
-      <Grid
-        className={classes.root}
-        container
-        alignContent='space-around'
-        direction='column'>
+      <Grid className={classes.root} container alignContent='space-around' direction='column'>
         <Grid item style={{ width: '100%' }}>
           <Input
             className={classes.searchInput}
@@ -110,7 +115,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
-                .map((token) => (
+                .map(token => (
                   <Grid
                     container
                     key={`tokens-${token.symbol}`}
@@ -121,26 +126,25 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                       handleClose()
                     }}>
                     <Grid item>
-                      <CardMedia className={classes.tokenIcon} image={icons[token.symbol] ?? icons.SNY} />{' '}
+                      <CardMedia
+                        className={classes.tokenIcon}
+                        image={icons[token.symbol] ?? icons.SNY}
+                      />{' '}
                     </Grid>
                     <Grid item>
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
-                      <Typography className={classes.tokenDescrpiption}>{descrpitionForSymbol[token.symbol] ?? 'Asset'}</Typography>
+                      <Typography className={classes.tokenDescrpiption}>
+                        {descrpitionForSymbol[token.symbol] ?? 'Asset'}
+                      </Typography>
                     </Grid>
-                    {(token.balance && token.decimals)
-                      ? (
-                        <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
-                          <Typography className={classes.tokenBalance}>
+                    {token.balance && token.decimals ? (
+                      <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
+                        <Typography className={classes.tokenBalance}>
                           Balance: {formatNumbers(printBN(token.balance, token.decimals))}
-                            {+printBN(token.balance, token.decimals) >= 10000
-                              ? 'K'
-                              : (+printBN(token.balance, token.decimals) >= 1000000 ? 'M' : '')
-                            }
-                          </Typography>
-                        </Grid>
-                      )
-                      : null
-                    }
+                          {showMorK(+printBN(token.balance, token.decimals))}
+                        </Typography>
+                      </Grid>
+                    ) : null}
                   </Grid>
                 ))}
             </CustomScrollbar>

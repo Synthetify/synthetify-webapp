@@ -16,14 +16,16 @@ import { WalletType } from '@web3/wallet'
 import { theme } from '@static/theme'
 import useButtonStyles from '../HeaderButton/style'
 import useStyles from './style'
+import { networkToName } from '@web3/connection'
 
 export interface IHeader {
   address: PublicKey
-  onNetworkSelect: (chosen: string) => void
+  onNetworkSelect: (chosen: SolanaNetworks) => void
   onWalletSelect: (chosen: WalletType) => void
   walletConnected: boolean
   landing: string
-  typeOfWallet?: 'phantom' | 'sollet'
+  typeOfWallet?: WalletType
+  typeOfNetwork: SolanaNetworks
   onFaucet?: () => void
   onDisconnectWallet: () => void
 }
@@ -33,7 +35,8 @@ export const Header: React.FC<IHeader> = ({
   onWalletSelect,
   walletConnected,
   landing,
-  typeOfWallet = 'phantom',
+  typeOfWallet = WalletType.PHANTOM,
+  typeOfNetwork,
   onFaucet,
   onDisconnectWallet
 }) => {
@@ -42,9 +45,8 @@ export const Header: React.FC<IHeader> = ({
 
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const routes = ['staking', 'exchange']
+  const routes = ['staking', 'stats', 'exchange']
   const [activePath, setActive] = React.useState(landing)
-  const [network, setNetwork] = React.useState('Devnet')
 
   const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
   const [routesModalAnchor, setRoutesModalAnchor] = React.useState<HTMLButtonElement | null>(null)
@@ -57,7 +59,9 @@ export const Header: React.FC<IHeader> = ({
     <>
       <Grid container className={classes.root} wrap='nowrap' alignItems='center'>
         <Grid item container className={classes.left} wrap='nowrap' alignItems='center'>
-          <CardMedia className={classes.snyLogo} image={snyIcon} />
+          <a href='https://synthetify.io/'>
+            <CardMedia className={classes.snyLogo} image={snyIcon} />
+          </a>
           <Divider orientation='vertical' className={classes.verticalDivider} />
         </Grid>
         <Hidden smDown>
@@ -77,24 +81,24 @@ export const Header: React.FC<IHeader> = ({
         </Hidden>
 
         <Grid container item className={classes.buttons} wrap='nowrap' alignItems='center'>
-          {(network === 'Devnet') && (
+          {(typeOfNetwork === SolanaNetworks.DEV || typeOfNetwork === SolanaNetworks.TEST) && (
             <Button
               className={buttonClasses.headerButton}
               variant='contained'
               classes={{ disabled: buttonClasses.disabled }}
-              onClick={onFaucet}
+              onClick={ onFaucet }
             >
                 Faucet
             </Button>
           )}
           <SelectNetworkButton
-            name={network}
+            name={networkToName(typeOfNetwork)}
             networks={[
-              { name: 'Devnet', network: SolanaNetworks.DEV }
+              { name: 'Devnet', network: SolanaNetworks.DEV },
+              { name: 'Testnet', network: SolanaNetworks.TEST }
             ]}
-            onSelect={(chosen: string) => {
+            onSelect={(chosen: SolanaNetworks) => {
               onNetworkSelect(chosen)
-              setNetwork(chosen)
             }}
           />
           {!walletConnected
@@ -117,7 +121,7 @@ export const Header: React.FC<IHeader> = ({
                 hideArrow={isSmDown}
                 onDisconnect={onDisconnectWallet}
                 startIcon={
-                  typeOfWallet === 'phantom'
+                  typeOfWallet === WalletType.PHANTOM
                     ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
                     )
