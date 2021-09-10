@@ -4,7 +4,7 @@ import { Grid, Typography, useMediaQuery } from '@material-ui/core'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import Switch from './Switch/Switch'
 import List from './List/List'
-import { printBN } from '@consts/utils'
+import { formatNumbers, printBN, showMorK } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
 import useStyles, { useStylesWithProps } from './style'
 import { theme } from '@static/theme'
@@ -62,32 +62,9 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
                   $ <AnimatedNumber
                   value={sum}
                   duration={300}
-                  formatValue={(value: string) => {
-                    const num = Number(value)
-
-                    if (num < 10) {
-                      return num.toFixed(6)
-                    }
-
-                    if (num < 1000) {
-                      return num.toFixed(4)
-                    }
-
-                    if (num < 10000) {
-                      return num.toFixed(2)
-                    }
-
-                    if (num < 1000000) {
-                      return (num / 1000).toFixed(2)
-                    }
-
-                    return (num / 1000000).toFixed(2)
-                  }}
+                  formatValue={formatNumbers}
                 />
-                {sum >= 10000
-                  ? 'K'
-                  : (sum >= 1000000 ? 'M' : '')
-                }
+                {showMorK(sum)}
               </Typography>
             )
             : null

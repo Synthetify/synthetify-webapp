@@ -4,20 +4,23 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
-    width: 855,
+    width: '1063px',
     height: 333,
     borderRadius: 10,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    margin: 0,
+    margin: '0 auto',
     padding: 0,
+    [theme.breakpoints.down('md')]: {
+      width: '846px'
+    },
     [theme.breakpoints.down('sm')]: {
       height: 327,
-      width: 855
+      width: '100%'
     },
     [theme.breakpoints.down('xs')]: {
-      width: 413,
+      width: '100%',
       height: 500
     }
   },

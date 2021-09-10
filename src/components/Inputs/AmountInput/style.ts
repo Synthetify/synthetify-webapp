@@ -18,12 +18,19 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     color: colors.navy.grey,
     height: '100%',
     justifyContent: 'flex-end',
-    marginLeft: 20
+    marginLeft: 50,
+    width: 160
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,
     height: 40,
-    marginRight: 10
+    marginRight: 5
+  },
+  avatarIcon: {
+    height: '1.7em',
+    width: '1.7em',
+    paddingRight: 4
+
   },
   select: ({ onSelectToken }) => ({
     cursor: onSelectToken ? 'pointer' : 'unset'

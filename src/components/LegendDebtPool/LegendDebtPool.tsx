@@ -9,8 +9,8 @@ import {
   Typography
 } from '@material-ui/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import NumberFormat from 'react-number-format'
 import useStyle from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
 export interface Data {
   id: string
   label: string
@@ -31,7 +31,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
         <Grid container item xs={12} style={{ height: '100%' }}>
           <List className={classes.legend}>
             {data.map(element => (
-              <ListItem className={classes.listItemContainer} id={element.id}>
+              <ListItem key={element.id} className={classes.listItemContainer} id={element.id}>
                 <Grid container item >
                   <ListItemIcon
                     className={classes.listItemIconName}
@@ -40,15 +40,14 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                     <Typography className={classes.titleLabel}> {element.label} </Typography>
                   </ListItemIcon>
                   <Typography
-                    className={classes.percentNumber}>{`(${element.percent}%)`}</Typography>
+                    className={classes.percentNumber}>{`(${Number(element.percent).toFixed(2)}%)`}</Typography>
                   <ListItemIcon className={classes.listItemIconNumber}>
                     <FiberManualRecordIcon style={{ width: '8px' }} />
-                    <NumberFormat
+                    <AnimatedNumber
                       value={element.price}
-                      prefix='$'
-                      thousandSeparator=' '
-                      displayType='text'
-                    />
+                      duration={500}
+                      formatValue={(value: string) => Number(value).toFixed(2)}
+                    />$
                   </ListItemIcon>
                 </Grid>
               </ListItem>

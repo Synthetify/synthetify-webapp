@@ -11,7 +11,7 @@ storiesOf('cards/Value', module)
       <ValueCard
         name='Staked Value'
         hint='Amount of money you’ve deciced to keep on your virtual wallet.'
-        value='100.00'
+        value='1900000.00'
         sign='$'
       />
     </div>
@@ -23,7 +23,7 @@ storiesOf('cards/Value', module)
         hint='Current value of your debt in comparison to your collateral value and max borrow'
         current={50}
         sign={'$'}
-        max={100}
+        max={1000}
         topIndicator={'Current debt'}
         topIndicatorValue={50}
         bottomIndicator={'Max borrow'}

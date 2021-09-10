@@ -73,7 +73,7 @@ export const divUpNumber = (a: number, b: number): number => {
   return Math.ceil(a / b)
 }
 export const removeTickerPrefix = (ticker: string, prefix: string[] = ['x', '$']): string => {
-  const index = prefix.findIndex((p) => ticker.startsWith(p))
+  const index = prefix.findIndex(p => ticker.startsWith(p))
   if (index && prefix[index]) {
     return ticker.substring(prefix[index].length)
   }
@@ -123,4 +123,38 @@ export const discountData = (userCollateralBalance: BN) => {
     discount: 15,
     nextThreshold: undefined
   }
+}
+
+export const showMorK = (nr: number) => {
+  if (nr >= 10000) {
+    if (nr >= 1000000) {
+      return 'M'
+    } else {
+      return 'K'
+    }
+  } else {
+    return ''
+  }
+}
+
+export const formatNumbers = (value: string) => {
+  const num = Number(value)
+
+  if (num < 10) {
+    return num.toFixed(4)
+  }
+
+  if (num < 1000) {
+    return num.toFixed(2)
+  }
+
+  if (num < 10000) {
+    return num.toFixed(1)
+  }
+
+  if (num < 1000000) {
+    return (num / 1000).toFixed(2)
+  }
+
+  return (num / 1000000).toFixed(2)
 }

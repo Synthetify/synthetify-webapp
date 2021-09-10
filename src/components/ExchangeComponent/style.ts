@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover $swapIcon': {
-      opacity: 0.85
+      opacity: 0.9
     },
 
     [theme.breakpoints.down('xs')]: {
@@ -152,6 +152,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 16
     }
+
   },
   numbersFieldAmount: {
     fontSize: 22,
@@ -162,6 +163,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 13,
       lineHeight: '16px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 12
     }
   },
   discount: {
@@ -179,6 +183,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover': {
       cursor: 'pointer'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: 18,
+      width: 18
     }
   },
   circleIcon: {
@@ -199,8 +207,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   arrowsBg: {
-    padding: 5,
     borderRadius: 3,
+    padding: 5,
     backgroundColor: colors.navy.navButton,
     marginLeft: 16,
     width: 38,
@@ -215,7 +223,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   arrowsIcon: {
-    backgroundSize: '4096px 1850px',
+    backgroundSize: '1920px 870px',
     maxWidth: '100%',
     cursor: 'pointer'
   },
