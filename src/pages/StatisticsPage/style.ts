@@ -6,9 +6,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 0
   },
   container: {
-    width: '80%',
+    width: '100%',
     margin: '0 auto',
-    padding: '86px 0'
+    padding: '86px 0',
+    [theme.breakpoints.down('sm')]: {
+      padding: '86px 19px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '86px 16px'
+    }
 
   },
   header: {

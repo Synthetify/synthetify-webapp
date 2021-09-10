@@ -15,7 +15,7 @@ export const StatisticsCollateral: React.FC = () => {
   })
 
   return (
-    < >
+    <>
       <StatsCollateralChart data={CollateralData}/>
     </>
   )
