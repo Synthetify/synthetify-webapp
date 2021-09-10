@@ -3,11 +3,12 @@ import { Button } from '@material-ui/core'
 import useStyles from './style'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/SelectNetwork'
+import { SolanaNetworks } from '@consts/static'
 
 export interface IProps {
   name: string
   networks: ISelectNetwork[]
-  onSelect: (chosen: string) => void
+  onSelect: (chosen: SolanaNetworks) => void
   disabled?: boolean
 }
 export const SelectNetworkButton: React.FC<IProps> = ({

@@ -4,7 +4,7 @@ import { actions, ExchangeAccount, PayloadTypes } from '@reducers/exchange'
 import { collaterals, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
 import { accounts, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
-import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA, SNY_DEV_TOKEN } from '@consts/static'
+import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
   Keypair,
   PublicKey,
@@ -364,8 +364,9 @@ export function* claimRewards(): SagaGenerator<string> {
 
 export function* withdrawRewards(): SagaGenerator<string> {
   const exchangeProgram = yield* call(getExchangeProgram)
+  const allCollaterals = yield* select(collaterals)
 
-  const userTokenAccount = yield* select(tokenAccount(new PublicKey(SNY_DEV_TOKEN)))
+  const userTokenAccount = yield* select(tokenAccount(Object.values(allCollaterals)[0].collateralAddress))
   if (!userTokenAccount) {
     return ''
   }
