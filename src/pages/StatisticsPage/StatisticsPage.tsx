@@ -1,6 +1,6 @@
 import { Container, Grid } from '@material-ui/core'
 import React from 'react'
-import { StatisticsCollateral } from '../../containers/Statistics/StatisticsCollateral'
+import { StatisticsCollateral } from '@containers/Statistics/StatisticsCollateral'
 import DeptPoolContainer from '@containers/DebtPoolContainer/DebtPoolContainer'
 import useStyles from './style'
 

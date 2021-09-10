@@ -17,7 +17,7 @@ export interface Data {
   value: number
   color: string
   price: number
-  percent: string
+  percent: number
 }
 
 export interface IProps {

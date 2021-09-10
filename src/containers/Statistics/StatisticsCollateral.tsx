@@ -9,7 +9,7 @@ export const StatisticsCollateral: React.FC = () => {
   const CollateralData = Object.values(collaterals).map((item, index) => {
     return {
       name: item.symbol,
-      percent: item.percent.toFixed(0),
+      percent: item.percent,
       color: colors[index]
     }
   })

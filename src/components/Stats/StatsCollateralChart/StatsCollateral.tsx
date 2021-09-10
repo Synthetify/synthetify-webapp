@@ -8,7 +8,7 @@ import useStyles from './style'
 export interface CoinToChart {
   // [index: number]: {
   name: string
-  percent: string
+  percent: number
   color: string
   // }
 }
@@ -25,7 +25,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
 
   const getNameAndValue = (data: CoinToChart[]) => {
     return [data.reduce((object, { name, percent }) => ({
-      [name]: percent,
+      [name]: percent.toFixed(2),
       ...object
     }), {})]
   }
@@ -100,7 +100,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
           <Grid item className={classes.legendWrapper}>
             <ul className={classes.legendList}>
               {data.map((coin) => (
-                <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent}%)</strong></span></li>
+                <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent.toFixed(2)}%)</strong></span></li>
               ))}
             </ul>
           </Grid>

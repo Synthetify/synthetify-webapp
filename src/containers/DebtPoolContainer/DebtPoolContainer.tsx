@@ -13,7 +13,7 @@ export interface Data {
   value: number
   color: string
   price: number
-  percent: string
+  percent: number
 }
 export interface IProps {
   data?: Data[]
@@ -28,7 +28,7 @@ export const DebtPoolContainer: React.FC<IProps> = () => {
       value: item.percent,
       color: colors[index],
       price: item.value,
-      percent: item.percent.toFixed(0)
+      percent: item.percent
     }
   })
   const classes = useStyles()
