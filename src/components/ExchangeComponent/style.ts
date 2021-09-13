@@ -123,9 +123,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   outputIcon: {
     width: 25,
-    height: 16,
+    height: 25,
     position: 'absolute',
-    right: 8
+    right: 8,
+    top: 6
   },
   tooltipTitle: {
     fontSize: 16,
@@ -252,6 +253,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   supplyTooltip: {
     backgroundColor: colors.red.error
+  },
+  noMarginTop: {
+    marginTop: 0
+  },
+  tooltipBold: {
+    color: colors.white.main
   }
 }))
 
