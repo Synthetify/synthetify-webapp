@@ -26,17 +26,17 @@ export interface IProps {
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const classes = useStyle()
   return (
-    <Card className={classes.statsListCard}>
+    <Card id="legendDebtPool" className={classes.statsListCard}>
       <CardContent className={classes.statsListCardContent}>
         <Grid container item xs={12} style={{ height: '100%' }}>
           <List className={classes.legend}>
             {data.map(element => (
-              <ListItem key={element.id} className={classes.listItemContainer} id={element.id}>
-                <Grid container item >
+              <ListItem key={element.id} className={classes.listItemContainer} >
+                <Grid container item id={element.id} className={classes.listItemGrid}>
                   <ListItemIcon
                     className={classes.listItemIconName}
                     style={{ color: element.color }}>
-                    <FiberManualRecordIcon style={{ width: '8px' }} />
+                    <FiberManualRecordIcon style={{ width: '10px' }} />
                     <Typography className={classes.titleLabel}> {element.label} </Typography>
                   </ListItemIcon>
                   <Typography

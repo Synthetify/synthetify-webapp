@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   debtcontainer: {
     width: '589px',
     [theme.breakpoints.down('md')]: {
-      width: '520px'
+      width: '500px'
     },
     [theme.breakpoints.down('sm')]: {
-      width: '60.0%'
+      width: '55.0%'
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%'
