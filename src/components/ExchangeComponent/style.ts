@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover $swapIcon': {
-      opacity: 0.9
+      opacity: 1
     },
 
     [theme.breakpoints.down('xs')]: {
@@ -97,6 +97,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundSize: '1841.948px 1925px',
     maxWidth: 40,
     transition: 'transform 300ms',
+    opacity: 0.9,
 
     [theme.breakpoints.down('xs')]: {
       maxWidth: 34
