@@ -2,7 +2,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    padding: 0,
+    padding: '0 0 12px 0',
     width: '100%',
     display: 'flex',
     justifyContent: 'center',

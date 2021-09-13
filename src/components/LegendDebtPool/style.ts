@@ -3,14 +3,12 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   statsListCard: {
-    background: colors.navy.component,
+    background: 'none',
     borderRadius: 10,
     height: 'auto',
     fontFamily: 'Inter',
     marginLeft: '12px',
     width: '459px',
-    paddingTop: '4px',
-    paddingBottom: '4px',
 
     [theme.breakpoints.down('md')]: {
       width: '331px'
@@ -22,17 +20,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       marginLeft: '0',
-      marginTop: '8px',
+      marginTop: '12px',
       padding: '8px 0 8px 0'
     }
   },
   statsListCardContent: {
-    padding: '0px 8px 0 8px',
+    padding: '0px 0px 0 12px',
     width: 'revert',
     height: '100%',
     '&:last-child': {
       paddingBottom: '0px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: 0
     }
+  },
+  listContainer: {
+    backgroundColor: colors.navy.component,
+    borderRadius: '10px',
+    marginBottom: '0px',
+    height: '100%',
+    paddingTop: '8px'
   },
   listItemIconName: {
     width: 'max-content',
@@ -62,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItemIconNumber: {
     alignItems: 'center',
-    color: '#6261A3',
+    color: colors.navy.info,
     paddingLeft: 4,
     fontSize: 21,
     fontWeight: 600,
@@ -90,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     padding: '4px 0',
     '&:hover': {
-      '&> div div span': {
+      '&> div div': {
         color: '#7574D6'
       }
     }

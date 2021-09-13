@@ -26,7 +26,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
         <Typography className={classes.debtPoolCardSubTitle}>{subTitle}</Typography>
         <Grid className={classes.pieContainer}>
           <Grid className={classes.pieCanvasBackground}>
-            <Grid className={classes.pieCanvasGrid} justifyContent='center'>
+            <Grid className={classes.pieCanvasGrid}>
               <ResponsivePie
                 data={data}
                 margin={{ top: 6, right: 6, bottom: 6, left: 6 }}
