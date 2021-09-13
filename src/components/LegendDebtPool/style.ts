@@ -25,8 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   statsListCardContent: {
-    padding: '0px 0px 0 12px',
-    width: 'revert',
+    padding: '0px 0px 0 0px',
     height: '100%',
     '&:last-child': {
       paddingBottom: '0px'
