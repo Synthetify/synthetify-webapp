@@ -1,4 +1,4 @@
-import { Avatar, Divider, Input, InputAdornment } from '@material-ui/core'
+import { Divider, Input, InputAdornment } from '@material-ui/core'
 import React, { CSSProperties, useState, useRef } from 'react'
 import classNames from 'classnames'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
@@ -100,7 +100,7 @@ export const AmountInput: React.FC<IProps> = ({
       }}
     >
       <Divider orientation='vertical' className={classes.divider} />
-      <Avatar alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
+      <img alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
       {currency}
       {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
     </InputAdornment>
@@ -112,6 +112,9 @@ export const AmountInput: React.FC<IProps> = ({
         inputRef={inputRef}
         error={!!error}
         className={classNames(classes.amountInput, className)}
+        classes={{
+          input: classes.input
+        }}
         style={style}
         type={'text'}
         value={value}
