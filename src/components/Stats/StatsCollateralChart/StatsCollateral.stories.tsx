@@ -115,7 +115,6 @@ storiesOf('StatsCollateral', module)
   .add('medium', () => (
     <StatsCollateralChart data={medium}/>
   ))
-
   .add('small', () => (
     <StatsCollateralChart data={small}/>
   ))

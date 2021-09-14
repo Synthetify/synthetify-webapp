@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   debtPoolCardTitle: {
-    color: colors.navy.lightGrey,
+    color: colors.navy.veryLightGrey,
     fontSize: '22px',
     lineHeight: '40px',
     fontWeight: 600
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   pieCanvasBackground: {
     height: '100%',
-    background: '#000000',
+    background: colors.navy.background,
     borderRadius: '100%',
     display: 'flex',
     alignItems: 'center',

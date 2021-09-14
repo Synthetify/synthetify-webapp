@@ -26,7 +26,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
         <Typography className={classes.debtPoolCardSubTitle}>{subTitle}</Typography>
         <Grid className={classes.pieContainer}>
           <Grid className={classes.pieCanvasBackground}>
-            <Grid className={classes.pieCanvasGrid} justifyContent='center'>
+            <Grid className={classes.pieCanvasGrid}>
               <ResponsivePie
                 data={data}
                 margin={{ top: 6, right: 6, bottom: 6, left: 6 }}
@@ -43,7 +43,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsRadiusOffset={0}
                 colors={{ datum: 'data.color' }}
                 arcLabelsTextColor='#000000'
-                tooltip={({ datum: { id, color, label } }) => (
+                tooltip={({ datum: { color, label } }) => (
                   <div
                     className={classes.tooltipContainer}
                     style={{
@@ -56,7 +56,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                           ? { color: colors.black.background, borderColor: color }
                           : { color: ' #ffffff', borderColor: color })
                       }}>
-                      {id}
+                      {label}
                     </div>
                   </div>
                 )}
