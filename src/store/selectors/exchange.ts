@@ -234,7 +234,7 @@ export const getCollateralStructure = createSelector(
     const collateralStructure = values.map((item) => {
       return {
         symbol: item.symbol,
-        percent: +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100
+        percent: +printBN(totalVal, item.scale) ? +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100 : 0
       }
     })
     return collateralStructure
@@ -259,7 +259,7 @@ export const getSyntheticsStructure = createSelector(
     const syntheticStructure = values.map((item) => {
       return {
         symbol: item.symbol,
-        percent: +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100,
+        percent: +printBN(totalVal, item.scale) ? +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100 : 0,
         value: +transformBN(item.value)
       }
     })
