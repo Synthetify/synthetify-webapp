@@ -2,11 +2,14 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    padding: 0,
+    padding: '0 0 12px 0',
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'row',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 0 4px 0'
+    },
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
     }
@@ -14,10 +17,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   debtcontainer: {
     width: '589px',
     [theme.breakpoints.down('md')]: {
-      width: '520px'
+      width: '500px'
     },
     [theme.breakpoints.down('sm')]: {
-      width: '60.0%'
+      width: '55.0%'
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%'

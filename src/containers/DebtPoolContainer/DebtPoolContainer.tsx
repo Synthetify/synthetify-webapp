@@ -32,6 +32,7 @@ export const DebtPoolContainer: React.FC<IProps> = () => {
     }
   })
   const classes = useStyles()
+
   return (
     <Grid className={classes.container}>
       <Grid className={classes.debtcontainer}>

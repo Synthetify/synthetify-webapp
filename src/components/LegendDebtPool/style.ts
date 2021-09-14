@@ -3,40 +3,47 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   statsListCard: {
-    background: colors.navy.component,
+    background: 'none',
     borderRadius: 10,
     height: 'auto',
     fontFamily: 'Inter',
-    marginLeft: '12px',
+    marginLeft: '24px',
     width: '459px',
-    paddingTop: '4px',
-    paddingBottom: '4px',
 
     [theme.breakpoints.down('md')]: {
-      width: '311px'
+      width: '331px'
     },
     [theme.breakpoints.down('sm')]: {
-      width: '40%',
-      marginLeft: '8px'
+      width: '45%',
+      marginLeft: '16px'
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       marginLeft: '0',
-      marginTop: '8px',
-      padding: '8px 0 8px 0'
+      padding: '8px 0 0px 0'
     }
   },
   statsListCardContent: {
-    padding: '0px 16px 0 16px',
+    padding: '0px 0px 0 0px',
     height: '100%',
     '&:last-child': {
       paddingBottom: '0px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: 0
     }
+  },
+  listContainer: {
+    backgroundColor: colors.navy.component,
+    borderRadius: '10px',
+    marginBottom: '0px',
+    height: '100%',
+    paddingTop: '8px'
   },
   listItemIconName: {
     width: 'max-content',
 
-    paddingRight: 16,
+    paddingRight: 8,
     alignItems: 'center',
     '&> svg': {
       paddingRight: 8
@@ -61,16 +68,21 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItemIconNumber: {
     alignItems: 'center',
-    color: '#6261A3',
-    paddingLeft: 6,
-    fontSize: 15,
+    color: colors.navy.info,
+    paddingLeft: 4,
+    fontSize: 21,
     fontWeight: 600,
     '&> svg': {
-      paddingRight: 8
+      paddingRight: 6
+    },
+    [theme.breakpoints.down('md')]: {
+      fontSize: '15px',
+      lineHeight: '28px',
+      paddingLeft: 3
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: '1.5vw',
-      lineHeight: '24px',
+      lineHeight: '28px',
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
@@ -82,33 +94,36 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   listItemContainer: {
     width: '100%',
-    padding: '16px 0',
+    padding: '4px 0',
     '&:hover': {
-      '&> div div span': {
+      '&> div div': {
         color: '#7574D6'
       }
     }
   },
+  listItemGrid: {
+    padding: '0 8px 0 8px'
+  },
   legend: {
     width: '100%',
+    height: 'max-content',
     padding: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
   },
   percentNumber: {
-    fontSize: 16,
+    fontSize: 21,
     width: 'min-content',
     display: 'flex',
     alignItems: 'center',
     padding: '0 4px 0 0',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1.7vw',
-      lineHeight: '28px'
+      fontSize: '2.3vw',
+      lineHeight: '24px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '14px',
-      lineHeight: '28px'
+      fontSize: '14px'
     }
   }
 }))
