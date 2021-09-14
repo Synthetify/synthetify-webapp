@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'row',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 0 4px 0'
+    },
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column'
     }

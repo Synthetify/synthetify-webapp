@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     height: 'auto',
     fontFamily: 'Inter',
-    marginLeft: '12px',
+    marginLeft: '24px',
     width: '459px',
 
     [theme.breakpoints.down('md')]: {
@@ -15,13 +15,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       width: '45%',
-      marginLeft: '8px'
+      marginLeft: '16px'
     },
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       marginLeft: '0',
-      marginTop: '12px',
-      padding: '8px 0 8px 0'
+      padding: '8px 0 0px 0'
     }
   },
   statsListCardContent: {
