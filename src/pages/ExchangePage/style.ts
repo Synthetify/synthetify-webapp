@@ -56,6 +56,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       marginTop: 16
     }
+  },
+  '@keyframes slide': {
+    from: {
+      transform: 'translateX(50px)'
+    },
+    to: {
+      transform: 'translateX(0px)'
+    }
+  },
+  slide: {
+    animation: '$slide .2s'
   }
 }))
 
