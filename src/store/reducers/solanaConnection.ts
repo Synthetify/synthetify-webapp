@@ -1,5 +1,5 @@
+import { NetworkType } from '@consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { SolanaNetworks } from '@web3/connection'
 import { PayloadType } from './types'
 
 export enum Status {
@@ -11,14 +11,14 @@ export enum Status {
 export interface ISolanaConnectionStore {
   status: Status
   message: string
-  network: SolanaNetworks
+  network: NetworkType
   slot: number
 }
 
 export const defaultState: ISolanaConnectionStore = {
   status: Status.Uninitialized,
   message: '',
-  network: SolanaNetworks.DEV,
+  network: NetworkType.DEVNET,
   slot: 0
 }
 export const solanaConnectionSliceName = 'solanaConnection'
@@ -38,7 +38,7 @@ const solanaConnectionSlice = createSlice({
       state.message = action.payload
       return state
     },
-    setNetwork(state, action: PayloadAction<SolanaNetworks>) {
+    setNetwork(state, action: PayloadAction<NetworkType>) {
       state.network = action.payload
       return state
     },
