@@ -29,8 +29,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   gridItem: {
     paddingBottom: 12
+  },
+  '@keyframes slide': {
+    from: {
+      transform: 'translateX(50px)'
+    },
+    to: {
+      transform: 'translateX(0px)'
+    }
+  },
+  slide: {
+    animation: '$slide .2s'
   }
-
 }))
 
 export default useStyles
