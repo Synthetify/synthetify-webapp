@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 147,
     height: 36,
     borderRadius: 6,
-    backgroundColor: 'rgba(12, 13, 44, 0.4)',
+    backgroundColor: 'rgba(14, 14, 42, 0.45)',
     color: colors.navy.veryLightGrey,
     fontSize: 16,
     fontWeight: 700,
@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       right: 11,
       width: 119,
       height: 28
+    },
+
+    '&:hover': {
+      backgroundColor: 'rgba(14, 14, 42, 0.7) !important'
     }
   },
   sum: {

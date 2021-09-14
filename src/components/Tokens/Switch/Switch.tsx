@@ -54,7 +54,7 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
     }
   },
   selected: ({ value }) => ({
-    fontWeight: 600,
+    fontWeight: 'bold',
     color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background,
     transition: 'color 300ms',
 

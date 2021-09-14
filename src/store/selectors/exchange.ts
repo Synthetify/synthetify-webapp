@@ -1,5 +1,5 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp, discountData, printBN } from '@consts/utils'
+import { divUp, discountData, printBN, transformBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -218,4 +218,52 @@ export const exchangeSelectors = {
   effectiveFee: effectiveFeeData
 }
 
+export const getCollateralStructure = createSelector(
+  collaterals,
+  assets, (allColaterals, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allColaterals).map((item) => {
+      const value = assets[item.assetIndex].price.val.mul(item.reserveBalance.val).div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value,
+        symbol: item.symbol,
+        scale: item.reserveBalance.scale
+      }
+    })
+    const collateralStructure = values.map((item) => {
+      return {
+        symbol: item.symbol,
+        percent: +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100
+      }
+    })
+    return collateralStructure
+  }
+)
+
+export const getSyntheticsStructure = createSelector(
+  synthetics,
+  assets, (allSynthetics, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allSynthetics).map((item) => {
+      const value = assets[item.assetIndex].price.val.mul(
+        item.supply.val.sub(item.borrowedSupply.val).sub(item.swaplineSupply.val)
+      ).div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value,
+        symbol: item.symbol,
+        scale: item.supply.scale
+      }
+    })
+    const syntheticStructure = values.map((item) => {
+      return {
+        symbol: item.symbol,
+        percent: +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100,
+        value: +transformBN(item.value)
+      }
+    })
+    return syntheticStructure
+  }
+)
 export default exchangeSelectors
