@@ -5,10 +5,14 @@ import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLin
 import Rewards1 from '@static/svg/rewards1.svg'
 import BN from 'bn.js'
 
+import { Provider } from 'react-redux'
+import { store } from '../../../../store/index'
+
 const loremHint =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc imperdiet varius orci.'
 
 storiesOf('WrappedActionMenu/RewardsTab', module)
+.addDecorator((Story) => <Provider store={store}>{<Story />}</Provider>)
   .add('amount per round line', () => (
     <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <RewardsLine
@@ -38,4 +42,5 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
         tooltipPlacement={'left'}
       />
     </div>
-  ))
+  )
+  )
