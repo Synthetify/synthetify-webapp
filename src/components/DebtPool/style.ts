@@ -19,8 +19,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   debtPoolCardTitle: {
     color: colors.navy.veryLightGrey,
     fontSize: '22px',
-    lineHeight: '40px',
-    fontWeight: 600
+    lineHeight: '22px',
+    fontWeight: 600,
+    paddingBottom: "8px"
   },
   debtPoolCardSubTitle: {
     color: colors.navy.info,
