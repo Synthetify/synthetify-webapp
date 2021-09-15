@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   legend: {
     width: '100%',
     height: 'max-content',
-    padding: 0,
+    padding: '0 8px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
