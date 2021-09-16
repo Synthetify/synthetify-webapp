@@ -47,7 +47,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                     <AnimatedNumber
                       value={element.price}
                       duration={500}
-                      formatValue={(value: string) => Number(value).toFixed(2)}
+                      formatValue={(value: string) => Number(value).toLocaleString('pl-PL').replace(',', '.')}
                     />
                     $
                   </ListItemIcon>
