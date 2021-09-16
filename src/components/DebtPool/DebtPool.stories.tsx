@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import { store } from '@store/index'
 
 storiesOf('stats/debtPool', module)
-  .addDecorator((Story) => <Provider store={store}>{<Story />}</Provider>)
+  //.addDecorator((Story) => <Provider store={store}>{<Story />}</Provider>)
   .add('pool', () => (
     <DebtPool
       title='Debt pool'
