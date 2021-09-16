@@ -88,7 +88,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                   const variable: string = event.id.toString()
                   setLabel('Total Dept')
                   setPercent('')
-                  setTotal(`${synthSum.toFixed(0).toString()}$`)
+                  setTotal(`${Number(synthSum.toFixed(0)).toLocaleString('pl-PL')}$`)
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = colors.navy.component
