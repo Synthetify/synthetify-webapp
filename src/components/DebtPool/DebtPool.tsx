@@ -18,9 +18,19 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
+  const [total, setTotal] = React.useState<String>('')
   const [label, setLabel] = React.useState<String>('')
   const [percent, setPercent] = React.useState<String>('')
   const classes = useStyles()
+  const synthSumValue = (): number => {
+    let sum = 0
+    data.map(item => {
+      sum += item.price
+    })
+    return sum
+  }
+  const synthSum = synthSumValue() as Number
+
   return (
     <Card className={classes.debtPoolCard}>
       <CardContent>
@@ -34,6 +44,9 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
               </Typography>
               <Typography component='p' className={classes.tooltipValue}>
                 {percent}
+              </Typography>
+              <Typography component='p' className={classes.tooltipTotal}>
+                {total}
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
@@ -64,6 +77,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                   const variable: string = event.id.toString()
                   setLabel(event.label.toString())
                   setPercent(`${Number(event.formattedValue).toFixed(2)}%`)
+                  setTotal('')
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = `${colors.navy.navButton}40`
@@ -72,8 +86,9 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 }}
                 onMouseLeave={event => {
                   const variable: string = event.id.toString()
-                  setLabel('')
+                  setLabel('Total Dept')
                   setPercent('')
+                  setTotal(`${synthSum.toFixed(0).toString()}$`)
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = colors.navy.component

@@ -11,6 +11,7 @@ import {
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import useStyle from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
+
 export interface Data {
   id: string
   label: string
@@ -47,7 +48,9 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                     <AnimatedNumber
                       value={element.price}
                       duration={500}
-                      formatValue={(value: string) => Number(value).toLocaleString('pl-PL').replace(',', '.')}
+                      formatValue={(value: string) => Number(value) > 1000000
+                        ? Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
+                        : Number(value).toLocaleString('pl-PL').replace(',', '.')}
                     />
                     $
                   </ListItemIcon>

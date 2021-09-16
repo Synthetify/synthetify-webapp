@@ -105,6 +105,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: 32
     }
+  },
+  tooltipTotal: {
+    fontSize: 36,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 26
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 20
+    }
   }
 }))
 
