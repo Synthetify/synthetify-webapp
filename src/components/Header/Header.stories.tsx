@@ -7,8 +7,10 @@ import { withKnobs } from '@storybook/addon-knobs'
 import Header from './Header'
 import { toBlur } from '@consts/uiUtils'
 import { WalletType } from '@web3/wallet'
+import { MemoryRouter } from 'react-router'
 
 storiesOf('ui/HeaderRedesign', module)
+  .addDecorator(story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>)
   .addDecorator(withKnobs)
   .add('default', () => {
     return (
