@@ -1,9 +1,9 @@
 import React from 'react'
 import { ResponsivePie } from '@nivo/pie'
+import AnimatedNumber from '@components/AnimatedNumber'
 import { Grid, Card, CardContent, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { colors } from '@static/theme'
-
 export interface Data {
   id: string
   label: string
@@ -18,18 +18,11 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
-  const [total, setTotal] = React.useState<String>('')
-  const [label, setLabel] = React.useState<String>('')
-  const [percent, setPercent] = React.useState<String>('')
+  const [label, setLabel] = React.useState<String>('Total Debt')
+  const [info, setInfo] = React.useState<String>('')
+  const [display, setDisplay] = React.useState<boolean>(true)
+
   const classes = useStyles()
-  const synthSumValue = (): number => {
-    let sum = 0
-    data.map(item => {
-      sum += item.price
-    })
-    return sum
-  }
-  const synthSum = synthSumValue() as Number
 
   return (
     <Card className={classes.debtPoolCard}>
@@ -43,10 +36,16 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 {label}
               </Typography>
               <Typography component='p' className={classes.tooltipValue}>
-                {percent}
+                {info}
               </Typography>
-              <Typography component='p' className={classes.tooltipTotal}>
-                {total}
+              <Typography component='p' className={classes.tooltipTotal} style={{ display: `${display ? 'block' : 'none'}` }}>
+                <AnimatedNumber
+                  value={data.reduce((sum, item) => {
+                    return sum + item.price
+                  }, 0)}
+                  duration={500}
+                  formatValue={(value: string) => Number(Number(value).toFixed(0)).toLocaleString('pl-PL')}
+                />$
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
@@ -76,8 +75,8 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 onMouseEnter={event => {
                   const variable: string = event.id.toString()
                   setLabel(event.label.toString())
-                  setPercent(`${Number(event.formattedValue).toFixed(2)}%`)
-                  setTotal('')
+                  setInfo(`${Number(event.formattedValue).toFixed(2)}%`)
+                  setDisplay(false)
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = `${colors.navy.navButton}40`
@@ -86,9 +85,9 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 }}
                 onMouseLeave={event => {
                   const variable: string = event.id.toString()
-                  setLabel('Total Dept')
-                  setPercent('')
-                  setTotal(`${Number(synthSum.toFixed(0)).toLocaleString('pl-PL')}$`)
+                  setLabel('Total Debt')
+                  setInfo('')
+                  setDisplay(true)
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = colors.navy.component

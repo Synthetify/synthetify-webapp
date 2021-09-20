@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '22px',
     lineHeight: '22px',
     fontWeight: 600,
-    paddingBottom: '8px'
+    paddingBottom: 8
   },
   debtPoolCardSubTitle: {
     color: colors.navy.info,
@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltipContainer: {
     borderRadius: '8px',
     filter: 'brightness(120%)',
-    boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.4)',
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -108,6 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipTotal: {
     fontSize: 36,
+    fontWeight: 700,
     [theme.breakpoints.down('md')]: {
       fontSize: 26
     },
