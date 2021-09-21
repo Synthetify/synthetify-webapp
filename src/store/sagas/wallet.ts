@@ -27,7 +27,6 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
 import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
-import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet

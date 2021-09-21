@@ -32,6 +32,7 @@ export const HeaderWrapper: React.FC = () => {
           enumWallet = WalletType.MATH
           break;
         default:
+          enumWallet = 0
       }
       
       setTypeOfWallet(enumWallet)
