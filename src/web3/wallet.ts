@@ -27,7 +27,6 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
           resolve(_wallet)
         })
         _wallet.connect()
-        console.log(_wallet)
         break
       case WalletType.SOLLET:
         providerUrl = 'https://www.sollet.io'

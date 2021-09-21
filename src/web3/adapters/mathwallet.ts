@@ -1,97 +1,92 @@
-import EventEmitter from 'eventemitter3'
-import { PublicKey, Transaction } from '@solana/web3.js'
-// import { notify } from '../../utils/notifications'
-import { WalletAdapter } from './types'
+import EventEmitter from 'eventemitter3';
+import { PublicKey, Transaction } from '@solana/web3.js';
+//mport { notify } from '../../utils/notifications';
+import { WalletAdapter } from './types';
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
-type MathEvent = 'disconnect' | 'connect'
-type MathRequestMethod = 'connect' | 'disconnect' | 'signTransaction' | 'signAllTransactions'
-
-interface MathProvider {
-  publicKey?: PublicKey
-  isConnected?: boolean
-  autoApprove?: boolean
-  signTransaction: (transaction: Transaction) => Promise<Transaction>
-  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
-  connect: () => Promise<void>
-  disconnect: () => Promise<void>
-  on: (event: MathEvent, handler: (args: any) => void) => void
-  request: (method: MathRequestMethod, params: any) => Promise<any>
-}
-
 export class MathWalletAdapter extends EventEmitter implements WalletAdapter {
-  _provider: MathProvider | undefined
+  _publicKey?: PublicKey;
+  _onProcess: boolean;
+  _connected: boolean;
   constructor() {
-    super()
-    this.connect = this.connect.bind(this)
+    super();
+    this._onProcess = false;
+    this._connected = false;
+    this.connect = this.connect.bind(this);
   }
 
   get connected() {
-    console.log(this._provider)
-    return this._provider?.isConnected || false
+    return this._connected;
   }
 
   get autoApprove() {
-    return this._provider?.autoApprove || false
+    return false;
   }
 
-  async signAllTransactions(transactions: Transaction[]): Promise<Transaction[]> {
+  public async signAllTransactions(
+    transactions: Transaction[],
+  ): Promise<Transaction[]> {
     if (!this._provider) {
-      return transactions
+      return transactions;
     }
 
-    return await this._provider.signAllTransactions(transactions)
+    return this._provider.signAllTransactions(transactions);
+  }
+
+  private get _provider() {
+    if ((window as any)?.solana?.isMathWallet) {
+      return (window as any).solana;
+    }
+    return undefined;
   }
 
   get publicKey() {
-    return this._provider?.publicKey || DEFAULT_PUBLICKEY
+    return this._publicKey || DEFAULT_PUBLICKEY;
   }
 
   async signTransaction(transaction: Transaction) {
     if (!this._provider) {
-      return transaction
+      return transaction;
     }
 
-    return await this._provider.signTransaction(transaction)
+    return this._provider.signTransaction(transaction);
   }
 
-  connect = async () => {
-    if (this._provider) {
-      return
+  connect() {
+    if (this._onProcess) {
+      return;
     }
-    console.log(window.solana)
 
-    let provider: MathProvider
-    if ((window as any)?.solana?.isMathWallet) {
-      provider = (window as any).solana
-    } else {
-      window.open('https://mathwallet.org/', '_blank')
+    if (!this._provider) {
+      window.open('https://mathwallet.org/', '_blank');
       // notify({
-      //   message: 'Mathwallet Error',
-      //   description: 'Please install mathwallet wallet from Chrome '
-      // })
-      return
+      //   message: 'Math Wallet Error',
+      //   description: 'Please install mathwallet',
+      // });
+      return;
     }
 
-    provider.on('connect', () => {
-      this._provider = provider
-      console.log(this._provider)
-      this.emit('connect')
-    })
-
-    if (!provider.isConnected) {
-      await provider.connect()
-    }
-
-    this._provider = provider
+    this._onProcess = true;
+    this._provider
+      .getAccount()  
+        .then((account: any) => {
+        this._publicKey = new PublicKey(account);
+        this._connected = true;
+        this.emit('connect', this._publicKey);
+      })
+      .catch(() => {
+        this.disconnect();
+      })
+      .finally(() => {
+        this._onProcess = false;
+      });
   }
 
   disconnect() {
-    if (this._provider) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this._provider.disconnect()
-      this._provider = undefined
-      this.emit('disconnect')
+    if (this._publicKey) {
+      this._publicKey = undefined;
+      this._connected = false;
+      this.emit('disconnect');
     }
   }
 }

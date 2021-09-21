@@ -19,7 +19,6 @@ export const HeaderWrapper: React.FC = () => {
 
   useEffect(() => {
     const sessionWallet = sessionStorage.getItem('SYNTHETIFY_SESSION_WALLET')
-    console.log(sessionWallet)
     if (sessionWallet === 'phantom') {
       setTypeOfWallet(WalletType.PHANTOM)
       dispatch(walletActions.connect(WalletType.PHANTOM))
