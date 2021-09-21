@@ -38,7 +38,7 @@ export const DebtPoolContainer: React.FC<IProps> = () => {
       <Grid className={classes.debtcontainer}>
         <DebtPool
           title='Debt pool'
-          subTitle='Percentage graph of a given synthetics share in debt'
+          subTitle='Chart of total debt&apos;s percentage share for each available synthetic asset'
           data={SyntheticData}
         />
       </Grid>

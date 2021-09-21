@@ -67,7 +67,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
         <Grid container className={classes.headerWrapper} direction="column">
           <Grid item>
             <Typography className={classes.title}>Collateral structure</Typography>
-            <Typography className={classes.subTitle}>Percentage graph of the amount of collaterals</Typography>
+            <Typography className={classes.subTitle}>Chart of total deposit's percentage share for each available collateral</Typography>
           </Grid>
         </Grid>
         <Grid container className={classes.statsWrapper}>
