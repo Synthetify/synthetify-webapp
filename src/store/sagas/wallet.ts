@@ -27,6 +27,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
 import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
+import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -243,6 +244,7 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
 
 export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): Generator {
   const walletAddress = yield* select(address)
+  let enumWallet = ''
   if (!walletAddress.equals(DEFAULT_PUBLICKEY)) {
     yield* put(
       snackbarsActions.add({
@@ -265,9 +267,19 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     )
     return
   }
-  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', action.payload === WalletType.PHANTOM
-    ? 'phantom'
-    : 'sollet')
+  switch(action.payload) {
+        case 0:
+          enumWallet = 'phantom'
+          break;
+        case 1:
+          enumWallet = 'sollet'
+          break;
+        case 2:
+          enumWallet = 'math'
+          break;
+        default:
+      }
+  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
 }
