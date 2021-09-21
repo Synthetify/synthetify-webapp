@@ -104,7 +104,7 @@ export const Header: React.FC<IHeader> = ({
             ? (
               <ChangeWalletButton
                 name={isSmDown ? 'My wallet' : 'Connect'}
-                options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATHWALLET]}
                 onSelect={onWalletSelect}
                 connected={walletConnected}
                 onDisconnect={onDisconnectWallet}
@@ -114,7 +114,7 @@ export const Header: React.FC<IHeader> = ({
             : (
               <ChangeWalletButton
                 name={`${address.toString().substr(0, isSmDown ? 2 : 6)}...${address.toString().substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
-                options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATHWALLET]}
                 onSelect={onWalletSelect}
                 connected={walletConnected}
                 hideArrow={isSmDown}

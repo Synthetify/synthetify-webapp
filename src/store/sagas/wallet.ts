@@ -265,7 +265,11 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     )
     return
   }
-  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', action.payload === WalletType.PHANTOM ? 'phantom' : 'sollet')
+  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', action.payload === WalletType.PHANTOM
+    ? 'phantom'
+    : action.payload === WalletType.SOLLET
+      ? 'sollet'
+      : 'mathwallet')
   yield* call(init)
   yield* call(connectExchangeWallet)
 }

@@ -4,10 +4,10 @@ import { PublicKey, Transaction } from '@solana/web3.js'
 import { WalletAdapter } from './types'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
-type PhantomEvent = 'disconnect' | 'connect'
-type PhantomRequestMethod = 'connect' | 'disconnect' | 'signTransaction' | 'signAllTransactions'
+type MathEvent = 'disconnect' | 'connect'
+type MathRequestMethod = 'connect' | 'disconnect' | 'signTransaction' | 'signAllTransactions'
 
-interface PhantomProvider {
+interface MathProvider {
   publicKey?: PublicKey
   isConnected?: boolean
   autoApprove?: boolean
@@ -15,19 +15,19 @@ interface PhantomProvider {
   signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
   connect: () => Promise<void>
   disconnect: () => Promise<void>
-  on: (event: PhantomEvent, handler: (args: any) => void) => void
-  request: (method: PhantomRequestMethod, params: any) => Promise<any>
+  on: (event: MathEvent, handler: (args: any) => void) => void
+  request: (method: MathRequestMethod, params: any) => Promise<any>
 }
 
-export class PhantomWalletAdapter extends EventEmitter implements WalletAdapter {
-  _provider: PhantomProvider | undefined
-
+export class MathWalletAdapter extends EventEmitter implements WalletAdapter {
+  _provider: MathProvider | undefined
   constructor() {
     super()
     this.connect = this.connect.bind(this)
   }
 
   get connected() {
+    console.log(this._provider)
     return this._provider?.isConnected || false
   }
 
@@ -59,22 +59,23 @@ export class PhantomWalletAdapter extends EventEmitter implements WalletAdapter 
     if (this._provider) {
       return
     }
+    console.log(window.solana)
 
-    let provider: PhantomProvider
-    if ((window as any)?.solana?.isPhantom) {
+    let provider: MathProvider
+    if ((window as any)?.solana?.isMathWallet) {
       provider = (window as any).solana
-      console.log(provider)
     } else {
-      window.open('https://phantom.app/', '_blank')
+      window.open('https://mathwallet.org/', '_blank')
       // notify({
-      //   message: 'Phantom Error',
-      //   description: 'Please install Phantom wallet from Chrome '
+      //   message: 'Mathwallet Error',
+      //   description: 'Please install mathwallet wallet from Chrome '
       // })
       return
     }
 
     provider.on('connect', () => {
       this._provider = provider
+      console.log(this._provider)
       this.emit('connect')
     })
 

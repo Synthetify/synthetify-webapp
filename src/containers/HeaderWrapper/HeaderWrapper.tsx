@@ -19,10 +19,16 @@ export const HeaderWrapper: React.FC = () => {
 
   useEffect(() => {
     const sessionWallet = sessionStorage.getItem('SYNTHETIFY_SESSION_WALLET')
-
-    if (sessionWallet === 'phantom' || sessionWallet === 'sollet') {
-      setTypeOfWallet(sessionWallet === 'phantom' ? WalletType.PHANTOM : WalletType.SOLLET)
-      dispatch(walletActions.connect(sessionWallet === 'phantom' ? WalletType.PHANTOM : WalletType.SOLLET))
+    console.log(sessionWallet)
+    if (sessionWallet === 'phantom') {
+      setTypeOfWallet(WalletType.PHANTOM)
+      dispatch(walletActions.connect(WalletType.PHANTOM))
+    } else if (sessionWallet === 'sollet') {
+      setTypeOfWallet(WalletType.SOLLET)
+      dispatch(walletActions.connect(WalletType.SOLLET))
+    } else {
+      setTypeOfWallet(WalletType.MATHWALLET)
+      dispatch(walletActions.connect(WalletType.MATHWALLET))
     }
   }, [])
 
