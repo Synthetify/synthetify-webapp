@@ -70,9 +70,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 colors={{ datum: 'data.color' }}
                 arcLabelsTextColor='#000000'
                 tooltip={() => (
-                  <div
-                    className={classes.tooltipContainerDisable}>
-                  </div>
+                  null
                 )}
                 onMouseEnter={event => {
                   const variable: string = event.id.toString()
