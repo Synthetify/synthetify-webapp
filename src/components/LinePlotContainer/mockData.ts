@@ -1,7 +1,7 @@
 export const data = [
   {
     id: 'Volument',
-    data: [
+    points: [
       {
         x: 11630913611000,
         y: 140
@@ -58,7 +58,7 @@ export const data = [
   },
   {
     id: 'Liquidation',
-    data: [
+    points: [
       {
         x: 11630913611000,
         y: 140
@@ -115,7 +115,7 @@ export const data = [
   },
   {
     id: 'Mint',
-    data: [
+    points: [
       {
         x: 11630913611000,
         y: 140
@@ -172,7 +172,7 @@ export const data = [
   },
   {
     id: 'Burn',
-    data: [
+    points: [
       {
         x: 11630913611000,
         y: 140
@@ -229,7 +229,7 @@ export const data = [
   },
   {
     id: 'User count',
-    data: [
+    points: [
       {
         x: 11630913611000,
         y: 140

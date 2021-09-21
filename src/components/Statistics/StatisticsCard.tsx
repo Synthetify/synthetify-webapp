@@ -5,7 +5,7 @@ import AnimatedNumber from '@components/AnimatedNumber'
 
 interface IProps {
   name: string,
-  value: string,
+  value: number,
   desc: string
 }
 

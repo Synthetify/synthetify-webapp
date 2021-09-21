@@ -8,16 +8,47 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box'
   },
   gridContainer: {
-    width: '77%',
     margin: '0 auto',
-
+    width: 1073,
     [theme.breakpoints.down('md')]: {
-      width: '89%'
+      width: 854
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   container: {
     width: '100%',
-    margin: '0 auto'
+    margin: '0 auto',
+    '& #collateral': {
+      padding: '0px 0px 0px 0px'
+    },
+    '& #valume': {
+      padding: '0px 0px 0px 24px'
+    },
+    '& #mint': {
+      padding: '24px 12px 24px 0'
+    },
+    '& #debt': {
+      padding: '24px 12px 24px 12px'
+    },
+    '& #fee': {
+      padding: '24px 0px 24px 12px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      '& #valume': {
+        padding: '0px 0px 0px 16px'
+      },
+      '& #mint': {
+        padding: '16px 8px 16px 0'
+      },
+      '& #debt': {
+        padding: '16px 8px 16px 8px'
+      },
+      '& #fee': {
+        padding: '16px 0px 16px 8px'
+      }
+    }
   },
   root: {
     display: 'flex',
@@ -41,14 +72,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: 0,
       margin: 0
     }
-
   },
   cardContent: {
     padding: '10.5px 16px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
-
   },
   header: {
     width: '100%',
@@ -98,7 +127,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       margin: '16.5px 0 11px 0',
       fontSize: 38
-
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: 25,

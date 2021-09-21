@@ -9,11 +9,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     margin: '0 auto',
     padding: '64px 0',
+    display: 'flex',
+    flexDirection: 'column',
     [theme.breakpoints.down('sm')]: {
       padding: '64px 19px'
     },
     [theme.breakpoints.down('xs')]: {
       padding: '32px 16px'
+    }
+  },
+  cardContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    width: '100%'
+  },
+  linePlot: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingBottom: 24,
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: 16
     }
   },
   header: {

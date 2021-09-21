@@ -3,57 +3,56 @@ import { Grid, CardContent, Card, ButtonGroup, Button, Paper } from '@material-u
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import LinePlot from '@components/LinePlot/LinePlot'
-import { data as mockData } from './mockData'
 import { colors } from '@static/theme'
 
 import useStyles from './style'
 interface Data {
   id: string
-  data: Array<{ x: number; y: number }>
+  points: Array<{ x: number; y: number }>
 }
-
-export const LinePlotContainer: React.FC = () => {
+interface IProp {
+  data: Data[]
+  status: boolean
+}
+export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
   const classes = useStyles()
-  const [menuOption, setMenuOption] = React.useState('Volument')
+  const [menuOption, setMenuOption] = React.useState('Volume')
   const [activeButtonTime, setActiveButtonTime] = React.useState('Y')
-  const [data, setData] = React.useState<Data>(mockData[0])
-  const [dataPlot, setDataPlot] = React.useState<Array<{ x: number; y: number }>>(
-    mockData[0].data.sort((a: { x: number; y: number }, b: { x: number; y: number }) => {
-      return a.x - b.x
-    })
-  )
+  const [data2, setData2] = React.useState<Data>(data[0])
+  const [dataPlot, setDataPlot] = React.useState<Array<{ x: number; y: number }>>(data[0].points)
+  // const [status, setStatus] = React.useState(false)
   const changeData = (name: string) => {
-    const value = mockData.findIndex(element => element.id === name)
+    const value = data.findIndex(element => element.id === name)
 
-    setData(mockData[value])
+    setData2(data[value])
   }
 
   const sortData = (type: string) => {
     const timestamp = Date.now()
     if (type === 'D') {
       setDataPlot(
-        data.data.filter(element => {
+        data2.points.filter(element => {
           return element.x > timestamp - 86400000
         })
       )
     }
     if (type === 'W') {
       setDataPlot(
-        data.data.filter(element => {
+        data2.points.filter(element => {
           return element.x > timestamp - 604800000
         })
       )
     }
     if (type === 'M') {
       setDataPlot(
-        data.data.filter(element => {
+        data2.points.filter(element => {
           return element.x > timestamp - 2629743000
         })
       )
     }
     if (type === 'Y') {
       setDataPlot(
-        data.data.filter(element => {
+        data2.points.filter(element => {
           return element.x > timestamp - 31556926000
         })
       )
@@ -61,8 +60,20 @@ export const LinePlotContainer: React.FC = () => {
   }
 
   React.useEffect(() => {
+    // if (status) {
+    //   setMenuOption('Burn')
+    //   changeData('burn')
+    //   // setStatus(true)
+    // }
     sortData(activeButtonTime)
-  }, [activeButtonTime, data.data])
+  }, [activeButtonTime, menuOption, data2])
+
+  React.useEffect(() => {
+    if (status) {
+      setMenuOption('Burn')
+      changeData('burn')
+    }
+  }, [status])
 
   return (
     <Card className={classes.diagramCard}>
@@ -82,16 +93,16 @@ export const LinePlotContainer: React.FC = () => {
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
-                      setMenuOption('Volument')
-                      changeData('Volument')
+                      setMenuOption('Volume')
+                      changeData('volume')
                     }}>
-                    Volument
+                    Volume
                   </Button>
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Liquidation')
-                      changeData('Liquidation')
+                      changeData('liquidation')
                     }}>
                     Liquidation
                   </Button>
@@ -99,7 +110,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Mint')
-                      changeData('Mint')
+                      changeData('mint')
                     }}>
                     Mint
                   </Button>
@@ -107,7 +118,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Burn')
-                      changeData('Burn')
+                      changeData('burn')
                     }}>
                     Burn
                   </Button>
@@ -115,7 +126,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('User count')
-                      changeData('User count')
+                      changeData('userCount')
                     }}>
                     User count
                   </Button>
@@ -168,7 +179,7 @@ export const LinePlotContainer: React.FC = () => {
             </ButtonGroup>
           </Grid>
         </Grid>
-        <LinePlot data={{ id: data.id, data: dataPlot }} />
+        <LinePlot data={{ id: data2.id, data: dataPlot }} />
       </CardContent>
     </Card>
   )
