@@ -63,6 +63,7 @@ export class PhantomWalletAdapter extends EventEmitter implements WalletAdapter 
     let provider: PhantomProvider
     if ((window as any)?.solana?.isPhantom) {
       provider = (window as any).solana
+      console.log(provider)
     } else {
       window.open('https://phantom.app/', '_blank')
       // notify({

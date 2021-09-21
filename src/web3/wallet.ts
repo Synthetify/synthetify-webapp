@@ -6,7 +6,7 @@ import Wallet from '@project-serum/sol-wallet-adapter'
 export enum WalletType {
   PHANTOM,
   SOLLET,
-  MATHWALLET
+  MATH
 }
 let _wallet: WalletAdapter
 const getSolanaWallet = (): WalletAdapter => {
@@ -36,7 +36,7 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         })
         _wallet.connect()
         break
-      case WalletType.MATHWALLET:
+      case WalletType.MATH:
         _wallet = new MathWalletAdapter()
         _wallet.on('connect', () => {
           resolve(_wallet)
