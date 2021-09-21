@@ -44,7 +44,9 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                     return sum + item.price
                   }, 0)}
                   duration={500}
-                  formatValue={(value: string) => Number(Number(value).toFixed(0)).toLocaleString('pl-PL')}
+                  formatValue={(value: string) => Number(value) > 10000000 
+                    ? (Number((Number(value)/1000000).toFixed(1))).toLocaleString('pl-PL')+'M' 
+                    : (Number(Number(value).toFixed(0))).toLocaleString('pl-PL')}
                 />$
               </Typography>
             </Grid>
