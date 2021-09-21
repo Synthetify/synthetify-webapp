@@ -278,7 +278,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
           enumWallet = 'math'
           break;
         default:
-          enumWallet = 'math'
+          enumWallet = ''
       }
   yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
