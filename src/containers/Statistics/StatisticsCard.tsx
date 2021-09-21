@@ -1,5 +1,7 @@
 import { StatisticCardAll } from '@components/Statistics/StatisticCardAll'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import solanaConnectionSelectors from '@selectors/solanaConnection'
 interface Props {
   collateral: number
   valume: number
@@ -7,8 +9,9 @@ interface Props {
   debt: number
   fee: number
 }
-const apiURL = 'https://api.synthetify.io/stats/devnet'
+
 export const StatisticsCard: React.FC = () => {
+  const network = useSelector(solanaConnectionSelectors.network)
   const [data, setData] = React.useState<Props>({
     collateral: 0,
     valume: 0,
@@ -18,7 +21,7 @@ export const StatisticsCard: React.FC = () => {
   })
 
   const updateData = async () => {
-    await fetch(apiURL)
+    await fetch(`https://api.synthetify.io/stats/${network.toLowerCase()}`)
       .then(async response => await response.json())
       .then(value => {
         const tmp = value[value.length - 1]

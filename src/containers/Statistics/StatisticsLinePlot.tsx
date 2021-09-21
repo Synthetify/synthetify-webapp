@@ -1,11 +1,11 @@
 import React from 'react'
 import LinePlotContainer from '@components/LinePlotContainer/LinePlotContainer'
+import { useSelector } from 'react-redux'
+import solanaConnectionSelectors from '@selectors/solanaConnection'
 interface Data {
   id: string
   points: Array<{ x: number; y: number }>
 }
-
-const apiURL = 'https://api.synthetify.io/stats/devnet'
 const timestamp = Date.now()
 const data: Data[] = [
   {
@@ -19,8 +19,9 @@ const data: Data[] = [
 
 export const StatisticsLinePlot: React.FC = () => {
   const [status, setStatus] = React.useState(false)
+  const network = useSelector(solanaConnectionSelectors.network)
   const updateData = async () => {
-    await fetch(apiURL)
+    await fetch(`https://api.synthetify.io/stats/${network.toLowerCase()}`)
       .then(async response => await response.json())
       .then(value => {
         fillDataVolume(value)
@@ -29,7 +30,9 @@ export const StatisticsLinePlot: React.FC = () => {
         fillDataMint(value)
         fillDataUserCount(value)
       })
-      .then(() => setStatus(true))
+      .then(() => {
+        setStatus(true)
+      })
   }
   const fillDataVolume = (value: any[]) => {
     const tmp: { id: string; points: Array<{ x: number; y: number }> } = {
