@@ -23,13 +23,13 @@ export const HeaderWrapper: React.FC = () => {
     if (sessionWallet === 'phantom' || sessionWallet === 'sollet' || sessionWallet === 'math') {
       switch(sessionWallet) {
         case 'phantom':
-          enumWallet = 0
+          enumWallet = WalletType.PHANTOM
           break;
         case 'sollet':
-          enumWallet = 1
+          enumWallet = WalletType.SOLLET
           break;
         case 'math':
-          enumWallet = 2
+          enumWallet = WalletType.MATH
           break;
         default:
       }

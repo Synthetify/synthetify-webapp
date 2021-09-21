@@ -45,7 +45,7 @@ const icons: { [key: string]: string } = {
   stSOL: WSOLIcon,
   phantom: phantomIcon,
   sollet: solletIcon,
-  math: mathIcon,
+  'math wallet': mathIcon,
   clear: clearIcon
 }
 

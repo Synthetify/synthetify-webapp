@@ -268,16 +268,17 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     return
   }
   switch(action.payload) {
-        case 0:
+        case WalletType.PHANTOM:
           enumWallet = 'phantom'
           break;
-        case 1:
+        case WalletType.SOLLET:
           enumWallet = 'sollet'
           break;
-        case 2:
+        case WalletType.MATH:
           enumWallet = 'math'
           break;
         default:
+          enumWallet = 'math'
       }
   yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
