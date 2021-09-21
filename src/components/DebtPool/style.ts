@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '8px',
     filter: 'brightness(120%)',
     position: 'absolute',
+    width: '100%',
     top: '50%',
     left: '50%',
     transform: 'translateX(-50%) translateY(-50%)',
