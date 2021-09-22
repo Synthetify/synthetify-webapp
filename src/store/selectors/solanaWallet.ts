@@ -1,12 +1,12 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { assets, collaterals, exchangeAccount, synthetics, userDebtValue } from '@selectors/exchange'
+import { assets, collaterals, exchangeAccount, swaplines, synthetics, userDebtValue } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { ISynthetic } from '@reducers/exchange'
-import { Asset } from '@synthetify/sdk/lib/exchange'
+import { ICollateral, ISynthetic } from '@reducers/exchange'
+import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -38,7 +38,7 @@ export const tokenAccount = (tokenAddress: PublicKey) =>
     }
   })
 
-export type ExchangeTokensWithBalance = Asset & ISynthetic & { balance: BN }
+export type ExchangeSyntheticTokens = Asset & ISynthetic & { balance: BN }
 export const exchangeTokensWithUserBalance = createSelector(
   accounts,
   synthetics,
@@ -52,8 +52,43 @@ export const exchangeTokensWithUserBalance = createSelector(
           ...exchangeAssets[allSynthetics[asset.assetAddress.toString()].assetIndex],
           ...allSynthetics[asset.assetAddress.toString()],
           balance: userAccount ? userAccount.balance : new BN(0)
-        } as ExchangeTokensWithBalance
+        } as ExchangeSyntheticTokens
       })
+  }
+)
+
+export type ExchangeCollateralTokens = Asset & ICollateral & { balance: BN }
+export interface SwaplinePair extends Omit<Swapline, 'synthetic' | 'collateral'> {
+  collateral: ExchangeCollateralTokens
+  synthetic: ExchangeSyntheticTokens
+}
+
+export const swaplinePairs = createSelector(
+  swaplines,
+  synthetics,
+  collaterals,
+  accounts,
+  assets,
+  (allSwaplines, allSynthetics, allCollaterals, tokensAccounts, allAssets) => {
+    return allSwaplines.map((swapline) => {
+      const syntheticAccount = tokensAccounts[swapline.synthetic.toString()]
+      const collateralAccount = tokensAccounts[swapline.collateral.toString()]
+      const pair: SwaplinePair = {
+        ...swapline,
+        synthetic: {
+          ...allAssets[allSynthetics[swapline.synthetic.toString()].assetIndex],
+          ...allSynthetics[swapline.synthetic.toString()],
+          balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
+        },
+        collateral: { // maybe add special case when WSOL is in collaterals
+          ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
+          ...allCollaterals[swapline.collateral.toString()],
+          balance: collateralAccount ? collateralAccount.balance : new BN(0)
+        }
+      }
+
+      return pair
+    })
   }
 )
 

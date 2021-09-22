@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { printBNtoBN, printBN, showMorK } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
@@ -22,8 +22,8 @@ import AmountWithMaxInput from '@components/Inputs/AmountWithMaxInput/AmountWith
 import useStyles from './style'
 
 export const calculateSwapOutAmount = (
-  assetIn: ExchangeTokensWithBalance,
-  assetFor: ExchangeTokensWithBalance,
+  assetIn: ExchangeSyntheticTokens,
+  assetFor: ExchangeSyntheticTokens,
   amount: string,
   effectiveFee: Decimal
 ) => {
@@ -44,8 +44,8 @@ export const calculateSwapOutAmount = (
 }
 
 export const calculateSwapOutAmountReversed = (
-  assetIn: ExchangeTokensWithBalance,
-  assetFor: ExchangeTokensWithBalance,
+  assetIn: ExchangeSyntheticTokens,
+  assetFor: ExchangeSyntheticTokens,
   amount: string,
   effectiveFee: Decimal
 ) => {
@@ -69,7 +69,7 @@ export const swapOutAmountCurrencyName = (
   reserved: boolean,
   tokenToIndex: number | null,
   tokenFromIndex: number | null,
-  tokens: ExchangeTokensWithBalance[]
+  tokens: ExchangeSyntheticTokens[]
 ) => {
   const per = tokenToIndex === null || tokenFromIndex === null ? '' : 'per'
   const firstSymbol = tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} `
@@ -80,7 +80,7 @@ export const swapOutAmountCurrencyName = (
 }
 
 export interface IExchangeComponent {
-  tokens: ExchangeTokensWithBalance[]
+  tokens: ExchangeSyntheticTokens[]
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
   fee: Decimal
   discountPercent?: number
@@ -184,9 +184,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
   const getButtonMessage = (
     amountFrom: string,
-    tokenFrom: ExchangeTokensWithBalance | null,
+    tokenFrom: ExchangeSyntheticTokens | null,
     amountTo: string,
-    tokenTo: ExchangeTokensWithBalance | null
+    tokenTo: ExchangeSyntheticTokens | null
   ) => {
     if (!tokenFrom) return 'Select input token'
     if (!tokenTo) {
