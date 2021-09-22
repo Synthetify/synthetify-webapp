@@ -18,41 +18,41 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
   const classes = useStyles()
   const [menuOption, setMenuOption] = React.useState('Volume')
   const [activeButtonTime, setActiveButtonTime] = React.useState('Y')
-  const [data2, setData2] = React.useState<Data>(data[0])
+  const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const [dataPlot, setDataPlot] = React.useState<Array<{ x: number; y: number }>>(data[0].points)
   // const [status, setStatus] = React.useState(false)
   const changeData = (name: string) => {
     const value = data.findIndex(element => element.id === name)
 
-    setData2(data[value])
+    setDataTmp(data[value])
   }
 
   const sortData = (type: string) => {
     const timestamp = Date.now()
     if (type === 'D') {
       setDataPlot(
-        data2.points.filter(element => {
+        dataTmp.points.filter(element => {
           return element.x > timestamp - 86400000
         })
       )
     }
     if (type === 'W') {
       setDataPlot(
-        data2.points.filter(element => {
+        dataTmp.points.filter(element => {
           return element.x > timestamp - 604800000
         })
       )
     }
     if (type === 'M') {
       setDataPlot(
-        data2.points.filter(element => {
+        dataTmp.points.filter(element => {
           return element.x > timestamp - 2629743000
         })
       )
     }
     if (type === 'Y') {
       setDataPlot(
-        data2.points.filter(element => {
+        dataTmp.points.filter(element => {
           return element.x > timestamp - 31556926000
         })
       )
@@ -60,13 +60,8 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
   }
 
   React.useEffect(() => {
-    // if (status) {
-    //   setMenuOption('Burn')
-    //   changeData('burn')
-    //   // setStatus(true)
-    // }
     sortData(activeButtonTime)
-  }, [activeButtonTime, menuOption, data2])
+  }, [activeButtonTime, menuOption, dataTmp])
 
   React.useEffect(() => {
     if (status) {
@@ -179,7 +174,7 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
             </ButtonGroup>
           </Grid>
         </Grid>
-        <LinePlot data={{ id: data2.id, data: dataPlot }} />
+        <LinePlot data={{ id: dataTmp.id, data: dataPlot }} />
       </CardContent>
     </Card>
   )
