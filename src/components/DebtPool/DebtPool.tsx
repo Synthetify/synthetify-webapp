@@ -1,9 +1,9 @@
 import React from 'react'
 import { ResponsivePie } from '@nivo/pie'
+import AnimatedNumber from '@components/AnimatedNumber'
 import { Grid, Card, CardContent, Typography } from '@material-ui/core'
 import useStyles from './style'
 import { colors } from '@static/theme'
-
 export interface Data {
   id: string
   label: string
@@ -18,7 +18,12 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
+  const [label, setLabel] = React.useState<String>('Total Debt')
+  const [info, setInfo] = React.useState<String>('')
+  const [display, setDisplay] = React.useState<boolean>(true)
+
   const classes = useStyles()
+
   return (
     <Card className={classes.debtPoolCard}>
       <CardContent>
@@ -26,6 +31,25 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
         <Typography className={classes.debtPoolCardSubTitle}>{subTitle}</Typography>
         <Grid className={classes.pieContainer}>
           <Grid className={classes.pieCanvasBackground}>
+            <Grid className={classes.tooltipContainer}>
+              <Typography component="h2" className={classes.tooltipLabel}>
+                {label}
+              </Typography>
+              <Typography component='p' className={classes.tooltipValue}>
+                {info}
+              </Typography>
+              <Typography component='p' className={classes.tooltipTotal} style={{ display: `${display ? 'block' : 'none'}` }}>
+                <AnimatedNumber
+                  value={data.reduce((sum, item) => {
+                    return sum + item.price
+                  }, 0)}
+                  duration={500}
+                  formatValue={(value: string) => Number(value) > 10000000 
+                    ? (Number((Number(value)/1000000).toFixed(1))).toLocaleString('pl-PL')+'M' 
+                    : (Number(Number(value).toFixed(0))).toLocaleString('pl-PL')}
+                />$
+              </Typography>
+            </Grid>
             <Grid className={classes.pieCanvasGrid}>
               <ResponsivePie
                 data={data}
@@ -33,8 +57,10 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 sortByValue={true}
                 activeOuterRadiusOffset={5}
                 borderWidth={1}
-                borderColor={{ from: 'color', modifiers: [['brighter', 1.9]] }}
+                borderColor={{ from: 'color' }}
                 startAngle={0}
+                innerRadius={0.75}
+                padAngle={2.5}
                 enableArcLinkLabels={false}
                 arcLinkLabelsTextColor='#333333'
                 arcLinkLabelsThickness={2}
@@ -43,25 +69,14 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsRadiusOffset={0}
                 colors={{ datum: 'data.color' }}
                 arcLabelsTextColor='#000000'
-                tooltip={({ datum: { color, label } }) => (
-                  <div
-                    className={classes.tooltipContainer}
-                    style={{
-                      background: color
-                    }}>
-                    <div
-                      className={classes.tooltip}
-                      style={{
-                        ...(label === 'xLTC'
-                          ? { color: colors.black.background, borderColor: color }
-                          : { color: ' #ffffff', borderColor: color })
-                      }}>
-                      {label}
-                    </div>
-                  </div>
+                tooltip={() => (
+                  null
                 )}
                 onMouseEnter={event => {
                   const variable: string = event.id.toString()
+                  setLabel(event.label.toString())
+                  setInfo(`${Number(event.formattedValue).toFixed(2)}%`)
+                  setDisplay(false)
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = `${colors.navy.navButton}40`
@@ -70,6 +85,9 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 }}
                 onMouseLeave={event => {
                   const variable: string = event.id.toString()
+                  setLabel('Total Debt')
+                  setInfo('')
+                  setDisplay(true)
                   var element = document.getElementById(variable)
                   if (element != null) {
                     element.style.background = colors.navy.component
