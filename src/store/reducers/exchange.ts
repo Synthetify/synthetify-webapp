@@ -3,14 +3,25 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral, Decimal } from '@synthetify/sdk/lib/exchange'
+import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral, Decimal, Swapline } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
+
+export type SwaplineSwapType = 'nativeToSynthetic' | 'syntheticToNative'
 
 export interface Swap {
   fromToken: PublicKey
   toToken: PublicKey
   amount: BN
   loading: boolean
+  txid?: string
+}
+
+export interface SwaplineSwap {
+  synthetic: PublicKey
+  collateral: PublicKey
+  amount: BN
+  loading: boolean
+  swapType: SwaplineSwapType
   txid?: string
 }
 export interface UserStaking {
@@ -34,6 +45,8 @@ export interface IExchange {
   collaterals: { [key in string]: ICollateral }
   exchangeAccount: ExchangeAccount
   swap: Swap
+  swaplineSwap: SwaplineSwap
+  swaplines: Swapline[]
 }
 export type IAsset = Asset & { symbol: string }
 export type ISynthetic = Synthetic & { symbol: string }
@@ -134,7 +147,15 @@ export const defaultState: IExchange = {
     toToken: DEFAULT_PUBLICKEY,
     amount: new BN(0),
     loading: false
-  }
+  },
+  swaplineSwap: {
+    collateral: DEFAULT_PUBLICKEY,
+    synthetic: DEFAULT_PUBLICKEY,
+    amount: new BN(0),
+    swapType: 'nativeToSynthetic',
+    loading: false
+  },
+  swaplines: []
 }
 export const exchangeSliceName = 'exchange'
 const exchangeSlice = createSlice({
@@ -208,9 +229,27 @@ const exchangeSlice = createSlice({
       state.swap.loading = true
       return state
     },
+    swaplineSwap(state, action: PayloadAction<Omit<SwaplineSwap, 'loading'>>) {
+      state.swaplineSwap.collateral = action.payload.collateral
+      state.swaplineSwap.synthetic = action.payload.synthetic
+      state.swaplineSwap.amount = action.payload.amount
+      state.swaplineSwap.swapType = action.payload.swapType
+      state.swaplineSwap.loading = true
+      return state
+    },
     swapDone(state, action: PayloadAction<Pick<Swap, 'txid'>>) {
       state.swap.txid = action.payload.txid
       state.swap.loading = false
+      return state
+    },
+    swaplineSwapDone(state, action: PayloadAction<Pick<SwaplineSwap, 'txid'>>) {
+      state.swap.txid = action.payload.txid
+      state.swap.loading = false
+      return state
+    },
+    setSwaplines(state, action: PayloadAction<Swapline[]>) {
+      state.swaplines = action.payload
+
       return state
     }
   }

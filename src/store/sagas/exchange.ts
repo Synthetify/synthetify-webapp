@@ -1,8 +1,8 @@
 import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, ExchangeAccount, PayloadTypes } from '@reducers/exchange'
-import { collaterals, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
-import { accounts, tokenAccount } from '@selectors/solanaWallet'
+import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
+import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
@@ -431,8 +431,65 @@ export function* handleSwap(): Generator {
     )
   }
 }
+
+export function* handleSwaplineSwap(): Generator {
+  const swapData = yield* select(swaplineSwap)
+
+  try {
+    const walletAddress = yield* select(address)
+    const tokensAccounts = yield* select(accounts)
+    const exchangeProgram = yield* call(getExchangeProgram)
+
+    let userSyntheticAccount = tokensAccounts[swapData.synthetic.toString()]
+      ? tokensAccounts[swapData.synthetic.toString()].address
+      : null
+    if (userSyntheticAccount == null) {
+      userSyntheticAccount = yield* call(createAccount, swapData.synthetic)
+    }
+    let userCollateralAccount = tokensAccounts[swapData.collateral.toString()]
+      ? tokensAccounts[swapData.collateral.toString()].address
+      : null
+    if (userCollateralAccount == null) {
+      userCollateralAccount = yield* call(createAccount, swapData.collateral)
+    }
+    const txid = yield* call([
+      exchangeProgram,
+      exchangeProgram[swapData.swapType]
+    ],
+    {
+      amount: swapData.amount,
+      signer: walletAddress,
+      userSyntheticAccount,
+      userCollateralAccount,
+      synthetic: swapData.synthetic,
+      collateral: swapData.collateral
+    })
+    yield* put(actions.swaplineSwapDone({ txid: txid[1] }))
+
+    yield put(
+      snackbarsActions.add({
+        message: 'Successfully swaped token.',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    yield* put(actions.swapDone({ txid: '12' }))
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
+
 export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
+}
+export function* swaplineSwapHandler(): Generator {
+  yield* takeEvery(actions.swaplineSwap, handleSwaplineSwap)
 }
 const pendingUpdates: { [x: string]: Decimal } = {}
 
@@ -452,5 +509,5 @@ export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
 }
 export function* exchangeSaga(): Generator {
-  yield all([swapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
+  yield all([swapHandler, swaplineSwapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
 }
