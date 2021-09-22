@@ -134,7 +134,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '28px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 18,
+      fontSize: 16,
       margin: '10.5px 0 10px 0',
       lineHeight: '12px'
     }

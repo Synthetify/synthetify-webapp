@@ -14,49 +14,33 @@ interface IProp {
   data: Data[]
   status: boolean
 }
+
+enum OptionTime {
+  D = 86400000,
+  W = 604800000,
+  M = 2629743000,
+  Y = 31556926000
+}
 export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
   const classes = useStyles()
   const [menuOption, setMenuOption] = React.useState('Volume')
-  const [activeButtonTime, setActiveButtonTime] = React.useState('Y')
+  const [activeButtonTime, setActiveButtonTime] = React.useState<OptionTime>(OptionTime.Y)
   const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const [dataPlot, setDataPlot] = React.useState<Array<{ x: number; y: number }>>(data[0].points)
-  // const [status, setStatus] = React.useState(false)
   const changeData = (name: string) => {
     const value = data.findIndex(element => element.id === name)
 
     setDataTmp(data[value])
   }
 
-  const sortData = (type: string) => {
+  const sortData = (type: OptionTime) => {
     const timestamp = Date.now()
-    if (type === 'D') {
-      setDataPlot(
-        dataTmp.points.filter(element => {
-          return element.x > timestamp - 86400000
-        })
-      )
-    }
-    if (type === 'W') {
-      setDataPlot(
-        dataTmp.points.filter(element => {
-          return element.x > timestamp - 604800000
-        })
-      )
-    }
-    if (type === 'M') {
-      setDataPlot(
-        dataTmp.points.filter(element => {
-          return element.x > timestamp - 2629743000
-        })
-      )
-    }
-    if (type === 'Y') {
-      setDataPlot(
-        dataTmp.points.filter(element => {
-          return element.x > timestamp - 31556926000
-        })
-      )
-    }
+
+    setDataPlot(
+      dataTmp.points.filter(element => {
+        return element.x > timestamp - Number(type)
+      })
+    )
   }
 
   React.useEffect(() => {
@@ -133,42 +117,42 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
             <ButtonGroup className={classes.buttonContainer}>
               <Button
                 style={{
-                  ...(activeButtonTime === 'D'
+                  ...(activeButtonTime === OptionTime.D
                     ? { color: colors.navy.veryLightGrey }
                     : { color: colors.navy.grey })
                 }}
                 className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('D')}>
+                onClick={() => setActiveButtonTime(OptionTime.D)}>
                 D
               </Button>
               <Button
                 style={{
-                  ...(activeButtonTime === 'W'
+                  ...(activeButtonTime === OptionTime.W
                     ? { color: colors.navy.veryLightGrey }
                     : { color: colors.navy.grey })
                 }}
                 className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('W')}>
+                onClick={() => setActiveButtonTime(OptionTime.W)}>
                 W
               </Button>
               <Button
                 style={{
-                  ...(activeButtonTime === 'M'
+                  ...(activeButtonTime === OptionTime.M
                     ? { color: colors.navy.veryLightGrey }
                     : { color: colors.navy.grey })
                 }}
                 className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('M')}>
+                onClick={() => setActiveButtonTime(OptionTime.M)}>
                 M
               </Button>
               <Button
                 style={{
-                  ...(activeButtonTime === 'Y'
+                  ...(activeButtonTime === OptionTime.Y
                     ? { color: colors.navy.veryLightGrey }
                     : { color: colors.navy.grey })
                 }}
                 className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('Y')}>
+                onClick={() => setActiveButtonTime(OptionTime.Y)}>
                 Y
               </Button>
             </ButtonGroup>

@@ -21,8 +21,8 @@ const data: Data[] = [
 export const StatisticsLinePlot: React.FC = () => {
   const [status, setStatus] = React.useState(false)
   const network = useSelector(solanaConnectionSelectors.network)
-  const updateData = async () => {
-    await fetch(`https://api.synthetify.io/stats/${network.toLowerCase()}`)
+  const updateData = () => {
+    fetch(`https://api.synthetify.io/stats/${network.toLowerCase()}`)
       .then(async response => await response.json())
       .then(value => {
         ;['volume', 'mint', 'burn', 'liquidation', 'userCount'].map(element =>
@@ -32,14 +32,17 @@ export const StatisticsLinePlot: React.FC = () => {
       .then(() => {
         setStatus(true)
       })
+      .catch(error => {
+        console.log(error)
+      })
   }
   const fillData = (value: any[], name: string) => {
     const tmp: { id: string; points: Array<{ x: number; y: number }> } = {
       id: '',
       points: []
     }
+    tmp.id = name
     for (let i = 0; i < value.length; i++) {
-      tmp.id = name
       tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][name] })
       if (i === value.length - 1) {
         data.push(tmp)
@@ -47,7 +50,7 @@ export const StatisticsLinePlot: React.FC = () => {
     }
   }
   React.useEffect(() => {
-    updateData().catch(() => {})
+    updateData()
   }, [])
   return <LinePlotContainer data={data} status={status} />
 }

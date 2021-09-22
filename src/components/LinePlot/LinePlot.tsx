@@ -4,7 +4,7 @@ import { ResponsiveLine } from '@nivo/line'
 import { colors } from '@static/theme'
 // @ts-expect-error
 import { linearGradientDef } from '@nivo/core'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import useStyles from './style'
 
 interface Data {
@@ -57,7 +57,7 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
   }
 
   return (
-    <Grid className={classes.linePlot} >
+    <Grid className={classes.linePlot}>
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
         margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
@@ -95,8 +95,12 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
         }) => (
           <div className={classes.tooltipRoot}>
             <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
-            <Typography className={classes.tooltipValue}>${(y as number).toFixed(2)}</Typography>
-            <FiberManualRecordIcon className={classes.tooltipPoint}/>
+            <Typography className={classes.tooltipValue}>
+              {data.id !== 'userCount'
+                ? `$ ${(y as number).toFixed(2)}`
+                : `${(y as number).toFixed(0)}`}
+            </Typography>
+            <FiberManualRecordIcon className={classes.tooltipPoint} />
           </div>
         )}
         theme={{

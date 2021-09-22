@@ -21,14 +21,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'normal',
     marginBottom: 2,
     textTransform: 'uppercase',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   tooltipValue: {
     color: colors.green.main,
     fontSize: 10,
     lineHeight: '12px',
     textAlign: 'center',
-    fontWeight: 700,
+    fontWeight: 700
   },
   tooltipPoint: {
     height: 5,
