@@ -26,7 +26,7 @@ export const StatisticCardAll: React.FC<IProp> = ({ data }) => {
             desc='Lorem ipsum dolor sit amet consectetur'
           />
         </Grid>
-        <Grid id='valume' item xs={5} >
+        <Grid id='volume' item xs={5}>
           <StatisticsCard
             name='Volume'
             value={data.valume}

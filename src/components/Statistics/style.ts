@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& #collateral': {
       padding: '0px 0px 0px 0px'
     },
-    '& #valume': {
+    '& #volume': {
       padding: '0px 0px 0px 24px'
     },
     '& #mint': {
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: '24px 0px 24px 12px'
     },
     [theme.breakpoints.down('sm')]: {
-      '& #valume': {
+      '& #volume': {
         padding: '0px 0px 0px 16px'
       },
       '& #mint': {

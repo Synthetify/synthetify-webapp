@@ -4,8 +4,8 @@ import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 
 interface IProps {
-  name: string,
-  value: number,
+  name: string
+  value: number
   desc: string
 }
 
@@ -22,10 +22,11 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
           <AnimatedNumber
             value={value}
             duration={400}
-            formatValue={(value: string) => {
-              const num = Number(value)
-              return num.toFixed(0)
-            }}
+            formatValue={(value: string) =>
+              Number(value) > 99999
+                ? Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
+                : Number(value).toLocaleString('pl-PL').replace(',', '.')
+            }
           />
         </Typography>
         <Typography className={classes.cardDesc}>{desc}</Typography>
