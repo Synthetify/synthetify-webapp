@@ -125,11 +125,11 @@ export const Header: React.FC<IHeader> = ({
                     ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
                     )
-                    : typeOfWallet === WalletType.SOLLET 
-                    ? (
-                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                    )
-                    : <CardMedia className={classes.connectedWalletIcon} image={MathIcon} />
+                    : typeOfWallet === WalletType.SOLLET
+                      ? (
+                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                      )
+                      : <CardMedia className={classes.connectedWalletIcon} image={MathIcon} />
                 }
               />
             )}

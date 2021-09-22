@@ -1,92 +1,93 @@
-import EventEmitter from 'eventemitter3';
-import { PublicKey, Transaction } from '@solana/web3.js';
-//mport { notify } from '../../utils/notifications';
-import { WalletAdapter } from './types';
+import EventEmitter from 'eventemitter3'
+import { PublicKey, Transaction } from '@solana/web3.js'
+import { WalletAdapter } from './types'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
 export class MathWalletAdapter extends EventEmitter implements WalletAdapter {
-  _publicKey?: PublicKey;
-  _onProcess: boolean;
-  _connected: boolean;
+  _publicKey?: PublicKey
+  _onProcess: boolean
+  _connected: boolean
   constructor() {
-    super();
-    this._onProcess = false;
-    this._connected = false;
-    this.connect = this.connect.bind(this);
+    super()
+    this._onProcess = false
+    this._connected = false
+    this.connect = this.connect.bind(this)
   }
 
   get connected() {
-    return this._connected;
+    return this._connected
   }
 
   get autoApprove() {
-    return false;
+    return false
   }
 
   public async signAllTransactions(
-    transactions: Transaction[],
+    transactions: Transaction[]
   ): Promise<Transaction[]> {
     if (!this._provider) {
-      return transactions;
+      return transactions
     }
 
-    return this._provider.signAllTransactions(transactions);
+    return this._provider.signAllTransactions(transactions)
   }
 
   private get _provider() {
     if ((window as any)?.solana?.isMathWallet) {
-      return (window as any).solana;
+      return (window as any).solana
     }
-    return undefined;
+    return undefined
   }
 
   get publicKey() {
-    return this._publicKey || DEFAULT_PUBLICKEY;
+    return this._publicKey || DEFAULT_PUBLICKEY
   }
 
   async signTransaction(transaction: Transaction) {
     if (!this._provider) {
-      return transaction;
+      return transaction
     }
 
-    return this._provider.signTransaction(transaction);
+    return this._provider.signTransaction(transaction)
   }
 
   connect() {
     if (this._onProcess) {
-      return;
+      return
     }
+    console.log(this._provider)
 
     if (!this._provider) {
-      window.open('https://mathwallet.org/', '_blank');
+      window.open('https://mathwallet.org/', '_blank')
       // notify({
       //   message: 'Math Wallet Error',
       //   description: 'Please install mathwallet',
       // });
-      return;
+      return
     }
 
-    this._onProcess = true;
+    this._onProcess = true
     this._provider
-      .getAccount()  
-        .then((account: any) => {
-        this._publicKey = new PublicKey(account);
-        this._connected = true;
-        this.emit('connect', this._publicKey);
+      .getAccount()
+      .then((account: any) => {
+        this._publicKey = new PublicKey(account)
+        this._connected = true
+        this.emit('connect', this._publicKey)
+        console.log('onProcess', this._onProcess)
       })
       .catch(() => {
-        this.disconnect();
+        this.disconnect()
       })
       .finally(() => {
-        this._onProcess = false;
-      });
+        this._onProcess = false
+      })
   }
 
   disconnect() {
     if (this._publicKey) {
-      this._publicKey = undefined;
-      this._connected = false;
-      this.emit('disconnect');
+      this._publicKey = undefined
+      this._connected = false
+      this.emit('disconnect')
     }
   }
 }

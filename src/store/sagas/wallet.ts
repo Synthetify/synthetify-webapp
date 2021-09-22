@@ -266,6 +266,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     )
     return
   }
+  console.log('action.payload', action.payload)
   switch (action.payload) {
     case WalletType.PHANTOM:
       enumWallet = 'phantom'
@@ -277,7 +278,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
       enumWallet = 'math'
       break
     default:
-      enumWallet = ''
+      enumWallet = 'phantom'
   }
   yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)

@@ -10,7 +10,6 @@ import SelectNetworkButton from './SelectNetworkButton'
 import ChangeWalletButton from './ChangeWalletButton'
 import { WalletType } from '@web3/wallet'
 import { NetworkType, SolanaNetworks } from '@consts/static'
-import { Wallet } from '@project-serum/anchor'
 
 const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'

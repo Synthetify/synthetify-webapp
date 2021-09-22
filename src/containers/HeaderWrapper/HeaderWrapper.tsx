@@ -18,7 +18,7 @@ export const HeaderWrapper: React.FC = () => {
   const [typeOfWallet, setTypeOfWallet] = useState<WalletType>(WalletType.PHANTOM)
 
   useEffect(() => {
-    let enumWallet = 0
+    let enumWallet = WalletType.PHANTOM
     const sessionWallet = sessionStorage.getItem('SYNTHETIFY_SESSION_WALLET')
     if (sessionWallet === 'phantom' || sessionWallet === 'sollet' || sessionWallet === 'math') {
       switch (sessionWallet) {
@@ -34,6 +34,8 @@ export const HeaderWrapper: React.FC = () => {
         default:
           enumWallet = WalletType.PHANTOM
       }
+      console.log(enumWallet)
+      console.log('session', sessionStorage)
       setTypeOfWallet(enumWallet)
       dispatch(walletActions.connect(enumWallet))
     }
