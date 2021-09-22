@@ -58,9 +58,9 @@ export const exchangeTokensWithUserBalance = createSelector(
 )
 
 export type ExchangeCollateralTokens = Asset & ICollateral & { balance: BN }
-export interface SwaplinePair extends Omit<Swapline, 'synthetic' | 'collateral'> {
-  collateral: ExchangeCollateralTokens
-  synthetic: ExchangeSyntheticTokens
+export interface SwaplinePair extends Swapline {
+  collateralData: ExchangeCollateralTokens
+  syntheticData: ExchangeSyntheticTokens
 }
 
 export const swaplinePairs = createSelector(
@@ -75,12 +75,12 @@ export const swaplinePairs = createSelector(
       const collateralAccount = tokensAccounts[swapline.collateral.toString()]
       const pair: SwaplinePair = {
         ...swapline,
-        synthetic: {
+        syntheticData: {
           ...allAssets[allSynthetics[swapline.synthetic.toString()].assetIndex],
           ...allSynthetics[swapline.synthetic.toString()],
           balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
         },
-        collateral: { // maybe add special case when WSOL is in collaterals
+        collateralData: { // maybe add special case when WSOL is in collaterals
           ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
           ...allCollaterals[swapline.collateral.toString()],
           balance: collateralAccount ? collateralAccount.balance : new BN(0)
