@@ -438,6 +438,7 @@ export function* handleSwaplineSwap(): Generator {
   try {
     const walletAddress = yield* select(address)
     const tokensAccounts = yield* select(accounts)
+    const allCollaterals = yield* select(collaterals)
     const exchangeProgram = yield* call(getExchangeProgram)
 
     let userSyntheticAccount = tokensAccounts[swapData.synthetic.toString()]
@@ -446,10 +447,13 @@ export function* handleSwaplineSwap(): Generator {
     if (userSyntheticAccount == null) {
       userSyntheticAccount = yield* call(createAccount, swapData.synthetic)
     }
-    let userCollateralAccount = tokensAccounts[swapData.collateral.toString()]
-      ? tokensAccounts[swapData.collateral.toString()].address
-      : null
-    if (userCollateralAccount == null) {
+
+    let userCollateralAccount
+    if (allCollaterals[swapData.collateral.toString()].symbol === 'WSOL') {
+      userCollateralAccount = yield* select(address)
+    } else if (tokensAccounts[swapData.collateral.toString()]) {
+      userCollateralAccount = tokensAccounts[swapData.collateral.toString()].address
+    } else {
       userCollateralAccount = yield* call(createAccount, swapData.collateral)
     }
     const txid = yield* call([

@@ -69,7 +69,8 @@ export const swaplinePairs = createSelector(
   collaterals,
   accounts,
   assets,
-  (allSwaplines, allSynthetics, allCollaterals, tokensAccounts, allAssets) => {
+  balance,
+  (allSwaplines, allSynthetics, allCollaterals, tokensAccounts, allAssets, wSOLBalance) => {
     return allSwaplines.map((swapline) => {
       const syntheticAccount = tokensAccounts[swapline.synthetic.toString()]
       const collateralAccount = tokensAccounts[swapline.collateral.toString()]
@@ -80,11 +81,16 @@ export const swaplinePairs = createSelector(
           ...allSynthetics[swapline.synthetic.toString()],
           balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
         },
-        collateralData: { // maybe add special case when WSOL is in collaterals
-          ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
-          ...allCollaterals[swapline.collateral.toString()],
-          balance: collateralAccount ? collateralAccount.balance : new BN(0)
-        }
+        collateralData: allCollaterals[swapline.collateral.toString()].symbol === 'WSOL'
+          ? {
+            ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
+            ...allCollaterals[swapline.collateral.toString()],
+            balance: collateralAccount ? collateralAccount.balance : new BN(0)
+          } : {
+            ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
+            ...allCollaterals[swapline.collateral.toString()],
+            balance: wSOLBalance
+          }
       }
 
       return pair
