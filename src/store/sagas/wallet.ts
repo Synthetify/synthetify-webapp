@@ -266,7 +266,6 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     )
     return
   }
-  console.log('action.payload', action.payload)
   switch (action.payload) {
     case WalletType.PHANTOM:
       enumWallet = 'phantom'

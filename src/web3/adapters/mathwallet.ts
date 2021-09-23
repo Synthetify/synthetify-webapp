@@ -55,7 +55,6 @@ export class MathWalletAdapter extends EventEmitter implements WalletAdapter {
     if (this._onProcess) {
       return
     }
-    console.log(this._provider)
 
     if (!this._provider) {
       window.open('https://mathwallet.org/', '_blank')
@@ -73,7 +72,6 @@ export class MathWalletAdapter extends EventEmitter implements WalletAdapter {
         this._publicKey = new PublicKey(account)
         this._connected = true
         this.emit('connect', this._publicKey)
-        console.log('onProcess', this._onProcess)
       })
       .catch(() => {
         this.disconnect()

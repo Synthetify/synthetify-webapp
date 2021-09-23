@@ -34,8 +34,6 @@ export const HeaderWrapper: React.FC = () => {
         default:
           enumWallet = WalletType.PHANTOM
       }
-      console.log(enumWallet)
-      console.log('session', sessionStorage)
       setTypeOfWallet(enumWallet)
       dispatch(walletActions.connect(enumWallet))
     }
