@@ -12,16 +12,14 @@ interface Data {
 }
 interface IProp {
   data: Data[]
-  status: boolean
 }
 
 enum OptionTime {
-  D = 86400000,
   W = 604800000,
   M = 2629743000,
   Y = 31556926000
 }
-export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
+export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
   const classes = useStyles()
   const [menuOption, setMenuOption] = React.useState('Volume')
   const [activeButtonTime, setActiveButtonTime] = React.useState<OptionTime>(OptionTime.Y)
@@ -45,14 +43,12 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
 
   React.useEffect(() => {
     sortData(activeButtonTime)
+    console.log(dataTmp)
   }, [activeButtonTime, menuOption, dataTmp])
 
   React.useEffect(() => {
-    if (status) {
-      setMenuOption('Burn')
-      changeData('burn')
-    }
-  }, [status])
+    changeData(menuOption.toLowerCase())
+  }, [data])
 
   return (
     <Card className={classes.diagramCard}>
@@ -115,16 +111,6 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, status }) => {
           </Grid>
           <Grid container item lg={4} md={4} xs={7} justifyContent='flex-end'>
             <ButtonGroup className={classes.buttonContainer}>
-              <Button
-                style={{
-                  ...(activeButtonTime === OptionTime.D
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime(OptionTime.D)}>
-                D
-              </Button>
               <Button
                 style={{
                   ...(activeButtonTime === OptionTime.W
