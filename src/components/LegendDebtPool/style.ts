@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   titleLabel: {
     fontSize: '21px',
-    fontWeight: 400,
+    fontWeight: 500,
     lineHeight: '40px',
 
     [theme.breakpoints.down('sm')]: {

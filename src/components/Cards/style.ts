@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     fontSize: 10,
     padding: '7px 9px',
-    fontWeight: 400,
+    fontWeight: 500,
     marginBlock: 9
   }
 }))

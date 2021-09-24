@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   hint: {
     color: colors.white.main,
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 13,
     lineHeight: '16px'
   }

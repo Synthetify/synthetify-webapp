@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   subTitle: {
     fontSize: 16,
     lineHeight: '40px',
-    fontWeight: 400,
+    fontWeight: 500,
     color: colors.navy.info,
     position: 'relative',
     width: 'calc(100% - 16px)',

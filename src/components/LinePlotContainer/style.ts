@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   menuItem: {
     background: colors.navy.navButton,
-    fontWeight: 400,
+    fontWeight: 500,
     lineHeight: '40px',
     fontSize: '13px',
     '&:hover': {
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '5px',
     fontSize: '14px',
     lineHeight: '26px',
-    fontWeight: 400,
+    fontWeight: 500,
     width: '100%',
     textTransform: 'none',
     padding: '0 0 0 6px',
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '40px',
     border: 0,
     fontSize: '20px',
-    fontWeight: 400,
+    fontWeight: 500,
     textTransform: 'capitalize',
     boxShadow: 'none',
     height: 'min-content',

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.info,
     fontSize: '16px',
     lineHeight: '24px',
-    fontWeight: 400,
+    fontWeight: 500,
 
     [theme.breakpoints.down('sm')]: {
       fontSize: '14px',
@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipLabel: {
     fontSize: 34,
-    fontWeight: 400,
+    fontWeight: 500,
     lineHeight: '56px',
     [theme.breakpoints.down('md')]: {
       fontSize: 26,

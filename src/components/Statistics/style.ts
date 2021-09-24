@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     [theme.breakpoints.down('md')]: {
       fontSize: 13,
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: '24px',
       minHeight: '24px',
       display: 'flex',
@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: 9,
-      fontWeight: 400,
+      fontWeight: 500,
       lineHeight: '12px'
     },
     [theme.breakpoints.down('xs')]: {

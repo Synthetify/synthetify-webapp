@@ -43,7 +43,7 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
   root: {
     zIndex: 1,
     textTransform: 'capitalize',
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 19,
     minHeight: 60,
     minWidth: '50%',

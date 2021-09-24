@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   emptyTokens: {
     paddingBlock: 20,
     textAlign: 'center',
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 22,
     color: colors.navy.lightGrey,
     backgroundColor: colors.navy.component,

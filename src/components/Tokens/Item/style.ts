@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   font: {
     fontSize: 22,
-    fontWeight: 400,
+    fontWeight: 500,
     color: colors.navy.veryLightGrey,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
