@@ -17,10 +17,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   debtPoolCardTitle: {
-    color: colors.navy.lightGrey,
+    color: colors.navy.veryLightGrey,
     fontSize: '22px',
-    lineHeight: '40px',
-    fontWeight: 600
+    lineHeight: '22px',
+    fontWeight: 600,
+    paddingBottom: 8
   },
   debtPoolCardSubTitle: {
     color: colors.navy.info,
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   pieCanvasBackground: {
     height: '100%',
-    background: '#000000',
+    background: colors.navy.background,
     borderRadius: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -68,21 +69,52 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltipContainer: {
     borderRadius: '8px',
     filter: 'brightness(120%)',
-    boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.4)'
-  },
-  tooltip: {
-    fontSize: '19px',
-    fontStyle: 'normal',
-    lineHeight: '40px',
-    fontWeight: 700,
-    width: '80px',
-    height: '36px',
+    position: 'absolute',
+    width: '100%',
+    top: '50%',
+    left: '50%',
+    transform: 'translateX(-50%) translateY(-50%)',
     textAlign: 'center',
-    padding: '1px',
-    borderStyle: 'solid',
-    borderWidth: '1px',
-    borderRadius: '10px',
-    filter: 'brightness(170%)'
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  tooltipContainerDisable: {
+    display: 'none'
+  },
+  tooltipLabel: {
+    fontSize: 34,
+    fontWeight: 400,
+    lineHeight: '56px',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 26,
+      lineHeight: '36px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 24,
+      lineHeight: '18px'
+    }
+  },
+  tooltipValue: {
+    fontSize: 47,
+    fontWeight: 700,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 38
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 32
+    }
+  },
+  tooltipTotal: {
+    fontSize: 36,
+    fontWeight: 700,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 26
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 20
+    }
   }
 }))
 

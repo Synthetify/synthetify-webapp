@@ -4,7 +4,7 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
-    width: '1063px',
+    width: '1072px',
     height: 333,
     borderRadius: 10,
     display: 'flex',

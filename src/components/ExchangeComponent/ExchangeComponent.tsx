@@ -376,6 +376,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
               anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
+              tooltipClasses={{ tooltip: classes.noMarginTop }}
               isInteractive
             />
           </Grid>
@@ -450,12 +451,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
                   <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
                     You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
-                    Your current discount on the fee is <b>{discountPercent ?? 0}%</b>.
+                    Your current discount on the fee is <b className={classes.tooltipBold}>{discountPercent ?? 0}%</b>.
                     {typeof nextDiscountThreshold !== 'undefined' && (
                       <>
                         {' '}
                         You can lower your fee by depositing{' '}
-                        <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.
+                        <b className={classes.tooltipBold}>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.
                       </>
                     )}
                   </p>

@@ -9,7 +9,8 @@
           "@sagas/*": ["./src/store/sagas/*"],
           "@consts/*": ["./src/store/consts/*"],
           "@web3/*": ["./src/web3/*"],
-          "@static/*": ["./src/static/*"]
+          "@static/*": ["./src/static/*"],
+          "@store/*": ["./src/store/*"]
       }
   }
 }

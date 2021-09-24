@@ -13,13 +13,14 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     minWidth: 150,
     width: '100%'
   },
+  input: {
+    width: 'calc(100% - 102px)'
+  },
   currency: {
-    fontSize: 22,
+    fontSize: 20,
     color: colors.navy.grey,
     height: '100%',
-    justifyContent: 'flex-end',
-    marginLeft: 50,
-    width: 160
+    justifyContent: 'flex-end'
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,
@@ -27,9 +28,9 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     marginRight: 5
   },
   avatarIcon: {
-    height: '1.7em',
-    width: '1.7em',
-    paddingRight: 4
+    minWidth: 30,
+    height: 30,
+    marginRight: 7
 
   },
   select: ({ onSelectToken }) => ({
