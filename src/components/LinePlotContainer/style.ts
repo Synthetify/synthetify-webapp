@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   selectContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'end'
   },
   optionLabel: {
     height: '100px'
@@ -103,27 +104,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:last-child': {
       marginBottom: '5px'
     }
-  },
-  buttonOption: {
-    color: colors.navy.grey,
-    margin: 'auto',
-    padding: '2px 2px',
-    minWidth: 40,
-    lineHeight: '40px',
-    border: 0,
-    fontSize: '20px',
-    fontWeight: 400,
-    textTransform: 'capitalize',
-    boxShadow: 'none',
-    height: 'min-content',
-    width: '42px',
-    '&:hover': {
-      color: colors.navy.veryLightGrey,
-      background: 'none'
-    }
-  },
-  buttonContainer: {
-    marginRight: 24
   }
 }))
 

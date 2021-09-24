@@ -13,16 +13,14 @@ const getData = async (name: string) => {
 
 export function* fetchData() {
   const dataTmp: IStats = {
-    value: [],
+    linePlot: [],
     last24: { volume: 0, collateral: 0, mint: 0, debt: 0, fee: 0 }
   }
   try {
     const currentNetwork = yield* call(getCurrentNetwork)
     const response = yield* call(getData, currentNetwork)
-    const elements = ['volume', 'mint', 'burn', 'liquidation', 'userCount']
-    elements.forEach(element => {
-      fillData(response.data, element, dataTmp)
-    })
+    fillData(response.data, dataTmp)
+
     dataTmp.last24.volume = response.data[response.data.length - 1].volume
     dataTmp.last24.collateral = response.data[response.data.length - 1].collateral
     dataTmp.last24.mint = response.data[response.data.length - 1].mint
@@ -34,18 +32,25 @@ export function* fetchData() {
     console.log(error)
   }
 }
-export function fillData(value: any[], name: string, dataTmp: IStats) {
-  const tmp: { id: string; points: Array<{ x: number; y: number }> } = {
-    id: '',
-    points: []
-  }
-  tmp.id = name
-  for (let i = 0; i < value.length; i++) {
-    tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][name] })
-    if (i === value.length - 1) {
-      dataTmp.value.push(tmp)
+export function fillData(value: any[], dataTmp: IStats) {
+  const elements = ['volume', 'mint', 'burn', 'liquidation', 'userCount']
+  elements.forEach(element => {
+    const tmp: { id: string; points: Array<{ x: number; y: number }> } = {
+      id: '',
+      points: []
     }
-  }
+    tmp.id = element
+    for (let i = 0; i < value.length; i++) {
+      if (element === 'userCount') {
+        tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][element].toFixed(2) })
+      } else {
+        tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][element].toFixed(2) })
+      }
+      if (i === value.length - 1) {
+        dataTmp.linePlot.push(tmp)
+      }
+    }
+  })
   return dataTmp
 }
 export function* apiData(): Generator {

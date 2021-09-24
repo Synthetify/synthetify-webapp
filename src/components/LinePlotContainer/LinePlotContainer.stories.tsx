@@ -2,9 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import LinePlotContainer from './LinePlotContainer'
 
-storiesOf('stats/topplotcontainer', module).add('line', () => (
-  <LinePlotContainer data={data} status={true} />
-))
+storiesOf('stats/topplotcontainer', module).add('line', () => <LinePlotContainer data={data} />)
 const data = [
   {
     id: 'default',
@@ -237,58 +235,14 @@ const data = [
   {
     id: 'burn',
     points: [
-      {
-        x: 11630913611000,
-        y: 140
-      },
-      {
-        x: 1630913621000,
-        y: 210
-      },
-      {
-        x: 1630913631000,
-        y: 230
-      },
-      {
-        x: 1630913641000,
-        y: 240
-      },
-      {
-        x: 1630913651300,
-        y: 187
-      },
-      {
-        x: 1630913661000,
-        y: 167
-      },
-      {
-        x: 1630913671000,
-        y: 107
-      },
-      {
-        x: 1630913681000,
-        y: 107
-      },
-      {
-        x: 1630913691000,
-        y: 80
-      },
-      {
-        x: 1630913771000,
-        y: 200
-      },
-      {
-        x: 1630913871000,
-        y: 157
-      },
-      {
-        x: 1630913971003,
-        y: 50
-      },
-      {
-        x: 1630913911000,
-        y: 181
-      }
+      { x: 1624518498300, y: 0 },
+      { x: 1627110498000, y: 0 },
+      { x: 1631782783000, y: 42468.09 },
+      { x: 1631785499000, y: 42468.09 },
+      { x: 1631786772000, y: 42468.09 },
+      { x: 1632229806000, y: 48840.3 },
+      { x: 1632300034000, y: 48840.3 },
+      { x: 1632394957000, y: 48840.3 }
     ]
   },
   {

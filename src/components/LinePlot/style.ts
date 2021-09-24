@@ -3,7 +3,15 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   linePlot: {
-    height: '190px'
+    height: '190px',
+    '& g > g >line': {
+      stroke: '#A3A8CE!important'
+    },
+    '&  g > text': {
+      stroke: 'none',
+      fill: '#A3A8CE!important',
+      fontFamily: 'Ben Vietnam!important'
+    }
   },
   tooltipRoot: {
     width: 122,

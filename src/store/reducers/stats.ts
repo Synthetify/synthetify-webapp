@@ -16,12 +16,12 @@ export interface CardData {
   fee: number
 }
 export interface IStats {
-  value: Data[]
+  linePlot: Data[]
   last24: CardData
 }
 const timestamp = Date.now()
 export const defaultState: IStats = {
-  value: [
+  linePlot: [
     {
       id: 'volume',
       points: [
@@ -62,7 +62,7 @@ export const defaultState: IStats = {
       ]
     },
     {
-      id: 'fee',
+      id: 'burn',
       points: [
         {
           x: timestamp,
@@ -103,7 +103,7 @@ const statsSlice = createSlice({
   initialState: defaultState,
   reducers: {
     receiveApiData(state, action: PayloadAction<IStats>) {
-      state.value = action.payload.value
+      state.linePlot = action.payload.linePlot
       state.last24 = action.payload.last24
     },
     updateData(state) {

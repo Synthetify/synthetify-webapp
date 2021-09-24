@@ -14,24 +14,14 @@ interface Data {
 
 interface IProps {
   data: Data
+  sign: string
 }
-export const LinePlot: React.FC<IProps> = ({ data }) => {
+export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
   const classes = useStyles()
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp)
 
     return date.toLocaleString('en-GB', { hour12: true, timeStyle: 'short', dateStyle: 'short' })
-  }
-  const getPlotMin = () => {
-    const values = data.data.map(point => point.y)
-    const minValue = Math.min(...values)
-    const maxValue = Math.max(...values)
-
-    if (minValue === maxValue) {
-      return minValue - 1
-    }
-
-    return minValue - (maxValue - minValue)
   }
 
   const getPlotMax = () => {
@@ -60,19 +50,32 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
     <Grid className={classes.linePlot}>
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
-        margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
+        margin={{ top: 10, right: 60, bottom: 30, left: 30 }}
         xScale={{ type: 'point' }}
         yScale={{
           type: 'linear',
-          min: getPlotMin(),
+          min: 0,
           max: getPlotMax()
         }}
         yFormat=' >-.2f'
-        curve='catmullRom'
+        curve='monotoneX'
         axisTop={null}
-        axisRight={null}
-        axisBottom={null}
         axisLeft={null}
+        axisRight={{
+          tickSize: 4,
+          tickPadding: 5,
+          tickRotation: 0
+        }}
+        axisBottom={{
+          tickSize: 5,
+          tickPadding: 3,
+          tickRotation: 0,
+          format: function (value) {
+            const date = new Date(value)
+
+            return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+          }
+        }}
         enableGridX={false}
         enableGridY={false}
         enablePoints={false}
@@ -85,7 +88,7 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
         defs={[
           linearGradientDef('gradient', [
             { offset: 0, color: 'inherit' },
-            { offset: getGradientEnd(), color: 'inherit', opacity: 0 }
+            { offset: 100, color: 'inherit', opacity: 0 }
           ])
         ]}
         tooltip={({
@@ -96,9 +99,8 @@ export const LinePlot: React.FC<IProps> = ({ data }) => {
           <div className={classes.tooltipRoot}>
             <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
             <Typography className={classes.tooltipValue}>
-              {data.id !== 'userCount'
-                ? `$ ${(y as number).toFixed(2)}`
-                : `${(y as number).toFixed(0)}`}
+              {sign}
+              {y as number}
             </Typography>
             <FiberManualRecordIcon className={classes.tooltipPoint} />
           </div>

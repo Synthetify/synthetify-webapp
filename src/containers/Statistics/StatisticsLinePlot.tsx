@@ -6,13 +6,9 @@ import statsSelector from '@selectors/stats'
 
 export const StatisticsLinePlot: React.FC = () => {
   const dispatch = useDispatch()
-  const statsData = useSelector(statsSelector.value)
-  const updateData = () => {
-    dispatch(action.updateData())
-  }
-
+  const statsData = useSelector(statsSelector.linePlot)
   React.useEffect(() => {
-    updateData()
+    dispatch(action.updateData())
   }, [])
   return <LinePlotContainer data={statsData} />
 }
