@@ -50,7 +50,7 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
     <Grid className={classes.linePlot}>
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
-        margin={{ top: 10, right: 60, bottom: 30, left: 30 }}
+        margin={{ top: 10, right: 30, bottom: 30, left: 30 }}
         xScale={{ type: 'point' }}
         yScale={{
           type: 'linear',
@@ -61,11 +61,7 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
         curve='monotoneX'
         axisTop={null}
         axisLeft={null}
-        axisRight={{
-          tickSize: 4,
-          tickPadding: 5,
-          tickRotation: 0
-        }}
+        axisRight={null}
         axisBottom={{
           tickSize: 5,
           tickPadding: 3,
