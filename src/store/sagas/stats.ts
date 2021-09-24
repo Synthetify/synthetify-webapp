@@ -1,8 +1,15 @@
 import { IStats, action } from '@reducers/stats'
-import { call, put, all, spawn, takeEvery } from 'typed-redux-saga'
+import { call, put, all, spawn, takeEvery, select } from 'typed-redux-saga'
+import { network } from '@selectors/solanaConnection'
 import axios from 'axios'
 
-const getData = async () => await axios.get('https://api.synthetify.io/stats/devnet')
+export function* getCurrentNetwork() {
+  const currentNetwork = yield* select(network)
+  return currentNetwork.toLowerCase()
+}
+const getData = async (name: string) => {
+  return await axios.get(`https://api.synthetify.io/stats/${name}`)
+}
 
 export function* fetchData() {
   const dataTmp: IStats = {
@@ -10,7 +17,8 @@ export function* fetchData() {
     last24: { volume: 0, collateral: 0, mint: 0, debt: 0, fee: 0 }
   }
   try {
-    const response = yield* call(getData)
+    const currentNetwork = yield* call(getCurrentNetwork)
+    const response = yield* call(getData, currentNetwork)
     const elements = ['volume', 'mint', 'burn', 'liquidation', 'userCount']
     elements.forEach(element => {
       fillData(response.data, element, dataTmp)

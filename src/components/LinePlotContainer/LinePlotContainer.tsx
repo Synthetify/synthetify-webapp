@@ -43,7 +43,6 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
 
   React.useEffect(() => {
     sortData(activeButtonTime)
-    console.log(dataTmp)
   }, [activeButtonTime, menuOption, dataTmp])
 
   React.useEffect(() => {
