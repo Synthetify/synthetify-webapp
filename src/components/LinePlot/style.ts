@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&  g > text': {
       stroke: 'none',
       fill: '#A3A8CE!important',
-      fontFamily: 'Ben Vietnam!important'
+      fontFamily: 'Be Vietnam!important'
     }
   },
   tooltipRoot: {
