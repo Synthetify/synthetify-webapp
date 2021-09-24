@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: 'none',
     borderRadius: 10,
     height: 'auto',
-    fontFamily: 'Inter',
+    fontFamily: 'Be Vietnam',
     marginLeft: '24px',
     width: '459px',
 

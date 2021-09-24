@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 35,
     fontSize: 18,
     lineHeight: '40px',
-    fontFamily: 'Inter',
+    fontFamily: 'Be Vietnam',
     [theme.breakpoints.down('sm')]: {
       fontSize: 15
     },
