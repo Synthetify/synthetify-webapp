@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   valueCard: {
@@ -8,15 +8,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   valueCardTitle: {
     color: colors.navy.veryLightGrey,
-    fontSize: 22,
-    lineHeight: '22px',
-    fontWeight: 600
+    ...typography.heading4
   },
   valueCardAmount: {
     color: colors.navy.veryLightGrey,
-    fontSize: 44,
-    fontWeight: 700,
-    lineHeight: '44px'
+    ...typography.heading1
   },
   questionMark: {
     height: 21,
@@ -38,16 +34,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBlock: '-0.67em !important'
   },
   cardContent: {
-    padding: 20,
+    paddingInline: 20,
+    paddingTop: 16,
+    paddingBottom: 18,
     position: 'relative',
     '&:last-child': {
-      paddingBottom: 20
+      paddingTop: 16,
+      paddingBottom: 18
     }
   },
   minMaxDebt: {
-    fontSize: 13,
-    fontWeight: 700,
-    lineHeight: 'unset'
+    ...typography.body4
   },
   progressContainer: {
     width: '100%',
@@ -66,9 +63,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   progressTooltip: {
     background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
-    fontSize: 10,
-    padding: '7px 9px',
-    fontWeight: 500,
+    ...typography.caption1,
+    padding: '5px 9px',
     marginBlock: 9
   }
 }))

@@ -1,14 +1,11 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   text: {
-    fontSize: 20,
+    ...typography.body2,
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 14
+      ...typography.body4
     }
   },
   property: {
@@ -16,9 +13,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   value: {
     color: colors.navy.lightGrey
-  },
-  lineHeight: {
-    lineHeight: 1.5
   }
 }))
 
