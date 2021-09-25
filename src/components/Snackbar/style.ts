@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
+import { ColorizeSharp } from '@material-ui/icons'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
@@ -42,6 +43,21 @@ const useStyles = makeStyles(() => ({
     borderRadius: 10,
     padding: 10,
     margin: 2
+  },
+  button: {
+    width: 73,
+    height: 33,
+    backgroundColor: colors.navy.grey,
+    borderRadius: 6,
+    marginRight: 16,
+    border: 'none',
+    color: colors.navy.navButton,
+    fontSize: 16,
+    fontWeight: 800,
+    transition: '1s all ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.15)'
+    }
   }
 }))
 

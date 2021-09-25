@@ -16,7 +16,14 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
         variantError: classes.error,
         variantWarning: classes.warning,
         variantInfo: classes.info
-      }}>
+      }}
+      action={(
+        <button className={classes.button} onClick={() => alert('message') }>
+            Details
+        </button>
+      )}
+      autoHideDuration= {99999999}
+    >
       {children}
     </SnackbarProvider>
   )
