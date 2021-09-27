@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from '@material-ui/core'
+import { Card, CardContent, Grid, Typography } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
@@ -14,10 +14,10 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
   return (
     <Card className={classes.card}>
       <CardContent classes={{ root: classes.root }}>
-        <Typography className={classes.header}>
+        <Grid className={classes.header}>
           <h1 className={classes.cardName}>{name}</h1>
           <p className={classes.cardTime}>last 24h</p>
-        </Typography>
+        </Grid>
         <Typography className={classes.cardValue}>
           <AnimatedNumber
             value={value}

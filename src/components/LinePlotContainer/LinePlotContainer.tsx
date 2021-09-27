@@ -19,8 +19,7 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
     setDataTmp(data[value])
   }
   React.useEffect(() => {
-    changeData(menuOption.toLowerCase())
-    console.log(data[2])
+    changeData('volume')
   }, [data])
 
   return (
