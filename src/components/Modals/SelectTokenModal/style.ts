@@ -58,12 +58,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenName: {
     color: colors.navy.veryLightGrey,
-    ...typography.heading3,
-    marginBottom: 5
+    ...typography.heading3
+  },
+  tokenData: {
+    position: 'relative',
+    top: -2
   },
   tokenDescrpiption: {
     color: colors.navy.grey,
-    ...typography.body4
+    ...typography.body4,
+    position: 'relative',
+    top: -4
   },
   tokenIcon: {
     width: 48,
