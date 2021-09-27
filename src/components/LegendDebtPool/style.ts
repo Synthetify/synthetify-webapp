@@ -56,7 +56,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '21px',
     fontWeight: 400,
     lineHeight: '40px',
-
+    [theme.breakpoints.down('md')]: {
+      fontSize: '19px',
+      lineHeight: '30px'
+    },
     [theme.breakpoints.down('sm')]: {
       fontSize: '2.3vw',
       lineHeight: '24px'
@@ -118,6 +121,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: '0 4px 0 0',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '19px',
+      lineHeight: '30px'
+    },
     [theme.breakpoints.down('sm')]: {
       fontSize: '2.3vw',
       lineHeight: '24px'

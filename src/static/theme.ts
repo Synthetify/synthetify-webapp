@@ -67,7 +67,8 @@ export const colors = {
   yellow: {
     neon: '#F5D300'
   },
-  navy: { // colors with suffix "2" on figma
+  navy: {
+    // colors with suffix "2" on figma
     background: '#0C0D2C',
     dark: '#0E0E2A',
     component: '#1D1D49',
