@@ -4,6 +4,7 @@ import { Grid, CardMedia, IconButton, Divider, Hidden, Button, useMediaQuery } f
 import { MoreHoriz, Menu } from '@material-ui/icons'
 import PhantomIcon from '@static/svg/phantom.svg'
 import SolletIcon from '@static/svg/sollet.svg'
+import MathIcon from '@static/svg/MathWallet.svg'
 import snyIcon from '@static/svg/logo-ic-nav.svg'
 import NavbarButton from '@components/Navbar/Button'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
@@ -104,7 +105,7 @@ export const Header: React.FC<IHeader> = ({
             ? (
               <ChangeWalletButton
                 name={isSmDown ? 'My wallet' : 'Connect'}
-                options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]}
                 onSelect={onWalletSelect}
                 connected={walletConnected}
                 onDisconnect={onDisconnectWallet}
@@ -114,7 +115,7 @@ export const Header: React.FC<IHeader> = ({
             : (
               <ChangeWalletButton
                 name={`${address.toString().substr(0, isSmDown ? 2 : 6)}...${address.toString().substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
-                options={[WalletType.PHANTOM, WalletType.SOLLET]}
+                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]}
                 onSelect={onWalletSelect}
                 connected={walletConnected}
                 hideArrow={isSmDown}
@@ -124,9 +125,11 @@ export const Header: React.FC<IHeader> = ({
                     ? (
                       <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
                     )
-                    : (
-                      <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                    )
+                    : typeOfWallet === WalletType.SOLLET
+                      ? (
+                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
+                      )
+                      : <CardMedia className={classes.connectedWalletIcon} image={MathIcon} />
                 }
               />
             )}
