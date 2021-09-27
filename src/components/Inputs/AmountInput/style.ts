@@ -17,6 +17,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     width: 'calc(100% - 102px)'
   },
   currency: {
+    minWidth: 'fit-content',
     height: '100%',
     justifyContent: 'flex-end'
   },

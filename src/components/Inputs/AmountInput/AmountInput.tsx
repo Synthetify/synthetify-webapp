@@ -102,7 +102,7 @@ export const AmountInput: React.FC<IProps> = ({
       <Divider orientation='vertical' className={classes.divider} />
       <img alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
       <Typography className={classes.currencyText}>{currency}</Typography>
-      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5, marginLeft: 3 }} /> : null}
+      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
     </InputAdornment>
   )
 
