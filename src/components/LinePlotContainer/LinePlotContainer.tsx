@@ -16,7 +16,11 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
   const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const changeData = (name: string) => {
     const value = data.findIndex(element => element.id === name)
-    setDataTmp(data[value])
+    if (value === undefined) {
+      setDataTmp(data[0])
+    } else {
+      setDataTmp(data[value])
+    }
   }
   React.useEffect(() => {
     changeData('volume')

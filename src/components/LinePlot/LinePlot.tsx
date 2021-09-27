@@ -6,7 +6,8 @@ import { colors } from '@static/theme'
 import { linearGradientDef } from '@nivo/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import useStyles from './style'
-import moment from 'moment'
+
+const STEP_VALUES = 2
 
 interface Data {
   id: string
@@ -61,7 +62,7 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
 
           format: tick => {
             const data = new Date(tick)
-            if (data.getDate() % 2 === 0) {
+            if (data.getDate() % STEP_VALUES === 0) {
               return `${('0' + data.getDate().toString()).slice(-2)}/${(
                 '0' + (data.getMonth() + 1).toString()
               ).slice(-2)}`
