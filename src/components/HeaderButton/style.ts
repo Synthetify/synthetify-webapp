@@ -3,7 +3,7 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
-    background: colors.navy.button,
+    background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
     paddingInline: 12,
     borderRadius: 10,
