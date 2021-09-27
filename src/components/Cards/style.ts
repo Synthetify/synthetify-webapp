@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardContent: {
     paddingInline: 20,
-    paddingTop: 16,
-    paddingBottom: 18,
+    paddingTop: 8,
+    paddingBottom: 30,
     position: 'relative',
     '&:last-child': {
-      paddingTop: 16,
-      paddingBottom: 18
+      paddingTop: 8,
+      paddingBottom: 30
     }
   },
   minMaxDebt: {
@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   progressContainer: {
     width: '100%',
-    marginTop: 44,
-    marginBottom: 16
+    marginTop: 40,
+    marginBottom: 6
   },
   progressRoot: {
     width: '100%',

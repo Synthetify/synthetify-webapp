@@ -27,7 +27,7 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
             desktopPlacement='top-end'
           />
         ) : null}
-        <Typography className={classes.valueCardTitle} style={{ marginBottom: 28 }}>
+        <Typography className={classes.valueCardTitle} style={{ marginBottom: 18 }}>
           {name}
         </Typography>
         <Typography className={classes.valueCardAmount}>
