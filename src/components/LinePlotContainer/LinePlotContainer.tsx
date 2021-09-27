@@ -25,8 +25,7 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
-        <Grid container item className={classes.optionLabel}>
-          <Grid container item lg={4} md={4} xs={7} justifyContent='flex-end'></Grid>
+        <Grid className={classes.optionLabel} container item justifyContent='flex-end'>
           <Grid item lg={8} md={8} xs={5} className={classes.selectContainer}>
             <Grid className={classes.hoverGrid}>
               <Button

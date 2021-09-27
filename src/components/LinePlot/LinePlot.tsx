@@ -6,6 +6,7 @@ import { colors } from '@static/theme'
 import { linearGradientDef } from '@nivo/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import useStyles from './style'
+import moment from 'moment'
 
 interface Data {
   id: string
@@ -34,19 +35,20 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
     }
     return maxValue * 1.01
   }
-
   return (
     <Grid className={classes.linePlot}>
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
-        margin={{ top: 10, right: 10, bottom: 30, left: 10 }}
-        xScale={{ type: 'point' }}
+        margin={{ top: 10, right: 15, bottom: 30, left: 15 }}
+        xScale={{
+          type: 'point'
+        }}
         yScale={{
           type: 'linear',
           min: 0,
           max: getPlotMax()
         }}
-        yFormat=' >-.2f'
+        yFormat='>-.2f'
         curve='monotoneX'
         axisTop={null}
         axisLeft={null}
@@ -55,24 +57,14 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
           tickSize: 5,
           tickPadding: 3,
           tickRotation: 0,
-          format: function (value) {
-            const monthNames = [
-              'Jan',
-              'Feb',
-              'Mar',
-              'Apr',
-              'May',
-              'Jun',
-              'Jul',
-              'Aug',
-              'Sep',
-              'Oct',
-              'Nov',
-              'Dec'
-            ]
-            const date = new Date(value)
+          tickValues: 2,
 
-            return `${monthNames[date.getMonth()]}`
+          format: tick => {
+            if (Number(moment(tick).format('D')) % 2 === 0) {
+              return moment(tick).format('DD/MM')
+            } else {
+              return ''
+            }
           }
         }}
         enableGridX={false}

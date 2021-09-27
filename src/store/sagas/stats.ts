@@ -16,7 +16,7 @@ export function fillData(value: any[]) {
     }
     for (let i = 0; i < value.length; i++) {
       if (element === 'userCount') {
-        tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][element].toFixed(2) })
+        tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][element].toFixed(0) })
       } else {
         tmp.points.push({ x: value[i].timestamp * 1000, y: value[i][element].toFixed(2) })
       }
