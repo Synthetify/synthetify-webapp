@@ -81,6 +81,10 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
         ...typography.body4,
         padding: 5
       },
+      [theme.breakpoints.down('xs')]: {
+        ...typography.body4,
+        padding: 0
+      },
       color: colors.navy.info,
 
       '&:hover': {
