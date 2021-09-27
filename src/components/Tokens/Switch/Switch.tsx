@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, makeStyles, Tab, Tabs } from '@material-ui/core'
 import { Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 export interface IProps {
   onChange: (newValue: number) => void
@@ -43,8 +43,7 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
   root: {
     zIndex: 1,
     textTransform: 'capitalize',
-    fontWeight: 500,
-    fontSize: 19,
+    ...typography.body2,
     minHeight: 60,
     minWidth: '50%',
     color: colors.navy.info,
@@ -54,7 +53,7 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
     }
   },
   selected: ({ value }) => ({
-    fontWeight: 'bold',
+    ...typography.body1,
     color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background,
     transition: 'color 300ms',
 

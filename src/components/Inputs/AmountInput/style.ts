@@ -17,10 +17,14 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     width: 'calc(100% - 102px)'
   },
   currency: {
-    ...typography.body2,
-    color: colors.navy.grey,
     height: '100%',
     justifyContent: 'flex-end'
+  },
+  currencyText: {
+    ...typography.body2,
+    color: colors.navy.grey,
+    position: 'relative',
+    top: -2
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,
