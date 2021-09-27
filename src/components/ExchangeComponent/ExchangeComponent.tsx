@@ -167,19 +167,23 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   const formatExchangeRateOnXs = (value: string) => {
     const num = Number(value)
 
-    if (num < 100) {
-      return num.toFixed(6)
+    if (num < 1) {
+      return num.toFixed(5)
     }
 
-    if (num < 10000) {
+    if (num < 10) {
       return num.toFixed(4)
     }
 
-    if (num < 100000) {
+    if (num < 1000) {
       return num.toFixed(2)
     }
 
-    return num.toFixed(1)
+    if (num < 10000) {
+      return num.toFixed(1)
+    }
+
+    return num.toFixed(0)
   }
 
   const getButtonMessage = (

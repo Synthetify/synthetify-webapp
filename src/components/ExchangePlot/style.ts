@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   infoPosition: {
     '&:not(:last-child)': {
-      marginBottom: 8
+      marginBottom: 4
     },
 
     '&:hover $positionTitle': {
@@ -68,19 +68,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tooltipRoot: {
-    width: 122,
+    width: 100,
     backgroundColor: colors.navy.darkGrey,
     borderRadius: 7,
     border: `0.5px solid ${colors.navy.grey}`,
-    padding: 8,
+    padding: 4,
     position: 'relative',
     top: -6
   },
   tooltipDate: {
     color: colors.navy.veryLightGrey,
     ...typography.caption3,
-    fontWeight: 'normal',
-    marginBottom: 2,
     textTransform: 'uppercase',
     textAlign: 'center'
   },
@@ -95,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 2,
     position: 'absolute',
     bottom: -23,
-    left: 57
+    left: 38
   }
 }))
 

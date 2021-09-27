@@ -15,16 +15,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     border: '1px solid rgba(98, 97, 163, 0.7)',
     padding: 16,
+    paddingTop: 10,
 
     [theme.breakpoints.down('sm')]: {
-      paddingTop: 13
+      paddingTop: 8
     }
   },
   tokenComponentInfo: {
-    marginBottom: 14,
+    marginBottom: 10,
 
     [theme.breakpoints.down('sm')]: {
-      marginBottom: 12
+      marginBottom: 8
     }
   },
   tokenComponentText: {
@@ -194,6 +195,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       height: 37
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 8,
+      marginRight: 8
     }
   },
   arrowsBg: {
