@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,13 +29,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   name: {
     textTransform: 'capitalize',
-    fontSize: 16,
-    fontWeight: 700,
-    lineHeight: '24px'
+    ...typography.subtitle2
   },
   network: {
-    fontSize: 16,
-    lineHeight: '22px'
+    ...typography.subtitle2
   },
   paper: {
     background: 'transparent',
