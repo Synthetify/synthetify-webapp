@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   debtPoolCard: {
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Be Vietnam',
+    fontFamily: 'Inter',
     marginRight: '12px',
     width: '100%',
     [theme.breakpoints.down('sm')]: {

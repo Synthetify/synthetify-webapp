@@ -104,7 +104,7 @@ export const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Be Vietnam',
+    fontFamily: 'Inter',
     body1: {
       fontSize: 22,
       lineHeight: '40px'

@@ -60,8 +60,11 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
           tickValues: 2,
 
           format: tick => {
-            if (Number(moment(tick).format('D')) % 2 === 0) {
-              return moment(tick).format('DD/MM')
+            const data = new Date(tick)
+            if (data.getDate() % 2 === 0) {
+              return `${('0' + data.getDate().toString()).slice(-2)}/${(
+                '0' + (data.getMonth() + 1).toString()
+              ).slice(-2)}`
             } else {
               return ''
             }

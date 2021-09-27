@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Be Vietnam',
+    fontFamily: 'Inter',
     width: 1073,
     [theme.breakpoints.down('md')]: {
       width: 854
