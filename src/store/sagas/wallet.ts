@@ -243,6 +243,7 @@ export function* sendSol(amount: BN, recipient: PublicKey): SagaGenerator<string
 
 export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): Generator {
   const walletAddress = yield* select(address)
+  let enumWallet = ''
   if (!walletAddress.equals(DEFAULT_PUBLICKEY)) {
     yield* put(
       snackbarsActions.add({
@@ -265,7 +266,20 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     )
     return
   }
-  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', action.payload === WalletType.PHANTOM ? 'phantom' : 'sollet')
+  switch (action.payload) {
+    case WalletType.PHANTOM:
+      enumWallet = 'phantom'
+      break
+    case WalletType.SOLLET:
+      enumWallet = 'sollet'
+      break
+    case WalletType.MATH:
+      enumWallet = 'math'
+      break
+    default:
+      enumWallet = 'phantom'
+  }
+  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
 }

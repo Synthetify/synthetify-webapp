@@ -19,6 +19,7 @@ import xUSDIcon from './icons/xusd.svg'
 import WSOLIcon from './icons/wsol.svg'
 import phantomIcon from './svg/phantom.svg'
 import solletIcon from './svg/sollet.svg'
+import mathIcon from './svg/MathWallet.svg'
 import clearIcon from './svg/clear.svg'
 
 const icons: { [key: string]: string } = {
@@ -44,6 +45,7 @@ const icons: { [key: string]: string } = {
   stSOL: WSOLIcon,
   phantom: phantomIcon,
   sollet: solletIcon,
+  'math wallet': mathIcon,
   clear: clearIcon
 }
 
