@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -11,14 +11,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     color: colors.white.main,
-    fontSize: 22,
-    lineHeight: '40px',
-    fontWeight: 700
+    ...typography.body1
   },
   description: {
     color: colors.navy.info,
-    fontSize: 13,
-    lineHeight: '16px'
+    ...typography.body4
   },
   tokenInfo: {
     marginTop: 24,
@@ -42,14 +39,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   positionTitle: {
     color: colors.navy.grey,
-    fontSize: 13,
-    lineHeight: '16px'
+    ...typography.body4
   },
   positionValue: {
     color: colors.navy.veryLightGrey,
-    fontWeight: 600,
-    fontSize: 13,
-    lineHeight: '16px'
+    ...typography.body4
   },
   copyIcon: {
     width: 14,
@@ -84,19 +78,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipDate: {
     color: colors.navy.veryLightGrey,
-    fontSize: 10,
-    lineHeight: '12px',
+    ...typography.caption3,
     fontWeight: 'normal',
     marginBottom: 2,
     textTransform: 'uppercase',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   tooltipValue: {
     color: colors.green.main,
-    fontSize: 10,
-    lineHeight: '12px',
     textAlign: 'center',
-    fontWeight: 700,
+    ...typography.caption2
   },
   tooltipPoint: {
     height: 5,

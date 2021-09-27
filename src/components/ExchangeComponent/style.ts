@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,23 +29,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenComponentText: {
     color: colors.navy.veryLightGrey,
-    fontWeight: 700,
-    fontSize: 16,
-    lineHeight: 1,
+    ...typography.subtitle1,
     whiteSpace: 'nowrap',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
+      ...typography.body3
     }
   },
   tokenMaxText: {
     color: colors.navy.grey,
-    fontSize: 16,
-    lineHeight: 1,
+    ...typography.subtitle2,
     whiteSpace: 'nowrap',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
+      ...typography.body4
     }
   },
   input: {
@@ -147,36 +144,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   numbersFieldTitle: {
-    fontSize: 22,
+    ...typography.body2,
     color: colors.navy.grey,
-    lineHeight: '26px',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 16
+      ...typography.subtitle2
     }
 
   },
   numbersFieldAmount: {
-    fontSize: 22,
+    ...typography.body1,
     color: colors.navy.veryLightGrey,
-    lineHeight: '40px',
-    fontWeight: 600,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13,
-      lineHeight: '16px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 12
+      ...typography.subtitle1
     }
   },
   discount: {
-    fontSize: 22,
-    lineHeight: '40px',
+    ...typography.body2,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 16,
-      lineHeight: '16px'
+      ...typography.subtitle2
     }
   },
   questionMark: {
