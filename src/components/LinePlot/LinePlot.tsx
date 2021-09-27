@@ -34,23 +34,12 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
     }
     return maxValue * 1.01
   }
-  const getGradientEnd = () => {
-    const values = data.data.map(point => point.y)
-    const minValue = Math.min(...values)
-    const maxValue = Math.max(...values)
-
-    if (minValue === maxValue) {
-      return 100
-    }
-
-    return (100 - (minValue / maxValue) * 100) * 2
-  }
 
   return (
     <Grid className={classes.linePlot}>
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
-        margin={{ top: 10, right: 30, bottom: 30, left: 30 }}
+        margin={{ top: 10, right: 10, bottom: 30, left: 10 }}
         xScale={{ type: 'point' }}
         yScale={{
           type: 'linear',
@@ -67,9 +56,23 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
           tickPadding: 3,
           tickRotation: 0,
           format: function (value) {
+            const monthNames = [
+              'Jan',
+              'Feb',
+              'Mar',
+              'Apr',
+              'May',
+              'Jun',
+              'Jul',
+              'Aug',
+              'Sep',
+              'Oct',
+              'Nov',
+              'Dec'
+            ]
             const date = new Date(value)
 
-            return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+            return `${monthNames[date.getMonth()]}`
           }
         }}
         enableGridX={false}

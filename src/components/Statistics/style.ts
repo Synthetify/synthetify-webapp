@@ -89,6 +89,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 24,
     lineHeight: '40px',
     fontWeight: 'bold',
+    fontFamily: 'Be Vietnam',
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('md')]: {
       fontSize: 20
@@ -105,6 +106,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 22,
     lineHeight: '40px',
     fontWeight: 'normal',
+    fontFamily: 'Be Vietnam',
     color: colors.navy.info,
     [theme.breakpoints.down('md')]: {
       fontSize: 20

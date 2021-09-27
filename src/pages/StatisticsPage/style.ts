@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   header: {
     fontSize: 32,
+    fontFamily: 'Be Vietnam',
     lineHeight: '40px',
     color: colors.navy.veryLightGrey,
     padding: '0 0 24px 0',
