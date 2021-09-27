@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { ColorizeSharp } from '@material-ui/icons'
 import { colors } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
@@ -56,7 +55,7 @@ const useStyles = makeStyles(() => ({
     fontWeight: 800,
     transition: '1s all ease-in-out',
     '&:hover': {
-      transform: 'scale(1.15)'
+      transform: 'scale(1.125)'
     }
   }
 }))

@@ -18,7 +18,7 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
         variantInfo: classes.info
       }}
       action={(
-        <button className={classes.button} onClick={() => alert('message') }>
+        <button className={classes.button} onClick={() => alert('') }>
             Details
         </button>
       )}
