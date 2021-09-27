@@ -7,7 +7,6 @@ const getData = async (name: string) => {
   return await axios.get(`https://api.synthetify.io/stats/${name}`)
 }
 export function fillData(value: any[]) {
-  // let linePlotArray: Array<{ id: string; points: Array<{ x: number; y: number }> }> = []
   const elements = ['volume', 'mint', 'burn', 'liquidation', 'userCount']
   const linePlotArray = elements.map(element => {
     const tmp: { id: string; points: Array<{ x: number; y: number }> } = {
