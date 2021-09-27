@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 2,
     position: 'absolute',
     bottom: -23,
-    left: 38
+    left: 42
   }
 }))
 
