@@ -78,7 +78,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       minHeight: 60,
       minWidth: '20%',
       [theme.breakpoints.down('sm')]: {
-        ...typography.body4,
+        ...typography.subtitle2,
         padding: 5
       },
       [theme.breakpoints.down('xs')]: {
@@ -100,6 +100,10 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       },
 
       [theme.breakpoints.down('sm')]: {
+        ...typography.subtitle1
+      },
+
+      [theme.breakpoints.down('xs')]: {
         ...typography.body3
       }
     }
