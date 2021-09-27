@@ -3,6 +3,7 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
+    overflow: 'unset',
     background: colors.navy.component,
     borderRadius: 10,
     fontFamily: 'Inter',

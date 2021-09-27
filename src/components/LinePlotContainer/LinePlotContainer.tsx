@@ -23,7 +23,11 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
     }
   }
   React.useEffect(() => {
-    changeData(menuOption.toLowerCase())
+    if (menuOption === 'User count') {
+      changeData('userCount')
+    } else {
+      changeData(menuOption.toLowerCase())
+    }
   }, [data])
 
   return (
