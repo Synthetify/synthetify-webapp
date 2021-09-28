@@ -25,3 +25,8 @@ export const colors = [
   '#C76BA2',
   '#D49347'
 ]
+
+export const importantStyles = (styleObject: { [key: string]: string | number }) => Object.entries(styleObject).reduce((obj, [key, value]) => ({
+  ...obj,
+  [key]: `${value} !important`
+}), styleObject)

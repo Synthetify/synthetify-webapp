@@ -1,3 +1,4 @@
+import { importantStyles } from '@consts/uiUtils'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
@@ -231,7 +232,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:disabled': {
-      pointerEvents: 'auto !important'
+      pointerEvents: 'auto !important',
+      ...importantStyles(typography.body2)
     },
 
     '&:disabled:hover': {
