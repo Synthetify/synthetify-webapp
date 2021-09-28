@@ -23,7 +23,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover': {
       background: colors.navy.navButton,
-      color: colors.navy.veryLightGrey
+      color: colors.navy.veryLightGrey,
+
+      '& $name': {
+        ...typography.subtitle1
+      }
     }
   },
   icon: {
