@@ -15,9 +15,7 @@ const useStyles = makeStyles(() => ({
     color: colors.navy.grey
   },
   title: {
-    fontSize: 16,
-    lineHeight: '16px',
-    fontWeight: 700,
+    ...typography.subtitle1,
     marginBottom: 10
   },
   questionMark: {

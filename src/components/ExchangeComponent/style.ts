@@ -128,12 +128,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     top: 6
   },
   tooltipTitle: {
-    fontSize: 16,
-    lineHeight: '16px',
-    fontWeight: 700
+    ...typography.subtitle1
   },
   tooltipLink: {
-    fontWeight: 700,
+    fontWeight: 800,
     color: colors.navy.veryLightGrey,
     cursor: 'pointer'
   },
@@ -247,7 +245,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   supplyTooltip: {
-    backgroundColor: colors.red.error
+    backgroundColor: `${colors.red.error} !important`
   },
   noMarginTop: {
     marginTop: 0
