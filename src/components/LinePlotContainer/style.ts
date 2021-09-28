@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100px'
   },
   buttonSelect: {
-    minWidth: '120px',
+    minWidth: 120,
+    height: 36,
     marginBottom: '6px',
     background: colors.navy.navButton,
     borderRadius: '5px',
     textTransform: 'none',
-    height: 'min-content',
     ...typography.subtitle1,
     color: colors.navy.veryLightGrey,
     '&:hover': {
@@ -43,7 +43,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.body3
+      ...typography.body3,
+      minWidth: 95,
+      height: 28
     }
   },
   hoverGrid: {
@@ -58,7 +60,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   arrowIcon: {
     transform: 'rotate(0.25turn)',
-    width: '10px'
+    width: 10,
+    marginTop: 2,
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 4
+    }
   },
   paperMenu: {
     display: 'none',

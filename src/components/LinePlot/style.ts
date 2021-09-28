@@ -14,25 +14,24 @@ const useStyles = makeStyles(() => ({
     }
   },
   tooltipRoot: {
-    width: 122,
+    width: 100,
     backgroundColor: colors.navy.darkGrey,
     borderRadius: 7,
     border: `0.5px solid ${colors.navy.grey}`,
-    padding: 8,
+    padding: 4,
     position: 'relative',
     top: -6
   },
   tooltipDate: {
     color: colors.navy.veryLightGrey,
     ...typography.caption3,
-    marginBottom: 2,
     textTransform: 'uppercase',
     textAlign: 'center'
   },
   tooltipValue: {
     color: colors.green.main,
-    ...typography.caption2,
-    textAlign: 'center'
+    textAlign: 'center',
+    ...typography.caption2
   },
   tooltipPoint: {
     height: 5,
@@ -40,7 +39,7 @@ const useStyles = makeStyles(() => ({
     zIndex: 2,
     position: 'absolute',
     bottom: -23,
-    left: 57
+    left: 42
   }
 }))
 
