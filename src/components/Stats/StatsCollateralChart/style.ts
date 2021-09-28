@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -49,23 +49,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   title: {
-    fontSize: '22px',
-    lineHeight: '40px',
-    fontWeight: 600,
+    ...typography.body1,
     color: colors.navy.veryLightGrey,
-    position: 'relative'
+    [theme.breakpoints.down('xs')]: {
+      ...typography.heading4
+    }
   },
   subTitle: {
-    fontSize: 16,
-    lineHeight: '40px',
-    fontWeight: 500,
+    ...typography.subtitle2,
     color: colors.navy.info,
-    position: 'relative',
     width: 'calc(100% - 16px)',
-    top: -8,
     [theme.breakpoints.down('xs')]: {
-      fontSize: 13,
-      lineHeight: '20px'
+      ...typography.body4
     }
   },
 
@@ -85,8 +80,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '& text': {
-      fontWeight: 700,
-      fontSize: 15
+      ...typography.body3,
+
+      [theme.breakpoints.down('xs')]: {
+        ...typography.caption4
+      }
     }
   },
 
@@ -144,15 +142,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   legendItem: {
     marginBottom: -10,
     marginRight: 35,
-    fontSize: 18,
-    lineHeight: '40px',
+    ...typography.body2,
     fontFamily: 'Be Vietnam',
     [theme.breakpoints.down('sm')]: {
-      fontSize: 15
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: -5,
-      fontSize: 16
+      ...typography.subtitle2
     }
   }
 

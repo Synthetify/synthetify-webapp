@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,9 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   header: {
-    fontSize: 32,
-    fontFamily: 'Inter',
-    lineHeight: '40px',
+    ...typography.heading1,
     color: colors.navy.veryLightGrey,
     padding: '0 0 24px 0',
     margin: '0 auto',

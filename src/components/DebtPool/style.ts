@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   debtPoolCard: {
@@ -18,20 +18,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   debtPoolCardTitle: {
     color: colors.navy.veryLightGrey,
-    fontSize: '22px',
-    lineHeight: '22px',
-    fontWeight: 600,
-    paddingBottom: 8
+    ...typography.body1,
+
+    [theme.breakpoints.down('sm')]: {
+      ...typography.heading4
+    }
   },
   debtPoolCardSubTitle: {
     color: colors.navy.info,
-    fontSize: '16px',
-    lineHeight: '24px',
-    fontWeight: 500,
+    ...typography.subtitle2,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: '14px',
-      lineHeight: '20px'
+      ...typography.body4
     }
   },
   pieCanvasGrid: {

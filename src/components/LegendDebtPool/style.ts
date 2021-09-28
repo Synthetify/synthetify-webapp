@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   statsListCard: {
@@ -53,9 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   titleLabel: {
-    fontSize: '21px',
-    fontWeight: 500,
-    lineHeight: '40px',
+    ...typography.body2,
     [theme.breakpoints.down('md')]: {
       fontSize: '19px',
       lineHeight: '30px'
@@ -65,16 +63,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '24px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '18px',
-      lineHeight: '38px'
+      ...typography.subtitle2
     }
   },
   listItemIconNumber: {
     alignItems: 'center',
     color: colors.navy.info,
     paddingLeft: 4,
-    fontSize: 21,
-    fontWeight: 600,
+    ...typography.body2,
     '&> svg': {
       paddingRight: 6
     },
@@ -89,8 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '15px',
-      lineHeight: '28px',
+      ...typography.subtitle2,
       paddingLeft: 3
     }
   },
@@ -116,7 +111,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center'
   },
   percentNumber: {
-    fontSize: 21,
+    ...typography.body2,
     width: 'min-content',
     display: 'flex',
     alignItems: 'center',
@@ -130,7 +125,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '24px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '14px'
+      ...typography.subtitle2
     }
   }
 }))

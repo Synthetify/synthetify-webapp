@@ -1,4 +1,4 @@
-import { Container, Fade, Grid } from '@material-ui/core'
+import { Container, Fade, Grid, Typography } from '@material-ui/core'
 import React from 'react'
 import { StatisticsCollateral } from '@containers/Statistics/StatisticsCollateral'
 import DeptPoolContainer from '@containers/DebtPoolContainer/DebtPoolContainer'
@@ -12,7 +12,7 @@ export const StatisticsPage: React.FC = () => {
     <>
       <Fade in={true}>
         <Container classes={{ root: classes.container }} className={classes.slide}>
-          <h1 className={classes.header}>Statistics</h1>
+          <Typography className={classes.header}>Statistics</Typography>
           <Grid className={classes.linePlot}>
             <StatisticsLinePlot />
           </Grid>

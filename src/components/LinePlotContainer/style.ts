@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
@@ -46,9 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '5px',
     textTransform: 'none',
     height: 'min-content',
-    fontSize: '16px',
-    fontWeight: 600,
-    maxHeight: '40px',
+    ...typography.subtitle1,
     color: colors.navy.veryLightGrey,
     '&:hover': {
       background: colors.navy.info,
@@ -89,9 +87,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   optionItem: {
     marginTop: '5px',
-    fontSize: '14px',
-    lineHeight: '26px',
-    fontWeight: 500,
+    ...typography.subtitle2,
     width: '100%',
     textTransform: 'none',
     padding: '0 0 0 6px',
@@ -99,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     '&:hover': {
       background: colors.navy.info,
-      fontWeight: 700,
+      ...typography.subtitle1,
       color: colors.navy.veryLightGrey
     },
     '&:last-child': {

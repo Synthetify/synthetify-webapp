@@ -1,7 +1,7 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { makeStyles } from '@material-ui/core/styles'
+import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   linePlot: {
     height: '190px',
     '& g > g >line': {
@@ -24,19 +24,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipDate: {
     color: colors.navy.veryLightGrey,
-    fontSize: 10,
-    lineHeight: '12px',
-    fontWeight: 'normal',
+    ...typography.caption3,
     marginBottom: 2,
     textTransform: 'uppercase',
     textAlign: 'center'
   },
   tooltipValue: {
     color: colors.green.main,
-    fontSize: 10,
-    lineHeight: '12px',
-    textAlign: 'center',
-    fontWeight: 700
+    ...typography.caption2,
+    textAlign: 'center'
   },
   tooltipPoint: {
     height: 5,

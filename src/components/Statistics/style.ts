@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   reset: {
@@ -86,10 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center'
   },
   cardName: {
-    fontSize: 24,
-    lineHeight: '40px',
-    fontWeight: 'bold',
-    fontFamily: 'Inter',
+    ...typography.body1,
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('md')]: {
       fontSize: 20
@@ -99,14 +96,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '24px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 10
+      ...typography.caption4
     }
   },
   cardTime: {
-    fontSize: 22,
-    lineHeight: '40px',
-    fontWeight: 'normal',
-    fontFamily: 'Inter',
+    ...typography.body2,
     color: colors.navy.info,
     [theme.breakpoints.down('md')]: {
       fontSize: 20
@@ -116,7 +110,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '16px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 8
+      ...typography.caption3
     }
   },
   cardValue: {
@@ -136,15 +130,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       lineHeight: '28px'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 16,
-      margin: '10.5px 0 10px 0',
-      lineHeight: '12px'
+      ...typography.subtitle1,
+      margin: '10.5px 0 10px 0'
     }
   },
   cardDesc: {
     color: colors.navy.info,
-    fontSize: 16,
-    lineHeight: '22px',
+    ...typography.subtitle2,
     textAlign: 'center',
     [theme.breakpoints.down('md')]: {
       fontSize: 13,

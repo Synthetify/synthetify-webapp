@@ -15,8 +15,8 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
     <Card className={classes.card}>
       <CardContent classes={{ root: classes.root }}>
         <Grid className={classes.header}>
-          <h1 className={classes.cardName}>{name}</h1>
-          <p className={classes.cardTime}>last 24h</p>
+          <Typography className={classes.cardName}>{name}</Typography>
+          <Typography className={classes.cardTime}>last 24h</Typography>
         </Grid>
         <Typography className={classes.cardValue}>
           <AnimatedNumber
