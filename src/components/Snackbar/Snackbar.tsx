@@ -27,27 +27,24 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
       }}
 
       action={
-        (
-          <button className={classes.button} onClick={() => {
+        snackbarsArray.at(-1)?.txid
+          ? <button className={classes.button} onClick={() => {
             const txid: string = snackbarsArray.at(-1).txid
-            console.log(currentNetwork)
-            console.log(txid)
-            if (currentNetwork.toLocaleLowerCase() === 'devnet' && txid !== undefined) {
-              window.open('https://explorer.solana.com/tx/' + txid + '?cluster=devnet')
-            } else if (currentNetwork.toLocaleLowerCase() === 'testnet' && txid !== undefined) {
-              window.open('https://explorer.solana.com/tx/' + txid + '?cluster=testnet')
+            if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined) {
+              window.open('https://explorer.solana.com/tx/' + txid + '?cluster=' + currentNetwork.toLowerCase())
             } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined) {
               window.open('https://explorer.solana.com/tx/' + txid)
             }
-            // window.open(URL);
           } }>
-            Details
+          Details
           </button>
-        )}
+          : null
+      }
       // autoHideDuration= {99999999}
     >
       {children}
     </SnackbarProvider>
+
   )
 }
 export default Snackbar
