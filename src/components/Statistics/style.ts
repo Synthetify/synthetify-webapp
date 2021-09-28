@@ -132,6 +132,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.info,
     ...typography.subtitle2,
     textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      minHeight: '24px',
+      display: 'flex',
+      alignItems: 'center'
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.caption3
     }
