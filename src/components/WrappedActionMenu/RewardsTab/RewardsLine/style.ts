@@ -1,16 +1,15 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   text: {
-    fontSize: 22,
+    ...typography.body2,
     color: colors.navy.lightGrey,
-    lineHeight: 1,
     [theme.breakpoints.down('sm')]: {
-      fontSize: 16
+      ...typography.subtitle2
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 13
+      ...typography.body4
     }
   },
   tooltip: {
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   hint: {
     color: colors.white.main,
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 13,
     lineHeight: '16px'
   }

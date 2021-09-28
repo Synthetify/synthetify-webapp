@@ -1,19 +1,13 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
     overflow: 'unset',
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Inter',
-    width: 1073,
-    [theme.breakpoints.down('md')]: {
-      width: 854
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
+    fontFamily: 'Be Vietnam',
+    width: '100%'
   },
   cardContent: {
     padding: 0,
@@ -30,25 +24,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   optionLabel: {
     height: '100px'
   },
-  menuItem: {
-    background: colors.navy.navButton,
-    fontWeight: 400,
-    lineHeight: '40px',
-    fontSize: '13px',
-    '&:hover': {
-      background: colors.navy.info
-    }
-  },
   buttonSelect: {
-    minWidth: '120px',
+    minWidth: 120,
+    height: 36,
     marginBottom: '6px',
     background: colors.navy.navButton,
     borderRadius: '5px',
     textTransform: 'none',
-    height: 'min-content',
-    fontSize: '16px',
-    fontWeight: 600,
-    maxHeight: '40px',
+    ...typography.subtitle1,
     color: colors.navy.veryLightGrey,
     '&:hover': {
       background: colors.navy.info,
@@ -58,6 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       '&> span >span': {
         transform: 'rotate(0.5turn)'
       }
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body3,
+      minWidth: 95,
+      height: 28
     }
   },
   hoverGrid: {
@@ -72,7 +60,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   arrowIcon: {
     transform: 'rotate(0.25turn)',
-    width: '10px'
+    width: 10,
+    marginTop: 2,
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 4
+    }
   },
   paperMenu: {
     display: 'none',
@@ -89,9 +81,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   optionItem: {
     marginTop: '5px',
-    fontSize: '14px',
-    lineHeight: '26px',
-    fontWeight: 400,
+    ...typography.subtitle2,
     width: '100%',
     textTransform: 'none',
     padding: '0 0 0 6px',
@@ -99,11 +89,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     '&:hover': {
       background: colors.navy.info,
-      fontWeight: 700,
+      ...typography.subtitle1,
       color: colors.navy.veryLightGrey
     },
     '&:last-child': {
       marginBottom: '5px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body4,
+
+      '&:hover': {
+        ...typography.body3
+      }
     }
   }
 }))

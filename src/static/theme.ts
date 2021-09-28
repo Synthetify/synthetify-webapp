@@ -85,6 +85,80 @@ export const colors = {
     '807ADC': '#807ADC'
   }
 }
+
+export const typography = {
+  heading1: {
+    fontSize: 40,
+    lineHeight: '49px',
+    fontWeight: 800
+  },
+  heading2: {
+    fontSize: 32,
+    lineHeight: '40px',
+    fontWeight: 700
+  },
+  heading3: {
+    fontSize: 27,
+    lineHeight: '35px',
+    fontWeight: 800
+  },
+  heading4: {
+    fontSize: 24,
+    lineHeight: '33px',
+    fontWeight: 800
+  },
+  body1: {
+    fontSize: 22,
+    lineHeight: '30px',
+    fontWeight: 800
+  },
+  body2: {
+    fontSize: 22,
+    lineHeight: '30px',
+    fontWeight: 500
+  },
+  subtitle1: {
+    fontSize: 16,
+    lineHeight: '24px',
+    fontWeight: 800
+  },
+  subtitle2: {
+    fontSize: 16,
+    lineHeight: '24px',
+    fontWeight: 500
+  },
+  body3: {
+    fontSize: 13,
+    lineHeight: '20px',
+    fontWeight: 800
+  },
+  body4: {
+    fontSize: 13,
+    lineHeight: '20px',
+    fontWeight: 500
+  },
+  caption1: {
+    fontSize: 11,
+    lineHeight: '16px',
+    fontWeight: 500
+  },
+  caption2: {
+    fontSize: 11,
+    lineHeight: '16px',
+    fontWeight: 800
+  },
+  caption3: {
+    fontSize: 9,
+    lineHeight: '14px',
+    fontWeight: 500
+  },
+  caption4: {
+    fontSize: 9,
+    lineHeight: '14px',
+    fontWeight: 800
+  }
+}
+
 export const theme = createTheme({
   palette: {
     primary: {
@@ -104,34 +178,17 @@ export const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Inter',
-    body1: {
-      fontSize: 22,
-      lineHeight: '40px'
-    },
-    body2: {
-      fontSize: 16
-    },
-    h1: {
-      fontSize: 56,
-      fontWeight: 700
-    },
-    h2: {
-      fontSize: 40
-    },
-    h3: {
-      fontSize: 32
-    },
-    h4: {
-      fontSize: 24,
-      fontWeight: 'bold'
-    },
-    h5: {
-      fontSize: 16
-    },
-    h6: {
-      fontSize: 12
-    }
+    fontFamily: 'Be Vietnam',
+    fontWeightRegular: 500,
+    h1: typography.heading1,
+    h2: typography.heading2,
+    h3: typography.heading3,
+    h4: typography.heading4,
+    body1: typography.body2,
+    subtitle1: typography.subtitle1,
+    subtitle2: typography.subtitle2,
+    body2: typography.body4,
+    caption: typography.caption1
   },
   overrides: {
     MuiInputBase: {

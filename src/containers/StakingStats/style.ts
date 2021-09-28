@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import { typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   statsTile: {
@@ -15,14 +16,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   indicator: {
-    fontSize: 10,
-    lineHeight: '12px',
-    fontWeight: 700
+    ...typography.caption1
   },
   tooltipTitle: {
-    fontSize: 16,
-    lineHeight: '16px',
-    fontWeight: 700
+    ...typography.subtitle1
   },
   tooltipIcon: {
     width: 16,

@@ -18,7 +18,7 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
-  const [label, setLabel] = React.useState<String>('Total Debt')
+  const [label, setLabel] = React.useState<String>('TOTAL DEBT')
   const [info, setInfo] = React.useState<String>('')
   const [display, setDisplay] = React.useState<boolean>(true)
 
@@ -89,7 +89,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 }}
                 onMouseLeave={event => {
                   const variable: string = event.id.toString()
-                  setLabel('Total Debt')
+                  setLabel('TOTAL DEBT')
                   setInfo('')
                   setDisplay(true)
                   var element = document.getElementById(variable)
