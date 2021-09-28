@@ -1,3 +1,4 @@
+import { importantStyles } from '@consts/uiUtils'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
@@ -116,7 +117,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       width: 74,
-      marginLeft: 12
+      marginLeft: 12,
+      ...importantStyles(typography.heading4)
     },
     [theme.breakpoints.down('xs')]: {
       width: 'calc(50% - 8px)',

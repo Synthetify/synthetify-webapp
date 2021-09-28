@@ -226,14 +226,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: 60,
     marginTop: 36,
+    ...importantStyles(typography.body2),
 
     '&:hover': {
       backgroundColor: '#4ADFBA !important'
     },
 
     '&:disabled': {
-      pointerEvents: 'auto !important',
-      ...importantStyles(typography.body2)
+      pointerEvents: 'auto !important'
     },
 
     '&:disabled:hover': {

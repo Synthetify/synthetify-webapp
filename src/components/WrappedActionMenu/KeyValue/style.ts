@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.subtitle2
     }
   },
   property: {

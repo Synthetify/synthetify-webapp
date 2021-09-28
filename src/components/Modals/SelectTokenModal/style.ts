@@ -68,7 +68,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     ...typography.body4,
     position: 'relative',
-    top: -4
+    top: -4,
+    whiteSpace: 'nowrap'
   },
   tokenIcon: {
     width: 48,
@@ -84,7 +85,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenBalance: {
     ...typography.subtitle2,
-    color: colors.navy.grey
+    color: colors.navy.grey,
+    whiteSpace: 'nowrap'
   },
   searchIcon: {
     color: colors.navy.grey,

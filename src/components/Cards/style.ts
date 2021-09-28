@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
     ...typography.caption1,
-    padding: '5px 9px',
+    padding: '3px 9px 6px',
     marginBlock: 9
   }
 }))

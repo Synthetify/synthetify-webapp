@@ -9,6 +9,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.heading3,
     color: colors.navy.veryLightGrey,
 
+    [theme.breakpoints.down('sm')]: {
+      ...typography.heading4
+    },
+
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle1
     }
@@ -45,6 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: 24,
 
     [theme.breakpoints.down('sm')]: {
+      ...typography.subtitle2,
       right: 20
     },
 
