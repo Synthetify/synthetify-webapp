@@ -29,7 +29,9 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
             }
           />
         </Typography>
-        <Typography className={classes.cardDesc}>{desc}</Typography>
+        <Grid container justifyContent='center' alignItems='center' style={{ flex: '1 1 auto' }}>
+          <Typography className={classes.cardDesc}>{desc}</Typography>
+        </Grid>
       </CardContent>
     </Card>
   )

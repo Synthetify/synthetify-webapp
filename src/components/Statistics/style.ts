@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    height: '100%',
     '&:last-child': {
       padding: '10.5px 16px',
       [theme.breakpoints.down('sm')]: {
@@ -61,6 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.component,
     borderRadius: 10,
     width: '100%',
+    height: '100%',
     '& *': {
       padding: 0,
       margin: 0
@@ -70,7 +72,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '10.5px 16px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: '100%'
   },
   header: {
     width: '100%',
@@ -82,11 +85,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body1,
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('md')]: {
-      fontSize: 20
+      ...typography.heading4
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 14,
-      lineHeight: '24px'
+      ...typography.subtitle1
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption4
@@ -96,11 +98,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     color: colors.navy.info,
     [theme.breakpoints.down('md')]: {
-      fontSize: 20
+      fontSize: 24,
+      lineHeight: '30px'
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 12,
-      lineHeight: '16px'
+      ...typography.subtitle2
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption3
@@ -108,45 +110,30 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardValue: {
     color: colors.navy.button,
-    fontSize: 48,
-    lineHeight: '40px',
+    fontSize: 52,
+    lineHeight: '52px',
     textAlign: 'center',
-    fontWeight: 'bold',
-    margin: '25.5px 0 18px 0',
+    fontWeight: 800,
+    margin: '16px 0 18px 0',
     [theme.breakpoints.down('md')]: {
-      margin: '16.5px 0 11px 0',
-      fontSize: 38
+      margin: '11px 0',
+      ...typography.heading1
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 25,
-      margin: '10.5px 0 4px 0',
-      lineHeight: '28px'
+      ...typography.heading3,
+      margin: '4px 0'
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.subtitle1,
-      margin: '10.5px 0 10px 0'
+      margin: 0,
+      ...typography.subtitle1
     }
   },
   cardDesc: {
     color: colors.navy.info,
     ...typography.subtitle2,
     textAlign: 'center',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 13,
-      fontWeight: 500,
-      lineHeight: '24px',
-      minHeight: '24px',
-      display: 'flex',
-      alignItems: 'center'
-    },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 9,
-      fontWeight: 500,
-      lineHeight: '12px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 8,
-      lineHeight: '8px'
+      ...typography.caption3
     }
   },
   collItem: {

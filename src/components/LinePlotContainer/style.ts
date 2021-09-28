@@ -24,15 +24,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   optionLabel: {
     height: '100px'
   },
-  menuItem: {
-    background: colors.navy.navButton,
-    fontWeight: 500,
-    lineHeight: '40px',
-    fontSize: '13px',
-    '&:hover': {
-      background: colors.navy.info
-    }
-  },
   buttonSelect: {
     minWidth: '120px',
     marginBottom: '6px',
@@ -50,6 +41,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       '&> span >span': {
         transform: 'rotate(0.5turn)'
       }
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body3
     }
   },
   hoverGrid: {
@@ -94,6 +88,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '&:last-child': {
       marginBottom: '5px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body4,
+
+      '&:hover': {
+        ...typography.body3
+      }
     }
   }
 }))
