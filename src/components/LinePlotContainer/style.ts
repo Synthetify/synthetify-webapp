@@ -7,13 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.component,
     borderRadius: 10,
     fontFamily: 'Be Vietnam',
-    width: 1073,
-    [theme.breakpoints.down('md')]: {
-      width: 854
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
+    width: '100%'
   },
   cardContent: {
     padding: 0,

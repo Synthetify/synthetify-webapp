@@ -8,14 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box'
   },
   gridContainer: {
-    margin: '0 auto',
-    width: 1073,
-    [theme.breakpoints.down('md')]: {
-      width: 854
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
+    width: '100%'
   },
   container: {
     width: '100%',
