@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -11,14 +11,11 @@ const useStyles = makeStyles(() => ({
     backgroundColor: colors.navy.background
   },
   text: {
-    fontSize: 16,
-    lineHeight: '16px',
+    ...typography.subtitle2,
     color: colors.navy.grey
   },
   title: {
-    fontSize: 16,
-    lineHeight: '16px',
-    fontWeight: 700,
+    ...typography.subtitle1,
     marginBottom: 10
   },
   questionMark: {

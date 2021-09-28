@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   reset: {
@@ -8,21 +8,46 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box'
   },
   gridContainer: {
-    width: '77%',
-    margin: '0 auto',
-
-    [theme.breakpoints.down('md')]: {
-      width: '89%'
-    }
+    width: '100%'
   },
   container: {
     width: '100%',
-    margin: '0 auto'
+    margin: '0 auto',
+    '& #collateral': {
+      padding: '0px 0px 0px 0px'
+    },
+    '& #volume': {
+      padding: '0px 0px 0px 24px'
+    },
+    '& #mint': {
+      padding: '24px 12px 24px 0'
+    },
+    '& #debt': {
+      padding: '24px 12px 24px 12px'
+    },
+    '& #fee': {
+      padding: '24px 0px 24px 12px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      '& #volume': {
+        padding: '0px 0px 0px 16px'
+      },
+      '& #mint': {
+        padding: '16px 8px 16px 0'
+      },
+      '& #debt': {
+        padding: '16px 8px 16px 8px'
+      },
+      '& #fee': {
+        padding: '16px 0px 16px 8px'
+      }
+    }
   },
   root: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    height: '100%',
     '&:last-child': {
       padding: '10.5px 16px',
       [theme.breakpoints.down('sm')]: {
@@ -37,18 +62,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.component,
     borderRadius: 10,
     width: '100%',
+    height: '100%',
     '& *': {
       padding: 0,
       margin: 0
     }
-
   },
   cardContent: {
     padding: '10.5px 16px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
-
+    alignItems: 'center',
+    height: '100%'
   },
   header: {
     width: '100%',
@@ -57,81 +82,63 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center'
   },
   cardName: {
-    fontSize: 24,
-    lineHeight: '40px',
-    fontWeight: 'bold',
+    ...typography.body1,
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('md')]: {
-      fontSize: 20
+      ...typography.heading4
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 14,
-      lineHeight: '24px'
+      ...typography.subtitle1
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 10
+      ...typography.caption4
     }
   },
   cardTime: {
-    fontSize: 22,
-    lineHeight: '40px',
-    fontWeight: 'normal',
+    ...typography.body2,
     color: colors.navy.info,
     [theme.breakpoints.down('md')]: {
-      fontSize: 20
+      fontSize: 24,
+      lineHeight: '30px'
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 12,
-      lineHeight: '16px'
+      ...typography.subtitle2
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 8
+      ...typography.caption3
     }
   },
   cardValue: {
     color: colors.navy.button,
-    fontSize: 48,
-    lineHeight: '40px',
+    fontSize: 52,
+    lineHeight: '52px',
     textAlign: 'center',
-    fontWeight: 'bold',
-    margin: '25.5px 0 18px 0',
+    fontWeight: 800,
+    margin: '16px 0 18px 0',
     [theme.breakpoints.down('md')]: {
-      margin: '16.5px 0 11px 0',
-      fontSize: 38
-
+      margin: '11px 0',
+      ...typography.heading1
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 25,
-      margin: '10.5px 0 4px 0',
-      lineHeight: '28px'
+      ...typography.heading3,
+      margin: '4px 0'
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 18,
-      margin: '10.5px 0 10px 0',
-      lineHeight: '12px'
+      margin: 0,
+      ...typography.subtitle1
     }
   },
   cardDesc: {
     color: colors.navy.info,
-    fontSize: 16,
-    lineHeight: '22px',
+    ...typography.subtitle2,
     textAlign: 'center',
     [theme.breakpoints.down('md')]: {
-      fontSize: 13,
-      fontWeight: 400,
-      lineHeight: '24px',
       minHeight: '24px',
       display: 'flex',
       alignItems: 'center'
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 9,
-      fontWeight: 400,
-      lineHeight: '12px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 8,
-      lineHeight: '8px'
+      ...typography.caption3
     }
   },
   collItem: {

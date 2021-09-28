@@ -28,11 +28,11 @@ export const KeyValue: React.FC<IProps> = ({
   return (
     <>
       <Typography
-        className={classNames(classes.text, classes.property, classes.lineHeight, keyClassName)}>
+        className={classNames(classes.text, classes.property, keyClassName)}>
         {keyName}
       </Typography>
       <Typography
-        className={classNames(classes.text, classes.value, classes.lineHeight, valueClassName)}>
+        className={classNames(classes.text, classes.value, valueClassName)}>
         {unit}{' '}
         <AnimatedNumber
           value={printBN(value, decimal)}

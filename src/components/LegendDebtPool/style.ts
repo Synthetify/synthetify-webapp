@@ -1,17 +1,17 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   statsListCard: {
     background: 'none',
     borderRadius: 10,
     height: 'auto',
-    fontFamily: 'Inter',
+    fontFamily: 'Be Vietnam',
     marginLeft: '24px',
     width: '459px',
 
     [theme.breakpoints.down('md')]: {
-      width: '331px'
+      width: '386px'
     },
     [theme.breakpoints.down('sm')]: {
       width: '45%',
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: '8px'
   },
   listItemIconName: {
-    width: 'max-content',
+    width: 'fit-content',
 
     paddingRight: 8,
     alignItems: 'center',
@@ -49,45 +49,42 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingRight: 8
     },
     [theme.breakpoints.down('sm')]: {
+      paddingRight: 0
+    },
+    [theme.breakpoints.down('xs')]: {
       paddingRight: 8
     }
   },
   titleLabel: {
-    fontSize: '21px',
-    fontWeight: 400,
-    lineHeight: '40px',
-
+    ...typography.body2,
+    [theme.breakpoints.down('md')]: {
+      ...typography.subtitle2
+    },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2.3vw',
-      lineHeight: '24px'
+      ...typography.body4
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '18px',
-      lineHeight: '38px'
+      ...typography.subtitle2
     }
   },
   listItemIconNumber: {
     alignItems: 'center',
     color: colors.navy.info,
     paddingLeft: 4,
-    fontSize: 21,
-    fontWeight: 600,
+    ...typography.body2,
     '&> svg': {
       paddingRight: 6
     },
     [theme.breakpoints.down('md')]: {
-      fontSize: '15px',
-      lineHeight: '28px',
+      ...typography.subtitle2,
       paddingLeft: 3
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1.5vw',
-      lineHeight: '28px',
+      ...typography.body4,
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '15px',
-      lineHeight: '28px',
+      ...typography.subtitle2,
       paddingLeft: 3
     }
   },
@@ -102,7 +99,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemGrid: {
-    padding: '0 8px 0 8px'
+    padding: '4px 8px'
   },
   legend: {
     width: '100%',
@@ -113,17 +110,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center'
   },
   percentNumber: {
-    fontSize: 21,
+    ...typography.body2,
     width: 'min-content',
     display: 'flex',
     alignItems: 'center',
     padding: '0 4px 0 0',
+    [theme.breakpoints.down('md')]: {
+      ...typography.subtitle2
+    },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2.3vw',
-      lineHeight: '24px'
+      ...typography.body4
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '14px'
+      ...typography.subtitle2
     }
   }
 }))

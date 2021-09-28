@@ -1,4 +1,4 @@
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -6,11 +6,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'none',
     boxShadow: 'none',
     borderRadius: 10,
-    fontSize: 16,
-    lineHeight: '25px',
+    ...typography.subtitle1,
     width: 160,
     height: 56,
-    fontWeight: 700,
     backgroundColor: colors.navy.background,
 
     '&:hover': {
