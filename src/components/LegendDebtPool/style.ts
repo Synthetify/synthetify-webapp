@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemGrid: {
-    padding: '0 8px 0 8px'
+    padding: '4px 8px'
   },
   legend: {
     width: '100%',
