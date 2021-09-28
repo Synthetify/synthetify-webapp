@@ -81,36 +81,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'none'
   },
   tooltipLabel: {
-    fontSize: 34,
+    fontSize: 24,
     fontWeight: 500,
-    lineHeight: '56px',
+    lineHeight: '30px',
     [theme.breakpoints.down('md')]: {
-      fontSize: 26,
-      lineHeight: '36px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 24,
-      lineHeight: '18px'
+      ...typography.body2
     }
   },
   tooltipValue: {
-    fontSize: 47,
-    fontWeight: 700,
+    ...typography.heading1,
     [theme.breakpoints.down('md')]: {
-      fontSize: 38
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 32
+      ...typography.heading3
     }
   },
   tooltipTotal: {
-    fontSize: 36,
-    fontWeight: 700,
+    ...typography.heading1,
     [theme.breakpoints.down('md')]: {
-      fontSize: 26
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 20
+      ...typography.heading3
     }
   }
 }))
