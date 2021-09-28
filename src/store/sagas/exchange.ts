@@ -278,7 +278,7 @@ export function* withdrawCollateral(
     userCollateralAccount: collateralAccountAddress?.address,
     reserveAccount: allCollaterals[collateralTokenAddress.toString()].reserveAddress
   })
-  return signature[1]
+  return signature
 }
 export function* withdrawCollateralWSOL(amount: BN): SagaGenerator<string> {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -352,7 +352,7 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     owner: wallet.publicKey,
     userTokenAccountBurn: userTokenAccount.address
   })
-  return signature[1]
+  return signature
 }
 
 export function* claimRewards(): SagaGenerator<string> {

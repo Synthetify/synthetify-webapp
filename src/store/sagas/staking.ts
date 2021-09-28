@@ -52,6 +52,7 @@ export function* handleDeposit(): Generator {
       snackbarsActions.add({
         message: 'Successfully deposited collateral.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
@@ -77,6 +78,7 @@ export function* handleMint(): Generator {
       snackbarsActions.add({
         message: 'Successfully minted xUSD.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
@@ -101,6 +103,7 @@ export function* handleWithdraw(): Generator {
     yield put(
       snackbarsActions.add({
         message: 'Successfully withdrawn collateral.',
+        txid: txid,
         variant: 'success',
         persist: false
       })
@@ -126,6 +129,7 @@ export function* handleBurn(): Generator {
       snackbarsActions.add({
         message: 'Successfully burned token.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
@@ -151,6 +155,7 @@ export function* handleClaimRewards(): Generator {
       snackbarsActions.add({
         message: 'Successfully claimed rewards',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
@@ -176,6 +181,7 @@ export function* handleWithdrawRewards(): Generator {
       snackbarsActions.add({
         message: 'Successfully withdrawn rewards',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
