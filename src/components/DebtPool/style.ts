@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   pieCanvasBackground: {
     height: '100%',
-    background: colors.navy.background,
     borderRadius: '100%',
     display: 'flex',
     alignItems: 'center',

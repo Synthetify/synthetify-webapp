@@ -3,9 +3,17 @@ import { colors } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   diagramCard: {
+    overflow: 'unset',
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Be Vietnam'
+    fontFamily: 'Be Vietnam',
+    width: 1073,
+    [theme.breakpoints.down('md')]: {
+      width: 854
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   cardContent: {
     padding: 0,
@@ -16,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   selectContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'end'
   },
   optionLabel: {
     height: '100px'
@@ -96,27 +105,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:last-child': {
       marginBottom: '5px'
     }
-  },
-  buttonOption: {
-    color: colors.navy.grey,
-    margin: 'auto',
-    padding: '2px 2px',
-    minWidth: 40,
-    lineHeight: '40px',
-    border: 0,
-    fontSize: '20px',
-    fontWeight: 500,
-    textTransform: 'capitalize',
-    boxShadow: 'none',
-    height: 'min-content',
-    width: '42px',
-    '&:hover': {
-      color: colors.navy.veryLightGrey,
-      background: 'none'
-    }
-  },
-  buttonContainer: {
-    marginRight: 24
   }
 }))
 

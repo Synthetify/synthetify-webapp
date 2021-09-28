@@ -32,22 +32,28 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
         <Grid className={classes.pieContainer}>
           <Grid className={classes.pieCanvasBackground}>
             <Grid className={classes.tooltipContainer}>
-              <Typography component="h2" className={classes.tooltipLabel}>
+              <Typography component='h2' className={classes.tooltipLabel}>
                 {label}
               </Typography>
               <Typography component='p' className={classes.tooltipValue}>
                 {info}
               </Typography>
-              <Typography component='p' className={classes.tooltipTotal} style={{ display: `${display ? 'block' : 'none'}` }}>
+              <Typography
+                component='p'
+                className={classes.tooltipTotal}
+                style={{ display: `${display ? 'block' : 'none'}` }}>
                 <AnimatedNumber
                   value={data.reduce((sum, item) => {
                     return sum + item.price
                   }, 0)}
                   duration={500}
-                  formatValue={(value: string) => Number(value) > 10000000 
-                    ? (Number((Number(value)/1000000).toFixed(1))).toLocaleString('pl-PL')+'M' 
-                    : (Number(Number(value).toFixed(0))).toLocaleString('pl-PL')}
-                />$
+                  formatValue={(value: string) =>
+                    Number(value) > 10000000
+                      ? Number((Number(value) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
+                      : Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
+                  }
+                />
+                $
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
@@ -69,9 +75,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsRadiusOffset={0}
                 colors={{ datum: 'data.color' }}
                 arcLabelsTextColor='#000000'
-                tooltip={() => (
-                  null
-                )}
+                tooltip={() => null}
                 onMouseEnter={event => {
                   const variable: string = event.id.toString()
                   setLabel(event.label.toString())
