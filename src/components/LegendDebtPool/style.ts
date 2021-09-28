@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '459px',
 
     [theme.breakpoints.down('md')]: {
-      width: '331px'
+      width: '386px'
     },
     [theme.breakpoints.down('sm')]: {
       width: '45%',
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: '8px'
   },
   listItemIconName: {
-    width: 'max-content',
+    width: 'fit-content',
 
     paddingRight: 8,
     alignItems: 'center',
@@ -49,18 +49,19 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingRight: 8
     },
     [theme.breakpoints.down('sm')]: {
+      paddingRight: 0
+    },
+    [theme.breakpoints.down('xs')]: {
       paddingRight: 8
     }
   },
   titleLabel: {
     ...typography.body2,
     [theme.breakpoints.down('md')]: {
-      fontSize: '19px',
-      lineHeight: '30px'
+      ...typography.subtitle2
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2.3vw',
-      lineHeight: '24px'
+      ...typography.body4
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2
@@ -75,13 +76,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingRight: 6
     },
     [theme.breakpoints.down('md')]: {
-      fontSize: '15px',
-      lineHeight: '28px',
+      ...typography.subtitle2,
       paddingLeft: 3
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1.5vw',
-      lineHeight: '28px',
+      ...typography.body4,
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
@@ -117,12 +116,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     padding: '0 4px 0 0',
     [theme.breakpoints.down('md')]: {
-      fontSize: '19px',
-      lineHeight: '30px'
+      ...typography.subtitle2
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2.3vw',
-      lineHeight: '24px'
+      ...typography.body4
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2

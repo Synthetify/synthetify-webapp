@@ -6,27 +6,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 0
   },
   container: {
-    width: '100%',
-    margin: '0 auto',
-    padding: '64px 0',
-    display: 'flex',
-    flexDirection: 'column',
-    [theme.breakpoints.down('sm')]: {
-      padding: '64px 19px'
+    background: colors.navy.background,
+    minHeight: 'calc(100vh - 77px)',
+    paddingTop: 64,
+    paddingBottom: 139,
+    [theme.breakpoints.down('md')]: {
+      paddingBottom: 62,
+      minHeight: 'calc(100vh - 122px)'
     },
-    [theme.breakpoints.down('xs')]: {
-      padding: '32px 16px'
+    [theme.breakpoints.down('sm')]: {
+      paddingBlock: 32
     }
   },
-  cardContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    width: '100%'
+  innerWrapper: {
+    width: 1064,
+    [theme.breakpoints.down('md')]: {
+      width: 886
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 'unset',
+      paddingInline: 20
+    }
   },
   linePlot: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
     paddingBottom: 24,
     [theme.breakpoints.down('sm')]: {
       paddingBottom: 16
@@ -35,12 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   header: {
     ...typography.heading1,
     color: colors.navy.veryLightGrey,
-    padding: '0 0 24px 0',
-    margin: '0 auto',
-    width: 1063,
-    [theme.breakpoints.down('md')]: {
-      width: 846
-    }
+    padding: '0 0 24px 0'
   },
   gridItem: {
     paddingBottom: 12

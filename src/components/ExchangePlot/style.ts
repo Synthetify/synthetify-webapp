@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover $positionValue': {
-      fontWeight: 700
+      ...typography.body3
     }
   },
   positionTitle: {
