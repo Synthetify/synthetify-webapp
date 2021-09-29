@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }>(() => ({
   amountInput: {
@@ -9,18 +9,24 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     paddingLeft: 16,
     paddingRight: 10,
     height: 60,
-    fontSize: 22,
+    fontSize: 24,
     minWidth: 150,
     width: '100%'
   },
   input: {
-    width: 'calc(100% - 102px)'
+    width: 'calc(100% - 102px)',
+    paddingTop: 4
   },
   currency: {
-    fontSize: 20,
-    color: colors.navy.grey,
+    minWidth: 'fit-content',
     height: '100%',
     justifyContent: 'flex-end'
+  },
+  currencyText: {
+    ...typography.body2,
+    color: colors.navy.grey,
+    position: 'relative',
+    top: -2
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,

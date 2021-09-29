@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Inter:400,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Be+Vietnam:500,600,700,800');
 
 * {
   min-width: 0;
@@ -7,8 +7,9 @@
 }
 body {
   margin: 0;
-  font-family: 'Inter';
+  font-family: 'Be Vietnam';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #0C0D2C;
+  letter-spacing: -0.03em;
 }

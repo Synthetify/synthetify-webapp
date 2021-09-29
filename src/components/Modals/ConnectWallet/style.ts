@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -23,20 +23,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover': {
       background: colors.navy.navButton,
-      color: colors.navy.veryLightGrey
+      color: colors.navy.veryLightGrey,
+
+      '& $name': {
+        ...typography.subtitle1
+      }
     }
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 27,
+    height: 27,
     display: 'inline',
     float: 'left',
     marginRight: 10
   },
   name: {
     textTransform: 'capitalize',
-    fontSize: 16,
-    lineHeight: '24px',
+    ...typography.subtitle2,
     float: 'left'
   },
   paper: {

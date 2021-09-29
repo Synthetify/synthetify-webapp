@@ -13,11 +13,11 @@ export const unblurContent = () => {
 }
 
 export const colors = [
-  '#DF3C3C',
-  '#6372BE',
+  '#FBFBFB',
+  '#655ED4',
+  '#C52727',
   '#40BFA0',
-  '#117098',
-  '#BFB665',
+  '#DF3C3C',
   '#1F70CF',
   '#936BC7',
   '#39D3F5',
@@ -25,3 +25,10 @@ export const colors = [
   '#C76BA2',
   '#D49347'
 ]
+
+const addPxToValue = ['fontSize'] // add more css properties when needed
+
+export const importantStyles = (styleObject: { [key: string]: string | number }) => Object.entries(styleObject).reduce((obj, [key, value]) => ({
+  ...obj,
+  [key]: `${value}${addPxToValue.some(prop => prop === key) ? 'px' : ''} !important`
+}), styleObject)
