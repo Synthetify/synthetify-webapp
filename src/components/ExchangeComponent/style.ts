@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     border: '1px solid rgba(98, 97, 163, 0.7)',
     padding: 16,
-    paddingTop: 10,
+    paddingTop: 8,
 
     [theme.breakpoints.down('sm')]: {
-      paddingTop: 8
+      paddingTop: 6
     }
   },
   tokenComponentInfo: {
@@ -137,10 +137,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer'
   },
   numbersField: {
-    marginTop: 30,
+    marginTop: 28,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: 20
+      marginTop: 18
     }
   },
   numbersFieldTitle: {

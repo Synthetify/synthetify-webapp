@@ -37,6 +37,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body3,
       padding: 0
     }
+  },
+  input: {
+    paddingTop: 4
+  },
+  label: {
+    transform: 'translateY(-1px)'
   }
 }))
 

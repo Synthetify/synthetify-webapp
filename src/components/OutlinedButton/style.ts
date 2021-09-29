@@ -16,6 +16,9 @@ const useStyles = makeStyles(() => ({
   disabled: {
     background: `${colors.navy.navButton} !important`,
     color: `${colors.navy.background} !important`
+  },
+  label: {
+    transform: 'translateY(-2px)'
   }
 }))
 
