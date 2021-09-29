@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-dynamic-delete */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PayloadType } from './types'
 import { Color } from '@material-ui/lab/Alert'
@@ -9,7 +8,8 @@ export interface ISnackbar {
   variant: Color
   open: boolean
   action?: (key: number) => JSX.Element
-  persist?: boolean
+  persist?: boolean,
+  txid?: string
 }
 
 export interface ISnackbarStore {
