@@ -121,6 +121,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     fontWeight: 800,
     margin: '12px 0 19px 0',
+    transition: 'transform 300ms linear, color 300ms linear, box-shadow 300ms linear',
     [theme.breakpoints.down('md')]: {
       margin: '11px 0',
       ...typography.heading1
