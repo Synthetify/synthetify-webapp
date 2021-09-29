@@ -9,7 +9,8 @@ export interface ISnackbar {
   variant: Color
   open: boolean
   action?: (key: number) => JSX.Element
-  persist?: boolean
+  persist?: boolean,
+  txid?: string
 }
 
 export interface ISnackbarStore {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { SnackbarProvider } from 'notistack'
 import useStyles from './style'
-import { store } from '@store/index'
 import { useSelector } from 'react-redux'
 import { snackbars } from '@selectors/snackbars'
 import { network } from '@selectors/solanaConnection'

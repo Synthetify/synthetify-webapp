@@ -78,7 +78,6 @@ export function* handleMint(): Generator {
       snackbarsActions.add({
         message: 'Successfully minted xUSD.',
         variant: 'success',
-        txid: txid,
         persist: false
       })
     )
