@@ -60,7 +60,11 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
     '&:hover': {
       color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background
     }
-  })
+  }),
+  wrapper: {
+    position: 'relative',
+    top: -2
+  }
 }))
 
 export const Switch: React.FC<IProps> = ({ onChange }) => {
