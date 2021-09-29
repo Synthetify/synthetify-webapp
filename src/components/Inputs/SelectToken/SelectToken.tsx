@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, CardMedia } from '@material-ui/core'
+import { Button, CardMedia, useMediaQuery } from '@material-ui/core'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -7,6 +7,7 @@ import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import classNames from 'classnames'
+import { theme, typography } from '@static/theme'
 
 export interface ISelectTokenModal {
   name?: string
@@ -27,6 +28,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const [open, setOpen] = React.useState<boolean>(false)
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -43,6 +45,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
     <>
       <Button
         className={classNames(classes.button, className)}
+        classes={{ startIcon: classes.startIcon }}
         color='primary'
         variant='contained'
         onClick={handleClick}
@@ -51,8 +54,12 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
             <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} />}>
-        <span style={{ position: 'relative', top: -1 }}>{!current ? name : current}</span>
+        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -10 }} />}
+        style={
+          !current ? (isXs ? typography.caption4 : typography.body3) : undefined
+        }
+      >
+        <span style={{ position: 'relative', top: -1, whiteSpace: 'nowrap' }}>{!current ? name : current}</span>
       </Button>
       <SelectTokenModal
         tokens={tokens}

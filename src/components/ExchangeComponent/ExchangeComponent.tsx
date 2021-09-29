@@ -17,9 +17,8 @@ import { docs, pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
-import SelectToken from '@components/Inputs/SelectToken/SelectToken'
-import AmountWithMaxInput from '@components/Inputs/AmountWithMaxInput/AmountWithMaxInput'
 import useStyles from './style'
+import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -285,42 +284,35 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           </Typography>
         </Grid>
 
-        <Grid item container wrap='nowrap' alignItems='center'>
-          <SelectToken
-            tokens={tokens.map(({ symbol, balance, supply }) => ({
-              symbol,
-              balance,
-              decimals: supply.scale
-            }))}
-            current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
-            centered={true}
-            onSelect={(chosen: string) =>
-              setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+        <ExchangeAmountInput
+          value={amountFrom}
+          setValue={value => {
+            if (value.match(/^\d*\.?\d*$/)) {
+              setAmountFrom(value)
+              updateEstimatedAmount(value)
             }
-          />
-
-          <AmountWithMaxInput
-            value={amountFrom}
-            setValue={value => {
-              if (value.match(/^\d*\.?\d*$/)) {
-                setAmountFrom(value)
-                updateEstimatedAmount(value)
-              }
-            }}
-            placeholder={'0.0'}
-            className={classes.input}
-            onMaxClick={() => {
-              if (tokenFromIndex !== null) {
-                setAmountFrom(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-                updateEstimatedAmount(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-              }
-            }}
-          />
-        </Grid>
+          }}
+          placeholder={'0.0'}
+          onMaxClick={() => {
+            if (tokenFromIndex !== null) {
+              setAmountFrom(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+              updateEstimatedAmount(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+            }
+          }}
+          tokens={tokens.map(({ symbol, balance, supply }) => ({
+            symbol,
+            balance,
+            decimals: supply.scale
+          }))}
+          current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
+          onSelect={(chosen: string) =>
+            setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+          }
+        />
       </Grid>
 
       <Grid item container direction='row' justifyContent='center'>
@@ -404,45 +396,38 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           </Typography>
         </Grid>
 
-        <Grid item container wrap='nowrap' alignItems='center'>
-          <SelectToken
-            tokens={tokens.map(({ symbol, balance, supply }) => ({
-              symbol,
-              balance,
-              decimals: supply.scale
-            }))}
-            current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
-            centered={true}
-            onSelect={(chosen: string) => {
-              const index = tokens.findIndex(t => t.symbol === chosen) ?? null
-              setTokenToIndex(index)
-              onSelectTokenTo(index)
-              setTimeout(() => updateEstimatedAmount(), 0)
-            }}
-          />
-
-          <AmountWithMaxInput
-            value={amountTo}
-            setValue={value => {
-              if (value.match(/^\d*\.?\d*$/)) {
-                setAmountTo(value)
-                updateFromEstimatedAmount(value)
-              }
-            }}
-            placeholder={'0.0'}
-            className={classes.input}
-            onMaxClick={() => {
-              if (tokenFromIndex !== null && tokenToIndex !== null) {
-                setAmountFrom(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-                updateEstimatedAmount(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-              }
-            }}
-          />
-        </Grid>
+        <ExchangeAmountInput
+          value={amountTo}
+          setValue={value => {
+            if (value.match(/^\d*\.?\d*$/)) {
+              setAmountTo(value)
+              updateFromEstimatedAmount(value)
+            }
+          }}
+          placeholder={'0.0'}
+          onMaxClick={() => {
+            if (tokenFromIndex !== null && tokenToIndex !== null) {
+              setAmountFrom(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+              updateEstimatedAmount(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+            }
+          }}
+          tokens={tokens.map(({ symbol, balance, supply }) => ({
+            symbol,
+            balance,
+            decimals: supply.scale
+          }))}
+          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
+          onSelect={(chosen: string) => {
+            const index = tokens.findIndex(t => t.symbol === chosen) ?? null
+            setTokenToIndex(index)
+            onSelectTokenTo(index)
+            setTimeout(() => updateEstimatedAmount(), 0)
+          }}
+        />
       </Grid>
       <Grid container item className={classes.numbersField}>
         <Grid item>

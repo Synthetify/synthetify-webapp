@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 56,
     fontSize: 24,
     fontWeight: 500,
-    minWidth: 148,
+    width: '100%',
 
     [theme.breakpoints.down('xs')]: {
       height: 48,
