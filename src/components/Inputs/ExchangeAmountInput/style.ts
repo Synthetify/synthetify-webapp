@@ -37,6 +37,19 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body3,
       padding: 0
     }
+  },
+  select: {
+    marginRight: 24,
+
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 16
+    }
+  },
+  input: {
+    paddingTop: 4
+  },
+  label: {
+    top: -1
   }
 }))
 

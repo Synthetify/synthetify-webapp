@@ -7,21 +7,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxShadow: 'none',
     borderRadius: 10,
     ...typography.subtitle1,
-    width: 160,
-    height: 56,
-    backgroundColor: colors.navy.background,
+    minWidth: 127,
+    height: 42,
+    backgroundColor: colors.navy.navButton,
 
     '&:hover': {
-      backgroundColor: colors.navy.background
+      backgroundColor: colors.navy.navButton
+    },
+
+    [theme.breakpoints.down('md')]: {
+      minWidth: 107,
+      borderRadius: 7,
+      paddingInline: 8
     },
 
     [theme.breakpoints.down('xs')]: {
-      height: 48,
-      minWidth: 96,
-      maxWidth: 110,
-      width: 110,
+      minWidth: 89,
+      height: 34,
       borderRadius: 6,
-      paddingInline: 8
+      paddingInline: 5,
+      ...typography.body3
     }
   },
   icon: {

@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
+import classNames from 'classnames'
 
 export interface ISelectTokenModal {
   name?: string
@@ -13,13 +14,15 @@ export interface ISelectTokenModal {
   centered?: boolean
   tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
   onSelect: (chosen: string) => void
+  className?: string
 }
 export const SelectToken: React.FC<ISelectTokenModal> = ({
   name = 'Select a token',
   current,
   centered,
   tokens,
-  onSelect
+  onSelect,
+  className
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -39,7 +42,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
   return (
     <>
       <Button
-        className={classes.button}
+        className={classNames(classes.button, className)}
         color='primary'
         variant='contained'
         onClick={handleClick}
