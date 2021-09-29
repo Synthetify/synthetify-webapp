@@ -30,7 +30,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
     }), {})]
   }
 
-  const handleMouseEnter = (d: any, e: any) => {
+  const handleMouseEnter = (_d: any, e: any) => {
     const fill = e.target.getAttribute('fill')
     function hex2rgb(hex: string) {
       const validHEXInput = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) as RegExpExecArray
@@ -52,7 +52,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   }
 
   const handleMouseLeave = (d: any, e: any) => {
-    e.target.setAttribute('fill', data.find(x => x.name === d.id)!.color)
+    e.target.setAttribute('fill', data.find(x => x.name === d.id)?.color ?? '#ffffff')
   }
 
   const colorsToBar = data.map(coin => {
@@ -63,7 +63,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
 
   return (
     <>
-      <div className={classes.root}>
+      <Grid container className={classes.root}>
         <Grid container className={classes.headerWrapper} direction="column">
           <Grid item>
             <Typography className={classes.title}>Collateral structure</Typography>
@@ -105,7 +105,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
             </ul>
           </Grid>
         </Grid>
-      </div>
+      </Grid>
     </>
   )
 }

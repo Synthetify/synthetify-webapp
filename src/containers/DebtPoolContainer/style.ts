@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0 0 12px 0',
     width: '100%',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     [theme.breakpoints.down('sm')]: {
       padding: '0 0 4px 0'

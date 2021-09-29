@@ -1,74 +1,40 @@
 import React from 'react'
-import { Grid, CardContent, Card, ButtonGroup, Button, Paper } from '@material-ui/core'
-
+import { Grid, CardContent, Card, Button, Paper } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import LinePlot from '@components/LinePlot/LinePlot'
-import { data as mockData } from './mockData'
-import { colors } from '@static/theme'
-
 import useStyles from './style'
 interface Data {
   id: string
-  data: Array<{ x: number; y: number }>
+  points: Array<{ x: number; y: number }>
 }
-
-export const LinePlotContainer: React.FC = () => {
+interface IProp {
+  data: Data[]
+}
+export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
   const classes = useStyles()
-  const [menuOption, setMenuOption] = React.useState('Volument')
-  const [activeButtonTime, setActiveButtonTime] = React.useState('Y')
-  const [data, setData] = React.useState<Data>(mockData[0])
-  const [dataPlot, setDataPlot] = React.useState<Array<{ x: number; y: number }>>(
-    mockData[0].data.sort((a: { x: number; y: number }, b: { x: number; y: number }) => {
-      return a.x - b.x
-    })
-  )
+  const [menuOption, setMenuOption] = React.useState('Volume')
+  const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const changeData = (name: string) => {
-    const value = mockData.findIndex(element => element.id === name)
-
-    setData(mockData[value])
-  }
-
-  const sortData = (type: string) => {
-    const timestamp = Date.now()
-    if (type === 'D') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 86400000
-        })
-      )
-    }
-    if (type === 'W') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 604800000
-        })
-      )
-    }
-    if (type === 'M') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 2629743000
-        })
-      )
-    }
-    if (type === 'Y') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 31556926000
-        })
-      )
+    const value = data.findIndex(element => element.id === name)
+    if (value === undefined) {
+      setDataTmp(data[0])
+    } else {
+      setDataTmp(data[value])
     }
   }
-
   React.useEffect(() => {
-    sortData(activeButtonTime)
-  }, [activeButtonTime, data.data])
+    if (menuOption === 'User count') {
+      changeData('userCount')
+    } else {
+      changeData(menuOption.toLowerCase())
+    }
+  }, [data])
 
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
-        <Grid container item className={classes.optionLabel}>
-          <Grid item lg={8} md={8} xs={5} className={classes.selectContainer}>
+        <Grid className={classes.optionLabel} container item justifyContent='flex-end'>
+          <Grid item className={classes.selectContainer}>
             <Grid className={classes.hoverGrid}>
               <Button
                 className={classes.buttonSelect}
@@ -82,16 +48,16 @@ export const LinePlotContainer: React.FC = () => {
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
-                      setMenuOption('Volument')
-                      changeData('Volument')
+                      setMenuOption('Volume')
+                      changeData('volume')
                     }}>
-                    Volument
+                    Volume
                   </Button>
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Liquidation')
-                      changeData('Liquidation')
+                      changeData('liquidation')
                     }}>
                     Liquidation
                   </Button>
@@ -99,7 +65,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Mint')
-                      changeData('Mint')
+                      changeData('mint')
                     }}>
                     Mint
                   </Button>
@@ -107,7 +73,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Burn')
-                      changeData('Burn')
+                      changeData('burn')
                     }}>
                     Burn
                   </Button>
@@ -115,7 +81,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('User count')
-                      changeData('User count')
+                      changeData('userCount')
                     }}>
                     User count
                   </Button>
@@ -123,52 +89,11 @@ export const LinePlotContainer: React.FC = () => {
               </Paper>
             </Grid>
           </Grid>
-          <Grid container item lg={4} md={4} xs={7} justifyContent='flex-end'>
-            <ButtonGroup className={classes.buttonContainer}>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'D'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('D')}>
-                D
-              </Button>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'W'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('W')}>
-                W
-              </Button>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'M'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('M')}>
-                M
-              </Button>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'Y'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('Y')}>
-                Y
-              </Button>
-            </ButtonGroup>
-          </Grid>
         </Grid>
-        <LinePlot data={{ id: data.id, data: dataPlot }} />
+        <LinePlot
+          data={{ id: dataTmp.id, data: dataTmp.points }}
+          sign={dataTmp.id === 'userCount' ? '' : '$'}
+        />
       </CardContent>
     </Card>
   )

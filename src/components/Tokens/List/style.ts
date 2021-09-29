@@ -1,26 +1,26 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
-    fontWeight: 700,
-    fontSize: 22,
-    lineHeight: '40px',
+    ...typography.body1,
+    position: 'relative',
+    top: -2,
     [theme.breakpoints.down('xs')]: {
-      fontSize: 13
+      ...typography.body3,
+      top: -1
     },
     color: colors.navy.grey
   },
   emptyTokens: {
     paddingBlock: 20,
     textAlign: 'center',
-    fontWeight: 400,
-    fontSize: 22,
+    ...typography.body2,
     color: colors.navy.lightGrey,
     backgroundColor: colors.navy.component,
     [theme.breakpoints.down('xs')]: {
       '& > *': {
-        fontSize: 18
+        ...typography.body4
       }
     }
   },

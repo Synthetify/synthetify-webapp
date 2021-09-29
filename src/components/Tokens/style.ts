@@ -1,17 +1,22 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   switch: {
     marginBottom: 8
   },
   title: {
-    fontSize: 22,
-    fontWeight: 600,
+    position: 'relative',
+    top: -2,
+    ...typography.heading3,
     color: colors.navy.veryLightGrey,
 
+    [theme.breakpoints.down('sm')]: {
+      ...typography.heading4
+    },
+
     [theme.breakpoints.down('xs')]: {
-      fontSize: 15
+      ...typography.subtitle1
     }
   },
   addAccount: {
@@ -20,8 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 6,
     backgroundColor: 'rgba(14, 14, 42, 0.45)',
     color: colors.navy.veryLightGrey,
-    fontSize: 16,
-    fontWeight: 700,
+    ...typography.subtitle1,
     marginLeft: 15,
     paddingInline: 0,
 
@@ -40,18 +44,23 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: 'rgba(14, 14, 42, 0.7) !important'
     }
   },
+  buttonLabel: {
+    top: -1
+  },
   sum: {
-    fontSize: 16,
+    ...typography.body2,
     color: colors.navy.veryLightGrey,
     position: 'absolute',
     right: 24,
+    marginTop: -2,
 
     [theme.breakpoints.down('sm')]: {
+      ...typography.subtitle2,
       right: 20
     },
 
     [theme.breakpoints.down('xs')]: {
-      fontSize: 13,
+      ...typography.body4,
       right: 16
     }
   }

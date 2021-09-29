@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -8,19 +8,19 @@ const useStyles = makeStyles(() => ({
     color: colors.navy.navBar,
     height: 44,
     borderRadius: 10,
-    fontSize: 16,
+    ...typography.subtitle2,
     textTransform: 'capitalize',
     boxShadow: 'none',
-
+    paddingBottom: '8px',
     '&:hover': {
       background: colors.navy.button,
-      color: colors.navy.veryLightGrey
+      color: colors.navy.veryLightGrey,
+      ...typography.subtitle1
     }
   },
   active: {
     background: colors.navy.button,
-    color: colors.navy.veryLightGrey,
-    fontWeight: 700
+    ...typography.subtitle1
   },
   disabled: {
     opacity: 1
