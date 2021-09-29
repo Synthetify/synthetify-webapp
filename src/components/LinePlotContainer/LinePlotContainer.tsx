@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, CardContent, Card, Button, Paper } from '@material-ui/core'
+import { Grid, CardContent, Card, Button, Paper, Typography } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import LinePlot from '@components/LinePlot/LinePlot'
 import useStyles from './style'
@@ -33,7 +33,16 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
-        <Grid className={classes.optionLabel} container item justifyContent='flex-end'>
+        <Grid className={classes.optionLabel} container item justifyContent='space-between'>
+          <Grid>
+            <Grid className={classes.tvlContainer}>
+              <Grid className={classes.tvlTitle}>
+                <Typography className={classes.tvlName}>TVL</Typography>
+                <Typography className={classes.tvlPercent}>(-00.05)</Typography>
+              </Grid>
+              <Typography className={classes.tvlNumber}>$1.34 B</Typography>
+            </Grid>
+          </Grid>
           <Grid item className={classes.selectContainer}>
             <Grid className={classes.hoverGrid}>
               <Button
