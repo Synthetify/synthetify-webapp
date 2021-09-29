@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 25,
     position: 'absolute',
     right: 8,
-    top: 6
+    top: 3
   },
   tooltipTitle: {
     ...typography.subtitle1
