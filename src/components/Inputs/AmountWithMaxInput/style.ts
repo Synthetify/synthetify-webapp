@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 4
   },
   label: {
-    transform: 'translateY(-1px)'
+    top: -1
   }
 }))
 

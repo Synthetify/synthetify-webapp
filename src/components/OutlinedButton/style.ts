@@ -18,7 +18,8 @@ const useStyles = makeStyles(() => ({
     color: `${colors.navy.background} !important`
   },
   label: {
-    transform: 'translateY(-2px)'
+    position: 'relative',
+    top: -2
   }
 }))
 

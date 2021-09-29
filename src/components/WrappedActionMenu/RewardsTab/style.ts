@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 22
   },
   label: {
-    transform: 'translateY(-1px)'
+    top: -1
   }
 }))
 
