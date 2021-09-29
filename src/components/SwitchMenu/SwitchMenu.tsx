@@ -106,6 +106,14 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       [theme.breakpoints.down('xs')]: {
         ...typography.body3
       }
+    },
+    wrapper: {
+      position: 'relative',
+      top: -2,
+
+      [theme.breakpoints.down('sm')]: {
+        top: -1
+      }
     }
   })
 )((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)

@@ -49,7 +49,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
           )
         }
         endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} />}>
-        {!current ? name : current}
+        <span style={{ position: 'relative', top: -1 }}>{!current ? name : current}</span>
       </Button>
       <SelectTokenModal
         tokens={tokens}
