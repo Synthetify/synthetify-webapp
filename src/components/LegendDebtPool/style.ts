@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemIconNumber: {
-    alignItems: 'center',
+    alignItems: 'end',
     color: colors.navy.info,
     paddingLeft: 4,
     ...typography.body2,

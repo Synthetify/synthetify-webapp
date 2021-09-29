@@ -40,7 +40,7 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
     <Grid className={classes.linePlot}>
       <ResponsiveLine
         data={[{ id: data.id, data: data.data }]}
-        margin={{ top: 10, right: 15, bottom: 30, left: 15 }}
+        margin={{ top: 10, right: 20, bottom: 35, left: 20 }}
         xScale={{
           type: 'point'
         }}
@@ -58,7 +58,7 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
           tickSize: 5,
           tickPadding: 3,
           tickRotation: 0,
-          tickValues: 2,
+          tickValues: 6,
 
           format: tick => {
             const data = new Date(tick)

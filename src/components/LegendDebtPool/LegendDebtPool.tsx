@@ -37,14 +37,21 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                   <ListItemIcon
                     className={classes.listItemIconName}
                     style={{ color: element.color }}>
-                    <FiberManualRecordIcon style={{ width: '10px' }} />
-                    <Typography className={classes.titleLabel}> {element.label} </Typography>
+                    <Typography className={classes.titleLabel}>
+                      {' '}
+                      <FiberManualRecordIcon
+                        style={{ width: '10px', height: 'auto', paddingRight: '2px' }}
+                      />
+                      {element.label}{' '}
+                    </Typography>
                   </ListItemIcon>
                   <Typography className={classes.percentNumber}>{`(${Number(
                     element.percent
                   ).toFixed(2)}%)`}</Typography>
                   <ListItemIcon className={classes.listItemIconNumber}>
-                    <FiberManualRecordIcon style={{ width: '8px' }} />
+                    <FiberManualRecordIcon
+                      style={{ width: '8px', height: 'auto', paddingBottom: '0.25em' }}
+                    />
                     <AnimatedNumber
                       value={element.price}
                       duration={500}
