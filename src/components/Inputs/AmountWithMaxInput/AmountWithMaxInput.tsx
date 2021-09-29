@@ -65,6 +65,7 @@ export const AmountInput: React.FC<IProps> = ({
       inputRef={inputRef}
       error={!!error}
       className={classNames(classes.amountInput, className)}
+      classes={{ input: classes.input }}
       style={style}
       type={'text'}
       value={value}
@@ -77,6 +78,7 @@ export const AmountInput: React.FC<IProps> = ({
           color='primary'
           onClick={onMaxClick}
           className={classes.maxButton}
+          labelClassName={classes.label}
         />
       )}
     />

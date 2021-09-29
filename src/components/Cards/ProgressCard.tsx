@@ -5,6 +5,7 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import useStyles, { useStylesWithProps } from './style'
 import { formatNumbers, showMorK } from '@consts/utils'
+import classNames from 'classnames'
 
 export interface IProps {
   name: string
@@ -45,7 +46,7 @@ export const ProgressCard: React.FC<IProps> = ({
       onClick={onClick}
       onMouseEnter={() => setAreIndicatorsOpen(true)}
       onMouseLeave={() => setAreIndicatorsOpen(false)}>
-      <CardContent className={classes.cardContent}>
+      <CardContent className={classNames(classes.cardContent, classes.progressCardContent)}>
         {hint ? (
           <MobileTooltip
             hint={hint}
@@ -57,7 +58,7 @@ export const ProgressCard: React.FC<IProps> = ({
         <Typography className={classes.valueCardTitle}>{name}</Typography>
         <Grid className={classes.progressContainer} container direction='row' alignItems='center'>
           <Typography className={classes.minMaxDebt}>0{sign}</Typography>
-          <Grid item style={{ flexGrow: 1, paddingInline: 7 }}>
+          <Grid item style={{ flexGrow: 1, paddingInline: 9 }}>
             <Tooltip
               classes={{
                 tooltip: classes.progressTooltip,
@@ -106,6 +107,10 @@ export const ProgressCard: React.FC<IProps> = ({
             {showMorK(max)}
             {sign}
           </Typography>
+        </Grid>
+        <Grid container justifyContent='space-between'>
+          <Typography className={classes.bottomText}>Radiant Liquidation Price</Typography>
+          <Typography className={classes.bottomText}>Collateralization Ratio</Typography>
         </Grid>
       </CardContent>
     </Card>

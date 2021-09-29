@@ -220,6 +220,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             disabled={isClaimDisabled()}
             className={classes.button}
             onClick={onClaim}
+            labelClassName={classes.label}
           />
         </Grid>
         <Grid item style={{ marginLeft: 18 }}>
@@ -229,6 +230,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
             disabled={isWithdrawDisabled()}
             className={classes.button}
             onClick={onWithdraw}
+            labelClassName={classes.label}
           />
         </Grid>
       </Grid>

@@ -7,9 +7,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
+    position: 'relative',
+    top: -2,
 
     [theme.breakpoints.down('xs')]: {
-      ...typography.body4
+      ...typography.body4,
+      top: -1
     }
   },
   icon: {
