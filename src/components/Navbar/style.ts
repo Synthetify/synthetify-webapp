@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     ...typography.subtitle2,
     textTransform: 'capitalize',
     boxShadow: 'none',
-
+    paddingBottom: '8px',
     '&:hover': {
       background: colors.navy.button,
       color: colors.navy.veryLightGrey,
