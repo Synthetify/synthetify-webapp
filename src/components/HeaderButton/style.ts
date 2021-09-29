@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
     paddingInline: 12,
+    paddingBottom: '9px',
     borderRadius: 10,
     textTransform: 'none',
     ...typography.subtitle1,

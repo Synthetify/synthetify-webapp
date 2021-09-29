@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginBottom: '8px'
     }
   },
+  debtPoolCardContent: {
+    paddingTop: '12px'
+  },
   debtPoolCardTitle: {
     color: colors.navy.veryLightGrey,
     ...typography.body1,

@@ -49,9 +49,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     height: '100%',
     '&:last-child': {
-      padding: '10.5px 16px',
+      padding: '8.5px 16px',
       [theme.breakpoints.down('sm')]: {
-        padding: '5.5px 8px'
+        padding: '3.5px 8px'
       },
       [theme.breakpoints.down('sm')]: {
         padding: '3px 8px 5px 8px'
@@ -83,6 +83,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardName: {
     ...typography.body1,
+    '&:before': {
+      content: ' ',
+      marginTop: '-3px',
+      display: 'block',
+      height: 0
+    },
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('md')]: {
       ...typography.heading4
@@ -114,7 +120,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '52px',
     textAlign: 'center',
     fontWeight: 800,
-    margin: '16px 0 18px 0',
+    margin: '12px 0 19px 0',
     [theme.breakpoints.down('md')]: {
       margin: '11px 0',
       ...typography.heading1
@@ -126,6 +132,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       margin: 0,
       ...typography.subtitle1
+    },
+    '&:hover': {
+      color: '#7C76DA',
+      textShadow: '0px 0px 12px rgba(124, 118, 218, 0.5)',
+      transform: 'scale(1.1)'
     }
   },
   cardDesc: {
