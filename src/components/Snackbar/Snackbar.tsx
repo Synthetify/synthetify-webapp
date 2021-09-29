@@ -4,7 +4,7 @@ import useStyles from './style'
 import { useSelector } from 'react-redux'
 import { snackbars } from '@selectors/snackbars'
 import { network } from '@selectors/solanaConnection'
-
+import { ISnackbar } from '@store/reducers/snackbars'
 interface ISnackbarProps {
   children: JSX.Element[]
   maxSnack: number
@@ -12,7 +12,7 @@ interface ISnackbarProps {
 export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
   const classes = useStyles()
 
-  const snackbarsArray = useSelector(snackbars)
+  const snackbarsArray: ISnackbar[] = useSelector(snackbars)
   const currentNetwork: string = useSelector(network)
 
   return (
@@ -28,7 +28,7 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
       action={
         snackbarsArray.at(-1)?.txid
           ? <button className={classes.button} onClick={() => {
-            const txid: string = snackbarsArray.at(-1).txid
+            const txid: string | undefined = snackbarsArray.at(-1)?.txid
             if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined) {
               window.open('https://explorer.solana.com/tx/' + txid + '?cluster=' + currentNetwork.toLowerCase())
             } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined) {
@@ -39,7 +39,7 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
           </button>
           : null
       }
-      // autoHideDuration= {99999999}
+      //autoHideDuration= {99999999}
     >
       {children}
     </SnackbarProvider>
