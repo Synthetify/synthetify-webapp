@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   line: {
     marginTop: 22
+  },
+  label: {
+    top: -1
   }
 }))
 

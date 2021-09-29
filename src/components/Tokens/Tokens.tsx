@@ -52,6 +52,7 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
                   name='Add account'
                   className={classes.addAccount}
                   onClick={addAccount}
+                  labelClassName={classes.buttonLabel}
                 />
               )
               : ''

@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   clockIcon: {
     width: 16,
     height: 16,
-    float: 'right'
+    float: 'right',
+    marginTop: 6
   },
   tooltipPlacementLeft: {
     marginRight: 16

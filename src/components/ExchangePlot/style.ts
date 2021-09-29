@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10
   },
   dataWrapper: {
-    padding: 16
+    padding: 16,
+    paddingTop: 6
   },
   title: {
     color: colors.white.main,
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenInfo: {
     marginTop: 24,
-    padding: 16,
+    padding: '8px 16px 10px',
     backgroundColor: 'rgba(12, 13, 44, 0.4)',
     border: '1px solid #6261A3',
     borderRadius: 10
@@ -46,11 +47,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body4
   },
   copyIcon: {
-    width: 14,
-    height: 14,
+    width: 12,
+    height: 12,
     marginRight: 8,
     opacity: 0.7,
     cursor: 'pointer',
+    marginTop: 1,
 
     '&:hover': {
       opacity: 1
