@@ -1,5 +1,5 @@
 import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
- 
+
 import { actions } from '@reducers/staking'
 import {
   deposit,
@@ -18,10 +18,10 @@ import {
   withdrawRewards
 } from './exchange'
 import { createAccount } from './wallet'
- 
+
 export function* handleCreateAccount(): Generator {
   const createAccountData = yield* select(createAccountRedux)
- 
+
   try {
     const accountAddress = yield* call(createAccount, createAccountData.tokenAddress)
     yield* put(
@@ -73,7 +73,6 @@ export function* handleMint(): Generator {
   try {
     yield* call(mintUsd, mintData.amount)
     yield* put(actions.mintDone())
- 
     yield put(
       snackbarsActions.add({
         message: 'Successfully minted xUSD.',
@@ -84,7 +83,7 @@ export function* handleMint(): Generator {
   } catch (error) {
     console.log(error)
     yield* put(actions.mintFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
- 
+
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -109,7 +108,7 @@ export function* handleWithdraw(): Generator {
     )
   } catch (error) {
     yield* put(actions.withdrawFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
- 
+
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -144,12 +143,12 @@ export function* handleBurn(): Generator {
     )
   }
 }
- 
+
 export function* handleClaimRewards(): Generator {
   try {
     const txid = yield* call(claimRewards)
     yield* put(actions.claimRewardsDone({ txid }))
- 
+
     yield put(
       snackbarsActions.add({
         message: 'Successfully claimed rewards',
@@ -160,7 +159,7 @@ export function* handleClaimRewards(): Generator {
     )
   } catch (error) {
     yield* put(actions.claimRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
- 
+
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -170,12 +169,12 @@ export function* handleClaimRewards(): Generator {
     )
   }
 }
- 
+
 export function* handleWithdrawRewards(): Generator {
   try {
     const txid = yield* call(withdrawRewards)
     yield* put(actions.withdrawRewardsDone({ txid }))
- 
+
     yield put(
       snackbarsActions.add({
         message: 'Successfully withdrawn rewards',
@@ -186,7 +185,7 @@ export function* handleWithdrawRewards(): Generator {
     )
   } catch (error) {
     yield* put(actions.withdrawRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
- 
+
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -196,7 +195,7 @@ export function* handleWithdrawRewards(): Generator {
     )
   }
 }
- 
+
 export function* depositHandler(): Generator {
   yield takeEvery(actions.deposit, handleDeposit)
 }
@@ -218,7 +217,7 @@ export function* withdrawRewardsHandler(): Generator {
 export function* createAccountHanlder(): Generator {
   yield takeEvery(actions.createAccount, handleCreateAccount)
 }
- 
+
 export function* stakingSaga(): Generator {
   yield all(
     [

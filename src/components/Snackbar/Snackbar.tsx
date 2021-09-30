@@ -24,20 +24,6 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
         variantWarning: classes.warning,
         variantInfo: classes.info
       }}
-
-      action={
-        snackbarsArray.at(-1)?.txid &&
-          <button className={classes.button} onClick={() => {
-            const txid: string | undefined = snackbarsArray.at(-1)?.txid
-            if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined) {
-              window.open('https://explorer.solana.com/tx/' + txid + '?cluster=' + currentNetwork.toLowerCase())
-            } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined) {
-              window.open('https://explorer.solana.com/tx/' + txid)
-            }
-          } }>
-          Details
-          </button>
-      }
       autoHideDuration= {99999999}
     >
       {children}
