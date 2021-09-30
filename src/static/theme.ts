@@ -73,7 +73,7 @@ export const colors = {
     dark: '#0E0E2A',
     component: '#1D1D49',
     navBar: 'rgba(249, 249, 251, 0.76)',
-    navButton: '#3D3F72',
+    navButton: '#3A3A85',
     grey: '#A3A8CE',
     lightGrey: '#DADCF1',
     veryLightGrey: '#FBFBFB',
