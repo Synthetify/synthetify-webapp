@@ -1,19 +1,13 @@
 import React from 'react'
 import { SnackbarProvider } from 'notistack'
 import useStyles from './style'
-import { useSelector } from 'react-redux'
-import { snackbars } from '@selectors/snackbars'
-import { network } from '@selectors/solanaConnection'
-import { ISnackbar } from '@store/reducers/snackbars'
+
 interface ISnackbarProps {
   children: JSX.Element[]
   maxSnack: number
 }
 export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
   const classes = useStyles()
-
-  const snackbarsArray: ISnackbar[] = useSelector(snackbars)
-  const currentNetwork: string = useSelector(network)
 
   return (
     <SnackbarProvider
