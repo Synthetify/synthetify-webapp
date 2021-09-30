@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -7,29 +7,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10
   },
   dataWrapper: {
-    padding: 16
+    padding: 16,
+    paddingTop: 6
   },
   title: {
     color: colors.white.main,
-    fontSize: 22,
-    lineHeight: '40px',
-    fontWeight: 700
+    ...typography.body1
   },
   description: {
     color: colors.navy.info,
-    fontSize: 13,
-    lineHeight: '16px'
+    ...typography.body4
   },
   tokenInfo: {
     marginTop: 24,
-    padding: 16,
+    padding: '8px 16px 10px',
     backgroundColor: 'rgba(12, 13, 44, 0.4)',
     border: '1px solid #6261A3',
     borderRadius: 10
   },
   infoPosition: {
     '&:not(:last-child)': {
-      marginBottom: 8
+      marginBottom: 4
     },
 
     '&:hover $positionTitle': {
@@ -37,26 +35,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover $positionValue': {
-      fontWeight: 700
+      ...typography.body3
     }
   },
   positionTitle: {
     color: colors.navy.grey,
-    fontSize: 13,
-    lineHeight: '16px'
+    ...typography.body4
   },
   positionValue: {
     color: colors.navy.veryLightGrey,
-    fontWeight: 600,
-    fontSize: 13,
-    lineHeight: '16px'
+    ...typography.body4
   },
   copyIcon: {
-    width: 14,
-    height: 14,
+    width: 12,
+    height: 12,
     marginRight: 8,
     opacity: 0.7,
     cursor: 'pointer',
+    marginTop: 1,
 
     '&:hover': {
       opacity: 1
@@ -74,29 +70,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tooltipRoot: {
-    width: 122,
+    width: 100,
     backgroundColor: colors.navy.darkGrey,
     borderRadius: 7,
     border: `0.5px solid ${colors.navy.grey}`,
-    padding: 8,
+    padding: 4,
     position: 'relative',
     top: -6
   },
   tooltipDate: {
     color: colors.navy.veryLightGrey,
-    fontSize: 10,
-    lineHeight: '12px',
-    fontWeight: 'normal',
-    marginBottom: 2,
+    ...typography.caption3,
     textTransform: 'uppercase',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   tooltipValue: {
     color: colors.green.main,
-    fontSize: 10,
-    lineHeight: '12px',
     textAlign: 'center',
-    fontWeight: 700,
+    ...typography.caption2
   },
   tooltipPoint: {
     height: 5,
@@ -104,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 2,
     position: 'absolute',
     bottom: -23,
-    left: 57
+    left: 42
   }
 }))
 

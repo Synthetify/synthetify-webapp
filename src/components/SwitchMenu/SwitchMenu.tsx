@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Fade, Grid, makeStyles, Tab, Tabs, Typography, withStyles } from '@material-ui/core'
 import { createStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 export interface IProps {
   menuItems: IMenuItem
@@ -74,16 +74,15 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
     root: {
       zIndex: 1,
       textTransform: 'capitalize',
-      fontWeight: 400,
-      fontSize: 22,
+      ...typography.body2,
       minHeight: 60,
       minWidth: '20%',
       [theme.breakpoints.down('sm')]: {
-        fontSize: 18,
+        ...typography.subtitle2,
         padding: 5
       },
       [theme.breakpoints.down('xs')]: {
-        fontSize: 13,
+        ...typography.body4,
         padding: 0
       },
       color: colors.navy.info,
@@ -93,11 +92,27 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       }
     },
     selected: {
-      fontWeight: 600,
+      ...typography.body1,
       color: colors.white.main,
 
       '&:hover': {
         color: colors.white.main
+      },
+
+      [theme.breakpoints.down('sm')]: {
+        ...typography.subtitle1
+      },
+
+      [theme.breakpoints.down('xs')]: {
+        ...typography.body3
+      }
+    },
+    wrapper: {
+      position: 'relative',
+      top: -2,
+
+      [theme.breakpoints.down('sm')]: {
+        top: -1
       }
     }
   })

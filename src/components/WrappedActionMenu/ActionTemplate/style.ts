@@ -1,5 +1,6 @@
+import { importantStyles } from '@consts/uiUtils'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -58,9 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   inputLabel: {
     color: colors.navy.veryLightGrey,
-    fontSize: 22,
-    lineHeight: '26px',
-    fontWeight: 600,
+    ...typography.body1,
     marginTop: 34,
 
     [theme.breakpoints.down('sm')]: {
@@ -118,7 +117,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       width: 74,
-      marginLeft: 12
+      marginLeft: 12,
+      ...importantStyles(typography.heading4)
     },
     [theme.breakpoints.down('xs')]: {
       width: 'calc(50% - 8px)',

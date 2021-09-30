@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   divider: {
@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 22
   },
   button: {
-    fontSize: 16,
+    ...typography.subtitle1,
     width: 130
   },
   amount: {
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   line: {
     marginTop: 22
+  },
+  label: {
+    top: -1
   }
 }))
 

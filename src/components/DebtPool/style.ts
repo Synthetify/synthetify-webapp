@@ -1,11 +1,11 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   debtPoolCard: {
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Inter',
+    fontFamily: 'Be Vietnam',
     marginRight: '12px',
     width: '100%',
     [theme.breakpoints.down('sm')]: {
@@ -16,22 +16,23 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginBottom: '8px'
     }
   },
+  debtPoolCardContent: {
+    paddingTop: '12px'
+  },
   debtPoolCardTitle: {
     color: colors.navy.veryLightGrey,
-    fontSize: '22px',
-    lineHeight: '22px',
-    fontWeight: 600,
-    paddingBottom: 8
+    ...typography.body1,
+
+    [theme.breakpoints.down('sm')]: {
+      ...typography.heading4
+    }
   },
   debtPoolCardSubTitle: {
     color: colors.navy.info,
-    fontSize: '16px',
-    lineHeight: '24px',
-    fontWeight: 400,
+    ...typography.subtitle2,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: '14px',
-      lineHeight: '20px'
+      ...typography.body4
     }
   },
   pieCanvasGrid: {
@@ -43,7 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   pieCanvasBackground: {
     height: '100%',
-    background: colors.navy.background,
     borderRadius: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -84,36 +84,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'none'
   },
   tooltipLabel: {
-    fontSize: 34,
-    fontWeight: 400,
-    lineHeight: '56px',
+    fontSize: 24,
+    fontWeight: 500,
+    lineHeight: '30px',
     [theme.breakpoints.down('md')]: {
-      fontSize: 26,
-      lineHeight: '36px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 24,
-      lineHeight: '18px'
+      ...typography.body2
     }
   },
   tooltipValue: {
-    fontSize: 47,
-    fontWeight: 700,
+    ...typography.heading1,
     [theme.breakpoints.down('md')]: {
-      fontSize: 38
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 32
+      ...typography.heading3
     }
   },
   tooltipTotal: {
-    fontSize: 36,
-    fontWeight: 700,
+    ...typography.heading1,
     [theme.breakpoints.down('md')]: {
-      fontSize: 26
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 20
+      ...typography.heading3
     }
   }
 }))

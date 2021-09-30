@@ -1,16 +1,18 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   font: {
-    fontSize: 22,
-    fontWeight: 400,
+    ...typography.body2,
     color: colors.navy.veryLightGrey,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
+    position: 'relative',
+    top: -2,
 
     [theme.breakpoints.down('xs')]: {
-      fontSize: 13
+      ...typography.body4,
+      top: -1
     }
   },
   icon: {

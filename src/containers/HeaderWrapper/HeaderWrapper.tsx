@@ -18,11 +18,24 @@ export const HeaderWrapper: React.FC = () => {
   const [typeOfWallet, setTypeOfWallet] = useState<WalletType>(WalletType.PHANTOM)
 
   useEffect(() => {
+    let enumWallet = WalletType.PHANTOM
     const sessionWallet = sessionStorage.getItem('SYNTHETIFY_SESSION_WALLET')
-
-    if (sessionWallet === 'phantom' || sessionWallet === 'sollet') {
-      setTypeOfWallet(sessionWallet === 'phantom' ? WalletType.PHANTOM : WalletType.SOLLET)
-      dispatch(walletActions.connect(sessionWallet === 'phantom' ? WalletType.PHANTOM : WalletType.SOLLET))
+    if (sessionWallet === 'phantom' || sessionWallet === 'sollet' || sessionWallet === 'math') {
+      switch (sessionWallet) {
+        case 'phantom':
+          enumWallet = WalletType.PHANTOM
+          break
+        case 'sollet':
+          enumWallet = WalletType.SOLLET
+          break
+        case 'math':
+          enumWallet = WalletType.MATH
+          break
+        default:
+          enumWallet = WalletType.PHANTOM
+      }
+      setTypeOfWallet(enumWallet)
+      dispatch(walletActions.connect(enumWallet))
     }
   }, [])
 

@@ -121,6 +121,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     key={`tokens-${token.symbol}`}
                     className={classes.tokenItem}
                     alignItems='center'
+                    wrap='nowrap'
                     onClick={() => {
                       onSelect(token.symbol)
                       handleClose()
@@ -131,7 +132,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                         image={icons[token.symbol] ?? icons.SNY}
                       />{' '}
                     </Grid>
-                    <Grid item>
+                    <Grid item className={classes.tokenData}>
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
                         {descrpitionForSymbol[token.symbol] ?? 'Asset'}

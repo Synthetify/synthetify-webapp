@@ -1,16 +1,16 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerButton: {
-    background: colors.navy.button,
+    background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
     paddingInline: 12,
+    paddingBottom: '9px',
     borderRadius: 10,
     textTransform: 'none',
-    fontSize: 16,
+    ...typography.subtitle1,
     height: 44,
-    fontWeight: 700,
     minWidth: 110,
 
     '&:not(:last-child)': {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       minWidth: 'unset',
       width: 110,
       height: 36,
-      fontSize: 13,
+      ...typography.body3,
 
       '&:not(:last-child)': {
         marginRight: 0
@@ -41,11 +41,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     textTransform: 'none',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    fontSize: 16,
-    fontWeight: 700,
+    ...typography.subtitle1,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
+      ...typography.body3
     }
   },
   disabled: {

@@ -1,5 +1,6 @@
+import { importantStyles } from '@consts/uiUtils'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -15,50 +16,35 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     border: '1px solid rgba(98, 97, 163, 0.7)',
     padding: 16,
+    paddingTop: 8,
 
     [theme.breakpoints.down('sm')]: {
-      paddingTop: 13
+      paddingTop: 6
     }
   },
   tokenComponentInfo: {
-    marginBottom: 14,
+    marginBottom: 10,
 
     [theme.breakpoints.down('sm')]: {
-      marginBottom: 12
+      marginBottom: 8
     }
   },
   tokenComponentText: {
     color: colors.navy.veryLightGrey,
-    fontWeight: 700,
-    fontSize: 16,
-    lineHeight: 1,
+    ...typography.subtitle1,
     whiteSpace: 'nowrap',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
+      ...typography.body3
     }
   },
   tokenMaxText: {
     color: colors.navy.grey,
-    fontSize: 16,
-    lineHeight: 1,
+    ...typography.subtitle2,
     whiteSpace: 'nowrap',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13
-    }
-  },
-  input: {
-    marginLeft: 24,
-    width: 'calc(100% - 184px)',
-
-    [theme.breakpoints.down('md')]: {
-      width: 'calc(100% - 176px)',
-      marginLeft: 16
-    },
-
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 126px)'
+      ...typography.body4
     }
   },
   swapIconSquare: {
@@ -127,56 +113,45 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 25,
     position: 'absolute',
     right: 8,
-    top: 6
+    top: 3
   },
   tooltipTitle: {
-    fontSize: 16,
-    lineHeight: '16px',
-    fontWeight: 700
+    ...typography.subtitle1
   },
   tooltipLink: {
-    fontWeight: 700,
+    fontWeight: 800,
     color: colors.navy.veryLightGrey,
     cursor: 'pointer'
   },
   numbersField: {
-    marginTop: 30,
+    marginTop: 28,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: 20
+      marginTop: 18
     }
   },
   numbersFieldTitle: {
-    fontSize: 22,
+    ...typography.body2,
     color: colors.navy.grey,
-    lineHeight: '26px',
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 16
+      ...typography.subtitle2
     }
 
   },
   numbersFieldAmount: {
-    fontSize: 22,
+    ...typography.body1,
     color: colors.navy.veryLightGrey,
-    lineHeight: '40px',
-    fontWeight: 600,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 13,
-      lineHeight: '16px'
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 12
+      ...typography.subtitle1
     }
   },
   discount: {
-    fontSize: 22,
-    lineHeight: '40px',
+    ...typography.body2,
 
     [theme.breakpoints.down('sm')]: {
-      fontSize: 16,
-      lineHeight: '16px'
+      ...typography.subtitle2
     }
   },
   questionMark: {
@@ -195,7 +170,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 16,
     height: 16,
     position: 'absolute',
-    right: 8
+    right: 8,
+    marginTop: 6
   },
   amountDivider: {
     background: colors.navy.grey,
@@ -206,6 +182,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       height: 37
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 8,
+      marginRight: 8
     }
   },
   arrowsBg: {
@@ -233,6 +214,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: 60,
     marginTop: 36,
+    ...importantStyles(typography.body2),
 
     '&:hover': {
       backgroundColor: '#4ADFBA !important'
@@ -253,7 +235,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   supplyTooltip: {
-    backgroundColor: colors.red.error
+    backgroundColor: `${colors.red.error} !important`
   },
   noMarginTop: {
     marginTop: 0
