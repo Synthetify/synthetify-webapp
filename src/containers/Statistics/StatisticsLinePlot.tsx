@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { action } from '@reducers/stats'
 import statsSelector from '@selectors/stats'
 import { getCollateralValue } from '@selectors/exchange'
-import { identity } from 'lodash'
 
 export const StatisticsLinePlot: React.FC = () => {
   const dispatch = useDispatch()
