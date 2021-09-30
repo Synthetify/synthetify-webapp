@@ -127,6 +127,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tvlNumber: {
     ...typography.heading2,
+    display: 'flex',
+    justifyContent: 'center',
     [theme.breakpoints.down('sm')]: {
       fontSize: '27px',
       lineHeight: '35px'

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
-import { printBNtoBN, printBN, showMorK } from '@consts/utils'
+import { printBNtoBN, printBN, showPrefix } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { CardMedia, Divider, Grid, Typography, useMediaQuery } from '@material-ui/core'
 import Swap from '@static/svg/swap.svg'
@@ -367,7 +367,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                     Output amount is calculated based on the most up-to-date data from price
                     oracles, so it can change due to the sub-second update intervals of the oracles.
                   </p>
-                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>Find out more about oracles on</p>
+                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>
+                    Find out more about oracles on
+                  </p>
                   <a
                     href={pyth}
                     className={classes.tooltipLink}
@@ -393,7 +395,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   duration={300}
                   formatValue={formatNumbers}
                 />
-                {showMorK(
+                {showPrefix(
                   +printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale)
                 )}
                 {` ${tokens[tokenToIndex].symbol}`}
@@ -455,12 +457,16 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
                   <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
                     You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
-                    Your current discount on the fee is <b className={classes.tooltipBold}>{discountPercent ?? 0}%</b>.
+                    Your current discount on the fee is{' '}
+                    <b className={classes.tooltipBold}>{discountPercent ?? 0}%</b>.
                     {typeof nextDiscountThreshold !== 'undefined' && (
                       <>
                         {' '}
                         You can lower your fee by depositing{' '}
-                        <b className={classes.tooltipBold}>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.
+                        <b className={classes.tooltipBold}>
+                          {+nextDiscountThreshold.toFixed(3)} SNY
+                        </b>{' '}
+                        more.
                       </>
                     )}
                   </p>

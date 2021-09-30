@@ -4,7 +4,7 @@ import HintIcon from '@static/svg/questionMark.svg'
 import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import useStyles, { useStylesWithProps } from './style'
-import { formatNumbers, showMorK } from '@consts/utils'
+import { formatNumbers, showPrefix } from '@consts/utils'
 import classNames from 'classnames'
 
 export interface IProps {
@@ -99,12 +99,8 @@ export const ProgressCard: React.FC<IProps> = ({
             </Tooltip>
           </Grid>
           <Typography className={classes.minMaxDebt}>
-            <AnimatedNumber
-              value={max}
-              duration={300}
-              formatValue={formatNumbers}
-            />
-            {showMorK(max)}
+            <AnimatedNumber value={max} duration={300} formatValue={formatNumbers} />
+            {showPrefix(max)}
             {sign}
           </Typography>
         </Grid>
