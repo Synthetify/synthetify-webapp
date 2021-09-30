@@ -95,7 +95,7 @@ export const typography = {
   heading2: {
     fontSize: 32,
     lineHeight: '40px',
-    fontWeight: 700
+    fontWeight: 800
   },
   heading3: {
     fontSize: 27,

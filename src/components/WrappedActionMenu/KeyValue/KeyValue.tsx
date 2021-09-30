@@ -1,5 +1,5 @@
 import React from 'react'
-import { printBN, showMorK } from '@consts/utils'
+import { printBN, showPrefix } from '@consts/utils'
 import { Typography } from '@material-ui/core'
 import BN from 'bn.js'
 import classNames from 'classnames'
@@ -27,12 +27,10 @@ export const KeyValue: React.FC<IProps> = ({
 
   return (
     <>
-      <Typography
-        className={classNames(classes.text, classes.property, keyClassName)}>
+      <Typography className={classNames(classes.text, classes.property, keyClassName)}>
         {keyName}
       </Typography>
-      <Typography
-        className={classNames(classes.text, classes.value, valueClassName)}>
+      <Typography className={classNames(classes.text, classes.value, valueClassName)}>
         {unit}{' '}
         <AnimatedNumber
           value={printBN(value, decimal)}
@@ -51,7 +49,7 @@ export const KeyValue: React.FC<IProps> = ({
             return (num / 1000000).toFixed(3)
           }}
         />
-        {showMorK(+printBN(value, decimal))}
+        {showPrefix(+printBN(value, decimal))}
       </Typography>
     </>
   )

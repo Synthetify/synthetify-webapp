@@ -103,6 +103,36 @@ const useStyles = makeStyles((theme: Theme) => ({
         ...typography.body3
       }
     }
+  },
+  tvlContainer: {
+    padding: '13px 20px '
+  },
+  tvlTitle: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  tvlName: {
+    ...typography.subtitle2,
+    color: colors.navy.grey,
+    paddingRight: '2px',
+    [theme.breakpoints.down('sm')]: {
+      ...typography.body4
+    }
+  },
+  tvlPercent: {
+    ...typography.subtitle2,
+    [theme.breakpoints.down('sm')]: {
+      ...typography.body4
+    }
+  },
+  tvlNumber: {
+    ...typography.heading2,
+    display: 'flex',
+    justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '27px',
+      lineHeight: '35px'
+    }
   }
 }))
 
