@@ -10,26 +10,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.green.snackbar,
     borderRadius: 10,
     padding: 10,
-    margin: 2,
-    fontWeight: 600,
-    fontSize: 20,
-    paddingBottom: 12.5,
-    paddingTop: 12.5,
-    '& svg': {
-      paddingTop: 4,
+    '& SVG': {
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 4
+      },
       [theme.breakpoints.down('xs')]: {
-        paddingTop: 2,
-        paddingLeft: 5,
-        width: 12,
-        height: 12,
+        marginTop: 2
       }
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 20,
+      lineHeight: '30px',
+      maxWidth: 500,
+      maxHeight: 65,
+      paddingBottom: 12
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 11,
+      lineHeight: '16px',
       maxWidth: 255,
       maxHeight: 32,
-      //paddingBottom: 2,
-      //paddingTop: 2,
+      padding: '0px 8px 5px 4px'
     }
   },
   error: {
@@ -40,15 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.red.snackbar,
     color: colors.red.snackbar,
     borderRadius: 10,
-    padding: 10,
-    margin: 2,
-    fontWeight: 600,
-    fontSize: 20,
-    paddingBottom: 8,
-    paddingTop: 8,
-    '& svg': {
-      paddingTop: 4
-    }
+    padding: 10
   },
   info: {
     backgroundColor: colors.navy.navButton,
@@ -57,15 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderLeftWidth: 10,
     borderColor: colors.blue.astel,
     borderRadius: 10,
-    padding: 10,
-    margin: 2,
-    fontWeight: 600,
-    fontSize: 20,
-    paddingBottom: 8,
-    paddingTop: 8,
-    '& svg': {
-      paddingTop: 4
-    }
+    padding: 10
   },
   warning: {
     backgroundColor: colors.navy.navButton,
@@ -74,18 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderLeftWidth: 10,
     borderColor: colors.yellow.neon,
     borderRadius: 10,
-    padding: 10,
-    margin: 2,
-    fontWeight: 600,
-    fontSize: 20,
-    paddingBottom: 8,
-    paddingTop: 8,
-    '& svg': {
-      paddingTop: 4
-    }
-  },
-  wrapperInner: {
-    opacity: 0
+    padding: 10
   }
 }))
 
