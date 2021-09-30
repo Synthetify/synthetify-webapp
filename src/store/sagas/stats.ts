@@ -27,8 +27,7 @@ export function fillData(value: any[]) {
 export function getLastColl(value: any[]) {
   const timestamp = Date.now()
   for (let i = 0; i < value.length; i++) {
-    if (value[i].timestamp < timestamp - 86400000) {
-      console.log(value[i])
+    if (value[i].timestamp < timestamp - 86400) {
       return value[i].collateral
     }
   }
@@ -37,7 +36,7 @@ export function* apiData(): Generator {
   const dataTmp: IStats = {
     linePlot: [],
     last24: { volume: 0, collateral: 0, mint: 0, debt: 0, fee: 0 },
-    tvl: { collMinDayAgo: 0 }
+    tvl: { collMinDayAgo: 1 }
   }
   try {
     const currentNetwork = yield* select(network)

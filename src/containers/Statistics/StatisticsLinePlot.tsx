@@ -26,7 +26,7 @@ export const StatisticsLinePlot: React.FC = () => {
         100
       ).toFixed(2)
     } else {
-      percentTvl = '0'
+      percentTvl = '00.00'
     }
 
     setTvlData({ ...tvlData, value: tvlValue, percent: percentTvl })
