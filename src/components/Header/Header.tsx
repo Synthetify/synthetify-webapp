@@ -94,9 +94,9 @@ export const Header: React.FC<IHeader> = ({
           <SelectNetworkButton
             name={typeOfNetwork}
             networks={[
+              { name: NetworkType.MAINNET, network: SolanaNetworks.MAIN },
               { name: NetworkType.DEVNET, network: SolanaNetworks.DEV },
-              { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
-              { name: NetworkType.MAINNET, network: SolanaNetworks.MAIN }
+              { name: NetworkType.TESTNET, network: SolanaNetworks.TEST }
             ]}
             onSelect={(chosen) => {
               onNetworkSelect(chosen)
