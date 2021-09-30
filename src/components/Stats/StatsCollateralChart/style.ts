@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '10px 24px 20px 24px'
+    padding: '10px 24px 20px 14px'
   },
 
   statsWrapper: {
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '20px 0px 24px 0px',
+    padding: '25px 0px 16px 0px',
     margin: 0,
     fontSize: 18,
     width: 'calc(100% - 20px)',
