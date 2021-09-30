@@ -3,6 +3,8 @@ import React, { CSSProperties, useRef } from 'react'
 import classNames from 'classnames'
 import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { BN } from '@project-serum/anchor'
+import SelectToken from '../SelectToken/SelectToken'
 
 interface IProps {
   setValue: (value: string) => void
@@ -11,7 +13,10 @@ interface IProps {
   className?: string
   placeholder?: string
   style?: CSSProperties,
-  onMaxClick: () => void
+  onMaxClick: () => void,
+  current: string | null
+  tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
+  onSelect: (chosen: string) => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -21,7 +26,10 @@ export const AmountInput: React.FC<IProps> = ({
   className,
   placeholder,
   style,
-  onMaxClick
+  onMaxClick,
+  current,
+  tokens,
+  onSelect
 }) => {
   const classes = useStyles()
 
@@ -65,6 +73,7 @@ export const AmountInput: React.FC<IProps> = ({
       inputRef={inputRef}
       error={!!error}
       className={classNames(classes.amountInput, className)}
+      classes={{ input: classes.input }}
       style={style}
       type={'text'}
       value={value}
@@ -77,6 +86,16 @@ export const AmountInput: React.FC<IProps> = ({
           color='primary'
           onClick={onMaxClick}
           className={classes.maxButton}
+          labelClassName={classes.label}
+        />
+      )}
+      startAdornment={(
+        <SelectToken
+          centered={true}
+          tokens={tokens}
+          onSelect={onSelect}
+          current={current}
+          className={classes.select}
         />
       )}
     />

@@ -1,16 +1,22 @@
 import React from 'react'
-import { Grid, CardContent, Card, Button, Paper } from '@material-ui/core'
+import { Grid, CardContent, Card, Button, Paper, Typography } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import LinePlot from '@components/LinePlot/LinePlot'
 import useStyles from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
+import { formatNumbers, showPrefix } from '@consts/utils'
 interface Data {
   id: string
   points: Array<{ x: number; y: number }>
 }
 interface IProp {
   data: Data[]
+  tvlData: {
+    value: number
+    percent: string
+  }
 }
-export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
+export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
   const classes = useStyles()
   const [menuOption, setMenuOption] = React.useState('Volume')
   const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
@@ -33,7 +39,34 @@ export const LinePlotContainer: React.FC<IProp> = ({ data }) => {
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
-        <Grid className={classes.optionLabel} container item justifyContent='flex-end'>
+        <Grid className={classes.optionLabel} container item justifyContent='space-between'>
+          <Grid>
+            <Grid className={classes.tvlContainer}>
+              <Grid className={classes.tvlTitle}>
+                <Typography className={classes.tvlName}>TVL</Typography>
+                <Typography
+                  className={classes.tvlPercent}
+                  style={{
+                    ...(+tvlData.percent >= 0 ? { color: '#4BB724' } : { color: '#e31417' })
+                  }}>
+                  (
+                  <AnimatedNumber
+                    value={tvlData.percent}
+                    formatValue={(value: string) => Number(value).toFixed(2)}
+                  />
+                  %)
+                </Typography>
+              </Grid>
+              <Typography className={classes.tvlNumber}>
+                <AnimatedNumber
+                  value={tvlData.value.toString()}
+                  duration={300}
+                  formatValue={formatNumbers}
+                />
+                {showPrefix(tvlData.value)}
+              </Typography>
+            </Grid>
+          </Grid>
           <Grid item className={classes.selectContainer}>
             <Grid className={classes.hoverGrid}>
               <Button

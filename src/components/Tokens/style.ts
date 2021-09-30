@@ -6,6 +6,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 8
   },
   title: {
+    position: 'relative',
+    top: -2,
     ...typography.heading3,
     color: colors.navy.veryLightGrey,
 
@@ -42,11 +44,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: 'rgba(14, 14, 42, 0.7) !important'
     }
   },
+  buttonLabel: {
+    top: -1
+  },
   sum: {
     ...typography.body2,
     color: colors.navy.veryLightGrey,
     position: 'absolute',
     right: 24,
+    marginTop: -2,
 
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2,

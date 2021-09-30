@@ -3,7 +3,7 @@ import { Card, CardContent, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
-import { showMorK, formatNumbers } from '@consts/utils'
+import { showPrefix, formatNumbers } from '@consts/utils'
 import useStyles from './style'
 
 export interface IProps {
@@ -31,12 +31,8 @@ export const ValueCard: React.FC<IProps> = ({ name, value, sign, hint, onClick }
           {name}
         </Typography>
         <Typography className={classes.valueCardAmount}>
-          <AnimatedNumber
-            value={value}
-            duration={300}
-            formatValue={formatNumbers}
-          />
-          {showMorK(Number(value))}
+          <AnimatedNumber value={value} duration={300} formatValue={formatNumbers} />
+          {showPrefix(Number(value))}
           {sign}
         </Typography>
       </CardContent>

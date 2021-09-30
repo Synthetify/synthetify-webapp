@@ -125,10 +125,14 @@ export const discountData = (userCollateralBalance: BN) => {
   }
 }
 
-export const showMorK = (nr: number) => {
+export const showPrefix = (nr: number) => {
   if (nr >= 10000) {
     if (nr >= 1000000) {
-      return 'M'
+      if (nr >= 1000000000) {
+        return 'B'
+      } else {
+        return 'M'
+      }
     } else {
       return 'K'
     }
@@ -155,6 +159,9 @@ export const formatNumbers = (value: string) => {
   if (num < 1000000) {
     return (num / 1000).toFixed(2)
   }
+  if (num < 1000000000) {
+    return (num / 1000000).toFixed(2)
+  }
 
-  return (num / 1000000).toFixed(2)
+  return (num / 1000000000).toFixed(2)
 }

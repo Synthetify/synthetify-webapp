@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 56,
     fontSize: 24,
     fontWeight: 500,
-    minWidth: 148,
+    width: '100%',
 
     [theme.breakpoints.down('xs')]: {
       height: 48,
@@ -37,6 +37,19 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body3,
       padding: 0
     }
+  },
+  select: {
+    marginRight: 24,
+
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 16
+    }
+  },
+  input: {
+    paddingTop: 4
+  },
+  label: {
+    top: -1
   }
 }))
 

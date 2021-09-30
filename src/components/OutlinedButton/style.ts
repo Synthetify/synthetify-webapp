@@ -16,6 +16,10 @@ const useStyles = makeStyles(() => ({
   disabled: {
     background: `${colors.navy.navButton} !important`,
     color: `${colors.navy.background} !important`
+  },
+  label: {
+    position: 'relative',
+    top: -2
   }
 }))
 

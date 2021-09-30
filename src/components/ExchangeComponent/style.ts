@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     border: '1px solid rgba(98, 97, 163, 0.7)',
     padding: 16,
-    paddingTop: 10,
+    paddingTop: 8,
 
     [theme.breakpoints.down('sm')]: {
-      paddingTop: 8
+      paddingTop: 6
     }
   },
   tokenComponentInfo: {
@@ -45,19 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
-    }
-  },
-  input: {
-    marginLeft: 24,
-    width: 'calc(100% - 184px)',
-
-    [theme.breakpoints.down('md')]: {
-      width: 'calc(100% - 176px)',
-      marginLeft: 16
-    },
-
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 126px)'
     }
   },
   swapIconSquare: {
@@ -126,7 +113,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 25,
     position: 'absolute',
     right: 8,
-    top: 6
+    top: 3
   },
   tooltipTitle: {
     ...typography.subtitle1
@@ -137,10 +124,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer'
   },
   numbersField: {
-    marginTop: 30,
+    marginTop: 28,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: 20
+      marginTop: 18
     }
   },
   numbersFieldTitle: {
@@ -183,7 +170,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 16,
     height: 16,
     position: 'absolute',
-    right: 8
+    right: 8,
+    marginTop: 6
   },
   amountDivider: {
     background: colors.navy.grey,

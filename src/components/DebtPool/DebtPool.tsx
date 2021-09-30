@@ -26,7 +26,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
 
   return (
     <Card className={classes.debtPoolCard}>
-      <CardContent>
+      <CardContent className={classes.debtPoolCardContent}>
         <Typography className={classes.debtPoolCardTitle}>{title}</Typography>
         <Typography className={classes.debtPoolCardSubTitle}>{subTitle}</Typography>
         <Grid className={classes.pieContainer}>
