@@ -20,19 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       transform: 'scale(1.125)'
     },
-    [theme.breakpoints.down('sm')]: {
-      width: 73,
-      height: 33,
-      fontSize: 16,
-      lineHeight: '24px',
-      marginRight: 16
-    },
     [theme.breakpoints.down('xs')]: {
       width: 36,
       height: 16,
       fontSize: 9,
       lineHeight: '14px',
-      marginTop:2,
+      marginTop: 2,
       marginRight: 8,
       paddingBottom: 17,
       paddingRight: 36
