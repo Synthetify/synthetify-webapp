@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '10px',
     marginBottom: '0px',
     height: '100%',
-    paddingTop: '8px'
+    paddingTop: '4px'
   },
   listItemIconName: {
     width: 'fit-content',

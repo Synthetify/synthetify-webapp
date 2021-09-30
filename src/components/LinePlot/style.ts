@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { colors, typography } from '@static/theme'
+import { colors, theme, typography } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   linePlot: {
@@ -10,7 +10,10 @@ const useStyles = makeStyles(() => ({
     '&  g > text': {
       stroke: 'none',
       fill: '#A3A8CE!important',
-      fontFamily: 'Be Vietnam!important'
+      fontFamily: 'Be Vietnam!important',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '7px!important'
+      }
     }
   },
   tooltipRoot: {

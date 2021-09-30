@@ -28,6 +28,7 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
                 : Number(value).toLocaleString('pl-PL').replace(',', '.')
             }
           />
+          {` $`}
         </Typography>
         <Typography className={classes.cardDesc}>{desc}</Typography>
       </CardContent>
