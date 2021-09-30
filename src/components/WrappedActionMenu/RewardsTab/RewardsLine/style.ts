@@ -3,12 +3,16 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   text: {
+    position: 'relative',
+    top: -2,
     ...typography.body2,
     color: colors.navy.lightGrey,
     [theme.breakpoints.down('sm')]: {
+      top: -1,
       ...typography.subtitle2
     },
     [theme.breakpoints.down('xs')]: {
+      top: 2,
       ...typography.body4
     }
   },
