@@ -36,7 +36,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle2
   },
   network: {
-    ...typography.subtitle2
+    ...typography.subtitle2,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
   },
   paper: {
     background: 'transparent',
