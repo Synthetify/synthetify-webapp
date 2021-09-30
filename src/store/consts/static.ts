@@ -26,14 +26,14 @@ enum NetworkType {
   LOCALNET = 'Localnet',
   MAINNET = 'Mainnet'
 }
-const MAINNET_RPCS = [
-  {
-    rpc: SolanaNetworks.MAIN,
-    probability: 0.6
-  },
+const MAINNET_RPCS = [ // when adding new rpc: 1) make sure probability is between 0 and one; 2) sum od all probabilities is equal to 1
+  // {
+  //   rpc: SolanaNetworks.MAIN,
+  //   probability: 0.6
+  // },
   {
     rpc: SolanaNetworks.MAIN_SERUM,
-    probability: 0.4
+    probability: 1
   }
 ]
 const DEFAULT_PUBLICKEY = new PublicKey(0)
