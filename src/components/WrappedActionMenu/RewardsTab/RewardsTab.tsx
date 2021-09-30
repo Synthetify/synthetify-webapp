@@ -19,13 +19,13 @@ export type RoundData = {
     roundPoints: BN
     roundAllPoints: BN
     roundStartSlot: BN
+    roundAmount: Decimal
   }
 }
 
 export interface IRewardsProps {
   slot: number
   amountToClaim: Decimal
-  amountPerRound: Decimal
   roundLength: number
   userDebtShares: BN
   rounds: RoundData
@@ -36,7 +36,6 @@ export interface IRewardsProps {
 export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
-  amountPerRound,
   roundLength,
   userDebtShares,
   rounds,
@@ -62,7 +61,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           }
         }
       }
@@ -72,12 +72,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           current: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           },
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           }
         }
       }
@@ -86,17 +88,20 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           finished: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           },
           current: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           },
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           }
         }
       }
@@ -104,16 +109,18 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const { finished, current, next } = estimateRounds()
-  const { roundAllPoints: finishedRoundAllPoints, roundPoints: finishedRoundPoints } = finished
+  const { roundAllPoints: finishedRoundAllPoints, roundPoints: finishedRoundPoints, roundAmount: finishedRoundAmount } = finished
   const {
     roundAllPoints: currentRoundAllPoints,
     roundPoints: currentRoundPoints,
-    roundStartSlot: currentRoundStartSlot
+    roundStartSlot: currentRoundStartSlot,
+    roundAmount: currentRoundAmount
   } = current
   const {
     roundAllPoints: nextRoundAllPoints,
     roundPoints: nextRoundPoints,
-    roundStartSlot: nextRoundStartSlot
+    roundStartSlot: nextRoundStartSlot,
+    roundAmount: nextRoundAmount
   } = next
 
   const isClaimDisabled = () => {
@@ -154,7 +161,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       bracketValue: calculateTokensBasedOnPoints(
         nextRoundPoints,
         nextRoundAllPoints,
-        amountPerRound
+        nextRoundAmount
       ),
       bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
       hint: 'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
@@ -169,7 +176,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       bracketValue: calculateTokensBasedOnPoints(
         currentRoundPoints,
         currentRoundAllPoints,
-        amountPerRound
+        currentRoundAmount
       ),
       bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
       hint: 'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
@@ -184,7 +191,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       bracketValue: calculateTokensBasedOnPoints(
         finishedRoundPoints,
         finishedRoundAllPoints,
-        amountPerRound
+        finishedRoundAmount
       ),
       bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
       hint: 'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
