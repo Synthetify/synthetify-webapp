@@ -94,7 +94,7 @@ export const Header: React.FC<IHeader> = ({
           <SelectNetworkButton
             name={typeOfNetwork}
             networks={[
-              { name: NetworkType.MAINNET, network: SolanaNetworks.MAIN },
+              { name: NetworkType.MAINNET, network: SolanaNetworks.MAIN_SERUM },
               { name: NetworkType.DEVNET, network: SolanaNetworks.DEV },
               { name: NetworkType.TESTNET, network: SolanaNetworks.TEST }
             ]}
