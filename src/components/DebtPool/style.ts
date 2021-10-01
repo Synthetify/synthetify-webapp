@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipLabel: {
     fontSize: 24,
-    fontWeight: 500,
+    fontWeight: 600,
     lineHeight: '30px',
     [theme.breakpoints.down('md')]: {
       ...typography.body2
