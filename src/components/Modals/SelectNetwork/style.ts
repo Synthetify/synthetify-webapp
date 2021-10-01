@@ -4,7 +4,7 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
-    width: 300,
+    width: 163,
     borderRadius: 10,
     marginTop: 13,
     padding: 20,
@@ -18,14 +18,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     paddingLeft: 16,
     padding: 10,
-    minWidth: 220,
+    maxWidth: 147,
     margin: 3,
     cursor: 'pointer',
 
     '&:hover': {
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,
-
+      '& $icon': {
+        opacity: 1
+      },
       '& $name': {
         ...typography.subtitle1
       }
@@ -46,12 +48,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxShadow: 'none'
   },
   icon: {
-    width: 18,
-    height: 18,
+    width: 20,
+    height: 20,
     display: 'inline',
     float: 'left',
     marginRight: 8,
-    marginTop: 3
+    marginTop: 3,
+    opacity: 0.6
   }
 }))
 

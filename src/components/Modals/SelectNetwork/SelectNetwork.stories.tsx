@@ -4,9 +4,11 @@ import { action } from '@storybook/addon-actions'
 import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/SelectNetwork'
 import { NetworkType, SolanaNetworks } from '@consts/static'
 
-const networks: ISelectNetwork[] = [
-  { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
-  { name: NetworkType.LOCALNET, network: SolanaNetworks.LOCAL }
+
+const networks = [
+  { name: 'mainnet', network: 'https://solana-api.projectserum.com' },
+  { name: 'devnet', network: 'https://api.devnet.solana.com' },
+  { name: 'testnet', network: 'https://api.testnet.solana.com' }
 ]
 
 storiesOf('modals/selectNetwork', module)
