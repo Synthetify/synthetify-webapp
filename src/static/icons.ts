@@ -52,7 +52,6 @@ const icons: { [key: string]: string } = {
   Mainnet: mainnet,
   Devnet: devnet,
   Testnet: testnet
-
 }
 
 export default icons
