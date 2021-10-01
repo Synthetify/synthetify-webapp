@@ -132,12 +132,15 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.burnFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
+    const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
+    yield* put(actions.burnFailed({ error: error instanceof 
+      Error ? error.message : 'Unknown error' }))
     console.log(error)
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
         variant: 'error',
+        txid: txid,
         persist: false
       })
     )
