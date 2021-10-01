@@ -23,6 +23,7 @@ import mathIcon from './svg/MathWallet.svg'
 import clearIcon from './svg/clear.svg'
 import mainnet from './svg/mainnet.svg'
 import devnet from './svg/devnet.svg'
+
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
