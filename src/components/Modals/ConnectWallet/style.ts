@@ -4,10 +4,10 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
-    width: 188,
+    width: 164,
     borderRadius: 10,
     marginTop: 13,
-    padding: 20,
+    padding: 8,
 
     [theme.breakpoints.down('md')]: {
       marginTop: 24
@@ -16,11 +16,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   listItem: {
     color: colors.navy.grey,
     borderRadius: 10,
-    padding: 7,
+    padding: 8,
     width: 150,
-    margin: 3,
+    //margin: 3,
     cursor: 'pointer',
-
     '&:hover': {
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,
