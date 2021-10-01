@@ -71,12 +71,13 @@ export function* handleDeposit(): Generator {
 export function* handleMint(): Generator {
   const mintData = yield* select(mint)
   try {
-    yield* call(mintUsd, mintData.amount)
+    const txid = yield* call(mintUsd, mintData.amount)
     yield* put(actions.mintDone())
     yield put(
       snackbarsActions.add({
         message: 'Successfully minted xUSD.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
