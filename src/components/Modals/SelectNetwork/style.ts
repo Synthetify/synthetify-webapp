@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,
 
-      '& $name, $network': {
+      '& $name': {
         ...typography.subtitle1
       }
     }
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle2
   },
   network: {
-    ...typography.subtitle2,
+    ...typography.caption1,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis'
@@ -44,6 +44,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     background: 'transparent',
     boxShadow: 'none'
+  },
+  icon: {
+    width: 18,
+    height: 18,
+    display: 'inline',
+    float: 'left',
+    marginRight: 8,
+    marginTop: 3
   }
 }))
 
