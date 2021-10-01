@@ -2,13 +2,9 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import LinePlotContainer from './LinePlotContainer'
 
-<<<<<<< HEAD
 storiesOf('stats/topplotcontainer', module).add('line', () => (
-  <LinePlotContainer data={data} tvlData={{ value: 0, percent: '0' }} />
+  <LinePlotContainer data={data} tvlData={{ value: 1000, percent: '20' }} />
 ))
-=======
-storiesOf('stats/topplotcontainer', module).add('line', () => <LinePlotContainer data={data} tvlData={{ value: 1000, percent: '20' }} />)
->>>>>>> dev
 const data = [
   {
     id: 'default',
