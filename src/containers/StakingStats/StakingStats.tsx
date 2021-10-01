@@ -75,6 +75,7 @@ export const StakingStats: React.FC = () => {
             </Typography>
           )}
           bottomIndicatorValue={+transformBN(maxDebt)}
+          rightSideDesc='Liquidation Threshold'
         />
       </Grid>
     </>

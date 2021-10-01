@@ -15,7 +15,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
   },
   input: {
     width: 'calc(100% - 102px)',
-    paddingTop: 4
+    paddingTop: 2
   },
   currency: {
     minWidth: 'fit-content',
