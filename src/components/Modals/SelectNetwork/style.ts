@@ -16,12 +16,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   listItem: {
     color: colors.navy.grey,
     borderRadius: 10,
-    paddingLeft: 16,
+    //paddingLeft: 16,
+    paddingLeft: 8,
     padding: 4,
     maxWidth: 147,
     margin: 3,
     cursor: 'pointer',
-
     '&:hover': {
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,

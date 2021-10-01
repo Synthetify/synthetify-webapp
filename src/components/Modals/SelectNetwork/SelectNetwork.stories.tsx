@@ -5,10 +5,9 @@ import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/
 import { NetworkType, SolanaNetworks } from '@consts/static'
 
 
-const networks = [
-  { name: 'Mainnet', network: 'https://solana-api.projectserum.com' },
-  { name: 'Devnet', network: 'https://api.devnet.solana.com' },
-  { name: 'Testnet', network: 'https://api.testnet.solana.com' }
+const networks: ISelectNetwork[] = [
+  { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
+  { name: NetworkType.LOCALNET, network: SolanaNetworks.LOCAL }
 ]
 
 storiesOf('modals/selectNetwork', module)
