@@ -20,5 +20,5 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           alias-domains: |
-            staging.app.synthetify.io/
+            staging.app.synthetify.io
           scope: ${{ secrets.VERCEL_ORG_ID }}
