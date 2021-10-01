@@ -27,10 +27,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   wrap: {
     flexWrap: 'nowrap',
-    marginTop: 22,
+    marginTop: 16,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: 14
+      marginTop: 8
     },
 
     [theme.breakpoints.down('xs')]: {
@@ -60,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   inputLabel: {
     color: colors.navy.veryLightGrey,
     ...typography.body1,
-    marginTop: 34,
+    marginTop: 28,
 
     [theme.breakpoints.down('sm')]: {
-      marginTop: 22
+      marginTop: 16
     }
   },
   divider: {

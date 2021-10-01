@@ -17,7 +17,9 @@ export interface IProps {
   topIndicator: string | ReactChild
   topIndicatorValue: number
   bottomIndicator: string | ReactChild
-  bottomIndicatorValue: number
+  bottomIndicatorValue: number,
+  leftSideDesc?: string
+  rightSideDesc?: string
 }
 export const ProgressCard: React.FC<IProps> = ({
   name,
@@ -29,7 +31,9 @@ export const ProgressCard: React.FC<IProps> = ({
   topIndicator,
   topIndicatorValue,
   bottomIndicator,
-  bottomIndicatorValue
+  bottomIndicatorValue,
+  leftSideDesc = '',
+  rightSideDesc = ''
 }) => {
   const classes = useStyles()
   const proppedClasses = useStylesWithProps({
@@ -105,8 +109,8 @@ export const ProgressCard: React.FC<IProps> = ({
           </Typography>
         </Grid>
         <Grid container justifyContent='space-between'>
-          <Typography className={classes.bottomText}>Radiant Liquidation Price</Typography>
-          <Typography className={classes.bottomText}>Collateralization Ratio</Typography>
+          <Typography className={classes.bottomText}>{leftSideDesc}</Typography>
+          <Typography className={classes.bottomText}>{rightSideDesc}</Typography>
         </Grid>
       </CardContent>
     </Card>

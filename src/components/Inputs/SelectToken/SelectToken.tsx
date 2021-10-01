@@ -54,7 +54,7 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
             <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -10 }} />}
+        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: !current ? -8 : -6 }} />}
         style={
           !current ? (isXs ? typography.caption4 : typography.body3) : undefined
         }
