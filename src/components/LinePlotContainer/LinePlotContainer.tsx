@@ -11,14 +11,24 @@ interface Data {
 }
 interface IProp {
   data: Data[]
-  tvlData: {
+  infoData: {
+    name: string
     value: number
     percent: string
   }
+  menuOption: string
+  setMenuOption: (value: string) => void
+  setTimeActive: any
 }
-export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
+export const LinePlotContainer: React.FC<IProp> = ({
+  data,
+  infoData,
+  setTimeActive,
+  setMenuOption,
+  menuOption
+}) => {
   const classes = useStyles()
-  const [menuOption, setMenuOption] = React.useState('Volume')
+
   const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const changeData = (name: string) => {
     const value = data.findIndex(element => element.id === name)
@@ -35,36 +45,35 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
       changeData(menuOption.toLowerCase())
     }
   }, [data])
-
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
         <Grid className={classes.optionLabel} container item justifyContent='space-between'>
           <Grid>
-            <Grid className={classes.tvlContainer}>
-              <Grid className={classes.tvlTitle}>
-                <Typography className={classes.tvlName}>TVL</Typography>
+            <Grid className={classes.infoContainer}>
+              <Grid className={classes.infoTitle}>
+                <Typography className={classes.infoName}>{infoData.name}</Typography>
 
                 <Typography
-                  className={classes.tvlPercent}
+                  className={classes.infoPercent}
                   style={{
-                    ...(+tvlData.percent >= 0 ? { color: '#40BFA0' } : { color: '#C52727' })
+                    ...(+infoData.percent >= 0.0 ? { color: '#40BFA0' } : { color: '#C52727' })
                   }}>
-                  ({+tvlData.percent > 0 ? '+' : ''}
+                  ({+infoData.percent > 0 ? '+' : ''}
                   <AnimatedNumber
-                    value={tvlData.percent}
+                    value={infoData.percent}
                     formatValue={(value: string) => Number(value).toFixed(2)}
                   />
                   %)
                 </Typography>
               </Grid>
-              <Typography className={classes.tvlNumber}>
+              <Typography className={classes.infoNumber}>
                 <AnimatedNumber
-                  value={tvlData.value.toString()}
+                  value={infoData.value.toString()}
                   duration={300}
                   formatValue={formatNumbers}
                 />
-                {showPrefix(tvlData.value)}
+                {showPrefix(infoData.value)}
               </Typography>
             </Grid>
           </Grid>
@@ -127,6 +136,7 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
         <LinePlot
           data={{ id: dataTmp.id, data: dataTmp.points }}
           sign={dataTmp.id === 'userCount' ? '' : '$'}
+          setTimeActive={setTimeActive}
         />
       </CardContent>
     </Card>

@@ -24,19 +24,11 @@ export function fillData(value: any[]) {
   })
   return linePlotArray
 }
-export function getLastColl(value: any[]) {
-  const timestamp = Date.now()
-  for (let i = 0; i < value.length; i++) {
-    if (value[i].timestamp < timestamp - 86400) {
-      return value[i].collateral
-    }
-  }
-}
+
 export function* apiData(): Generator {
   const dataTmp: IStats = {
     linePlot: [],
-    last24: { volume: 0, collateral: 0, mint: 0, debt: 0, fee: 0 },
-    tvl: { collMinDayAgo: 1 }
+    last24: { volume: 0, collateral: 0, mint: 0, debt: 0, fee: 0 }
   }
   try {
     const currentNetwork = yield* select(network)
@@ -48,9 +40,6 @@ export function* apiData(): Generator {
     dataTmp.last24.mint = response.data[response.data.length - 1].mint
     dataTmp.last24.debt = response.data[response.data.length - 1].debt
     dataTmp.last24.fee = response.data[response.data.length - 1].fee
-
-    dataTmp.tvl.collMinDayAgo = getLastColl(response.data.reverse())
-
     yield put(action.receiveApiData(dataTmp))
   } catch (error) {
     console.log(error)

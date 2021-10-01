@@ -104,14 +104,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     }
   },
-  tvlContainer: {
+  infoContainer: {
     padding: '13px 20px '
   },
-  tvlTitle: {
+  infoTitle: {
     display: 'flex',
     flexDirection: 'row'
   },
-  tvlName: {
+  infoName: {
     ...typography.subtitle2,
     color: colors.navy.grey,
     paddingRight: '2px',
@@ -119,13 +119,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body4
     }
   },
-  tvlPercent: {
+  infoPercent: {
     ...typography.subtitle2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
   },
-  tvlNumber: {
+  infoNumber: {
     ...typography.heading2,
     display: 'flex',
     justifyContent: 'center',
