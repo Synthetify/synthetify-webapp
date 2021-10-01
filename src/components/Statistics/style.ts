@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       margin: 0,
       ...typography.subtitle1,
-      fontSize: '15px'
+      fontSize: '14px'
     },
     '&:hover': {
       color: '#7C76DA',
