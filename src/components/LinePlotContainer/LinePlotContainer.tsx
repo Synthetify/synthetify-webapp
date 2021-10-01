@@ -44,12 +44,13 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
             <Grid className={classes.tvlContainer}>
               <Grid className={classes.tvlTitle}>
                 <Typography className={classes.tvlName}>TVL</Typography>
+
                 <Typography
                   className={classes.tvlPercent}
                   style={{
-                    ...(+tvlData.percent >= 0 ? { color: '#4BB724' } : { color: '#e31417' })
+                    ...(+tvlData.percent >= 0 ? { color: '#40BFA0' } : { color: '#C52727' })
                   }}>
-                  (
+                  ({+tvlData.percent > 0 ? '+' : ''}
                   <AnimatedNumber
                     value={tvlData.percent}
                     formatValue={(value: string) => Number(value).toFixed(2)}
