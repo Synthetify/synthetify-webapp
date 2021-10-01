@@ -49,9 +49,9 @@ const icons: { [key: string]: string } = {
   sollet: solletIcon,
   'math wallet': mathIcon,
   clear: clearIcon,
-  mainnet: mainnet,
-  devnet: devnet,
-  testnet: testnet
+  Mainnet: mainnet,
+  Devnet: devnet,
+  Testnet: testnet
 
 }
 

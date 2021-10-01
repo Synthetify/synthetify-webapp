@@ -6,9 +6,9 @@ import { NetworkType, SolanaNetworks } from '@consts/static'
 
 
 const networks = [
-  { name: 'mainnet', network: 'https://solana-api.projectserum.com' },
-  { name: 'devnet', network: 'https://api.devnet.solana.com' },
-  { name: 'testnet', network: 'https://api.testnet.solana.com' }
+  { name: 'Mainnet', network: 'https://solana-api.projectserum.com' },
+  { name: 'Devnet', network: 'https://api.devnet.solana.com' },
+  { name: 'Testnet', network: 'https://api.testnet.solana.com' }
 ]
 
 storiesOf('modals/selectNetwork', module)
