@@ -3,10 +3,12 @@ import { WalletAdapter } from './adapters/types'
 import { PhantomWalletAdapter } from './adapters/phantom'
 import { MathWalletAdapter } from './adapters/mathwallet'
 import Wallet from '@project-serum/sol-wallet-adapter'
+import { SolflareWalletAdapter } from './adapters/solflare'
 export enum WalletType {
   PHANTOM,
   SOLLET,
-  MATH
+  MATH,
+  SOLFLARE
 }
 let _wallet: WalletAdapter
 const getSolanaWallet = (): WalletAdapter => {
@@ -38,6 +40,18 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         break
       case WalletType.MATH:
         _wallet = new MathWalletAdapter()
+        _wallet.on('connect', () => {
+          resolve(_wallet)
+        })
+        _wallet.connect()
+        break
+      case WalletType.SOLFLARE:
+        if ((window as any)?.solflare?.isSolFlare) {
+          _wallet = new SolflareWalletAdapter()
+        } else {
+          providerUrl = 'https://www.solflare.com'
+          _wallet = new Wallet(providerUrl) as WalletAdapter
+        }
         _wallet.on('connect', () => {
           resolve(_wallet)
         })
