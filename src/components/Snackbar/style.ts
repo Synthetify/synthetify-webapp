@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   success: {
@@ -10,8 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.green.snackbar,
     borderRadius: 10,
     padding: 10,
-    fontSize: 20,
-    lineHeight: '30px',
+    ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
     paddingBottom: 12,
@@ -23,8 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 11,
-      lineHeight: '16px',
+      ...typography.caption1,
       maxWidth: 255,
       maxHeight: 32,
       padding: '0px 8px 5px 4px'
@@ -39,9 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.red.snackbar,
     borderRadius: 10,
     padding: 10,
-    fontSize: 20,
-    lineHeight: '30px',
-    maxWidth: 500,
+    ...typography.heading5,
     maxHeight: 65,
     paddingBottom: 12,
     '& SVG': {
@@ -52,8 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 11,
-      lineHeight: '16px',
+      ...typography.caption1,
       maxWidth: 255,
       maxHeight: 32,
       padding: '0px 8px 5px 4px'
@@ -67,8 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.blue.astel,
     borderRadius: 10,
     padding: 10,
-    fontSize: 20,
-    lineHeight: '30px',
+    ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
     paddingBottom: 12,
@@ -80,8 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 11,
-      lineHeight: '16px',
+      ...typography.caption1,
       maxWidth: 255,
       maxHeight: 32,
       padding: '0px 8px 5px 4px'
@@ -95,8 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.yellow.neon,
     borderRadius: 10,
     padding: 10,
-    fontSize: 20,
-    lineHeight: '30px',
+    ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
     paddingBottom: 12,
@@ -108,8 +100,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      fontSize: 11,
-      lineHeight: '16px',
+      ...typography.caption1,
       maxWidth: 255,
       maxHeight: 32,
       padding: '0px 8px 5px 4px'

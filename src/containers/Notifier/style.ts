@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
 
@@ -11,10 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 16,
     border: 'none',
     color: colors.navy.navButton,
-    fontFamily: 'Be Vietnam',
-    fontSize: 16,
-    fontWeight: 800,
-    lineHeight: '24px',
+    ...typography.subtitle1,
     paddingBottom: 3,
     transition: '1s all ease-in-out',
     transform:  'perspective(1000px) translateZ(0px)',
