@@ -163,11 +163,13 @@ export function* handleClaimRewards(): Generator {
     )
   } catch (error) {
     yield* put(actions.claimRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
-
+    const txid = yield* call(claimRewards)
+    console.log(txid)
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
         variant: 'error',
+        txid: txid,
         persist: false
       })
     )

@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: 65,
     paddingBottom: 12,
     '& SVG': {
+      color: colors.green.snackbar,
       marginTop: 4,
       [theme.breakpoints.down('xs')]: {
         marginTop: 2
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: 65,
     paddingBottom: 12,
     '& SVG': {
+      color: colors.red.snackbar,
       marginTop: 4,
       [theme.breakpoints.down('xs')]: {
         marginTop: 2
@@ -71,6 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: 65,
     paddingBottom: 12,
     '& SVG': {
+      color: colors.blue.astel,
       marginTop: 4,
       [theme.breakpoints.down('xs')]: {
         marginTop: 2
@@ -98,6 +101,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: 65,
     paddingBottom: 12,
     '& SVG': {
+      color: colors.yellow.neon,
       marginTop: 4,
       [theme.breakpoints.down('xs')]: {
         marginTop: 2

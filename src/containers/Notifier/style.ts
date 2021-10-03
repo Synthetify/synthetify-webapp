@@ -1,5 +1,3 @@
-
-   
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors } from '@static/theme'
 
@@ -19,8 +17,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '24px',
     paddingBottom: 3,
     transition: '1s all ease-in-out',
+    transform:  'perspective(1000px) translateZ(0px)',
     '&:hover': {
-      transform: 'scale(1.125)'
+      transform:  'perspective(1000px) translateZ(150px)'
     },
     [theme.breakpoints.down('xs')]: {
       width: 36,
