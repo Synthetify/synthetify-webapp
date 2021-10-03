@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.component,
     width: 163,
     height: 180,
-    borderRadius: 10,
+    borderRadius: 8,
     marginTop: 13,
     paddingTop: 8,
     [theme.breakpoints.down('md')]: {
@@ -15,13 +15,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItem: {
     color: colors.navy.grey,
-    borderRadius: 10,
-    //paddingLeft: 16,
-    paddingLeft: 8,
-    padding: 4,
+    borderRadius: 8,
+    padding: '4px 4px 4px 8px',
     maxWidth: 147,
-    margin: 3,
+    height: 52,
     cursor: 'pointer',
+    '&:nth-child(2)': {
+      margin: '4px 0px'
+    },
     '&:hover': {
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,

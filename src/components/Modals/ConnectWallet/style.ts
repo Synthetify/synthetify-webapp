@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItem: {
     color: colors.navy.grey,
-    borderRadius: 10,
+    borderRadius: 8,
     padding: 8,
     width: 150,
     //margin: 3,
