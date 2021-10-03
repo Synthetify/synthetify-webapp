@@ -63,6 +63,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover': {
       background: colors.navy.navButton
+    },
+
+    '& $dehazeIcon': {
+      fill: colors.navy.lightGrey
     }
   },
   left: {
