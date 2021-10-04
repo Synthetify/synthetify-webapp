@@ -19,6 +19,7 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
           <Typography className={classes.cardTime}>last 24h</Typography>
         </Grid>
         <Typography className={classes.cardValue}>
+          $
           <AnimatedNumber
             value={value}
             duration={400}
