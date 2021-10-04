@@ -1,8 +1,8 @@
 import React from 'react'
 import { Typography, Popover, Grid } from '@material-ui/core'
-import useStyles from './style'
 import { NetworkType, SolanaNetworks } from '@consts/static'
-
+import icons from '@static/icons'
+import useStyles from './style'
 export interface ISelectNetwork {
   name: NetworkType
   network: SolanaNetworks
@@ -47,6 +47,7 @@ export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
               onSelect(name)
               handleClose()
             }}>
+            <img className={classes.icon} src={icons[name]} alt={`${name} icon}`} />
             <Typography className={classes.name}>{name}</Typography>
             <Typography className={classes.network}>{network}</Typography>
           </Grid>

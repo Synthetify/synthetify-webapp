@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBlock: 12
   },
   socialMedia: {
-    width: 32,
-    height: 32,
+    width: 34,
+    height: 34,
     backgroundColor: 'transparent',
     cursor: 'pointer',
 
