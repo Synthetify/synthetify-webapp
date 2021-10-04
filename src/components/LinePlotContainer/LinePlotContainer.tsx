@@ -5,6 +5,8 @@ import LinePlot from '@components/LinePlot/LinePlot'
 import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { formatNumbers, showPrefix } from '@consts/utils'
+import TrendingDownIcon from '@material-ui/icons/TrendingDown'
+import TrendingUpIcon from '@material-ui/icons/TrendingUp'
 interface Data {
   id: string
   points: Array<{ x: number; y: number }>
@@ -57,12 +59,19 @@ export const LinePlotContainer: React.FC<IProp> = ({
                 <Typography
                   className={classes.infoPercent}
                   style={{
-                    ...(+infoData.percent >= 0.0 ? { color: '#40BFA0' } : { color: '#C52727' })
+                    ...(+infoData.percent >= 0.0 ? { color: '#40BFA0' } : { color: '#C52727' }),
+                    display: 'flex',
+                    alignContent: 'center'
                   }}>
-                  ({+infoData.percent > 0 ? '+' : ''}
+                  (
+                  {+infoData.percent >= 0.0 ? (
+                    <TrendingUpIcon style={{ margin: 0, padding: 0 }} />
+                  ) : (
+                    <TrendingDownIcon style={{ margin: 0, padding: 0 }} />
+                  )}
                   <AnimatedNumber
                     value={infoData.percent}
-                    formatValue={(value: string) => Number(value).toFixed(2)}
+                    formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
                   />
                   %)
                 </Typography>

@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'end'
   },
   optionLabel: {
-    height: '100px'
+    height: '100px',
+    alignContent: 'flex-start'
   },
   buttonSelect: {
     minWidth: 120,
@@ -114,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   infoName: {
     ...typography.subtitle2,
     color: colors.navy.grey,
-    paddingRight: '2px',
+    paddingRight: '4px',
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }

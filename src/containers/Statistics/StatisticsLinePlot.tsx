@@ -14,7 +14,7 @@ export const StatisticsLinePlot: React.FC = () => {
     value: number
   }>({
     index: 0,
-    serieId: 'dafault',
+    serieId: 'default',
     timestamp: 0,
     value: 0
   })
@@ -28,7 +28,7 @@ export const StatisticsLinePlot: React.FC = () => {
     dispatch(action.updateData())
   }, [])
 
-  const findEarlierRekord = () => {
+  const findEarlierRecord = () => {
     return statsData.find(element => element.id === timeActive.serieId)?.points[
       timeActive.index - 1
     ]?.y
@@ -43,50 +43,26 @@ export const StatisticsLinePlot: React.FC = () => {
     }
     if (option !== timeActive.serieId) {
       const tmp = statsData.find(element => element.id === option)?.points
-      if (tmp !== undefined) {
-        if (tmp[tmp.length - 1].y !== 0.0) {
+      if (tmp) {
+        console.log((tmp[tmp.length - 2].y * 1.0).toFixed(1))
+        if (tmp[tmp.length - 2].y * 1.0 !== 0.0) {
           percentTmp = (
             ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
             100
           ).toFixed(2)
           setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
         } else {
-          percentTmp = ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / 1).toFixed(2)
+          percentTmp = tmp[tmp.length - 1].y.toFixed(2)
           setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
         }
       }
-
-      // else {
-      //   const tmp = statsData.find(element => element.id === 'userCount')?.points
-      //   if (tmp !== undefined) {
-      //     if (tmp[tmp.length - 1].y.toString() !== '0') {
-      //       percentTmp = (
-      //         ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
-      //         100
-      //       ).toFixed(2)
-      //       setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
-      //     } else {
-      //       percentTmp = ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / 1).toFixed(2)
-      //       setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
-      //     }
-      //   }
-      // }
     } else {
-      const lastCol = findEarlierRekord()
-      console.log(lastCol)
-      if (lastCol !== undefined) {
-        if (menuOption !== 'User count') {
-          if (lastCol.toString() !== '0.00') {
-            percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
-          } else {
-            percentTmp = ((timeActive.value - lastCol) / 1).toFixed(2)
-          }
+      const lastCol = findEarlierRecord()
+      if (lastCol) {
+        if (lastCol * 1.0 !== 0.0) {
+          percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
         } else {
-          if (lastCol.toString() !== '0') {
-            percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
-          } else {
-            percentTmp = ((timeActive.value - lastCol) / 1).toFixed(2)
-          }
+          percentTmp = timeActive.value.toFixed(2)
         }
       } else {
         percentTmp = '0.00'
