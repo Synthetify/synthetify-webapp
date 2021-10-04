@@ -20,7 +20,12 @@ interface SolflareProvider {
 }
 
 export class SolflareWalletAdapter extends EventEmitter implements WalletAdapter {
-  _provider: SolflareProvider | undefined
+  private get _provider(): SolflareProvider | undefined {
+    if ((window as any)?.solflare?.isSolflare) {
+      return (window as any).solflare
+    }
+    return undefined
+  }
 
   constructor() {
     super()
@@ -56,32 +61,21 @@ export class SolflareWalletAdapter extends EventEmitter implements WalletAdapter
   }
 
   connect = async () => {
-    if (this._provider) {
+    if (!this._provider) {
       return
     }
 
-    let provider: SolflareProvider = (window as any).solflare
-    if ((window as any)?.solflare?.isSolFlare) {
-      provider = (window as any).solflare
-    }
-
-    provider.on('connect', () => {
-      this._provider = provider
+    this._provider?.on('connect', () => {
       this.emit('connect')
     })
 
-    if (!provider.isConnected) {
-      await provider.connect()
-    }
-
-    this._provider = provider
+    return this._provider.connect()
   }
 
   disconnect() {
     if (this._provider) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this._provider.disconnect()
-      this._provider = undefined
       this.emit('disconnect')
     }
   }
