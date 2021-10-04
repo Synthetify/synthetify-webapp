@@ -15,9 +15,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: 3,
     cursor: 'pointer',
     transition: '0.3s all ease-in-out',
-    transform:  'perspective(1000px) translateZ(0px)',
+    transform: 'perspective(1000px) translateZ(0px)',
+    '& span': {
+      position: 'relative',
+      top: 2
+    },
     '&:hover': {
-      transform:  'perspective(1000px) translateZ(150px)'
+      transform: 'perspective(1000px) translateZ(150px)'
     },
     [theme.breakpoints.down('xs')]: {
       width: 36,

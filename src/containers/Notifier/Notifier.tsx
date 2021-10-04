@@ -33,7 +33,6 @@ const Notifier = () => {
 
       // do nothing if snackbar is already displayed
       if (key && displayed.includes(key)) return
-      console.log(isAccount)
       const action = () => (
 
         txid &&

@@ -50,8 +50,9 @@ export function* handleCreateAccount(): Generator {
 }
 export function* handleDeposit(): Generator {
   const depositData = yield* select(deposit)
+  let txid
   try {
-    const txid = yield* call(depositCollateral, depositData.amount, depositData.tokenAddress)
+    txid = yield* call(depositCollateral, depositData.amount, depositData.tokenAddress)
     yield* put(
       actions.depositDone({
         txid: txid
@@ -72,6 +73,7 @@ export function* handleDeposit(): Generator {
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
         variant: 'error',
+        txid: txid,
         persist: false
       })
     )
@@ -79,8 +81,9 @@ export function* handleDeposit(): Generator {
 }
 export function* handleMint(): Generator {
   const mintData = yield* select(mint)
+  let txid
   try {
-    const txid = yield* call(mintUsd, mintData.amount)
+    txid = yield* call(mintUsd, mintData.amount)
     yield* put(actions.mintDone())
     yield put(
       snackbarsActions.add({
@@ -98,6 +101,7 @@ export function* handleMint(): Generator {
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
         variant: 'error',
+        txid: txid,
         persist: false
       })
     )
@@ -105,8 +109,9 @@ export function* handleMint(): Generator {
 }
 export function* handleWithdraw(): Generator {
   const withdrawData = yield* select(withdraw)
+  let txid
   try {
-    const txid = yield* call(withdrawCollateral, withdrawData.amount, withdrawData.tokenAddress)
+    txid = yield* call(withdrawCollateral, withdrawData.amount, withdrawData.tokenAddress)
     yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
@@ -123,6 +128,7 @@ export function* handleWithdraw(): Generator {
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
         variant: 'error',
+        txid: txid,
         persist: false
       })
     )
@@ -130,8 +136,9 @@ export function* handleWithdraw(): Generator {
 }
 export function* handleBurn(): Generator {
   const burnData = yield* select(burn)
+  let txid
   try {
-    const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
+    txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
     yield* put(actions.burnDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
@@ -142,9 +149,10 @@ export function* handleBurn(): Generator {
       })
     )
   } catch (error) {
-    const txid = yield* call(burnToken, burnData.amount, burnData.tokenAddress)
-    yield* put(actions.burnFailed({ error: error instanceof 
-      Error ? error.message : 'Unknown error' }))
+    yield* put(actions.burnFailed({
+      error: error instanceof
+      Error ? error.message : 'Unknown error'
+    }))
     console.log(error)
     yield put(
       snackbarsActions.add({
@@ -158,8 +166,9 @@ export function* handleBurn(): Generator {
 }
 
 export function* handleClaimRewards(): Generator {
+  let txid
   try {
-    const txid = yield* call(claimRewards)
+    txid = yield* call(claimRewards)
     yield* put(actions.claimRewardsDone({ txid }))
 
     yield put(
@@ -172,8 +181,6 @@ export function* handleClaimRewards(): Generator {
     )
   } catch (error) {
     yield* put(actions.claimRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
-    const txid = yield* call(claimRewards)
-    console.log(txid)
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -186,8 +193,9 @@ export function* handleClaimRewards(): Generator {
 }
 
 export function* handleWithdrawRewards(): Generator {
+  let txid
   try {
-    const txid = yield* call(withdrawRewards)
+    txid = yield* call(withdrawRewards)
     yield* put(actions.withdrawRewardsDone({ txid }))
 
     yield put(
@@ -205,6 +213,7 @@ export function* handleWithdrawRewards(): Generator {
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
         variant: 'error',
+        txid: txid,
         persist: false
       })
     )
