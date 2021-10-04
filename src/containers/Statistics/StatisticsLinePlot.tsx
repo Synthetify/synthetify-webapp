@@ -47,7 +47,7 @@ export const StatisticsLinePlot: React.FC = () => {
     if (option !== timeActive.serieId) {
       const tmp = statsData.find(element => element.id === option)?.points
       if (tmp !== undefined) {
-        if (tmp[tmp.length - 2].y * 1.0 !== 0.0) {
+        if (Number(tmp[tmp.length - 2].y) !== 0) {
           percentTmp = (
             ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
             100
@@ -60,7 +60,7 @@ export const StatisticsLinePlot: React.FC = () => {
     } else {
       const lastCol = findEarlierRecord()
       if (lastCol !== undefined) {
-        if (lastCol * 1.0 !== 0) {
+        if (Number(lastCol) !== 0) {
           percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
         } else {
           percentTmp = timeActive.value.toFixed(2)

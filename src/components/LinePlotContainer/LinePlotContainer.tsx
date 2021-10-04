@@ -40,6 +40,19 @@ export const LinePlotContainer: React.FC<IProp> = ({
       setDataTmp(data[value])
     }
   }
+  const formatNumbersUser = (value: string) => {
+    const num = Number(value)
+    if (num < 10000) {
+      return num.toFixed(0)
+    }
+    if (num < 1000000) {
+      return (num / 1000).toFixed(0)
+    }
+    if (num < 1000000000) {
+      return (num / 1000000).toFixed(0)
+    }
+    return (num / 1000000000).toFixed(0)
+  }
   React.useEffect(() => {
     if (menuOption === 'User count') {
       changeData('userCount')
@@ -59,12 +72,12 @@ export const LinePlotContainer: React.FC<IProp> = ({
                 <Typography
                   className={classes.infoPercent}
                   style={{
-                    ...(+infoData.percent >= 0.0 ? { color: '#40BFA0' } : { color: '#C52727' }),
+                    ...(+infoData.percent >= 0 ? { color: '#40BFA0' } : { color: '#C52727' }),
                     display: 'flex',
                     alignContent: 'center'
                   }}>
                   (
-                  {+infoData.percent >= 0.0 ? (
+                  {+infoData.percent >= 0 ? (
                     <TrendingUpIcon style={{ margin: 0, padding: 0 }} />
                   ) : (
                     <TrendingDownIcon style={{ margin: 0, padding: 0 }} />
@@ -78,10 +91,11 @@ export const LinePlotContainer: React.FC<IProp> = ({
                 </Typography>
               </Grid>
               <Typography className={classes.infoNumber}>
+                {menuOption !== 'User count' ? '$' : ''}
                 <AnimatedNumber
                   value={infoData.value.toString()}
                   duration={300}
-                  formatValue={formatNumbers}
+                  formatValue={menuOption !== 'User count' ? formatNumbers : formatNumbersUser}
                 />
                 {showPrefix(infoData.value)}
               </Typography>
