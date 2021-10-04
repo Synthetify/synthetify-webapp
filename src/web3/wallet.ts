@@ -49,7 +49,7 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         if ((window as any)?.solflare?.isSolflare) {
           _wallet = new SolflareWalletAdapter()
         } else {
-          providerUrl = 'https://www.solflare.com/access-wallet'
+          providerUrl = 'https://solflare.com/provider'
           _wallet = new Wallet(providerUrl) as WalletAdapter
         }
         _wallet.on('connect', () => {
