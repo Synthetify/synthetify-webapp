@@ -20,7 +20,7 @@ interface IProp {
   }
   menuOption: string
   setMenuOption: (value: string) => void
-  setTimeActive: any
+  setTimeActive: (index: number, serieId: string, timestamp: number, value: number) => void
 }
 export const LinePlotContainer: React.FC<IProp> = ({
   data,
@@ -71,6 +71,7 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   )}
                   <AnimatedNumber
                     value={infoData.percent}
+                    duration={100}
                     formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
                   />
                   %)

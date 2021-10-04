@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   infoNumber: {
     ...typography.heading2,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     [theme.breakpoints.down('sm')]: {
       fontSize: '27px',
       lineHeight: '35px'

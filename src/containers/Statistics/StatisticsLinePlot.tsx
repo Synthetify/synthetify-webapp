@@ -27,6 +27,9 @@ export const StatisticsLinePlot: React.FC = () => {
   React.useEffect(() => {
     dispatch(action.updateData())
   }, [])
+  const changeActiveTime = (index: number, serieId: string, timestamp: number, value: number) => {
+    setTimeActive({ index: index, serieId: serieId, timestamp: timestamp, value: value })
+  }
 
   const findEarlierRecord = () => {
     return statsData.find(element => element.id === timeActive.serieId)?.points[
@@ -43,23 +46,21 @@ export const StatisticsLinePlot: React.FC = () => {
     }
     if (option !== timeActive.serieId) {
       const tmp = statsData.find(element => element.id === option)?.points
-      if (tmp) {
-        console.log((tmp[tmp.length - 2].y * 1.0).toFixed(1))
+      if (tmp !== undefined) {
         if (tmp[tmp.length - 2].y * 1.0 !== 0.0) {
           percentTmp = (
             ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
             100
           ).toFixed(2)
-          setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
         } else {
-          percentTmp = tmp[tmp.length - 1].y.toFixed(2)
-          setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
+          percentTmp = (tmp[tmp.length - 1].y * 1.0).toFixed(2)
         }
+        setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
       }
     } else {
       const lastCol = findEarlierRecord()
-      if (lastCol) {
-        if (lastCol * 1.0 !== 0.0) {
+      if (lastCol !== undefined) {
+        if (lastCol * 1.0 !== 0) {
           percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
         } else {
           percentTmp = timeActive.value.toFixed(2)
@@ -74,7 +75,7 @@ export const StatisticsLinePlot: React.FC = () => {
     <LinePlotContainer
       data={statsData}
       infoData={infoData}
-      setTimeActive={setTimeActive}
+      setTimeActive={changeActiveTime}
       menuOption={menuOption}
       setMenuOption={setMenuOption}
     />
