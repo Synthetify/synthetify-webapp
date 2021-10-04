@@ -53,7 +53,14 @@ export const StatisticsLinePlot: React.FC = () => {
             100
           ).toFixed(2)
         } else {
-          percentTmp = (tmp[tmp.length - 1].y * 1.0).toFixed(2)
+          if (timeActive.value !== 0) {
+            percentTmp = (
+              ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 1].y) *
+              100
+            ).toFixed(2)
+          } else {
+            percentTmp = '0.00'
+          }
         }
         setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
       }
@@ -63,7 +70,11 @@ export const StatisticsLinePlot: React.FC = () => {
         if (Number(lastCol) !== 0) {
           percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
         } else {
-          percentTmp = timeActive.value.toFixed(2)
+          if (timeActive.value !== 0) {
+            percentTmp = (((timeActive.value - lastCol) / timeActive.value) * 100).toFixed(2)
+          } else {
+            percentTmp = '0.00'
+          }
         }
       } else {
         percentTmp = '0.00'
