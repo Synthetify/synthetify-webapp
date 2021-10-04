@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 122,
     height: 41,
     cursor: 'pointer',
-
     '&:first-child': {
       marginTop: 8
     },

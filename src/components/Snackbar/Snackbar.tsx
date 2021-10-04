@@ -10,7 +10,7 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
   const classes = useStyles()
   return (
     <SnackbarProvider
-      maxSnack={maxSnxack}
+      maxSnack={maxSnack}
       classes={{
         variantSuccess: classes.success,
         variantError: classes.error,
