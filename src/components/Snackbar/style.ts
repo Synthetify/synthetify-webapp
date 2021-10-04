@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderWidth: 0,
     borderLeftWidth: 10,
     borderColor: colors.red.snackbar,
-    color: colors.red.snackbar,
     borderRadius: 10,
     padding: 10,
     ...typography.heading5,

@@ -9,19 +9,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.navy.grey,
     borderRadius: 6,
     marginRight: 16,
+    paddingTop: 3,
     border: 'none',
     color: colors.navy.navButton,
     ...typography.subtitle1,
-    paddingBottom: 3,
     cursor: 'pointer',
-    transition: '0.3s all ease-in-out',
-    transform: 'perspective(1000px) translateZ(0px)',
-    '& span': {
-      position: 'relative',
-      top: 2
-    },
+    transition: '0.2s all cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    backfaceVisibility: 'hidden',
+    fontSmoothing: 'subpixel-antialiased',
     '&:hover': {
-      transform: 'perspective(1000px) translateZ(150px)'
+      transform: 'scale(1.1) translateY(1px)'
     },
     [theme.breakpoints.down('xs')]: {
       width: 36,
