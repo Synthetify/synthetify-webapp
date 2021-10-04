@@ -22,7 +22,9 @@ import solletIcon from './svg/sollet.svg'
 import mathIcon from './svg/MathWallet.svg'
 import solflareIcon from './svg/solflare.svg'
 import clearIcon from './svg/clear.svg'
-
+import mainnet from './svg/mainnet.svg'
+import devnet from './svg/devnet.svg'
+import testnet from './svg/testnet.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -48,7 +50,10 @@ const icons: { [key: string]: string } = {
   sollet: solletIcon,
   'math wallet': mathIcon,
   solflare: solflareIcon,
-  clear: clearIcon
+  clear: clearIcon,
+  Mainnet: mainnet,
+  Devnet: devnet,
+  Testnet: testnet
 }
 
 export default icons
