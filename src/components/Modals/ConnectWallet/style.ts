@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 8,
     padding: 8,
     width: 150,
-    //margin: 3,
     cursor: 'pointer',
     '&:hover': {
       background: colors.navy.navButton,
