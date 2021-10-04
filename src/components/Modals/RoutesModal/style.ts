@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 8,
     paddingLeft: 12,
     paddingTop: 3,
-    minWidth: 122,
+    width: 140,
     height: 41,
     cursor: 'pointer',
     '&:first-child': {
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
     '&:hover': {
       ...typography.body1,
+      color: colors.navy.veryLightGrey
     }
   },
   current: {
