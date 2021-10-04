@@ -38,7 +38,7 @@ export function* apiData(): Generator {
     dataTmp.last24.volume = response.data[response.data.length - 1].volume
     dataTmp.last24.collateral = response.data[response.data.length - 1].collateralAll
     dataTmp.last24.mint = response.data[response.data.length - 1].mint
-    dataTmp.last24.debt = response.data[response.data.length - 1].debt
+    dataTmp.last24.debt = response.data[response.data.length - 1].debtAll
     dataTmp.last24.fee = response.data[response.data.length - 1].fee
     yield put(action.receiveApiData(dataTmp))
   } catch (error) {

@@ -16,26 +16,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& #collateral': {
       padding: '0px 0px 0px 0px'
     },
-    '& #volume': {
+    '& #debt': {
       padding: '0px 0px 0px 24px'
     },
     '& #mint': {
       padding: '24px 12px 24px 0'
     },
-    '& #debt': {
+    '& #volume': {
       padding: '24px 12px 24px 12px'
     },
     '& #fee': {
       padding: '24px 0px 24px 12px'
     },
     [theme.breakpoints.down('sm')]: {
-      '& #volume': {
+      '& #debt': {
         padding: '0px 0px 0px 16px'
       },
       '& #mint': {
         padding: '16px 8px 16px 0'
       },
-      '& #debt': {
+      '& #volume': {
         padding: '16px 8px 16px 8px'
       },
       '& #fee': {
@@ -43,13 +43,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      '& #volume': {
+      '& #debt': {
         padding: '16px 0px 0px 0px'
       },
       '& #mint': {
         padding: '16px 0px 16px 0px'
       },
-      '& #debt': {
+      '& #volume': {
         padding: '0px 0px 0px 0px'
       },
       '& #fee': {

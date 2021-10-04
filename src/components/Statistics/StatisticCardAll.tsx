@@ -20,16 +20,20 @@ export const StatisticCardAll: React.FC<IProp> = ({ data }) => {
     <div className={classes.gridContainer}>
       <Grid container className={classes.container}>
         <Grid id='collateral' item xs={12} sm={7}>
-          <StatisticsCard name='Collateral' value={data.collateral} desc='Total value deposited' />
+          <StatisticsCard
+            name='Collateral'
+            value={data.collateral}
+            desc={'Total value deposited'}
+          />
         </Grid>
-        <Grid id='volume' item xs={12} sm={5}>
-          <StatisticsCard name='Volume' value={data.volume} desc='Exchange volume' />
+        <Grid id='debt' item xs={12} sm={5}>
+          <StatisticsCard name='Debt' value={data.debt} desc={'Total debt owed'} />
         </Grid>
         <Grid id='mint' item xs={12} sm={4}>
           <StatisticsCard name='Mint' value={data.mint} desc={'Value minted'} />
         </Grid>
-        <Grid id='debt' item xs={12} sm={5}>
-          <StatisticsCard name='Debt' value={data.debt} desc={'Total debt owed'} />
+        <Grid id='volume' item xs={12} sm={5}>
+          <StatisticsCard name='Volume' value={data.volume} desc={'Exchange volume'} />
         </Grid>
         <Grid id='fee' item xs={12} sm={3}>
           <StatisticsCard name='Fee' value={data.fee} desc={'Fee collected '} />
