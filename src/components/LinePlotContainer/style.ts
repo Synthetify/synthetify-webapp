@@ -106,7 +106,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   infoContainer: {
-    padding: '13px 20px '
+    padding: '13px  0 0 16px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '5px  0 0 8px'
+    }
   },
   infoTitle: {
     display: 'flex',
