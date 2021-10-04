@@ -52,13 +52,8 @@ export const StatisticsLinePlot: React.FC = () => {
             ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
             100
           ).toFixed(2)
-        } else if (timeActive.value !== 0) {
-          percentTmp = (
-            ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 1].y) *
-            100
-          ).toFixed(2)
-        } else {
-          percentTmp = '0.00'
+        } else if (tmp[tmp.length - 1].y) {
+          percentTmp = 'NaN'
         }
 
         setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
@@ -69,12 +64,8 @@ export const StatisticsLinePlot: React.FC = () => {
         if (Number(lastCol) !== 0) {
           percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
         } else if (timeActive.value !== 0) {
-          percentTmp = (((timeActive.value - lastCol) / timeActive.value) * 100).toFixed(2)
-        } else {
-          percentTmp = '0.00'
+          percentTmp = 'NaN'
         }
-      } else {
-        percentTmp = '0.00'
       }
       setInfoData({ name: menuOption, value: timeActive.value, percent: percentTmp })
     }

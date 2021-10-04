@@ -73,7 +73,9 @@ export const LinePlotContainer: React.FC<IProp> = ({
                 <Typography
                   className={classes.infoPercent}
                   style={{
-                    ...(Number(infoData.percent) >= 0
+                    ...(infoData.percent === 'NaN'
+                      ? { color: '#40BFA0' }
+                      : Number(infoData.percent) >= 0
                       ? Number(infoData.percent) === 0
                         ? { color: '#777777' }
                         : { color: '#40BFA0' }
@@ -82,7 +84,9 @@ export const LinePlotContainer: React.FC<IProp> = ({
                     alignContent: 'center'
                   }}>
                   (
-                  {Number(infoData.percent) >= 0 ? (
+                  {infoData.percent === 'NaN' ? (
+                    <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                  ) : Number(infoData.percent) >= 0 ? (
                     Number(infoData.percent) === 0 ? (
                       <TrendingFlatIcon
                         style={{ marginTop: 'auto', padding: 0, fontSize: '1.25em' }}
@@ -93,12 +97,19 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   ) : (
                     <TrendingDownIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
                   )}
-                  <AnimatedNumber
-                    value={infoData.percent}
-                    duration={300}
-                    formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
-                  />
-                  %)
+                  {infoData.percent !== 'NaN' ? (
+                    <>
+                      <AnimatedNumber
+                        value={infoData.percent}
+                        duration={300}
+                        formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
+                      />
+                      %
+                    </>
+                  ) : (
+                    <Typography className={classes.infoPercent}>{infoData.percent}</Typography>
+                  )}
+                  )
                 </Typography>
               </Grid>
               <Typography className={classes.infoNumber}>
