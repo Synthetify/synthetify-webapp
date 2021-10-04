@@ -76,10 +76,10 @@ export const LinePlotContainer: React.FC<IProp> = ({
                     ...(infoData.percent === 'NaN'
                       ? { color: '#40BFA0' }
                       : Number(infoData.percent) >= 0
-                      ? Number(infoData.percent) === 0
-                        ? { color: '#777777' }
-                        : { color: '#40BFA0' }
-                      : { color: '#C52727' }),
+                        ? Number(infoData.percent) === 0
+                          ? { color: '#777777' }
+                          : { color: '#40BFA0' }
+                        : { color: '#C52727' }),
                     display: 'flex',
                     alignContent: 'center'
                   }}>

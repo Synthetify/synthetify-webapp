@@ -38,12 +38,7 @@ export const StatisticsLinePlot: React.FC = () => {
   }
   React.useEffect(() => {
     let percentTmp = '0.00'
-    let option: string
-    if (menuOption === 'User count') {
-      option = 'userCount'
-    } else {
-      option = menuOption.toLowerCase()
-    }
+    const option: string = menuOption ? 'userCount' : menuOption.toLowerCase()
     if (option !== timeActive.serieId) {
       const tmp = statsData.find(element => element.id === option)?.points
       if (typeof tmp !== 'undefined') {
