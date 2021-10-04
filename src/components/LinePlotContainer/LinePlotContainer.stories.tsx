@@ -5,8 +5,8 @@ let menuOption: string = 'Value'
 const setMenuOption = (value: string) => {
   menuOption = value
 }
-const setTimeAction = () => {
-  console.log('test')
+const setTimeAction = (index: number, serieId: string, timestamp: number, value: number) => {
+  console.log(index, serieId, timestamp, value)
 }
 storiesOf('stats/topplotcontainer', module).add('line', () => (
   <LinePlotContainer

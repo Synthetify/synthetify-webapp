@@ -35,42 +35,42 @@ export const StatisticsLinePlot: React.FC = () => {
   }
   React.useEffect(() => {
     let percentTmp = '0.00'
-    let option
+    let option: string
     if (menuOption === 'User count') {
       option = 'userCount'
     } else {
       option = menuOption.toLowerCase()
     }
     if (option !== timeActive.serieId) {
-      if (menuOption !== 'User count') {
-        const tmp = statsData.find(element => element.id === menuOption.toLowerCase())?.points
-        if (tmp !== undefined) {
-          if (tmp[tmp.length - 1].y !== 0.0) {
-            percentTmp = (
-              ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
-              100
-            ).toFixed(2)
-            setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
-          } else {
-            percentTmp = ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / 1).toFixed(2)
-            setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
-          }
-        }
-      } else {
-        const tmp = statsData.find(element => element.id === 'userCount')?.points
-        if (tmp !== undefined) {
-          if (tmp[tmp.length - 1].y.toString() !== '0') {
-            percentTmp = (
-              ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
-              100
-            ).toFixed(2)
-            setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
-          } else {
-            percentTmp = ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / 1).toFixed(2)
-            setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
-          }
+      const tmp = statsData.find(element => element.id === option)?.points
+      if (tmp !== undefined) {
+        if (tmp[tmp.length - 1].y !== 0.0) {
+          percentTmp = (
+            ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
+            100
+          ).toFixed(2)
+          setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
+        } else {
+          percentTmp = ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / 1).toFixed(2)
+          setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
         }
       }
+
+      // else {
+      //   const tmp = statsData.find(element => element.id === 'userCount')?.points
+      //   if (tmp !== undefined) {
+      //     if (tmp[tmp.length - 1].y.toString() !== '0') {
+      //       percentTmp = (
+      //         ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
+      //         100
+      //       ).toFixed(2)
+      //       setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
+      //     } else {
+      //       percentTmp = ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / 1).toFixed(2)
+      //       setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
+      //     }
+      //   }
+      // }
     } else {
       const lastCol = findEarlierRekord()
       console.log(lastCol)
