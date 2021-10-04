@@ -74,7 +74,9 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   className={classes.infoPercent}
                   style={{
                     ...(Number(infoData.percent) >= 0
-                      ? { color: '#40BFA0' }
+                      ? Number(infoData.percent) === 0
+                        ? { color: '#777777' }
+                        : { color: '#40BFA0' }
                       : { color: '#C52727' }),
                     display: 'flex',
                     alignContent: 'center'
@@ -82,16 +84,18 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   (
                   {Number(infoData.percent) >= 0 ? (
                     Number(infoData.percent) === 0 ? (
-                      <TrendingFlatIcon />
+                      <TrendingFlatIcon
+                        style={{ marginTop: 'auto', padding: 0, fontSize: '1.25em' }}
+                      />
                     ) : (
-                      <TrendingUpIcon style={{ margin: 0, padding: 0 }} />
+                      <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
                     )
                   ) : (
-                    <TrendingDownIcon style={{ margin: 0, padding: 0 }} />
+                    <TrendingDownIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
                   )}
                   <AnimatedNumber
                     value={infoData.percent}
-                    duration={100}
+                    duration={300}
                     formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
                   />
                   %)
