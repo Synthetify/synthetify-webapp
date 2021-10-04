@@ -14,6 +14,12 @@ const useStyles = makeStyles(() => ({
       [theme.breakpoints.down('sm')]: {
         fontSize: '7px!important'
       }
+    },
+    [theme.breakpoints.down('md')]: {
+      height: '172px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '104px'
     }
   },
   tooltipRoot: {
