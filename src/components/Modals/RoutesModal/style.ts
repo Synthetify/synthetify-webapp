@@ -29,8 +29,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '&:hover': {
       background: colors.navy.navButton,
-      color: colors.navy.veryLightGrey,
-      ...typography.body1,
+      '& a p': {
+        color: colors.navy.veryLightGrey,
+        ...typography.body1
+      }
     }
   },
   name: {
@@ -38,11 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     color: colors.navy.grey,
     width: '100%',
-    height: '100%',
-    '&:hover': {
-      ...typography.body1,
-      color: colors.navy.veryLightGrey
-    }
+    height: '100%'
   },
   current: {
     textTransform: 'capitalize',
