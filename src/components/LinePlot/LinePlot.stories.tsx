@@ -1,7 +1,9 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import LinePlot from './LinePlot'
-
+const setTimeAction = (index: number, serieId: string, timestamp: number, value: number) => {
+  console.log(index, serieId, timestamp, value)
+}
 storiesOf('stats/topplot', module).add('line', () => (
   <LinePlot
     data={{
@@ -17,5 +19,6 @@ storiesOf('stats/topplot', module).add('line', () => (
       ]
     }}
     sign={'$'}
+    setTimeActive={setTimeAction}
   />
 ))

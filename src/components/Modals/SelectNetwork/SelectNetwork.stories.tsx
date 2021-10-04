@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions'
 import SelectNetwork, { ISelectNetwork } from '@components/Modals/SelectNetwork/SelectNetwork'
 import { NetworkType, SolanaNetworks } from '@consts/static'
 
+
 const networks: ISelectNetwork[] = [
   { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
   { name: NetworkType.LOCALNET, network: SolanaNetworks.LOCAL }
