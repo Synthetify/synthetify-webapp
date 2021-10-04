@@ -4,46 +4,61 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
-    width: 300,
-    borderRadius: 10,
+    width: 163,
+    height: 180,
+    borderRadius: 8,
     marginTop: 13,
-    padding: 20,
-
+    paddingTop: 8,
     [theme.breakpoints.down('md')]: {
       marginTop: 24
     }
   },
   listItem: {
     color: colors.navy.grey,
-    borderRadius: 10,
-    paddingLeft: 16,
-    padding: 10,
-    minWidth: 220,
-    margin: 3,
+    borderRadius: 8,
+    padding: '4px 4px 4px 8px',
+    maxWidth: 147,
+    height: 52,
     cursor: 'pointer',
-
+    '&:nth-child(2)': {
+      margin: '4px 0px'
+    },
     '&:hover': {
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,
-
-      '& $name, $network': {
+      '& $icon': {
+        opacity: 1
+      },
+      '& $name': {
         ...typography.subtitle1
+      },
+      '& $network':{
+        color: '#9D9CEE'
       }
     }
   },
   name: {
     textTransform: 'capitalize',
-    ...typography.subtitle2
+    ...typography.subtitle1
   },
   network: {
-    ...typography.subtitle2,
+    ...typography.caption1,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    color: colors.navy.info
   },
   paper: {
     background: 'transparent',
     boxShadow: 'none'
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    display: 'inline',
+    float: 'left',
+    margin:'3px 8px 0px 1px',
+    opacity: 0.6
   }
 }))
 

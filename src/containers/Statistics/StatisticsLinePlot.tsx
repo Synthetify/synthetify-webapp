@@ -46,35 +46,32 @@ export const StatisticsLinePlot: React.FC = () => {
     }
     if (option !== timeActive.serieId) {
       const tmp = statsData.find(element => element.id === option)?.points
-      if (tmp !== undefined) {
+      if (typeof tmp !== 'undefined') {
         if (Number(tmp[tmp.length - 2].y) !== 0) {
           percentTmp = (
             ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 2].y) *
             100
           ).toFixed(2)
+        } else if (timeActive.value !== 0) {
+          percentTmp = (
+            ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 1].y) *
+            100
+          ).toFixed(2)
         } else {
-          if (timeActive.value !== 0) {
-            percentTmp = (
-              ((tmp[tmp.length - 1].y - tmp[tmp.length - 2].y) / tmp[tmp.length - 1].y) *
-              100
-            ).toFixed(2)
-          } else {
-            percentTmp = '0.00'
-          }
+          percentTmp = '0.00'
         }
+
         setInfoData({ name: menuOption, value: tmp[tmp.length - 1].y, percent: percentTmp })
       }
     } else {
       const lastCol = findEarlierRecord()
-      if (lastCol !== undefined) {
+      if (typeof lastCol !== 'undefined') {
         if (Number(lastCol) !== 0) {
           percentTmp = (((timeActive.value - lastCol) / lastCol) * 100).toFixed(2)
+        } else if (timeActive.value !== 0) {
+          percentTmp = (((timeActive.value - lastCol) / timeActive.value) * 100).toFixed(2)
         } else {
-          if (timeActive.value !== 0) {
-            percentTmp = (((timeActive.value - lastCol) / timeActive.value) * 100).toFixed(2)
-          } else {
-            percentTmp = '0.00'
-          }
+          percentTmp = '0.00'
         }
       } else {
         percentTmp = '0.00'
