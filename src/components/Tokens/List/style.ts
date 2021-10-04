@@ -5,10 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
     ...typography.body1,
     position: 'relative',
-    top: -2,
+    top: -3,
     [theme.breakpoints.down('xs')]: {
       ...typography.body3,
-      top: -1
+      top: -2
     },
     color: colors.navy.grey
   },

@@ -56,13 +56,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   startIcon: {
     marginLeft: 0,
+    marginTop: 2,
 
     [theme.breakpoints.down('xs')]: {
       marginRight: 2
     }
   },
   endIcon: {
-    minWidth: 20
+    minWidth: 20,
+    marginTop: 2
   },
   innerEndIcon: {
     marginLeft: 0
