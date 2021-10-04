@@ -17,7 +17,7 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
         <Grid className={classes.header}>
           <Typography className={classes.cardName}>{name}</Typography>
           {name === 'Debt' || name === 'Collateral' ? (
-            ''
+            <Typography className={classes.cardTime}>Current</Typography>
           ) : (
             <Typography className={classes.cardTime}>last 24h</Typography>
           )}
