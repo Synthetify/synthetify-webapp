@@ -10,6 +10,7 @@ export interface ISnackbar {
   action?: (key: number) => JSX.Element
   persist?: boolean,
   txid?: string
+  isAccount?: boolean
 }
 
 export interface ISnackbarStore {

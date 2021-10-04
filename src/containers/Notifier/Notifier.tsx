@@ -24,7 +24,7 @@ const Notifier = () => {
   const currentNetwork: string = useSelector(network)
 
   React.useEffect(() => {
-    notifications.forEach(({ key = '', message, open, variant, txid, persist = true }) => {
+    notifications.forEach(({ key = '', message, open, variant, txid, isAccount, persist = true }) => {
       if (!open) {
         // dismiss snackbar using notistack
         closeSnackbar(key)
@@ -33,17 +33,28 @@ const Notifier = () => {
 
       // do nothing if snackbar is already displayed
       if (key && displayed.includes(key)) return
-
+      console.log(isAccount)
       const action = () => (
+
         txid &&
         <button className={classes.button} onClick={() => {
-          if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined) {
+          if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined && !isAccount) {
             window.open('https://explorer.solana.com/tx/' + txid + '?cluster=' + currentNetwork.toLowerCase())
-          } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined) {
+          } 
+          
+          else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined && !isAccount) {
             window.open('https://explorer.solana.com/tx/' + txid)
+          } 
+          
+          else if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && isAccount) {
+            window.open('https://explorer.solana.com/address/' + txid + '?cluster=' + currentNetwork.toLowerCase())
+          } 
+          
+          else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && isAccount) {
+            window.open('https://explorer.solana.com/address/' + txid)
           }
         }}>
-                <span>Details</span>
+          <span>Details</span>
         </button>
       )
 

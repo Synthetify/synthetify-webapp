@@ -29,6 +29,15 @@ export function* handleCreateAccount(): Generator {
         txid: accountAddress.toString()
       })
     )
+    yield put(
+      snackbarsActions.add({
+        message: 'Successfully added account.',
+        variant: 'success',
+        txid: accountAddress.toString(),
+        isAccount: true,
+        persist: false
+      })
+    )
   } catch (error) {
     yield put(
       snackbarsActions.add({

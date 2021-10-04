@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.navButton,
     ...typography.subtitle1,
     paddingBottom: 3,
-    transition: '1s all ease-in-out',
+    transition: '0.3s all ease-in-out',
     transform:  'perspective(1000px) translateZ(0px)',
     '&:hover': {
       transform:  'perspective(1000px) translateZ(150px)'
