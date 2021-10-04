@@ -159,7 +159,7 @@ export function* handleBurn(): Generator {
 
 export function* handleClaimRewards(): Generator {
   try {
-  const txid = yield* call(claimRewards)
+    const txid = yield* call(claimRewards)
     yield* put(actions.claimRewardsDone({ txid }))
 
     yield put(
