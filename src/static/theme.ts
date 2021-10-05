@@ -107,6 +107,11 @@ export const typography = {
     lineHeight: '33px',
     fontWeight: 800
   },
+  heading5: {
+    fontSize: 20,
+    lineHeight: '30px',
+    fontWeight: 600
+  },
   body1: {
     fontSize: 22,
     lineHeight: '30px',

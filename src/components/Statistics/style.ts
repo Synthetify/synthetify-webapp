@@ -16,30 +16,44 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& #collateral': {
       padding: '0px 0px 0px 0px'
     },
-    '& #volume': {
+    '& #debt': {
       padding: '0px 0px 0px 24px'
     },
     '& #mint': {
       padding: '24px 12px 24px 0'
     },
-    '& #debt': {
+    '& #volume': {
       padding: '24px 12px 24px 12px'
     },
     '& #fee': {
       padding: '24px 0px 24px 12px'
     },
     [theme.breakpoints.down('sm')]: {
-      '& #volume': {
+      '& #debt': {
         padding: '0px 0px 0px 16px'
       },
       '& #mint': {
         padding: '16px 8px 16px 0'
       },
-      '& #debt': {
+      '& #volume': {
         padding: '16px 8px 16px 8px'
       },
       '& #fee': {
         padding: '16px 0px 16px 8px'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& #debt': {
+        padding: '16px 0px 0px 0px'
+      },
+      '& #mint': {
+        padding: '16px 0px 16px 0px'
+      },
+      '& #volume': {
+        padding: '0px 0px 0px 0px'
+      },
+      '& #fee': {
+        padding: '16px 0px 16px 0px'
       }
     }
   },
@@ -90,9 +104,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle1
-    },
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption4
     }
   },
   cardTime: {
@@ -104,9 +115,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
-    },
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption3
     }
   },
   cardValue: {
@@ -125,11 +133,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.heading3,
       margin: '4px 0'
     },
-    [theme.breakpoints.down('xs')]: {
-      margin: 0,
-      ...typography.subtitle1,
-      fontSize: '14px'
-    },
     '&:hover': {
       color: '#7C76DA',
       textShadow: '0px 0px 12px rgba(124, 118, 218, 0.5)',
@@ -146,7 +149,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       alignItems: 'center'
     },
     [theme.breakpoints.down('sm')]: {
-      ...typography.caption3
+      ...typography.body4
     }
   },
   collItem: {
