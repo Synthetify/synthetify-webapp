@@ -20,7 +20,7 @@ export const HeaderWrapper: React.FC = () => {
   useEffect(() => {
     let enumWallet = WalletType.PHANTOM
     const sessionWallet = sessionStorage.getItem('SYNTHETIFY_SESSION_WALLET')
-    if (sessionWallet === 'phantom' || sessionWallet === 'sollet' || sessionWallet === 'math') {
+    if (sessionWallet === 'phantom' || sessionWallet === 'sollet' || sessionWallet === 'math' || sessionWallet === 'solflare') {
       switch (sessionWallet) {
         case 'phantom':
           enumWallet = WalletType.PHANTOM
@@ -30,6 +30,9 @@ export const HeaderWrapper: React.FC = () => {
           break
         case 'math':
           enumWallet = WalletType.MATH
+          break
+        case 'solflare':
+          enumWallet = WalletType.SOLFLARE
           break
         default:
           enumWallet = WalletType.PHANTOM
