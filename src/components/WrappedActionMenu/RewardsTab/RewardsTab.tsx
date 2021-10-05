@@ -6,11 +6,13 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
 import useStyles from './style'
+import { useSelector } from 'react-redux'
 import Rewards1 from '@static/svg/rewards1.svg'
 import Rewards2 from '@static/svg/rewards2.svg'
 import Rewards3 from '@static/svg/rewards3.svg'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
+import { stakedValue, getSNYPrice } from '@selectors/exchange'
 
 export type RoundType = 'next' | 'current' | 'finished'
 
@@ -43,6 +45,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   onWithdraw
 }) => {
   const classes = useStyles()
+  const stakedUserValue = useSelector(stakedValue)
+  const SNYPrice = useSelector(getSNYPrice)
 
   const estimateRounds = (): RoundData => {
     const { current, next } = rounds
@@ -140,6 +144,29 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     }
     return roundPoints.mul(amount.val).div(allPoints)
   }
+  const APRNext: BN =
+  !stakedUserValue.eq(new BN(0))
+    ? (calculateTokensBasedOnPoints(
+      nextRoundPoints,
+      nextRoundAllPoints,
+      nextRoundAmount
+    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
+
+  const APRCurrent: BN =
+  !stakedUserValue.eq(new BN(0))
+    ? (calculateTokensBasedOnPoints(
+      currentRoundPoints,
+      currentRoundAllPoints,
+      currentRoundAmount
+    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
+
+  const APRFinished: BN =
+  !stakedUserValue.eq(new BN(0))
+    ? (calculateTokensBasedOnPoints(
+      finishedRoundPoints,
+      finishedRoundAllPoints,
+      finishedRoundAmount
+    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
 
   const rewardsLines: {
     [index: number]: {
@@ -156,14 +183,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   } = [
     {
       name: 'Subscription round',
-      nonBracket: 'points',
-      nonBracketValue: nextRoundPoints,
-      bracketValue: calculateTokensBasedOnPoints(
+      nonBracket: 'SNY',
+      nonBracketValue: calculateTokensBasedOnPoints(
         nextRoundPoints,
         nextRoundAllPoints,
         nextRoundAmount
       ),
-      bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
+      bracketValue: APRNext,
+      bracket: nextRoundPoints.eqn(0) ? '' : '%',
       hint: 'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards1,
@@ -171,14 +198,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     },
     {
       name: 'Staking round',
-      nonBracketValue: currentRoundPoints,
-      nonBracket: 'points',
-      bracketValue: calculateTokensBasedOnPoints(
+      nonBracketValue: calculateTokensBasedOnPoints(
         currentRoundPoints,
         currentRoundAllPoints,
         currentRoundAmount
       ),
-      bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
+      nonBracket: 'SNY',
+      bracketValue: APRCurrent,
+      bracket: currentRoundPoints.eqn(0) ? '' : '%',
       hint: 'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards2,
@@ -186,14 +213,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     },
     {
       name: 'Claiming round',
-      nonBracketValue: finishedRoundPoints,
-      nonBracket: 'points',
-      bracketValue: calculateTokensBasedOnPoints(
+      nonBracketValue: calculateTokensBasedOnPoints(
         finishedRoundPoints,
         finishedRoundAllPoints,
         finishedRoundAmount
       ),
-      bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
+      nonBracket: 'SNY',
+      bracketValue: APRFinished,
+      bracket: finishedRoundPoints.eqn(0) ? '' : '%',
       hint: 'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards3,

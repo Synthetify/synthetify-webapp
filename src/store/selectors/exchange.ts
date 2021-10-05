@@ -293,4 +293,20 @@ export const getSyntheticsStructure = createSelector(
   }
 )
 
+export const getCollateralValue = createSelector(collaterals, assets, (allColaterals, assets) => {
+  let totalVal = new BN(0)
+  Object.values(allColaterals).forEach(item => {
+    const value = assets[item.assetIndex].price.val
+      .mul(item.reserveBalance.val)
+      .div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+    totalVal = totalVal.add(value)
+  })
+
+  return +transformBN(totalVal)
+})
+
+export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, assets) =>
+  assets[Object.values(allColaterals)[0].assetIndex].price
+)
+
 export default exchangeSelectors
