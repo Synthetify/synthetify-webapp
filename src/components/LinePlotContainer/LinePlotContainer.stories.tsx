@@ -1,8 +1,22 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import LinePlotContainer from './LinePlotContainer'
-
-storiesOf('stats/topplotcontainer', module).add('line', () => <LinePlotContainer data={data} tvlData={{ value: 1000, percent: '20' }} />)
+let menuOption: string = 'Value'
+const setMenuOption = (value: string) => {
+  menuOption = value
+}
+const setTimeAction = (index: number, serieId: string, timestamp: number, value: number) => {
+  console.log(index, serieId, timestamp, value)
+}
+storiesOf('stats/topplotcontainer', module).add('line', () => (
+  <LinePlotContainer
+    data={data}
+    infoData={{ name: 'Volume', value: 1000, percent: '20' }}
+    menuOption={menuOption}
+    setMenuOption={setMenuOption}
+    setTimeActive={setTimeAction}
+  />
+))
 const data = [
   {
     id: 'default',

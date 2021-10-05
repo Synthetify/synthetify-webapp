@@ -16,30 +16,44 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& #collateral': {
       padding: '0px 0px 0px 0px'
     },
-    '& #volume': {
+    '& #debt': {
       padding: '0px 0px 0px 24px'
     },
     '& #mint': {
       padding: '24px 12px 24px 0'
     },
-    '& #debt': {
+    '& #volume': {
       padding: '24px 12px 24px 12px'
     },
     '& #fee': {
       padding: '24px 0px 24px 12px'
     },
     [theme.breakpoints.down('sm')]: {
-      '& #volume': {
+      '& #debt': {
         padding: '0px 0px 0px 16px'
       },
       '& #mint': {
         padding: '16px 8px 16px 0'
       },
-      '& #debt': {
+      '& #volume': {
         padding: '16px 8px 16px 8px'
       },
       '& #fee': {
         padding: '16px 0px 16px 8px'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& #debt': {
+        padding: '16px 0px 0px 0px'
+      },
+      '& #mint': {
+        padding: '16px 0px 16px 0px'
+      },
+      '& #volume': {
+        padding: '0px 0px 0px 0px'
+      },
+      '& #fee': {
+        padding: '16px 0px 16px 0px'
       }
     }
   },
@@ -49,9 +63,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     height: '100%',
     '&:last-child': {
-      padding: '8.5px 16px',
+      padding: '4.5px 16px 8.5px 16px',
       [theme.breakpoints.down('sm')]: {
-        padding: '3.5px 8px'
+        padding: '2.5px 8px'
       },
       [theme.breakpoints.down('sm')]: {
         padding: '3px 8px 5px 8px'
@@ -83,21 +97,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardName: {
     ...typography.body1,
-    '&:before': {
-      content: ' ',
-      marginTop: '-3px',
-      display: 'block',
-      height: 0
-    },
+
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('md')]: {
       ...typography.heading4
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle1
-    },
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption4
     }
   },
   cardTime: {
@@ -109,9 +115,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
-    },
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption3
     }
   },
   cardValue: {
@@ -120,7 +123,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '52px',
     textAlign: 'center',
     fontWeight: 800,
-    margin: '12px 0 19px 0',
+    margin: '8px 0 21px 0',
     transition: 'transform 300ms linear, color 300ms linear, box-shadow 300ms linear',
     [theme.breakpoints.down('md')]: {
       margin: '11px 0',
@@ -129,10 +132,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       ...typography.heading3,
       margin: '4px 0'
-    },
-    [theme.breakpoints.down('xs')]: {
-      margin: 0,
-      ...typography.subtitle1
     },
     '&:hover': {
       color: '#7C76DA',
@@ -150,7 +149,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       alignItems: 'center'
     },
     [theme.breakpoints.down('sm')]: {
-      ...typography.caption3
+      ...typography.body4
     }
   },
   collItem: {
