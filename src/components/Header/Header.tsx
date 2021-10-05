@@ -53,7 +53,7 @@ export const Header: React.FC<IHeader> = ({
 
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const routes = ['staking', 'stats', 'exchange', 'swap']
+  const routes = ['staking', 'stats', 'exchange']
   const [activePath, setActive] = React.useState(landing)
 
   const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
