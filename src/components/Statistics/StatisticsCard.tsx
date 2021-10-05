@@ -16,9 +16,14 @@ export const StatisticsCard: React.FC<IProps> = ({ name, value, desc }) => {
       <CardContent classes={{ root: classes.root }}>
         <Grid className={classes.header}>
           <Typography className={classes.cardName}>{name}</Typography>
-          <Typography className={classes.cardTime}>last 24h</Typography>
+          {name === 'Debt' || name === 'Collateral' ? (
+            <Typography className={classes.cardTime}>current</Typography>
+          ) : (
+            <Typography className={classes.cardTime}>last 24h</Typography>
+          )}
         </Grid>
         <Typography className={classes.cardValue}>
+          $
           <AnimatedNumber
             value={value}
             duration={400}

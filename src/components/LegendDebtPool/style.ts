@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '10px',
     marginBottom: '0px',
     height: '100%',
-    paddingTop: '8px'
+    paddingTop: '4px'
   },
   listItemIconName: {
     width: 'fit-content',
@@ -99,7 +99,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemGrid: {
-    padding: '4px 8px'
+    padding: '4px 8px 10px 8px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '2px 8px 6px 8px'
+    }
   },
   legend: {
     width: '100%',
