@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'end'
   },
   optionLabel: {
-    height: '100px'
+    height: '100px',
+    alignContent: 'flex-start'
   },
   buttonSelect: {
     minWidth: 120,
@@ -104,31 +105,34 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     }
   },
-  tvlContainer: {
-    padding: '13px 20px '
+  infoContainer: {
+    padding: '13px  0 0 16px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '5px  0 0 8px'
+    }
   },
-  tvlTitle: {
+  infoTitle: {
     display: 'flex',
     flexDirection: 'row'
   },
-  tvlName: {
+  infoName: {
     ...typography.subtitle2,
     color: colors.navy.grey,
-    paddingRight: '2px',
+    paddingRight: '4px',
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
   },
-  tvlPercent: {
+  infoPercent: {
     ...typography.subtitle2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
   },
-  tvlNumber: {
+  infoNumber: {
     ...typography.heading2,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     [theme.breakpoints.down('sm')]: {
       fontSize: '27px',
       lineHeight: '35px'

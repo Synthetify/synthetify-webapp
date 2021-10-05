@@ -17,8 +17,9 @@ interface Data {
 interface IProps {
   data: Data
   sign: string
+  setTimeActive: (index: number, serieId: string, timestamp: number, value: number) => void
 }
-export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
+export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
   const classes = useStyles()
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp)
@@ -109,6 +110,14 @@ export const LinePlot: React.FC<IProps> = ({ data, sign }) => {
               strokeOpacity: 1
             }
           }
+        }}
+        onMouseMove={event => {
+          setTimeActive(
+            event.index,
+            event.serieId.toString(),
+            Number(event.data.x),
+            Number(event.data.y)
+          )
         }}
       />
     </Grid>
