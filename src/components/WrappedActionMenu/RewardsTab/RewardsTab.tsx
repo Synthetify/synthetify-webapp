@@ -156,8 +156,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   } = [
     {
       name: 'Subscription round',
-      nonBracket: 'points',
-      nonBracketValue: nextRoundPoints,
+      nonBracket: 'SNY',
+      nonBracketValue: nextRoundAmount.val,
       bracketValue: calculateTokensBasedOnPoints(
         nextRoundPoints,
         nextRoundAllPoints,
@@ -171,8 +171,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     },
     {
       name: 'Staking round',
-      nonBracketValue: currentRoundPoints,
-      nonBracket: 'points',
+      nonBracketValue: currentRoundAmount.val,
+      nonBracket: 'SNY',
       bracketValue: calculateTokensBasedOnPoints(
         currentRoundPoints,
         currentRoundAllPoints,
@@ -186,8 +186,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     },
     {
       name: 'Claiming round',
-      nonBracketValue: finishedRoundPoints,
-      nonBracket: 'points',
+      nonBracketValue: finishedRoundAmount.val,
+      nonBracket: 'SNY',
       bracketValue: calculateTokensBasedOnPoints(
         finishedRoundPoints,
         finishedRoundAllPoints,

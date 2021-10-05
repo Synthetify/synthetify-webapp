@@ -60,13 +60,13 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
       {bracket
         ? (
           <>
-            {' ('}
+            {' ( Your reward: '}
             <AnimatedNumber
               value={bracketValue ? transformBN(bracketValue) : new BN(0)}
               duration={300}
               formatValue={(value: string) => Number(value).toFixed(4)}
             />
-            {` ${bracket})`}
+            {` ${bracket} )`}
           </>
         )
         : (
