@@ -4,11 +4,11 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
-    width: 163,
-    height: 180,
-    borderRadius: 8,
+    width: 171,
+    height: 188,
+    borderRadius: 10,
     marginTop: 13,
-    paddingTop: 8,
+    paddingTop: 12,
     [theme.breakpoints.down('md')]: {
       marginTop: 24
     }
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     borderRadius: 8,
     padding: '4px 4px 4px 8px',
-    maxWidth: 147,
+    width: 147,
     height: 52,
     cursor: 'pointer',
     '&:nth-child(2)': {
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       '& $name': {
         ...typography.subtitle1
       },
-      '& $network':{
+      '& $network': {
         color: '#9D9CEE'
       }
     }
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 20,
     display: 'inline',
     float: 'left',
-    margin:'3px 8px 0px 1px',
+    margin: '3px 8px 0px 1px',
     opacity: 0.6
   }
 }))
