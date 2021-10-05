@@ -1,74 +1,129 @@
 import React from 'react'
-import { Grid, CardContent, Card, ButtonGroup, Button, Paper } from '@material-ui/core'
-
+import { Grid, CardContent, Card, Button, Paper, Typography } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import LinePlot from '@components/LinePlot/LinePlot'
-import { data as mockData } from './mockData'
-import { colors } from '@static/theme'
-
 import useStyles from './style'
+import AnimatedNumber from '@components/AnimatedNumber'
+import { formatNumbers, showPrefix } from '@consts/utils'
+import TrendingDownIcon from '@material-ui/icons/TrendingDown'
+import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import TrendingFlatIcon from '@material-ui/icons/TrendingFlat'
 interface Data {
   id: string
-  data: Array<{ x: number; y: number }>
+  points: Array<{ x: number; y: number }>
 }
-
-export const LinePlotContainer: React.FC = () => {
+interface IProp {
+  data: Data[]
+  infoData: {
+    name: string
+    value: number
+    percent: string
+  }
+  menuOption: string
+  setMenuOption: (value: string) => void
+  setTimeActive: (index: number, serieId: string, timestamp: number, value: number) => void
+}
+export const LinePlotContainer: React.FC<IProp> = ({
+  data,
+  infoData,
+  setTimeActive,
+  setMenuOption,
+  menuOption
+}) => {
   const classes = useStyles()
-  const [menuOption, setMenuOption] = React.useState('Volument')
-  const [activeButtonTime, setActiveButtonTime] = React.useState('Y')
-  const [data, setData] = React.useState<Data>(mockData[0])
-  const [dataPlot, setDataPlot] = React.useState<Array<{ x: number; y: number }>>(
-    mockData[0].data.sort((a: { x: number; y: number }, b: { x: number; y: number }) => {
-      return a.x - b.x
-    })
-  )
+
+  const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const changeData = (name: string) => {
-    const value = mockData.findIndex(element => element.id === name)
-
-    setData(mockData[value])
-  }
-
-  const sortData = (type: string) => {
-    const timestamp = Date.now()
-    if (type === 'D') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 86400000
-        })
-      )
-    }
-    if (type === 'W') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 604800000
-        })
-      )
-    }
-    if (type === 'M') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 2629743000
-        })
-      )
-    }
-    if (type === 'Y') {
-      setDataPlot(
-        data.data.filter(element => {
-          return element.x > timestamp - 31556926000
-        })
-      )
+    const value = data.findIndex(element => element.id === name)
+    if (value === undefined) {
+      setDataTmp(data[0])
+    } else {
+      setDataTmp(data[value])
     }
   }
-
+  const formatNumbersUser = (value: string) => {
+    const num = Number(value)
+    if (num < 10000) {
+      return num.toFixed(0)
+    }
+    if (num < 1000000) {
+      return (num / 1000).toFixed(0)
+    }
+    if (num < 1000000000) {
+      return (num / 1000000).toFixed(0)
+    }
+    return (num / 1000000000).toFixed(0)
+  }
   React.useEffect(() => {
-    sortData(activeButtonTime)
-  }, [activeButtonTime, data.data])
-
+    if (menuOption === 'User count') {
+      changeData('userCount')
+    } else {
+      changeData(menuOption.toLowerCase())
+    }
+  }, [data])
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
-        <Grid container item className={classes.optionLabel}>
-          <Grid item lg={8} md={8} xs={5} className={classes.selectContainer}>
+        <Grid className={classes.optionLabel} container item justifyContent='space-between'>
+          <Grid>
+            <Grid className={classes.infoContainer}>
+              <Grid className={classes.infoTitle}>
+                <Typography className={classes.infoName}>{infoData.name}</Typography>
+
+                <Typography
+                  className={classes.infoPercent}
+                  style={{
+                    ...(infoData.percent === 'NaN'
+                      ? { color: '#40BFA0' }
+                      : Number(infoData.percent) >= 0
+                        ? Number(infoData.percent) === 0
+                          ? { color: '#777777' }
+                          : { color: '#40BFA0' }
+                        : { color: '#C52727' }),
+                    display: 'flex',
+                    alignContent: 'center'
+                  }}>
+                  (
+                  {infoData.percent === 'NaN' ? (
+                    <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                  ) : Number(infoData.percent) >= 0 ? (
+                    Number(infoData.percent) === 0 ? (
+                      <TrendingFlatIcon
+                        style={{ marginTop: 'auto', padding: 0, fontSize: '1.25em' }}
+                      />
+                    ) : (
+                      <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                    )
+                  ) : (
+                    <TrendingDownIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                  )}
+                  {infoData.percent !== 'NaN' ? (
+                    <>
+                      <AnimatedNumber
+                        value={infoData.percent}
+                        duration={300}
+                        formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
+                      />
+                      %
+                    </>
+                  ) : (
+                    <Typography className={classes.infoPercent}>{infoData.percent}</Typography>
+                  )}
+                  )
+                </Typography>
+              </Grid>
+              <Typography className={classes.infoNumber}>
+                {menuOption !== 'User count' ? '$' : ''}
+                <AnimatedNumber
+                  value={infoData.value.toString()}
+                  duration={300}
+                  formatValue={menuOption !== 'User count' ? formatNumbers : formatNumbersUser}
+                />
+                {showPrefix(infoData.value)}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item className={classes.selectContainer}>
             <Grid className={classes.hoverGrid}>
               <Button
                 className={classes.buttonSelect}
@@ -82,16 +137,16 @@ export const LinePlotContainer: React.FC = () => {
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
-                      setMenuOption('Volument')
-                      changeData('Volument')
+                      setMenuOption('Volume')
+                      changeData('volume')
                     }}>
-                    Volument
+                    Volume
                   </Button>
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Liquidation')
-                      changeData('Liquidation')
+                      changeData('liquidation')
                     }}>
                     Liquidation
                   </Button>
@@ -99,7 +154,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Mint')
-                      changeData('Mint')
+                      changeData('mint')
                     }}>
                     Mint
                   </Button>
@@ -107,7 +162,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('Burn')
-                      changeData('Burn')
+                      changeData('burn')
                     }}>
                     Burn
                   </Button>
@@ -115,7 +170,7 @@ export const LinePlotContainer: React.FC = () => {
                     className={classes.optionItem}
                     onClick={() => {
                       setMenuOption('User count')
-                      changeData('User count')
+                      changeData('userCount')
                     }}>
                     User count
                   </Button>
@@ -123,52 +178,12 @@ export const LinePlotContainer: React.FC = () => {
               </Paper>
             </Grid>
           </Grid>
-          <Grid container item lg={4} md={4} xs={7} justifyContent='flex-end'>
-            <ButtonGroup className={classes.buttonContainer}>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'D'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('D')}>
-                D
-              </Button>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'W'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('W')}>
-                W
-              </Button>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'M'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('M')}>
-                M
-              </Button>
-              <Button
-                style={{
-                  ...(activeButtonTime === 'Y'
-                    ? { color: colors.navy.veryLightGrey }
-                    : { color: colors.navy.grey })
-                }}
-                className={classes.buttonOption}
-                onClick={() => setActiveButtonTime('Y')}>
-                Y
-              </Button>
-            </ButtonGroup>
-          </Grid>
         </Grid>
-        <LinePlot data={{ id: data.id, data: dataPlot }} />
+        <LinePlot
+          data={{ id: dataTmp.id, data: dataTmp.points }}
+          sign={dataTmp.id === 'userCount' ? '' : '$'}
+          setTimeActive={setTimeActive}
+        />
       </CardContent>
     </Card>
   )

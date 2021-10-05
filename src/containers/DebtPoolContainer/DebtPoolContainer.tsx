@@ -32,12 +32,13 @@ export const DebtPoolContainer: React.FC<IProps> = () => {
     }
   })
   const classes = useStyles()
+
   return (
     <Grid className={classes.container}>
       <Grid className={classes.debtcontainer}>
         <DebtPool
           title='Debt pool'
-          subTitle='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+          subTitle='Chart of total debt&apos;s percentage share for each available synthetic asset'
           data={SyntheticData}
         />
       </Grid>

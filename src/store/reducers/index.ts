@@ -7,17 +7,18 @@ import { reducer as solanaConnectionReducer, solanaConnectionSliceName } from '.
 import { reducer as uiReducer, uiSliceName } from './ui'
 import { reducer as exhcangeReducer, exchangeSliceName } from './exchange'
 import { reducer as stakingReducer, stakingSliceName } from './staking'
-import { SolanaNetworks } from '@consts/static'
+import { reducer as statsReducer, statsSliceName } from './stats'
+import { NetworkType } from '@consts/static'
 
 const transformNetwork = createTransform(
   (inboundState: any, _key) => {
     return inboundState
   },
   (outboundState, _key) => {
-    if (Object.values(SolanaNetworks).includes(outboundState)) {
+    if (Object.values(NetworkType).includes(outboundState)) {
       return outboundState
     } else {
-      return SolanaNetworks.DEV
+      return NetworkType.MAINNET
     }
   }
 )
@@ -34,6 +35,7 @@ const combinedReducers = combineReducers({
   [solanaConnectionSliceName]: persistReducer(connectionPersistConfig, solanaConnectionReducer),
   [exchangeSliceName]: exhcangeReducer,
   [solanaWalletSliceName]: solanaWalletReducer,
-  [stakingSliceName]: stakingReducer
+  [stakingSliceName]: stakingReducer,
+  [statsSliceName]: statsReducer
 })
 export default combinedReducers

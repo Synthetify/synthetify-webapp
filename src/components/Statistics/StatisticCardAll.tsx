@@ -1,51 +1,42 @@
-import {
-  Grid
-} from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
-import {
-  StatisticsCard
-} from './StatisticsCard'
+import { StatisticsCard } from './StatisticsCard'
+interface Props {
+  collateral: number
+  volume: number
+  mint: number
+  debt: number
+  fee: number
+}
 
-export const StatisticCardAll: React.FC = () => {
+interface IProp {
+  data: Props
+}
+
+export const StatisticCardAll: React.FC<IProp> = ({ data }) => {
   const classes = useStyles()
   return (
     <div className={classes.gridContainer}>
-      <Grid container spacing={2} className={classes.container}>
-        <Grid item xs={7}>
+      <Grid container className={classes.container}>
+        <Grid id='collateral' item xs={12} sm={7}>
           <StatisticsCard
-            name="Collateral"
-            value="23450456"
-            desc="Lorem ipsum dolor sit amet consectetur"
+            name='Collateral'
+            value={data.collateral}
+            desc={'Total value deposited'}
           />
         </Grid>
-        <Grid item xs={5}>
-          <StatisticsCard
-            name="Volume"
-            value="4456000"
-            desc="Lorem ipsum dolor sit amet, consectetur"
-          />
+        <Grid id='debt' item xs={12} sm={5}>
+          <StatisticsCard name='Debt' value={data.debt} desc={'Total debt owed'} />
         </Grid>
-        <Grid item xs>
-          <StatisticsCard
-            name="Mint"
-            value={'450000'}
-            desc={'Lorem ipsum dolor sit amet.'}
-          />
+        <Grid id='mint' item xs={12} sm={4}>
+          <StatisticsCard name='Mint' value={data.mint} desc={'Value minted'} />
         </Grid>
-        <Grid item xs={4} sm={5}>
-          <StatisticsCard
-            name="Debt"
-            value={'24456000'}
-            desc={'Lorem ipsum dolor sit amet,consectetur'}
-          />
+        <Grid id='volume' item xs={12} sm={5}>
+          <StatisticsCard name='Volume' value={data.volume} desc={'Exchange volume'} />
         </Grid>
-        <Grid item xs>
-          <StatisticsCard
-            name="Fee"
-            value={'450000'}
-            desc={'Lorem ipsum dolor sit amet.'}
-          />
+        <Grid id='fee' item xs={12} sm={3}>
+          <StatisticsCard name='Fee' value={data.fee} desc={'Fee collected '} />
         </Grid>
       </Grid>
     </div>

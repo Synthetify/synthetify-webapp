@@ -9,6 +9,7 @@ import HeaderButton from './HeaderButton'
 import SelectNetworkButton from './SelectNetworkButton'
 import ChangeWalletButton from './ChangeWalletButton'
 import { WalletType } from '@web3/wallet'
+import { NetworkType, SolanaNetworks } from '@consts/static'
 
 const loremIpsum =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
@@ -22,7 +23,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('selectWallet', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET]} name='Open Dropdown' connected={false} onSelect={(chosen) => action(`chosen: ${chosen}`)()} onDisconnect={action('disconnect')} />
+      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]} name='Open Dropdown' connected={false} onSelect={(chosen) => action(`chosen: ${chosen}`)()} onDisconnect={action('disconnect')} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
@@ -31,7 +32,7 @@ storiesOf('buttons/HeaderButton', module)
   ))
   .add('withDisconnect', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET]} name='Open Dropdown' connected={true} onSelect={(chosen) => action(`chosen: ${chosen}`)()} onDisconnect={action('disconnect')} />
+      <ChangeWalletButton options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]} name='Open Dropdown' connected={true} onSelect={(chosen) => action(`chosen: ${chosen}`)()} onDisconnect={action('disconnect')} />
       <br />
       <div id={toBlur} style={{ color: '#00F9BB' }}>
         <Typography variant='body2'>{loremIpsum}</Typography>
@@ -43,8 +44,8 @@ storiesOf('buttons/HeaderButton', module)
       <SelectNetworkButton
         name='Mainnet'
         networks={[
-          { name: 'testnet', network: 'https://api.solana.com/' },
-          { name: 'localnet', network: 'https://127.0.0.1:8898/' }
+          { name: NetworkType.TESTNET, network: SolanaNetworks.TEST },
+          { name: NetworkType.LOCALNET, network: SolanaNetworks.LOCAL }
         ]}
         onSelect={(chosen: string) => action(`chosen: ${chosen}`)()}
       />

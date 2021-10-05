@@ -1,10 +1,9 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import { typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
-    fontSize: 16,
-    lineHeight: '16px',
-    fontWeight: 700,
+    ...typography.subtitle1,
     marginBottom: 10
   },
   icon: {
@@ -19,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   clockIcon: {
     width: 16,
     height: 16,
-    float: 'right'
+    float: 'right',
+    marginTop: 6
   },
   tooltipPlacementLeft: {
     marginRight: 16

@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   amountInput: {
@@ -8,19 +8,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     paddingInline: 10,
     height: 56,
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 600,
-    minWidth: 148,
+    width: '100%',
 
     [theme.breakpoints.down('xs')]: {
       height: 48,
-      fontSize: 13,
+      ...typography.subtitle2,
       paddingInline: 8,
       borderRadius: 6
     }
   },
   maxButton: {
-    fontSize: 15,
+    ...typography.subtitle1,
     width: 64,
     height: 36,
     borderRadius: 5,
@@ -34,9 +34,22 @@ const useStyles = makeStyles((theme: Theme) => ({
       minWidth: 48,
       width: 48,
       height: 32,
-      fontSize: 13,
+      ...typography.body3,
       padding: 0
     }
+  },
+  select: {
+    marginRight: 24,
+
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 16
+    }
+  },
+  input: {
+    paddingTop: 4
+  },
+  label: {
+    top: -1
   }
 }))
 

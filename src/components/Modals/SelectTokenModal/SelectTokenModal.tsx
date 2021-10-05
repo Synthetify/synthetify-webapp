@@ -5,7 +5,7 @@ import { Search } from '@material-ui/icons'
 import CustomScrollbar from './CustomScrollbar'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
-import { printBN, showMorK } from '@consts/utils'
+import { printBN, showPrefix } from '@consts/utils'
 export interface ISelectTokenModal {
   tokens: Array<{ symbol: string; balance?: BN; decimals?: number }>
   open: boolean
@@ -121,6 +121,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     key={`tokens-${token.symbol}`}
                     className={classes.tokenItem}
                     alignItems='center'
+                    wrap='nowrap'
                     onClick={() => {
                       onSelect(token.symbol)
                       handleClose()
@@ -131,7 +132,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                         image={icons[token.symbol] ?? icons.SNY}
                       />{' '}
                     </Grid>
-                    <Grid item>
+                    <Grid item className={classes.tokenData}>
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
                         {descrpitionForSymbol[token.symbol] ?? 'Asset'}
@@ -141,7 +142,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                       <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
                         <Typography className={classes.tokenBalance}>
                           Balance: {formatNumbers(printBN(token.balance, token.decimals))}
-                          {showMorK(+printBN(token.balance, token.decimals))}
+                          {showPrefix(+printBN(token.balance, token.decimals))}
                         </Typography>
                       </Grid>
                     ) : null}

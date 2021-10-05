@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
-import { printBNtoBN, printBN, showMorK } from '@consts/utils'
+import { printBNtoBN, printBN, showPrefix } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { CardMedia, Divider, Grid, Typography, useMediaQuery } from '@material-ui/core'
 import Swap from '@static/svg/swap.svg'
@@ -17,9 +17,8 @@ import { docs, pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
-import SelectToken from '@components/Inputs/SelectToken/SelectToken'
-import AmountWithMaxInput from '@components/Inputs/AmountWithMaxInput/AmountWithMaxInput'
 import useStyles from './style'
+import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -167,19 +166,23 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   const formatExchangeRateOnXs = (value: string) => {
     const num = Number(value)
 
-    if (num < 100) {
-      return num.toFixed(6)
+    if (num < 1) {
+      return num.toFixed(5)
     }
 
-    if (num < 10000) {
+    if (num < 10) {
       return num.toFixed(4)
     }
 
-    if (num < 100000) {
+    if (num < 1000) {
       return num.toFixed(2)
     }
 
-    return num.toFixed(1)
+    if (num < 10000) {
+      return num.toFixed(1)
+    }
+
+    return num.toFixed(0)
   }
 
   const getButtonMessage = (
@@ -281,42 +284,35 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           </Typography>
         </Grid>
 
-        <Grid item container wrap='nowrap' alignItems='center'>
-          <SelectToken
-            tokens={tokens.map(({ symbol, balance, supply }) => ({
-              symbol,
-              balance,
-              decimals: supply.scale
-            }))}
-            current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
-            centered={true}
-            onSelect={(chosen: string) =>
-              setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+        <ExchangeAmountInput
+          value={amountFrom}
+          setValue={value => {
+            if (value.match(/^\d*\.?\d*$/)) {
+              setAmountFrom(value)
+              updateEstimatedAmount(value)
             }
-          />
-
-          <AmountWithMaxInput
-            value={amountFrom}
-            setValue={value => {
-              if (value.match(/^\d*\.?\d*$/)) {
-                setAmountFrom(value)
-                updateEstimatedAmount(value)
-              }
-            }}
-            placeholder={'0.0'}
-            className={classes.input}
-            onMaxClick={() => {
-              if (tokenFromIndex !== null) {
-                setAmountFrom(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-                updateEstimatedAmount(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-              }
-            }}
-          />
-        </Grid>
+          }}
+          placeholder={'0.0'}
+          onMaxClick={() => {
+            if (tokenFromIndex !== null) {
+              setAmountFrom(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+              updateEstimatedAmount(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+            }
+          }}
+          tokens={tokens.map(({ symbol, balance, supply }) => ({
+            symbol,
+            balance,
+            decimals: supply.scale
+          }))}
+          current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
+          onSelect={(chosen: string) =>
+            setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+          }
+        />
       </Grid>
 
       <Grid item container direction='row' justifyContent='center'>
@@ -363,7 +359,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                     Output amount is calculated based on the most up-to-date data from price
                     oracles, so it can change due to the sub-second update intervals of the oracles.
                   </p>
-                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>Find out more about oracles on</p>
+                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>
+                    Find out more about oracles on
+                  </p>
                   <a
                     href={pyth}
                     className={classes.tooltipLink}
@@ -376,6 +374,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
               anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
               mobilePlacement='top-end'
               desktopPlacement='top-end'
+              tooltipClasses={{ tooltip: classes.noMarginTop }}
               isInteractive
             />
           </Grid>
@@ -388,7 +387,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   duration={300}
                   formatValue={formatNumbers}
                 />
-                {showMorK(
+                {showPrefix(
                   +printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].supply.scale)
                 )}
                 {` ${tokens[tokenToIndex].symbol}`}
@@ -399,45 +398,38 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           </Typography>
         </Grid>
 
-        <Grid item container wrap='nowrap' alignItems='center'>
-          <SelectToken
-            tokens={tokens.map(({ symbol, balance, supply }) => ({
-              symbol,
-              balance,
-              decimals: supply.scale
-            }))}
-            current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
-            centered={true}
-            onSelect={(chosen: string) => {
-              const index = tokens.findIndex(t => t.symbol === chosen) ?? null
-              setTokenToIndex(index)
-              onSelectTokenTo(index)
-              setTimeout(() => updateEstimatedAmount(), 0)
-            }}
-          />
-
-          <AmountWithMaxInput
-            value={amountTo}
-            setValue={value => {
-              if (value.match(/^\d*\.?\d*$/)) {
-                setAmountTo(value)
-                updateFromEstimatedAmount(value)
-              }
-            }}
-            placeholder={'0.0'}
-            className={classes.input}
-            onMaxClick={() => {
-              if (tokenFromIndex !== null && tokenToIndex !== null) {
-                setAmountFrom(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-                updateEstimatedAmount(
-                  printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
-                )
-              }
-            }}
-          />
-        </Grid>
+        <ExchangeAmountInput
+          value={amountTo}
+          setValue={value => {
+            if (value.match(/^\d*\.?\d*$/)) {
+              setAmountTo(value)
+              updateFromEstimatedAmount(value)
+            }
+          }}
+          placeholder={'0.0'}
+          onMaxClick={() => {
+            if (tokenFromIndex !== null && tokenToIndex !== null) {
+              setAmountFrom(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+              updateEstimatedAmount(
+                printBN(tokens[tokenFromIndex].balance, tokens[tokenFromIndex].supply.scale)
+              )
+            }
+          }}
+          tokens={tokens.map(({ symbol, balance, supply }) => ({
+            symbol,
+            balance,
+            decimals: supply.scale
+          }))}
+          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
+          onSelect={(chosen: string) => {
+            const index = tokens.findIndex(t => t.symbol === chosen) ?? null
+            setTokenToIndex(index)
+            onSelectTokenTo(index)
+            updateEstimatedAmount()
+          }}
+        />
       </Grid>
       <Grid container item className={classes.numbersField}>
         <Grid item>
@@ -450,12 +442,16 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
                   <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
                     You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
-                    Your current discount on the fee is <b>{discountPercent ?? 0}%</b>.
+                    Your current discount on the fee is{' '}
+                    <b className={classes.tooltipBold}>{discountPercent ?? 0}%</b>.
                     {typeof nextDiscountThreshold !== 'undefined' && (
                       <>
                         {' '}
                         You can lower your fee by depositing{' '}
-                        <b>{+nextDiscountThreshold.toFixed(3)} SNY</b> more.
+                        <b className={classes.tooltipBold}>
+                          {+nextDiscountThreshold.toFixed(3)} SNY
+                        </b>{' '}
+                        more.
                       </>
                     )}
                   </p>

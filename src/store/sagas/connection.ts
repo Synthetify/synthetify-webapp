@@ -2,7 +2,7 @@ import { all, call, put, SagaGenerator, select, takeLeading, spawn, delay } from
 
 import { actions, Status, PayloadTypes } from '@reducers/solanaConnection'
 import { actions as uiActions } from '@reducers/ui'
-import { getSolanaConnection, networkToName } from '@web3/connection'
+import { getNetworkFromType, getSolanaConnection } from '@web3/connection'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { network } from '@selectors/solanaConnection'
 import { Connection } from '@solana/web3.js'
@@ -11,7 +11,7 @@ import { pullExchangeState } from './exchange'
 
 export function* getConnection(): SagaGenerator<Connection> {
   const currentNetwork = yield* select(network)
-  const connection = yield* call(getSolanaConnection, currentNetwork)
+  const connection = yield* call(getSolanaConnection, getNetworkFromType(currentNetwork))
   return connection
 }
 
@@ -61,14 +61,14 @@ export function* handleNetworkChange(action: PayloadAction<PayloadTypes['setNetw
   yield* put(
     uiActions.setLoader({
       open: true,
-      message: `Loading ${networkToName(action.payload)} wallet.`
+      message: `Loading ${action.payload} wallet.`
     })
   )
   yield* delay(1000)
   window.location.reload()
   yield* put(
     snackbarsActions.add({
-      message: `You are on ${networkToName(action.payload)} network.`,
+      message: `You are on ${action.payload} network.`,
       variant: 'info',
       persist: false
     })

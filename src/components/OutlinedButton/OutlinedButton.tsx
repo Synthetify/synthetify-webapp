@@ -14,6 +14,7 @@ export interface IProps {
   startIcon?: JSX.Element
   fontWeight?: FontWeightProperty
   padding?: PaddingProperty<number>
+  labelClassName?: string
 }
 
 export const OutlinedButton: React.FC<IProps> = ({
@@ -25,7 +26,8 @@ export const OutlinedButton: React.FC<IProps> = ({
   disabled = false,
   startIcon,
   fontWeight = 'bold',
-  padding
+  padding,
+  labelClassName
 }) => {
   const classes = useStyles()
   return (
@@ -33,7 +35,7 @@ export const OutlinedButton: React.FC<IProps> = ({
       className={classNames(classes.general, className)}
       variant='contained'
       color={color}
-      classes={{ disabled: classes.disabled }}
+      classes={{ disabled: classes.disabled, label: classNames(classes.label, labelClassName) }}
       disabled={disabled}
       type={onClick ? 'button' : 'submit'}
       startIcon={startIcon}

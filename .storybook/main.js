@@ -29,7 +29,8 @@ module.exports = {
       '@reducers': resolve('src/store/reducers'),
       '@selectors': resolve('src/store/selectors'),
       '@sagas': resolve('src/store/sagas'),
-      '@consts': resolve('src/store/consts')
+      '@consts': resolve('src/store/consts'),
+      '@store': resolve('src/store')
     })
     config.define = { 'process.env.NODE_DEBUG': 'false' }
     // return the customized config

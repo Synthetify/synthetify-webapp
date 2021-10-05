@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,9 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   title: {
-    fontSize: 32,
-    fontWeight: 700,
-    lineHeight: '40px',
+    ...typography.heading1,
     color: colors.navy.veryLightGrey,
     marginBottom: 16
   },
@@ -56,6 +54,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       marginTop: 16
     }
+  },
+  '@keyframes slide': {
+    from: {
+      transform: 'translateX(50px)'
+    },
+    to: {
+      transform: 'translateX(0px)'
+    }
+  },
+  slide: {
+    animation: '$slide .2s'
   }
 }))
 

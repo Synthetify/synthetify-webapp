@@ -4,18 +4,18 @@ import { colors } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.background,
-    paddingTop: 22,
-    paddingBottom: 60,
+    paddingTop: 32,
+    paddingBottom: 48,
     [theme.breakpoints.up('sm')]: {
-      paddingBottom: 48
+      paddingTop: 29,
+      paddingBottom: 36
     },
     [theme.breakpoints.up('md')]: {
-      paddingTop: 55,
-      paddingBottom: 29
+      paddingTop: 64,
+      paddingBottom: 45
     },
     [theme.breakpoints.up('lg')]: {
-      paddingTop: 80,
-      paddingBottom: 77
+      paddingBottom: 124
     }
   },
   innerWrapper: {
@@ -24,27 +24,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   pageRow: {
     '&:not(:last-child)': {
-      marginBottom: 20
+      marginBottom: 24
     },
     [theme.breakpoints.up('sm')]: {
-      flexWrap: 'nowrap',
-      '&:not(:last-child)': {
-        marginBottom: 30
-      }
+      flexWrap: 'nowrap'
     }
   },
-  statsTile: {
-    marginBottom: 20,
-    '&:last-child': {
-      marginBottom: 0
+  '@keyframes slide': {
+    from: {
+      transform: 'translateX(50px)'
     },
-    [theme.breakpoints.up('md')]: {
-      marginLeft: 30,
-      marginBottom: 0,
-      '&:first-child': {
-        marginLeft: 0
-      }
+    to: {
+      transform: 'translateX(0px)'
     }
+  },
+  slide: {
+    animation: '$slide .2s'
   }
 }))
 

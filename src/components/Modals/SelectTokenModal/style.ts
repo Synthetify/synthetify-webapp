@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { colors } from '@static/theme'
+import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   popover: {
@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       marginTop: 'calc(50vh - 213px)',
-      marginLeft: 'calc(50vw - 189px)'
+      marginLeft: 'calc(50vw - 179px)'
     }
   },
   root: {
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: 372,
       paddingInline: 10,
       paddingBottom: 10
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
     }
   },
   tokenList: {
@@ -58,24 +61,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenName: {
     color: colors.navy.veryLightGrey,
-    fontSize: 28,
-    lineHeight: '28px',
-    marginBottom: 5,
-
-    [theme.breakpoints.down('md')]: {
-      fontSize: 25,
-      lineHeight: '25px'
-    }
+    ...typography.heading3
+  },
+  tokenData: {
+    position: 'relative',
+    top: -2
   },
   tokenDescrpiption: {
     color: colors.navy.grey,
-    fontSize: 14,
-    lineHeight: '14px',
-
-    [theme.breakpoints.down('md')]: {
-      fontSize: 12,
-      lineHeight: '12px'
-    }
+    ...typography.body4,
+    position: 'relative',
+    top: -4,
+    whiteSpace: 'nowrap'
   },
   tokenIcon: {
     width: 48,
@@ -90,12 +87,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tokenBalance: {
-    fontSize: 18,
+    ...typography.subtitle2,
     color: colors.navy.grey,
-
-    [theme.breakpoints.down('md')]: {
-      fontSize: 15
-    }
+    whiteSpace: 'nowrap'
   },
   searchIcon: {
     color: colors.navy.grey,
@@ -105,12 +99,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.dark,
     color: colors.navy.grey,
     height: 46,
-    lineHeight: 40,
     paddingLeft: 16,
-    fontSize: 22,
     borderRadius: 10,
     width: '100%',
-    marginBottom: 20
+    marginBottom: 20,
+    ...typography.body2
   },
   hideScroll: {
     '& > *:first-child': {
@@ -137,6 +130,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       maxWidth: 372
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
     }
   },
   clearIcon: {

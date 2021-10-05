@@ -1,17 +1,17 @@
 import React from 'react'
 import { Typography, Popover, Grid } from '@material-ui/core'
+import { NetworkType, SolanaNetworks } from '@consts/static'
+import icons from '@static/icons'
 import useStyles from './style'
-import { SolanaNetworks } from '@consts/static'
-
 export interface ISelectNetwork {
-  name: 'Devnet' | 'Testnet' | 'Mainnet' | 'Localnet'
+  name: NetworkType
   network: SolanaNetworks
 }
 export interface ISelectNetworkModal {
   networks: ISelectNetwork[]
   open: boolean
   anchorEl: HTMLButtonElement | null
-  onSelect: (wallet: SolanaNetworks) => void
+  onSelect: (wallet: NetworkType) => void
   handleClose: () => void
 }
 export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
@@ -44,9 +44,10 @@ export const SelectNetwork: React.FC<ISelectNetworkModal> = ({
             key={`networks-${name}`}
             className={classes.listItem}
             onClick={() => {
-              onSelect(network)
+              onSelect(name)
               handleClose()
             }}>
+            <img className={classes.icon} src={icons[name]} alt={`${name} icon}`} />
             <Typography className={classes.name}>{name}</Typography>
             <Typography className={classes.network}>{network}</Typography>
           </Grid>
