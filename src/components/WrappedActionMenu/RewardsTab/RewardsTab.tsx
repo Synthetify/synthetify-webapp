@@ -4,7 +4,6 @@ import { divUpNumber } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
-import { syntheticAccountsArray } from '@selectors/solanaWallet'
 import BN from 'bn.js'
 import useStyles from './style'
 import { useSelector } from 'react-redux'
@@ -145,12 +144,28 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     }
     return roundPoints.mul(amount.val).div(allPoints)
   }
-  const APR: BN =
+  const APRNext: BN =
   !stakedUserValue.eq(new BN(0))
     ? (calculateTokensBasedOnPoints(
       nextRoundPoints,
       nextRoundAllPoints,
       nextRoundAmount
+    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
+
+  const APRCurrent: BN =
+  !stakedUserValue.eq(new BN(0))
+    ? (calculateTokensBasedOnPoints(
+      currentRoundPoints,
+      currentRoundAllPoints,
+      currentRoundAmount
+    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
+
+  const APRFinished: BN =
+  !stakedUserValue.eq(new BN(0))
+    ? (calculateTokensBasedOnPoints(
+      finishedRoundPoints,
+      finishedRoundAllPoints,
+      finishedRoundAmount
     ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
 
   const rewardsLines: {
@@ -174,7 +189,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         nextRoundAllPoints,
         nextRoundAmount
       ),
-      bracketValue: APR,
+      bracketValue: APRNext,
       bracket: nextRoundPoints.eqn(0) ? '' : '%',
       hint: 'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
@@ -183,9 +198,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     },
     {
       name: 'Staking round',
-      nonBracketValue: currentRoundAmount.val,
+      nonBracketValue: calculateTokensBasedOnPoints(
+        currentRoundPoints,
+        currentRoundAllPoints,
+        currentRoundAmount
+      ),
       nonBracket: 'SNY',
-      bracketValue: APR,
+      bracketValue: APRCurrent,
       bracket: currentRoundPoints.eqn(0) ? '' : '%',
       hint: 'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
@@ -194,9 +213,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     },
     {
       name: 'Claiming round',
-      nonBracketValue: finishedRoundAmount.val,
+      nonBracketValue: calculateTokensBasedOnPoints(
+        finishedRoundPoints,
+        finishedRoundAllPoints,
+        finishedRoundAmount
+      ),
       nonBracket: 'SNY',
-      bracketValue: APR,
+      bracketValue: APRFinished,
       bracket: finishedRoundPoints.eqn(0) ? '' : '%',
       hint: 'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
       timeRemainingEndSlot: nextRoundStartSlot,
