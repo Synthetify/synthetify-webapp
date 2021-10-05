@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingInline: 10,
     height: 56,
     fontSize: 24,
-    fontWeight: 500,
+    fontWeight: 600,
     width: '100%',
 
     [theme.breakpoints.down('xs')]: {

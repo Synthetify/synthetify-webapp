@@ -2,9 +2,6 @@ import React from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { Grid, CardMedia, IconButton, Divider, Hidden, Button, useMediaQuery } from '@material-ui/core'
 import { MoreHoriz, Menu } from '@material-ui/icons'
-import PhantomIcon from '@static/svg/phantom.svg'
-import SolletIcon from '@static/svg/sollet.svg'
-import MathIcon from '@static/svg/MathWallet.svg'
 import snyIcon from '@static/svg/logo-ic-nav.svg'
 import NavbarButton from '@components/Navbar/Button'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
@@ -16,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
 import { theme } from '@static/theme'
 import useButtonStyles from '../HeaderButton/style'
+import icons from '@static/icons'
 import useStyles from './style'
 
 export interface IHeader {
@@ -54,6 +52,13 @@ export const Header: React.FC<IHeader> = ({
   React.useEffect(() => { // if there will be no redirects, get rid of this
     setActive(landing)
   }, [landing])
+
+  const names = {
+    [WalletType.PHANTOM]: 'phantom',
+    [WalletType.SOLLET]: 'sollet',
+    [WalletType.MATH]: 'math wallet',
+    [WalletType.SOLFLARE]: 'solflare'
+  }
 
   return (
     <>
@@ -106,7 +111,7 @@ export const Header: React.FC<IHeader> = ({
             ? (
               <ChangeWalletButton
                 name={isSmDown ? 'My wallet' : 'Connect'}
-                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]}
+                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH, WalletType.SOLFLARE]}
                 onSelect={onWalletSelect}
                 connected={walletConnected}
                 onDisconnect={onDisconnectWallet}
@@ -116,22 +121,14 @@ export const Header: React.FC<IHeader> = ({
             : (
               <ChangeWalletButton
                 name={`${address.toString().substr(0, isSmDown ? 2 : 6)}...${address.toString().substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
-                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]}
+                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH, WalletType.SOLFLARE]}
                 onSelect={onWalletSelect}
                 connected={walletConnected}
                 hideArrow={isSmDown}
                 onDisconnect={onDisconnectWallet}
-                startIcon={
-                  typeOfWallet === WalletType.PHANTOM
-                    ? (
-                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                    )
-                    : typeOfWallet === WalletType.SOLLET
-                      ? (
-                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                      )
-                      : <CardMedia className={classes.connectedWalletIcon} image={MathIcon} />
-                }
+                startIcon={(
+                  <CardMedia className={classes.connectedWalletIcon} image={icons[names[typeOfWallet]]} />
+                )}
               />
             )}
         </Grid>

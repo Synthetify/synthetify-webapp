@@ -6,12 +6,18 @@ import linkedin from '@static/svg/linkedin-circle.svg'
 import github from '@static/svg/github-circle.svg'
 import discord from '@static/svg/discord-circle.svg'
 import twitter from '@static/svg/twitter-circle.svg'
-
+import telegram from '@static/svg/telegram-circle.svg'
 const Icons = () => {
   const classes = useStyles()
 
   return (
     <>
+      <img
+        src={telegram}
+        alt={'telegram'}
+        className={classes.socialMedia}
+        onClick={() => window.open(social.telegram)}
+      />
       <img
         src={github}
         alt={'github'}

@@ -20,8 +20,11 @@ import WSOLIcon from './icons/wsol.svg'
 import phantomIcon from './svg/phantom.svg'
 import solletIcon from './svg/sollet.svg'
 import mathIcon from './svg/MathWallet.svg'
+import solflareIcon from './svg/solflare.svg'
 import clearIcon from './svg/clear.svg'
-
+import mainnet from './svg/mainnet.svg'
+import devnet from './svg/devnet.svg'
+import testnet from './svg/testnet.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -46,7 +49,11 @@ const icons: { [key: string]: string } = {
   phantom: phantomIcon,
   sollet: solletIcon,
   'math wallet': mathIcon,
-  clear: clearIcon
+  solflare: solflareIcon,
+  clear: clearIcon,
+  Mainnet: mainnet,
+  Devnet: devnet,
+  Testnet: testnet
 }
 
 export default icons

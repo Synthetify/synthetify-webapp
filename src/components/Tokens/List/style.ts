@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey
   },
   emptyTokens: {
+    borderRadius: 10,
     paddingBlock: 20,
     textAlign: 'center',
     ...typography.body2,
