@@ -9,7 +9,9 @@ import {
   xUSDAddress,
   userStaking,
   staking,
-  userDebtShares
+  userDebtShares,
+  stakedValue,
+  getSNYPrice
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
@@ -44,6 +46,8 @@ export const ActionMenuContainer: React.FC = () => {
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
   const walletStatus = useSelector(status)
+  const stakedUserValue = useSelector(stakedValue)
+  const SNYPrice = useSelector(getSNYPrice)
 
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
@@ -103,6 +107,8 @@ export const ActionMenuContainer: React.FC = () => {
       burnState={burnState}
       stakingData={{
         ...userStakingState,
+        stakedUserValue: stakedUserValue,
+        SNYPrice: SNYPrice,
         slot: slotState,
         roundLength: stakingState.roundLength,
         userDebtShares: userDebtSharesState,

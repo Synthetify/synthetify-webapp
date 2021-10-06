@@ -305,8 +305,14 @@ export const getCollateralValue = createSelector(collaterals, assets, (allColate
   return +transformBN(totalVal)
 })
 
-export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, assets) =>
-  assets[Object.values(allColaterals)[0].assetIndex].price
-)
+export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, assets) => {
+  const snyIndex = Object.values(allColaterals)[0]?.assetIndex
+  return typeof snyIndex !== 'undefined'
+    ? assets[snyIndex].price
+    : {
+      val: new BN(0),
+      scale: 6
+    }
+})
 
 export default exchangeSelectors
