@@ -13,12 +13,13 @@ import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import Output from '@static/svg/output.svg'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
 import RedExclamationMark from '@static/svg/redExclamationMark.svg'
-import { docs, pyth } from '@static/links'
+import { pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
-import useStyles from './style'
+import useStyles from '../style'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
+import { SwaplinePair, SwaplineSwapType } from '../tmpConsts'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -78,21 +79,19 @@ export const swapOutAmountCurrencyName = (
     : `${secondSymbol} ${per} ${firstSymbol}`
 }
 
-export interface IExchangeComponent {
+export interface ISwaplineComponent {
+  pairs: SwaplinePair[]
   tokens: ExchangeTokensWithBalance[]
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
   fee: Decimal
-  discountPercent?: number
-  nextDiscountThreshold?: number
-  onSelectTokenTo: (index: number | null) => void
+  onSelectPair: (index: number | null) => void
 }
-export const ExchangeComponent: React.FC<IExchangeComponent> = ({
+export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
   tokens,
+  pairs,
   onSwap,
   fee,
-  discountPercent,
-  nextDiscountThreshold,
-  onSelectTokenTo
+  onSelectPair
 }) => {
   const classes = useStyles()
 
@@ -102,6 +101,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     tokens.length ? 0 : null
   )
   const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
+
+  const [pairIndex, setPairIndex] = React.useState<number | null>(null)
+  const [swapType, setSwapType] = React.useState<SwaplineSwapType>('nativeToSynthetic')
   const [amountFrom, setAmountFrom] = React.useState<string>('')
   const [amountTo, setAmountTo] = React.useState<string>('')
   const [isReversed, setIsReversed] = React.useState<boolean>(false)
@@ -256,7 +258,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           justifyContent='space-between'
           alignItems='center'
           className={classes.tokenComponentInfo}>
-          <Typography className={classes.tokenComponentText}>From</Typography>
+          <Typography className={classes.tokenComponentText}>You send</Typography>
           <Typography className={classes.tokenMaxText}>
             {tokenFromIndex !== null ? (
               <>
@@ -322,7 +324,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             setRotates(rotates + 1)
             if (tokenToIndex === null || tokenFromIndex === null) return
             setTokenFromIndex(tokenToIndex)
-            onSelectTokenTo(tokenFromIndex)
+            onSelectPair(tokenFromIndex)
             setTokenToIndex(tokenFromIndex)
           }}>
           <CardMedia
@@ -349,7 +351,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             justifyContent='space-between'
             alignItems='center'
             className={classes.toText}>
-            <Typography className={classes.tokenComponentText}>To (Estimate)</Typography>
+            <Typography className={classes.tokenComponentText}>You get</Typography>
             <MobileTooltip
               hint={
                 <>
@@ -426,7 +428,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           onSelect={(chosen: string) => {
             const index = tokens.findIndex(t => t.symbol === chosen) ?? null
             setTokenToIndex(index)
-            onSelectTokenTo(index)
+            onSelectPair(index)
             updateEstimatedAmount()
           }}
         />
@@ -441,30 +443,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                   <img src={Fee} alt='' className={classes.circleIcon} />
                   <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
                   <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
-                    You can gain discounts on the swap fee by depositing SNY to Synthetify Exchange.
-                    Your current discount on the fee is{' '}
-                    <b className={classes.tooltipBold}>{discountPercent ?? 0}%</b>.
-                    {typeof nextDiscountThreshold !== 'undefined' && (
-                      <>
-                        {' '}
-                        You can lower your fee by depositing{' '}
-                        <b className={classes.tooltipBold}>
-                          {+nextDiscountThreshold.toFixed(3)} SNY
-                        </b>{' '}
-                        more.
-                      </>
-                    )}
+                    Lorem impsum qweryy uiop asdgh bgjhgh fdsfdfbg.
                   </p>
-                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>
-                    Find out more about fee tiers in our
-                  </p>{' '}
-                  <a
-                    href={docs}
-                    className={classes.tooltipLink}
-                    target='_blank'
-                    rel='noopener noreferrer'>
-                    documentation.
-                  </a>
                 </>
               }
               anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
@@ -474,16 +454,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             />
           </Grid>
 
-          <Grid container item justifyContent='space-between' alignItems='center'>
-            <Typography className={classes.numbersFieldAmount} style={{ marginRight: 12 }}>
+          <Grid container item>
+            <Typography className={classes.numbersFieldAmount}>
               {+printBN(fee.val.mul(new BN(100)), fee.scale)}%
-            </Typography>
-            <Typography
-              className={classes.discount}
-              style={{
-                color: !discountPercent ? colors.navy.grey : colors.green.main
-              }}>
-              ({discountPercent ?? 0}%)
             </Typography>
           </Grid>
         </Grid>
@@ -553,4 +526,4 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     </Grid>
   )
 }
-export default ExchangeComponent
+export default SwaplineComponent
