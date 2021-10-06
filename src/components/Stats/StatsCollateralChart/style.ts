@@ -89,6 +89,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 25
+    },
     [theme.breakpoints.down('xs')]: {
       width: 'fit-content',
       alignItems: 'flex-end',
