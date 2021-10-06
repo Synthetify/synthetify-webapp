@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
-import { divUpNumber, transformBN, printBN } from '@consts/utils'
+import { divUpNumber, transformBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -149,39 +149,21 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return roundPoints.mul(amount.val).div(allPoints)
   }
 
-  const APRNext: BN =
-  !stakedUserValue.eq(new BN(0))
-    ? (calculateTokensBasedOnPoints(
-      nextRoundPoints,
-      nextRoundAllPoints,
-      nextRoundAmount
-    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
-  const APYNext = !stakedUserValue.eq(new BN(0))
-    ? new BN(Math.pow((+transformBN(APRNext) / 100 / 52) + 1, 52) * 10000)
-    : new BN(0)
-  const APRCurrent: BN =
-    !stakedUserValue.eq(new BN(0))
+  const APRValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
+    return !stakedUserValue.eq(new BN(0))
       ? (calculateTokensBasedOnPoints(
-        currentRoundPoints,
-        currentRoundAllPoints,
-        currentRoundAmount
-      ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
+        roundPoints,
+        roundAllPoints,
+        roundAmount
+      ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue)
+      : new BN(0)
+  }
+  const APYValue = (APRValue: BN): BN => {
+    return !stakedUserValue.eq(new BN(0))
+      ? new BN(Math.pow((+transformBN(APRValue) / 100 / 52) + 1, 52) * 10000)
+      : new BN(0)
+  }
 
-  const APYCurrent: BN = !stakedUserValue.eq(new BN(0))
-    ? new BN(Math.pow((+transformBN(APRCurrent) / 100 / 52) + 1, 52) * 100)
-    : new BN(0)
-
-  const APRFinished: BN =
-  !stakedUserValue.eq(new BN(0))
-    ? (calculateTokensBasedOnPoints(
-      finishedRoundPoints,
-      finishedRoundAllPoints,
-      finishedRoundAmount
-    ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
-
-  const APYFinished: BN = !stakedUserValue.eq(new BN(0))
-    ? new BN(Math.pow((+transformBN(APRFinished) / 100 / 52) + 1, 52) * 100)
-    : new BN(0)
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -203,7 +185,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         nextRoundAllPoints,
         nextRoundAmount
       ),
-      bracketValue: APYNext,
+      bracketValue: APYValue(APRValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount)),
       bracket: nextRoundPoints.eqn(0) ? '' : '%',
       hint:
         'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
@@ -219,7 +201,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         currentRoundAmount
       ),
       nonBracket: 'SNY',
-      bracketValue: APYCurrent,
+      bracketValue: APYValue(APRValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount)),
       bracket: currentRoundPoints.eqn(0) ? '' : '%',
       hint:
         'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
@@ -235,7 +217,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         finishedRoundAmount
       ),
       nonBracket: 'SNY',
-      bracketValue: APYFinished,
+      bracketValue: APYValue(APRValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount)),
       bracket: finishedRoundPoints.eqn(0) ? '' : '%',
       hint:
         'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
