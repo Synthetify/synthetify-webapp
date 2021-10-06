@@ -7,11 +7,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 
 export interface CoinToChart {
-  // [index: number]: {
   name: string
   percent: number
   color: string
-  // }
 }
 export interface IProps {
   data: CoinToChart[]
@@ -81,7 +79,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
                 keys={getCoinsName(data)}
                 colors={colorsToBar}
                 padding={0}
-                margin={{ top: -2, right: -2, bottom: -2, left: -2 }} // very important without it, bars will not fill whole container!!
+                margin={{ top: -2, right: -2, bottom: -2, left: -2 }}
                 isInteractive={true}
                 labelSkipWidth={35}
                 labelSkipHeight={14}
@@ -99,18 +97,16 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
             </Grid>
           </div>
           <Grid item className={classes.legendWrapper}>
-            <ul className={classes.legendList}>
-              {data.map((coin) => (
-                // <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent.toFixed(2)}%)</strong></span></li>
-                <Typography className={classes.legendItem} style={{ color: coin.color, marginLeft: -20 }}>
-                  <FiberManualRecordIcon
-                    style={{ width: '10px', height: 'auto', paddingRight: '2px', paddingBottom: '2px' }}
-                  />
-                  {coin.name}
-                  <span style={{ color: '#ffffff', marginLeft: '7px' }}><strong>({coin.percent.toFixed(2)}%)</strong></span>
-                </Typography>
-              ))}
-            </ul>
+            {data.map((coin) => (
+              <div className={classes.legendItem} style={{ color: coin.color }}>
+                <FiberManualRecordIcon
+                  style={{ width: '10px', height: 'auto', paddingRight: '2px', paddingBottom: '2px' }}
+                />
+                {coin.name}
+                <span style={{ color: '#ffffff', marginLeft: '7px' }}><span style={{ fontWeight: 700 }}>({coin.percent.toFixed(2)}%)</span></span>
+              </div>
+            ))}
+
           </Grid>
         </Grid>
       </Grid>

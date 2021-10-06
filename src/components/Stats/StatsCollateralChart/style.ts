@@ -83,27 +83,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '25px 0px 16px 0px',
-    margin: 0,
+    padding: '25px 0px 16px 35px',
     fontSize: 18,
     width: 'calc(100% - 20px)',
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
     [theme.breakpoints.down('xs')]: {
       width: 'fit-content',
       alignItems: 'flex-end',
-      paddingBlock: 16
-    }
-  },
-  legendList: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginBlock: 0,
-    [theme.breakpoints.down('xs')]: {
-      display: 'block',
+      paddingBlock: 16,
       height: '100%',
-      width: '100%'
+      display: 'block'
     }
   },
 
@@ -111,6 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 35,
     ...typography.body2,
     fontFamily: 'Be Vietnam',
+    marginLeft: -20,
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
       ...typography.subtitle2,
