@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
-import { divUpNumber, transformBN } from '@consts/utils'
+import { divUpNumber, transformBN, printBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -158,8 +158,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
   console.log(transformBN(APRNext))
   const APYNext = !stakedUserValue.eq(new BN(0))
-    ? new BN(Math.pow((+transformBN(APRNext) / 100 / 52) + 1, 52) * 100)
+    ? new BN(Math.pow((+transformBN(APRNext) / 100 / 52) + 1, 52) * 10000)
     : new BN(0)
+  console.log(+printBN(APYNext, 2))
   const APRCurrent: BN =
     !stakedUserValue.eq(new BN(0))
       ? (calculateTokensBasedOnPoints(
