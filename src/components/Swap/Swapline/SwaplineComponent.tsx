@@ -17,9 +17,9 @@ import { pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
 import QuestionMark from '@static/svg/questionMark.svg'
 import Fee from '@static/svg/fee.svg'
-import useStyles from '../style'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { SwaplinePair, SwaplineSwapType } from '../tmpConsts'
+import useStyles from '../style'
 
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
@@ -305,15 +305,15 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
               )
             }
           }}
-          tokens={tokens.map(({ symbol, balance, supply }) => ({
-            symbol,
-            balance,
-            decimals: supply.scale
+          pairs={pairs.map((pair) => ({
+            symbol1: pair.syntheticData.symbol,
+            symbol2: pair.collateralData.symbol
           }))}
           current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
-          onSelect={(chosen: string) =>
-            setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
-          }
+          onSelect={(chosen: number) => {
+            setPairIndex(chosen)
+            onSelectPair(chosen)
+          }}
         />
       </Grid>
 
@@ -324,7 +324,6 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
             setRotates(rotates + 1)
             if (tokenToIndex === null || tokenFromIndex === null) return
             setTokenFromIndex(tokenToIndex)
-            onSelectPair(tokenFromIndex)
             setTokenToIndex(tokenFromIndex)
           }}>
           <CardMedia
@@ -425,10 +424,9 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
             decimals: supply.scale
           }))}
           current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
-          onSelect={(chosen: string) => {
-            const index = tokens.findIndex(t => t.symbol === chosen) ?? null
-            setTokenToIndex(index)
-            onSelectPair(index)
+          onSelect={(chosen: number) => {
+            setPairIndex(chosen)
+            onSelectPair(chosen)
             updateEstimatedAmount()
           }}
         />

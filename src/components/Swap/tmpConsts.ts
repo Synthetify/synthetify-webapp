@@ -1,4 +1,5 @@
 // these defs are only temporary - they are also on the branch with redux logic but it's not finished yet
+// remove this file later
 
 import { BN } from '@project-serum/anchor'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
