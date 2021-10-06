@@ -149,7 +149,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return roundPoints.mul(amount.val).div(allPoints)
   }
 
-  const APRValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
+  const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     return !stakedUserValue.eq(new BN(0))
       ? (calculateTokensBasedOnPoints(
         roundPoints,
@@ -158,9 +158,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue)
       : new BN(0)
   }
-  const APYValue = (APRValue: BN): BN => {
+  const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
+    const apr = aprValue(roundPoints, roundAllPoints, roundAmount)
     return !stakedUserValue.eq(new BN(0))
-      ? new BN(Math.pow((+transformBN(APRValue) / 100 / 52) + 1, 52) * 10000)
+      ? new BN(Math.pow((+transformBN(apr) / 100 / 52) + 1, 52) * 10000)
       : new BN(0)
   }
 
@@ -185,7 +186,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         nextRoundAllPoints,
         nextRoundAmount
       ),
-      bracketValue: APYValue(APRValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount)),
+      bracketValue: apyValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount),
       bracket: nextRoundPoints.eqn(0) ? '' : '%',
       hint:
         'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
@@ -201,7 +202,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         currentRoundAmount
       ),
       nonBracket: 'SNY',
-      bracketValue: APYValue(APRValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount)),
+      bracketValue: apyValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount),
       bracket: currentRoundPoints.eqn(0) ? '' : '%',
       hint:
         'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
@@ -217,7 +218,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         finishedRoundAmount
       ),
       nonBracket: 'SNY',
-      bracketValue: APYValue(APRValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount)),
+      bracketValue: apyValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount),
       bracket: finishedRoundPoints.eqn(0) ? '' : '%',
       hint:
         'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
