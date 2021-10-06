@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 24,
     padding: '8px 16px 10px',
     backgroundColor: 'rgba(12, 13, 44, 0.4)',
-    border: '1px solid #6261A3',
+    border: `1px solid ${colors.navy.info}`,
     borderRadius: 10
   },
   infoPosition: {

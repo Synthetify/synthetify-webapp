@@ -4,8 +4,8 @@ import { SwapInfo } from './SwapInfo'
 
 storiesOf('Swap/Info', module).add('Info', () => (
   <SwapInfo
-    syntheticName={'SNY'}
-    collateralName={'xBTC'}
+    syntheticName={'xBTC'}
+    collateralName={'SNY'}
     fee={0.3}
     accumulatedFee={0.003}
     balance={6234.35}
