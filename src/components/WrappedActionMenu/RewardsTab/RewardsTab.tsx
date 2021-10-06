@@ -156,11 +156,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nextRoundAllPoints,
       nextRoundAmount
     ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue) : new BN(0)
-  console.log(transformBN(APRNext))
   const APYNext = !stakedUserValue.eq(new BN(0))
     ? new BN(Math.pow((+transformBN(APRNext) / 100 / 52) + 1, 52) * 10000)
     : new BN(0)
-  console.log(+printBN(APYNext, 2))
   const APRCurrent: BN =
     !stakedUserValue.eq(new BN(0))
       ? (calculateTokensBasedOnPoints(
