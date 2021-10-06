@@ -113,7 +113,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Be Vietnam',
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
-      ...typography.subtitle2
+      ...typography.subtitle2,
+      display: 'flex'
+    },
+    '& svg': {
+      [theme.breakpoints.down('xs')]: {
+        marginTop: 5
+      }
     }
   }
 }))

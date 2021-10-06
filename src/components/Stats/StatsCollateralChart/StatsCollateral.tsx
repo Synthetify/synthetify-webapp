@@ -1,6 +1,7 @@
 import React from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { colors, theme } from '@static/theme'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { Grid, Typography } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
@@ -100,7 +101,14 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
           <Grid item className={classes.legendWrapper}>
             <ul className={classes.legendList}>
               {data.map((coin) => (
-                <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent.toFixed(2)}%)</strong></span></li>
+                // <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent.toFixed(2)}%)</strong></span></li>
+                <Typography className={classes.legendItem} style={{ color: coin.color, marginLeft: -20 }}>
+                  <FiberManualRecordIcon
+                    style={{ width: '10px', height: 'auto', paddingRight: '2px', paddingBottom: '2px' }}
+                  />
+                  {coin.name}
+                  <span style={{ color: '#ffffff', marginLeft: '7px' }}><strong>({coin.percent.toFixed(2)}%)</strong></span>
+                </Typography>
               ))}
             </ul>
           </Grid>
