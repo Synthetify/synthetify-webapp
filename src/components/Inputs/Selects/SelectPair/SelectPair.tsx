@@ -1,27 +1,26 @@
 import React from 'react'
 import { Button, CardMedia, useMediaQuery } from '@material-ui/core'
 import { blurContent, unblurContent } from '@consts/uiUtils'
-import SelectTokenModal from '@components/Modals/SelectModals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import icons from '@static/icons'
-import { BN } from '@project-serum/anchor'
-import useStyles from './style'
 import classNames from 'classnames'
 import { theme, typography } from '@static/theme'
+import SelectPairModal from '@components/Modals/SelectModals/SelectPairModal/SelectPairModal'
+import useStyles from '../style'
 
-export interface ISelectTokenModal {
+export interface ISelectPair {
   name?: string
   current: string | null
   centered?: boolean
-  tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  onSelect: (chosen: string) => void
+  pairs: Array<{ symbol1: string; symbol2: string }>
+  onSelect: (index: number) => void
   className?: string
 }
-export const SelectToken: React.FC<ISelectTokenModal> = ({
-  name = 'Select a token',
+export const SelectPair: React.FC<ISelectPair> = ({
+  name = 'Select a pair',
   current,
   centered,
-  tokens,
+  pairs,
   onSelect,
   className
 }) => {
@@ -61,8 +60,8 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
       >
         <span style={{ position: 'relative', top: -1, whiteSpace: 'nowrap' }}>{!current ? name : current}</span>
       </Button>
-      <SelectTokenModal
-        tokens={tokens}
+      <SelectPairModal
+        pairs={pairs}
         open={open}
         centered={centered}
         anchorEl={anchorEl}
@@ -72,4 +71,4 @@ export const SelectToken: React.FC<ISelectTokenModal> = ({
     </>
   )
 }
-export default SelectToken
+export default SelectPair

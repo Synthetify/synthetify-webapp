@@ -1,10 +1,10 @@
 import { Input } from '@material-ui/core'
 import React, { CSSProperties, useRef } from 'react'
 import classNames from 'classnames'
-import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { BN } from '@project-serum/anchor'
-import SelectToken from '../SelectToken/SelectToken'
+import SelectToken from '../Selects/SelectToken/SelectToken'
+import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
