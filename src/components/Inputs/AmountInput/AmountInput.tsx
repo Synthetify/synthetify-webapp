@@ -1,7 +1,7 @@
 import { Divider, Input, InputAdornment, Typography } from '@material-ui/core'
 import React, { CSSProperties, useState, useRef } from 'react'
 import classNames from 'classnames'
-import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
+import SelectTokenModal from '@components/Modals/SelectModals/SelectTokenModal/SelectTokenModal'
 import { BN } from '@project-serum/anchor'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import icons from '@static/icons'

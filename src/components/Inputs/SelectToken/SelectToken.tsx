@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, CardMedia, useMediaQuery } from '@material-ui/core'
 import { blurContent, unblurContent } from '@consts/uiUtils'
-import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
+import SelectTokenModal from '@components/Modals/SelectModals/SelectTokenModal/SelectTokenModal'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
