@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body4
   },
   descWrapper: {
-    paddingTop: 24
+    padding: '24px 4px 0px 4px'
   },
   descTitle: {
     color: colors.navy.veryLightGrey,
