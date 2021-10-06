@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   descTitle: {
     color: colors.navy.veryLightGrey,
     ...typography.subtitle1,
-    paddingBottom: 24
+    paddingBottom: 8
   },
   descText: {
     color: colors.navy.grey,
