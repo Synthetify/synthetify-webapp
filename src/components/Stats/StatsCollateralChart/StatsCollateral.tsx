@@ -96,15 +96,15 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
               />
             </Grid>
           </div>
-          <Grid item className={classes.legendWrapper}>
+          <Grid container className={classes.legendWrapper}>
             {data.map((coin) => (
-              <div className={classes.legendItem} style={{ color: coin.color }}>
+              <Grid item className={classes.legendItem} style={{ color: coin.color }}>
                 <FiberManualRecordIcon
                   style={{ width: '10px', height: 'auto', paddingRight: '2px', paddingBottom: '2px' }}
                 />
                 {coin.name}
                 <span style={{ color: '#ffffff', marginLeft: '7px' }}><span style={{ fontWeight: 700 }}>({coin.percent.toFixed(2)}%)</span></span>
-              </div>
+              </Grid>
             ))}
 
           </Grid>
