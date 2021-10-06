@@ -16,7 +16,7 @@ interface IProps {
   onMaxClick: () => void,
   current: string | null
   tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  onSelect: (chosen: string) => void
+  onSelect: (chosen: number) => void
 }
 
 export const AmountInput: React.FC<IProps> = ({

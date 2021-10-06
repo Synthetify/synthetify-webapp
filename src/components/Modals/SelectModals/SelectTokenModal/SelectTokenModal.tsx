@@ -12,7 +12,7 @@ export interface ISelectTokenModal {
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
   centered?: boolean
-  onSelect: (chosen: string) => void
+  onSelect: (index: number) => void
 }
 
 export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
@@ -116,7 +116,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
-                .map(token => (
+                .map((token, index) => (
                   <Grid
                     container
                     key={`tokens-${token.symbol}`}
@@ -124,7 +124,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(token.symbol)
+                      onSelect(index)
                       handleClose()
                     }}>
                     <Grid item>

@@ -309,8 +309,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             decimals: supply.scale
           }))}
           current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
-          onSelect={(chosen: string) =>
-            setTokenFromIndex(tokens.findIndex(t => t.symbol === chosen) ?? null)
+          onSelect={(chosen: number) =>
+            setTokenFromIndex(chosen)
           }
         />
       </Grid>
@@ -423,10 +423,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             decimals: supply.scale
           }))}
           current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
-          onSelect={(chosen: string) => {
-            const index = tokens.findIndex(t => t.symbol === chosen) ?? null
-            setTokenToIndex(index)
-            onSelectTokenTo(index)
+          onSelect={(chosen: number) => {
+            setTokenToIndex(chosen)
+            onSelectTokenTo(chosen)
             updateEstimatedAmount()
           }}
         />

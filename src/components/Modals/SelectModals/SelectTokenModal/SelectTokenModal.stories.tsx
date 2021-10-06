@@ -14,6 +14,6 @@ storiesOf('modals/selectToken', module)
       open={true}
       handleClose={() => {}}
       anchorEl={null}
-      onSelect={(chosen: string) => action('chosen: ' + chosen)()}
+      onSelect={(chosen: number) => action(`chosen pair index: ${chosen}`)()}
     />
   ))

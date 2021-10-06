@@ -11,11 +11,11 @@ storiesOf('Inputs/selectToken', module)
   .addDecorator(withKnobs)
   .add('default', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <SelectToken current={null} name='Select&nbsp;token' tokens={tokens} onSelect={(chosen: string) => action(`chosen: ${chosen}`)} />
+      <SelectToken current={null} name='Select&nbsp;token' tokens={tokens} onSelect={(chosen: number) => action(`chosen pair index: ${chosen}`)()} />
     </div>
   ))
   .add('chosen', () => (
     <div style={{ backgroundColor: colors.black.header, padding: '100px' }}>
-      <SelectToken current={'SOL'} name='Select&nbsp;token' tokens={tokens} onSelect={(chosen: string) => action(`chosen: ${chosen}`)} />
+      <SelectToken current={'SOL'} name='Select&nbsp;token' tokens={tokens} onSelect={(chosen: number) => action(`chosen pair index: ${chosen}`)()} />
     </div>
   ))

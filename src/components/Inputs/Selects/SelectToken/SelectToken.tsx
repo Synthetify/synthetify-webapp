@@ -14,7 +14,7 @@ export interface ISelectTokenModal {
   current: string | null
   centered?: boolean
   tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  onSelect: (chosen: string) => void
+  onSelect: (chosen: number) => void
   className?: string
 }
 export const SelectToken: React.FC<ISelectTokenModal> = ({
