@@ -134,10 +134,10 @@ export const ActionMenuContainer: React.FC = () => {
       depositCurrency={(walletStatus === Status.Initialized) ? (userCollaterals[depositIndex]?.symbol ?? 'SNY') : 'SNY'}
       withdrawCurrency={userStaked[withdrawIndex]?.symbol ?? 'SNY'}
       onSelectDepositToken={(chosen) => {
-        setDepositIndex(userCollaterals.findIndex(token => token.symbol === chosen))
+        setDepositIndex(chosen)
       }}
       onSelectWithdrawToken={(chosen) => {
-        setWithdrawIndex(userStaked.findIndex(token => token.symbol === chosen))
+        setWithdrawIndex(chosen)
       }}
       depositDecimal={depositDecimal}
       withdrawDecimal={userStaked[withdrawIndex]?.decimals ?? 6}

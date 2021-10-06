@@ -17,7 +17,7 @@ interface IProps {
   placeholder?: string
   style?: CSSProperties
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
-  onSelectToken?: (chosen: string) => void
+  onSelectToken?: (chosen: number) => void
   showArrow?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void

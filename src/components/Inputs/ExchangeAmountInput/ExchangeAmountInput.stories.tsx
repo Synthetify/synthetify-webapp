@@ -11,6 +11,6 @@ storiesOf('inputs/exchangeAmount', module)
   .addDecorator(withKnobs)
   .add('default', () => (
     <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
-      <ExchangeAmountInput setValue={() => {}} placeholder={'0.0'} onMaxClick={() => {}} tokens={tokens} current={'SOL'} onSelect={(chosen: string) => action(`chosen: ${chosen}`)} />
+      <ExchangeAmountInput setValue={() => {}} placeholder={'0.0'} onMaxClick={() => {}} tokens={tokens} current={'SOL'} onSelect={(chosen: number) => action(`chosen: ${chosen}`)} />
     </div>
   ))
