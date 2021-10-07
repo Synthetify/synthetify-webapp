@@ -454,30 +454,11 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
       </Grid>
       <Grid container item className={classes.numbersField}>
         <Grid item>
-          <Grid container item justifyContent='space-between' alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-            <MobileTooltip
-              hint={
-                <>
-                  <img src={Fee} alt='' className={classes.circleIcon} />
-                  <Typography className={classes.tooltipTitle}>Fee tiers</Typography>
-                  <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
-                    Lorem impsum qweryy uiop asdgh bgjhgh fdsfdfbg.
-                  </p>
-                </>
-              }
-              anchor={<img src={QuestionMark} alt='' className={classes.questionMark} />}
-              mobilePlacement='top-start'
-              desktopPlacement='top-end'
-              isInteractive
-            />
-          </Grid>
 
-          <Grid container item>
             <Typography className={classes.numbersFieldAmount}>
               {pairIndex !== null ? +printBN(pairs[pairIndex].fee.val.mul(new BN(100)), pairs[pairIndex].fee.scale) : 0}%
             </Typography>
-          </Grid>
         </Grid>
 
         <Divider className={classes.amountDivider} orientation='vertical' />
