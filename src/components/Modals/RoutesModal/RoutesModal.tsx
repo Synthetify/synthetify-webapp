@@ -45,7 +45,7 @@ export const RoutesModal: React.FC<IRoutesModal> = ({
               onSelect(route)
               handleClose()
             }}>
-            <Link to={`/${route}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/${route}`} style={{ textDecoration: 'none', width: '100%', height: '100%' }}>
               <Typography className={current === route ? classes.current : classes.name}>
                 {route}
               </Typography>

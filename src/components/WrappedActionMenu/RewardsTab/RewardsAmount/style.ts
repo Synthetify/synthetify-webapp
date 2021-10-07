@@ -12,7 +12,9 @@ const useStyles = makeStyles(() => ({
   },
   text: {
     ...typography.subtitle2,
-    color: colors.navy.grey
+    color: colors.navy.grey,
+    position: 'relative',
+    top: -1
   },
   title: {
     ...typography.subtitle1,

@@ -4,7 +4,15 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   divider: {
     background: colors.navy.navButton,
-    marginTop: 22
+    marginBlock: 16,
+
+    [theme.breakpoints.down('sm')]: {
+      marginBlock: 20
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      marginBlock: 16
+    }
   },
   button: {
     ...typography.subtitle1,
@@ -12,16 +20,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   amount: {
     marginTop: 24,
+    marginBottom: 18,
 
     [theme.breakpoints.down('sm')]: {
       marginTop: 16
     }
   },
   buttonsWrapper: {
-    marginTop: 24
+    marginTop: 8,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 4
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 8
+    }
   },
   line: {
-    marginTop: 22
   },
   label: {
     top: -1

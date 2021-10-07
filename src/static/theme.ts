@@ -73,7 +73,7 @@ export const colors = {
     dark: '#0E0E2A',
     component: '#1D1D49',
     navBar: 'rgba(249, 249, 251, 0.76)',
-    navButton: '#3D3F72',
+    navButton: '#3A3A85',
     grey: '#A3A8CE',
     lightGrey: '#DADCF1',
     veryLightGrey: '#FBFBFB',
@@ -95,7 +95,7 @@ export const typography = {
   heading2: {
     fontSize: 32,
     lineHeight: '40px',
-    fontWeight: 700
+    fontWeight: 800
   },
   heading3: {
     fontSize: 27,
@@ -107,6 +107,11 @@ export const typography = {
     lineHeight: '33px',
     fontWeight: 800
   },
+  heading5: {
+    fontSize: 20,
+    lineHeight: '30px',
+    fontWeight: 600
+  },
   body1: {
     fontSize: 22,
     lineHeight: '30px',
@@ -115,7 +120,7 @@ export const typography = {
   body2: {
     fontSize: 22,
     lineHeight: '30px',
-    fontWeight: 500
+    fontWeight: 600
   },
   subtitle1: {
     fontSize: 16,
@@ -125,7 +130,7 @@ export const typography = {
   subtitle2: {
     fontSize: 16,
     lineHeight: '24px',
-    fontWeight: 500
+    fontWeight: 600
   },
   body3: {
     fontSize: 13,
@@ -135,12 +140,12 @@ export const typography = {
   body4: {
     fontSize: 13,
     lineHeight: '20px',
-    fontWeight: 500
+    fontWeight: 600
   },
   caption1: {
     fontSize: 11,
     lineHeight: '16px',
-    fontWeight: 500
+    fontWeight: 600
   },
   caption2: {
     fontSize: 11,
@@ -150,7 +155,7 @@ export const typography = {
   caption3: {
     fontSize: 9,
     lineHeight: '14px',
-    fontWeight: 500
+    fontWeight: 600
   },
   caption4: {
     fontSize: 9,
@@ -179,7 +184,7 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily: 'Be Vietnam',
-    fontWeightRegular: 500,
+    fontWeightRegular: 600,
     h1: typography.heading1,
     h2: typography.heading2,
     h3: typography.heading3,

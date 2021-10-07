@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => ({
   },
   active: {
     background: colors.navy.button,
+    color: colors.navy.veryLightGrey,
     ...typography.subtitle1
   },
   disabled: {

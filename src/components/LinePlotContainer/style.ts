@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'end'
   },
   optionLabel: {
-    height: '100px'
+    height: '100px',
+    alignContent: 'flex-start'
   },
   buttonSelect: {
     minWidth: 120,
@@ -102,6 +103,39 @@ const useStyles = makeStyles((theme: Theme) => ({
       '&:hover': {
         ...typography.body3
       }
+    }
+  },
+  infoContainer: {
+    padding: '13px  0 0 16px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '5px  0 0 8px'
+    }
+  },
+  infoTitle: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  infoName: {
+    ...typography.subtitle2,
+    color: colors.navy.grey,
+    paddingRight: '4px',
+    [theme.breakpoints.down('sm')]: {
+      ...typography.body4
+    }
+  },
+  infoPercent: {
+    ...typography.subtitle2,
+    [theme.breakpoints.down('sm')]: {
+      ...typography.body4
+    }
+  },
+  infoNumber: {
+    ...typography.heading2,
+    display: 'flex',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '27px',
+      lineHeight: '35px'
     }
   }
 }))

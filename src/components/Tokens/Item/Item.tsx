@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardMedia, Grid, Typography } from '@material-ui/core'
 import BN from 'bn.js'
-import { printBN, showMorK } from '@consts/utils'
+import { printBN, showPrefix } from '@consts/utils'
 import useStyles from './style'
 import icons from '@static/icons'
 import AnimatedNumber from '@components/AnimatedNumber'
@@ -10,7 +10,7 @@ export interface IToken {
   ticker: string
   balance: BN
   decimals: number
-  usdValue: BN,
+  usdValue: BN
   assetDecimals: number
 }
 
@@ -40,23 +40,35 @@ export const Item: React.FC<IToken> = ({ ticker, balance, decimals, usdValue, as
   }
 
   return (
-    <Grid container className={classes.row} alignItems='center' wrap='nowrap' justifyContent='space-between'>
+    <Grid
+      container
+      className={classes.row}
+      alignItems='center'
+      wrap='nowrap'
+      justifyContent='space-between'>
       <Grid className={classes.column} container item alignItems='center'>
         <CardMedia className={classes.icon} image={icons[ticker] ?? icons.SNY} />
+        <Typography className={classes.font}>{ticker}</Typography>
+      </Grid>
+      <Grid className={classes.column} container item alignItems='center'>
         <Typography className={classes.font}>
-          {ticker}
+          <AnimatedNumber
+            value={printBN(balance, assetDecimals)}
+            duration={300}
+            formatValue={formatNumbers}
+          />
+          {showPrefix(+printBN(balance, assetDecimals))}
         </Typography>
       </Grid>
       <Grid className={classes.column} container item alignItems='center'>
         <Typography className={classes.font}>
-          <AnimatedNumber value={printBN(balance, assetDecimals)} duration={300} formatValue={formatNumbers}/>
-          {showMorK(+printBN(balance, assetDecimals))}
-        </Typography>
-      </Grid>
-      <Grid className={classes.column} container item alignItems='center'>
-        <Typography className={classes.font}>
-          $ <AnimatedNumber value={printBN(usdValue, decimals)} duration={300} formatValue={formatNumbers}/>
-          {showMorK(+printBN(usdValue, decimals))}
+          ${' '}
+          <AnimatedNumber
+            value={printBN(usdValue, decimals)}
+            duration={300}
+            formatValue={formatNumbers}
+          />
+          {showPrefix(+printBN(usdValue, decimals))}
         </Typography>
       </Grid>
     </Grid>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid } from '@material-ui/core'
-import { divUpNumber } from '@consts/utils'
+import { divUpNumber, transformBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -19,14 +19,16 @@ export type RoundData = {
     roundPoints: BN
     roundAllPoints: BN
     roundStartSlot: BN
+    roundAmount: Decimal
   }
 }
 
 export interface IRewardsProps {
   slot: number
   amountToClaim: Decimal
-  amountPerRound: Decimal
   roundLength: number
+  stakedUserValue: BN,
+  SNYPrice: Decimal,
   userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
@@ -36,8 +38,9 @@ export interface IRewardsProps {
 export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
-  amountPerRound,
   roundLength,
+  stakedUserValue,
+  SNYPrice,
   userDebtShares,
   rounds,
   onClaim,
@@ -62,7 +65,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           }
         }
       }
@@ -72,12 +76,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           current: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           },
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           }
         }
       }
@@ -86,17 +92,20 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           finished: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           },
           current: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           },
           next: {
             roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
             roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares
+            roundPoints: userDebtShares,
+            roundAmount: next.roundAmount
           }
         }
       }
@@ -104,16 +113,22 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const { finished, current, next } = estimateRounds()
-  const { roundAllPoints: finishedRoundAllPoints, roundPoints: finishedRoundPoints } = finished
+  const {
+    roundAllPoints: finishedRoundAllPoints,
+    roundPoints: finishedRoundPoints,
+    roundAmount: finishedRoundAmount
+  } = finished
   const {
     roundAllPoints: currentRoundAllPoints,
     roundPoints: currentRoundPoints,
-    roundStartSlot: currentRoundStartSlot
+    roundStartSlot: currentRoundStartSlot,
+    roundAmount: currentRoundAmount
   } = current
   const {
     roundAllPoints: nextRoundAllPoints,
     roundPoints: nextRoundPoints,
-    roundStartSlot: nextRoundStartSlot
+    roundStartSlot: nextRoundStartSlot,
+    roundAmount: nextRoundAmount
   } = next
 
   const isClaimDisabled = () => {
@@ -134,6 +149,22 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return roundPoints.mul(amount.val).div(allPoints)
   }
 
+  const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
+    return !stakedUserValue.eq(new BN(0))
+      ? (calculateTokensBasedOnPoints(
+        roundPoints,
+        roundAllPoints,
+        roundAmount
+      ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue)
+      : new BN(0)
+  }
+  const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
+    const apr = aprValue(roundPoints, roundAllPoints, roundAmount)
+    return !stakedUserValue.eq(new BN(0))
+      ? new BN(Math.pow((+transformBN(apr) / 100 / 52) + 1, 52) * 10000)
+      : new BN(0)
+  }
+
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -149,45 +180,48 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   } = [
     {
       name: 'Subscription round',
-      nonBracket: 'points',
-      nonBracketValue: nextRoundPoints,
-      bracketValue: calculateTokensBasedOnPoints(
+      nonBracket: 'SNY',
+      nonBracketValue: calculateTokensBasedOnPoints(
         nextRoundPoints,
         nextRoundAllPoints,
-        amountPerRound
+        nextRoundAmount
       ),
-      bracket: nextRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
+      bracketValue: apyValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount),
+      bracket: nextRoundPoints.eqn(0) ? '' : '%',
+      hint:
+        'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards1,
       tooltipPlacement: 'left-end'
     },
     {
       name: 'Staking round',
-      nonBracketValue: currentRoundPoints,
-      nonBracket: 'points',
-      bracketValue: calculateTokensBasedOnPoints(
+      nonBracketValue: calculateTokensBasedOnPoints(
         currentRoundPoints,
         currentRoundAllPoints,
-        amountPerRound
+        currentRoundAmount
       ),
-      bracket: currentRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
+      nonBracket: 'SNY',
+      bracketValue: apyValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount),
+      bracket: currentRoundPoints.eqn(0) ? '' : '%',
+      hint:
+        'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards2,
       tooltipPlacement: 'left'
     },
     {
       name: 'Claiming round',
-      nonBracketValue: finishedRoundPoints,
-      nonBracket: 'points',
-      bracketValue: calculateTokensBasedOnPoints(
+      nonBracketValue: calculateTokensBasedOnPoints(
         finishedRoundPoints,
         finishedRoundAllPoints,
-        amountPerRound
+        finishedRoundAmount
       ),
-      bracket: finishedRoundPoints.eqn(0) ? '' : 'SNY',
-      hint: 'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
+      nonBracket: 'SNY',
+      bracketValue: apyValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount),
+      bracket: finishedRoundPoints.eqn(0) ? '' : '%',
+      hint:
+        'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards3,
       tooltipPlacement: 'left-start'
@@ -212,7 +246,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       <Grid item container justifyContent='space-between' direction='column'>
         {lines}
       </Grid>
-      <Grid item container alignItems='center' justifyContent='flex-end' wrap='nowrap' className={classes.buttonsWrapper}>
+      <Grid
+        item
+        container
+        alignItems='center'
+        justifyContent='flex-end'
+        wrap='nowrap'
+        className={classes.buttonsWrapper}>
         <Grid item>
           <OutlinedButton
             color='secondary'

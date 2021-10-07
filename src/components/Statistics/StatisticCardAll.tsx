@@ -12,35 +12,42 @@ interface Props {
 
 interface IProp {
   data: Props
+  debtCurrent: Array<{
+    id: string
+    value: number
+    price: number
+  }>
 }
 
-export const StatisticCardAll: React.FC<IProp> = ({ data }) => {
+export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent }) => {
   const classes = useStyles()
   return (
     <div className={classes.gridContainer}>
       <Grid container className={classes.container}>
-        <Grid id='collateral' item xs={7}>
+        <Grid id='collateral' item xs={12} sm={7}>
           <StatisticsCard
             name='Collateral'
             value={data.collateral}
-            desc='Total value of tokens deposited'
+            desc={'Total value deposited'}
           />
         </Grid>
-        <Grid id='volume' item xs={5}>
+        <Grid id='debt' item xs={12} sm={5}>
           <StatisticsCard
-            name='Volume'
-            value={data.volume}
-            desc='Total value of tokens currently in circulation'
+            name='Debt'
+            value={debtCurrent.reduce((sum, item) => {
+              return sum + item.price
+            }, 0)}
+            desc={'Total debt owed'}
           />
         </Grid>
-        <Grid id='mint' item xs>
-          <StatisticsCard name='Mint' value={data.mint} desc={'Total value of minted tokens'} />
+        <Grid id='mint' item xs={12} sm={4}>
+          <StatisticsCard name='Mint' value={data.mint} desc={'Value minted'} />
         </Grid>
-        <Grid id='debt' item xs={4} sm={5}>
-          <StatisticsCard name='Debt' value={data.debt} desc={'Total debt owed'} />
+        <Grid id='volume' item xs={12} sm={5}>
+          <StatisticsCard name='Volume' value={data.volume} desc={'Exchange volume'} />
         </Grid>
-        <Grid id='fee' item xs>
-          <StatisticsCard name='Fee' value={data.fee} desc={'Total fee collected on trades'} />
+        <Grid id='fee' item xs={12} sm={3}>
+          <StatisticsCard name='Fee' value={data.fee} desc={'Fee collected '} />
         </Grid>
       </Grid>
     </div>

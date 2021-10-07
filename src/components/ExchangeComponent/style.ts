@@ -47,19 +47,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body4
     }
   },
-  input: {
-    marginLeft: 24,
-    width: 'calc(100% - 184px)',
-
-    [theme.breakpoints.down('md')]: {
-      width: 'calc(100% - 176px)',
-      marginLeft: 16
-    },
-
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100% - 126px)'
-    }
-  },
   swapIconSquare: {
     background: colors.navy.dark,
     position: 'relative',
@@ -146,8 +133,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   numbersFieldTitle: {
     ...typography.body2,
     color: colors.navy.grey,
+    position: 'relative',
+    top: -4,
 
     [theme.breakpoints.down('sm')]: {
+      top: -2,
       ...typography.subtitle2
     }
 

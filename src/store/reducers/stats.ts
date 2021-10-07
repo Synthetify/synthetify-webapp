@@ -15,6 +15,7 @@ export interface CardData {
   debt: number
   fee: number
 }
+
 export interface IStats {
   linePlot: Data[]
   last24: CardData

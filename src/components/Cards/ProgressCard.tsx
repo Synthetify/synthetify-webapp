@@ -4,7 +4,7 @@ import HintIcon from '@static/svg/questionMark.svg'
 import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import useStyles, { useStylesWithProps } from './style'
-import { formatNumbers, showMorK } from '@consts/utils'
+import { formatNumbers, showPrefix } from '@consts/utils'
 import classNames from 'classnames'
 
 export interface IProps {
@@ -17,7 +17,9 @@ export interface IProps {
   topIndicator: string | ReactChild
   topIndicatorValue: number
   bottomIndicator: string | ReactChild
-  bottomIndicatorValue: number
+  bottomIndicatorValue: number,
+  leftSideDesc?: string
+  rightSideDesc?: string
 }
 export const ProgressCard: React.FC<IProps> = ({
   name,
@@ -29,7 +31,9 @@ export const ProgressCard: React.FC<IProps> = ({
   topIndicator,
   topIndicatorValue,
   bottomIndicator,
-  bottomIndicatorValue
+  bottomIndicatorValue,
+  leftSideDesc = '',
+  rightSideDesc = ''
 }) => {
   const classes = useStyles()
   const proppedClasses = useStylesWithProps({
@@ -99,18 +103,14 @@ export const ProgressCard: React.FC<IProps> = ({
             </Tooltip>
           </Grid>
           <Typography className={classes.minMaxDebt}>
-            <AnimatedNumber
-              value={max}
-              duration={300}
-              formatValue={formatNumbers}
-            />
-            {showMorK(max)}
+            <AnimatedNumber value={max} duration={300} formatValue={formatNumbers} />
+            {showPrefix(max)}
             {sign}
           </Typography>
         </Grid>
         <Grid container justifyContent='space-between'>
-          <Typography className={classes.bottomText}>Radiant Liquidation Price</Typography>
-          <Typography className={classes.bottomText}>Collateralization Ratio</Typography>
+          <Typography className={classes.bottomText}>{leftSideDesc}</Typography>
+          <Typography className={classes.bottomText}>{rightSideDesc}</Typography>
         </Grid>
       </CardContent>
     </Card>

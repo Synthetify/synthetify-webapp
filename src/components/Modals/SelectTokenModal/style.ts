@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       marginTop: 'calc(50vh - 213px)',
-      marginLeft: 'calc(50vw - 189px)'
+      marginLeft: 'calc(50vw - 179px)'
     }
   },
   root: {
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: 372,
       paddingInline: 10,
       paddingBottom: 10
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
     }
   },
   tokenList: {
@@ -127,6 +130,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       maxWidth: 372
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
     }
   },
   clearIcon: {

@@ -1,10 +1,15 @@
 import React from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { Grid, CardMedia, IconButton, Divider, Hidden, Button, useMediaQuery } from '@material-ui/core'
+import {
+  Grid,
+  CardMedia,
+  IconButton,
+  Divider,
+  Hidden,
+  Button,
+  useMediaQuery
+} from '@material-ui/core'
 import { MoreHoriz, Menu } from '@material-ui/icons'
-import PhantomIcon from '@static/svg/phantom.svg'
-import SolletIcon from '@static/svg/sollet.svg'
-import MathIcon from '@static/svg/MathWallet.svg'
 import snyIcon from '@static/svg/logo-ic-nav.svg'
 import NavbarButton from '@components/Navbar/Button'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
@@ -16,6 +21,7 @@ import { Link } from 'react-router-dom'
 import { WalletType } from '@web3/wallet'
 import { theme } from '@static/theme'
 import useButtonStyles from '../HeaderButton/style'
+import icons from '@static/icons'
 import useStyles from './style'
 
 export interface IHeader {
@@ -51,9 +57,17 @@ export const Header: React.FC<IHeader> = ({
   const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
   const [routesModalAnchor, setRoutesModalAnchor] = React.useState<HTMLButtonElement | null>(null)
 
-  React.useEffect(() => { // if there will be no redirects, get rid of this
+  React.useEffect(() => {
+    // if there will be no redirects, get rid of this
     setActive(landing)
   }, [landing])
+
+  const names = {
+    [WalletType.PHANTOM]: 'phantom',
+    [WalletType.SOLLET]: 'sollet',
+    [WalletType.MATH]: 'math wallet',
+    [WalletType.SOLFLARE]: 'solflare'
+  }
 
   return (
     <>
@@ -65,7 +79,11 @@ export const Header: React.FC<IHeader> = ({
           <Divider orientation='vertical' className={classes.verticalDivider} />
         </Grid>
         <Hidden smDown>
-          <Grid container wrap='nowrap' alignItems='center' style={{ maxWidth: (93 * routes.length) + (15 * (routes.length - 1)) }}>
+          <Grid
+            container
+            wrap='nowrap'
+            alignItems='center'
+            style={{ maxWidth: 93 * routes.length + 15 * (routes.length - 1) }}>
             {routes.map(path => (
               <Link key={`path-${path}`} to={`/${path}`} className={classes.link}>
                 <NavbarButton
@@ -86,53 +104,60 @@ export const Header: React.FC<IHeader> = ({
               className={buttonClasses.headerButton}
               variant='contained'
               classes={{ disabled: buttonClasses.disabled }}
-              onClick={ onFaucet }
-            >
-                Faucet
+              onClick={onFaucet}>
+              Faucet
             </Button>
           )}
           <SelectNetworkButton
             name={typeOfNetwork}
             networks={[
+              { name: NetworkType.MAINNET, network: SolanaNetworks.MAIN_SERUM },
               { name: NetworkType.DEVNET, network: SolanaNetworks.DEV },
               { name: NetworkType.TESTNET, network: SolanaNetworks.TEST }
             ]}
-            onSelect={(chosen) => {
+            onSelect={chosen => {
               onNetworkSelect(chosen)
             }}
           />
-          {!walletConnected
-            ? (
-              <ChangeWalletButton
-                name={isSmDown ? 'My wallet' : 'Connect'}
-                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]}
-                onSelect={onWalletSelect}
-                connected={walletConnected}
-                onDisconnect={onDisconnectWallet}
-                hideArrow={isSmDown}
-              />
-            )
-            : (
-              <ChangeWalletButton
-                name={`${address.toString().substr(0, isSmDown ? 2 : 6)}...${address.toString().substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
-                options={[WalletType.PHANTOM, WalletType.SOLLET, WalletType.MATH]}
-                onSelect={onWalletSelect}
-                connected={walletConnected}
-                hideArrow={isSmDown}
-                onDisconnect={onDisconnectWallet}
-                startIcon={
-                  typeOfWallet === WalletType.PHANTOM
-                    ? (
-                      <CardMedia className={classes.connectedWalletIcon} image={PhantomIcon} />
-                    )
-                    : typeOfWallet === WalletType.SOLLET
-                      ? (
-                        <CardMedia className={classes.connectedWalletIcon} image={SolletIcon} />
-                      )
-                      : <CardMedia className={classes.connectedWalletIcon} image={MathIcon} />
-                }
-              />
-            )}
+          {!walletConnected ? (
+            <ChangeWalletButton
+              name={isSmDown ? 'My wallet' : 'Connect'}
+              options={[
+                WalletType.PHANTOM,
+                WalletType.SOLLET,
+                WalletType.MATH,
+                WalletType.SOLFLARE
+              ]}
+              onSelect={onWalletSelect}
+              connected={walletConnected}
+              onDisconnect={onDisconnectWallet}
+              hideArrow={isSmDown}
+            />
+          ) : (
+            <ChangeWalletButton
+              name={`${address
+                .toString()
+                .substr(0, isSmDown ? 2 : 6)}...${address
+                .toString()
+                .substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
+              options={[
+                WalletType.PHANTOM,
+                WalletType.SOLLET,
+                WalletType.MATH,
+                WalletType.SOLFLARE
+              ]}
+              onSelect={onWalletSelect}
+              connected={walletConnected}
+              hideArrow={isSmDown}
+              onDisconnect={onDisconnectWallet}
+              startIcon={
+                <CardMedia
+                  className={classes.connectedWalletIcon}
+                  image={icons[names[typeOfWallet]]}
+                />
+              }
+            />
+          )}
         </Grid>
         <Hidden smDown>
           <Grid item container className={classes.right} wrap='nowrap' alignItems='center'>

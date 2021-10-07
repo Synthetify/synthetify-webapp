@@ -9,7 +9,9 @@ import {
   xUSDAddress,
   userStaking,
   staking,
-  userDebtShares
+  userDebtShares,
+  stakedValue,
+  getSNYPrice
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
@@ -44,6 +46,8 @@ export const ActionMenuContainer: React.FC = () => {
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
   const walletStatus = useSelector(status)
+  const stakedUserValue = useSelector(stakedValue)
+  const SNYPrice = useSelector(getSNYPrice)
 
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
@@ -103,25 +107,29 @@ export const ActionMenuContainer: React.FC = () => {
       burnState={burnState}
       stakingData={{
         ...userStakingState,
+        stakedUserValue: stakedUserValue,
+        SNYPrice: SNYPrice,
         slot: slotState,
-        amountPerRound: stakingState.amountPerRound,
         roundLength: stakingState.roundLength,
         userDebtShares: userDebtSharesState,
         rounds: {
           next: {
             roundAllPoints: stakingState.nextRound.allPoints,
             roundPoints: userStakingState.nextRoundPoints,
-            roundStartSlot: stakingState.nextRound.start
+            roundStartSlot: stakingState.nextRound.start,
+            roundAmount: stakingState.nextRound.amount
           },
           current: {
             roundAllPoints: stakingState.currentRound.allPoints,
             roundPoints: userStakingState.currentRoundPoints,
-            roundStartSlot: stakingState.currentRound.start
+            roundStartSlot: stakingState.currentRound.start,
+            roundAmount: stakingState.currentRound.amount
           },
           finished: {
             roundAllPoints: stakingState.finishedRound.allPoints,
             roundPoints: userStakingState.finishedRoundPoints,
-            roundStartSlot: stakingState.finishedRound.start
+            roundStartSlot: stakingState.finishedRound.start,
+            roundAmount: stakingState.finishedRound.amount
           }
         },
         onClaim: () => dispatch(actions.claimRewards()),

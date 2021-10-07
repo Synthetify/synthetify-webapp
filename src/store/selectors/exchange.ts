@@ -30,22 +30,22 @@ export const {
   'swaplines',
   'swaplineSwap'
 ])
-export const healthFactor = createSelector(state, (s) => {
+export const healthFactor = createSelector(state, s => {
   return s.healthFactor
 })
-export const staking = createSelector(state, (s) => {
+export const staking = createSelector(state, s => {
   return s.staking
 })
-export const debtInterestRate = createSelector(state, (s) => {
+export const debtInterestRate = createSelector(state, s => {
   return s.debtInterestRate
 })
-export const fee = createSelector(state, (s) => {
+export const fee = createSelector(state, s => {
   return s.fee
 })
-export const userDebtShares = createSelector(exchangeAccount, (account) => {
+export const userDebtShares = createSelector(exchangeAccount, account => {
   return account.debtShares
 })
-export const userStaking = createSelector(exchangeAccount, (account) => {
+export const userStaking = createSelector(exchangeAccount, account => {
   return account.userStaking
 })
 export const xUSDAddress = createSelector(synthetics, assets, (allSynthetics, allAssets) => {
@@ -58,26 +58,36 @@ export const xUSDAddress = createSelector(synthetics, assets, (allSynthetics, al
     return DEFAULT_PUBLICKEY
   }
 })
-export const stakedValue = createSelector(exchangeAccount, collaterals, assets, (account, allCollaterals, allAssets) => {
-  if (account.address.equals(DEFAULT_PUBLICKEY)) {
-    return new BN(0)
-  }
-
-  let val: BN = new BN(0)
-
-  for (const collateral of account.collaterals) {
-    const collateralAddress = collateral.collateralAddress.toString()
-
-    if (allCollaterals[collateralAddress]) {
-      const toAdd: BN = collateral.amount
-        .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
-        .div(new BN(10 ** (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
-      val = val.add(toAdd)
+export const stakedValue = createSelector(
+  exchangeAccount,
+  collaterals,
+  assets,
+  (account, allCollaterals, allAssets) => {
+    if (account.address.equals(DEFAULT_PUBLICKEY)) {
+      return new BN(0)
     }
-  }
 
-  return val
-})
+    let val: BN = new BN(0)
+
+    for (const collateral of account.collaterals) {
+      const collateralAddress = collateral.collateralAddress.toString()
+
+      if (allCollaterals[collateralAddress]) {
+        const toAdd: BN = collateral.amount
+          .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
+          .div(
+            new BN(
+              10 **
+                (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)
+            )
+          )
+        val = val.add(toAdd)
+      }
+    }
+
+    return val
+  }
+)
 
 export const collateralValue = createSelector(
   exchangeAccount,
@@ -96,7 +106,12 @@ export const collateralValue = createSelector(
           .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
           .mul(allCollaterals[collateralAddress].collateralRatio.val)
           .div(new BN(10 ** allCollaterals[collateralAddress].collateralRatio.scale))
-          .div(new BN(10 ** (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+          .div(
+            new BN(
+              10 **
+                (allCollaterals[collateralAddress].reserveBalance.scale + ORACLE_OFFSET - ACCURACY)
+            )
+          )
         val = val.add(toAdd)
       }
     }
@@ -113,7 +128,7 @@ export const userDebtValue = createSelector(
   (account, allSynthetics, exchangeState, allAssets) => {
     if (
       account.address.equals(DEFAULT_PUBLICKEY) ||
-      !account.collaterals.some((col) => !col.amount.eq(new BN(0))) ||
+      !account.collaterals.some(col => !col.amount.eq(new BN(0))) ||
       account.debtShares.eq(new BN(0)) ||
       exchangeState.debtShares.eq(new BN(0))
     ) {
@@ -122,7 +137,9 @@ export const userDebtValue = createSelector(
     const debt = Object.entries(allSynthetics).reduce((acc, [_, synthetic]) => {
       return acc.add(
         divUp(
-          allAssets[synthetic.assetIndex].price.val.mul(synthetic.supply.val.sub(synthetic.borrowedSupply.val).sub(synthetic.swaplineSupply.val)),
+          allAssets[synthetic.assetIndex].price.val.mul(
+            synthetic.supply.val.sub(synthetic.borrowedSupply.val).sub(synthetic.swaplineSupply.val)
+          ),
           new BN(10 ** (synthetic.supply.scale + ORACLE_OFFSET - ACCURACY))
         )
       )
@@ -132,13 +149,9 @@ export const userDebtValue = createSelector(
   }
 )
 
-export const userMaxDebtValue = createSelector(
-  collateralValue,
-  healthFactor,
-  (value, factor) => {
-    return value.mul(factor.val).div(new BN(10 ** factor.scale))
-  }
-)
+export const userMaxDebtValue = createSelector(collateralValue, healthFactor, (value, factor) => {
+  return value.mul(factor.val).div(new BN(10 ** factor.scale))
+})
 
 export const userMaxMintUsd = createSelector(
   userMaxDebtValue,
@@ -177,7 +190,9 @@ export const userMaxWithdraw = (collateralTokenAddress: PublicKey) =>
         .div(collateralToken.collateralRatio.val)
         .div(new BN(factor.val))
         .div(new BN(allAssets[collateralToken.assetIndex].price.val))
-      const collateralAmount = account.collaterals.find(token => token.collateralAddress.equals(collateralTokenAddress))?.amount ?? new BN(0)
+      const collateralAmount =
+        account.collaterals.find(token => token.collateralAddress.equals(collateralTokenAddress))
+          ?.amount ?? new BN(0)
       return maxWithdraw.lte(collateralAmount) ? maxWithdraw : collateralAmount
     }
   )
@@ -195,7 +210,10 @@ export const effectiveFeeData = createSelector(
         fee: toEffectiveFee(currentFee, snyAmount),
         discountData: {
           discount,
-          nextThreshold: typeof nextThreshold !== 'undefined' ? nextThreshold - +printBN(snyAmount, 6) : undefined
+          nextThreshold:
+            typeof nextThreshold !== 'undefined'
+              ? nextThreshold - +printBN(snyAmount, 6)
+              : undefined
         }
       }
     } else {
@@ -224,10 +242,13 @@ export const exchangeSelectors = {
 
 export const getCollateralStructure = createSelector(
   collaterals,
-  assets, (allColaterals, assets) => {
+  assets,
+  (allColaterals, assets) => {
     let totalVal = new BN(0)
-    const values = Object.values(allColaterals).map((item) => {
-      const value = assets[item.assetIndex].price.val.mul(item.reserveBalance.val).div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+    const values = Object.values(allColaterals).map(item => {
+      const value = assets[item.assetIndex].price.val
+        .mul(item.reserveBalance.val)
+        .div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
       totalVal = totalVal.add(value)
       return {
         value,
@@ -235,10 +256,12 @@ export const getCollateralStructure = createSelector(
         scale: item.reserveBalance.scale
       }
     })
-    const collateralStructure = values.map((item) => {
+    const collateralStructure = values.map(item => {
       return {
         symbol: item.symbol,
-        percent: +printBN(totalVal, item.scale) ? +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100 : 0
+        percent: +printBN(totalVal, item.scale)
+          ? (+printBN(item.value, item.scale) / +printBN(totalVal, item.scale)) * 100
+          : 0
       }
     })
     return collateralStructure
@@ -247,12 +270,13 @@ export const getCollateralStructure = createSelector(
 
 export const getSyntheticsStructure = createSelector(
   synthetics,
-  assets, (allSynthetics, assets) => {
+  assets,
+  (allSynthetics, assets) => {
     let totalVal = new BN(0)
-    const values = Object.values(allSynthetics).map((item) => {
-      const value = assets[item.assetIndex].price.val.mul(
-        item.supply.val.sub(item.borrowedSupply.val).sub(item.swaplineSupply.val)
-      ).div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+    const values = Object.values(allSynthetics).map(item => {
+      const value = assets[item.assetIndex].price.val
+        .mul(item.supply.val.sub(item.borrowedSupply.val).sub(item.swaplineSupply.val))
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
       totalVal = totalVal.add(value)
       return {
         value,
@@ -260,14 +284,39 @@ export const getSyntheticsStructure = createSelector(
         scale: item.supply.scale
       }
     })
-    const syntheticStructure = values.map((item) => {
+    const syntheticStructure = values.map(item => {
       return {
         symbol: item.symbol,
-        percent: +printBN(totalVal, item.scale) ? +printBN(item.value, item.scale) / +printBN(totalVal, item.scale) * 100 : 0,
+        percent: +printBN(totalVal, item.scale)
+          ? (+printBN(item.value, item.scale) / +printBN(totalVal, item.scale)) * 100
+          : 0,
         value: +transformBN(item.value)
       }
     })
     return syntheticStructure
   }
 )
+
+export const getCollateralValue = createSelector(collaterals, assets, (allColaterals, assets) => {
+  let totalVal = new BN(0)
+  Object.values(allColaterals).forEach(item => {
+    const value = assets[item.assetIndex].price.val
+      .mul(item.reserveBalance.val)
+      .div(new BN(10 ** (item.reserveBalance.scale + ORACLE_OFFSET - ACCURACY)))
+    totalVal = totalVal.add(value)
+  })
+
+  return +transformBN(totalVal)
+})
+
+export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, assets) => {
+  const snyIndex = Object.values(allColaterals)[0]?.assetIndex
+  return typeof snyIndex !== 'undefined'
+    ? assets[snyIndex].price
+    : {
+      val: new BN(0),
+      scale: 6
+    }
+})
+
 export default exchangeSelectors

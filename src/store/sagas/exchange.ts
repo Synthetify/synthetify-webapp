@@ -235,7 +235,7 @@ export function* depositCollateralWSOL(amount: BN): SagaGenerator<string> {
   return signature
 }
 
-export function* mintUsd(amount: BN): SagaGenerator<void> {
+export function* mintUsd(amount: BN): SagaGenerator<string> {
   const usdTokenAddress = yield* select(xUSDAddress)
   const tokensAccounts = yield* select(accounts)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -247,12 +247,14 @@ export function* mintUsd(amount: BN): SagaGenerator<void> {
   if (accountAddress == null) {
     accountAddress = yield* call(createAccount, usdTokenAddress)
   }
-  yield* call([exchangeProgram, exchangeProgram.mint], {
+  const signature = yield* call([exchangeProgram, exchangeProgram.mint], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
     to: accountAddress
   })
+  console.log(signature)
+  return signature
 }
 export function* withdrawCollateral(
   amount: BN,
@@ -278,7 +280,7 @@ export function* withdrawCollateral(
     userCollateralAccount: collateralAccountAddress?.address,
     reserveAccount: allCollaterals[collateralTokenAddress.toString()].reserveAddress
   })
-  return signature[1]
+  return signature
 }
 export function* withdrawCollateralWSOL(amount: BN): SagaGenerator<string> {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -352,7 +354,7 @@ export function* burnToken(amount: BN, tokenAddress: PublicKey): SagaGenerator<s
     owner: wallet.publicKey,
     userTokenAccountBurn: userTokenAccount.address
   })
-  return signature[1]
+  return signature
 }
 
 export function* claimRewards(): SagaGenerator<string> {
@@ -415,8 +417,9 @@ export function* handleSwap(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Successfully swaped token.',
+        message: 'Successfully swapped token.',
         variant: 'success',
+        txid,
         persist: false
       })
     )

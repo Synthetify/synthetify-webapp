@@ -24,6 +24,7 @@ export function fillData(value: any[]) {
   })
   return linePlotArray
 }
+
 export function* apiData(): Generator {
   const dataTmp: IStats = {
     linePlot: [],
@@ -31,21 +32,20 @@ export function* apiData(): Generator {
   }
   try {
     const currentNetwork = yield* select(network)
-
     const response = yield* call(getData, currentNetwork.toLowerCase())
     dataTmp.linePlot = fillData(response.data)
 
     dataTmp.last24.volume = response.data[response.data.length - 1].volume
-    dataTmp.last24.collateral = response.data[response.data.length - 1].collateral
+    dataTmp.last24.collateral = response.data[response.data.length - 1].collateralAll
     dataTmp.last24.mint = response.data[response.data.length - 1].mint
-    dataTmp.last24.debt = response.data[response.data.length - 1].debt
+    dataTmp.last24.debt = response.data[response.data.length - 1].debtAll
     dataTmp.last24.fee = response.data[response.data.length - 1].fee
-
     yield put(action.receiveApiData(dataTmp))
   } catch (error) {
     console.log(error)
   }
 }
+
 export function* getUpdateData(): Generator {
   yield takeEvery(action.updateData, apiData)
 }
