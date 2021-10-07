@@ -40,7 +40,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                     <Typography className={classes.titleLabel}>
                       {' '}
                       <FiberManualRecordIcon
-                        style={{ width: '10px', height: 'auto', paddingRight: '2px' }}
+                        style={{ width: '10px', height: 'auto', paddingRight: '8px' }}
                       />
                       {element.label}{' '}
                     </Typography>
