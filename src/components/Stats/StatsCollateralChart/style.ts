@@ -111,19 +111,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.subtitle2,
       display: 'flex'
     },
-    '& svg': {
-      [theme.breakpoints.down('xs')]: {
-        marginTop: 5
-      }
-    },
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
     },
-    [theme.breakpoints.down('sm')]: {
-      //...typography.body4
-    },
-    [theme.breakpoints.down('xs')]: {
-      //...typography.subtitle2
+    '& svg': {
+      paddingBottom: 2,
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 0
+      },
+      [theme.breakpoints.down('xs')]: {
+        marginTop: 5
+      }
     }
   }
 }))

@@ -50,7 +50,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                   ).toFixed(2)}%)`}</Typography>
                   <ListItemIcon className={classes.listItemIconNumber}>
                     <FiberManualRecordIcon
-                      style={{ width: '8px', height: 'auto', paddingBottom: '0.25em' }}
+                      style={{ width: '10px', height: 'auto' }}
                     />
                     <AnimatedNumber
                       value={element.price}

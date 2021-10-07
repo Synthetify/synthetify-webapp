@@ -42,9 +42,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItemIconName: {
     width: 'fit-content',
-
     paddingRight: 8,
     alignItems: 'center',
+    '& svg': {
+      paddingBottom: 2,
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 0
+      }
+    },
     '&> svg': {
       paddingRight: 8
     },
@@ -60,9 +65,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
     },
-    [theme.breakpoints.down('sm')]: {
-      ...typography.body4
-    },
+    //    [theme.breakpoints.down('sm')]: {
+    //      ...typography.body4
+    //    },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2
     }
@@ -73,14 +78,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: 4,
     ...typography.body2,
     '&> svg': {
-      paddingRight: 6
+      paddingRight: 6,
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 5
+      }
     },
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2,
       paddingLeft: 3
     },
     [theme.breakpoints.down('sm')]: {
-      ...typography.body4,
+      // ...typography.body4,
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
@@ -122,7 +130,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.subtitle2
     },
     [theme.breakpoints.down('sm')]: {
-      ...typography.body4
+      //      ...typography.body4
+      paddingLeft: 7
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2

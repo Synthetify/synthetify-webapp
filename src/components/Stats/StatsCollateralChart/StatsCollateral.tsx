@@ -103,7 +103,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
                   style={{ width: '10px', height: 'auto', paddingRight: '8px' }}
                 />
                 {coin.name}
-                <span style={{ color: '#ffffff', marginLeft: '7px' }}><span style={{ fontWeight: 700 }}>({coin.percent.toFixed(2)}%)</span></span>
+                <span style={{ color: '#ffffff', marginLeft: '2px' }}><span>({coin.percent.toFixed(2)}%)</span></span>
               </Grid>
             ))}
 
