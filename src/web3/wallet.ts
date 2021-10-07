@@ -4,7 +4,6 @@ import { PhantomWalletAdapter } from './adapters/phantom'
 import { MathWalletAdapter } from './adapters/mathwallet'
 import Wallet from '@project-serum/sol-wallet-adapter'
 import { SolflareWalletAdapter } from './adapters/solflare'
-import { getSolanaNetwork } from './connection'
 export enum WalletType {
   PHANTOM,
   SOLLET,
@@ -33,7 +32,7 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         break
       case WalletType.SOLLET:
         if ((window as any)?.sollet) {
-          _wallet = new Wallet((window as any)?.sollet, getSolanaNetwork())
+          _wallet = new Wallet((window as any)?.sollet) as WalletAdapter
         } else {
           providerUrl = 'https://www.sollet.io'
           _wallet = new Wallet(providerUrl) as WalletAdapter
