@@ -115,6 +115,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       [theme.breakpoints.down('xs')]: {
         marginTop: 5
       }
+    },
+    [theme.breakpoints.down('md')]: {
+      ...typography.subtitle2
+    },
+    [theme.breakpoints.down('sm')]: {
+      //...typography.body4
+    },
+    [theme.breakpoints.down('xs')]: {
+      //...typography.subtitle2
     }
   }
 }))

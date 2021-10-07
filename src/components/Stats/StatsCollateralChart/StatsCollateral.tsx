@@ -100,7 +100,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
             {data.map((coin) => (
               <Grid item className={classes.legendItem} style={{ color: coin.color }}>
                 <FiberManualRecordIcon
-                  style={{ width: '10px', height: 'auto', paddingRight: '2px', paddingBottom: '2px' }}
+                  style={{ width: '10px', height: 'auto', paddingRight: '8px' }}
                 />
                 {coin.name}
                 <span style={{ color: '#ffffff', marginLeft: '7px' }}><span style={{ fontWeight: 700 }}>({coin.percent.toFixed(2)}%)</span></span>
