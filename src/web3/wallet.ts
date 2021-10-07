@@ -31,8 +31,12 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         _wallet.connect()
         break
       case WalletType.SOLLET:
-        providerUrl = 'https://www.sollet.io'
-        _wallet = new Wallet(providerUrl) as WalletAdapter
+        if ((window as any)?.sollet) {
+          _wallet = new Wallet((window as any)?.sollet) as WalletAdapter
+        } else {
+          providerUrl = 'https://www.sollet.io'
+          _wallet = new Wallet(providerUrl) as WalletAdapter
+        }
         _wallet.on('connect', () => {
           resolve(_wallet)
         })
