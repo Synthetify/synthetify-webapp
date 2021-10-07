@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: 8,
     alignItems: 'center',
     '& svg': {
-      paddingBottom: 2,
+      paddingBottom: 1,
       [theme.breakpoints.down('md')]: {
         paddingBottom: 0
       }
@@ -79,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     '&> svg': {
       paddingRight: 6,
+      paddingBottom: 7,
       [theme.breakpoints.down('md')]: {
         paddingBottom: 5
       }
