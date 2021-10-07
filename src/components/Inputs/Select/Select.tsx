@@ -57,7 +57,7 @@ export const Select: React.FC<ISelectModal> = ({
             <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: !current ? -8 : -6 }} />}
+        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8, marginRight: -4 }} />}
         style={
           !current ? (isXs ? typography.caption4 : typography.body3) : undefined
         }

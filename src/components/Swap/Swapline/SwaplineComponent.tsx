@@ -226,7 +226,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
   }
 
   const getButtonMessage = () => {
-    if (!pairIndex) return 'Select pair'
+    if (pairIndex === null) return 'Select pair'
 
     if (amountTo.match(/^0\.0*$/)) {
       return 'Enter value of swap'
@@ -260,7 +260,6 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                 src={RedExclamationMark}
                 alt=''
                 className={classes.exclamationMark}
-                style={{ marginLeft: 16 }}
               />
             }
             tooltipClasses={{ tooltip: classes.supplyTooltip }}

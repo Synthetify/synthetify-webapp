@@ -90,19 +90,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   toText: {
-    maxWidth: 138,
-
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: 121
-    },
-
-    [theme.breakpoints.down('xs')]: {
-      maxWidth: 113
-    }
+    width: 'max-content'
   },
   exclamationMark: {
     height: 18,
     width: 18,
+    marginLeft: 16,
+    marginTop: 4,
 
     '&:hover': {
       cursor: 'pointer'
