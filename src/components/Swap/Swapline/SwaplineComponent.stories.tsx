@@ -87,7 +87,7 @@ synthetics[1].price = {
   scale: 4
 }
 
-const collaterals = 'USD DOGE SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
+const collaterals = 'USDC DOGE WSOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
   .split(' ')
   .map((i): ExchangeCollateralTokens => {
     return {

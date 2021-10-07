@@ -14,8 +14,6 @@ import ExclamationMark from '@static/svg/exclamationMark.svg'
 import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import { pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
-import QuestionMark from '@static/svg/questionMark.svg'
-import Fee from '@static/svg/fee.svg'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { SwaplinePair, SwaplineSwapType } from '../tmpConsts'
 import useStyles from '../style'
@@ -54,7 +52,7 @@ export const getAssetInAndFor = (
     priceVal: pair.collateralData.price.val,
     assetScale: pair.collateralData.reserveBalance.scale,
     symbol: pair.collateralData.symbol,
-    maxAvailable: pair.collateralData.reserveBalance.val,
+    maxAvailable: pair.balance.val,
     balance: pair.collateralData.balance
   }
 
@@ -62,7 +60,7 @@ export const getAssetInAndFor = (
     priceVal: pair.syntheticData.price.val,
     assetScale: pair.syntheticData.supply.scale,
     symbol: pair.syntheticData.symbol,
-    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val),
+    maxAvailable: pair.limit.val,
     balance: pair.syntheticData.balance
   }
 

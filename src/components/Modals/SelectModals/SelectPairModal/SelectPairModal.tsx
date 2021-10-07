@@ -4,6 +4,7 @@ import useStyles from '../style'
 import { Search } from '@material-ui/icons'
 import CustomScrollbar from '../CustomScrollbar'
 import icons from '@static/icons'
+import classNames from 'classnames'
 
 export interface ISelectPairModal {
   pairs: Array<{ symbol1: string; symbol2: string }>
@@ -106,10 +107,15 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                       onSelect(index)
                       handleClose()
                     }}>
-                    <Grid item>
+                    <Grid className={classes.dualIcon}>
                       <CardMedia
                         className={classes.tokenIcon}
                         image={icons[pair.symbol1] ?? icons.SNY}
+                        style={{ marginRight: 0 }}
+                      />
+                      <CardMedia
+                        className={classNames(classes.tokenIcon, classes.secondIcon)}
+                        image={icons[pair.symbol2] ?? icons.SNY}
                       />{' '}
                     </Grid>
                     <Grid item className={classes.tokenData}>
