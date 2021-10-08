@@ -9,6 +9,11 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
   .add('rewards tab', () => (
     <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <RewardsTab
+        SNYPrice={{
+          val: new BN(2000000),
+          scale: 6
+        }}
+        stakedUserValue={new BN(2137)}
         slot={578000}
         userDebtShares={new BN(1e5)}
         roundLength={100000}
