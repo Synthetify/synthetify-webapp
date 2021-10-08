@@ -10,9 +10,7 @@ export interface Data {
 }
 export interface CardData {
   volume: number
-  collateral: number
   mint: number
-  debt: number
   fee: number
 }
 
@@ -91,9 +89,7 @@ export const defaultState: IStats = {
   ],
   last24: {
     volume: 0,
-    collateral: 0,
     mint: 0,
-    debt: 0,
     fee: 0
   }
 }

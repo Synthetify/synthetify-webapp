@@ -52,11 +52,15 @@ storiesOf('cards/StatisticsAll', module).add('Container', () => (
     <StatisticCardAll
       data={{
         volume: 0,
-        collateral: 0,
         mint: 0,
-        debt: 0,
         fee: 0
       }}
+      debtCurrent={[{
+        id: 'default',
+        value: 1,
+        price: 1
+      }]}
+      collateralValue={100}
     />
   </div>
 ))
