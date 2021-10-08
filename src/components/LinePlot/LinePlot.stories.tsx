@@ -4,19 +4,18 @@ import LinePlot from './LinePlot'
 const setTimeAction = (index: number, serieId: string, timestamp: number, value: number) => {
   console.log(index, serieId, timestamp, value)
 }
+const fillData = () => {
+  const tmp: Array<{ x: number; y: number }> = []
+  for (let i = 1624518498300; i < 1624518498300 + 200; i++) {
+    tmp.push({ x: i, y: i % 100 })
+  }
+  return tmp
+}
 storiesOf('stats/topplot', module).add('line', () => (
   <LinePlot
     data={{
       id: 'default',
-      data: [
-        { x: 1624518498300, y: 0 },
-        { x: 1631782783000, y: 42468.09 },
-        { x: 1631785499000, y: 42468.09 },
-        { x: 1631786772000, y: 42468.09 },
-        { x: 1632229806000, y: 48840.3 },
-        { x: 1632300034000, y: 48840.3 },
-        { x: 1632394957000, y: 48840.3 }
-      ]
+      data: fillData()
     }}
     sign={'$'}
     setTimeActive={setTimeAction}

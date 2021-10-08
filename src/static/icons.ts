@@ -17,6 +17,7 @@ import xUNIIcon from './icons/xuni.svg'
 import xYFIIcon from './icons/xyfi.svg'
 import xUSDIcon from './icons/xusd.svg'
 import WSOLIcon from './icons/wsol.svg'
+import USDCIcon from './icons/usdc.svg'
 import phantomIcon from './svg/phantom.svg'
 import solletIcon from './svg/sollet.svg'
 import mathIcon from './svg/MathWallet.svg'
@@ -46,6 +47,7 @@ const icons: { [key: string]: string } = {
   xYFI: xYFIIcon,
   WSOL: WSOLIcon,
   stSOL: WSOLIcon,
+  USDC: USDCIcon,
   phantom: phantomIcon,
   sollet: solletIcon,
   'math wallet': mathIcon,

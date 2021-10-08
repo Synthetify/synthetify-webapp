@@ -36,7 +36,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     xSRM: 'Synthetic Serum',
     xUSD: 'Synthetic USD',
     stSOL: 'Staked Solana',
-    WSOL: 'Wrapped Solana'
+    WSOL: 'Wrapped Solana',
+    USDC: 'USD Coin'
   }
 
   const endAdornment = () => (
