@@ -12,9 +12,14 @@ interface Props {
 
 interface IProp {
   data: Props
+  debtCurrent: Array<{
+    id: string
+    value: number
+    price: number
+  }>
 }
 
-export const StatisticCardAll: React.FC<IProp> = ({ data }) => {
+export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent }) => {
   const classes = useStyles()
   return (
     <div className={classes.gridContainer}>
@@ -27,7 +32,13 @@ export const StatisticCardAll: React.FC<IProp> = ({ data }) => {
           />
         </Grid>
         <Grid id='debt' item xs={12} sm={5}>
-          <StatisticsCard name='Debt' value={data.debt} desc={'Total debt owed'} />
+          <StatisticsCard
+            name='Debt'
+            value={debtCurrent.reduce((sum, item) => {
+              return sum + item.price
+            }, 0)}
+            desc={'Total debt owed'}
+          />
         </Grid>
         <Grid id='mint' item xs={12} sm={4}>
           <StatisticsCard name='Mint' value={data.mint} desc={'Value minted'} />

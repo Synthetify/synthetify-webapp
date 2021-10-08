@@ -1,5 +1,5 @@
 import React from 'react'
-import { transformBN } from '@consts/utils'
+import { transformBN, printBN } from '@consts/utils'
 import { Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeRemainingTooltip/TimeRemainingTooltip'
@@ -60,12 +60,15 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
       {bracket
         ? (
           <>
-            {' (APR: '}
-            <AnimatedNumber
-              value={bracketValue ? transformBN(bracketValue) : new BN(0)}
-              duration={300}
-              formatValue={(value: string) => Number(value).toFixed(2)}
-            />
+            {' (APY: '}
+            {bracketValue.div(new BN(100)).lt(new BN(1000000))
+              ? <AnimatedNumber
+                value={printBN(bracketValue, 2)}
+                duration={300}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
+              : 'infinity'
+            }
             {` ${bracket})`}
           </>
         )
