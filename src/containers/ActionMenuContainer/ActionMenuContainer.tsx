@@ -68,6 +68,40 @@ export const ActionMenuContainer: React.FC = () => {
     }
   }, [userStaked, withdrawIndex])
 
+  const estimateUserDebtShares = () => {
+    if (stakingState.currentRound.start.toNumber() <= userStakingState.lastUpdate.toNumber()) {
+      return {
+        nextShares: userStakingState.nextRoundPoints,
+        currentShares: userStakingState.currentRoundPoints,
+        finishedShares: userStakingState.finishedRoundPoints
+      }
+    }
+
+    if (stakingState.finishedRound.start.toNumber() <= userStakingState.lastUpdate.toNumber()) {
+      return {
+        nextShares: userDebtSharesState,
+        currentShares: userStakingState.nextRoundPoints,
+        finishedShares: userStakingState.currentRoundPoints
+      }
+    }
+
+    if (stakingState.finishedRound.start.toNumber() - stakingState.roundLength <= userStakingState.lastUpdate.toNumber()) {
+      return {
+        nextShares: userDebtSharesState,
+        currentShares: userDebtSharesState,
+        finishedShares: userStakingState.nextRoundPoints
+      }
+    }
+
+    return {
+      nextShares: userDebtSharesState,
+      currentShares: userDebtSharesState,
+      finishedShares: userDebtSharesState
+    }
+  }
+
+  const { nextShares, currentShares, finishedShares } = estimateUserDebtShares()
+
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
@@ -115,19 +149,19 @@ export const ActionMenuContainer: React.FC = () => {
         rounds: {
           next: {
             roundAllPoints: stakingState.nextRound.allPoints,
-            roundPoints: userStakingState.nextRoundPoints,
+            roundPoints: nextShares,
             roundStartSlot: stakingState.nextRound.start,
             roundAmount: stakingState.nextRound.amount
           },
           current: {
             roundAllPoints: stakingState.currentRound.allPoints,
-            roundPoints: userStakingState.currentRoundPoints,
+            roundPoints: currentShares,
             roundStartSlot: stakingState.currentRound.start,
             roundAmount: stakingState.currentRound.amount
           },
           finished: {
             roundAllPoints: stakingState.finishedRound.allPoints,
-            roundPoints: userStakingState.finishedRoundPoints,
+            roundPoints: finishedShares,
             roundStartSlot: stakingState.finishedRound.start,
             roundAmount: stakingState.finishedRound.amount
           }
