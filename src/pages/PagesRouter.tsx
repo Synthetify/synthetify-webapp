@@ -23,10 +23,11 @@ export const PagesRouter: React.FC = () => {
     // dispatch(providerActions.initProvider())
     dispatch(solanaConnectionActions.initSolanaConnection())
   }, [dispatch])
+
   // TODO: add more paths to router later
   return (
     <Router>
-      {halted ? console.log(true) : <InformationCard />}
+      {halted ? <InformationCard /> : ''}
       {signerStatus === Status.Initialized && <EventsHandlers />}
       <div id={toBlur}>
         <HeaderWrapper />
