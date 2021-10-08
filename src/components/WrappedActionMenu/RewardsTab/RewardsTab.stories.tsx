@@ -14,7 +14,6 @@ storiesOf('WrappedActionMenu/RewardsTab', module)
           scale: 6
         }}
         stakedUserValue={new BN(2137)}
-        lastUpdate={new BN(2137)}
         slot={578000}
         userDebtShares={new BN(1e5)}
         roundLength={100000}

@@ -31,13 +31,11 @@ export interface IRewardsProps {
   SNYPrice: Decimal,
   userDebtShares: BN
   rounds: RoundData
-  lastUpdate: BN
   onClaim: () => void
   onWithdraw: () => void
 }
 
 export const RewardsTab: React.FC<IRewardsProps> = ({
-  lastUpdate,
   slot = 0,
   amountToClaim,
   roundLength,
@@ -53,14 +51,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const estimateRounds = (): RoundData => {
     const { current, next } = rounds
 
-    if ((next.roundStartSlot.toNumber() >= slot) && (current.roundStartSlot.toNumber() <= lastUpdate.toNumber())) {
+    if (next.roundStartSlot.toNumber() >= slot) {
       return rounds
     }
     const slotDiff = slot - next.roundStartSlot.toNumber()
     const roundDiff = divUpNumber(slotDiff, roundLength)
 
     switch (roundDiff) {
-      case 0:
       case 1: {
         return {
           finished: current,
@@ -73,7 +70,6 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           }
         }
       }
-      case -1:
       case 2: {
         return {
           finished: next,
