@@ -417,7 +417,7 @@ export function* handleSwap(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Successfully swaped token.',
+        message: 'Successfully swapped token.',
         variant: 'success',
         txid,
         persist: false
