@@ -28,7 +28,7 @@ export function fillData(value: any[]) {
 export function* apiData(): Generator {
   const dataTmp: IStats = {
     linePlot: [],
-    last24: { volume: 0, collateral: 0, mint: 0, debt: 0, fee: 0 }
+    last24: { volume: 0, mint: 0, fee: 0 }
   }
   try {
     const currentNetwork = yield* select(network)
@@ -36,9 +36,7 @@ export function* apiData(): Generator {
     dataTmp.linePlot = fillData(response.data)
 
     dataTmp.last24.volume = response.data[response.data.length - 1].volume
-    dataTmp.last24.collateral = response.data[response.data.length - 1].collateralAll
     dataTmp.last24.mint = response.data[response.data.length - 1].mint
-    dataTmp.last24.debt = response.data[response.data.length - 1].debtAll
     dataTmp.last24.fee = response.data[response.data.length - 1].fee
     yield put(action.receiveApiData(dataTmp))
   } catch (error) {
