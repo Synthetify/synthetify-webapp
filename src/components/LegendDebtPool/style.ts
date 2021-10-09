@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItemIconName: {
     width: 'fit-content',
-    paddingRight: 8,
+    paddingRight: 2,
     alignItems: 'center',
     '& svg': {
       paddingBottom: 1,
@@ -65,9 +65,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
     },
-    //    [theme.breakpoints.down('sm')]: {
-    //      ...typography.body4
-    //    },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2
     }
@@ -89,7 +86,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingLeft: 3
     },
     [theme.breakpoints.down('sm')]: {
-      // ...typography.body4,
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
@@ -131,8 +127,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.subtitle2
     },
     [theme.breakpoints.down('sm')]: {
-      //      ...typography.body4
-      paddingLeft: 7
+      paddingLeft: 2
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2

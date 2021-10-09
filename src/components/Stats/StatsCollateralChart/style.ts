@@ -109,7 +109,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
       ...typography.subtitle2,
-      display: 'flex'
+      display: 'flex',
+      '&:not(:first-child)': {
+        marginTop: 16
+      }
     },
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
