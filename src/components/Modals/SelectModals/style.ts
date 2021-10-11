@@ -140,6 +140,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 12,
     marginLeft: 8,
     cursor: 'pointer'
+  },
+  dualIcon: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 'fit-content'
+  },
+  secondIcon: {
+    marginLeft: -15,
+    marginRight: 14,
+
+    [theme.breakpoints.down('md')]: {
+      marginRight: 6
+    }
   }
 }))
 

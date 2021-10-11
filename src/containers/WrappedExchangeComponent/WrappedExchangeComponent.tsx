@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
 import { effectiveFeeData, swap } from '@selectors/exchange'
 import { actions } from '@reducers/exchange'
-import ExchangeComponent from '@components/ExchangeComponent/ExchangeComponent'
+import ExchangeComponent from '@components/Swap/Exchange/ExchangeComponent'
 
 export const WrappedExchangeComponent: React.FC<{
   tokensWithBalance: ExchangeTokensWithBalance[],
