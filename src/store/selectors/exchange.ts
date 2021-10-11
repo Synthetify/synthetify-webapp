@@ -319,4 +319,8 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
     }
 })
 
+export const getHaltedState = createSelector(state, (allState) => {
+  return allState.halted
+})
+
 export default exchangeSelectors

@@ -1,7 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }>(() => ({
+const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }>(() => ({
   amountInput: {
     background: colors.navy.dark,
     color: colors.navy.grey,
