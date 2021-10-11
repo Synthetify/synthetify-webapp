@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 130
   },
   amount: {
+    display: 'flex',
     marginTop: 24,
     marginBottom: 18,
 
@@ -37,10 +38,30 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginTop: 8
     }
   },
-  line: {
-  },
+  line: {},
   label: {
     top: -1
+  },
+  time: {
+    ...typography.subtitle2,
+    color: colors.navy.grey,
+    paddingBottom: '3px'
+  },
+  rootTimer: {
+    width: 'fit-content',
+    borderRadius: 10,
+    paddingBlock: 11,
+    paddingInline: 16,
+    backgroundColor: colors.navy.background,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    minWidth: '87px'
+  },
+  clockIcon: {
+    width: 16,
+    height: 16,
+    paddingRight: '6px'
   }
 }))
 

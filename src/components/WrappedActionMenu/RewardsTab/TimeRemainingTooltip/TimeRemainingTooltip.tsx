@@ -13,15 +13,15 @@ export interface ITimeRemainingTooltipInterface {
   timeRemainingEndSlot: BN
   slot: number
   hint: string
-  icon: string,
+  icon: string
   placement: Placement
+  isPopoverOpen: boolean
+  setIsPopoverOpen: (status: boolean) => void
 }
 
-export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement'>> = ({
-  timeRemainingEndSlot,
-  slot,
-  hint
-}) => {
+export const CountDown: React.FC<
+  Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement' | 'isPopoverOpen' | 'setIsPopoverOpen'>
+> = ({ timeRemainingEndSlot, slot, hint }) => {
   const classes = useStyles()
 
   const calculateTimeRemaining = (): BN => {
@@ -41,7 +41,7 @@ export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon' | '
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeRemaining((time) => {
+      setTimeRemaining(time => {
         if (time.eqn(0)) {
           return time
         }
@@ -58,9 +58,7 @@ export const CountDown: React.FC<Omit<ITimeRemainingTooltipInterface, 'icon' | '
   return (
     <>
       <img src={Clock} alt='' className={classes.clockIcon} />
-      <Typography className={classes.title}>
-        {displayTimeRemaining()}
-      </Typography>
+      <Typography className={classes.title}>{displayTimeRemaining()}</Typography>
       <p style={{ margin: 0, color: colors.navy.lightGrey }}>{hint}</p>
     </>
   )
@@ -71,7 +69,9 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
   slot,
   hint,
   icon,
-  placement
+  placement,
+  isPopoverOpen,
+  setIsPopoverOpen
 }) => {
   const classes = useStyles()
 
@@ -83,11 +83,12 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
       hint={<CountDown timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />}
       anchor={<img src={icon} alt='' className={classes.icon} />}
       mobilePlacement={placement}
-      desktopPlacement={placement}
       tooltipClasses={{
         tooltipPlacementLeft: classes.tooltipPlacementLeft,
         tooltipPlacementRight: classes.tooltipPlacementRight
       }}
+      isPopoverOpen={isPopoverOpen}
+      setIsPopoverOpen={setIsPopoverOpen}
     />
   )
 }
