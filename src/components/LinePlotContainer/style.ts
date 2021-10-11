@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'unset',
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Be Vietnam',
     width: '100%'
   },
   cardContent: {
@@ -29,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 120,
     height: 36,
     marginBottom: '6px',
-    paddingBottom: '7px',
     background: colors.navy.navButton,
     borderRadius: '5px',
     textTransform: 'none',
@@ -86,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle2,
     width: '100%',
     textTransform: 'none',
-    padding: '0 0 3px 6px',
+    padding: '2px 0 0px 6px',
     justifyContent: 'start',
     color: colors.navy.grey,
     '&:hover': {
@@ -125,6 +123,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   infoPercent: {
     ...typography.subtitle2,
+    alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
@@ -137,6 +136,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '27px',
       lineHeight: '35px'
     }
+  },
+  tradingIcon: {
+    padding: 0,
+    fontSize: '1.25em'
   }
 }))
 

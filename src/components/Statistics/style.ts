@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     height: '100%',
     '&:last-child': {
-      padding: '4.5px 16px 8.5px 16px',
+      padding: '6.5px 16px 8.5px 16px',
       [theme.breakpoints.down('sm')]: {
         padding: '2.5px 8px'
       },

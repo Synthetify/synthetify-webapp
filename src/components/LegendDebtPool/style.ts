@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: 'none',
     borderRadius: 10,
     height: 'auto',
-    fontFamily: 'Be Vietnam',
     marginLeft: '24px',
     width: '459px',
 
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '10px',
     marginBottom: '0px',
     height: '100%',
-    paddingTop: '4px'
+    paddingTop: '10px'
   },
   listItemIconName: {
     width: 'fit-content',
@@ -68,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemIconNumber: {
-    alignItems: 'end',
+    alignItems: 'center',
     color: colors.navy.info,
     paddingLeft: 4,
     ...typography.body2,
@@ -99,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemGrid: {
-    padding: '4px 8px 10px 8px',
+    padding: '10px 8px 10px 8px',
     [theme.breakpoints.down('sm')]: {
       padding: '2px 8px 6px 8px'
     }
@@ -107,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   legend: {
     width: '100%',
     height: 'max-content',
-    padding: '0 8px',
+    padding: '0 16px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'

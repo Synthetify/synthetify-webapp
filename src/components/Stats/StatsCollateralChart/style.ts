@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '10px 24px 20px 14px'
+    padding: '20px 24px 20px 24px'
   },
 
   statsWrapper: {
@@ -110,7 +110,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   legendItem: {
     marginRight: 35,
     ...typography.body2,
-    fontFamily: 'Be Vietnam',
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
       ...typography.subtitle2

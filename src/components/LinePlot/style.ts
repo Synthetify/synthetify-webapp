@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
     '&  g > text': {
       stroke: 'none',
       fill: '#A3A8CE!important',
-      fontFamily: 'Be Vietnam!important',
+      fontFamily: 'Nunito Sans!important',
       [theme.breakpoints.down('sm')]: {
         fontSize: '7px!important'
       }
