@@ -6,7 +6,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'fixed',
     width: 'fit-content',
     bottom: 22,
-    right: 22
+    right: 22,
+    padding: '17px 18px 15px 18px',
+    paddingInline: 13,
+    borderRadius: 56.5,
+    backdropFilter: 'blur(4px)',
+    backgroundColor: 'rgba(157, 160, 174, 0.1)',
+    zIndex: 10
   },
   container: {
     justifyContent: 'center',
@@ -18,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 34,
     backgroundColor: 'transparent',
     cursor: 'pointer',
+    transition: 'transform 300ms',
+    '&:hover': {
+      transform: 'scale(1.1) rotate(-20deg)'
+    },
 
     [theme.breakpoints.only('md')]: {
       height: 43,
