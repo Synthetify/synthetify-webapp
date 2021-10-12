@@ -28,20 +28,20 @@ export interface IProps {
 }
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const classes = useStyle()
-  const allCoins: HTMLElement[] = Array.from(document.querySelectorAll('li')).map((coin) => coin.childNodes[0].childNodes[2] as HTMLElement)
+  const allCoins: HTMLElement[] = Array.from(document.querySelectorAll('li'))
   const xs = !useMediaQuery(theme.breakpoints.down('xs'))
   const md = !useMediaQuery(theme.breakpoints.down('sm'))
 
   allCoins.map((coins) => {
     if (coins.offsetHeight >= 53 && xs && !md) {
       allCoins.map((coin) => {
-        coin.style.flex = '1 0 100%'
-        coin.style.marginLeft = '-3px'
+        (coin.childNodes[0].childNodes[2] as HTMLElement).style.flex = '1 0 100%';
+        (coin.childNodes[0].childNodes[2] as HTMLElement).style.marginLeft = '-3px';
       })
     } else {
       allCoins.map((coin) => {
-        coin.style.flex = 'unset'
-        coin.style.marginLeft = '0'
+        (coin.childNodes[0].childNodes[2] as HTMLElement).style.flex = 'unset';
+        (coin.childNodes[0].childNodes[2] as HTMLElement).style.marginLeft = '0';
       })
     }
   })
