@@ -27,8 +27,8 @@ export interface IProps {
   withdrawTokens: TokenAccounts[]
   withdrawCurrency: string
   depositCurrency: string
-  onSelectDepositToken?: (chosen: string) => void
-  onSelectWithdrawToken?: (chosen: string) => void
+  onSelectDepositToken?: (chosen: number) => void
+  onSelectWithdrawToken?: (chosen: number) => void
   depositDecimal: number
   withdrawDecimal: number
   walletConnected: boolean

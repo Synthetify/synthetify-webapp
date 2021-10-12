@@ -1,10 +1,10 @@
 import { Input } from '@material-ui/core'
 import React, { CSSProperties, useRef } from 'react'
 import classNames from 'classnames'
-import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { BN } from '@project-serum/anchor'
-import SelectToken from '../SelectToken/SelectToken'
+import Select from '@components/Inputs/Select/Select'
+import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
@@ -15,8 +15,9 @@ interface IProps {
   style?: CSSProperties,
   onMaxClick: () => void,
   current: string | null
-  tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  onSelect: (chosen: string) => void
+  tokens?: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
+  pairs?: Array<{ symbol1: string; symbol2: string }>
+  onSelect: (chosen: number) => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -29,6 +30,7 @@ export const AmountInput: React.FC<IProps> = ({
   onMaxClick,
   current,
   tokens,
+  pairs,
   onSelect
 }) => {
   const classes = useStyles()
@@ -90,9 +92,10 @@ export const AmountInput: React.FC<IProps> = ({
         />
       )}
       startAdornment={(
-        <SelectToken
+        <Select
           centered={true}
           tokens={tokens}
+          pairs={pairs}
           onSelect={onSelect}
           current={current}
           className={classes.select}

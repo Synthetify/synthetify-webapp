@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Tokens from '@components/Tokens/Tokens'
 import { syntheticAccountsArray, accounts, stakedAccountsArray } from '@selectors/solanaWallet'
 import { synthetics } from '@selectors/exchange'
-import SelectTokenModal from '@components/Modals/SelectTokenModal/SelectTokenModal'
+import SelectTokenModal from '@components/Modals/SelectModals/SelectTokenModal/SelectTokenModal'
 import { actions } from '@reducers/staking'
 import { actions as snackbarActions } from '@reducers/snackbars'
 import { blurContent, unblurContent } from '@consts/uiUtils'
@@ -44,7 +44,7 @@ export const TokenListWrapper: React.FC = () => {
         centered={true}
         anchorEl={null}
         onSelect={(chosen) => {
-          const syntheticTokenAddress = Object.values(allSynthetics).find((synthetic) => synthetic.symbol === chosen)?.assetAddress
+          const syntheticTokenAddress = Object.values(allSynthetics)[chosen]?.assetAddress
           if (userAccounts[chosen]) {
             dispatch(
               snackbarActions.add({
