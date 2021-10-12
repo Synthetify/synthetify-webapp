@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   Card,
   CardContent,
@@ -28,23 +28,24 @@ export interface IProps {
 }
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const classes = useStyle()
-  const allCoins = Array.from(document.querySelectorAll('li'))
+  const allCoins: HTMLElement[] = Array.from(document.querySelectorAll('li')).map((coin) => coin.childNodes[0].childNodes[2] as HTMLElement)
   const xs = !useMediaQuery(theme.breakpoints.down('xs'))
   const md = !useMediaQuery(theme.breakpoints.down('sm'))
 
   allCoins.map((coins) => {
     if (coins.offsetHeight >= 53 && xs && !md) {
       allCoins.map((coin) => {
-        coin.childNodes[0].childNodes[2].style.flex = '1 0 100%'
-        coin.childNodes[0].childNodes[2].style.marginLeft = '-3px'
+        coin.style.flex = '1 0 100%'
+        coin.style.marginLeft = '-3px'
       })
     } else {
       allCoins.map((coin) => {
-        coin.childNodes[0].childNodes[2].style.flex = 'unset'
-        coin.childNodes[0].childNodes[2].style.marginLeft = '0'
+        coin.style.flex = 'unset'
+        coin.style.marginLeft = '0'
       })
     }
   })
+
   return (
     <Card className={classes.statsListCard}>
       <CardContent className={classes.statsListCardContent}>
