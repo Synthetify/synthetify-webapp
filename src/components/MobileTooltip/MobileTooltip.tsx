@@ -1,6 +1,6 @@
-import { Tooltip } from '@material-ui/core'
+import { ClickAwayListener, Hidden, Tooltip } from '@material-ui/core'
 import classNames from 'classnames'
-import React, { ReactChild, ReactElement, useEffect } from 'react'
+import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import useStyles from './style'
 
 export type Placement =
@@ -22,10 +22,9 @@ export interface IMobileTooltip {
   anchor: ReactElement
   onOpen?: () => void
   mobilePlacement?: Placement
+  desktopPlacement?: Placement
   tooltipClasses?: { [key: string]: string }
   isInteractive?: boolean
-  isPopoverOpen: boolean
-  setIsPopoverOpen: (status: boolean) => void
 }
 
 export const MobileTooltip: React.FC<IMobileTooltip> = ({
@@ -33,13 +32,12 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   anchor,
   onOpen,
   mobilePlacement = 'bottom',
+  desktopPlacement = 'right',
   tooltipClasses,
-  isInteractive = true,
-  isPopoverOpen,
-  setIsPopoverOpen
+  isInteractive = true
 }) => {
   const classes = useStyles()
-
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   useEffect(() => {
     if (isPopoverOpen && onOpen) {
       onOpen()
@@ -48,7 +46,43 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
 
   return (
     <>
-      <Tooltip
+      <Hidden mdDown>
+        <Tooltip
+          onOpen={onOpen}
+          classes={{
+            ...tooltipClasses,
+            tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip)
+          }}
+          title={hint}
+          placement={desktopPlacement}
+          interactive={isInteractive}>
+          {anchor}
+        </Tooltip>
+      </Hidden>
+      <Hidden lgUp>
+        <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
+          <div style={{ lineHeight: 1 }} onClick={() => setIsPopoverOpen(true)}>
+            <Tooltip
+              classes={{
+                ...tooltipClasses,
+                tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip)
+              }}
+              title={hint}
+              placement={mobilePlacement}
+              open={isPopoverOpen}
+              onOpen={onOpen}
+              onClose={() => setIsPopoverOpen(false)}
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+              interactive={isInteractive}>
+              {anchor}
+            </Tooltip>
+          </div>
+        </ClickAwayListener>
+      </Hidden>
+
+      {/* <Tooltip
         classes={{
           ...tooltipClasses,
           tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip)
@@ -63,7 +97,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         disableTouchListener
         interactive={isInteractive}>
         {anchor}
-      </Tooltip>
+      </Tooltip> */}
     </>
   )
 }

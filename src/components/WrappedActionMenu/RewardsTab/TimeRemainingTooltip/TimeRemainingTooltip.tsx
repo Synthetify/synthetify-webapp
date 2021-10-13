@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import MobileTooltip, { Placement } from '@components/MobileTooltip/MobileTooltip'
 import BN from 'bn.js'
 import { displayDate } from '@consts/utils'
 import { useDispatch } from 'react-redux'
@@ -7,6 +6,7 @@ import { Typography } from '@material-ui/core'
 import { actions } from '@reducers/solanaConnection'
 import Clock from '@static/svg/clock.svg'
 import { colors } from '@static/theme'
+import MobileTooltipRewards, { Placement } from '@components/MobileTooltip/MobileTooltipRewards'
 import useStyles from './style'
 
 export interface ITimeRemainingTooltipInterface {
@@ -78,7 +78,7 @@ export const TimeRemainingTooltip: React.FC<ITimeRemainingTooltipInterface> = ({
   const dispatch = useDispatch()
 
   return (
-    <MobileTooltip
+    <MobileTooltipRewards
       onOpen={() => dispatch(actions.updateSlot())}
       hint={<CountDown timeRemainingEndSlot={timeRemainingEndSlot} slot={slot} hint={hint} />}
       anchor={<img src={icon} alt='' className={classes.icon} />}
