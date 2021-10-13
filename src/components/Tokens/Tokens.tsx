@@ -43,12 +43,10 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
           <Typography className={classes.title}>
             {current === 0 ? 'Staked tokens' : 'Synthetic assets'}
           </Typography>
-          {!isXs || current === 0 ? (
             <Typography className={classes.sum}>
               $ <AnimatedNumber value={sum} duration={300} formatValue={formatNumbers} />
               {showPrefix(sum)}
             </Typography>
-          ) : null}
         </Grid>
         <List
           tokens={current === 0 ? staked : synthetic}
