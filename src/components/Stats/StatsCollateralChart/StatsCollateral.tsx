@@ -1,16 +1,15 @@
 import React from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { colors, theme } from '@static/theme'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { Grid, Typography } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 
 export interface CoinToChart {
-  // [index: number]: {
   name: string
   percent: number
   color: string
-  // }
 }
 export interface IProps {
   data: CoinToChart[]
@@ -80,7 +79,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
                 keys={getCoinsName(data)}
                 colors={colorsToBar}
                 padding={0}
-                margin={{ top: -2, right: -2, bottom: -2, left: -2 }} // very important without it, bars will not fill whole container!!
+                margin={{ top: -2, right: -2, bottom: -2, left: -2 }}
                 isInteractive={true}
                 labelSkipWidth={35}
                 labelSkipHeight={14}
@@ -97,12 +96,17 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
               />
             </Grid>
           </div>
-          <Grid item className={classes.legendWrapper}>
-            <ul className={classes.legendList}>
-              {data.map((coin) => (
-                <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent.toFixed(2)}%)</strong></span></li>
-              ))}
-            </ul>
+          <Grid container className={classes.legendWrapper}>
+            {data.map((coin) => (
+              <Grid item className={classes.legendItem} style={{ color: coin.color }}>
+                <FiberManualRecordIcon
+                  style={{ width: '10px', height: 'auto', paddingRight: '8px' }}
+                />
+                {coin.name}
+                <span style={{ color: '#ffffff', marginLeft: '2px' }}><span>({coin.percent.toFixed(2)}%)</span></span>
+              </Grid>
+            ))}
+
           </Grid>
         </Grid>
       </Grid>

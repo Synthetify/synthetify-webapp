@@ -197,7 +197,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     const apr = aprValue(roundPoints, roundAllPoints, roundAmount)
     return !stakedUserValue.eq(new BN(0))
-      ? new BN(Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) * 10000)
+      ? new BN((Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) - 1) * 10000)
       : new BN(0)
   }
 
