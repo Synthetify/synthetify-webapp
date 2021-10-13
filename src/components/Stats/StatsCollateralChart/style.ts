@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '20px 24px 20px 24px'
+    padding: '20px 24px 20px 24px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '12px 16px 12px 16px'
+    }
   },
 
   statsWrapper: {

@@ -17,7 +17,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   debtPoolCardContent: {
     paddingTop: '18px',
-    paddingLeft: '24px'
+    paddingLeft: '24px',
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: '10px',
+      paddingLeft: '16px'
+    }
   },
   debtPoolCardTitle: {
     color: colors.navy.veryLightGrey,

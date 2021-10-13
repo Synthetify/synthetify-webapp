@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   dataWrapper: {
     padding: 16,
-    paddingTop: 6
+    paddingTop: 12
   },
   title: {
     color: colors.white.main,

@@ -109,7 +109,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0 16px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 8px'
+    }
   },
   percentNumber: {
     ...typography.body2,
