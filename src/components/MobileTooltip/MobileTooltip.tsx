@@ -81,23 +81,6 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
           </div>
         </ClickAwayListener>
       </Hidden>
-
-      {/* <Tooltip
-        classes={{
-          ...tooltipClasses,
-          tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip)
-        }}
-        title={hint}
-        placement={mobilePlacement}
-        open={isPopoverOpen}
-        onOpen={onOpen}
-        onClose={() => setIsPopoverOpen(false)}
-        disableFocusListener
-        disableHoverListener
-        disableTouchListener
-        interactive={isInteractive}>
-        {anchor}
-      </Tooltip> */}
     </>
   )
 }
