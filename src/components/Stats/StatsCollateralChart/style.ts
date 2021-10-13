@@ -107,11 +107,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   legendItem: {
     marginRight: 35,
     ...typography.body2,
-<<<<<<< HEAD
-=======
-    fontFamily: 'Be Vietnam',
-    marginLeft: -20,
->>>>>>> dev
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
       ...typography.subtitle2,
