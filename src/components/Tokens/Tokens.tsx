@@ -43,16 +43,6 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
           <Typography className={classes.title}>
             {current === 0 ? 'Staked tokens' : 'Synthetic assets'}
           </Typography>
-          {current === 1 ? (
-            <OutlinedButton
-              name='Add account'
-              className={classes.addAccount}
-              onClick={addAccount}
-              labelClassName={classes.buttonLabel}
-            />
-          ) : (
-            ''
-          )}
           {!isXs || current === 0 ? (
             <Typography className={classes.sum}>
               $ <AnimatedNumber value={sum} duration={300} formatValue={formatNumbers} />
