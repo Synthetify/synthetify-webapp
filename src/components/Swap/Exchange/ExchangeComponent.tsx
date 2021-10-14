@@ -23,22 +23,17 @@ import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/Exchange
 export const calculateSwapOutAmount = (
   assetIn: ExchangeTokensWithBalance,
   assetFor: ExchangeTokensWithBalance,
-  amount: string,
-  effectiveFee: Decimal
+  amount: string
 ) => {
   const amountOutBeforeFee = assetIn.price.val
     .mul(printBNtoBN(amount, assetIn.supply.scale))
     .div(assetFor.price.val)
-
-  const amountAfterFee = amountOutBeforeFee.sub(
-    amountOutBeforeFee.mul(effectiveFee.val).div(new BN(10 ** effectiveFee.scale))
-  )
   const decimalChange = 10 ** (assetFor.supply.scale - assetIn.supply.scale)
 
   if (decimalChange < 1) {
-    return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.supply.scale)
+    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.supply.scale)
   } else {
-    return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.supply.scale)
+    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.supply.scale)
   }
 }
 
@@ -119,12 +114,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   const updateEstimatedAmount = (amount: string | null = null) => {
     if (tokenFromIndex !== null && tokenToIndex !== null) {
       setAmountTo(
-        calculateSwapOutAmount(
-          tokens[tokenFromIndex],
-          tokens[tokenToIndex],
-          amount ?? amountFrom,
-          fee
-        )
+        calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], amount ?? amountFrom)
       )
     }
   }
@@ -309,9 +299,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             decimals: supply.scale
           }))}
           current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
-          onSelect={(chosen: number) =>
-            setTokenFromIndex(chosen)
-          }
+          onSelect={(chosen: number) => setTokenFromIndex(chosen)}
         />
       </Grid>
 
@@ -508,8 +496,8 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
               value={(() => {
                 if (tokenFromIndex === null || tokenToIndex === null) return '0.0000'
                 const Amountvalue = isReversed
-                  ? calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1', fee)
-                  : calculateSwapOutAmount(tokens[tokenToIndex], tokens[tokenFromIndex], '1', fee)
+                  ? calculateSwapOutAmount(tokens[tokenFromIndex], tokens[tokenToIndex], '1')
+                  : calculateSwapOutAmount(tokens[tokenToIndex], tokens[tokenFromIndex], '1')
                 return Amountvalue
               })()}
               duration={300}
