@@ -31,7 +31,7 @@ export function* handleCreateAccount(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: 'Successfully added account.',
+        message: 'Account added successfully.',
         variant: 'success',
         txid: accountAddress.toString(),
         isAccount: true,
@@ -59,7 +59,7 @@ export function* handleDeposit(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: 'Successfully deposited collateral.',
+        message: 'Collateral deposited successfully.',
         variant: 'success',
         txid: txid,
         persist: false
@@ -84,7 +84,7 @@ export function* handleMint(): Generator {
     yield* put(actions.mintDone())
     yield put(
       snackbarsActions.add({
-        message: 'Successfully minted xUSD.',
+        message: 'xUSD minted successfully.',
         variant: 'success',
         txid: txid,
         persist: false
@@ -110,7 +110,7 @@ export function* handleWithdraw(): Generator {
     yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Successfully withdrawn collateral.',
+        message: 'Collateral withdrawn successfully.',
         txid: txid,
         variant: 'success',
         persist: false
@@ -135,7 +135,7 @@ export function* handleBurn(): Generator {
     yield* put(actions.burnDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Successfully burned token.',
+        message: 'Tokens burnt successfully.',
         variant: 'success',
         txid: txid,
         persist: false
@@ -164,7 +164,7 @@ export function* handleClaimRewards(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Successfully claimed rewards',
+        message: 'Rewards claimed successfully',
         variant: 'success',
         txid: txid,
         persist: false
@@ -189,7 +189,7 @@ export function* handleWithdrawRewards(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Successfully withdrawn rewards',
+        message: 'Rewards withdrawn successfully',
         variant: 'success',
         txid: txid,
         persist: false
