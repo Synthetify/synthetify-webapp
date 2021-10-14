@@ -40,6 +40,23 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     USDC: 'USD Coin'
   }
 
+  const selectTokens = (name: string): number => {
+    switch (name) {
+      case 'xUSD':
+        return 0
+      case 'xBTC':
+        return 1
+      case 'xSOL':
+        return 2
+      case 'xFTT':
+        return 3
+      case 'xETH':
+        return 4
+      default:
+        return 0
+    }
+  }
+
   const endAdornment = () => (
     <>
       {!!value.length && (
@@ -114,9 +131,10 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
               {tokens
                 .filter(token => {
                   if (!value) return true
+                  console.log(token.symbol.toLowerCase().includes(value.toLowerCase()))
                   return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
-                .map((token, index) => (
+                .map((token) => (
                   <Grid
                     container
                     key={`tokens-${token.symbol}`}
@@ -124,7 +142,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(index)
+                      onSelect(selectTokens(token.symbol))
                       handleClose()
                     }}>
                     <Grid item>

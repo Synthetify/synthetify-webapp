@@ -95,7 +95,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   onSelectTokenTo
 }) => {
   const classes = useStyles()
-
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(
@@ -422,9 +421,10 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             balance,
             decimals: supply.scale
           }))}
-          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
+          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null} // point 1
           onSelect={(chosen: number) => {
             setTokenToIndex(chosen)
+            console.log(chosen)
             onSelectTokenTo(chosen)
             updateEstimatedAmount()
           }}
