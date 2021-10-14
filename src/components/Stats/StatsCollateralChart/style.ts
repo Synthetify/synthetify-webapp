@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   border: {
-    width: 'calc(100% - 48px)',
+    width: '100%',
     height: 103,
     backgroundColor: colors.navy.background,
     display: 'flex',
@@ -86,9 +86,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '25px 0px 16px 35px',
+    padding: '25px 0px 16px 0px',
     fontSize: 18,
-    width: 'calc(100% - 20px)',
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',

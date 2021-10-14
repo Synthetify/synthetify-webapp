@@ -134,7 +134,7 @@ export const typography = {
   },
   body3: {
     fontSize: 13,
-    lineHeight: '19px',
+    lineHeight: '17px',
     fontWeight: 800
   },
   body4: {

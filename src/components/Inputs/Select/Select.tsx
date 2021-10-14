@@ -14,8 +14,8 @@ export interface ISelectModal {
   name?: string
   current: string | null
   centered?: boolean
-  tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
-  pairs?: Array<{ symbol1: string; symbol2: string }>
+  tokens?: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
+  pairs?: Array<{ symbol1: string, symbol2: string }>
   onSelect: (chosen: number) => void
   className?: string
 }
