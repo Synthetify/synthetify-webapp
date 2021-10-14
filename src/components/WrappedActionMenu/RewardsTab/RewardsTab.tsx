@@ -1,17 +1,18 @@
 import React from 'react'
-import { Divider, Grid } from '@material-ui/core'
-import { divUpNumber, transformBN } from '@consts/utils'
+import { Divider, Grid, Typography } from '@material-ui/core'
+import { displayDate, divUpNumber, transformBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
-import useStyles from './style'
+
 import Rewards1 from '@static/svg/rewards1.svg'
 import Rewards2 from '@static/svg/rewards2.svg'
 import Rewards3 from '@static/svg/rewards3.svg'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
-
+import Clock from '@static/svg/clock.svg'
+import useStyles from './style'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -34,7 +35,43 @@ export interface IRewardsProps {
   onClaim: () => void
   onWithdraw: () => void
 }
+const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
+  timeRemainingEndSlot,
+  slot
+}) => {
+  const classes = useStyles()
 
+  const calculateTimeRemaining = (): BN => {
+    const slotTime = 0.4
+    const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
+    if (slotDiff.lten(0)) {
+      return new BN(0)
+    }
+    return slotDiff.muln(slotTime)
+  }
+  const [timeRemaining, setTimeRemaining] = React.useState(calculateTimeRemaining())
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeRemaining(time => {
+        if (time.eqn(0)) {
+          return time
+        }
+        return time.subn(1)
+      })
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  React.useEffect(() => {
+    setTimeRemaining(calculateTimeRemaining())
+  }, [slot])
+  return (
+    <Grid className={classes.rootTimer}>
+      <img src={Clock} alt='' className={classes.clockIcon} />
+      <Typography className={classes.time}>{displayDate(timeRemaining.toNumber())}</Typography>
+    </Grid>
+  )
+}
 export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
@@ -239,7 +276,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   return (
     <Grid container direction='column' justifyContent='space-around'>
-      <Grid item className={classes.amount}>
+      <Grid item className={classes.amount} justifyContent='space-between'>
+        <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>
