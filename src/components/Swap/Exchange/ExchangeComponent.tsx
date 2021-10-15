@@ -25,15 +25,15 @@ export const calculateSwapOutAmount = (
   assetFor: ExchangeTokensWithBalance,
   amount: string
 ) => {
-  const amountOutBeforeFee = assetIn.price.val
+  const actualAmountOut = assetIn.price.val
     .mul(printBNtoBN(amount, assetIn.supply.scale))
     .div(assetFor.price.val)
   const decimalChange = 10 ** (assetFor.supply.scale - assetIn.supply.scale)
 
   if (decimalChange < 1) {
-    return printBN(amountOutBeforeFee.div(new BN(1 / decimalChange)), assetFor.supply.scale)
+    return printBN(actualAmountOut.div(new BN(1 / decimalChange)), assetFor.supply.scale)
   } else {
-    return printBN(amountOutBeforeFee.mul(new BN(decimalChange)), assetFor.supply.scale)
+    return printBN(actualAmountOut.mul(new BN(decimalChange)), assetFor.supply.scale)
   }
 }
 
