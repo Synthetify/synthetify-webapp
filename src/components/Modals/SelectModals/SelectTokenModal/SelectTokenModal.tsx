@@ -41,20 +41,12 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   }
 
   const selectTokens = (name: string): number => {
-    switch (name) {
-      case 'xUSD':
-        return 0
-      case 'xBTC':
-        return 1
-      case 'xSOL':
-        return 2
-      case 'xFTT':
-        return 3
-      case 'xETH':
-        return 4
-      default:
-        return 0
-    }
+    let tokenIndex = 0
+    tokens.map((token, index) => {
+      console.log(token.symbol, name)
+      token.symbol === name ? tokenIndex = index : ''
+    })
+    return tokenIndex
   }
 
   const endAdornment = () => (
