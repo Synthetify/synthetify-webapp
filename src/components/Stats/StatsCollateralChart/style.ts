@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '10px 24px 20px 14px'
+    padding: '20px 24px 20px 24px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '12px 16px 12px 16px'
+    }
   },
 
   statsWrapper: {
@@ -66,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   border: {
-    width: 'calc(100% - 48px)',
+    width: '100%',
     height: 103,
     backgroundColor: colors.navy.background,
     display: 'flex',
@@ -83,9 +86,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '25px 0px 16px 35px',
+    padding: '25px 0px 16px 0px',
     fontSize: 18,
-    width: 'calc(100% - 20px)',
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
@@ -104,8 +107,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   legendItem: {
     marginRight: 35,
     ...typography.body2,
-    fontFamily: 'Be Vietnam',
-    marginLeft: -20,
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
       ...typography.subtitle2,

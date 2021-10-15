@@ -76,26 +76,24 @@ export const LinePlotContainer: React.FC<IProp> = ({
                     ...(infoData.percent === 'NaN'
                       ? { color: '#40BFA0' }
                       : Number(infoData.percent) >= 0
-                        ? Number(infoData.percent) === 0
-                          ? { color: '#777777' }
-                          : { color: '#40BFA0' }
-                        : { color: '#C52727' }),
+                      ? Number(infoData.percent) === 0
+                        ? { color: '#777777' }
+                        : { color: '#40BFA0' }
+                      : { color: '#C52727' }),
                     display: 'flex',
                     alignContent: 'center'
                   }}>
                   (
                   {infoData.percent === 'NaN' ? (
-                    <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                    <TrendingUpIcon className={classes.tradingIcon} />
                   ) : Number(infoData.percent) >= 0 ? (
                     Number(infoData.percent) === 0 ? (
-                      <TrendingFlatIcon
-                        style={{ marginTop: 'auto', padding: 0, fontSize: '1.25em' }}
-                      />
+                      <TrendingFlatIcon className={classes.tradingIcon} />
                     ) : (
-                      <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                      <TrendingUpIcon className={classes.tradingIcon} />
                     )
                   ) : (
-                    <TrendingDownIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                    <TrendingDownIcon className={classes.tradingIcon} />
                   )}
                   {infoData.percent !== 'NaN' ? (
                     <>
