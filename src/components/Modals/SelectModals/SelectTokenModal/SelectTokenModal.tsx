@@ -43,7 +43,6 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   const selectTokens = (name: string): number => {
     let tokenIndex = 0
     tokens.map((token, index) => {
-      console.log(token.symbol, name)
       token.symbol === name ? tokenIndex = index : ''
     })
     return tokenIndex
@@ -123,7 +122,6 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
               {tokens
                 .filter(token => {
                   if (!value) return true
-                  console.log(token.symbol.toLowerCase().includes(value.toLowerCase()))
                   return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
                 .map((token) => (

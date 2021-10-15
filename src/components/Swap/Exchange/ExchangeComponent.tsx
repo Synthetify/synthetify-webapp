@@ -424,7 +424,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null} // point 1
           onSelect={(chosen: number) => {
             setTokenToIndex(chosen)
-            console.log(chosen)
             onSelectTokenTo(chosen)
             updateEstimatedAmount()
           }}
