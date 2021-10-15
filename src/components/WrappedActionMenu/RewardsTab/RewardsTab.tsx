@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid, Typography } from '@material-ui/core'
-import { displayDate, divUpNumber, transformBN } from '@consts/utils'
+import { displayDate, divUpNumber, printBN, transformBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -14,6 +14,8 @@ import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
+import { useSelector } from 'react-redux'
+import { getCollateralValue, stateValue } from '@selectors/exchange'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -201,6 +203,14 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ? new BN((Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) - 1) * 10000)
       : new BN(0)
   }
+  const collateralValue = useSelector(getCollateralValue)
+  const userStaking = useSelector(stateValue)
+  const avgAPR = new BN(transformBN(userStaking.val))
+    .mul(SNYPrice.val)
+    .div(new BN(collateralValue))
+    .mul(new BN(52))
+    .div(new BN(100))
+  const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
 
   const rewardsLines: {
     [index: number]: {
@@ -280,7 +290,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       <Grid item className={classes.amount} justifyContent='space-between'>
         <Grid item className={classes.timeGrid}>
           <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
-          <AverageAPY avgAPY={100.87} />
+          <AverageAPY avgAPY={printBN(avgAPY, 2)} />
         </Grid>
 
         <RewardsAmount amountToClaim={amountToClaim} />

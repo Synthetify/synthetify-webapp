@@ -4,7 +4,7 @@ import useStyles from './style'
 import { Grid, Typography } from '@material-ui/core'
 
 interface IProp {
-  avgAPY: number
+  avgAPY: string
 }
 export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
   const classes = useStyles()
