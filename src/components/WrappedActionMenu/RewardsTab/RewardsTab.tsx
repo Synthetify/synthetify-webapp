@@ -13,6 +13,7 @@ import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
+import { AverageAPY } from './AverageAPY/AverageAPY'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -277,7 +278,11 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   return (
     <Grid container direction='column' justifyContent='space-around'>
       <Grid item className={classes.amount} justifyContent='space-between'>
-        <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+        <Grid item className={classes.timeGrid}>
+          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+          <AverageAPY avgAPY={100.87} />
+        </Grid>
+
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>
