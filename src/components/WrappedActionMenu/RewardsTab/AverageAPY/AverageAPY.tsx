@@ -29,7 +29,7 @@ export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
         APY:
         <span
           style={{
-            ...(avgAPY >= 0 ? { color: '#40BFA0' } : { color: '#C52727' }),
+            color: '#40BFA0',
             paddingLeft: '8px'
           }}>
           {avgAPY}%
