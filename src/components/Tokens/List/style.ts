@@ -4,12 +4,6 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
     ...typography.body1,
-    position: 'relative',
-    top: -3,
-    [theme.breakpoints.down('xs')]: {
-      ...typography.body3,
-      top: -2
-    },
     color: colors.navy.grey
   },
   emptyTokens: {

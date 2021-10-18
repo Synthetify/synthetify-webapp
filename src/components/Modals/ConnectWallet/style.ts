@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 8,
     padding: 8,
     width: 150,
+    display: 'flex',
     cursor: 'pointer',
     '&:hover': {
       background: colors.navy.navButton,
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   name: {
     textTransform: 'capitalize',
+    margin: 'auto 0px',
     ...typography.subtitle2,
     float: 'left'
   },
