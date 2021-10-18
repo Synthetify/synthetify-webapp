@@ -56,7 +56,8 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
     </>
   )
 
-  const pairSymbol = (pair: { symbol1: string; symbol2: string }) => `${pair.symbol1}/${pair.symbol2}`
+  const pairSymbol = (pair: { symbol1: string; symbol2: string }) =>
+    `${pair.symbol1}/${pair.symbol2}`
 
   return (
     <Popover
@@ -118,10 +119,11 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                         image={icons[pair.symbol2] ?? icons.SNY}
                       />{' '}
                     </Grid>
-                    <Grid item className={classes.tokenData}>
+                    <Grid item>
                       <Typography className={classes.tokenName}>{pairSymbol(pair)}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
-                        {descrpitionForSymbol[pair.symbol1] ?? 'Asset'}/{descrpitionForSymbol[pair.symbol2] ?? 'Asset'}
+                        {descrpitionForSymbol[pair.symbol1] ?? 'Asset'}/
+                        {descrpitionForSymbol[pair.symbol2] ?? 'Asset'}
                       </Typography>
                     </Grid>
                   </Grid>
