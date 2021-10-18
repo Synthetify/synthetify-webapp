@@ -55,6 +55,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
         val: new BN(100000000),
         scale: 0
       }}
+      collateralValue={1500000}
     />
   </div>
 ))

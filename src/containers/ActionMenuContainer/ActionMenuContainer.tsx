@@ -12,7 +12,7 @@ import {
   userDebtShares,
   stakedValue,
   getSNYPrice,
-  getAmountPerRoundValue
+  getCollateralValue
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import {
@@ -55,7 +55,7 @@ export const ActionMenuContainer: React.FC = () => {
   const walletStatus = useSelector(status)
   const stakedUserValue = useSelector(stakedValue)
   const SNYPrice = useSelector(getSNYPrice)
-
+  const collateralValue = useSelector(getCollateralValue)
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
       setDepositIndex(0)
@@ -111,7 +111,7 @@ export const ActionMenuContainer: React.FC = () => {
   }
 
   const { nextShares, currentShares, finishedShares } = estimateUserDebtShares()
-  const amountPerRoundValue = useSelector(getAmountPerRoundValue)
+
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
@@ -182,7 +182,8 @@ export const ActionMenuContainer: React.FC = () => {
         },
         onClaim: () => dispatch(actions.claimRewards()),
         onWithdraw: () => dispatch(actions.withdrawRewards()),
-        amountPerRoundValue: amountPerRoundValue
+        amountPerRoundValue: stakingState.amountPerRound,
+        collateralValue: collateralValue
       }}
       depositTokens={walletStatus === Status.Initialized ? userCollaterals : []}
       withdrawTokens={userStaked}

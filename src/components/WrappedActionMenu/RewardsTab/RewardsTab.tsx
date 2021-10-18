@@ -14,8 +14,6 @@ import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
-import { useSelector } from 'react-redux'
-import { getCollateralValue } from '@selectors/exchange'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -38,6 +36,7 @@ export interface IRewardsProps {
   onClaim: () => void
   onWithdraw: () => void
   amountPerRoundValue: Decimal
+  collateralValue: number
 }
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   timeRemainingEndSlot,
@@ -86,7 +85,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   rounds,
   onClaim,
   onWithdraw,
-  amountPerRoundValue
+  amountPerRoundValue,
+  collateralValue
 }) => {
   const classes = useStyles()
 
@@ -205,7 +205,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ? new BN((Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) - 1) * 10000)
       : new BN(0)
   }
-  const collateralValue = useSelector(getCollateralValue)
+
   const avgAPR = new BN(transformBN(amountPerRoundValue.val))
     .mul(SNYPrice.val)
     .div(new BN(collateralValue))

@@ -319,9 +319,4 @@ export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
 
-export const getAmountPerRoundValue = createSelector(state, state => {
-  console.log(state.staking.amountPerRound)
-  return state.staking.amountPerRound
-})
-
 export default exchangeSelectors

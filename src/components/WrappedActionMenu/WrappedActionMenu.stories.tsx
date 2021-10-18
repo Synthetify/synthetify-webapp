@@ -67,7 +67,8 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
         amountPerRoundValue: {
           val: new BN(100000000),
           scale: 0
-        }
+        },
+        collateralValue: 1500000
       }}
       depositTokens={[]}
       withdrawTokens={[]}
