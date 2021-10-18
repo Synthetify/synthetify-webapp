@@ -1,17 +1,19 @@
 import React from 'react'
-import { Divider, Grid } from '@material-ui/core'
-import { divUpNumber, transformBN } from '@consts/utils'
+import { Divider, Grid, Typography } from '@material-ui/core'
+import { displayDate, divUpNumber, printBN, transformBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
 import BN from 'bn.js'
-import useStyles from './style'
+
 import Rewards1 from '@static/svg/rewards1.svg'
 import Rewards2 from '@static/svg/rewards2.svg'
 import Rewards3 from '@static/svg/rewards3.svg'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
-
+import Clock from '@static/svg/clock.svg'
+import useStyles from './style'
+import { AverageAPY } from './AverageAPY/AverageAPY'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -27,14 +29,52 @@ export interface IRewardsProps {
   slot: number
   amountToClaim: Decimal
   roundLength: number
-  stakedUserValue: BN,
-  SNYPrice: Decimal,
+  stakedUserValue: BN
+  SNYPrice: Decimal
   userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
+  amountPerRoundValue: Decimal
+  collateralValue: number
 }
+const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
+  timeRemainingEndSlot,
+  slot
+}) => {
+  const classes = useStyles()
 
+  const calculateTimeRemaining = (): BN => {
+    const slotTime = 0.4
+    const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
+    if (slotDiff.lten(0)) {
+      return new BN(0)
+    }
+    return slotDiff.muln(slotTime)
+  }
+  const [timeRemaining, setTimeRemaining] = React.useState(calculateTimeRemaining())
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeRemaining(time => {
+        if (time.eqn(0)) {
+          return time
+        }
+        return time.subn(1)
+      })
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  React.useEffect(() => {
+    setTimeRemaining(calculateTimeRemaining())
+  }, [slot])
+  return (
+    <Grid className={classes.rootTimer}>
+      <img src={Clock} alt='' className={classes.clockIcon} />
+      <Typography className={classes.time}>{displayDate(timeRemaining.toNumber())}</Typography>
+    </Grid>
+  )
+}
 export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
@@ -44,7 +84,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   userDebtShares,
   rounds,
   onClaim,
-  onWithdraw
+  onWithdraw,
+  amountPerRoundValue,
+  collateralValue
 }) => {
   const classes = useStyles()
 
@@ -151,19 +193,25 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     return !stakedUserValue.eq(new BN(0))
-      ? (calculateTokensBasedOnPoints(
-        roundPoints,
-        roundAllPoints,
-        roundAmount
-      ).mul(SNYPrice.val).mul(new BN(52))).div(stakedUserValue)
+      ? calculateTokensBasedOnPoints(roundPoints, roundAllPoints, roundAmount)
+          .mul(SNYPrice.val)
+          .mul(new BN(52))
+          .div(stakedUserValue)
       : new BN(0)
   }
   const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     const apr = aprValue(roundPoints, roundAllPoints, roundAmount)
     return !stakedUserValue.eq(new BN(0))
-      ? new BN(Math.pow((+transformBN(apr) / 100 / 52) + 1, 52) * 10000)
+      ? new BN((Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) - 1) * 10000)
       : new BN(0)
   }
+
+  const avgAPR = new BN(transformBN(amountPerRoundValue.val))
+    .mul(SNYPrice.val)
+    .div(new BN(collateralValue))
+    .mul(new BN(52))
+    .div(new BN(100))
+  const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
 
   const rewardsLines: {
     [index: number]: {
@@ -240,7 +288,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   return (
     <Grid container direction='column' justifyContent='space-around'>
-      <Grid item className={classes.amount}>
+      <Grid item className={classes.amount} justifyContent='space-between'>
+        <Grid item className={classes.timeGrid}>
+          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+          <AverageAPY avgAPY={printBN(avgAPY, 2)} />
+        </Grid>
+
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>

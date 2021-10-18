@@ -63,10 +63,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     ...typography.heading3
   },
-  tokenData: {
-    position: 'relative',
-    top: -2
-  },
   tokenDescrpiption: {
     color: colors.navy.grey,
     ...typography.body4,

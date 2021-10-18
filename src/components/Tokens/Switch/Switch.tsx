@@ -60,11 +60,7 @@ const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
     '&:hover': {
       color: value === 0 ? colors.navy.veryLightGrey : colors.navy.background
     }
-  }),
-  wrapper: {
-    position: 'relative',
-    top: -2
-  }
+  })
 }))
 
 export const Switch: React.FC<IProps> = ({ onChange }) => {
@@ -86,8 +82,7 @@ export const Switch: React.FC<IProps> = ({ onChange }) => {
           variant='scrollable'
           scrollButtons='off'
           TabIndicatorProps={{ children: <span /> }}
-          classes={tabsClasses}
-        >
+          classes={tabsClasses}>
           <Tab disableRipple label='Staked' classes={singleTabClasses} />
           <Tab disableRipple label='Synthetic' classes={singleTabClasses} />
         </Tabs>

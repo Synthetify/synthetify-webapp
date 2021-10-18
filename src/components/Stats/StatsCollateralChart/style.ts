@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '10px 24px 20px 14px'
+    padding: '20px 24px 20px 24px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '12px 16px 12px 16px'
+    }
   },
 
   statsWrapper: {
@@ -66,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   border: {
-    width: 'calc(100% - 48px)',
+    width: '100%',
     height: 103,
     backgroundColor: colors.navy.background,
     display: 'flex',
@@ -84,36 +87,45 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   legendWrapper: {
     padding: '25px 0px 16px 0px',
-    margin: 0,
     fontSize: 18,
-    width: 'calc(100% - 20px)',
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 25
+    },
     [theme.breakpoints.down('xs')]: {
       width: 'fit-content',
       alignItems: 'flex-end',
-      paddingBlock: 16
-    }
-  },
-  legendList: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginBlock: 0,
-    [theme.breakpoints.down('xs')]: {
-      display: 'block',
+      paddingBlock: 16,
       height: '100%',
-      width: '100%'
+      display: 'block'
     }
   },
 
   legendItem: {
     marginRight: 35,
     ...typography.body2,
-    fontFamily: 'Be Vietnam',
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
+      ...typography.subtitle2,
+      display: 'flex',
+      '&:not(:first-child)': {
+        marginTop: 16
+      }
+    },
+    [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
+    },
+    '& svg': {
+      paddingBottom: 2,
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 0
+      },
+      [theme.breakpoints.down('xs')]: {
+        marginTop: 5
+      }
     }
   }
 }))

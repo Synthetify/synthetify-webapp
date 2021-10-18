@@ -34,7 +34,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
   mobilePlacement = 'bottom',
   desktopPlacement = 'right',
   tooltipClasses,
-  isInteractive = false
+  isInteractive = true
 }) => {
   const classes = useStyles()
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -49,11 +49,13 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
       <Hidden mdDown>
         <Tooltip
           onOpen={onOpen}
-          classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
+          classes={{
+            ...tooltipClasses,
+            tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip)
+          }}
           title={hint}
           placement={desktopPlacement}
-          interactive={isInteractive}
-        >
+          interactive={isInteractive}>
           {anchor}
         </Tooltip>
       </Hidden>
@@ -61,7 +63,10 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
         <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
           <div style={{ lineHeight: 1 }} onClick={() => setIsPopoverOpen(true)}>
             <Tooltip
-              classes={{ ...tooltipClasses, tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip) }}
+              classes={{
+                ...tooltipClasses,
+                tooltip: classNames(classes.tooltip, tooltipClasses?.tooltip)
+              }}
               title={hint}
               placement={mobilePlacement}
               open={isPopoverOpen}
@@ -70,8 +75,7 @@ export const MobileTooltip: React.FC<IMobileTooltip> = ({
               disableFocusListener
               disableHoverListener
               disableTouchListener
-              interactive={isInteractive}
-            >
+              interactive={isInteractive}>
               {anchor}
             </Tooltip>
           </div>

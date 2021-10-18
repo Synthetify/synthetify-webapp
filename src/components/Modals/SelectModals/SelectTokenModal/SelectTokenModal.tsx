@@ -40,6 +40,10 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     USDC: 'USD Coin'
   }
 
+  const selectTokens = (name: string): number => {
+    return tokens.findIndex(token => token.symbol === name)
+  }
+
   const endAdornment = () => (
     <>
       {!!value.length && (
@@ -116,7 +120,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
-                .map((token, index) => (
+                .map((token) => (
                   <Grid
                     container
                     key={`tokens-${token.symbol}`}
@@ -124,7 +128,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(index)
+                      onSelect(selectTokens(token.symbol))
                       handleClose()
                     }}>
                     <Grid item>
@@ -133,7 +137,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                         image={icons[token.symbol] ?? icons.SNY}
                       />{' '}
                     </Grid>
-                    <Grid item className={classes.tokenData}>
+                    <Grid item>
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
                         {descrpitionForSymbol[token.symbol] ?? 'Asset'}
