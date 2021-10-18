@@ -37,7 +37,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     xUSD: 'Synthetic USD',
     stSOL: 'Staked Solana',
     WSOL: 'Wrapped Solana',
-    USDC: 'USD Coin'
+    USDC: 'USD Coin',
+    renBTC: 'renBTC'
   }
 
   const selectTokens = (name: string): number => {
