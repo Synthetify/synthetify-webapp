@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 16,
     height: 16,
     paddingRight: '6px',
+    opacity: 0.75,
     [theme.breakpoints.down('xs')]: {
       width: 13,
       height: 13,
@@ -36,6 +37,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1
+    }
+  },
+  popover: {
+    pointerEvents: 'none'
+  },
+  paper: {
+    backgroundColor: colors.navy.tooltip,
+    padding: '4px 8px 3px 8px',
+    boxDhadow: '8px 8px 9px 0.1px rgba(0, 0, 0, 0.75)',
+    borderRadius: '7px',
+    marginTop: -20,
+    ...typography.subtitle2,
+    color: colors.navy.veryLightGrey,
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption1,
+      marginTop: -15
     }
   }
 }))
