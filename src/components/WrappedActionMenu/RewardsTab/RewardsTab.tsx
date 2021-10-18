@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Grid, Typography } from '@material-ui/core'
-import { displayDate, divUpNumber, transformBN } from '@consts/utils'
+import { displayDate, divUpNumber, printBN, transformBN } from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -13,6 +13,7 @@ import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
+import { AverageAPY } from './AverageAPY/AverageAPY'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -34,6 +35,8 @@ export interface IRewardsProps {
   rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
+  amountPerRoundValue: Decimal
+  collateralValue: number
 }
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   timeRemainingEndSlot,
@@ -81,7 +84,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   userDebtShares,
   rounds,
   onClaim,
-  onWithdraw
+  onWithdraw,
+  amountPerRoundValue,
+  collateralValue
 }) => {
   const classes = useStyles()
 
@@ -201,6 +206,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       : new BN(0)
   }
 
+  const avgAPR = new BN(transformBN(amountPerRoundValue.val))
+    .mul(SNYPrice.val)
+    .div(new BN(collateralValue))
+    .mul(new BN(52))
+    .div(new BN(100))
+  const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
+
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -277,7 +289,11 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   return (
     <Grid container direction='column' justifyContent='space-around'>
       <Grid item className={classes.amount} justifyContent='space-between'>
-        <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+        <Grid item className={classes.timeGrid}>
+          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+          <AverageAPY avgAPY={printBN(avgAPY, 2)} />
+        </Grid>
+
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid item container justifyContent='space-between' direction='column'>
