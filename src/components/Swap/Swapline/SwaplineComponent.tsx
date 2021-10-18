@@ -15,8 +15,9 @@ import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import { pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
-import { SwaplinePair, SwaplineSwapType } from '../tmpConsts'
 import useStyles from '../style'
+import { SwaplinePair } from '@selectors/solanaWallet'
+import { SwaplineSwapType } from '@reducers/exchange'
 
 interface AssetPriceData {
   priceVal: BN,
