@@ -47,11 +47,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '4px 8px 3px 8px',
     borderRadius: '7px',
     marginTop: -20,
-    ...typography.subtitle2,
     color: colors.navy.veryLightGrey,
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
       marginTop: -15
+    }
+  },
+  text: {
+    ...typography.subtitle2,
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption1
     }
   }
 }))

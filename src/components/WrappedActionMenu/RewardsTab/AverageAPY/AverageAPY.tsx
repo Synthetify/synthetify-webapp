@@ -1,8 +1,7 @@
 import React from 'react'
 import Percent from '@static/svg/percent.svg'
-import useStyles from './style'
 import { Grid, Popover, Typography } from '@material-ui/core'
-
+import useStyles from './style'
 interface IProp {
   avgAPY: string
 }
@@ -52,7 +51,7 @@ export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus>
-        <Typography>Average APY</Typography>
+        <Typography className={classes.text}>Average APY</Typography>
       </Popover>
     </Grid>
   )

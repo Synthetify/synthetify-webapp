@@ -15,7 +15,7 @@ import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
 import { useSelector } from 'react-redux'
-import { getCollateralValue, stateValue } from '@selectors/exchange'
+import { getCollateralValue } from '@selectors/exchange'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -37,6 +37,7 @@ export interface IRewardsProps {
   rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
+  amountPerRoundValue: Decimal
 }
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   timeRemainingEndSlot,
@@ -84,7 +85,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   userDebtShares,
   rounds,
   onClaim,
-  onWithdraw
+  onWithdraw,
+  amountPerRoundValue
 }) => {
   const classes = useStyles()
 
@@ -204,8 +206,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       : new BN(0)
   }
   const collateralValue = useSelector(getCollateralValue)
-  const userStaking = useSelector(stateValue)
-  const avgAPR = new BN(transformBN(userStaking.val))
+  const avgAPR = new BN(transformBN(amountPerRoundValue.val))
     .mul(SNYPrice.val)
     .div(new BN(collateralValue))
     .mul(new BN(52))

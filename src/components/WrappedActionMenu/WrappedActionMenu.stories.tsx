@@ -63,7 +63,11 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
           scale: 0
         },
         onWithdraw: () => {},
-        onClaim: () => {}
+        onClaim: () => {},
+        amountPerRoundValue: {
+          val: new BN(100000000),
+          scale: 0
+        }
       }}
       depositTokens={[]}
       withdrawTokens={[]}
