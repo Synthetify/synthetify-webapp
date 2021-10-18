@@ -38,7 +38,7 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
     stSOL: 'Staked Solana',
     WSOL: 'Wrapped Solana',
     USDC: 'USD Coin',
-    renBTC: 'RENBTC'
+    renBTC: 'renBTC'
   }
 
   const endAdornment = () => (
