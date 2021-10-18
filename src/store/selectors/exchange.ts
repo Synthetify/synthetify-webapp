@@ -314,12 +314,12 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
   return typeof snyIndex !== 'undefined'
     ? assets[snyIndex].price
     : {
-      val: new BN(0),
-      scale: 6
-    }
+        val: new BN(0),
+        scale: 6
+      }
 })
 
-export const getHaltedState = createSelector(state, (allState) => {
+export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
 
