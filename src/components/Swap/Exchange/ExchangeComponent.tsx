@@ -421,7 +421,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             balance,
             decimals: supply.scale
           }))}
-          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null} // point 1
+          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : null}
           onSelect={(chosen: number) => {
             setTokenToIndex(chosen)
             onSelectTokenTo(chosen)

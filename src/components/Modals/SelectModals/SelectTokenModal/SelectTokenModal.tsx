@@ -41,10 +41,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   }
 
   const selectTokens = (name: string): number => {
-    let tokenIndex = 0
-    tokens.map((token, index) => {
-      token.symbol === name ? tokenIndex = index : ''
-    })
+    const tokenIndex = tokens.findIndex(token => token.symbol === name)
     return tokenIndex
   }
 
