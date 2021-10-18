@@ -24,9 +24,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
   },
   currencyText: {
     ...typography.body2,
-    color: colors.navy.grey,
-    position: 'relative',
-    top: -2
+    color: colors.navy.grey
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,
@@ -37,7 +35,6 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
     minWidth: 30,
     height: 30,
     marginRight: 7
-
   },
   select: ({ onSelectToken }) => ({
     cursor: onSelectToken ? 'pointer' : 'unset'

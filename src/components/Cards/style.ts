@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardContent: {
     paddingInline: 20,
-    paddingTop: 8,
+    paddingTop: 10,
     paddingBottom: 30,
     position: 'relative',
     '&:last-child': {
-      paddingTop: 8,
+      paddingTop: 10,
       paddingBottom: 30
     }
   },
@@ -51,9 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   minMaxDebt: {
-    ...typography.body4,
-    position: 'relative',
-    top: -2
+    ...typography.body4
   },
   progressContainer: {
     width: '100%',
@@ -81,15 +79,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export const useStylesWithProps = makeStyles<Theme, {
-  max: number
-  current: number
-  topIndicatorValue: number
-  bottomIndicatorValue: number
-}>(() => ({
+export const useStylesWithProps = makeStyles<
+  Theme,
+  {
+    max: number
+    current: number
+    topIndicatorValue: number
+    bottomIndicatorValue: number
+  }
+>(() => ({
   bar: ({ max, current }) => ({
     borderRadius: 10,
-    background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%, #C34848 ${200 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%)`
+    background: `linear-gradient(90deg, #40BFA0 ${
+      100 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)
+    }%, #C34848 ${200 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%)`
   }),
   topIndicator: ({ max, topIndicatorValue }) => ({
     width: 0.1,

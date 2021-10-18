@@ -133,7 +133,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                         image={icons[token.symbol] ?? icons.SNY}
                       />{' '}
                     </Grid>
-                    <Grid item className={classes.tokenData}>
+                    <Grid item>
                       <Typography className={classes.tokenName}>{token.symbol}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
                         {descrpitionForSymbol[token.symbol] ?? 'Asset'}
