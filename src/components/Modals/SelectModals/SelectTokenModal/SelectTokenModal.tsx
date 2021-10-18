@@ -41,8 +41,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   }
 
   const selectTokens = (name: string): number => {
-    const tokenIndex = tokens.findIndex(token => token.symbol === name)
-    return tokenIndex
+    return tokens.findIndex(token => token.symbol === name)
   }
 
   const endAdornment = () => (
