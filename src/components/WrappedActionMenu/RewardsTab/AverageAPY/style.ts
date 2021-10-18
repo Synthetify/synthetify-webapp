@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     backgroundColor: colors.navy.tooltip,
     padding: '4px 8px 3px 8px',
-    boxDhadow: '8px 8px 9px 0.1px rgba(0, 0, 0, 0.75)',
     borderRadius: '7px',
     marginTop: -20,
     ...typography.subtitle2,
