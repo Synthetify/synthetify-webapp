@@ -41,8 +41,8 @@ export const calculateSwapOutAmount = (
   }
 }
 export const calculateEstimateAmount = (
-  assetIn: ExchangeTokensWithBalance,
-  assetFor: ExchangeTokensWithBalance,
+  assetIn: ExchangeSyntheticTokens,
+  assetFor: ExchangeSyntheticTokens,
   amount: string
 ) => {
   const actualAmountOut = assetIn.price.val

@@ -91,6 +91,23 @@ export const calculateSwapOutAmount = (
   }
 }
 
+export const calculateEstimateAmount = (
+  assetIn: AssetPriceData,
+  assetFor: AssetPriceData,
+  amount: string
+) => {
+  const actualAmountOut = assetIn.priceVal
+    .mul(printBNtoBN(amount, assetIn.assetScale))
+    .div(assetFor.priceVal)
+  const decimalChange = 10 ** (assetFor.assetScale - assetIn.assetScale)
+
+  if (decimalChange < 1) {
+    return printBN(actualAmountOut.div(new BN(1 / decimalChange)), assetFor.assetScale)
+  } else {
+    return printBN(actualAmountOut.mul(new BN(decimalChange)), assetFor.assetScale)
+  }
+}
+
 export const calculateSwapOutAmountReversed = (
   assetIn: AssetPriceData,
   assetFor: AssetPriceData,
@@ -479,8 +496,8 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
               value={(() => {
                 if (pairIndex === null) return '0.0000'
                 const Amountvalue = isReversed
-                  ? calculateSwapOutAmount(tokenTo, tokenFrom, '1', pairs[pairIndex].fee)
-                  : calculateSwapOutAmount(tokenFrom, tokenTo, '1', pairs[pairIndex].fee)
+                  ? calculateEstimateAmount(tokenTo, tokenFrom, '1')
+                  : calculateEstimateAmount(tokenFrom, tokenTo, '1')
                 return Amountvalue
               })()}
               duration={300}
