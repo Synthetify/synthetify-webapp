@@ -1,22 +1,22 @@
 import React from 'react'
 import { Typography, Popover, Grid, Input, CardMedia, Box } from '@material-ui/core'
-import useStyles from './style'
+import useStyles from '../style'
 import { Search } from '@material-ui/icons'
-import CustomScrollbar from './CustomScrollbar'
+import CustomScrollbar from '../CustomScrollbar'
 import icons from '@static/icons'
-import { BN } from '@project-serum/anchor'
-import { printBN, showPrefix } from '@consts/utils'
-export interface ISelectTokenModal {
-  tokens: Array<{ symbol: string; balance?: BN; decimals?: number }>
+import classNames from 'classnames'
+
+export interface ISelectPairModal {
+  pairs: Array<{ symbol1: string; symbol2: string }>
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
   centered?: boolean
-  onSelect: (chosen: string) => void
+  onSelect: (index: number) => void
 }
 
-export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
-  tokens,
+export const SelectPairModal: React.FC<ISelectPairModal> = ({
+  pairs,
   open,
   handleClose,
   anchorEl,
@@ -56,27 +56,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     </>
   )
 
-  const formatNumbers = (value: string) => {
-    const num = Number(value)
-
-    if (num < 10) {
-      return num.toFixed(6)
-    }
-
-    if (num < 1000) {
-      return num.toFixed(4)
-    }
-
-    if (num < 10000) {
-      return num.toFixed(2)
-    }
-
-    if (num < 1000000) {
-      return (num / 1000).toFixed(2)
-    }
-
-    return (num / 1000000).toFixed(2)
-  }
+  const pairSymbol = (pair: { symbol1: string; symbol2: string }) => `${pair.symbol1}/${pair.symbol2}`
 
   return (
     <Popover
@@ -101,7 +81,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
             className={classes.searchInput}
             value={value}
             disableUnderline={true}
-            placeholder='Search a token'
+            placeholder='Select a pair'
             endAdornment={endAdornment()}
             onChange={e => {
               setValue(e.target.value)
@@ -111,42 +91,39 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         <Grid item>
           <Box className={classes.tokenList}>
             <CustomScrollbar>
-              {tokens
-                .filter(token => {
+              {pairs
+                .filter(pair => {
                   if (!value) return true
-                  return token.symbol.toLowerCase().includes(value.toLowerCase())
+                  return pairSymbol(pair).toLowerCase().includes(value.toLowerCase())
                 })
-                .map(token => (
+                .map((pair, index) => (
                   <Grid
                     container
-                    key={`tokens-${token.symbol}`}
+                    key={index}
                     className={classes.tokenItem}
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(token.symbol)
+                      onSelect(index)
                       handleClose()
                     }}>
-                    <Grid item>
+                    <Grid className={classes.dualIcon}>
                       <CardMedia
                         className={classes.tokenIcon}
-                        image={icons[token.symbol] ?? icons.SNY}
+                        image={icons[pair.symbol1] ?? icons.SNY}
+                        style={{ marginRight: 0 }}
+                      />
+                      <CardMedia
+                        className={classNames(classes.tokenIcon, classes.secondIcon)}
+                        image={icons[pair.symbol2] ?? icons.SNY}
                       />{' '}
                     </Grid>
                     <Grid item className={classes.tokenData}>
-                      <Typography className={classes.tokenName}>{token.symbol}</Typography>
+                      <Typography className={classes.tokenName}>{pairSymbol(pair)}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
-                        {descrpitionForSymbol[token.symbol] ?? 'Asset'}
+                        {descrpitionForSymbol[pair.symbol1] ?? 'Asset'}/{descrpitionForSymbol[pair.symbol2] ?? 'Asset'}
                       </Typography>
                     </Grid>
-                    {token.balance && token.decimals ? (
-                      <Grid item style={{ marginLeft: 'auto', marginRight: 5 }}>
-                        <Typography className={classes.tokenBalance}>
-                          Balance: {formatNumbers(printBN(token.balance, token.decimals))}
-                          {showPrefix(+printBN(token.balance, token.decimals))}
-                        </Typography>
-                      </Grid>
-                    ) : null}
                   </Grid>
                 ))}
             </CustomScrollbar>
@@ -156,4 +133,4 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     </Popover>
   )
 }
-export default SelectTokenModal
+export default SelectPairModal

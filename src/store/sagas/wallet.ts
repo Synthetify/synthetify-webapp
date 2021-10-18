@@ -111,11 +111,16 @@ export function* handleAirdrop(): Generator {
   const allCollaterals = yield* select(collaterals)
   const snyToken = Object.values(allCollaterals)[0]
   const stSolToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'stSOL')
+  const usdcToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'USDC')
   try {
     yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
 
     if (stSolToken) {
       yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
+    }
+
+    if (usdcToken) {
+      yield* call(getCollateralTokenAirdrop, usdcToken.collateralAddress, 1e8)
     }
   } catch (error) {
     if (error instanceof Error && error.message === 'Signature request denied') return
@@ -130,7 +135,7 @@ export function* handleAirdrop(): Generator {
   }
   yield put(
     snackbarsActions.add({
-      message: 'You will soon receive airdrop',
+      message: 'You will receive airdrop soon',
       variant: 'success',
       persist: false
     })

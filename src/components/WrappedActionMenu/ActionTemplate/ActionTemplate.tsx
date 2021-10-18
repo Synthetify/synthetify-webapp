@@ -21,7 +21,7 @@ export interface IProps {
   sending: boolean
   hasError: boolean
   tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
-  onSelectToken?: (chosen: string) => void
+  onSelectToken?: (chosen: number) => void
   showArrowInInput?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void

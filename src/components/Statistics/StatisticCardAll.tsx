@@ -3,10 +3,8 @@ import React from 'react'
 import useStyles from './style'
 import { StatisticsCard } from './StatisticsCard'
 interface Props {
-  collateral: number
   volume: number
   mint: number
-  debt: number
   fee: number
 }
 
@@ -17,9 +15,10 @@ interface IProp {
     value: number
     price: number
   }>
+  collateralValue: number
 }
 
-export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent }) => {
+export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent, collateralValue }) => {
   const classes = useStyles()
   return (
     <div className={classes.gridContainer}>
@@ -27,7 +26,7 @@ export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent }) => {
         <Grid id='collateral' item xs={12} sm={7}>
           <StatisticsCard
             name='Collateral'
-            value={data.collateral}
+            value={collateralValue}
             desc={'Total value deposited'}
           />
         </Grid>
