@@ -252,7 +252,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   if (!walletAddress.equals(DEFAULT_PUBLICKEY)) {
     yield* put(
       snackbarsActions.add({
-        message: 'A walle is already connected.',
+        message: 'A wallet is already connected.',
         variant: 'info',
         persist: false
       })
