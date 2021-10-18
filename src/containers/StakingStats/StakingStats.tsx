@@ -56,8 +56,8 @@ export const StakingStats: React.FC = () => {
               <img src={Percent} alt='' className={classes.tooltipIcon} />
               <Typography className={classes.tooltipTitle}>Debt status</Typography>
               <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
-                Current value of your debt based on the debt of the platform. Max borrow represents
-                the maximal debt that you can mint. Value at the end of the bar is your liquidation
+                Current value of your debt proportionally to the global debt. Max borrow represents
+                mint threshold. Value at the end of the bar is your liquidation
                 threshold - if your debt increases beyond this value, your position can be
                 liquidated.
               </p>
