@@ -75,7 +75,7 @@
     "storybook": "start-storybook -p 9009 -c .storybook watch-css -s public",
     "build-storybook": "build-storybook -s public",
     "build": "vite build",
-    "preinstall": "npx npm-force-resolutions"
+    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions"
   },
   "eslintConfig": {
     "extends": "react-app"
