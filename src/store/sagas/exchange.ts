@@ -14,7 +14,7 @@ import {
   TransactionInstruction
 } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
-import { createAccount, getToken, getWallet, sleep } from './wallet'
+import { createAccount, getToken, getWallet, signAndSend, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
 import { NATIVE_MINT, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
@@ -459,7 +459,7 @@ export function* handleSwaplineSwap(): Generator {
     } else {
       userCollateralAccount = yield* call(createAccount, swapData.collateral)
     }
-    const txid = yield* call([
+    const swaplineIx = yield* call([
       exchangeProgram,
       exchangeProgram[swapData.swapType]
     ],
@@ -471,7 +471,18 @@ export function* handleSwaplineSwap(): Generator {
       synthetic: swapData.synthetic,
       collateral: swapData.collateral
     })
-    yield* put(actions.swaplineSwapDone({ txid: txid[1] }))
+    const wallet = yield* call(getWallet)
+    const approveIx = Token.createApproveInstruction(
+      TOKEN_PROGRAM_ID,
+      swapData.swapType === 'nativeToSynthetic' ? userCollateralAccount : userSyntheticAccount,
+      exchangeProgram.exchangeAuthority,
+      wallet.publicKey,
+      [],
+      tou64(swapData.amount)
+    )
+    const tx = new Transaction().add(approveIx).add(swaplineIx)
+    const txid = yield* call(signAndSend, wallet, tx)
+    yield* put(actions.swaplineSwapDone({ txid }))
 
     yield put(
       snackbarsActions.add({

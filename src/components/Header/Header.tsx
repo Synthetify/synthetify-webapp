@@ -83,7 +83,7 @@ export const Header: React.FC<IHeader> = ({
             container
             wrap='nowrap'
             alignItems='center'
-            style={{ maxWidth: 93 * routes.length + 15 * (routes.length - 1) }}>
+            style={{ maxWidth: 93 * (routes.length + 1) + 15 * (routes.length) }}>
             {routes.map(path => (
               <Link key={`path-${path}`} to={`/${path}`} className={classes.link}>
                 <NavbarButton
@@ -95,6 +95,17 @@ export const Header: React.FC<IHeader> = ({
                 />
               </Link>
             ))}
+            {typeOfNetwork === NetworkType.DEVNET && (
+              <Link to='/swapline' className={classes.link}>
+                <NavbarButton
+                  name='swapline'
+                  onClick={() => {
+                    setActive('swapline')
+                  }}
+                  active={activePath === 'swapline'}
+                />
+              </Link>
+            )}
           </Grid>
         </Hidden>
 
