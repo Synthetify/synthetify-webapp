@@ -15,7 +15,7 @@ export interface ISelectModal {
   current: string | null
   centered?: boolean
   tokens?: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  pairs?: Array<{ symbol1: string; symbol2: string }>
+  pairs?: Array<{ symbol1: string, symbol2: string }>
   onSelect: (chosen: number) => void
   className?: string
 }
@@ -58,36 +58,31 @@ export const Select: React.FC<ISelectModal> = ({
           )
         }
         endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8, marginRight: -4 }} />}
-        style={
-          !current ? (isXs ? typography.caption4 : typography.body3) : undefined
-        }
-      >
-        <span style={{ position: 'relative', top: -1, whiteSpace: 'nowrap' }}>{!current ? name : current}</span>
+        style={!current ? (isXs ? typography.caption4 : typography.body3) : undefined}>
+        <span style={{ position: 'relative', whiteSpace: 'nowrap' }}>
+          {!current ? name : current}
+        </span>
       </Button>
-      {
-        tokens && (
-          <SelectTokenModal
-            tokens={tokens}
-            open={open}
-            centered={centered}
-            anchorEl={anchorEl}
-            onSelect={onSelect}
-            handleClose={handleClose}
-          />
-        )
-      }
-      {
-        pairs && (
-          <SelectPairModal
-            pairs={pairs}
-            open={open}
-            centered={centered}
-            anchorEl={anchorEl}
-            onSelect={onSelect}
-            handleClose={handleClose}
-          />
-        )
-      }
+      {tokens && (
+        <SelectTokenModal
+          tokens={tokens}
+          open={open}
+          centered={centered}
+          anchorEl={anchorEl}
+          onSelect={onSelect}
+          handleClose={handleClose}
+        />
+      )}
+      {pairs && (
+        <SelectPairModal
+          pairs={pairs}
+          open={open}
+          centered={centered}
+          anchorEl={anchorEl}
+          onSelect={onSelect}
+          handleClose={handleClose}
+        />
+      )}
     </>
   )
 }

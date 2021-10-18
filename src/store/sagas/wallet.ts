@@ -135,7 +135,7 @@ export function* handleAirdrop(): Generator {
   }
   yield put(
     snackbarsActions.add({
-      message: 'You will soon receive airdrop',
+      message: 'You will receive airdrop soon',
       variant: 'success',
       persist: false
     })

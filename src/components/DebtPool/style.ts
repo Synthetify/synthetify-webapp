@@ -5,7 +5,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   debtPoolCard: {
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Be Vietnam',
     marginRight: '12px',
     width: '100%',
     [theme.breakpoints.down('sm')]: {
@@ -17,7 +16,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   debtPoolCardContent: {
-    paddingTop: '6px'
+    paddingTop: '18px',
+    paddingLeft: '24px',
+    [theme.breakpoints.down('xs')]: {
+      paddingTop: '10px',
+      paddingLeft: '16px'
+    }
   },
   debtPoolCardTitle: {
     color: colors.navy.veryLightGrey,
