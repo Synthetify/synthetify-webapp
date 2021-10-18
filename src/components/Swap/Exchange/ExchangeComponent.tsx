@@ -110,7 +110,6 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
   onSelectTokenTo
 }) => {
   const classes = useStyles()
-
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(
