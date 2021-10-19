@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 27,
     height: 27,
     display: 'inline',
-    float: 'left',
-    marginRight: 8
+    marginRight: 8,
+    float: 'left'
   },
   name: {
     textTransform: 'capitalize',
