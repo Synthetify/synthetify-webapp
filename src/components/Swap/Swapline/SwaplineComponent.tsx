@@ -468,7 +468,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
         />
       </Grid>
       <Grid container item className={classes.numbersField}>
-        <Grid item>
+        <Grid item className={classes.numbersFieldGrid}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
 
             <Typography className={classes.numbersFieldAmount}>
@@ -478,7 +478,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
 
         <Divider className={classes.amountDivider} orientation='vertical' />
 
-        <Grid item>
+        <Grid className={classes.numbersFieldGrid} item>
           <Grid container item alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
             <Grid item className={classes.arrowsBg}>
