@@ -453,7 +453,7 @@ export function* handleSwaplineSwap(): Generator {
 
     let userCollateralAccount
     if (allCollaterals[swapData.collateral.toString()].symbol === 'WSOL') {
-      userCollateralAccount = yield* select(address)
+      userCollateralAccount = walletAddress
     } else if (tokensAccounts[swapData.collateral.toString()]) {
       userCollateralAccount = tokensAccounts[swapData.collateral.toString()].address
     } else {

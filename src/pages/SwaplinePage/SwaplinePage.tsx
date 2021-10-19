@@ -6,6 +6,7 @@ import { swaplinePairs } from '@selectors/solanaWallet'
 import useStyles from './style'
 import { SwapInfo } from '@components/SwapInfo/SwapInfo'
 import { printDecimal } from '@consts/utils'
+import BN from 'bn.js'
 
 export const SwaplinePage: React.FC = () => {
   const classes = useStyles()
@@ -13,6 +14,11 @@ export const SwaplinePage: React.FC = () => {
   const pairs = useSelector(swaplinePairs)
 
   const [pairIndex, setPairIndex] = useState<number | null>(null)
+
+  const decimalZero = {
+    val: new BN(0),
+    scale: 6
+  }
 
   return (
     <Fade in={true} >
@@ -22,11 +28,11 @@ export const SwaplinePage: React.FC = () => {
           <Grid container direction='row' className={classes.row}>
             <Grid item className={classes.plotWrapper}>
               <SwapInfo
-                syntheticName={pairs[pairIndex === null ? 0 : pairIndex].syntheticData.symbol}
-                collateralName={pairs[pairIndex === null ? 0 : pairIndex].collateralData.symbol}
-                fee={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].fee)}
-                balance={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].balance)}
-                limit={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].limit)}
+                syntheticName={pairs[pairIndex === null ? 0 : pairIndex]?.syntheticData?.symbol ?? ''}
+                collateralName={pairs[pairIndex === null ? 0 : pairIndex]?.collateralData?.symbol ?? ''}
+                fee={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.fee ?? decimalZero)}
+                balance={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.balance ?? decimalZero)}
+                limit={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.limit ?? decimalZero)}
               />
             </Grid>
             <WrappedSwaplineComponent
