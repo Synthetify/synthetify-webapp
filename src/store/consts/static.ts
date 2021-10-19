@@ -50,4 +50,20 @@ const DEFAULT_STAKING_DATA: UserStaking = {
   lastUpdate: new BN(0)
 }
 const MAX_U64 = new BN('18446744073709551615')
-export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA, MAX_U64, MAINNET_RPCS, NetworkType }
+
+const descrpitionForSymbol: { [key: string]: string } = {
+  SNY: 'Synthetify',
+  xBNB: 'Synthetic Binance Coin',
+  xBTC: 'Synthetic Bitcoin',
+  xETH: 'Synthetic Ethereum',
+  xFTT: 'Synthetic FTT',
+  xSOL: 'Synthetic Solana',
+  xSRM: 'Synthetic Serum',
+  xUSD: 'Synthetic USD',
+  stSOL: 'Staked Solana',
+  WSOL: 'Wrapped Solana',
+  USDC: 'USD Coin',
+  renBTC: 'renBTC'
+}
+
+export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA, MAX_U64, MAINNET_RPCS, NetworkType, descrpitionForSymbol }

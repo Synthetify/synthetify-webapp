@@ -28,8 +28,8 @@ export const SwaplinePage: React.FC = () => {
           <Grid container className={classes.row}>
             <Grid item className={classes.plotWrapper}>
               <SwapInfo
-                syntheticName={pairs[pairIndex === null ? 0 : pairIndex]?.syntheticData?.symbol ?? ''}
-                collateralName={pairs[pairIndex === null ? 0 : pairIndex]?.collateralData?.symbol ?? ''}
+                syntheticSymbol={pairs[pairIndex === null ? 0 : pairIndex]?.syntheticData?.symbol ?? ''}
+                collateralSymbol={pairs[pairIndex === null ? 0 : pairIndex]?.collateralData?.symbol ?? ''}
                 fee={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.fee ?? decimalZero)}
                 balance={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.balance ?? decimalZero)}
                 limit={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.limit ?? decimalZero)}

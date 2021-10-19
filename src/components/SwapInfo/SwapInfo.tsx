@@ -1,18 +1,19 @@
 import AnimatedNumber from '@components/AnimatedNumber'
+import { descrpitionForSymbol } from '@consts/static'
 import { Grid, Typography } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 
 interface IProps {
-  syntheticName: string
-  collateralName: string
+  syntheticSymbol: string
+  collateralSymbol: string
   fee: number
   balance: number
   limit: number
 }
 export const SwapInfo: React.FC<IProps> = ({
-  syntheticName,
-  collateralName,
+  syntheticSymbol,
+  collateralSymbol,
   fee,
   balance,
   limit
@@ -31,7 +32,7 @@ export const SwapInfo: React.FC<IProps> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Synthetic:</Typography>
-            <Typography className={classes.positionValue}>{syntheticName}</Typography>
+            <Typography className={classes.positionValue}>{descrpitionForSymbol[syntheticSymbol] ?? 'Unknown'}</Typography>
           </Grid>
 
           <Grid
@@ -41,7 +42,7 @@ export const SwapInfo: React.FC<IProps> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Collateral:</Typography>
-            <Typography className={classes.positionValue}>{collateralName}</Typography>
+            <Typography className={classes.positionValue}>{descrpitionForSymbol[collateralSymbol] ?? 'Unknown'}</Typography>
           </Grid>
 
           <Grid
@@ -70,12 +71,12 @@ export const SwapInfo: React.FC<IProps> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Balance:</Typography>
             <Typography className={classes.positionValue}>
-              $
               <AnimatedNumber
                 value={balance}
                 duration={300}
                 formatValue={(value: number) => value.toFixed(2)}
               />
+              {' '}{collateralSymbol}
             </Typography>
           </Grid>
           <Grid
@@ -86,12 +87,12 @@ export const SwapInfo: React.FC<IProps> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Limit:</Typography>
             <Typography className={classes.positionValue}>
-              $
               <AnimatedNumber
                 value={limit}
                 duration={300}
                 formatValue={(value: number) => value.toFixed(2)}
               />
+              {' '}{collateralSymbol}
             </Typography>
           </Grid>
         </Grid>
