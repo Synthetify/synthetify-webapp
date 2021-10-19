@@ -44,7 +44,8 @@ const ExhcangeEvents = () => {
   }, [dispatch, userAccount.address.toString(), exchangeProgram, networkStatus])
 
   React.useEffect(() => {
-    if (!exchangeProgram || networkStatus !== Status.Initialized) {
+    const connection = getCurrentSolanaConnection()
+    if (!exchangeProgram || networkStatus !== Status.Initialized || !connection) {
       return
     }
     const connectEvents = () => {
@@ -52,16 +53,24 @@ const ExhcangeEvents = () => {
         dispatch(actions.setState(state))
       })
 
-      Promise.all(
-        SWAPLINE_MAP[networkTypetoProgramNetwork(networkType)].map(
-          async (swapline) => {
-            const { swaplineAddress } = await exchangeProgram.getSwaplineAddress(swapline.synthetic, swapline.collateral)
-            return await exchangeProgram.getSwapline(swaplineAddress)
-          }
-        )
-      ).then((swaplines) => {
-        dispatch(actions.setSwaplines(swaplines))
-      }, () => {})
+      SWAPLINE_MAP[networkTypetoProgramNetwork(networkType)].map(
+        async (swapline) => {
+          const { swaplineAddress } = await exchangeProgram.getSwaplineAddress(swapline.synthetic, swapline.collateral)
+          const data = await exchangeProgram.getSwapline(swaplineAddress)
+          dispatch(actions.setSwapline({
+            address: swaplineAddress,
+            swapline: data
+          }))
+          connection.onAccountChange(swaplineAddress, () => {
+            exchangeProgram.getSwapline(swaplineAddress).then((swaplineData) => {
+              dispatch(actions.setSwapline({
+                address: swaplineAddress,
+                swapline: swaplineData
+              }))
+            }, () => {})
+          })
+        }
+      )
     }
     connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])

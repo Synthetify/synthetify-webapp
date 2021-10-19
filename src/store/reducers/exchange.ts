@@ -8,6 +8,11 @@ import * as R from 'remeda'
 
 export type SwaplineSwapType = 'nativeToSynthetic' | 'syntheticToNative'
 
+export interface SwaplineUpdate {
+  address: PublicKey
+  swapline: Swapline
+}
+
 export interface Swap {
   fromToken: PublicKey
   toToken: PublicKey
@@ -46,7 +51,7 @@ export interface IExchange {
   exchangeAccount: ExchangeAccount
   swap: Swap
   swaplineSwap: SwaplineSwap
-  swaplines: Swapline[]
+  swaplines: { [key in string]: Swapline }
 }
 export type IAsset = Asset & { symbol: string }
 export type ISynthetic = Synthetic & { symbol: string }
@@ -155,7 +160,7 @@ export const defaultState: IExchange = {
     swapType: 'nativeToSynthetic',
     loading: false
   },
-  swaplines: []
+  swaplines: {}
 }
 export const exchangeSliceName = 'exchange'
 const exchangeSlice = createSlice({
@@ -247,8 +252,8 @@ const exchangeSlice = createSlice({
       state.swap.loading = false
       return state
     },
-    setSwaplines(state, action: PayloadAction<Swapline[]>) {
-      state.swaplines = action.payload
+    setSwapline(state, action: PayloadAction<SwaplineUpdate>) {
+      state.swaplines[action.payload.address.toString()] = action.payload.swapline
 
       return state
     }

@@ -71,7 +71,7 @@ export const swaplinePairs = createSelector(
   assets,
   balance,
   (allSwaplines, allSynthetics, allCollaterals, tokensAccounts, allAssets, wSOLBalance) => {
-    return allSwaplines.map((swapline) => {
+    return Object.values(allSwaplines).map((swapline) => {
       const syntheticAccount = tokensAccounts[swapline.synthetic.toString()]
       const collateralAccount = tokensAccounts[swapline.collateral.toString()]
       const pair: SwaplinePair = {
