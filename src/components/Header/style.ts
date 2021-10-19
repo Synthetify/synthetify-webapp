@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   connectedWalletIcon: {
     minWidth: 21,
     height: 21,
-    marginRight: 0
+    marginRight: 0,
+    marginTop: -2
   },
   dehazeButton: {
     borderRadius: 10,
