@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 18,
     width: 18,
     marginLeft: 16,
-    marginTop: 4,
+    marginTop: 2,
 
     '&:hover': {
       cursor: 'pointer'
