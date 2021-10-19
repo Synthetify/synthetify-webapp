@@ -99,10 +99,10 @@ export const SwapInfo: React.FC<IProps> = ({
         <Grid container item className={classes.descWrapper}>
           <Typography className={classes.descTitle}>What is Swapline?</Typography>
           <Typography className={classes.descText}>
-          The Swapline is a more straightforward way to get synthetic tokens.
+          Swapline is a more straightforward way to get synthetic tokens.
           It exists to keep the price of each of the synthetic tokens close to their original counterparts.
-          Moreover, without it, amount of synthetic tokens in circulation would be smaller than debt, due to interest rate.
-          The Swapline provides a simple way to counteract that.
+          Tokens can be swapped from collateral to synthetic as long as the total swapped amount is below the swapline limit.
+          They can also be swapped back from synthetic to collateral, as long as there are enough tokens in collateral reserve (balance).
           </Typography>
         </Grid>
       </Grid>
