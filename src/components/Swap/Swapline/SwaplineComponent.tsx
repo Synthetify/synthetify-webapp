@@ -158,9 +158,9 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
 
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
-  const [pairIndex, setPairIndex] = React.useState<number | null>(null)
+  const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [swapType, setSwapType] = React.useState<SwaplineSwapType>('nativeToSynthetic')
-  const [amountFrom, setAmountFrom] = React.useState<string>('')
+  const [amountFrom, setAmountFrom] = React.useState<string>('0.000000')
   const [amountTo, setAmountTo] = React.useState<string>('')
   const [isReversed, setIsReversed] = React.useState<boolean>(false)
 

@@ -13,7 +13,7 @@ export const SwaplinePage: React.FC = () => {
 
   const pairs = useSelector(swaplinePairs)
 
-  const [pairIndex, setPairIndex] = useState<number | null>(null)
+  const [pairIndex, setPairIndex] = useState<number | null>(pairs.length ? 0 : null)
 
   const decimalZero = {
     val: new BN(0),
