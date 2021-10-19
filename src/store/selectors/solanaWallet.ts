@@ -81,7 +81,7 @@ export const swaplinePairs = createSelector(
           ...allSynthetics[swapline.synthetic.toString()],
           balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
         },
-        collateralData: allCollaterals[swapline.collateral.toString()].symbol === 'WSOL'
+        collateralData: allCollaterals[swapline.collateral.toString()].symbol !== 'WSOL'
           ? {
             ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
             ...allCollaterals[swapline.collateral.toString()],
