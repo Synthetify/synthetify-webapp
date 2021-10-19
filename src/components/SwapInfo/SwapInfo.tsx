@@ -56,7 +56,7 @@ export const SwapInfo: React.FC<IProps> = ({
               <AnimatedNumber
                 value={fee}
                 duration={300}
-                formatValue={(value: number) => value.toFixed(2)}
+                formatValue={(value: number) => (value * 100).toFixed(2)}
               />
               %
             </Typography>
