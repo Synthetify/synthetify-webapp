@@ -18,6 +18,7 @@ interface IProps {
   tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
   pairs?: Array<{ symbol1: string; symbol2: string }>
   onSelect: (chosen: number) => void
+  selectText?: string
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -31,7 +32,8 @@ export const AmountInput: React.FC<IProps> = ({
   current,
   tokens,
   pairs,
-  onSelect
+  onSelect,
+  selectText
 }) => {
   const classes = useStyles()
 
@@ -98,6 +100,7 @@ export const AmountInput: React.FC<IProps> = ({
           onSelect={onSelect}
           current={current}
           className={classes.select}
+          name={selectText}
         />
       }
     />

@@ -242,7 +242,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
   }
 
   const getButtonMessage = () => {
-    if (pairIndex === null) return 'Select pair'
+    if (pairIndex === null) return 'Select a pair'
 
     if (amountTo.match(/^0\.0*$/)) {
       return 'Enter value of swap'
@@ -357,6 +357,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
             setPairIndex(chosen)
             onSelectPair(chosen)
           }}
+          selectText='Select a pair'
         />
       </Grid>
 
@@ -468,6 +469,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
             setPairIndex(chosen)
             onSelectPair(chosen)
           }}
+          selectText='Select a pair'
         />
       </Grid>
       <Grid container item className={classes.numbersField}>

@@ -50,6 +50,7 @@ export const Header: React.FC<IHeader> = ({
   const buttonClasses = useButtonStyles()
 
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
   const routes = ['staking', 'stats', 'exchange']
   if (typeOfNetwork === NetworkType.DEVNET) {
@@ -141,7 +142,7 @@ export const Header: React.FC<IHeader> = ({
             <ChangeWalletButton
               name={`${address
                 .toString()
-                .substr(0, isSmDown ? 2 : 6)}...${address
+                .substr(0, isSmDown ? 2 : (isMdDown ? 3 : 6))}...${address
                 .toString()
                 .substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
               options={[
