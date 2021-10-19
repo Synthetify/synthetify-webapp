@@ -253,7 +253,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
     if (printBNtoBN(amountFrom, tokenFrom.assetScale).gt(tokenFrom.balance)) {
       return 'Invalid swap amount'
     }
-    if (swapType === 'nativeToSynthetic' && printBNtoBN(amountFrom, tokenFrom.assetScale).gt(pairs[pairIndex].limit.val)) {
+    if (swapType === 'nativeToSynthetic' && printBNtoBN(amountFrom, tokenFrom.assetScale).gt(pairs[pairIndex].limit.val.sub(pairs[pairIndex].balance.val))) {
       return 'Collateral limit reached'
     }
     if (printBNtoBN(amountTo, tokenTo.assetScale).gt(tokenTo.maxAvailable)) {
