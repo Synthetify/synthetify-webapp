@@ -13,17 +13,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
-      color: colors.green.snackbar,
-      marginTop: 4,
-      [theme.breakpoints.down('xs')]: {
-        marginTop: 2
-      }
+      width: 24,
+      height: 24,
+      color: colors.green.snackbar
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      maxWidth: 255,
+      maxWidth: 235,
       maxHeight: 32,
       padding: '0px 8px 5px 4px'
     }
@@ -37,19 +35,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     padding: 10,
     ...typography.heading5,
+    maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
       color: colors.red.snackbar,
-      marginTop: 4,
-      [theme.breakpoints.down('xs')]: {
-        marginTop: 2
-      }
+      width: 24,
+      height: 24
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
+      width: 235,
+      height: 32,
       padding: '0px 8px 5px 4px'
     }
   },
@@ -64,18 +61,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
       color: colors.blue.astel,
-      marginTop: 4,
-      [theme.breakpoints.down('xs')]: {
-        marginTop: 2
-      }
+      width: 24,
+      height: 24
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
+      width: 235,
+      height: 32,
       padding: '0px 8px 5px 4px'
     }
   },
@@ -90,18 +85,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
       color: colors.yellow.neon,
-      marginTop: 4,
-      [theme.breakpoints.down('xs')]: {
-        marginTop: 2
-      }
+      width: 24,
+      height: 24
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
+      width: 235,
+      height: 32,
       padding: '0px 8px 5px 4px'
     }
   }
