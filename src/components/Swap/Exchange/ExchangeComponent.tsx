@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { printBNtoBN, printBN, showPrefix } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
@@ -21,8 +21,8 @@ import useStyles from '../style'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 
 export const calculateSwapOutAmount = (
-  assetIn: ExchangeTokensWithBalance,
-  assetFor: ExchangeTokensWithBalance,
+  assetIn: ExchangeSyntheticTokens,
+  assetFor: ExchangeSyntheticTokens,
   amount: string,
   effectiveFee: Decimal
 ) => {
@@ -41,8 +41,8 @@ export const calculateSwapOutAmount = (
   }
 }
 export const calculateEstimateAmount = (
-  assetIn: ExchangeTokensWithBalance,
-  assetFor: ExchangeTokensWithBalance,
+  assetIn: ExchangeSyntheticTokens,
+  assetFor: ExchangeSyntheticTokens,
   amount: string
 ) => {
   const actualAmountOut = assetIn.price.val
@@ -58,8 +58,8 @@ export const calculateEstimateAmount = (
 }
 
 export const calculateSwapOutAmountReversed = (
-  assetIn: ExchangeTokensWithBalance,
-  assetFor: ExchangeTokensWithBalance,
+  assetIn: ExchangeSyntheticTokens,
+  assetFor: ExchangeSyntheticTokens,
   amount: string,
   effectiveFee: Decimal
 ) => {
@@ -83,7 +83,7 @@ export const swapOutAmountCurrencyName = (
   reserved: boolean,
   tokenToIndex: number | null,
   tokenFromIndex: number | null,
-  tokens: ExchangeTokensWithBalance[]
+  tokens: ExchangeSyntheticTokens[]
 ) => {
   const per = tokenToIndex === null || tokenFromIndex === null ? '' : 'per'
   const firstSymbol = tokenToIndex === null ? '' : `${tokens[tokenToIndex].symbol} `
@@ -94,7 +94,7 @@ export const swapOutAmountCurrencyName = (
 }
 
 export interface IExchangeComponent {
-  tokens: ExchangeTokensWithBalance[]
+  tokens: ExchangeSyntheticTokens[]
   onSwap: (fromToken: PublicKey, toToken: PublicKey, amount: BN) => void
   fee: Decimal
   discountPercent?: number
@@ -201,9 +201,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
   const getButtonMessage = (
     amountFrom: string,
-    tokenFrom: ExchangeTokensWithBalance | null,
+    tokenFrom: ExchangeSyntheticTokens | null,
     amountTo: string,
-    tokenTo: ExchangeTokensWithBalance | null
+    tokenTo: ExchangeSyntheticTokens | null
   ) => {
     if (!tokenFrom) return 'Select input token'
     if (!tokenTo) {
@@ -223,7 +223,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     }
     if (
       tokenToIndex !== null &&
-      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))
+      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val).sub(tokenTo.swaplineSupply.val).sub(tokenTo.borrowedSupply.val))
     ) {
       return (
         <>
@@ -237,7 +237,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 </Typography>
                 Your amount exceeded current supply of token. Available to trade:
                 <b style={{ wordWrap: 'break-word' }}>{` ${printBN(
-                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val),
+                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val).sub(tokenTo.swaplineSupply.val).sub(tokenTo.borrowedSupply.val),
                   tokens[tokenToIndex].supply.scale
                 )} ${tokens[tokenToIndex].symbol}`}</b>
               </>

@@ -1,5 +1,6 @@
 import { BN } from '@project-serum/anchor'
 import { u64 } from '@solana/spl-token'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 
 export const tou64 = (amount: BN | String) => {
   // eslint-disable-next-line new-cap
@@ -21,6 +22,7 @@ export const printBN = (amount: BN, decimals: number): string => {
     )
   }
 }
+export const printDecimal = (amount: Decimal): string => printBN(amount.val, amount.scale)
 // Bad solution but i hate regex
 export const trimZeros = (amount: string) => {
   try {

@@ -5,6 +5,7 @@ import { Search } from '@material-ui/icons'
 import CustomScrollbar from '../CustomScrollbar'
 import icons from '@static/icons'
 import classNames from 'classnames'
+import { descrpitionForSymbol } from '@consts/static'
 
 export interface ISelectPairModal {
   pairs: Array<{ symbol1: string; symbol2: string }>
@@ -25,21 +26,6 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
-
-  const descrpitionForSymbol: { [key: string]: string } = {
-    SNY: 'Synthetify',
-    xBNB: 'Synthetic Binance Coin',
-    xBTC: 'Synthetic Bitcoin',
-    xETH: 'Synthetic Ethereum',
-    xFTT: 'Synthetic FTT',
-    xSOL: 'Synthetic Solana',
-    xSRM: 'Synthetic Serum',
-    xUSD: 'Synthetic USD',
-    stSOL: 'Staked Solana',
-    WSOL: 'Wrapped Solana',
-    USDC: 'USD Coin',
-    renBTC: 'renBTC'
-  }
 
   const endAdornment = () => (
     <>

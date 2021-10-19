@@ -1,19 +1,21 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { assets, exchangeAccount, state } from '@selectors/exchange'
-import { status } from '@selectors/solanaConnection'
+import { network, status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 import { getOracleProgram } from '@web3/programs/oracle'
-import { getCurrentSolanaConnection } from '@web3/connection'
+import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/connection'
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
+import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
 
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
+  const networkType = useSelector(network)
   const exchangeState = useSelector(state)
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
@@ -42,13 +44,33 @@ const ExhcangeEvents = () => {
   }, [dispatch, userAccount.address.toString(), exchangeProgram, networkStatus])
 
   React.useEffect(() => {
-    if (!exchangeProgram || networkStatus !== Status.Initialized) {
+    const connection = getCurrentSolanaConnection()
+    if (!exchangeProgram || networkStatus !== Status.Initialized || !connection) {
       return
     }
     const connectEvents = () => {
       exchangeProgram.onStateChange(state => {
         dispatch(actions.setState(state))
       })
+
+      SWAPLINE_MAP[networkTypetoProgramNetwork(networkType)].map(
+        async (swapline) => {
+          const { swaplineAddress } = await exchangeProgram.getSwaplineAddress(swapline.synthetic, swapline.collateral)
+          const data = await exchangeProgram.getSwapline(swaplineAddress)
+          dispatch(actions.setSwapline({
+            address: swaplineAddress,
+            swapline: data
+          }))
+          connection.onAccountChange(swaplineAddress, () => {
+            exchangeProgram.getSwapline(swaplineAddress).then((swaplineData) => {
+              dispatch(actions.setSwapline({
+                address: swaplineAddress,
+                swapline: swaplineData
+              }))
+            }, () => {})
+          })
+        }
+      )
     }
     connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
