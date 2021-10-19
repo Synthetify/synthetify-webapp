@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   endIcon: {
     minWidth: 20,
-    marginTop: 2
+    marginTop: 0
   },
   innerEndIcon: {
     marginLeft: 0
