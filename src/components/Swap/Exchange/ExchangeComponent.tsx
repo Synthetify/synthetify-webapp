@@ -443,7 +443,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         />
       </Grid>
       <Grid container item className={classes.numbersField}>
-        <Grid item>
+        <Grid className={classes.numbersFieldGrid} item>
           <Grid container item justifyContent='space-between' alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
             <MobileTooltip
@@ -501,7 +501,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
         <Divider className={classes.amountDivider} orientation='vertical' />
 
-        <Grid item>
+        <Grid className={classes.numbersFieldGrid} item>
           <Grid container item alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
             <Grid item className={classes.arrowsBg}>
