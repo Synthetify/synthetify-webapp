@@ -37,22 +37,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   plotWrapper: {
-    marginLeft: 24,
+    marginRight: 24,
     maxWidth: 312,
 
     [theme.breakpoints.down('md')]: {
-      marginLeft: 32,
+      marginRight: 32,
       maxWidth: 272
     },
 
     [theme.breakpoints.down('sm')]: {
       maxWidth: 'unset',
-      marginLeft: 0,
-      marginTop: 24
+      marginRight: 0,
+      marginBottom: 24
     },
 
     [theme.breakpoints.down('xs')]: {
-      marginTop: 16
+      marginBottom: 16
     }
   },
   '@keyframes slide': {

@@ -7,7 +7,6 @@ interface IProps {
   syntheticName: string
   collateralName: string
   fee: number
-  accumulatedFee: number
   balance: number
   limit: number
 }
@@ -15,7 +14,6 @@ export const SwapInfo: React.FC<IProps> = ({
   syntheticName,
   collateralName,
   fee,
-  accumulatedFee,
   balance,
   limit
 }) => {
@@ -70,22 +68,6 @@ export const SwapInfo: React.FC<IProps> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Accumulated Fee:</Typography>
-            <Typography className={classes.positionValue}>
-              <AnimatedNumber
-                value={accumulatedFee}
-                duration={300}
-                formatValue={(value: number) => value.toFixed(3)}
-              />
-              %
-            </Typography>
-          </Grid>
-          <Grid
-            container
-            item
-            className={classes.infoPosition}
-            justifyContent='space-between'
-            alignItems='center'>
             <Typography className={classes.positionTitle}>Balance:</Typography>
             <Typography className={classes.positionValue}>
               $
@@ -114,12 +96,12 @@ export const SwapInfo: React.FC<IProps> = ({
           </Grid>
         </Grid>
         <Grid container item className={classes.descWrapper}>
-          <Typography className={classes.descTitle}> Lorem impsum itd itp</Typography>
+          <Typography className={classes.descTitle}>What is Swapline?</Typography>
           <Typography className={classes.descText}>
-            Lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nibh
-            dui, tempor eget pharetra vitae, semper a urna. Sed mi augue, molestie et ligula ut,
-            ullamcorper pretium purus. Aliquam lacinia placerat diam ut lobortis. Fusce lacinia, sem
-            non faucibus aliquam, ipsum quam gravida ligula, ac faucibus justo orci quis.
+          The Swapline is a more straightforward way to get synthetic tokens.
+          It exists to keep the price of each of the synthetic tokens close to their original counterparts.
+          Moreover, without it, amount of synthetic tokens in circulation would be smaller than debt, due to interest rate.
+          The Swapline provides a simple way to counteract that.
           </Typography>
         </Grid>
       </Grid>

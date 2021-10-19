@@ -20,20 +20,19 @@ export const SwaplinePage: React.FC = () => {
         <Grid item className={classes.exchange}>
           <Typography className={classes.title}>Swapline</Typography>
           <Grid container direction='row' className={classes.row}>
-            <WrappedSwaplineComponent
-              pairs={pairs}
-              onSelectPair={setPairIndex}
-            />
             <Grid item className={classes.plotWrapper}>
               <SwapInfo
                 syntheticName={pairs[pairIndex === null ? 0 : pairIndex].syntheticData.symbol}
                 collateralName={pairs[pairIndex === null ? 0 : pairIndex].collateralData.symbol}
                 fee={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].fee)}
-                accumulatedFee={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].accumulatedFee)}
                 balance={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].balance)}
                 limit={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex].limit)}
               />
             </Grid>
+            <WrappedSwaplineComponent
+              pairs={pairs}
+              onSelectPair={setPairIndex}
+            />
           </Grid>
         </Grid>
       </Grid>
