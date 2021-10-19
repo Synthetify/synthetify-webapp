@@ -385,42 +385,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
           justifyContent='space-between'
           alignItems='center'
           className={classes.tokenComponentInfo}>
-          <Grid
-            item
-            container
-            wrap='nowrap'
-            justifyContent='space-between'
-            alignItems='center'
-            className={classes.toText}>
-            <Typography className={classes.tokenComponentText}>You get</Typography>
-            <MobileTooltip
-              hint={
-                <>
-                  <img src={Output} alt='' className={classes.outputIcon} />
-                  <Typography className={classes.tooltipTitle}>Estimated output amount</Typography>
-                  <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
-                    Output amount is calculated based on the most up-to-date data from price
-                    oracles, so it can change due to the sub-second update intervals of the oracles.
-                  </p>
-                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>
-                    Find out more about oracles on
-                  </p>
-                  <a
-                    href={pyth}
-                    className={classes.tooltipLink}
-                    target='_blank'
-                    rel='noopener noreferrer'>
-                    Pyth Network website.
-                  </a>
-                </>
-              }
-              anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
-              mobilePlacement='top-end'
-              desktopPlacement='top-end'
-              tooltipClasses={{ tooltip: classes.noMarginTop }}
-              isInteractive
-            />
-          </Grid>
+          <Typography className={classes.tokenComponentText}>You get</Typography>
           <Typography className={classes.tokenMaxText}>
             {pairIndex !== null ? (
               <>

@@ -492,7 +492,7 @@ export function* handleSwaplineSwap(): Generator {
       })
     )
   } catch (error) {
-    yield* put(actions.swapDone({ txid: '12' }))
+    yield* put(actions.swaplineSwapDone({ txid: undefined }))
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
