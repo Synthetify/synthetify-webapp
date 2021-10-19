@@ -52,6 +52,10 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
 
   const routes = ['staking', 'stats', 'exchange']
+  if (typeOfNetwork === NetworkType.DEVNET) {
+    routes.push('swapline')
+  }
+
   const [activePath, setActive] = React.useState(landing)
 
   const [routesModalOpen, setRoutesModalOpen] = React.useState(false)
@@ -83,7 +87,7 @@ export const Header: React.FC<IHeader> = ({
             container
             wrap='nowrap'
             alignItems='center'
-            style={{ maxWidth: 93 * (routes.length + 1) + 15 * (routes.length) }}>
+            style={{ maxWidth: 93 * (routes.length) + 15 * (routes.length - 1) }}>
             {routes.map(path => (
               <Link key={`path-${path}`} to={`/${path}`} className={classes.link}>
                 <NavbarButton
@@ -95,17 +99,6 @@ export const Header: React.FC<IHeader> = ({
                 />
               </Link>
             ))}
-            {typeOfNetwork === NetworkType.DEVNET && (
-              <Link to='/swapline' className={classes.link}>
-                <NavbarButton
-                  name='swapline'
-                  onClick={() => {
-                    setActive('swapline')
-                  }}
-                  active={activePath === 'swapline'}
-                />
-              </Link>
-            )}
           </Grid>
         </Hidden>
 
