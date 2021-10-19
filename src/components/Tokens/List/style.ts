@@ -4,7 +4,10 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   headerFont: {
     ...typography.body1,
-    color: colors.navy.grey
+    color: colors.navy.grey,
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body3
+    }
   },
   emptyTokens: {
     borderRadius: 10,
