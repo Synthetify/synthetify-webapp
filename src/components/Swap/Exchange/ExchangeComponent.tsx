@@ -223,7 +223,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     }
     if (
       tokenToIndex !== null &&
-      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))
+      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val).sub(tokenTo.swaplineSupply.val).sub(tokenTo.borrowedSupply.val))
     ) {
       return (
         <>
@@ -237,7 +237,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 </Typography>
                 Your amount exceeded current supply of token. Available to trade:
                 <b style={{ wordWrap: 'break-word' }}>{` ${printBN(
-                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val),
+                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val).sub(tokenTo.swaplineSupply.val).sub(tokenTo.borrowedSupply.val),
                   tokens[tokenToIndex].supply.scale
                 )} ${tokens[tokenToIndex].symbol}`}</b>
               </>

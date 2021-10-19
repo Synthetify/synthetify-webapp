@@ -25,7 +25,7 @@ export const SwaplinePage: React.FC = () => {
       <Grid container classes={{ root: classes.root }} className={classes.slide} justifyContent='center'>
         <Grid item className={classes.exchange}>
           <Typography className={classes.title}>Swapline</Typography>
-          <Grid container direction='row' className={classes.row}>
+          <Grid container className={classes.row}>
             <Grid item className={classes.plotWrapper}>
               <SwapInfo
                 syntheticName={pairs[pairIndex === null ? 0 : pairIndex]?.syntheticData?.symbol ?? ''}

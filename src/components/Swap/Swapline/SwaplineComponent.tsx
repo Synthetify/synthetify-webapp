@@ -61,7 +61,7 @@ export const getAssetInAndFor = (
     priceVal: pair.syntheticData.price.val,
     assetScale: pair.syntheticData.supply.scale,
     symbol: pair.syntheticData.symbol,
-    maxAvailable: pair.limit.val,
+    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val).sub(pair.syntheticData.swaplineSupply.val).sub(pair.syntheticData.borrowedSupply.val),
     balance: pair.syntheticData.balance
   }
 
@@ -252,6 +252,9 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
     }
     if (printBNtoBN(amountFrom, tokenFrom.assetScale).gt(tokenFrom.balance)) {
       return 'Invalid swap amount'
+    }
+    if (swapType === 'nativeToSynthetic' && printBNtoBN(amountFrom, tokenFrom.assetScale).gt(pairs[pairIndex].limit.val)) {
+      return 'Collateral limit reached'
     }
     if (printBNtoBN(amountTo, tokenTo.assetScale).gt(tokenTo.maxAvailable)) {
       return (

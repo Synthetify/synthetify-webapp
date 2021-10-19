@@ -32,8 +32,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   row: {
     flexWrap: 'nowrap',
+    flexDirection: 'row',
     [theme.breakpoints.down('sm')]: {
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
+      flexDirection: 'column-reverse'
     }
   },
   plotWrapper: {
@@ -48,11 +50,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       maxWidth: 'unset',
       marginRight: 0,
-      marginBottom: 24
+      marginTop: 24
     },
 
     [theme.breakpoints.down('xs')]: {
-      marginBottom: 16
+      marginTop: 16
     }
   },
   '@keyframes slide': {
