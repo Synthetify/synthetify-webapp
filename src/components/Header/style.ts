@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 1,
     paddingBottom: 1,
     marginLeft: 5,
-
     '&:hover': {
       background: colors.navy.navButton
     }
