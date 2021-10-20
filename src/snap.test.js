@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer'
+var imageDiff = require('image-diff');
 
 const takeScreen = async () => {
   const browser = await puppeteer.launch()
@@ -24,6 +25,12 @@ const takeScreen = async () => {
       .evaluate(selector => document.querySelector(selector).click(), itemId)
       .then(async () => {
         await new Promise(resolve => setTimeout(resolve, 500))
+        await element.screenshot({ path: `screenshots/${itemId}_new.png` })
+        await imageDiff({
+          actualImage: `screenshots/${itemId}.png`,
+          expectedImage: `screenshots/${itemId}_new.png`,
+          diffImage: `screenshots/diff/${itemId}_diff.png`
+        }, async () => {})
         await element.screenshot({ path: `screenshots/${itemId}.png` })
       })
   }
