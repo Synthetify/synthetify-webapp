@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&> svg': {
       padding: '0px 6px 0px 0px',
       [theme.breakpoints.down('md')]: {
-        paddingBottom: 5
+        paddingBottom: 2
       }
     },
     [theme.breakpoints.down('md')]: {
