@@ -20,8 +20,8 @@ export interface IProps {
   currency: string
   sending: boolean
   hasError: boolean
-  tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
-  onSelectToken?: (chosen: string) => void
+  tokens?: Array<{ symbol: string; balance?: BN; decimals?: number }>
+  onSelectToken?: (chosen: number) => void
   showArrowInInput?: boolean
   walletConnected?: boolean
   noWalletHandler?: () => void
@@ -70,7 +70,7 @@ export const ActionTemplate: React.FC<IProps> = ({
   }, [amountBN])
 
   useEffect(() => {
-    if ((maxBehavior !== 'number') && (inputValue === 'Max')) {
+    if (maxBehavior !== 'number' && inputValue === 'Max') {
       setAmountBN(new BN(0))
       setDecimal(1)
       setInputValue(printBN(new BN(0), 1))
@@ -83,7 +83,11 @@ export const ActionTemplate: React.FC<IProps> = ({
     }
     const decimalDiff = maxDecimal - decimal
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
-    return !amountBN.eqn(0) && (isLessThanMaxAmount || ((maxBehavior === 'maxU64') && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)))
+    return (
+      !amountBN.eqn(0) &&
+      (isLessThanMaxAmount ||
+        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)))
+    )
   }
 
   const onMaxButtonClick = () => {
@@ -171,14 +175,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   }
 
   return (
-    <Grid
-      container
-      alignItems='flex-start'
-      direction='column'
-      className={classes.root}>
-      <Typography className={classes.inputLabel}>
-        Amount
-      </Typography>
+    <Grid container alignItems='flex-start' direction='column' className={classes.root}>
+      <Typography className={classes.inputLabel}>Amount</Typography>
       <Grid container item direction='row' className={classes.wrap}>
         <AmountInput
           value={inputValue}
@@ -214,7 +212,14 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item container alignItems='center' wrap='nowrap' direction='row' justifyContent='flex-start' className={classes.bottom}>
+      <Grid
+        item
+        container
+        alignItems='center'
+        wrap='nowrap'
+        direction='row'
+        justifyContent='flex-start'
+        className={classes.bottom}>
         <OutlinedButton
           name={capitalizeString(action)}
           disabled={!actionAvailable}

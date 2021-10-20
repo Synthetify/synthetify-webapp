@@ -29,6 +29,15 @@ export function* handleCreateAccount(): Generator {
         txid: accountAddress.toString()
       })
     )
+    yield put(
+      snackbarsActions.add({
+        message: 'Account added successfully.',
+        variant: 'success',
+        txid: accountAddress.toString(),
+        isAccount: true,
+        persist: false
+      })
+    )
   } catch (error) {
     yield put(
       snackbarsActions.add({
@@ -50,8 +59,9 @@ export function* handleDeposit(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: 'Successfully deposited collateral.',
+        message: 'Collateral deposited successfully.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
@@ -70,13 +80,13 @@ export function* handleDeposit(): Generator {
 export function* handleMint(): Generator {
   const mintData = yield* select(mint)
   try {
-    yield* call(mintUsd, mintData.amount)
+    const txid = yield* call(mintUsd, mintData.amount)
     yield* put(actions.mintDone())
-
     yield put(
       snackbarsActions.add({
-        message: 'Successfully minted xUSD.',
+        message: 'xUSD minted successfully.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
@@ -100,7 +110,8 @@ export function* handleWithdraw(): Generator {
     yield* put(actions.withdrawDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Successfully withdrawn collateral.',
+        message: 'Collateral withdrawn successfully.',
+        txid: txid,
         variant: 'success',
         persist: false
       })
@@ -124,13 +135,17 @@ export function* handleBurn(): Generator {
     yield* put(actions.burnDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Successfully burned token.',
+        message: 'Tokens burnt successfully.',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
   } catch (error) {
-    yield* put(actions.burnFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
+    yield* put(actions.burnFailed({
+      error: error instanceof
+      Error ? error.message : 'Unknown error'
+    }))
     console.log(error)
     yield put(
       snackbarsActions.add({
@@ -149,14 +164,14 @@ export function* handleClaimRewards(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Successfully claimed rewards',
+        message: 'Rewards claimed successfully',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )
   } catch (error) {
     yield* put(actions.claimRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
-
     yield put(
       snackbarsActions.add({
         message: 'Failed to send. Please try again.',
@@ -174,8 +189,9 @@ export function* handleWithdrawRewards(): Generator {
 
     yield put(
       snackbarsActions.add({
-        message: 'Successfully withdrawn rewards',
+        message: 'Rewards withdrawn successfully',
         variant: 'success',
+        txid: txid,
         persist: false
       })
     )

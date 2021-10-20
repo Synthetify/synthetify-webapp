@@ -17,11 +17,16 @@ import xUNIIcon from './icons/xuni.svg'
 import xYFIIcon from './icons/xyfi.svg'
 import xUSDIcon from './icons/xusd.svg'
 import WSOLIcon from './icons/wsol.svg'
+import USDCIcon from './icons/usdc.svg'
 import phantomIcon from './svg/phantom.svg'
 import solletIcon from './svg/sollet.svg'
 import mathIcon from './svg/MathWallet.svg'
+import solflareIcon from './svg/solflare.svg'
 import clearIcon from './svg/clear.svg'
-
+import mainnet from './svg/mainnet.svg'
+import devnet from './svg/devnet.svg'
+import testnet from './svg/testnet.svg'
+import renBTC from './svg/renBTC.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -43,10 +48,16 @@ const icons: { [key: string]: string } = {
   xYFI: xYFIIcon,
   WSOL: WSOLIcon,
   stSOL: WSOLIcon,
+  USDC: USDCIcon,
   phantom: phantomIcon,
   sollet: solletIcon,
   'math wallet': mathIcon,
-  clear: clearIcon
+  solflare: solflareIcon,
+  clear: clearIcon,
+  Mainnet: mainnet,
+  Devnet: devnet,
+  Testnet: testnet,
+  renBTC: renBTC
 }
 
 export default icons

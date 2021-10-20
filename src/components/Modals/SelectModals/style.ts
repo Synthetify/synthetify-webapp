@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       marginTop: 'calc(50vh - 213px)',
-      marginLeft: 'calc(50vw - 189px)'
+      marginLeft: 'calc(50vw - 179px)'
     }
   },
   root: {
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: 372,
       paddingInline: 10,
       paddingBottom: 10
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
     }
   },
   tokenList: {
@@ -59,10 +62,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenName: {
     color: colors.navy.veryLightGrey,
     ...typography.heading3
-  },
-  tokenData: {
-    position: 'relative',
-    top: -2
   },
   tokenDescrpiption: {
     color: colors.navy.grey,
@@ -127,6 +126,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('md')]: {
       maxWidth: 372
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%'
     }
   },
   clearIcon: {
@@ -134,6 +136,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 12,
     marginLeft: 8,
     cursor: 'pointer'
+  },
+  dualIcon: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 'fit-content'
+  },
+  secondIcon: {
+    marginLeft: -15,
+    marginRight: 14,
+
+    [theme.breakpoints.down('md')]: {
+      marginRight: 6
+    }
   }
 }))
 

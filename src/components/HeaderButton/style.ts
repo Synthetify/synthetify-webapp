@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
     paddingInline: 12,
-    paddingBottom: '9px',
     borderRadius: 10,
     textTransform: 'none',
     ...typography.subtitle1,
@@ -15,6 +14,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:not(:last-child)': {
       marginRight: 15
+    },
+
+    [theme.breakpoints.down('md')]: {
+      minWidth: 80
     },
 
     [theme.breakpoints.down('sm')]: {
@@ -56,13 +59,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   startIcon: {
     marginLeft: 0,
+    marginTop: 2,
 
     [theme.breakpoints.down('xs')]: {
       marginRight: 2
     }
   },
   endIcon: {
-    minWidth: 20
+    minWidth: 20,
+    marginTop: 0
   },
   innerEndIcon: {
     marginLeft: 0

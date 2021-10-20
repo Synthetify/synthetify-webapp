@@ -21,6 +21,11 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
       depositState={{ sending: false }}
       burnState={{ sending: false }}
       stakingData={{
+        stakedUserValue: new BN(1e6),
+        SNYPrice: {
+          val: new BN(2000000),
+          scale: 6
+        },
         slot: 300000,
         userDebtShares: new BN(1e6),
         roundLength: 160000,
@@ -28,29 +33,42 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
           finished: {
             roundStartSlot: new BN(1000000),
             roundPoints: new BN(1e6),
-            roundAllPoints: new BN(1e9)
+            roundAllPoints: new BN(1e9),
+            roundAmount: {
+              val: new BN(100000000),
+              scale: 0
+            }
           },
           current: {
             roundStartSlot: new BN(1100000),
             roundPoints: new BN(1e6),
-            roundAllPoints: new BN(1e9)
+            roundAllPoints: new BN(1e9),
+            roundAmount: {
+              val: new BN(100000000),
+              scale: 0
+            }
           },
           next: {
             roundStartSlot: new BN(1200000),
             roundPoints: new BN(1e6),
-            roundAllPoints: new BN(1e9)
+            roundAllPoints: new BN(1e9),
+            roundAmount: {
+              val: new BN(100000000),
+              scale: 0
+            }
           }
-        },
-        amountPerRound: {
-          val: new BN(1e10),
-          scale: 0
         },
         amountToClaim: {
           val: new BN(88648),
           scale: 0
         },
         onWithdraw: () => {},
-        onClaim: () => {}
+        onClaim: () => {},
+        amountPerRoundValue: {
+          val: new BN(100000000),
+          scale: 0
+        },
+        collateralValue: 1500000
       }}
       depositTokens={[]}
       withdrawTokens={[]}

@@ -8,6 +8,7 @@ interface ISnackbarProps {
 }
 export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
   const classes = useStyles()
+
   return (
     <SnackbarProvider
       maxSnack={maxSnack}
@@ -16,7 +17,8 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
         variantError: classes.error,
         variantWarning: classes.warning,
         variantInfo: classes.info
-      }}>
+      }}
+    >
       {children}
     </SnackbarProvider>
   )

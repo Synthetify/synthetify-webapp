@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingInline: 10,
     height: 56,
     fontSize: 24,
-    fontWeight: 500,
+    fontWeight: 600,
     width: '100%',
 
     [theme.breakpoints.down('xs')]: {
@@ -44,9 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       marginRight: 16
     }
-  },
-  input: {
-    paddingTop: 4
   },
   label: {
     top: -1

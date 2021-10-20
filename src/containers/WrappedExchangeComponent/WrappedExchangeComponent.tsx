@@ -2,13 +2,13 @@ import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { effectiveFeeData, swap } from '@selectors/exchange'
 import { actions } from '@reducers/exchange'
-import ExchangeComponent from '@components/ExchangeComponent/ExchangeComponent'
+import ExchangeComponent from '@components/Swap/Exchange/ExchangeComponent'
 
 export const WrappedExchangeComponent: React.FC<{
-  tokensWithBalance: ExchangeTokensWithBalance[],
+  tokensWithBalance: ExchangeSyntheticTokens[],
   onSelectTokenTo: (index: number | null) => void
 }> = ({ tokensWithBalance, onSelectTokenTo }) => {
   const feeData = useSelector(effectiveFeeData)

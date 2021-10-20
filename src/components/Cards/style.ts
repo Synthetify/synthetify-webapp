@@ -35,29 +35,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardContent: {
     paddingInline: 20,
-    paddingTop: 8,
-    paddingBottom: 30,
+    paddingTop: 10,
+    paddingBottom: 25,
     position: 'relative',
     '&:last-child': {
-      paddingTop: 8,
-      paddingBottom: 30
+      paddingTop: 10,
+      paddingBottom: 25
     }
   },
   progressCardContent: {
-    paddingBottom: 22,
+    paddingBottom: 17,
     position: 'relative',
     '&:last-child': {
-      paddingBottom: 22
+      paddingBottom: 17
     }
   },
   minMaxDebt: {
-    ...typography.body4,
-    position: 'relative',
-    top: -2
+    ...typography.body4
   },
   progressContainer: {
     width: '100%',
-    marginTop: 40
+    marginTop: 36
   },
   progressRoot: {
     width: '100%',
@@ -72,24 +70,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.navButton,
     color: colors.navy.veryLightGrey,
     ...typography.caption1,
-    padding: '3px 9px 6px',
+    padding: '4px 9px 5px',
     marginBlock: 9
   },
   bottomText: {
-    ...typography.caption3,
+    paddingTop: 4,
+    ...typography.caption1,
     color: colors.navy.grey
   }
 }))
 
-export const useStylesWithProps = makeStyles<Theme, {
-  max: number
-  current: number
-  topIndicatorValue: number
-  bottomIndicatorValue: number
-}>(() => ({
+export const useStylesWithProps = makeStyles<
+  Theme,
+  {
+    max: number
+    current: number
+    topIndicatorValue: number
+    bottomIndicatorValue: number
+  }
+>(() => ({
   bar: ({ max, current }) => ({
     borderRadius: 10,
-    background: `linear-gradient(90deg, #40BFA0 ${100 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%, #C34848 ${200 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%)`
+    background: `linear-gradient(90deg, #40BFA0 ${
+      100 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)
+    }%, #C34848 ${200 - (max !== 0 ? Math.min((current / max) * 100, 100) : 0)}%)`
   }),
   topIndicator: ({ max, topIndicatorValue }) => ({
     width: 0.1,

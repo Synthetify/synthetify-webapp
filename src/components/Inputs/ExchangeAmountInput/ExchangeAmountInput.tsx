@@ -1,10 +1,10 @@
 import { Input } from '@material-ui/core'
 import React, { CSSProperties, useRef } from 'react'
 import classNames from 'classnames'
-import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { BN } from '@project-serum/anchor'
-import SelectToken from '../SelectToken/SelectToken'
+import Select from '@components/Inputs/Select/Select'
+import useStyles from './style'
 
 interface IProps {
   setValue: (value: string) => void
@@ -12,11 +12,13 @@ interface IProps {
   error?: string | null
   className?: string
   placeholder?: string
-  style?: CSSProperties,
-  onMaxClick: () => void,
+  style?: CSSProperties
+  onMaxClick: () => void
   current: string | null
-  tokens: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  onSelect: (chosen: string) => void
+  tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
+  pairs?: Array<{ symbol1: string; symbol2: string }>
+  onSelect: (chosen: number) => void
+  selectText?: string
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -29,13 +31,15 @@ export const AmountInput: React.FC<IProps> = ({
   onMaxClick,
   current,
   tokens,
-  onSelect
+  pairs,
+  onSelect,
+  selectText
 }) => {
   const classes = useStyles()
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = e => {
     const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || e.target.value === 'Max' || regex.test(e.target.value)) {
       const startValue = e.target.value
@@ -73,14 +77,13 @@ export const AmountInput: React.FC<IProps> = ({
       inputRef={inputRef}
       error={!!error}
       className={classNames(classes.amountInput, className)}
-      classes={{ input: classes.input }}
       style={style}
       type={'text'}
       value={value}
       disableUnderline={true}
       placeholder={placeholder}
       onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
-      endAdornment={(
+      endAdornment={
         <OutlinedButton
           name='Max'
           color='primary'
@@ -88,16 +91,18 @@ export const AmountInput: React.FC<IProps> = ({
           className={classes.maxButton}
           labelClassName={classes.label}
         />
-      )}
-      startAdornment={(
-        <SelectToken
+      }
+      startAdornment={
+        <Select
           centered={true}
           tokens={tokens}
+          pairs={pairs}
           onSelect={onSelect}
           current={current}
           className={classes.select}
+          name={selectText}
         />
-      )}
+      }
     />
   )
 }

@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'unset',
     background: colors.navy.component,
     borderRadius: 10,
-    fontFamily: 'Be Vietnam',
     width: '100%'
   },
   cardContent: {
@@ -22,13 +21,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'end'
   },
   optionLabel: {
-    height: '100px'
+    height: '100px',
+    alignContent: 'flex-start'
   },
   buttonSelect: {
     minWidth: 120,
     height: 36,
     marginBottom: '6px',
-    paddingBottom: '7px',
     background: colors.navy.navButton,
     borderRadius: '5px',
     textTransform: 'none',
@@ -85,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle2,
     width: '100%',
     textTransform: 'none',
-    padding: '0 0 3px 6px',
+    padding: '2px 0 0px 6px',
     justifyContent: 'start',
     color: colors.navy.grey,
     '&:hover': {
@@ -104,35 +103,43 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     }
   },
-  tvlContainer: {
-    padding: '13px 20px '
+  infoContainer: {
+    padding: '13px  0 0 16px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '5px  0 0 8px'
+    }
   },
-  tvlTitle: {
+  infoTitle: {
     display: 'flex',
     flexDirection: 'row'
   },
-  tvlName: {
+  infoName: {
     ...typography.subtitle2,
     color: colors.navy.grey,
-    paddingRight: '2px',
+    paddingRight: '4px',
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
   },
-  tvlPercent: {
+  infoPercent: {
     ...typography.subtitle2,
+    alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
   },
-  tvlNumber: {
+  infoNumber: {
     ...typography.heading2,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     [theme.breakpoints.down('sm')]: {
       fontSize: '27px',
       lineHeight: '35px'
     }
+  },
+  tradingIcon: {
+    padding: 0,
+    fontSize: '1.25em'
   }
 }))
 

@@ -16,7 +16,9 @@ export const {
   mintAuthority,
   swap,
   state,
-  exchangeAccount
+  exchangeAccount,
+  swaplines,
+  swaplineSwap
 } = keySelectors(store, [
   'assets',
   'synthetics',
@@ -24,7 +26,9 @@ export const {
   'mintAuthority',
   'swap',
   'state',
-  'exchangeAccount'
+  'exchangeAccount',
+  'swaplines',
+  'swaplineSwap'
 ])
 export const healthFactor = createSelector(state, s => {
   return s.healthFactor
@@ -303,6 +307,20 @@ export const getCollateralValue = createSelector(collaterals, assets, (allColate
   })
 
   return +transformBN(totalVal)
+})
+
+export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, assets) => {
+  const snyIndex = Object.values(allColaterals)[0]?.assetIndex
+  return typeof snyIndex !== 'undefined'
+    ? assets[snyIndex].price
+    : {
+      val: new BN(0),
+      scale: 6
+    }
+})
+
+export const getHaltedState = createSelector(state, allState => {
+  return allState.halted
 })
 
 export default exchangeSelectors

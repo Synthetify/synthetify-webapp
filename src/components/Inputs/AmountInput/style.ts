@@ -1,7 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }>(() => ({
+const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }>(() => ({
   amountInput: {
     background: colors.navy.dark,
     color: colors.navy.grey,
@@ -15,7 +15,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
   },
   input: {
     width: 'calc(100% - 102px)',
-    paddingTop: 4
+    padding: '6px 0'
   },
   currency: {
     minWidth: 'fit-content',
@@ -24,9 +24,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
   },
   currencyText: {
     ...typography.body2,
-    color: colors.navy.grey,
-    position: 'relative',
-    top: -2
+    color: colors.navy.grey
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,
@@ -37,7 +35,6 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: string) => void }
     minWidth: 30,
     height: 30,
     marginRight: 7
-
   },
   select: ({ onSelectToken }) => ({
     cursor: onSelectToken ? 'pointer' : 'unset'

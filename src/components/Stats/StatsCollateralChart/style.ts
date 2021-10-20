@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '16px 24px 20px 24px'
+    padding: '20px 24px 20px 24px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '12px 16px 12px 16px'
+    }
   },
 
   statsWrapper: {
@@ -42,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   chartWrapper: {
-    width: 'calc(100% - 13.8px)',
+    width: '100%',
     height: 85,
     backgroundColor: colors.navy.background,
     borderRadius: 10,
@@ -66,8 +69,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   border: {
-    width: 'calc(100% - 48px)',
-    height: 103,
+    width: '100%',
+    padding: '8px 8px',
     backgroundColor: colors.navy.background,
     display: 'flex',
     justifyContent: 'center',
@@ -75,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     [theme.breakpoints.down('sm')]: {
       height: 84,
-      width: 'calc(100% - 32px)'
+      padding: '4px 4px'
     },
     [theme.breakpoints.down('xs')]: {
       height: 404,
@@ -83,37 +86,46 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    paddingBlock: 24,
-    margin: 0,
+    padding: '25px 0px 16px 0px',
     fontSize: 18,
-    width: 'calc(100% - 20px)',
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 25
+    },
     [theme.breakpoints.down('xs')]: {
       width: 'fit-content',
       alignItems: 'flex-end',
-      paddingBlock: 16
-    }
-  },
-  legendList: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginBlock: 0,
-    [theme.breakpoints.down('xs')]: {
-      display: 'block',
+      paddingBlock: 16,
       height: '100%',
-      width: '100%'
+      display: 'block'
     }
   },
 
   legendItem: {
     marginRight: 35,
     ...typography.body2,
-    fontFamily: 'Be Vietnam',
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
+      ...typography.subtitle2,
+      display: 'flex',
+      '&:not(:first-child)': {
+        marginTop: 16
+      }
+    },
+    [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
+    },
+    '& svg': {
+      paddingBottom: 2,
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 0
+      },
+      [theme.breakpoints.down('xs')]: {
+        marginTop: 5
+      }
     }
   }
 }))

@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   connectedWalletIcon: {
     minWidth: 21,
     height: 21,
-    marginRight: 0
+    marginRight: 0,
+    marginTop: -2
   },
   dehazeButton: {
     borderRadius: 10,
@@ -46,7 +47,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 1,
     paddingBottom: 1,
     marginLeft: 5,
-
     '&:hover': {
       background: colors.navy.navButton
     }
@@ -63,6 +63,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:hover': {
       background: colors.navy.navButton
+    },
+
+    '& $dehazeIcon': {
+      fill: colors.navy.lightGrey
     }
   },
   left: {

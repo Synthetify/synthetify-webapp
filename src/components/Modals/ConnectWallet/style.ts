@@ -4,10 +4,10 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
-    width: 226,
+    width: 164,
     borderRadius: 10,
     marginTop: 13,
-    padding: 20,
+    padding: 8,
 
     [theme.breakpoints.down('md')]: {
       marginTop: 24
@@ -15,12 +15,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItem: {
     color: colors.navy.grey,
-    borderRadius: 10,
-    padding: 7,
-    width: 188,
-    margin: 3,
+    borderRadius: 8,
+    padding: 8,
+    width: 150,
+    display: 'flex',
     cursor: 'pointer',
-
     '&:hover': {
       background: colors.navy.navButton,
       color: colors.navy.veryLightGrey,
@@ -34,11 +33,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 27,
     height: 27,
     display: 'inline',
-    float: 'left',
-    marginRight: 10
+    marginRight: 8,
+    float: 'left'
   },
   name: {
     textTransform: 'capitalize',
+    margin: 'auto 0px',
     ...typography.subtitle2,
     float: 'left'
   },

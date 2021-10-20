@@ -1,16 +1,15 @@
 import React from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { colors, theme } from '@static/theme'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { Grid, Typography } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 
 export interface CoinToChart {
-  // [index: number]: {
   name: string
   percent: number
   color: string
-  // }
 }
 export interface IProps {
   data: CoinToChart[]
@@ -24,10 +23,15 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   }
 
   const getNameAndValue = (data: CoinToChart[]) => {
-    return [data.reduce((object, { name, percent }) => ({
-      [name]: percent.toFixed(2),
-      ...object
-    }), {})]
+    return [
+      data.reduce(
+        (object, { name, percent }) => ({
+          [name]: percent.toFixed(2),
+          ...object
+        }),
+        {}
+      )
+    ]
   }
 
   const handleMouseEnter = (_d: any, e: any) => {
@@ -56,7 +60,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   }
 
   const colorsToBar = data.map(coin => {
-    return (coin.color)
+    return coin.color
   })
 
   const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs')) // under 600px return false
@@ -64,10 +68,12 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   return (
     <>
       <Grid container className={classes.root}>
-        <Grid container className={classes.headerWrapper} direction="column">
+        <Grid container className={classes.headerWrapper} direction='column'>
           <Grid item>
             <Typography className={classes.title}>Collateral structure</Typography>
-            <Typography className={classes.subTitle}>Chart of total deposit's percentage share for each available collateral</Typography>
+            <Typography className={classes.subTitle}>
+              Chart of total deposit's percentage share for each available collateral
+            </Typography>
           </Grid>
         </Grid>
         <Grid container className={classes.statsWrapper}>
@@ -80,7 +86,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
                 keys={getCoinsName(data)}
                 colors={colorsToBar}
                 padding={0}
-                margin={{ top: -2, right: -2, bottom: -2, left: -2 }} // very important without it, bars will not fill whole container!!
+                margin={{ top: -2, right: -2, bottom: -2, left: -2 }}
                 isInteractive={true}
                 labelSkipWidth={35}
                 labelSkipHeight={14}
@@ -97,12 +103,18 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
               />
             </Grid>
           </div>
-          <Grid item className={classes.legendWrapper}>
-            <ul className={classes.legendList}>
-              {data.map((coin) => (
-                <li className={classes.legendItem} key={coin.name} style={{ color: coin.color }}><span>{coin.name}</span> <span style={{ color: '#ffffff' }}><strong>({coin.percent.toFixed(2)}%)</strong></span></li>
-              ))}
-            </ul>
+          <Grid container className={classes.legendWrapper}>
+            {data.map(coin => (
+              <Grid item className={classes.legendItem} style={{ color: coin.color }}>
+                <FiberManualRecordIcon
+                  style={{ width: '10px', height: 'auto', paddingRight: '8px', margin: 'auto 0' }}
+                />
+                {coin.name}
+                <span style={{ color: '#ffffff', marginLeft: '2px' }}>
+                  <span>({coin.percent.toFixed(2)}%)</span>
+                </span>
+              </Grid>
+            ))}
           </Grid>
         </Grid>
       </Grid>

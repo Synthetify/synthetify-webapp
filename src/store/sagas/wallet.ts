@@ -111,18 +111,23 @@ export function* handleAirdrop(): Generator {
   const allCollaterals = yield* select(collaterals)
   const snyToken = Object.values(allCollaterals)[0]
   const stSolToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'stSOL')
+  const usdcToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'USDC')
   try {
     yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
 
     if (stSolToken) {
       yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
     }
+
+    if (usdcToken) {
+      yield* call(getCollateralTokenAirdrop, usdcToken.collateralAddress, 1e8)
+    }
   } catch (error) {
     if (error instanceof Error && error.message === 'Signature request denied') return
     console.error(error)
     return put(
       snackbarsActions.add({
-        message: 'Airdrop failed',
+        message: 'The airdrop failed',
         variant: 'error',
         persist: false
       })
@@ -130,7 +135,7 @@ export function* handleAirdrop(): Generator {
   }
   yield put(
     snackbarsActions.add({
-      message: 'You will soon receive airdrop',
+      message: 'You will receive an airdrop soon',
       variant: 'success',
       persist: false
     })
@@ -247,7 +252,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   if (!walletAddress.equals(DEFAULT_PUBLICKEY)) {
     yield* put(
       snackbarsActions.add({
-        message: 'Wallet already connected.',
+        message: 'A wallet is already connected.',
         variant: 'info',
         persist: false
       })
@@ -259,7 +264,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   } catch (error) {
     yield put(
       snackbarsActions.add({
-        message: 'Unable to connect to wallet.',
+        message: 'Unable to connect to the wallet.',
         variant: 'error',
         persist: false
       })
@@ -275,6 +280,9 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
       break
     case WalletType.MATH:
       enumWallet = 'math'
+      break
+    case WalletType.SOLFLARE:
+      enumWallet = 'solflare'
       break
     default:
       enumWallet = 'phantom'

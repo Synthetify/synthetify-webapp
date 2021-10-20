@@ -9,10 +9,19 @@ import {
   xUSDAddress,
   userStaking,
   staking,
-  userDebtShares
+  userDebtShares,
+  stakedValue,
+  getSNYPrice,
+  getCollateralValue
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
-import { collateralAccountsArray, stakedAccountsArray, userMaxBurnToken, userMaxDeposit, status } from '@selectors/solanaWallet'
+import {
+  collateralAccountsArray,
+  stakedAccountsArray,
+  userMaxBurnToken,
+  userMaxDeposit,
+  status
+} from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { Status } from '@reducers/solanaWallet'
@@ -44,7 +53,9 @@ export const ActionMenuContainer: React.FC = () => {
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
   const walletStatus = useSelector(status)
-
+  const stakedUserValue = useSelector(stakedValue)
+  const SNYPrice = useSelector(getSNYPrice)
+  const collateralValue = useSelector(getCollateralValue)
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
       setDepositIndex(0)
@@ -64,6 +75,43 @@ export const ActionMenuContainer: React.FC = () => {
     }
   }, [userStaked, withdrawIndex])
 
+  const estimateUserDebtShares = () => {
+    if (stakingState.currentRound.start.toNumber() <= userStakingState.lastUpdate.toNumber()) {
+      return {
+        nextShares: userStakingState.nextRoundPoints,
+        currentShares: userStakingState.currentRoundPoints,
+        finishedShares: userStakingState.finishedRoundPoints
+      }
+    }
+
+    if (stakingState.finishedRound.start.toNumber() <= userStakingState.lastUpdate.toNumber()) {
+      return {
+        nextShares: userDebtSharesState,
+        currentShares: userStakingState.nextRoundPoints,
+        finishedShares: userStakingState.currentRoundPoints
+      }
+    }
+
+    if (
+      stakingState.finishedRound.start.toNumber() - stakingState.roundLength <=
+      userStakingState.lastUpdate.toNumber()
+    ) {
+      return {
+        nextShares: userDebtSharesState,
+        currentShares: userDebtSharesState,
+        finishedShares: userStakingState.nextRoundPoints
+      }
+    }
+
+    return {
+      nextShares: userDebtSharesState,
+      currentShares: userDebtSharesState,
+      finishedShares: userDebtSharesState
+    }
+  }
+
+  const { nextShares, currentShares, finishedShares } = estimateUserDebtShares()
+
   return (
     <WrappedActionMenu
       onMint={(amount, decimal) => () => {
@@ -80,7 +128,9 @@ export const ActionMenuContainer: React.FC = () => {
       onDeposit={(amount, decimal) => () => {
         dispatch(
           actions.deposit({
-            amount: amount.mul(new BN(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal))),
+            amount: amount.mul(
+              new BN(10 ** ((userCollaterals[depositIndex]?.decimals ?? 9) - decimal))
+            ),
             tokenAddress: userCollaterals[depositIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
@@ -88,7 +138,9 @@ export const ActionMenuContainer: React.FC = () => {
       onWithdraw={(amount, decimal) => () => {
         dispatch(
           actions.withdraw({
-            amount: amount.mul(new BN(10 ** ((userStaked[withdrawIndex]?.decimals ?? 6) - decimal))),
+            amount: amount.mul(
+              new BN(10 ** ((userStaked[withdrawIndex]?.decimals ?? 6) - decimal))
+            ),
             tokenAddress: userStaked[withdrawIndex]?.programId ?? DEFAULT_PUBLICKEY
           })
         )
@@ -103,64 +155,78 @@ export const ActionMenuContainer: React.FC = () => {
       burnState={burnState}
       stakingData={{
         ...userStakingState,
+        stakedUserValue: stakedUserValue,
+        SNYPrice: SNYPrice,
         slot: slotState,
-        amountPerRound: stakingState.amountPerRound,
         roundLength: stakingState.roundLength,
         userDebtShares: userDebtSharesState,
         rounds: {
           next: {
             roundAllPoints: stakingState.nextRound.allPoints,
-            roundPoints: userStakingState.nextRoundPoints,
-            roundStartSlot: stakingState.nextRound.start
+            roundPoints: nextShares,
+            roundStartSlot: stakingState.nextRound.start,
+            roundAmount: stakingState.nextRound.amount
           },
           current: {
             roundAllPoints: stakingState.currentRound.allPoints,
-            roundPoints: userStakingState.currentRoundPoints,
-            roundStartSlot: stakingState.currentRound.start
+            roundPoints: currentShares,
+            roundStartSlot: stakingState.currentRound.start,
+            roundAmount: stakingState.currentRound.amount
           },
           finished: {
             roundAllPoints: stakingState.finishedRound.allPoints,
-            roundPoints: userStakingState.finishedRoundPoints,
-            roundStartSlot: stakingState.finishedRound.start
+            roundPoints: finishedShares,
+            roundStartSlot: stakingState.finishedRound.start,
+            roundAmount: stakingState.finishedRound.amount
           }
         },
         onClaim: () => dispatch(actions.claimRewards()),
-        onWithdraw: () => dispatch(actions.withdrawRewards())
+        onWithdraw: () => dispatch(actions.withdrawRewards()),
+        amountPerRoundValue: stakingState.amountPerRound,
+        collateralValue: collateralValue
       }}
-      depositTokens={(walletStatus === Status.Initialized) ? userCollaterals : []}
+      depositTokens={walletStatus === Status.Initialized ? userCollaterals : []}
       withdrawTokens={userStaked}
-      depositCurrency={(walletStatus === Status.Initialized) ? (userCollaterals[depositIndex]?.symbol ?? 'SNY') : 'SNY'}
+      depositCurrency={
+        walletStatus === Status.Initialized ? userCollaterals[depositIndex]?.symbol ?? 'SNY' : 'SNY'
+      }
       withdrawCurrency={userStaked[withdrawIndex]?.symbol ?? 'SNY'}
-      onSelectDepositToken={(chosen) => {
-        setDepositIndex(userCollaterals.findIndex(token => token.symbol === chosen))
+      onSelectDepositToken={chosen => {
+        setDepositIndex(chosen)
       }}
-      onSelectWithdrawToken={(chosen) => {
-        setWithdrawIndex(userStaked.findIndex(token => token.symbol === chosen))
+      onSelectWithdrawToken={chosen => {
+        setWithdrawIndex(chosen)
       }}
       depositDecimal={depositDecimal}
       withdrawDecimal={userStaked[withdrawIndex]?.decimals ?? 6}
       walletConnected={walletStatus === Status.Initialized}
-      noWalletHandler={() => dispatch(
-        snackbarActions.add({
-          message: 'Connect your wallet first',
-          variant: 'warning',
-          persist: false
-        })
-      )}
-      emptyDepositTokensHandler={() => dispatch(
-        snackbarActions.add({
-          message: 'You have no tokens to deposit',
-          variant: 'info',
-          persist: false
-        })
-      )}
-      emptyWithdrawTokensHandler={() => dispatch(
-        snackbarActions.add({
-          message: 'You have no tokens to withdraw',
-          variant: 'info',
-          persist: false
-        })
-      )}
+      noWalletHandler={() =>
+        dispatch(
+          snackbarActions.add({
+            message: 'Connect your wallet first',
+            variant: 'warning',
+            persist: false
+          })
+        )
+      }
+      emptyDepositTokensHandler={() =>
+        dispatch(
+          snackbarActions.add({
+            message: 'You have no tokens to deposit',
+            variant: 'info',
+            persist: false
+          })
+        )
+      }
+      emptyWithdrawTokensHandler={() =>
+        dispatch(
+          snackbarActions.add({
+            message: 'You have no tokens to withdraw',
+            variant: 'info',
+            persist: false
+          })
+        )
+      }
     />
   )
 }

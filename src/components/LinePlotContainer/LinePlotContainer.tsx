@@ -5,20 +5,33 @@ import LinePlot from '@components/LinePlot/LinePlot'
 import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { formatNumbers, showPrefix } from '@consts/utils'
+import TrendingDownIcon from '@material-ui/icons/TrendingDown'
+import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import TrendingFlatIcon from '@material-ui/icons/TrendingFlat'
 interface Data {
   id: string
   points: Array<{ x: number; y: number }>
 }
 interface IProp {
   data: Data[]
-  tvlData: {
+  infoData: {
+    name: string
     value: number
     percent: string
   }
+  menuOption: string
+  setMenuOption: (value: string) => void
+  setTimeActive: (index: number, serieId: string, timestamp: number, value: number) => void
 }
-export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
+export const LinePlotContainer: React.FC<IProp> = ({
+  data,
+  infoData,
+  setTimeActive,
+  setMenuOption,
+  menuOption
+}) => {
   const classes = useStyles()
-  const [menuOption, setMenuOption] = React.useState('Volume')
+
   const [dataTmp, setDataTmp] = React.useState<Data>(data[0])
   const changeData = (name: string) => {
     const value = data.findIndex(element => element.id === name)
@@ -28,6 +41,19 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
       setDataTmp(data[value])
     }
   }
+  const formatNumbersUser = (value: string) => {
+    const num = Number(value)
+    if (num < 10000) {
+      return num.toFixed(0)
+    }
+    if (num < 1000000) {
+      return (num / 1000).toFixed(0)
+    }
+    if (num < 1000000000) {
+      return (num / 1000000).toFixed(0)
+    }
+    return (num / 1000000000).toFixed(0)
+  }
   React.useEffect(() => {
     if (menuOption === 'User count') {
       changeData('userCount')
@@ -35,35 +61,63 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
       changeData(menuOption.toLowerCase())
     }
   }, [data])
-
   return (
     <Card className={classes.diagramCard}>
       <CardContent className={classes.cardContent}>
         <Grid className={classes.optionLabel} container item justifyContent='space-between'>
           <Grid>
-            <Grid className={classes.tvlContainer}>
-              <Grid className={classes.tvlTitle}>
-                <Typography className={classes.tvlName}>TVL</Typography>
+            <Grid className={classes.infoContainer}>
+              <Grid className={classes.infoTitle}>
+                <Typography className={classes.infoName}>{infoData.name}</Typography>
+
                 <Typography
-                  className={classes.tvlPercent}
+                  className={classes.infoPercent}
                   style={{
-                    ...(+tvlData.percent >= 0 ? { color: '#4BB724' } : { color: '#e31417' })
+                    ...(infoData.percent === 'NaN'
+                      ? { color: '#40BFA0' }
+                      : Number(infoData.percent) >= 0
+                      ? Number(infoData.percent) === 0
+                        ? { color: '#777777' }
+                        : { color: '#40BFA0' }
+                      : { color: '#C52727' }),
+                    display: 'flex',
+                    alignContent: 'center'
                   }}>
                   (
-                  <AnimatedNumber
-                    value={tvlData.percent}
-                    formatValue={(value: string) => Number(value).toFixed(2)}
-                  />
-                  %)
+                  {infoData.percent === 'NaN' ? (
+                    <TrendingUpIcon className={classes.tradingIcon} />
+                  ) : Number(infoData.percent) >= 0 ? (
+                    Number(infoData.percent) === 0 ? (
+                      <TrendingFlatIcon className={classes.tradingIcon} />
+                    ) : (
+                      <TrendingUpIcon className={classes.tradingIcon} />
+                    )
+                  ) : (
+                    <TrendingDownIcon className={classes.tradingIcon} />
+                  )}
+                  {infoData.percent !== 'NaN' ? (
+                    <>
+                      <AnimatedNumber
+                        value={infoData.percent}
+                        duration={300}
+                        formatValue={(value: string) => Math.abs(Number(value)).toFixed(2)}
+                      />
+                      %
+                    </>
+                  ) : (
+                    <Typography className={classes.infoPercent}>{infoData.percent}</Typography>
+                  )}
+                  )
                 </Typography>
               </Grid>
-              <Typography className={classes.tvlNumber}>
+              <Typography className={classes.infoNumber}>
+                {menuOption !== 'User count' ? '$' : ''}
                 <AnimatedNumber
-                  value={tvlData.value.toString()}
+                  value={infoData.value.toString()}
                   duration={300}
-                  formatValue={formatNumbers}
+                  formatValue={menuOption !== 'User count' ? formatNumbers : formatNumbersUser}
                 />
-                {showPrefix(tvlData.value)}
+                {showPrefix(infoData.value)}
               </Typography>
             </Grid>
           </Grid>
@@ -126,6 +180,7 @@ export const LinePlotContainer: React.FC<IProp> = ({ data, tvlData }) => {
         <LinePlot
           data={{ id: dataTmp.id, data: dataTmp.points }}
           sign={dataTmp.id === 'userCount' ? '' : '$'}
+          setTimeActive={setTimeActive}
         />
       </CardContent>
     </Card>
