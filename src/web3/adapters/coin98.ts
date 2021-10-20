@@ -1,109 +1,124 @@
 import {
+  BaseSignerWalletAdapter,
+  pollUntilReady,
+  WalletAccountError,
   WalletNotConnectedError,
+  WalletNotFoundError,
+  WalletNotInstalledError,
+  WalletPublicKeyError,
   WalletSignTransactionError
 } from '@solana/wallet-adapter-base'
-import { DEFAULT_PUBLICKEY } from '@consts/static'
-import EventEmitter from 'eventemitter3'
-import { WalletAdapter } from './types'
 import { PublicKey, Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 
 interface Coin98Wallet {
-  isCoin98?: boolean
-  signTransaction: (transaction: Transaction) => Promise<Transaction>
-  isConnected: () => boolean
-  connect: () => Promise<string[]>
-  disconnect: () => Promise<void>
+  isCoin98?: boolean;
+  signTransaction: (transaction: Transaction) => Promise<Transaction>;
+  isConnected: () => boolean;
+  connect: () => Promise<string[]>;
+  disconnect: () => Promise<void>;
   request: (params: { method: string; params: string | string[] | unknown }) => Promise<{
-    signature: string
-    publicKey: string
-  }>
+    signature: string;
+    publicKey: string;
+  }>;
 }
 
 interface Coin98Window extends Window {
   coin98?: {
-    sol?: Coin98Wallet
-  }
+    sol?: Coin98Wallet;
+  };
 }
 
 declare const window: Coin98Window
 
 export interface Coin98WalletAdapterConfig {
-  pollInterval?: number
-  pollCount?: number
+  pollInterval?: number;
+  pollCount?: number;
 }
 
-export class Coin98WalletAdapter extends EventEmitter implements WalletAdapter {
-  _publicKey?: PublicKey
-  _onProcess: boolean
-  _connected: boolean
-  constructor() {
+export class Coin98WalletAdapter extends BaseSignerWalletAdapter {
+  private _connecting: boolean
+  private _wallet: Coin98Wallet | null
+  private _publicKey: PublicKey | null
+
+  constructor(config: Coin98WalletAdapterConfig = {}) {
     super()
-    this._onProcess = false
-    this._connected = false
-    this.connect = this.connect.bind(this)
+    this._connecting = false
+    this._wallet = null
+    this._publicKey = null
+
+    if (!this.ready) pollUntilReady(this, config.pollInterval || 1000, config.pollCount || 3)
   }
 
-  get connected() {
-    return this._connected
+  get publicKey(): PublicKey | null {
+    return this._publicKey
   }
 
-  get autoApprove() {
-    return false
+  get ready(): boolean {
+    return typeof window !== 'undefined' && !!window.coin98
   }
 
-  private get _provider() {
-    if ((window as any)?.solana?.isMathWallet) {
-      return (window as any).solana
+  get connecting(): boolean {
+    return this._connecting
+  }
+
+  get connected(): boolean {
+    return !!this._wallet?.isConnected()
+  }
+
+  async connect(): Promise<void> {
+    try {
+      if (this.connected || this.connecting) return
+      this._connecting = true
+
+      const wallet = typeof window !== 'undefined' && window.coin98?.sol
+      if (!wallet) {
+        window.open('https://coin98.com/wallet', '_blank')
+        throw new WalletNotFoundError()
+      }
+      if (!wallet.isCoin98) throw new WalletNotInstalledError()
+
+      let account: string
+      try {
+        [account] = await wallet.connect()
+      } catch (error: any) {
+        throw new WalletAccountError(error?.message, error)
+      }
+
+      let publicKey: PublicKey
+      try {
+        publicKey = new PublicKey(account)
+      } catch (error: any) {
+        throw new WalletPublicKeyError(error?.message, error)
+      }
+
+      this._wallet = wallet
+      this._publicKey = publicKey
+
+      this.emit('connect')
+    } catch (error: any) {
+      this.emit('error', error)
+      throw error
+    } finally {
+      this._connecting = false
     }
-    return undefined
   }
 
-  get publicKey() {
-    return this._publicKey || DEFAULT_PUBLICKEY
-  }
+  async disconnect(): Promise<void> {
+    const wallet = this._wallet
+    if (wallet) {
+      this._wallet = null
+      this._publicKey = null
 
-  connect() {
-    if (this._onProcess) {
-      return
+      await wallet.disconnect()
     }
 
-    if (!this._provider) {
-      window.open('https://coin98.com/wallet', '_blank')
-      // notify({
-      //   message: 'Math Wallet Error',
-      //   description: 'Please install mathwallet',
-      // });
-      return
-    }
-
-    this._onProcess = true
-    this._provider
-      .getAccount()
-      .then((account: any) => {
-        this._publicKey = new PublicKey(account)
-        this._connected = true
-        this.emit('connect', this._publicKey)
-      })
-      .catch(() => {
-        this.disconnect()
-      })
-      .finally(() => {
-        this._onProcess = false
-      })
-  }
-
-  disconnect() {
-    if (this._publicKey) {
-      this._publicKey = undefined
-      this._connected = false
-      this.emit('disconnect')
-    }
+    this.emit('disconnect')
   }
 
   async signTransaction(transaction: Transaction): Promise<Transaction> {
     try {
-      const wallet = this._provider
+      const wallet = this._wallet
       if (!wallet) throw new WalletNotConnectedError()
 
       try {
