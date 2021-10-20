@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   chartWrapper: {
-    width: 'calc(100% - 13.8px)',
+    width: '100%',
     height: 85,
     backgroundColor: colors.navy.background,
     borderRadius: 10,
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   border: {
     width: '100%',
-    height: 103,
+    padding: '8px 8px',
     backgroundColor: colors.navy.background,
     display: 'flex',
     justifyContent: 'center',
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     [theme.breakpoints.down('sm')]: {
       height: 84,
-      width: 'calc(100% - 32px)'
+      padding: '4px 4px'
     },
     [theme.breakpoints.down('xs')]: {
       height: 404,

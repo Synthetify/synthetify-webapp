@@ -5,6 +5,7 @@ import { Search } from '@material-ui/icons'
 import CustomScrollbar from '../CustomScrollbar'
 import icons from '@static/icons'
 import classNames from 'classnames'
+import { descrpitionForSymbol } from '@consts/static'
 
 export interface ISelectPairModal {
   pairs: Array<{ symbol1: string; symbol2: string }>
@@ -26,20 +27,6 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
-  const descrpitionForSymbol: { [key: string]: string } = {
-    SNY: 'Synthetify',
-    xBNB: 'Synthetic Binance Coin',
-    xBTC: 'Synthetic Bitcoin',
-    xETH: 'Synthetic Ethereum',
-    xFTT: 'Synthetic FTT',
-    xSOL: 'Synthetic Solana',
-    xSRM: 'Synthetic Serum',
-    xUSD: 'Synthetic USD',
-    stSOL: 'Staked Solana',
-    WSOL: 'Wrapped Solana',
-    USDC: 'USD Coin'
-  }
-
   const endAdornment = () => (
     <>
       {!!value.length && (
@@ -56,7 +43,8 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
     </>
   )
 
-  const pairSymbol = (pair: { symbol1: string; symbol2: string }) => `${pair.symbol1}/${pair.symbol2}`
+  const pairSymbol = (pair: { symbol1: string; symbol2: string }) =>
+    `${pair.symbol1}/${pair.symbol2}`
 
   return (
     <Popover
@@ -118,10 +106,11 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                         image={icons[pair.symbol2] ?? icons.SNY}
                       />{' '}
                     </Grid>
-                    <Grid item className={classes.tokenData}>
+                    <Grid item>
                       <Typography className={classes.tokenName}>{pairSymbol(pair)}</Typography>
                       <Typography className={classes.tokenDescrpiption}>
-                        {descrpitionForSymbol[pair.symbol1] ?? 'Asset'}/{descrpitionForSymbol[pair.symbol2] ?? 'Asset'}
+                        {descrpitionForSymbol[pair.symbol1] ?? 'Asset'}/
+                        {descrpitionForSymbol[pair.symbol2] ?? 'Asset'}
                       </Typography>
                     </Grid>
                   </Grid>

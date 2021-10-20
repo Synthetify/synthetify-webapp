@@ -6,6 +6,7 @@ import CustomScrollbar from '../CustomScrollbar'
 import icons from '@static/icons'
 import { BN } from '@project-serum/anchor'
 import { printBN, showPrefix } from '@consts/utils'
+import { descrpitionForSymbol } from '@consts/static'
 export interface ISelectTokenModal {
   tokens: Array<{ symbol: string; balance?: BN; decimals?: number }>
   open: boolean
@@ -26,18 +27,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
-  const descrpitionForSymbol: { [key: string]: string } = {
-    SNY: 'Synthetify',
-    xBNB: 'Synthetic Binance Coin',
-    xBTC: 'Synthetic Bitcoin',
-    xETH: 'Synthetic Ethereum',
-    xFTT: 'Synthetic FTT',
-    xSOL: 'Synthetic Solana',
-    xSRM: 'Synthetic Serum',
-    xUSD: 'Synthetic USD',
-    stSOL: 'Staked Solana',
-    WSOL: 'Wrapped Solana',
-    USDC: 'USD Coin'
+  const selectTokens = (name: string): number => {
+    return tokens.findIndex(token => token.symbol === name)
   }
 
   const endAdornment = () => (
@@ -116,7 +107,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                   if (!value) return true
                   return token.symbol.toLowerCase().includes(value.toLowerCase())
                 })
-                .map((token, index) => (
+                .map((token) => (
                   <Grid
                     container
                     key={`tokens-${token.symbol}`}
@@ -124,7 +115,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(index)
+                      onSelect(selectTokens(token.symbol))
                       handleClose()
                     }}>
                     <Grid item>

@@ -25,7 +25,7 @@ export const OutlinedButton: React.FC<IProps> = ({
   style,
   disabled = false,
   startIcon,
-  fontWeight = 'bold',
+  fontWeight = 800,
   padding,
   labelClassName
 }) => {

@@ -27,6 +27,7 @@ import clearIcon from './svg/clear.svg'
 import mainnet from './svg/mainnet.svg'
 import devnet from './svg/devnet.svg'
 import testnet from './svg/testnet.svg'
+import renBTC from './svg/renBTC.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -57,7 +58,8 @@ const icons: { [key: string]: string } = {
   clear: clearIcon,
   Mainnet: mainnet,
   Devnet: devnet,
-  Testnet: testnet
+  Testnet: testnet,
+  renBTC: renBTC
 }
 
 export default icons

@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginRight: 15
     },
 
+    [theme.breakpoints.down('md')]: {
+      minWidth: 80
+    },
+
     [theme.breakpoints.down('sm')]: {
       paddingInline: 0,
       minWidth: 'unset',
@@ -63,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   endIcon: {
     minWidth: 20,
-    marginTop: 2
+    marginTop: 0
   },
   innerEndIcon: {
     marginLeft: 0

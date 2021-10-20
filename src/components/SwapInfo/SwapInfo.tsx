@@ -1,21 +1,20 @@
 import AnimatedNumber from '@components/AnimatedNumber'
+import { descrpitionForSymbol } from '@consts/static'
 import { Grid, Typography } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 
 interface IProps {
-  syntheticName: string
-  collateralName: string
+  syntheticSymbol: string
+  collateralSymbol: string
   fee: number
-  accumulatedFee: number
   balance: number
   limit: number
 }
 export const SwapInfo: React.FC<IProps> = ({
-  syntheticName,
-  collateralName,
+  syntheticSymbol,
+  collateralSymbol,
   fee,
-  accumulatedFee,
   balance,
   limit
 }) => {
@@ -33,7 +32,7 @@ export const SwapInfo: React.FC<IProps> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Synthetic:</Typography>
-            <Typography className={classes.positionValue}>{syntheticName}</Typography>
+            <Typography className={classes.positionValue}>{descrpitionForSymbol[syntheticSymbol] ?? 'Unknown'}</Typography>
           </Grid>
 
           <Grid
@@ -43,7 +42,7 @@ export const SwapInfo: React.FC<IProps> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Collateral:</Typography>
-            <Typography className={classes.positionValue}>{collateralName}</Typography>
+            <Typography className={classes.positionValue}>{descrpitionForSymbol[collateralSymbol] ?? 'Unknown'}</Typography>
           </Grid>
 
           <Grid
@@ -58,7 +57,7 @@ export const SwapInfo: React.FC<IProps> = ({
               <AnimatedNumber
                 value={fee}
                 duration={300}
-                formatValue={(value: number) => value.toFixed(2)}
+                formatValue={(value: number) => (value * 100).toFixed(2)}
               />
               %
             </Typography>
@@ -70,30 +69,14 @@ export const SwapInfo: React.FC<IProps> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Accumulated Fee:</Typography>
-            <Typography className={classes.positionValue}>
-              <AnimatedNumber
-                value={accumulatedFee}
-                duration={300}
-                formatValue={(value: number) => value.toFixed(3)}
-              />
-              %
-            </Typography>
-          </Grid>
-          <Grid
-            container
-            item
-            className={classes.infoPosition}
-            justifyContent='space-between'
-            alignItems='center'>
             <Typography className={classes.positionTitle}>Balance:</Typography>
             <Typography className={classes.positionValue}>
-              $
               <AnimatedNumber
                 value={balance}
                 duration={300}
                 formatValue={(value: number) => value.toFixed(2)}
               />
+              {' '}{collateralSymbol}
             </Typography>
           </Grid>
           <Grid
@@ -104,22 +87,22 @@ export const SwapInfo: React.FC<IProps> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Limit:</Typography>
             <Typography className={classes.positionValue}>
-              $
               <AnimatedNumber
                 value={limit}
                 duration={300}
                 formatValue={(value: number) => value.toFixed(2)}
               />
+              {' '}{collateralSymbol}
             </Typography>
           </Grid>
         </Grid>
         <Grid container item className={classes.descWrapper}>
-          <Typography className={classes.descTitle}> Lorem impsum itd itp</Typography>
+          <Typography className={classes.descTitle}>What is Swapline?</Typography>
           <Typography className={classes.descText}>
-            Lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nibh
-            dui, tempor eget pharetra vitae, semper a urna. Sed mi augue, molestie et ligula ut,
-            ullamcorper pretium purus. Aliquam lacinia placerat diam ut lobortis. Fusce lacinia, sem
-            non faucibus aliquam, ipsum quam gravida ligula, ac faucibus justo orci quis.
+          Swapline is a more straightforward way to get synthetic tokens.
+          It exists to keep the price of each of the synthetic tokens close to their original counterparts.
+          Tokens can be swapped from collateral to synthetic as long as the total swapped amount is below the swapline limit.
+          They can also be swapped back from synthetic to collateral, as long as there are enough tokens in collateral reserve (balance).
           </Typography>
         </Grid>
       </Grid>

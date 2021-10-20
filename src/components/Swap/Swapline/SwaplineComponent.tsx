@@ -15,8 +15,9 @@ import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import { pyth } from '@static/links'
 import { colors, theme } from '@static/theme'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
-import { SwaplinePair, SwaplineSwapType } from '../tmpConsts'
 import useStyles from '../style'
+import { SwaplinePair } from '@selectors/solanaWallet'
+import { SwaplineSwapType } from '@reducers/exchange'
 
 interface AssetPriceData {
   priceVal: BN,
@@ -60,7 +61,7 @@ export const getAssetInAndFor = (
     priceVal: pair.syntheticData.price.val,
     assetScale: pair.syntheticData.supply.scale,
     symbol: pair.syntheticData.symbol,
-    maxAvailable: pair.limit.val,
+    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val).sub(pair.syntheticData.swaplineSupply.val).sub(pair.syntheticData.borrowedSupply.val),
     balance: pair.syntheticData.balance
   }
 
@@ -88,6 +89,23 @@ export const calculateSwapOutAmount = (
     return printBN(amountAfterFee.div(new BN(1 / decimalChange)), assetFor.assetScale)
   } else {
     return printBN(amountAfterFee.mul(new BN(decimalChange)), assetFor.assetScale)
+  }
+}
+
+export const calculateEstimateAmount = (
+  assetIn: AssetPriceData,
+  assetFor: AssetPriceData,
+  amount: string
+) => {
+  const actualAmountOut = assetIn.priceVal
+    .mul(printBNtoBN(amount, assetIn.assetScale))
+    .div(assetFor.priceVal)
+  const decimalChange = 10 ** (assetFor.assetScale - assetIn.assetScale)
+
+  if (decimalChange < 1) {
+    return printBN(actualAmountOut.div(new BN(1 / decimalChange)), assetFor.assetScale)
+  } else {
+    return printBN(actualAmountOut.mul(new BN(decimalChange)), assetFor.assetScale)
   }
 }
 
@@ -140,9 +158,9 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
 
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
-  const [pairIndex, setPairIndex] = React.useState<number | null>(null)
+  const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [swapType, setSwapType] = React.useState<SwaplineSwapType>('nativeToSynthetic')
-  const [amountFrom, setAmountFrom] = React.useState<string>('')
+  const [amountFrom, setAmountFrom] = React.useState<string>('0.000000')
   const [amountTo, setAmountTo] = React.useState<string>('')
   const [isReversed, setIsReversed] = React.useState<boolean>(false)
 
@@ -224,7 +242,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
   }
 
   const getButtonMessage = () => {
-    if (pairIndex === null) return 'Select pair'
+    if (pairIndex === null) return 'Select a pair'
 
     if (amountTo.match(/^0\.0*$/)) {
       return 'Enter value of swap'
@@ -234,6 +252,9 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
     }
     if (printBNtoBN(amountFrom, tokenFrom.assetScale).gt(tokenFrom.balance)) {
       return 'Invalid swap amount'
+    }
+    if (swapType === 'nativeToSynthetic' && printBNtoBN(amountFrom, tokenFrom.assetScale).gt(pairs[pairIndex].limit.val.sub(pairs[pairIndex].balance.val))) {
+      return 'Collateral limit reached'
     }
     if (printBNtoBN(amountTo, tokenTo.assetScale).gt(tokenTo.maxAvailable)) {
       return (
@@ -336,6 +357,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
             setPairIndex(chosen)
             onSelectPair(chosen)
           }}
+          selectText='Select a pair'
         />
       </Grid>
 
@@ -363,42 +385,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
           justifyContent='space-between'
           alignItems='center'
           className={classes.tokenComponentInfo}>
-          <Grid
-            item
-            container
-            wrap='nowrap'
-            justifyContent='space-between'
-            alignItems='center'
-            className={classes.toText}>
-            <Typography className={classes.tokenComponentText}>You get</Typography>
-            <MobileTooltip
-              hint={
-                <>
-                  <img src={Output} alt='' className={classes.outputIcon} />
-                  <Typography className={classes.tooltipTitle}>Estimated output amount</Typography>
-                  <p style={{ marginBlock: 10, color: colors.navy.lightGrey }}>
-                    Output amount is calculated based on the most up-to-date data from price
-                    oracles, so it can change due to the sub-second update intervals of the oracles.
-                  </p>
-                  <p style={{ margin: 0, color: colors.navy.lightGrey }}>
-                    Find out more about oracles on
-                  </p>
-                  <a
-                    href={pyth}
-                    className={classes.tooltipLink}
-                    target='_blank'
-                    rel='noopener noreferrer'>
-                    Pyth Network website.
-                  </a>
-                </>
-              }
-              anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
-              mobilePlacement='top-end'
-              desktopPlacement='top-end'
-              tooltipClasses={{ tooltip: classes.noMarginTop }}
-              isInteractive
-            />
-          </Grid>
+          <Typography className={classes.tokenComponentText}>You get</Typography>
           <Typography className={classes.tokenMaxText}>
             {pairIndex !== null ? (
               <>
@@ -447,10 +434,11 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
             setPairIndex(chosen)
             onSelectPair(chosen)
           }}
+          selectText='Select a pair'
         />
       </Grid>
       <Grid container item className={classes.numbersField}>
-        <Grid item>
+        <Grid item className={classes.numbersFieldGrid}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
 
             <Typography className={classes.numbersFieldAmount}>
@@ -460,7 +448,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
 
         <Divider className={classes.amountDivider} orientation='vertical' />
 
-        <Grid item>
+        <Grid className={classes.numbersFieldGrid} item>
           <Grid container item alignItems='center'>
             <Typography className={classes.numbersFieldTitle}>Exchange rate</Typography>
             <Grid item className={classes.arrowsBg}>
@@ -479,8 +467,8 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
               value={(() => {
                 if (pairIndex === null) return '0.0000'
                 const Amountvalue = isReversed
-                  ? calculateSwapOutAmount(tokenTo, tokenFrom, '1', pairs[pairIndex].fee)
-                  : calculateSwapOutAmount(tokenFrom, tokenTo, '1', pairs[pairIndex].fee)
+                  ? calculateEstimateAmount(tokenTo, tokenFrom, '1')
+                  : calculateEstimateAmount(tokenFrom, tokenTo, '1')
                 return Amountvalue
               })()}
               duration={300}

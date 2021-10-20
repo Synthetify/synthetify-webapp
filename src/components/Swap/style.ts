@@ -96,7 +96,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 18,
     width: 18,
     marginLeft: 16,
-    marginTop: 4,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 2
+    },
 
     '&:hover': {
       cursor: 'pointer'
@@ -128,6 +131,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     color: colors.navy.grey,
     position: 'relative',
+    lineHeight: '22px',
 
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
@@ -136,14 +140,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   numbersFieldAmount: {
     ...typography.body1,
     color: colors.navy.veryLightGrey,
-
+    lineHeight: '22px',
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle1
     }
   },
+  numbersFieldGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
   discount: {
     ...typography.body2,
-
+    lineHeight: '22px',
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
     }
@@ -208,7 +217,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: 60,
     marginTop: 36,
-    ...importantStyles(typography.body2),
+    ...importantStyles(typography.body1),
 
     '&:hover': {
       backgroundColor: '#4ADFBA !important'

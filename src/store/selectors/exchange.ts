@@ -16,7 +16,9 @@ export const {
   mintAuthority,
   swap,
   state,
-  exchangeAccount
+  exchangeAccount,
+  swaplines,
+  swaplineSwap
 } = keySelectors(store, [
   'assets',
   'synthetics',
@@ -24,7 +26,9 @@ export const {
   'mintAuthority',
   'swap',
   'state',
-  'exchangeAccount'
+  'exchangeAccount',
+  'swaplines',
+  'swaplineSwap'
 ])
 export const healthFactor = createSelector(state, s => {
   return s.healthFactor
@@ -315,7 +319,7 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
     }
 })
 
-export const getHaltedState = createSelector(state, (allState) => {
+export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
 
