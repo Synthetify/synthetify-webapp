@@ -1,11 +1,11 @@
 import ExchangePlot from '@components/ExchangePlot/ExchangePlot'
-import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import React, { useEffect, useState } from 'react'
 import Binance from 'binance-api-node'
 import { BN } from '@project-serum/anchor'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 
-const ExchangePlotContainer: React.FC<{ token?: ExchangeTokensWithBalance }> = ({ token }) => {
+const ExchangePlotContainer: React.FC<{ token?: ExchangeSyntheticTokens }> = ({ token }) => {
   const firstTimestamp = Date.now()
   const [data, setData] = useState<Array<{ x: number, y: number }>>(
     [...Array(25).keys()].map((index) => ({

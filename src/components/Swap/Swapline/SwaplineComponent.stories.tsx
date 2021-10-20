@@ -6,7 +6,7 @@ import { PublicKey } from '@solana/web3.js'
 import { Asset, Collateral, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { toBlur } from '@consts/uiUtils'
 import SwaplineComponent from './SwaplineComponent'
-import { ExchangeCollateralTokens, ExchangeSyntheticTokens, SwaplinePair } from '../tmpConsts'
+import { ExchangeCollateralTokens, ExchangeSyntheticTokens, SwaplinePair } from '@selectors/solanaWallet'
 
 const defaultSynthetic: Synthetic = {
   assetIndex: 0,

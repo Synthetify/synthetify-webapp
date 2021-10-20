@@ -1,8 +1,8 @@
 import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, ExchangeAccount, PayloadTypes } from '@reducers/exchange'
-import { collaterals, exchangeAccount, swap, xUSDAddress } from '@selectors/exchange'
-import { accounts, tokenAccount } from '@selectors/solanaWallet'
+import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
+import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
@@ -14,7 +14,7 @@ import {
   TransactionInstruction
 } from '@solana/web3.js'
 import { pullAssetPrices } from './oracle'
-import { createAccount, getToken, getWallet, sleep } from './wallet'
+import { createAccount, getToken, getWallet, signAndSend, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
 import { NATIVE_MINT, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
@@ -434,8 +434,80 @@ export function* handleSwap(): Generator {
     )
   }
 }
+
+export function* handleSwaplineSwap(): Generator {
+  const swapData = yield* select(swaplineSwap)
+
+  try {
+    const walletAddress = yield* select(address)
+    const tokensAccounts = yield* select(accounts)
+    const allCollaterals = yield* select(collaterals)
+    const exchangeProgram = yield* call(getExchangeProgram)
+
+    let userSyntheticAccount = tokensAccounts[swapData.synthetic.toString()]
+      ? tokensAccounts[swapData.synthetic.toString()].address
+      : null
+    if (userSyntheticAccount == null) {
+      userSyntheticAccount = yield* call(createAccount, swapData.synthetic)
+    }
+
+    let userCollateralAccount
+    if (allCollaterals[swapData.collateral.toString()].symbol === 'WSOL') {
+      userCollateralAccount = walletAddress
+    } else if (tokensAccounts[swapData.collateral.toString()]) {
+      userCollateralAccount = tokensAccounts[swapData.collateral.toString()].address
+    } else {
+      userCollateralAccount = yield* call(createAccount, swapData.collateral)
+    }
+    const swaplineIx = yield* call([
+      exchangeProgram,
+      exchangeProgram[swapData.swapType]
+    ],
+    {
+      amount: swapData.amount,
+      signer: walletAddress,
+      userSyntheticAccount,
+      userCollateralAccount,
+      synthetic: swapData.synthetic,
+      collateral: swapData.collateral
+    })
+    const wallet = yield* call(getWallet)
+    const approveIx = Token.createApproveInstruction(
+      TOKEN_PROGRAM_ID,
+      swapData.swapType === 'nativeToSynthetic' ? userCollateralAccount : userSyntheticAccount,
+      exchangeProgram.exchangeAuthority,
+      wallet.publicKey,
+      [],
+      tou64(swapData.amount)
+    )
+    const tx = new Transaction().add(approveIx).add(swaplineIx)
+    const txid = yield* call(signAndSend, wallet, tx)
+    yield* put(actions.swaplineSwapDone({ txid }))
+
+    yield put(
+      snackbarsActions.add({
+        message: 'Successfully swaped token.',
+        variant: 'success',
+        persist: false
+      })
+    )
+  } catch (error) {
+    yield* put(actions.swaplineSwapDone({ txid: undefined }))
+    yield put(
+      snackbarsActions.add({
+        message: 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
+
 export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
+}
+export function* swaplineSwapHandler(): Generator {
+  yield* takeEvery(actions.swaplineSwap, handleSwaplineSwap)
 }
 const pendingUpdates: { [x: string]: Decimal } = {}
 
@@ -455,5 +527,5 @@ export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
 }
 export function* exchangeSaga(): Generator {
-  yield all([swapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
+  yield all([swapHandler, swaplineSwapHandler, assetPriceHandler, assetPriceBatcher].map(spawn))
 }
