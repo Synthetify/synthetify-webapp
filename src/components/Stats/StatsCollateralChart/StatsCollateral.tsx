@@ -63,7 +63,9 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
     return coin.color
   })
 
-  const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs')) // under 600px return false
+  const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs'))
+
+  data.sort((a, b) => (a.percent > b.percent) ? -1 : ((b.percent > a.percent) ? 1 : 0))
 
   return (
     <>
@@ -105,7 +107,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
           </div>
           <Grid container className={classes.legendWrapper}>
             {data.map(coin => (
-              <Grid item className={classes.legendItem} style={{ color: coin.color }}>
+              <Grid item key={coin.name} className={classes.legendItem} style={{ color: coin.color }}>
                 <FiberManualRecordIcon
                   style={{ width: '10px', height: 'auto', paddingRight: '8px', margin: 'auto 0' }}
                 />

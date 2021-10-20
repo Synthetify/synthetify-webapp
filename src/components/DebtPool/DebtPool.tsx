@@ -65,6 +65,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 borderWidth={1}
                 borderColor={{ from: 'color' }}
                 startAngle={0}
+                endAngle={-360}
                 innerRadius={0.75}
                 padAngle={2.5}
                 enableArcLinkLabels={false}
