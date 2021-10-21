@@ -485,7 +485,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
             />
           </Grid>
 
-          <Grid container item justifyContent='space-between' alignItems='center' style={{ marginTop: 17}}>
+          <Grid container item justifyContent='space-between' alignItems='center'>
             <Typography className={classes.numbersFieldAmount} style={{ marginRight: 12 }}>
               {+printBN(fee.val.mul(new BN(100)), fee.scale)}%
             </Typography>
