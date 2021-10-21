@@ -131,8 +131,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     color: colors.navy.grey,
     position: 'relative',
+    top: 2,
     lineHeight: '22px',
-
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
     }
@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   questionMark: {
     height: 20,
     width: 20,
-    
+
     '&:hover': {
       cursor: 'pointer'
     },
