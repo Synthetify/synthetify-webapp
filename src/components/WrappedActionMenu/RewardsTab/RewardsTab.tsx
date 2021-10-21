@@ -290,13 +290,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     <Grid container direction='column' justifyContent='space-around'>
       <Grid item className={classes.amount} justifyContent='space-between'>
         <Grid item className={classes.timeGrid}>
-          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />    //HERE IS THE IMAGES
+          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
           <AverageAPY avgAPY={printBN(avgAPY, 2)} />
         </Grid>
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
-      <Grid item container justifyContent='space-between' direction='column'>
+      <Grid item container justifyContent='space-between' direction='column' style={{marginTop: 18}}>
         {lines}
       </Grid>
       <Grid
