@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   questionMark: {
     height: 20,
     width: 20,
-
+    
     '&:hover': {
       cursor: 'pointer'
     },
