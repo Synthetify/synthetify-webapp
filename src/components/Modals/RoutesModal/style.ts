@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     width: 156,
-    height: 147,
+    //height: 188,
     borderRadius: 10,
     marginTop: 13,
     [theme.breakpoints.down('md')]: {
@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 140,
     height: 41,
     cursor: 'pointer',
+    marginBottom: 8,
     '&:first-child': {
       marginTop: 8
     },
-    '&:nth-child(2)': {
-      marginTop: 4,
-      marginBottom: 4
+    '&:last-child': {
+      marginBottom: 8
     },
     '&:hover': {
       background: colors.navy.navButton,
