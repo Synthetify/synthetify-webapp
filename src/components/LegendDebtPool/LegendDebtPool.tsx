@@ -46,7 +46,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
     }
   })
 
-  data.sort((a, b) => (b.percent - a.percent))
+  data.sort((a, b) => (b.percent - a.percent)) 
 
   return (
     <Card className={classes.statsListCard}>

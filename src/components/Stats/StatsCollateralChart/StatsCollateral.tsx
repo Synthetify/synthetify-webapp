@@ -65,7 +65,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
 
   const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs'))
 
-  data.sort((a, b) => (b.percent - a.percent))
+  data.sort((a, b) => (b.percent - a.percent)) 
 
   return (
     <>
