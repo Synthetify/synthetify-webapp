@@ -84,6 +84,19 @@ const solanaNetworktoProgramNetwork = (solanaNetwork: SolanaNetworks): Network =
   }
 }
 
+const networkTypetoProgramNetwork = (type: NetworkType): Network => {
+  switch (type) {
+    case NetworkType.DEVNET:
+      return Network.DEV
+    case NetworkType.LOCALNET:
+      return Network.LOCAL
+    case NetworkType.TESTNET:
+      return Network.TEST
+    case NetworkType.MAINNET:
+      return Network.MAIN
+  }
+}
+
 const getCurrentSolanaConnection = (): Connection | null => {
   return _connection
 }
@@ -93,5 +106,6 @@ export {
   SolanaNetworks,
   getCurrentSolanaConnection,
   getSolanaNetwork,
-  solanaNetworktoProgramNetwork
+  solanaNetworktoProgramNetwork,
+  networkTypetoProgramNetwork
 }

@@ -5,7 +5,7 @@ import ExchangeComponent from './ExchangeComponent'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 import { Asset, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
-import { ExchangeTokensWithBalance } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { toBlur } from '@consts/uiUtils'
 
 const defaultSynthetic: Synthetic = {
@@ -58,7 +58,7 @@ const onSwap = (fromToken: PublicKey, toToken: PublicKey, amount: BN) => {
 
 const tokens = 'xUSD Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
   .split(' ')
-  .map((i): ExchangeTokensWithBalance => {
+  .map((i): ExchangeSyntheticTokens => {
     return { symbol: i, balance: new BN(0), ...defaultAsset, ...defaultSynthetic }
   })
 tokens[0].balance = new BN(100).mul(new BN(10000))

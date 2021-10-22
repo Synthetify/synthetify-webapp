@@ -237,7 +237,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       bracketValue: apyValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount),
       bracket: nextRoundPoints.eqn(0) ? '' : '%',
       hint:
-        'This round is in the Subscription phase. You will receive or lose points proportionally to the value of your debt when you mint or burn your xUSD.',
+        'In this round you receive or lose pro rata shares proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards1,
       tooltipPlacement: 'left-end'
@@ -253,7 +253,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       bracketValue: apyValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount),
       bracket: currentRoundPoints.eqn(0) ? '' : '%',
       hint:
-        'This round is in the Staking phase. You entered this round with points from the previous phase. You will lose points when you burn your xUSD.',
+        'In this round you join with the pro rata shares from the previous round. You will lose those when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards2,
       tooltipPlacement: 'left'
@@ -269,7 +269,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       bracketValue: apyValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount),
       bracket: finishedRoundPoints.eqn(0) ? '' : '%',
       hint:
-        'This round is in the Claiming phase. You entered this round with points from the previous phase. You can now Claim your reward proportional to the number of points in SNY tokens.',
+        'In this round you join with the pro rata shares from the previous phase. You can now claim your reward in SNY tokens, being proportional to the number of your shares.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards3,
       tooltipPlacement: 'left-start'

@@ -21,7 +21,6 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
     >
       {children}
     </SnackbarProvider>
-
   )
 }
 export default Snackbar

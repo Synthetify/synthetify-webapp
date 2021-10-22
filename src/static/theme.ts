@@ -115,7 +115,7 @@ export const typography = {
   body1: {
     fontSize: 22,
     lineHeight: '28px',
-    fontWeight: 800
+    fontWeight: 900
   },
   body2: {
     fontSize: 22,
@@ -125,7 +125,7 @@ export const typography = {
   subtitle1: {
     fontSize: 16,
     lineHeight: '24px',
-    fontWeight: 800
+    fontWeight: 900
   },
   subtitle2: {
     fontSize: 16,
@@ -135,7 +135,7 @@ export const typography = {
   body3: {
     fontSize: 13,
     lineHeight: '17px',
-    fontWeight: 800
+    fontWeight: 900
   },
   body4: {
     fontSize: 13,
@@ -150,7 +150,7 @@ export const typography = {
   caption2: {
     fontSize: 11,
     lineHeight: '16px',
-    fontWeight: 800
+    fontWeight: 900
   },
   caption3: {
     fontSize: 9,
@@ -160,7 +160,7 @@ export const typography = {
   caption4: {
     fontSize: 9,
     lineHeight: '14px',
-    fontWeight: 800
+    fontWeight: 900
   }
 }
 
