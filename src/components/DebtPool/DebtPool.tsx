@@ -23,7 +23,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
   const [display, setDisplay] = React.useState<boolean>(true)
 
   const classes = useStyles()
-  data.sort((a, b) => (a.price - b.price)) 
+  data.sort((a, b) => (a.price - b.price))
   return (
     <Card className={classes.debtPoolCard}>
       <CardContent className={classes.debtPoolCardContent}>
