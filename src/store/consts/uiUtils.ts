@@ -15,15 +15,15 @@ export const unblurContent = () => {
 export const colors = [
   '#FBFBFB',
   '#655ED4',
-  '#C52727',
-  '#40BFA0',
   '#DF3C3C',
+  '#D49347',
+  '#117098',
+  '#C76BA2',
+  '#40BFA0',
   '#1F70CF',
   '#936BC7',
   '#39D3F5',
-  '#DADCF1',
-  '#C76BA2',
-  '#D49347'
+  '#DADCF1'
 ]
 
 const addPxToValue = ['fontSize'] // add more css properties when needed
