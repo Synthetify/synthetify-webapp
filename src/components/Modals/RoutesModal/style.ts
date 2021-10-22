@@ -5,7 +5,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     width: 156,
-    //height: 188,
     borderRadius: 10,
     marginTop: 13,
     [theme.breakpoints.down('md')]: {

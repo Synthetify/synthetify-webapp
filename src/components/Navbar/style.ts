@@ -10,19 +10,21 @@ const useStyles = makeStyles(() => ({
     borderRadius: 10,
     ...typography.subtitle2,
     textTransform: 'capitalize',
-    //boxShadow: 'none',
+    boxShadow: 'none',
 
     '&:hover': {
-      //boxShadow: 'none',
-      backgroundColor: 'unset'
-//      color: colors.navy.veryLightGrey
-      //backgroundColor: 'transparent'
-      //opacity: 0
+      // background: colors.navy.button,
+      color: colors.navy.veryLightGrey
+      // ...typography.subtitle1
     }
   },
   active: {
     background: colors.navy.button,
-    color: colors.navy.veryLightGrey
+    color: colors.navy.veryLightGrey,
+    ...typography.subtitle1,
+    '&:hover': {
+      background: colors.navy.button
+    }
   },
   disabled: {
     opacity: 1
