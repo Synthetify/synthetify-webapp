@@ -13,8 +13,11 @@ const useStyles = makeStyles(() => ({
     //boxShadow: 'none',
 
     '&:hover': {
-      color: colors.navy.veryLightGrey
+      //boxShadow: 'none',
+      backgroundColor: 'unset'
+//      color: colors.navy.veryLightGrey
       //backgroundColor: 'transparent'
+      //opacity: 0
     }
   },
   active: {
