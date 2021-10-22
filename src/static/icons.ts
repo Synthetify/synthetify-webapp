@@ -22,6 +22,7 @@ import phantomIcon from './svg/phantom.svg'
 import solletIcon from './svg/sollet.svg'
 import mathIcon from './svg/MathWallet.svg'
 import solflareIcon from './svg/solflare.svg'
+import coin98Icon from './svg/coin98.svg'
 import clearIcon from './svg/clear.svg'
 import mainnet from './svg/mainnet.svg'
 import devnet from './svg/devnet.svg'
@@ -53,6 +54,7 @@ const icons: { [key: string]: string } = {
   sollet: solletIcon,
   'math wallet': mathIcon,
   solflare: solflareIcon,
+  coin98: coin98Icon,
   clear: clearIcon,
   Mainnet: mainnet,
   Devnet: devnet,
