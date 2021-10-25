@@ -95,7 +95,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down('sm')]: {
-      marginRight: 24
+      marginRight: 24,
+      '&:active': {
+        backgroundColor: '#4ADFBA !important'
+      }
     },
     [theme.breakpoints.down('xs')]: {
       paddingBlock: 15,

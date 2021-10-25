@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 16,
       fontSize: 9,
       lineHeight: '14px',
-      marginTop: 2,
       marginRight: 8,
       paddingBottom: 17,
       paddingRight: 36

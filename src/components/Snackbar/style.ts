@@ -17,13 +17,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& SVG': {
       width: 24,
       height: 24,
-      color: colors.green.snackbar
+      color: colors.green.snackbar,
+      [theme.breakpoints.down('xs')]: {
+        width: 14,
+        height: 14,
+        marginLeft: 5
+      }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      maxWidth: 235,
+      width: 235,
       maxHeight: 32,
-      padding: '0px 8px 5px 4px'
+      padding: '0px 8px 0px 0px'
     }
   },
   error: {
@@ -40,14 +45,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     '& SVG': {
       color: colors.red.snackbar,
-      width: 24,
-      height: 24
+      [theme.breakpoints.down('xs')]: {
+        width: 14,
+        height: 14,
+        marginLeft: 5
+      }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
       width: 235,
-      height: 32,
-      padding: '0px 8px 5px 4px'
+      maxHeight: 32,
+      padding: '0px 8px 0px 0px'
     }
   },
   info: {
@@ -64,14 +72,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     '& SVG': {
       color: colors.blue.astel,
-      width: 24,
-      height: 24
+      [theme.breakpoints.down('xs')]: {
+        width: 14,
+        height: 14,
+        marginLeft: 5
+      }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
       width: 235,
-      height: 32,
-      padding: '0px 8px 5px 4px'
+      maxHeight: 32,
+      padding: '0px 8px 0px 0px'
     }
   },
   warning: {
@@ -88,14 +99,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     '& SVG': {
       color: colors.yellow.neon,
-      width: 24,
-      height: 24
+      [theme.breakpoints.down('xs')]: {
+        width: 14,
+        height: 14,
+        marginLeft: 5
+      }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
       width: 235,
-      height: 32,
-      padding: '0px 8px 5px 4px'
+      maxHeight: 32,
+      padding: '0px 8px 0px 0px'
     }
   }
 }))
