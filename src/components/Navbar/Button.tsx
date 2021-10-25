@@ -27,7 +27,6 @@ export const NavbarButton: React.FC<IProps> = ({
         classes.button,
         active ? classes.active : undefined
       )}
-      variant='contained'
       classes={{ disabled: classes.disabled }}
       disabled={disabled}
       type={onClick ? 'button' : 'submit'}

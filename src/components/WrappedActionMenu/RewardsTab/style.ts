@@ -71,8 +71,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   clockIcon: {
-    width: 16,
-    height: 16,
+    width: 21,
+    height: 21,
+    opacity: 0.75,
     paddingRight: '6px',
     [theme.breakpoints.down('xs')]: {
       width: 13,

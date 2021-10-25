@@ -194,9 +194,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     return !stakedUserValue.eq(new BN(0))
       ? calculateTokensBasedOnPoints(roundPoints, roundAllPoints, roundAmount)
-          .mul(SNYPrice.val)
-          .mul(new BN(52))
-          .div(stakedUserValue)
+        .mul(SNYPrice.val)
+        .mul(new BN(52))
+        .div(stakedUserValue)
       : new BN(0)
   }
   const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
@@ -296,7 +296,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
-      <Grid item container justifyContent='space-between' direction='column'>
+      <Grid item container justifyContent='space-between' direction='column' style={{marginTop: 18}}>
         {lines}
       </Grid>
       <Grid
