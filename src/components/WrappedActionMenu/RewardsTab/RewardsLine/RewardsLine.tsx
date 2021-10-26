@@ -91,7 +91,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
             isPopoverOpen={isPopoverOpen}
             setIsPopoverOpen={setIsPopoverOpen}
           />
-          <Grid item style={{ margin: '0 -15px 0 15px' }}>
+          <Grid item className={classes.textContainer}>
             <Typography className={classes.text}>
               {name}
               {': '}

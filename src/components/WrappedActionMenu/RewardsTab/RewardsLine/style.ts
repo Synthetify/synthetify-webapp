@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body4
     }
   },
+  textContainer: {
+    margin: '0 -15px 0 15px',
+    [theme.breakpoints.down('xs')]: {
+      margin: '0 -15px 0 7px'
+    }
+  },
   tooltip: {
     background: colors.navy.info,
     padding: '5px 8px'
