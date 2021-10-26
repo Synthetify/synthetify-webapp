@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textContainer: {
     margin: '0 -15px 0 15px',
     [theme.breakpoints.down('xs')]: {
-      margin: '0 -15px 0 7px'
+      margin: '0 -15px 0 5px'
     }
   },
   tooltip: {

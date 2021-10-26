@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
     color: colors.navy.navButton,
     ...typography.subtitle1,
+    lineHeight: '20px',
     cursor: 'pointer',
     transition: '0.2s all cubic-bezier(0.25, 0.46, 0.45, 0.94)',
     backfaceVisibility: 'hidden',
@@ -22,15 +23,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.body3,
+      lineHeight: '10px',
       maxWidth: 56,
       maxHeight: 25,
       marginRight: 12
-    }
-  },
-  text: {
-    [theme.breakpoints.down('xs')]: {
-      position: 'relative',
-      top: -1
     }
   }
 

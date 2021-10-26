@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.green.snackbar,
     borderRadius: 10,
     padding: 10,
-    ...typography.heading5,
-    maxWidth: 500,
+    ...typography.body2,
+    maxWidth: 550,
     maxHeight: 65,
     lineHeight: '30px',
     '& SVG': {
@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.subtitle2,
-      maxWidth: 350,
+      ...typography.body4,
+      maxWidth: 360,
       height: 50,
       padding: '0px 8px 0px 0px'
     }
@@ -52,9 +52,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 245,
-      maxHeight: 32,
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
       padding: '0px 8px 0px 0px'
     }
   },
@@ -79,9 +79,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 245,
-      maxHeight: 32,
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
       padding: '0px 8px 0px 0px'
     }
   },
@@ -106,9 +106,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 245,
-      maxHeight: 32,
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
       padding: '0px 8px 0px 0px'
     }
   }
