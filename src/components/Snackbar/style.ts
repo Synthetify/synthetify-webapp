@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      width: 235,
+      maxWidth: 235,
       maxHeight: 32,
       padding: '0px 8px 0px 0px'
     }
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      width: 235,
+      maxWidth: 235,
       maxHeight: 32,
       padding: '0px 8px 0px 0px'
     }
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      width: 235,
+      maxWidth: 235,
       maxHeight: 32,
       padding: '0px 8px 0px 0px'
     }
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      width: 235,
+      maxWidth: 235,
       maxHeight: 32,
       padding: '0px 8px 0px 0px'
     }
