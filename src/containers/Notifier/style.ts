@@ -21,13 +21,16 @@ const useStyles = makeStyles((theme: Theme) => ({
       transform: 'scale(1.1) translateY(1px)'
     },
     [theme.breakpoints.down('xs')]: {
-      maxWidth: 36,
-      maxHeight: 16,
-      fontSize: 9,
-      lineHeight: '14px',
-      marginRight: 8,
-      paddingBottom: 17,
-      paddingRight: 36
+      ...typography.body3,
+      maxWidth: 56,
+      maxHeight: 25,
+      marginRight: 12
+    }
+  },
+  text: {
+    [theme.breakpoints.down('xs')]: {
+      position: 'relative',
+      top: -1
     }
   }
 

@@ -19,15 +19,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 24,
       color: colors.green.snackbar,
       [theme.breakpoints.down('xs')]: {
-        width: 14,
-        height: 14,
-        marginLeft: 5
+        width: 22,
+        height: 22,
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 245,
-      maxHeight: 32,
+      ...typography.subtitle2,
+      maxWidth: 350,
+      height: 50,
       padding: '0px 8px 0px 0px'
     }
   },
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       [theme.breakpoints.down('xs')]: {
         width: 14,
         height: 14,
-        marginLeft: 5
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       [theme.breakpoints.down('xs')]: {
         width: 14,
         height: 14,
-        marginLeft: 5
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       [theme.breakpoints.down('xs')]: {
         width: 14,
         height: 14,
-        marginLeft: 5
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
