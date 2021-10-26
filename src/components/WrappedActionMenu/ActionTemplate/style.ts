@@ -81,21 +81,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 136,
     marginRight: 36,
 
-    [theme.breakpoints.up('sm')]: {
-      '&:hover': {
-        backgroundColor: '#4ADFBA !important'
-      }
-    },
-
-    [theme.breakpoints.down('sm')]: {
-      '&:hover': {
-        backgroundColor: '#40BFA0 !important'
-      },
-      '&:active': {
-        backgroundColor: '#4ADFBA !important'
-      }
-    },
-
     '&:disabled': {
       pointerEvents: 'auto !important'
     },
@@ -106,7 +91,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down('sm')]: {
-      marginRight: 24
+      marginRight: 24,
+      '&:hover': {
+        backgroundColor: '#40BFA0 !important'
+      },
+      '&:active': {
+        backgroundColor: '#4ADFBA !important'
+      }
+    },
+    [theme.breakpoints.up('sm')]: {
+      '&:hover': {
+        backgroundColor: '#4ADFBA !important'
+      }
     },
     [theme.breakpoints.down('xs')]: {
       paddingBlock: 15,
