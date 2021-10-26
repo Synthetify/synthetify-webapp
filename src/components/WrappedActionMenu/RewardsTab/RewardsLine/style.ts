@@ -6,11 +6,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     color: colors.navy.lightGrey,
     [theme.breakpoints.down('sm')]: {
-      top: -1,
       ...typography.subtitle2
     },
     [theme.breakpoints.down('xs')]: {
-      top: 2,
+      paddingTop: 2,
       ...typography.body4
     }
   },
