@@ -125,7 +125,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: 74,
       marginLeft: 12,
-      ...importantStyles(typography.heading4)
+      ...importantStyles(typography.heading4),
+      '&:active': {
+        backgroundColor: '#7C76DA',
+        opacity: 1
+      },
+      '&:hover': {
+        backgroundColor: colors.navy.button
+      }
     },
     [theme.breakpoints.down('xs')]: {
       width: 'calc(50% - 8px)',

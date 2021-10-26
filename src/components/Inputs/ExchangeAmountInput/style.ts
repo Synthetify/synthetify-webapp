@@ -25,19 +25,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 36,
     borderRadius: 5,
     marginLeft: 8,
-    [theme.breakpoints.up('sm')]: {
-      '&:hover': {
-        backgroundColor: '#7C76DA'
-      }
+
+    '&:hover': {
+      backgroundColor: '#7C76DA'
     },
-    [theme.breakpoints.down('sm')]: {
-      '&:active': {
-        backgroundColor: '#7C76DA'
-      },
-      '&:hover': {
-        backgroundColor: colors.navy.button
-      }
-    },
+
     [theme.breakpoints.down('xs')]: {
       minWidth: 48,
       width: 48,
