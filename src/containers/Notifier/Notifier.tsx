@@ -47,7 +47,7 @@ const Notifier = () => {
             window.open('https://explorer.solana.com/address/' + txid)
           }
         }}>
-          <span>Details</span>
+          Details
         </button>
       )
 

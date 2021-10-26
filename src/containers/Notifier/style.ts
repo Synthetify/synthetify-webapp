@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       transform: 'scale(1.1) translateY(1px)'
     },
     [theme.breakpoints.down('xs')]: {
-      width: 36,
-      height: 16,
+      maxWidth: 36,
+      maxHeight: 16,
       fontSize: 9,
       lineHeight: '14px',
       marginRight: 8,
