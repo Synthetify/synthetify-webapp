@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: '#4ADFBA !important'
       }
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       '&:hover': {
         backgroundColor: '#4ADFBA !important'
       }
