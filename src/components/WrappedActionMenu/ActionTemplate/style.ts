@@ -140,6 +140,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginLeft: 0,
       height: 56
     }
+  },
+  label: {
+    marginTop: 1
   }
 }))
 
