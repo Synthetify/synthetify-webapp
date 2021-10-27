@@ -33,9 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover $positionTitle': {
       color: colors.navy.lightGrey
     },
-
     '&:hover $positionValue': {
-      ...typography.body3
+      color: colors.navy.veryLightGrey
     }
   },
   positionTitle: {
@@ -43,8 +42,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body4
   },
   positionValue: {
-    color: colors.navy.veryLightGrey,
-    ...typography.body4
+    color: colors.navy.lightGrey,
+    ...typography.body3
   },
   copyIcon: {
     width: 12,

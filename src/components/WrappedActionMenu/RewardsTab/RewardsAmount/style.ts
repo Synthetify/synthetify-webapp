@@ -29,8 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 10
   },
   questionMark: {
-    height: 22,
-    width: 22,
+    height: 21,
+    width: 21,
+    opacity: 0.75,
     [theme.breakpoints.down('xs')]: {
       width: 13,
       height: 13,

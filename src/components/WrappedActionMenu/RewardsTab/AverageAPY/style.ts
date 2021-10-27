@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   percentIcon: {
-    width: 16,
-    height: 16,
+    width: 21,
+    height: 21,
     paddingRight: '6px',
     opacity: 0.75,
     [theme.breakpoints.down('xs')]: {

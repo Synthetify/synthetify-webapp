@@ -122,7 +122,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   numbersField: {
     marginTop: 28,
-
     [theme.breakpoints.down('sm')]: {
       marginTop: 18
     }
@@ -132,7 +131,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     position: 'relative',
     lineHeight: '22px',
-
+    [theme.breakpoints.up('md')]: {
+      top: 2
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
     }
@@ -141,6 +142,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body1,
     color: colors.navy.veryLightGrey,
     lineHeight: '22px',
+    [theme.breakpoints.up('md')]: {
+      marginTop: 16
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle1
     }
@@ -153,6 +157,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   discount: {
     ...typography.body2,
     lineHeight: '22px',
+    [theme.breakpoints.up('md')]: {
+      marginTop: 16
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
     }

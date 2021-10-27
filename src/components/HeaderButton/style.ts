@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:not(:last-child)': {
       marginRight: 15
     },
-
+    '&:hover': {
+      background: colors.navy['807ADC']
+    },
     [theme.breakpoints.down('md')]: {
       minWidth: 80
     },
@@ -29,15 +31,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
       '&:not(:last-child)': {
         marginRight: 0
+      },
+      '&:hover': {
+        background: colors.navy.navButton
+      },
+      '&:active': {
+        background: colors.navy['807ADC']
       }
     },
 
     [theme.breakpoints.down('xs')]: {
       width: 72
-    },
-
-    '&:hover': {
-      background: colors.navy['807ADC']
     }
   },
   headerButtonTextEllipsis: {

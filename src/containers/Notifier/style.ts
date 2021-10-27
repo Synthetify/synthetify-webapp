@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
     color: colors.navy.navButton,
     ...typography.subtitle1,
+    lineHeight: '20px',
     cursor: 'pointer',
     transition: '0.2s all cubic-bezier(0.25, 0.46, 0.45, 0.94)',
     backfaceVisibility: 'hidden',
@@ -21,14 +22,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       transform: 'scale(1.1) translateY(1px)'
     },
     [theme.breakpoints.down('xs')]: {
-      width: 36,
-      height: 16,
-      fontSize: 9,
-      lineHeight: '14px',
-      marginTop: 2,
-      marginRight: 8,
-      paddingBottom: 17,
-      paddingRight: 36
+      ...typography.body3,
+      lineHeight: '10px',
+      maxWidth: 56,
+      maxHeight: 25,
+      marginRight: 12
     }
   }
 

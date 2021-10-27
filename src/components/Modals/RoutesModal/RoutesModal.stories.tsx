@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import RoutesModal from '@components/Modals/RoutesModal/RoutesModal'
 import { MemoryRouter } from 'react-router'
 
-const routes = ['staking', 'stats', 'exchange']
+const routes = ['staking', 'stats', 'exchange', 'swapline']
 
 storiesOf('modals/routesModal', module)
   .addDecorator(story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>)
