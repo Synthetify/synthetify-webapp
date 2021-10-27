@@ -35,14 +35,14 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   allCoins.map((coins) => {
     if (coins.offsetHeight >= 53 && xs && !md) {
       allCoins.map((coin) => {
-        if (coin.childNodes[0].childNodes[2] !== undefined) {
+        if (typeof (coin.childNodes[0].childNodes[2]) !== 'undefined') {
           (coin.childNodes[0].childNodes[2] as HTMLElement).style.flex = '1 0 100%';
           (coin.childNodes[0].childNodes[2] as HTMLElement).style.marginLeft = '-3px'
         }
       })
     } else {
       allCoins.map((coin) => {
-        if (coin.childNodes[0].childNodes[2] !== undefined) {
+        if (typeof (coin.childNodes[0].childNodes[2]) !== 'undefined') {
           (coin.childNodes[0].childNodes[2] as HTMLElement).style.flex = 'unset';
           (coin.childNodes[0].childNodes[2] as HTMLElement).style.marginLeft = '0'
         }
