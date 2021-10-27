@@ -37,9 +37,9 @@ export const HeaderWrapper: React.FC = () => {
         case 'coin98':
           enumWallet = WalletType.COIN98
           break
-          case 'slope':
-            enumWallet = WalletType.SLOPE
-            break
+        case 'slope':
+          enumWallet = WalletType.SLOPE
+          break
         default:
           enumWallet = WalletType.PHANTOM
       }
