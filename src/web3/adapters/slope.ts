@@ -1,149 +1,82 @@
-import {
-    BaseSignerWalletAdapter,
-    pollUntilReady,
-    WalletAccountError,
-    WalletNotConnectedError,
-    WalletNotFoundError,
-    WalletNotInstalledError,
-    WalletPublicKeyError,
-    WalletSignTransactionError
-  } from '@solana/wallet-adapter-base'
-  import { PublicKey, Transaction } from '@solana/web3.js'
-  import bs58 from 'bs58'
-  
-  interface Coin98Wallet {
-    isCoin98?: boolean;
-    signTransaction: (transaction: Transaction) => Promise<Transaction>;
-    isConnected: () => boolean;
-    connect: () => Promise<string[]>;
-    disconnect: () => Promise<void>;
-    request: (params: { method: string; params: string | string[] | unknown }) => Promise<{
-      signature: string;
-      publicKey: string;
-    }>;
+import EventEmitter from 'eventemitter3'
+import { PublicKey, Transaction } from '@solana/web3.js'
+// import { notify } from '../../utils/notifications'
+import { WalletAdapter } from './types'
+import { DEFAULT_PUBLICKEY } from '@consts/static'
+
+type SolflareEvent = 'disconnect' | 'connect'
+type SolflareRequestMethod = 'connect' | 'disconnect' | 'signTransaction' | 'signAllTransactions'
+
+interface SlopeProvider {
+  publicKey?: PublicKey
+  isConnected?: boolean
+  autoApprove?: boolean
+  signTransaction: (transaction: Transaction) => Promise<Transaction>
+  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
+  connect: () => Promise<void>
+  disconnect: () => Promise<void>
+  on: (event: SolflareEvent, handler: (args: any) => void) => void
+  request: (method: SolflareRequestMethod, params: any) => Promise<any>
+}
+
+export class SlopeWalletAdapter extends EventEmitter implements WalletAdapter {
+  private get _provider(): SolflareProvider | undefined {
+    if ((window as any)?.solflare?.isSolflare) {
+      return (window as any).solflare
+    }
+    return undefined
   }
-  
-  interface Coin98Window extends Window {
-    coin98?: {
-      sol?: Coin98Wallet;
-    };
+
+  constructor() {
+    super()
+    this.connect = this.connect.bind(this)
   }
-  
-  declare const window: Coin98Window
-  
-  export interface Coin98WalletAdapterConfig {
-    pollInterval?: number;
-    pollCount?: number;
+
+  get connected() {
+    return this._provider?.isConnected || false
   }
-  
-  export class Coin98WalletAdapter extends BaseSignerWalletAdapter {
-    private _connecting: boolean
-    private _wallet: Coin98Wallet | null
-    private _publicKey: PublicKey | null
-  
-    constructor(config: Coin98WalletAdapterConfig = {}) {
-      super()
-      this._connecting = false
-      this._wallet = null
-      this._publicKey = null
-  
-      if (!this.ready) pollUntilReady(this, config.pollInterval || 1000, config.pollCount || 3)
+
+  get autoApprove() {
+    return this._provider?.autoApprove || false
+  }
+
+  async signAllTransactions(transactions: Transaction[]): Promise<Transaction[]> {
+    if (!this._provider) {
+      return transactions
     }
-  
-    get publicKey(): PublicKey | null {
-      return this._publicKey
+
+    return await this._provider.signAllTransactions(transactions)
+  }
+
+  get publicKey() {
+    return this._provider?.publicKey || DEFAULT_PUBLICKEY
+  }
+
+  async signTransaction(transaction: Transaction) {
+    if (!this._provider) {
+      return transaction
     }
-  
-    get ready(): boolean {
-      return typeof window !== 'undefined' && !!window.coin98
+
+    return await this._provider.signTransaction(transaction)
+  }
+
+  connect = async () => {
+    if (!this._provider) {
+      return
     }
-  
-    get connecting(): boolean {
-      return this._connecting
-    }
-  
-    get connected(): boolean {
-      return !!this._wallet?.isConnected()
-    }
-  
-    async connect(): Promise<void> {
-      try {
-        if (this.connected || this.connecting) return
-        this._connecting = true
-  
-        const wallet = typeof window !== 'undefined' && window.coin98?.sol
-        if (!wallet) {
-          window.open('https://coin98.com/wallet', '_blank')
-          throw new WalletNotFoundError()
-        }
-        if (!wallet.isCoin98) throw new WalletNotInstalledError()
-  
-        let account: string
-        try {
-          [account] = await wallet.connect()
-        } catch (error: any) {
-          throw new WalletAccountError(error?.message, error)
-        }
-  
-        let publicKey: PublicKey
-        try {
-          publicKey = new PublicKey(account)
-        } catch (error: any) {
-          throw new WalletPublicKeyError(error?.message, error)
-        }
-  
-        this._wallet = wallet
-        this._publicKey = publicKey
-  
-        this.emit('connect')
-      } catch (error: any) {
-        this.emit('error', error)
-        throw error
-      } finally {
-        this._connecting = false
-      }
-    }
-  
-    async disconnect(): Promise<void> {
-      const wallet = this._wallet
-      if (wallet) {
-        this._wallet = null
-        this._publicKey = null
-  
-        await wallet.disconnect()
-      }
-  
+
+    this._provider?.on('connect', () => {
+      this.emit('connect')
+    })
+
+    return this._provider.connect()
+  }
+
+  disconnect() {
+    if (this._provider) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this._provider.disconnect()
       this.emit('disconnect')
     }
-  
-    async signTransaction(transaction: Transaction): Promise<Transaction> {
-      try {
-        const wallet = this._wallet
-        if (!wallet) throw new WalletNotConnectedError()
-  
-        try {
-          const response = await wallet.request({ method: 'sol_sign', params: [transaction] })
-  
-          const publicKey = new PublicKey(response.publicKey)
-          const signature = bs58.decode(response.signature)
-  
-          transaction.addSignature(publicKey, signature)
-          return transaction
-        } catch (error: any) {
-          throw new WalletSignTransactionError(error?.message, error)
-        }
-      } catch (error: any) {
-        this.emit('error', error)
-        throw error
-      }
-    }
-  
-    async signAllTransactions(transactions: Transaction[]): Promise<Transaction[]> {
-      const signedTransactions: Transaction[] = []
-      for (const transaction of transactions) {
-        signedTransactions.push(await this.signTransaction(transaction))
-      }
-      return signedTransactions
-    }
   }
-  
+}
