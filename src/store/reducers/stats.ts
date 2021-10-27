@@ -35,19 +35,6 @@ export const defaultState: IStats = {
       ]
     },
     {
-      id: 'liquidation',
-      points: [
-        {
-          x: timestamp,
-          y: 10
-        },
-        {
-          x: timestamp + 5,
-          y: 15
-        }
-      ]
-    },
-    {
       id: 'mint',
       points: [
         {
