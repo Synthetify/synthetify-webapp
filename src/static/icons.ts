@@ -28,6 +28,8 @@ import mainnet from './svg/mainnet.svg'
 import devnet from './svg/devnet.svg'
 import testnet from './svg/testnet.svg'
 import renBTC from './svg/renBTC.svg'
+import slopeIcon from './svg/slope.svg'
+
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -59,7 +61,8 @@ const icons: { [key: string]: string } = {
   Mainnet: mainnet,
   Devnet: devnet,
   Testnet: testnet,
-  renBTC: renBTC
+  renBTC: renBTC,
+  slope: slopeIcon
 }
 
 export default icons
