@@ -60,7 +60,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
             <AnimatedNumber
               value={printBN(bracketValue, 2)}
               duration={300}
-              formatValue={(value: string) => Number(value) > 80 ? Number(value).toFixed(2) : Number(value).toFixed(1)}
+              formatValue={(value: string) => Number(value).toFixed(2) }
             />
           ) : (
             'infinity'
