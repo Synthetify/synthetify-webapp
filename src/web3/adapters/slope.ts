@@ -1,65 +1,47 @@
-import {
-  BaseMessageSignerWalletAdapter,
-  pollUntilReady,
-  WalletConnectionError,
-  WalletDisconnectionError,
-  WalletError,
-  WalletNotConnectedError,
-  WalletNotFoundError,
-  WalletPublicKeyError,
-  WalletSignTransactionError
-} from '@solana/wallet-adapter-base'
-import { PublicKey, Transaction } from '@solana/web3.js'
+import { PublicKey, PublicKeyInitData, Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
+import EventEmitter from 'events'
 
 interface SlopeWallet {
   connect: () => Promise<{
-    msg: string;
+    msg: string
     data: {
-      publicKey?: string;
-    };
-  }>;
-  disconnect: () => Promise<{ msg: string }>;
+      publicKey: PublicKeyInitData
+    }
+  }>
+  disconnect: () => Promise<{ msg: string }>
   signTransaction: (message: string) => Promise<{
-    msg: string;
+    msg: string
     data: {
-      publicKey?: string;
-      signature?: string;
-    };
-  }>;
+      publicKey: PublicKeyInitData
+      signature: string
+    }
+  }>
   signAllTransactions: (messages: string[]) => Promise<{
-    msg: string;
+    msg: string
     data: {
-      publicKey?: string;
-      signatures?: string[];
-    };
-  }>;
-  signMessage: (message: Uint8Array) => Promise<{ data: { signature: string } }>;
+      publicKey: PublicKeyInitData
+      signatures: string[]
+    }
+  }>
 }
 
 interface SlopeWindow extends Window {
-  Slope?: new () => SlopeWallet;
+  Slope?: new () => SlopeWallet
 }
 
 declare const window: SlopeWindow
 
-export interface SlopeWalletAdapterConfig {
-  pollInterval?: number;
-  pollCount?: number;
-}
-
-export class SlopeWalletAdapter extends BaseMessageSignerWalletAdapter {
+export class SlopeWalletAdapter extends EventEmitter {
   private _connecting: boolean
   private _wallet: SlopeWallet | null
   private _publicKey: PublicKey | null
 
-  constructor(config: SlopeWalletAdapterConfig = {}) {
+  constructor() {
     super()
     this._connecting = false
     this._wallet = null
     this._publicKey = null
-
-    if (!this.ready) pollUntilReady(this, config.pollInterval || 1000, config.pollCount || 3)
   }
 
   get publicKey(): PublicKey | null {
@@ -78,45 +60,23 @@ export class SlopeWalletAdapter extends BaseMessageSignerWalletAdapter {
     return !!this._publicKey
   }
 
+  get autoApprove() {
+    return true
+  }
+
   async connect(): Promise<void> {
-    try {
-      if (typeof (window.Slope) === 'undefined') {
-        window.open('https://slope.finance/', '_blank')
-      }
+    if (typeof (window.Slope) !== 'undefined') {
       if (this.connected || this.connecting) return
       this._connecting = true
 
-      if (!window.Slope) throw new WalletNotFoundError()
-
       const wallet = new window.Slope()
-
-      let account: string
-      try {
-        const { data } = await wallet.connect()
-
-        if (!data.publicKey) throw new WalletConnectionError()
-
-        account = data.publicKey
-      } catch (error: any) {
-        if (error instanceof WalletError) throw error
-        throw new WalletConnectionError(error?.message, error)
-      }
-
-      let publicKey: PublicKey
-      try {
-        publicKey = new PublicKey(account)
-      } catch (error: any) {
-        throw new WalletPublicKeyError(error?.message, error)
-      }
-
+      const { data } = await wallet.connect()
       this._wallet = wallet
-      this._publicKey = publicKey
+      this._publicKey = new PublicKey(data.publicKey)
 
       this.emit('connect')
-    } catch (error: any) {
-      this.emit('error', error)
-      throw error
-    } finally {
+    } else {
+      window.open('https://slope.finance/', '_blank')
       this._connecting = false
     }
   }
@@ -126,91 +86,39 @@ export class SlopeWalletAdapter extends BaseMessageSignerWalletAdapter {
     if (wallet) {
       this._wallet = null
       this._publicKey = null
-
-      try {
-        const { msg } = await wallet.disconnect()
-        if (msg !== 'ok') throw new WalletDisconnectionError(msg)
-      } catch (error: any) {
-        if (!(error instanceof WalletError)) {
-          // eslint-disable-next-line no-ex-assign
-          error = new WalletDisconnectionError(error?.message, error)
-        }
-        this.emit('error', error)
-      }
+      await wallet.disconnect()
+      this.emit('disconnect')
     }
-
-    this.emit('disconnect')
   }
 
   async signTransaction(transaction: Transaction): Promise<Transaction> {
-    try {
-      const wallet = this._wallet
-      if (!wallet) throw new WalletNotConnectedError()
-
-      try {
-        const message = bs58.encode(transaction.serializeMessage())
-        const { msg, data } = await wallet.signTransaction(message)
-
-        if (!data.publicKey || !data.signature) throw new WalletSignTransactionError(msg)
-
-        const publicKey = new PublicKey(data.publicKey)
-        const signature = bs58.decode(data.signature)
-
-        transaction.addSignature(publicKey, signature)
-        return transaction
-      } catch (error: any) {
-        if (error instanceof WalletError) throw error
-        throw new WalletSignTransactionError(error?.message, error)
-      }
-    } catch (error: any) {
-      this.emit('error', error)
-      throw error
+    const wallet = this._wallet
+    const message = bs58.encode(transaction.serializeMessage())
+    if (wallet) {
+      const { data } = await wallet.signTransaction(message)
+      const publicKey = new PublicKey(data.publicKey)
+      const signature = bs58.decode(data.signature)
+      transaction.addSignature(publicKey, signature)
     }
+    return transaction
   }
 
-  async signAllTransactions(transactions: Transaction[]): Promise<Transaction[]> {
-    try {
-      const wallet = this._wallet
-      if (!wallet) throw new WalletNotConnectedError()
+  async signAllTransactions(
+    transactions: Transaction[]
+  ): Promise<Transaction[]> {
+    const wallet = this._wallet
+    const messages = transactions.map((transaction) =>
+      bs58.encode(transaction.serializeMessage())
+    )
+    if (wallet) {
+      const { data } = await wallet.signAllTransactions(messages)
+      const length = transactions.length
+      const publicKey = new PublicKey(data.publicKey)
 
-      try {
-        const messages = transactions.map((transaction) => bs58.encode(transaction.serializeMessage()))
-        const { msg, data } = await wallet.signAllTransactions(messages)
-
-        const length = transactions.length
-        if (!data.publicKey || data.signatures?.length !== length) throw new WalletSignTransactionError(msg)
-
-        const publicKey = new PublicKey(data.publicKey)
-
-        for (let i = 0; i < length; i++) {
-          transactions[i].addSignature(publicKey, bs58.decode(data.signatures[i]))
-        }
-
-        return transactions
-      } catch (error: any) {
-        if (error instanceof WalletError) throw error
-        throw new WalletSignTransactionError(error?.message, error)
+      for (let i = 0; i < length; i++) {
+        transactions[i].addSignature(publicKey, bs58.decode(data.signatures[i]))
       }
-    } catch (error: any) {
-      this.emit('error', error)
-      throw error
     }
-  }
-
-  async signMessage(message: Uint8Array): Promise<Uint8Array> {
-    try {
-      const wallet = this._wallet
-      if (!wallet) throw new WalletNotConnectedError()
-
-      try {
-        const response = await wallet.signMessage(message)
-        return bs58.decode(response.data.signature)
-      } catch (error: any) {
-        throw new WalletSignTransactionError(error?.message, error)
-      }
-    } catch (error: any) {
-      this.emit('error', error)
-      throw error
-    }
+    return transactions
   }
 }
