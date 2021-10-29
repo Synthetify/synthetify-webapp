@@ -79,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   actionButton: {
     paddingBlock: 11,
     width: 136,
+    maxHeight: 48,
     marginRight: 36,
 
     '&:disabled': {
@@ -92,6 +93,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down('sm')]: {
       marginRight: 24,
+      maxHeight: 46,
       '&:hover': {
         backgroundColor: '#40BFA0 !important'
       },
@@ -106,6 +108,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       paddingBlock: 15,
+      maxHeight: 56,
       minWidth: 'calc(50% - 8px)',
       marginRight: 16
     }
