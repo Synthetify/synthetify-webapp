@@ -1,6 +1,6 @@
 import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
-import { actions, ExchangeAccount, PayloadTypes } from '@reducers/exchange'
+import { actions, ExchangeAccount, PayloadTypes, SwaplineSwapType } from '@reducers/exchange'
 import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
 import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
@@ -435,6 +435,98 @@ export function* handleSwap(): Generator {
   }
 }
 
+export function* handleSwaplineWSOLSwap(
+  amount: BN,
+  signer: PublicKey,
+  userSyntheticAccount: PublicKey,
+  synthetic: PublicKey,
+  collateral: PublicKey,
+  type: SwaplineSwapType
+): Generator {
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const wallet = yield* call(getWallet)
+
+  const wrappedSolAccount = Keypair.generate()
+  const connection = yield* call(getConnection)
+
+  const createIx = SystemProgram.createAccount({
+    fromPubkey: wallet.publicKey,
+    newAccountPubkey: wrappedSolAccount.publicKey,
+    lamports: yield* call(Token.getMinBalanceRentForExemptAccount, connection),
+    space: 165,
+    programId: TOKEN_PROGRAM_ID
+  })
+  const transferIx = SystemProgram.transfer({
+    fromPubkey: wallet.publicKey,
+    toPubkey: wrappedSolAccount.publicKey,
+    lamports: amount.toNumber()
+  })
+  const initIx = Token.createInitAccountInstruction(
+    TOKEN_PROGRAM_ID,
+    NATIVE_MINT,
+    wrappedSolAccount.publicKey,
+    wallet.publicKey
+  )
+  const swaplineIx = yield* call([
+    exchangeProgram,
+    exchangeProgram[type]
+  ],
+  {
+    amount,
+    signer,
+    userSyntheticAccount,
+    userCollateralAccount: wrappedSolAccount.publicKey,
+    synthetic,
+    collateral
+  })
+  const approveIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    type === 'nativeToSynthetic' ? wrappedSolAccount.publicKey : userSyntheticAccount,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(amount)
+  )
+  const unwrapIx = Token.createCloseAccountInstruction(
+    TOKEN_PROGRAM_ID,
+    wrappedSolAccount.publicKey,
+    wallet.publicKey,
+    wallet.publicKey,
+    []
+  )
+  const tx = type === 'nativeToSynthetic'
+    ? new Transaction()
+      .add(createIx)
+      .add(transferIx)
+      .add(initIx)
+      .add(approveIx)
+      .add(swaplineIx)
+      .add(unwrapIx)
+    : new Transaction()
+      .add(createIx)
+      .add(initIx)
+      .add(approveIx)
+      .add(swaplineIx)
+      .add(unwrapIx)
+
+  const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  tx.feePayer = wallet.publicKey
+  tx.recentBlockhash = blockhash.blockhash
+  const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+
+  signedTx.partialSign(wrappedSolAccount)
+  const txid = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
+
+  yield* put(actions.swaplineSwapDone({ txid }))
+  yield put(
+    snackbarsActions.add({
+      message: 'Successfully swaped token.',
+      variant: 'success',
+      persist: false
+    })
+  )
+}
+
 export function* handleSwaplineSwap(): Generator {
   const swapData = yield* select(swaplineSwap)
 
@@ -442,23 +534,31 @@ export function* handleSwaplineSwap(): Generator {
     const walletAddress = yield* select(address)
     const tokensAccounts = yield* select(accounts)
     const allCollaterals = yield* select(collaterals)
-    const exchangeProgram = yield* call(getExchangeProgram)
 
     let userSyntheticAccount = tokensAccounts[swapData.synthetic.toString()]
       ? tokensAccounts[swapData.synthetic.toString()].address
       : null
-    if (userSyntheticAccount == null) {
+    if (userSyntheticAccount === null) {
       userSyntheticAccount = yield* call(createAccount, swapData.synthetic)
     }
 
     let userCollateralAccount
     if (allCollaterals[swapData.collateral.toString()].symbol === 'WSOL') {
-      userCollateralAccount = walletAddress
+      return yield* call(
+        handleSwaplineWSOLSwap,
+        swapData.amount,
+        walletAddress,
+        userSyntheticAccount,
+        swapData.synthetic,
+        swapData.collateral,
+        swapData.swapType
+      )
     } else if (tokensAccounts[swapData.collateral.toString()]) {
       userCollateralAccount = tokensAccounts[swapData.collateral.toString()].address
     } else {
       userCollateralAccount = yield* call(createAccount, swapData.collateral)
     }
+    const exchangeProgram = yield* call(getExchangeProgram)
     const swaplineIx = yield* call([
       exchangeProgram,
       exchangeProgram[swapData.swapType]
