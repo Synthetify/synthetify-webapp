@@ -31,7 +31,14 @@ export const SwaplinePage: React.FC = () => {
                 syntheticSymbol={pairs[pairIndex === null ? 0 : pairIndex]?.syntheticData?.symbol ?? ''}
                 collateralSymbol={pairs[pairIndex === null ? 0 : pairIndex]?.collateralData?.symbol ?? ''}
                 fee={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.fee ?? decimalZero)}
-                balance={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.balance ?? decimalZero)}
+                balance={+printDecimal(
+                  pairs?.length
+                    ? {
+                      val: pairs[pairIndex === null ? 0 : pairIndex].balance.val.sub(pairs[pairIndex === null ? 0 : pairIndex].accumulatedFee.val),
+                      scale: pairs[pairIndex === null ? 0 : pairIndex].balance.scale
+                    }
+                    : decimalZero
+                )}
                 limit={+printDecimal(pairs[pairIndex === null ? 0 : pairIndex]?.limit ?? decimalZero)}
               />
             </Grid>
