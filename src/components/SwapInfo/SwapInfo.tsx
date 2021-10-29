@@ -74,7 +74,7 @@ export const SwapInfo: React.FC<IProps> = ({
               <AnimatedNumber
                 value={balance}
                 duration={300}
-                formatValue={(value: number) => value.toFixed(2)}
+                formatValue={(value: number) => value.toFixed(6)}
               />
               {' '}{collateralSymbol}
             </Typography>
@@ -90,7 +90,7 @@ export const SwapInfo: React.FC<IProps> = ({
               <AnimatedNumber
                 value={limit}
                 duration={300}
-                formatValue={(value: number) => value.toFixed(2)}
+                formatValue={(value: number) => value.toFixed(6)}
               />
               {' '}{collateralSymbol}
             </Typography>
