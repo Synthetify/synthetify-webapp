@@ -257,6 +257,12 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
         </>
       )
     }
+    if (
+      tokenFrom.symbol === 'xUSD' &&
+      tokenFrom.supply.val.sub(printBNtoBN(amountFrom, tokenFrom.supply.scale)).sub(tokenFrom.swaplineSupply.val).sub(tokenFrom.borrowedSupply.val).lt(new BN(0))
+    ) {
+      return 'xUSD swap limit reached'
+    }
     return 'Swap'
   }
 
