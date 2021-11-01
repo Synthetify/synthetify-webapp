@@ -108,12 +108,7 @@ const FullHeightIndicatorTab = withStyles((theme: Theme) =>
       }
     },
     wrapper: {
-      position: 'relative',
-      top: -2,
-
-      [theme.breakpoints.down('sm')]: {
-        top: -1
-      }
+      paddingTop: '1px'
     }
   })
 )((props: FullHeightIndicatorTabProps) => <Tab disableRipple {...props} />)
@@ -172,7 +167,9 @@ export const SwitchMenu: React.FC<IProps> = ({ menuItems, onChange }) => {
           {tabs}
         </FullHeightIndicatorTabs>
       </Grid>
-      <Fade in={fadeIn} ><Grid className={slide ? classes.slide : ''}>{tabsContent}</Grid></Fade>
+      <Fade in={fadeIn}>
+        <Grid className={slide ? classes.slide : ''}>{tabsContent}</Grid>
+      </Fade>
     </Grid>
   )
 }

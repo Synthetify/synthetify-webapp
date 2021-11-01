@@ -45,9 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginRight: 16
     }
   },
-  input: {
-    paddingTop: 4
-  },
   label: {
     top: -1
   }

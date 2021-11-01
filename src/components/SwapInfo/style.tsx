@@ -1,14 +1,15 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     background: colors.navy.component,
-    borderRadius: 10
+    borderRadius: 10,
+    height: '100%'
   },
   dataWrapper: {
     padding: 16,
-    paddingTop: 6
+    paddingTop: 12
   },
   title: {
     color: colors.white.main,
@@ -20,14 +21,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenInfo: {
     marginTop: 24,
-    padding: '8px 16px 10px',
+    padding: '12px 16px 10px',
     backgroundColor: 'rgba(12, 13, 44, 0.4)',
     border: `1px solid ${colors.navy.info}`,
     borderRadius: 10
   },
   infoPosition: {
     '&:not(:last-child)': {
-      marginBottom: 4
+      marginBottom: 5
     },
 
     '&:hover $positionTitle': {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     '&:hover $positionValue': {
-      ...typography.body3
+      color: colors.navy.veryLightGrey
     }
   },
   positionTitle: {
@@ -43,8 +44,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body4
   },
   positionValue: {
-    color: colors.navy.veryLightGrey,
-    ...typography.body4
+    color: colors.navy.lightGrey,
+    ...typography.body3
   },
   descWrapper: {
     padding: '24px 4px 0px 4px'
@@ -56,6 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   descText: {
     color: colors.navy.grey,
+    textAlign: 'justify',
     ...typography.body4
   }
 }))

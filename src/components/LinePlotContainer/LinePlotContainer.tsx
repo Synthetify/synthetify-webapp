@@ -85,17 +85,15 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   }}>
                   (
                   {infoData.percent === 'NaN' ? (
-                    <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                    <TrendingUpIcon className={classes.tradingIcon} />
                   ) : Number(infoData.percent) >= 0 ? (
                     Number(infoData.percent) === 0 ? (
-                      <TrendingFlatIcon
-                        style={{ marginTop: 'auto', padding: 0, fontSize: '1.25em' }}
-                      />
+                      <TrendingFlatIcon className={classes.tradingIcon} />
                     ) : (
-                      <TrendingUpIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                      <TrendingUpIcon className={classes.tradingIcon} />
                     )
                   ) : (
-                    <TrendingDownIcon style={{ margin: 'auto', padding: 0, fontSize: '1.25em' }} />
+                    <TrendingDownIcon className={classes.tradingIcon} />
                   )}
                   {infoData.percent !== 'NaN' ? (
                     <>
@@ -141,14 +139,6 @@ export const LinePlotContainer: React.FC<IProp> = ({
                       changeData('volume')
                     }}>
                     Volume
-                  </Button>
-                  <Button
-                    className={classes.optionItem}
-                    onClick={() => {
-                      setMenuOption('Liquidation')
-                      changeData('liquidation')
-                    }}>
-                    Liquidation
                   </Button>
                   <Button
                     className={classes.optionItem}

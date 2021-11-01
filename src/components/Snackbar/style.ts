@@ -10,22 +10,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.green.snackbar,
     borderRadius: 10,
     padding: 10,
-    ...typography.heading5,
-    maxWidth: 500,
+    ...typography.body2,
+    maxWidth: 550,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
+      width: 24,
+      height: 24,
       color: colors.green.snackbar,
-      marginTop: 4,
       [theme.breakpoints.down('xs')]: {
-        marginTop: 2
+        width: 22,
+        height: 22,
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
-      padding: '0px 8px 5px 4px'
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
+      padding: '0px 8px 0px 0px'
     }
   },
   error: {
@@ -37,20 +40,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     padding: 10,
     ...typography.heading5,
+    maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
       color: colors.red.snackbar,
-      marginTop: 4,
       [theme.breakpoints.down('xs')]: {
-        marginTop: 2
+        width: 14,
+        height: 14,
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
-      padding: '0px 8px 5px 4px'
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
+      padding: '0px 8px 0px 0px'
     }
   },
   info: {
@@ -64,19 +69,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
       color: colors.blue.astel,
-      marginTop: 4,
       [theme.breakpoints.down('xs')]: {
-        marginTop: 2
+        width: 14,
+        height: 14,
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
-      padding: '0px 8px 5px 4px'
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
+      padding: '0px 8px 0px 0px'
     }
   },
   warning: {
@@ -90,19 +96,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.heading5,
     maxWidth: 500,
     maxHeight: 65,
-    paddingBottom: 12,
+    lineHeight: '30px',
     '& SVG': {
       color: colors.yellow.neon,
-      marginTop: 4,
       [theme.breakpoints.down('xs')]: {
-        marginTop: 2
+        width: 14,
+        height: 14,
+        margin: '0 0 1px 5px'
       }
     },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1,
-      maxWidth: 255,
-      maxHeight: 32,
-      padding: '0px 8px 5px 4px'
+      ...typography.body4,
+      maxWidth: 360,
+      height: 50,
+      padding: '0px 8px 0px 0px'
     }
   }
 }))

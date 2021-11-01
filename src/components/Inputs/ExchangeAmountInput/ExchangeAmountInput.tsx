@@ -12,12 +12,13 @@ interface IProps {
   error?: string | null
   className?: string
   placeholder?: string
-  style?: CSSProperties,
-  onMaxClick: () => void,
+  style?: CSSProperties
+  onMaxClick: () => void
   current: string | null
-  tokens?: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
+  tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
   pairs?: Array<{ symbol1: string; symbol2: string }>
   onSelect: (chosen: number) => void
+  selectText?: string
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -31,13 +32,14 @@ export const AmountInput: React.FC<IProps> = ({
   current,
   tokens,
   pairs,
-  onSelect
+  onSelect,
+  selectText
 }) => {
   const classes = useStyles()
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = e => {
     const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || e.target.value === 'Max' || regex.test(e.target.value)) {
       const startValue = e.target.value
@@ -75,14 +77,13 @@ export const AmountInput: React.FC<IProps> = ({
       inputRef={inputRef}
       error={!!error}
       className={classNames(classes.amountInput, className)}
-      classes={{ input: classes.input }}
       style={style}
       type={'text'}
       value={value}
       disableUnderline={true}
       placeholder={placeholder}
       onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
-      endAdornment={(
+      endAdornment={
         <OutlinedButton
           name='Max'
           color='primary'
@@ -90,8 +91,8 @@ export const AmountInput: React.FC<IProps> = ({
           className={classes.maxButton}
           labelClassName={classes.label}
         />
-      )}
-      startAdornment={(
+      }
+      startAdornment={
         <Select
           centered={true}
           tokens={tokens}
@@ -99,8 +100,9 @@ export const AmountInput: React.FC<IProps> = ({
           onSelect={onSelect}
           current={current}
           className={classes.select}
+          name={selectText}
         />
-      )}
+      }
     />
   )
 }

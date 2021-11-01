@@ -127,7 +127,7 @@ export function* handleAirdrop(): Generator {
     console.error(error)
     return put(
       snackbarsActions.add({
-        message: 'Airdrop failed',
+        message: 'The airdrop failed',
         variant: 'error',
         persist: false
       })
@@ -135,7 +135,7 @@ export function* handleAirdrop(): Generator {
   }
   yield put(
     snackbarsActions.add({
-      message: 'You will soon receive airdrop',
+      message: 'You will receive an airdrop soon',
       variant: 'success',
       persist: false
     })
@@ -252,7 +252,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   if (!walletAddress.equals(DEFAULT_PUBLICKEY)) {
     yield* put(
       snackbarsActions.add({
-        message: 'Wallet already connected.',
+        message: 'A wallet is already connected.',
         variant: 'info',
         persist: false
       })
@@ -264,7 +264,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   } catch (error) {
     yield put(
       snackbarsActions.add({
-        message: 'Unable to connect to wallet.',
+        message: 'Unable to connect to the wallet.',
         variant: 'error',
         persist: false
       })
@@ -283,6 +283,9 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
       break
     case WalletType.SOLFLARE:
       enumWallet = 'solflare'
+      break
+    case WalletType.COIN98:
+      enumWallet = 'coin98'
       break
     default:
       enumWallet = 'phantom'

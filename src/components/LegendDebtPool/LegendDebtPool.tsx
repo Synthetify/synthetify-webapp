@@ -9,6 +9,8 @@ import {
   Typography
 } from '@material-ui/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { theme } from '@static/theme'
 import useStyle from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 
@@ -26,6 +28,30 @@ export interface IProps {
 }
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const classes = useStyle()
+  const allCoins: HTMLElement[] = Array.from(document.querySelectorAll('li'))
+  const xs = !useMediaQuery(theme.breakpoints.down('xs'))
+  const md = !useMediaQuery(theme.breakpoints.down('sm'))
+
+  allCoins.map((coins) => {
+    if (coins.offsetHeight >= 53 && xs && !md) {
+      allCoins.map((coin) => {
+        if (typeof (coin.childNodes[0].childNodes[2]) !== 'undefined') {
+          (coin.childNodes[0].childNodes[2] as HTMLElement).style.flex = '1 0 100%';
+          (coin.childNodes[0].childNodes[2] as HTMLElement).style.marginLeft = '-3px'
+        }
+      })
+    } else {
+      allCoins.map((coin) => {
+        if (typeof (coin.childNodes[0].childNodes[2]) !== 'undefined') {
+          (coin.childNodes[0].childNodes[2] as HTMLElement).style.flex = 'unset';
+          (coin.childNodes[0].childNodes[2] as HTMLElement).style.marginLeft = '0'
+        }
+      })
+    }
+  })
+
+  data.sort((a, b) => (b.percent - a.percent))
+
   return (
     <Card className={classes.statsListCard}>
       <CardContent className={classes.statsListCardContent}>
@@ -38,11 +64,11 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                     className={classes.listItemIconName}
                     style={{ color: element.color }}>
                     <Typography className={classes.titleLabel}>
-                      {' '}
+                      {''}
                       <FiberManualRecordIcon
-                        style={{ width: '10px', height: 'auto', paddingRight: '2px' }}
+                        style={{ width: '10px', height: 'auto', paddingRight: '8px' }}
                       />
-                      {element.label}{' '}
+                      {element.label}{''}
                     </Typography>
                   </ListItemIcon>
                   <Typography className={classes.percentNumber}>{`(${Number(
@@ -50,7 +76,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                   ).toFixed(2)}%)`}</Typography>
                   <ListItemIcon className={classes.listItemIconNumber}>
                     <FiberManualRecordIcon
-                      style={{ width: '8px', height: 'auto', paddingBottom: '0.25em' }}
+                      style={{ width: '10px', height: 'auto' }}
                     />
                     <AnimatedNumber
                       value={element.price}

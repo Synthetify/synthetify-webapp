@@ -5,7 +5,7 @@ const useStyles = makeStyles(() => ({
   tooltip: {
     backgroundColor: colors.navy.tooltip,
     padding: 10,
-    paddingTop: 2,
+    paddingTop: 5,
     borderRadius: 10,
     ...typography.body4,
     color: colors.navy.veryLightGrey,

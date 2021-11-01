@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     height: '100%',
     '&:last-child': {
-      padding: '4.5px 16px 8.5px 16px',
+      padding: '6.5px 16px 8.5px 16px',
       [theme.breakpoints.down('sm')]: {
         padding: '2.5px 8px'
       },
@@ -123,10 +123,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '52px',
     textAlign: 'center',
     fontWeight: 800,
-    margin: '8px 0 21px 0',
+    margin: '20px 0 21px 0',
     transition: 'transform 300ms linear, color 300ms linear, box-shadow 300ms linear',
     [theme.breakpoints.down('md')]: {
-      margin: '11px 0',
+      margin: '18px 0',
       ...typography.heading1
     },
     [theme.breakpoints.down('sm')]: {

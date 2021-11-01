@@ -6,8 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 8
   },
   title: {
-    position: 'relative',
-    top: -2,
     ...typography.heading3,
     color: colors.navy.veryLightGrey,
 
@@ -93,7 +91,8 @@ export const useStylesWithProps = makeStyles<Theme, { current: number }>((theme:
       width: '200%',
       height: '100%',
       zIndex: -1,
-      background: 'linear-gradient(90deg, #655ED4 24.66%, #40BF9F 50%, #40BF9F 78.82%, #655ED4 100%)',
+      background:
+        'linear-gradient(90deg, #655ED4 24.66%, #40BF9F 50%, #40BF9F 78.82%, #655ED4 100%)',
       opacity: 0.75,
       transform: `translateX(${current === 0 ? 0 : -50}%)`,
       transition: 'transform 300ms'

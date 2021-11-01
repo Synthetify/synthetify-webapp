@@ -114,18 +114,18 @@ export const typography = {
   },
   body1: {
     fontSize: 22,
-    lineHeight: '30px',
-    fontWeight: 800
+    lineHeight: '28px',
+    fontWeight: 900
   },
   body2: {
     fontSize: 22,
-    lineHeight: '30px',
+    lineHeight: '32px',
     fontWeight: 600
   },
   subtitle1: {
     fontSize: 16,
     lineHeight: '24px',
-    fontWeight: 800
+    fontWeight: 900
   },
   subtitle2: {
     fontSize: 16,
@@ -134,33 +134,33 @@ export const typography = {
   },
   body3: {
     fontSize: 13,
-    lineHeight: '20px',
-    fontWeight: 800
+    lineHeight: '17px',
+    fontWeight: 900
   },
   body4: {
     fontSize: 13,
-    lineHeight: '20px',
+    lineHeight: '19px',
     fontWeight: 600
   },
   caption1: {
     fontSize: 11,
-    lineHeight: '16px',
+    lineHeight: '15px',
     fontWeight: 600
   },
   caption2: {
     fontSize: 11,
     lineHeight: '16px',
-    fontWeight: 800
+    fontWeight: 900
   },
   caption3: {
     fontSize: 9,
-    lineHeight: '14px',
+    lineHeight: '12px',
     fontWeight: 600
   },
   caption4: {
     fontSize: 9,
     lineHeight: '14px',
-    fontWeight: 800
+    fontWeight: 900
   }
 }
 
@@ -183,7 +183,7 @@ export const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Be Vietnam',
+    fontFamily: 'Nunito Sans',
     fontWeightRegular: 600,
     h1: typography.heading1,
     h2: typography.heading2,

@@ -23,7 +23,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
   const [display, setDisplay] = React.useState<boolean>(true)
 
   const classes = useStyles()
-
+  data.sort((a, b) => (a.price - b.price))
   return (
     <Card className={classes.debtPoolCard}>
       <CardContent className={classes.debtPoolCardContent}>
@@ -60,11 +60,11 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
               <ResponsivePie
                 data={data}
                 margin={{ top: 6, right: 6, bottom: 6, left: 6 }}
-                sortByValue={true}
                 activeOuterRadiusOffset={5}
                 borderWidth={1}
                 borderColor={{ from: 'color' }}
                 startAngle={0}
+                endAngle={-360}
                 innerRadius={0.75}
                 padAngle={2.5}
                 enableArcLinkLabels={false}

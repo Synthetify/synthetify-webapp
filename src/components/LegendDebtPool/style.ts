@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: 'none',
     borderRadius: 10,
     height: 'auto',
-    fontFamily: 'Be Vietnam',
     marginLeft: '24px',
     width: '459px',
 
@@ -38,13 +37,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '10px',
     marginBottom: '0px',
     height: '100%',
-    paddingTop: '4px'
+    paddingTop: '10px'
   },
   listItemIconName: {
     width: 'fit-content',
-
-    paddingRight: 8,
+    paddingRight: 2,
     alignItems: 'center',
+    '& svg': {
+      paddingBottom: 1,
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 0
+      }
+    },
     '&> svg': {
       paddingRight: 8
     },
@@ -60,27 +64,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2
     },
-    [theme.breakpoints.down('sm')]: {
-      ...typography.body4
-    },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2
     }
   },
   listItemIconNumber: {
-    alignItems: 'end',
+    alignItems: 'center',
     color: colors.navy.info,
     paddingLeft: 4,
     ...typography.body2,
     '&> svg': {
-      paddingRight: 6
+      padding: '0px 6px 0px 0px',
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: 2
+      }
     },
     [theme.breakpoints.down('md')]: {
       ...typography.subtitle2,
       paddingLeft: 3
     },
     [theme.breakpoints.down('sm')]: {
-      ...typography.body4,
       paddingLeft: 3
     },
     [theme.breakpoints.down('xs')]: {
@@ -99,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   listItemGrid: {
-    padding: '4px 8px 10px 8px',
+    padding: '10px 8px 10px 8px',
     [theme.breakpoints.down('sm')]: {
       padding: '2px 8px 6px 8px'
     }
@@ -107,10 +110,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   legend: {
     width: '100%',
     height: 'max-content',
-    padding: '0 8px',
+    padding: '0 16px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 8px'
+    }
   },
   percentNumber: {
     ...typography.body2,
@@ -122,7 +128,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.subtitle2
     },
     [theme.breakpoints.down('sm')]: {
-      ...typography.body4
+      paddingLeft: 2
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.subtitle2

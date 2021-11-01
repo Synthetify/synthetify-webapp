@@ -13,6 +13,7 @@ import { Status } from '@reducers/solanaWallet'
 import { StatisticsPage } from './StatisticsPage/StatisticsPage'
 import solanaConnectionSelector from '@selectors/solanaConnection'
 import InformationCard from '@components/InformationCard/InformationCard'
+import { SwaplinePage } from './SwaplinePage/SwaplinePage'
 
 export const PagesRouter: React.FC = () => {
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ export const PagesRouter: React.FC = () => {
           <Route path='/staking' component={StakingPage} />
           <Route path={'/exchange'} component={ExchangePage} />
           <Route path={'/stats'} component={StatisticsPage} />
+          <Route path={'/swapline'} component={SwaplinePage} />
           <Route path='*'>
             <Redirect to='/staking'>
               <StakingPage />

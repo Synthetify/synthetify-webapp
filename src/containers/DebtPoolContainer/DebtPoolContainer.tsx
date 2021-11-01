@@ -20,7 +20,6 @@ export interface IProps {
 }
 export const DebtPoolContainer: React.FC<IProps> = () => {
   const synthetics = useSelector(getSyntheticsStructure)
-
   const SyntheticData: Data[] = Object.values(synthetics).map((item, index) => {
     return {
       id: index.toString(),

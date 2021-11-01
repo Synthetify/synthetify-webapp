@@ -8,11 +8,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     position: 'relative',
-    top: -3,
+    lineHeight: '26px',
 
     [theme.breakpoints.down('xs')]: {
-      ...typography.body4,
-      top: -2
+      ...typography.body4
     }
   },
   icon: {
