@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
     },
 
     '&:hover $positionValue': {
-      ...typography.body3
+      color: colors.navy.veryLightGrey
     }
   },
   positionTitle: {
@@ -44,8 +44,8 @@ const useStyles = makeStyles(() => ({
     ...typography.body4
   },
   positionValue: {
-    color: colors.navy.veryLightGrey,
-    ...typography.body4
+    color: colors.navy.lightGrey,
+    ...typography.body3
   },
   descWrapper: {
     padding: '24px 4px 0px 4px'

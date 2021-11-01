@@ -31,14 +31,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     minWidth: 30,
     height: 30,
-
     [theme.breakpoints.down('xs')]: {
       height: 24,
       minWidth: 24
     }
   },
   startIcon: {
-    marginRight: 6
+    marginRight: 5
   }
 }))
 

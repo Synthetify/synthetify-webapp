@@ -53,7 +53,7 @@ export const getAssetInAndFor = (
     priceVal: pair.collateralData.price.val,
     assetScale: pair.collateralData.reserveBalance.scale,
     symbol: pair.collateralData.symbol,
-    maxAvailable: pair.balance.val,
+    maxAvailable: pair.balance.val.sub(pair.accumulatedFee.val),
     balance: pair.collateralData.balance
   }
 
@@ -440,7 +440,6 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
       <Grid container item className={classes.numbersField}>
         <Grid item className={classes.numbersFieldGrid}>
             <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-
             <Typography className={classes.numbersFieldAmount}>
               {pairIndex !== null ? +printBN(pairs[pairIndex].fee.val.mul(new BN(100)), pairs[pairIndex].fee.scale) : 0}%
             </Typography>

@@ -6,12 +6,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2,
     color: colors.navy.lightGrey,
     [theme.breakpoints.down('sm')]: {
-      top: -1,
       ...typography.subtitle2
     },
     [theme.breakpoints.down('xs')]: {
-      top: 2,
+      paddingTop: 2,
       ...typography.body4
+    }
+  },
+  textContainer: {
+    margin: '0 -15px 0 15px',
+    [theme.breakpoints.down('xs')]: {
+      margin: '0 -15px 0 5px'
     }
   },
   tooltip: {

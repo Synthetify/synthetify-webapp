@@ -25,7 +25,6 @@ export const colors = [
   '#C76BA2',
   '#D49347'
 ]
-
 const addPxToValue = ['fontSize'] // add more css properties when needed
 
 export const importantStyles = (styleObject: { [key: string]: string | number }) => Object.entries(styleObject).reduce((obj, [key, value]) => ({

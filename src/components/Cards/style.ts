@@ -81,13 +81,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 export const useStylesWithProps = makeStyles<
-  Theme,
-  {
-    max: number
-    current: number
-    topIndicatorValue: number
-    bottomIndicatorValue: number
-  }
+Theme,
+{
+  max: number
+  current: number
+  topIndicatorValue: number
+  bottomIndicatorValue: number
+}
 >(() => ({
   bar: ({ max, current }) => ({
     borderRadius: 10,
