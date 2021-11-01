@@ -32,7 +32,9 @@ export const SwapInfo: React.FC<IProps> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Synthetic:</Typography>
-            <Typography className={classes.positionValue}>{descrpitionForSymbol[syntheticSymbol] ?? 'Unknown'}</Typography>
+            <Typography className={classes.positionValue}>
+              {descrpitionForSymbol[syntheticSymbol] ?? 'Unknown'}
+            </Typography>
           </Grid>
 
           <Grid
@@ -42,7 +44,9 @@ export const SwapInfo: React.FC<IProps> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Collateral:</Typography>
-            <Typography className={classes.positionValue}>{descrpitionForSymbol[collateralSymbol] ?? 'Unknown'}</Typography>
+            <Typography className={classes.positionValue}>
+              {descrpitionForSymbol[collateralSymbol] ?? 'Unknown'}
+            </Typography>
           </Grid>
 
           <Grid
@@ -75,8 +79,8 @@ export const SwapInfo: React.FC<IProps> = ({
                 value={balance}
                 duration={300}
                 formatValue={(value: number) => value.toFixed(6)}
-              />
-              {' '}{collateralSymbol}
+              />{' '}
+              {collateralSymbol}
             </Typography>
           </Grid>
           <Grid
@@ -91,18 +95,19 @@ export const SwapInfo: React.FC<IProps> = ({
                 value={limit}
                 duration={300}
                 formatValue={(value: number) => value.toFixed(6)}
-              />
-              {' '}{collateralSymbol}
+              />{' '}
+              {collateralSymbol}
             </Typography>
           </Grid>
         </Grid>
         <Grid container item className={classes.descWrapper}>
           <Typography className={classes.descTitle}>What is Swapline?</Typography>
           <Typography className={classes.descText}>
-          Swapline is a more straightforward way to get synthetic tokens.
-          It exists to keep the price of each of the synthetic tokens close to their original counterparts.
-          Tokens can be swapped from collateral to synthetic as long as the total swapped amount is below the swapline limit.
-          They can also be swapped back from synthetic to collateral, as long as there are enough tokens in collateral reserve (balance).
+            Swapline is a more straightforward way to get synthetic tokens. It exists to keep the
+            price of each of the synthetic tokens close to their original counterparts. Tokens can
+            be swapped from collateral to synthetic as long as the total swapped amount is below the
+            swapline limit. They can also be swapped back from synthetic to collateral, as long as
+            there are enough tokens in collateral reserve (balance).
           </Typography>
         </Grid>
       </Grid>

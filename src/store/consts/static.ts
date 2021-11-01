@@ -26,7 +26,8 @@ enum NetworkType {
   LOCALNET = 'Localnet',
   MAINNET = 'Mainnet'
 }
-const MAINNET_RPCS = [ // when adding new rpc: 1) make sure probability is between 0 and one; 2) sum od all probabilities is equal to 1
+const MAINNET_RPCS = [
+  // when adding new rpc: 1) make sure probability is between 0 and one; 2) sum od all probabilities is equal to 1
   // {
   //   rpc: SolanaNetworks.MAIN,
   //   probability: 0.6
@@ -63,7 +64,19 @@ const descrpitionForSymbol: { [key: string]: string } = {
   stSOL: 'Staked Solana',
   WSOL: 'Wrapped Solana',
   USDC: 'USD Coin',
-  renBTC: 'renBTC'
+  renBTC: 'renBTC',
+  whETH: 'Wormhole ETH',
+  whFTT: 'Wormhole FTT'
 }
 
-export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA, MAX_U64, MAINNET_RPCS, NetworkType, descrpitionForSymbol }
+export {
+  SolanaNetworks,
+  DEFAULT_PUBLICKEY,
+  ORACLE_OFFSET,
+  ACCURACY,
+  DEFAULT_STAKING_DATA,
+  MAX_U64,
+  MAINNET_RPCS,
+  NetworkType,
+  descrpitionForSymbol
+}

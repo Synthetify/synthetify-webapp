@@ -110,13 +110,17 @@ export function* handleAirdrop(): Generator {
 
   const allCollaterals = yield* select(collaterals)
   const snyToken = Object.values(allCollaterals)[0]
-  const stSolToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'stSOL')
-  const usdcToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'USDC')
+  const stSolToken = Object.values(allCollaterals).find(collateral => collateral.symbol === 'stSOL')
+  const whETH = Object.values(allCollaterals).find(collateral => collateral.symbol === 'whETH')
+  const usdcToken = Object.values(allCollaterals).find(collateral => collateral.symbol === 'USDC')
   try {
     yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
 
     if (stSolToken) {
       yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
+    }
+    if (whETH) {
+      yield* call(getCollateralTokenAirdrop, whETH.collateralAddress, 1e8)
     }
 
     if (usdcToken) {

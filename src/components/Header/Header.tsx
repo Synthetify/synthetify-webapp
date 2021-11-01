@@ -53,7 +53,7 @@ export const Header: React.FC<IHeader> = ({
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
   const routes = ['staking', 'stats', 'exchange']
-  if (typeOfNetwork === NetworkType.DEVNET) {
+  if (typeOfNetwork !== NetworkType.TESTNET) {
     routes.push('swapline')
   }
 
@@ -89,7 +89,7 @@ export const Header: React.FC<IHeader> = ({
             container
             wrap='nowrap'
             alignItems='center'
-            style={{ maxWidth: 93 * (routes.length) + 15 * (routes.length - 1) }}>
+            style={{ maxWidth: 93 * routes.length + 15 * (routes.length - 1) }}>
             {routes.map(path => (
               <Link key={`path-${path}`} to={`/${path}`} className={classes.link}>
                 <NavbarButton
@@ -144,7 +144,7 @@ export const Header: React.FC<IHeader> = ({
             <ChangeWalletButton
               name={`${address
                 .toString()
-                .substr(0, isSmDown ? 2 : (isMdDown ? 3 : 6))}...${address
+                .substr(0, isSmDown ? 2 : isMdDown ? 3 : 6)}...${address
                 .toString()
                 .substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
               options={[
