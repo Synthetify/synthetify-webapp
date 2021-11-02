@@ -226,6 +226,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           color='secondary'
           className={classes.actionButton}
           onClick={onClick(amountBN, decimal)}
+          labelClassName={classes.label}
         />
         <Progress state={getProgressState()} message={getProgressMessage()} />
       </Grid>
