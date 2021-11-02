@@ -4,6 +4,7 @@ import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
+import { toNumber } from 'lodash'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 
@@ -239,6 +240,23 @@ export const exchangeSelectors = {
   swap,
   effectiveFee: effectiveFeeData
 }
+
+export const getSwaplineCollateralBalance = createSelector(
+  swaplines,
+  collaterals,
+  assets,
+  (allSwaplines, allCollaterals, allAssets) => {
+    const balanceUSD = Object.values(allSwaplines).map((swapline) => {
+      const collateral = allCollaterals[swapline.collateral.toString()]
+      if (!collateral) {
+        return 0
+      } else {
+        return (+printBN(swapline.balance.val, swapline.balance.scale) - +printBN(swapline.accumulatedFee.val, swapline.accumulatedFee.scale)) * +printBN(allAssets[collateral.assetIndex].price.val, allAssets[collateral.assetIndex].price.scale)
+      }
+    })
+    return balanceUSD.reduce((sum, val) => sum + val, 0)
+  }
+)
 
 export const getCollateralStructure = createSelector(
   collaterals,

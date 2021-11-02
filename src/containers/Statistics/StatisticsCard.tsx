@@ -3,11 +3,12 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import statsSelector from '@selectors/stats'
-import { getCollateralValue, getSyntheticsStructure } from '@selectors/exchange'
+import { getCollateralValue, getSyntheticsStructure, getSwaplineCollateralBalance } from '@selectors/exchange'
 
 export const StatisticsCard: React.FC = () => {
   const statsData = useSelector(statsSelector.last24)
   const synthetics = useSelector(getSyntheticsStructure)
+  const USDBalance = useSelector(getSwaplineCollateralBalance)
   const collateralValue = useSelector(getCollateralValue)
 
   const syntheticData: Array<{
@@ -22,5 +23,5 @@ export const StatisticsCard: React.FC = () => {
     }
   })
 
-  return <StatisticCardAll data={statsData} debtCurrent={syntheticData} collateralValue={collateralValue} />
+  return <StatisticCardAll data={statsData} debtCurrent={syntheticData} collateralValue={collateralValue + USDBalance} />
 }
