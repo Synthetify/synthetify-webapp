@@ -34,7 +34,6 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   tooltipPlacement
 }) => {
   const classes = useStyles()
-
   const processedNonBracket = (
     <>
       {nonBracket ? (
@@ -42,7 +41,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           <AnimatedNumber
             value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
+            formatValue={(value: string) => Number(value) > 1000 ? Number(value).toFixed(1) : Number(value).toFixed(4)}
           />
           {` ${nonBracket}`}
         </>
@@ -61,12 +60,12 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
             <AnimatedNumber
               value={printBN(bracketValue, 2)}
               duration={300}
-              formatValue={(value: string) => Number(value).toFixed(2)}
+              formatValue={(value: string) => Number(value).toFixed(2) }
             />
           ) : (
             'infinity'
           )}
-          {` ${bracket})`}
+          {`${bracket})`}
         </>
       ) : (
         ''
@@ -91,7 +90,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
             isPopoverOpen={isPopoverOpen}
             setIsPopoverOpen={setIsPopoverOpen}
           />
-          <Grid item style={{ marginLeft: 15 }}>
+          <Grid item className={classes.textContainer}>
             <Typography className={classes.text}>
               {name}
               {': '}

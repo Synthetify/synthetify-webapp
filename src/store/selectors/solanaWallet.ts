@@ -134,37 +134,44 @@ export const collateralAccountsArray = createSelector(
   address,
   balance,
   (tokensAccounts, allCollaterals, exchangeAssets, wSOLAddress, wSOLBalance): TokenAccounts[] => {
-    const accounts = Object.values(tokensAccounts).reduce((acc, account) => {
-      if (allCollaterals[account.programId.toString()]) {
-        const asset = allCollaterals[account.programId.toString()]
-        acc.push({
+    const accounts: TokenAccounts[] = []
+
+    for (const collateral of Object.values(allCollaterals)) {
+      const account = tokensAccounts[collateral.collateralAddress.toString()]
+      if (collateral.symbol === 'WSOL') {
+        accounts.push({
+          symbol: collateral.symbol,
+          assetDecimals: collateral.reserveBalance.scale,
+          usdValue: exchangeAssets[collateral.assetIndex].price.val
+            .mul(wSOLBalance)
+            .div(new BN(10 ** (exchangeAssets[collateral.assetIndex].price.scale))),
+          decimals: collateral.reserveBalance.scale,
+          programId: collateral.collateralAddress,
+          balance: wSOLBalance,
+          address: wSOLAddress
+        })
+      } else if (account) {
+        accounts.push({
           ...account,
-          symbol: asset.symbol,
-          assetDecimals: asset.reserveBalance.scale,
-          usdValue: exchangeAssets[asset.assetIndex].price.val
+          symbol: collateral.symbol,
+          assetDecimals: collateral.reserveBalance.scale,
+          usdValue: exchangeAssets[collateral.assetIndex].price.val
             .mul(account.balance)
             .mul(new BN(10 ** account.decimals))
-            .div(new BN(10 ** (exchangeAssets[asset.assetIndex].price.scale)))
-            .div(new BN(10 ** asset.reserveBalance.scale))
+            .div(new BN(10 ** (exchangeAssets[collateral.assetIndex].price.scale)))
+            .div(new BN(10 ** collateral.reserveBalance.scale))
+        })
+      } else {
+        accounts.push({
+          symbol: collateral.symbol,
+          assetDecimals: collateral.reserveBalance.scale,
+          usdValue: new BN(0),
+          decimals: collateral.reserveBalance.scale,
+          programId: collateral.collateralAddress,
+          balance: new BN(0),
+          address: DEFAULT_PUBLICKEY
         })
       }
-      return acc
-    }, [] as TokenAccounts[])
-
-    const wSOL = Object.values(allCollaterals).find(asset => asset.symbol === 'WSOL')
-
-    if (wSOL) {
-      accounts.push({
-        symbol: wSOL.symbol,
-        assetDecimals: wSOL.reserveBalance.scale,
-        usdValue: exchangeAssets[wSOL.assetIndex].price.val
-          .mul(wSOLBalance)
-          .div(new BN(10 ** (exchangeAssets[wSOL.assetIndex].price.scale))),
-        decimals: wSOL.reserveBalance.scale,
-        programId: wSOL.collateralAddress,
-        balance: wSOLBalance,
-        address: wSOLAddress
-      })
     }
 
     return accounts

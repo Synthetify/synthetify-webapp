@@ -281,7 +281,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     return (
       <Grid item key={index} className={classes.line}>
         <RewardsLine {...props} slot={slot} />
-        <Divider className={classes.divider} />
+        <Divider className={classes.divider}/>
       </Grid>
     )
   })
@@ -296,7 +296,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
-      <Grid item container justifyContent='space-between' direction='column' style={{marginTop: 18}}>
+      <Grid item container justifyContent='space-between' direction='column' style={{ marginTop: 18 }}>
         {lines}
       </Grid>
       <Grid
