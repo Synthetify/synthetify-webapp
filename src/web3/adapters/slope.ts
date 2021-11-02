@@ -1,6 +1,8 @@
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { PublicKey, PublicKeyInitData, Transaction } from '@solana/web3.js'
 import bs58 from 'bs58'
 import EventEmitter from 'events'
+import { WalletAdapter } from './types'
 
 interface SlopeWallet {
   connect: () => Promise<{
@@ -32,19 +34,19 @@ interface SlopeWindow extends Window {
 
 declare const window: SlopeWindow
 
-export class SlopeWalletAdapter extends EventEmitter {
+export class SlopeWalletAdapter extends EventEmitter implements WalletAdapter {
   private _connecting: boolean
   private _wallet: SlopeWallet | null
-  private _publicKey: PublicKey | null
+  private _publicKey: PublicKey
 
   constructor() {
     super()
     this._connecting = false
     this._wallet = null
-    this._publicKey = null
+    this._publicKey = DEFAULT_PUBLICKEY
   }
 
-  get publicKey(): PublicKey | null {
+  get publicKey(): PublicKey {
     return this._publicKey
   }
 
@@ -57,7 +59,7 @@ export class SlopeWalletAdapter extends EventEmitter {
   }
 
   get connected(): boolean {
-    return !!this._publicKey
+    return this._publicKey !== DEFAULT_PUBLICKEY
   }
 
   get autoApprove() {
@@ -85,7 +87,7 @@ export class SlopeWalletAdapter extends EventEmitter {
     const wallet = this._wallet
     if (wallet) {
       this._wallet = null
-      this._publicKey = null
+      this._publicKey = DEFAULT_PUBLICKEY
       await wallet.disconnect()
       this.emit('disconnect')
     }
