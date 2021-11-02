@@ -11,9 +11,9 @@ interface Props {
 interface IProp {
   data: Props
   debtCurrent: Array<{
-    id: string
     value: number
-    price: number
+    symbol: string
+    scale: number
   }>
   collateralValue: number
 }
@@ -23,6 +23,7 @@ export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent, collatera
   return (
     <div className={classes.gridContainer}>
       <Grid container className={classes.container}>
+        {console.log(debtCurrent)}
         <Grid id='collateral' item xs={12} sm={7}>
           <StatisticsCard
             name='Collateral'
@@ -33,9 +34,7 @@ export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent, collatera
         <Grid id='debt' item xs={12} sm={5}>
           <StatisticsCard
             name='Debt'
-            value={debtCurrent.reduce((sum, item) => {
-              return sum + item.price
-            }, 0)}
+            value={debtCurrent.reduce((a, b) => a + b.value, 0)}
             desc={'Total debt owed'}
           />
         </Grid>

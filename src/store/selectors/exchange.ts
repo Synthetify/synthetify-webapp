@@ -314,6 +314,26 @@ export const getSyntheticsStructure = createSelector(
   }
 )
 
+export const getSyntheticsValue = createSelector(
+  synthetics,
+  assets,
+  (allSynthetics, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allSynthetics).map(item => {
+      const value = assets[item.assetIndex].price.val
+        .mul(item.supply.val)
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value: +transformBN(value),
+        symbol: item.symbol,
+        scale: item.supply.scale
+      }
+    })
+    return values
+  }
+)
+
 export const getCollateralValue = createSelector(collaterals, assets, (allColaterals, assets) => {
   let totalVal = new BN(0)
   Object.values(allColaterals).forEach(item => {

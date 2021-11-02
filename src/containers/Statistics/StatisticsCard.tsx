@@ -3,23 +3,23 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import statsSelector from '@selectors/stats'
-import { getCollateralValue, getSyntheticsStructure, getSwaplineCollateralBalance } from '@selectors/exchange'
+import { getCollateralValue, getSyntheticsValue, getSwaplineCollateralBalance } from '@selectors/exchange'
 
 export const StatisticsCard: React.FC = () => {
   const statsData = useSelector(statsSelector.last24)
-  const synthetics = useSelector(getSyntheticsStructure)
+  const synthetics = useSelector(getSyntheticsValue)
   const USDBalance = useSelector(getSwaplineCollateralBalance)
   const collateralValue = useSelector(getCollateralValue)
 
   const syntheticData: Array<{
-    id: string
     value: number
-    price: number
-  }> = Object.values(synthetics).map((item, index) => {
+    symbol: string
+    scale: number
+  }> = Object.values(synthetics).map((item) => {
     return {
-      id: index.toString(),
-      value: item.percent,
-      price: item.value
+      value: item.value,
+      symbol: item.symbol,
+      scale: item.scale
     }
   })
 
