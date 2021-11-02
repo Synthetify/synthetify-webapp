@@ -28,9 +28,7 @@ interface SlopeWallet {
   }>
 }
 
-interface SlopeWindow extends Window {
-  Slope?: new () => SlopeWallet
-}
+interface SlopeWindow extends Window { Slope?: new () => SlopeWallet }
 
 declare const window: SlopeWindow
 
