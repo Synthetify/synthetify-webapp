@@ -23,7 +23,6 @@ export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent, collatera
   return (
     <div className={classes.gridContainer}>
       <Grid container className={classes.container}>
-        {console.log(debtCurrent)}
         <Grid id='collateral' item xs={12} sm={7}>
           <StatisticsCard
             name='Collateral'
