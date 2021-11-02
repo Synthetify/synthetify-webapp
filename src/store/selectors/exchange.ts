@@ -4,7 +4,6 @@ import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
-import { toNumber } from 'lodash'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 
