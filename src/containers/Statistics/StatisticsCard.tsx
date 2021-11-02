@@ -8,9 +8,8 @@ import { getCollateralValue, getSyntheticsValue, getSwaplineCollateralBalance } 
 export const StatisticsCard: React.FC = () => {
   const statsData = useSelector(statsSelector.last24)
   const synthetics = useSelector(getSyntheticsValue)
-  const USDBalance = useSelector(getSwaplineCollateralBalance)
+  const swaplineCollateralValue = useSelector(getSwaplineCollateralBalance)
   const collateralValue = useSelector(getCollateralValue)
-
   const syntheticData: Array<{
     value: number
     symbol: string
@@ -23,5 +22,5 @@ export const StatisticsCard: React.FC = () => {
     }
   })
 
-  return <StatisticCardAll data={statsData} debtCurrent={syntheticData} collateralValue={collateralValue + USDBalance} />
+  return <StatisticCardAll data={statsData} debtCurrent={syntheticData} collateralValue={collateralValue + swaplineCollateralValue} />
 }
