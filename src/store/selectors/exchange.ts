@@ -288,30 +288,21 @@ export const getCollateralStructure = createSelector(
 export const getSyntheticsStructure = createSelector(
   synthetics,
   assets,
-  (allSynthetics, assets) => {
-    let totalVal = new BN(0)
-    const values = Object.values(allSynthetics).map(item => {
-      const value = assets[item.assetIndex].price.val
-        .mul(item.supply.val.sub(item.borrowedSupply.val).sub(item.swaplineSupply.val))
-        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
-      totalVal = totalVal.add(value)
-      return {
-        value,
-        symbol: item.symbol,
-        scale: item.supply.scale
-      }
-    })
-    const syntheticStructure = values.map(item => {
-      return {
-        symbol: item.symbol,
-        percent: +printBN(totalVal, item.scale)
-          ? (+printBN(item.value, item.scale) / +printBN(totalVal, item.scale)) * 100
-          : 0,
-        value: +transformBN(item.value)
-      }
-    })
-    return syntheticStructure
-  }
+  (allSynthetics, assets) => Object.values(allSynthetics).map(item => ({
+    symbol: item.symbol,
+    debt: {
+      amount: +transformBN(item.supply.val),
+      usdValue: +transformBN(assets[item.assetIndex].price.val
+        .mul(item.supply.val)
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
+    },
+    collateral: {
+      amount: +transformBN(item.borrowedSupply.val.add(item.swaplineSupply.val)),
+      usdValue: +transformBN(assets[item.assetIndex].price.val
+        .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
+    }
+  }))
 )
 
 export const getSyntheticsValue = createSelector(
