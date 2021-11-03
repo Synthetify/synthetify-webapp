@@ -18,6 +18,7 @@ export const Snackbar: React.FC<ISnackbarProps> = ({ children, maxSnack }) => {
         variantWarning: classes.warning,
         variantInfo: classes.info
       }}
+
     >
       {children}
     </SnackbarProvider>
