@@ -240,6 +240,23 @@ export const exchangeSelectors = {
   effectiveFee: effectiveFeeData
 }
 
+export const getSwaplineCollateralBalance = createSelector(
+  swaplines,
+  collaterals,
+  assets,
+  (allSwaplines, allCollaterals, allAssets) => {
+    const balanceUSD = Object.values(allSwaplines).map((swapline) => {
+      const collateral = allCollaterals[swapline.collateral.toString()]
+      if (!collateral) {
+        return 0
+      } else {
+        return (+printBN(swapline.balance.val, swapline.balance.scale) - +printBN(swapline.accumulatedFee.val, swapline.accumulatedFee.scale)) * +printBN(allAssets[collateral.assetIndex].price.val, allAssets[collateral.assetIndex].price.scale)
+      }
+    })
+    return balanceUSD.reduce((sum, val) => sum + val, 0)
+  }
+)
+
 export const getCollateralStructure = createSelector(
   collaterals,
   assets,
@@ -294,6 +311,26 @@ export const getSyntheticsStructure = createSelector(
       }
     })
     return syntheticStructure
+  }
+)
+
+export const getSyntheticsValue = createSelector(
+  synthetics,
+  assets,
+  (allSynthetics, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allSynthetics).map(item => {
+      const value = assets[item.assetIndex].price.val
+        .mul(item.supply.val)
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value: +transformBN(value),
+        symbol: item.symbol,
+        scale: item.supply.scale
+      }
+    })
+    return values
   }
 )
 

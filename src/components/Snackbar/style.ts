@@ -14,14 +14,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 550,
     maxHeight: 65,
     lineHeight: '30px',
-    '& SVG': {
-      width: 24,
-      height: 24,
-      color: colors.green.snackbar,
-      [theme.breakpoints.down('xs')]: {
-        width: 22,
-        height: 22,
-        margin: '0 0 1px 5px'
+    '& div': {
+      '& svg': {
+        width: 24,
+        height: 24,
+        fill: colors.green.snackbar,
+        [theme.breakpoints.down('xs')]: {
+          width: 22,
+          height: 22,
+          margin: '0 0 1px 5px'
+        }
       }
     },
     [theme.breakpoints.down('xs')]: {
@@ -43,12 +45,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 500,
     maxHeight: 65,
     lineHeight: '30px',
-    '& SVG': {
-      color: colors.red.snackbar,
-      [theme.breakpoints.down('xs')]: {
-        width: 14,
-        height: 14,
-        margin: '0 0 1px 5px'
+    '& div': {
+      '& svg': {
+        width: 24,
+        height: 24,
+        fill: colors.red.snackbar,
+        [theme.breakpoints.down('xs')]: {
+          width: 22,
+          height: 22,
+          margin: '0 0 1px 5px'
+        }
       }
     },
     [theme.breakpoints.down('xs')]: {
@@ -70,12 +76,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 500,
     maxHeight: 65,
     lineHeight: '30px',
-    '& SVG': {
-      color: colors.blue.astel,
-      [theme.breakpoints.down('xs')]: {
-        width: 14,
-        height: 14,
-        margin: '0 0 1px 5px'
+    '& div': {
+      '& svg': {
+        width: 24,
+        height: 24,
+        fill: colors.blue.astel,
+        [theme.breakpoints.down('xs')]: {
+          width: 22,
+          height: 22,
+          margin: '0 0 1px 5px'
+        }
       }
     },
     [theme.breakpoints.down('xs')]: {
@@ -97,12 +107,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 500,
     maxHeight: 65,
     lineHeight: '30px',
-    '& SVG': {
-      color: colors.yellow.neon,
-      [theme.breakpoints.down('xs')]: {
-        width: 14,
-        height: 14,
-        margin: '0 0 1px 5px'
+    '& div': {
+      '& svg': {
+        width: 24,
+        height: 24,
+        fill: colors.yellow.neon,
+        [theme.breakpoints.down('xs')]: {
+          width: 22,
+          height: 22,
+          margin: '0 0 1px 5px'
+        }
       }
     },
     [theme.breakpoints.down('xs')]: {
