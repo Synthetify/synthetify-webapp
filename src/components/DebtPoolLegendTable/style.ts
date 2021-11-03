@@ -2,12 +2,62 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {},
-  header: {
+  root: {
+    width: 496,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: colors.navy.component,
+
+    [theme.breakpoints.down('md')]: {
+      width: 464
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      width: 300
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
   },
-  row: {},
-  column: {},
-  dataCell: {},
+  header: {
+    height: 60,
+
+    [theme.breakpoints.down('sm')]: {
+      height: 40
+    }
+  },
+  row: {
+    height: 48,
+    backgroundColor: `${colors.navy.background}80`,
+
+    '&:nth-child(2n+1)': {
+      backgroundColor: `${colors.navy.background}00`
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      height: 40
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      height: 34
+    }
+  },
+  column: {
+    width: '25%',
+    backgroundColor: `${colors.navy.background}4D`,
+
+    '&:nth-child(2n+1)': {
+      backgroundColor: `${colors.navy.background}00`
+    }
+  },
+  dataCell: {
+    paddingLeft: 8,
+
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 5
+    }
+  },
   headerText: {
     ...typography.subtitle1,
     color: colors.navy.veryLightGrey,
@@ -17,7 +67,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down('xs')]: {
-      ...typography.body3
+      ...typography.body3,
+      fontSize: 12
     }
   },
   tokenName: {
@@ -27,8 +78,25 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body3
     }
   },
-  tokenAmount: {},
-  tokenValue: {}
+  tokenAmount: {
+    color: colors.navy.info,
+    ...typography.body3,
+
+    [theme.breakpoints.down('sm')]: {
+      ...typography.caption4
+    }
+  },
+  tokenValue: {
+    color: colors.navy.info,
+    ...typography.body4,
+
+    [theme.breakpoints.down('sm')]: {
+      ...typography.caption3
+    }
+  },
+  negative: {
+    color: colors.red.negative
+  }
 }))
 
 export default useStyles
