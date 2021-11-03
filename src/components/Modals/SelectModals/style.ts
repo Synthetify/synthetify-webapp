@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: 3,
     paddingInline: 15,
     paddingBlock: 20,
-
     [theme.breakpoints.down('md')]: {
       width: 372,
       paddingInline: 10,
@@ -42,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tokenItem: {
-    margin: 5,
+    margin: '5px 5px 5px 0',
     marginBottom: 14,
     borderRadius: 10,
     width: 392,

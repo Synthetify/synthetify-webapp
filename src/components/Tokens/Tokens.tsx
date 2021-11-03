@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { IToken } from './Item/Item'
-import { Grid, Typography, useMediaQuery } from '@material-ui/core'
-import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { Grid, Typography } from '@material-ui/core'
+
 import Switch from './Switch/Switch'
 import List from './List/List'
 import { formatNumbers, printBN, showPrefix } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
 import useStyles, { useStylesWithProps } from './style'
-import { theme } from '@static/theme'
 
 export interface IProps {
   synthetic: IToken[]
@@ -15,14 +14,13 @@ export interface IProps {
   addAccount: () => void
 }
 
-export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
+export const Tokens: React.FC<IProps> = ({ synthetic, staked }) => {
   const classes = useStyles()
   const [current, setCurrent] = useState(0)
   const [sum, setSum] = useState(
     staked.reduce((acc, token) => acc + +printBN(token.usdValue, token.decimals), 0)
   )
   const proppedClasses = useStylesWithProps({ current })
-  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   useEffect(() => {
     setSum(
@@ -43,10 +41,10 @@ export const Tokens: React.FC<IProps> = ({ synthetic, staked, addAccount }) => {
           <Typography className={classes.title}>
             {current === 0 ? 'Staked tokens' : 'Synthetic assets'}
           </Typography>
-            <Typography className={classes.sum}>
+          <Typography className={classes.sum}>
               $ <AnimatedNumber value={sum} duration={300} formatValue={formatNumbers} />
-              {showPrefix(sum)}
-            </Typography>
+            {showPrefix(sum)}
+          </Typography>
         </Grid>
         <List
           tokens={current === 0 ? staked : synthetic}
