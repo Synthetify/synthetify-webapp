@@ -79,14 +79,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
   roundLength,
-  stakedUserValue,
   SNYPrice,
   userDebtShares,
   rounds,
   onClaim,
   onWithdraw,
-  amountPerRoundValue,
-  collateralValue
+  amountPerRoundValue
 }) => {
   const classes = useStyles()
 
@@ -192,23 +190,23 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
-    return !stakedUserValue.eq(new BN(0))
+    return !userDebtShares.eq(new BN(0))
       ? calculateTokensBasedOnPoints(roundPoints, roundAllPoints, roundAmount)
         .mul(SNYPrice.val)
         .mul(new BN(52))
-        .div(stakedUserValue)
+        .div(userDebtShares)
       : new BN(0)
   }
   const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     const apr = aprValue(roundPoints, roundAllPoints, roundAmount)
-    return !stakedUserValue.eq(new BN(0))
+    return !userDebtShares.eq(new BN(0))
       ? new BN((Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) - 1) * 10000)
       : new BN(0)
   }
 
   const avgAPR = new BN(transformBN(amountPerRoundValue.val))
     .mul(SNYPrice.val)
-    .div(new BN(collateralValue))
+    .div(new BN(userDebtShares))
     .mul(new BN(52))
     .div(new BN(100))
   const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
