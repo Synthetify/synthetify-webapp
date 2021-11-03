@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '25px 0px 16px 0px',
+    padding: '24px 0px 6px 0px',
     fontSize: 18,
     width: '100%',
     display: 'flex',
@@ -107,6 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   legendItem: {
     marginRight: 35,
     ...typography.body2,
+    marginBottom: 10,
     [theme.breakpoints.down('xs')]: {
       marginRight: 0,
       ...typography.subtitle2,
