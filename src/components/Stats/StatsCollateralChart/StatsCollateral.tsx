@@ -18,6 +18,8 @@ export interface IProps {
 export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
 
+  data.sort((a, b) => (b.percent - a.percent))
+  
   const getCoinsName = (data: CoinToChart[]) => {
     return data.map(coin => coin.name)
   }
@@ -65,7 +67,6 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
 
   const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs'))
 
-  //data.sort((a, b) => (b.percent - a.percent))
 
   return (
     <>
