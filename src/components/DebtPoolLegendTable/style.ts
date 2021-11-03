@@ -7,17 +7,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: colors.navy.component,
+    marginLeft: 32,
 
     [theme.breakpoints.down('md')]: {
-      width: 464
+      width: 464,
+      marginLeft: 24
     },
 
     [theme.breakpoints.down('sm')]: {
-      width: 300
+      width: 300,
+      marginLeft: 16
     },
 
     [theme.breakpoints.down('xs')]: {
-      width: '100%'
+      width: '100%',
+      marginLeft: 0
     }
   },
   header: {
@@ -33,6 +37,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:nth-child(2n+1)': {
       backgroundColor: `${colors.navy.background}00`
+    },
+
+    '&.light $tokenAmount, &.light $tokenValue': {
+      color: colors.navy['8E8DEF']
     },
 
     [theme.breakpoints.down('sm')]: {

@@ -3,13 +3,19 @@ import { ResponsivePie } from '@nivo/pie'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { Grid, Card, CardContent, Typography } from '@material-ui/core'
 import useStyles from './style'
-import { colors } from '@static/theme'
+
 export interface Data {
   id: string
   label: string
-  value: number
   color: string
-  price: number
+  debt: {
+    amount: number
+    usdValue: number
+  }
+  collateral: {
+    amount: number
+    usdValue: number
+  }
 }
 
 export interface IProps {
@@ -23,7 +29,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
   const [display, setDisplay] = React.useState<boolean>(true)
 
   const classes = useStyles()
-  data.sort((a, b) => (a.price - b.price))
+  data.sort((a, b) => (Math.abs(a.debt.usdValue - a.collateral.usdValue) - Math.abs(b.debt.usdValue - b.collateral.usdValue)))
   return (
     <Card className={classes.debtPoolCard}>
       <CardContent className={classes.debtPoolCardContent}>
@@ -43,22 +49,27 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 className={classes.tooltipTotal}
                 style={{ display: `${display ? 'block' : 'none'}` }}>
                 <AnimatedNumber
+                  $
                   value={data.reduce((sum, item) => {
-                    return sum + item.price
+                    return sum + item.debt.usdValue
                   }, 0)}
                   duration={500}
                   formatValue={(value: string) =>
-                    Number(value) > 10000000
-                      ? Number((Number(value) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
-                      : Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
+                    '$' + (
+                      Math.abs(Number(value)) > 10000000
+                        ? Number((Number(value) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
+                        : Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
+                    )
                   }
                 />
-                $
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
               <ResponsivePie
-                data={data}
+                data={data.map((element) => ({
+                  ...element,
+                  value: Math.abs(element.debt.usdValue - element.collateral.usdValue)
+                }))}
                 margin={{ top: 6, right: 6, bottom: 6, left: 6 }}
                 activeOuterRadiusOffset={5}
                 borderWidth={1}
@@ -78,13 +89,18 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 tooltip={() => null}
                 onMouseEnter={event => {
                   const variable: string = event.id.toString()
-                  setLabel(event.label.toString())
-                  setInfo(`${Number(event.formattedValue).toFixed(2)}%`)
+                  setLabel('DELTA')
+                  setInfo(
+                    '$' + (
+                      Math.abs(Number(event.formattedValue)) > 10000000
+                        ? Number((Number(event.formattedValue) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
+                        : Number(Number(event.formattedValue).toFixed(0)).toLocaleString('pl-PL')
+                    )
+                  )
                   setDisplay(false)
                   var element = document.getElementById(variable)
                   if (element != null) {
-                    element.style.background = `${colors.navy.navButton}40`
-                    element.style.borderRadius = '10px'
+                    element.classList.add('light')
                   }
                 }}
                 onMouseLeave={event => {
@@ -94,8 +110,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                   setDisplay(true)
                   var element = document.getElementById(variable)
                   if (element != null) {
-                    element.style.background = colors.navy.component
-                    element.style.borderRadius = '0px'
+                    element.classList.remove('light')
                   }
                 }}
                 legends={[]}

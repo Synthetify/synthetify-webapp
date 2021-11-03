@@ -83,7 +83,8 @@ export const colors = {
     darkGrey: '#292956',
     tooltip: '#5B54CE',
     '5756B3': '#5756B3',
-    '807ADC': '#807ADC'
+    '807ADC': '#807ADC',
+    '8E8DEF': '#8E8DEF'
   }
 }
 

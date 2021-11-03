@@ -45,43 +45,45 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
         </Grid>
       </Grid>
 
-      {data.map((token, index) => {
-        const delta = token.debt.amount - token.collateral.amount
-        return (
-          <Grid key={index} id={token.id} className={classes.row} container direction='row'>
-            <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
-              <Typography className={classes.tokenName} style={{ color: token.color }}>{token.label}</Typography>
-            </Grid>
+      {data
+        .sort((a, b) => (Math.abs(b.debt.usdValue - b.collateral.usdValue) - Math.abs(a.debt.usdValue - a.collateral.usdValue)))
+        .map((token, index) => {
+          const delta = token.debt.amount - token.collateral.amount
+          return (
+            <Grid key={index} id={token.id} className={classes.row} container direction='row'>
+              <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
+                <Typography className={classes.tokenName} style={{ color: token.color }}>{token.label}</Typography>
+              </Grid>
 
-            <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
-              <Typography className={classes.tokenAmount}>
-                {token.debt.amount} {token.label}
-              </Typography>
-              <Typography className={classes.tokenValue}>
+              <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
+                <Typography className={classes.tokenAmount}>
+                  {token.debt.amount} {token.label}
+                </Typography>
+                <Typography className={classes.tokenValue}>
                 ${token.debt.usdValue}
-              </Typography>
-            </Grid>
+                </Typography>
+              </Grid>
 
-            <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
-              <Typography className={classes.tokenAmount}>
-                {token.collateral.amount} {token.label}
-              </Typography>
-              <Typography className={classes.tokenValue}>
+              <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
+                <Typography className={classes.tokenAmount}>
+                  {token.collateral.amount} {token.label}
+                </Typography>
+                <Typography className={classes.tokenValue}>
                 ${token.collateral.usdValue}
-              </Typography>
-            </Grid>
+                </Typography>
+              </Grid>
 
-            <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center' >
-              <Typography className={classNames(classes.tokenAmount, delta < 0 ? classes.negative : undefined)}>
-                {token.debt.amount - token.collateral.amount} {token.label}
-              </Typography>
-              <Typography className={classNames(classes.tokenValue, delta < 0 ? classes.negative : undefined)}>
+              <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center' >
+                <Typography className={classNames(classes.tokenAmount, delta < 0 ? classes.negative : undefined)}>
+                  {token.debt.amount - token.collateral.amount} {token.label}
+                </Typography>
+                <Typography className={classNames(classes.tokenValue, delta < 0 ? classes.negative : undefined)}>
                 ${token.debt.usdValue - token.collateral.usdValue}
-              </Typography>
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        )
-      })}
+          )
+        })}
     </Grid>
   )
 }

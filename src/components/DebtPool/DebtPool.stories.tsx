@@ -9,37 +9,67 @@ storiesOf('stats/debtPool', module).add('pool', () => (
       {
         id: 'xBTC',
         label: 'xBTC',
-        value: 1456,
         color: '#6372BE',
-        price: 7445665
+        debt: {
+          amount: 5,
+          usdValue: 3.14
+        },
+        collateral: {
+          amount: 6,
+          usdValue: 4.14
+        }
       },
       {
         id: 'xETH',
         label: 'xETH',
-        value: 2456,
         color: '#40BFA0',
-        price: 740345546
+        debt: {
+          amount: 5,
+          usdValue: 3.14
+        },
+        collateral: {
+          amount: 4,
+          usdValue: 2.14
+        }
       },
       {
         id: 'xSOL',
         label: 'xSOL',
-        value: 6544,
         color: '#117098',
-        price: 74456
+        debt: {
+          amount: 500000,
+          usdValue: 30000.14
+        },
+        collateral: {
+          amount: 60000,
+          usdValue: 40000.14
+        }
       },
       {
         id: 'xBNB',
         label: 'xBNB',
-        value: 2374,
         color: '#BFB655',
-        price: 7345
+        debt: {
+          amount: 5,
+          usdValue: 3.14
+        },
+        collateral: {
+          amount: 4,
+          usdValue: 2.14
+        }
       },
       {
         id: 'xFTT',
         label: 'xFTT',
-        value: 3514,
         color: '#1F70CF',
-        price: 345
+        debt: {
+          amount: 50000000,
+          usdValue: 30000000.14
+        },
+        collateral: {
+          amount: 60000000,
+          usdValue: 40000000.14
+        }
       }
     ]}
   />

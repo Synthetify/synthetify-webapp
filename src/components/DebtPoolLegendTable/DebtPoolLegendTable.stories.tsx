@@ -27,8 +27,8 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
           usdValue: 3.14
         },
         collateral: {
-          amount: 6,
-          usdValue: 4.14
+          amount: 4,
+          usdValue: 2.14
         }
       },
       {
@@ -36,12 +36,12 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         label: 'xSOL',
         color: '#117098',
         debt: {
-          amount: 5,
-          usdValue: 3.14
+          amount: 500000,
+          usdValue: 30000.14
         },
         collateral: {
-          amount: 6,
-          usdValue: 4.14
+          amount: 60000,
+          usdValue: 40000.14
         }
       },
       {
@@ -53,8 +53,8 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
           usdValue: 3.14
         },
         collateral: {
-          amount: 6,
-          usdValue: 4.14
+          amount: 4,
+          usdValue: 2.14
         }
       },
       {
@@ -62,12 +62,12 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         label: 'xFTT',
         color: '#1F70CF',
         debt: {
-          amount: 5,
-          usdValue: 3.14
+          amount: 50000000,
+          usdValue: 30000000.14
         },
         collateral: {
-          amount: 6,
-          usdValue: 4.14
+          amount: 60000000,
+          usdValue: 40000000.14
         }
       }
     ]}
