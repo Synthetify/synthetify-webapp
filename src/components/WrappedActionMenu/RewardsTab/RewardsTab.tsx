@@ -31,6 +31,7 @@ export interface IRewardsProps {
   roundLength: number
   stakedUserValue: BN
   SNYPrice: Decimal
+  allDebtValue: Array<{symbol: string, percent: number, value: number}>
   userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
@@ -84,7 +85,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   rounds,
   onClaim,
   onWithdraw,
-  amountPerRoundValue
+  amountPerRoundValue,
+  allDebtValue
 }) => {
   const classes = useStyles()
 
@@ -206,7 +208,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const avgAPR = new BN(transformBN(amountPerRoundValue.val))
     .mul(SNYPrice.val)
-    .div(new BN(userDebtShares))
+    .div(new BN(allDebtValue.reduce((a, b) => a + b.value, 0)))
     .mul(new BN(52))
     .div(new BN(100))
   const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
