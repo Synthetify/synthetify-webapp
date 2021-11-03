@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down('sm')]: {
-      margin: '12px 23px 0px 23px'
+      margin: '12px 0px 0px 0px'
     },
 
     [theme.breakpoints.down('xs')]: {

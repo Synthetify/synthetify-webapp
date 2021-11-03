@@ -1,5 +1,5 @@
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp, discountData, printBN, transformBN } from '@consts/utils'
+import { divUp, discountData, printBN, transformBN, printDecimal } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -291,13 +291,13 @@ export const getSyntheticsStructure = createSelector(
   (allSynthetics, assets) => Object.values(allSynthetics).map(item => ({
     symbol: item.symbol,
     debt: {
-      amount: +transformBN(item.supply.val),
+      amount: +printDecimal(item.supply),
       usdValue: +transformBN(assets[item.assetIndex].price.val
         .mul(item.supply.val)
         .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
     },
     collateral: {
-      amount: +transformBN(item.borrowedSupply.val.add(item.swaplineSupply.val)),
+      amount: +printBN(item.borrowedSupply.val.add(item.swaplineSupply.val), item.supply.scale),
       usdValue: +transformBN(assets[item.assetIndex].price.val
         .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
         .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))

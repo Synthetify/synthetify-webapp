@@ -27,6 +27,20 @@ export interface IProps {
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
 
+  const formatTableValue = (value: string) => {
+    const numVal = Number(value)
+
+    if (Math.abs(numVal) < 1000) {
+      return numVal.toFixed(4)
+    }
+
+    if (Math.abs(numVal) < 1000000) {
+      return numVal.toFixed(2)
+    }
+
+    return numVal.toFixed(0)
+  }
+
   return (
     <Grid className={classes.root}>
       <Grid className={classes.header} container direction='row'>
@@ -57,28 +71,58 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
 
               <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
                 <Typography className={classes.tokenAmount}>
-                  {token.debt.amount} {token.label}
+                  <AnimatedNumber
+                    value={token.debt.amount}
+                    duration={500}
+                    formatValue={formatTableValue}
+                  />
+                  {' '}{token.label}
                 </Typography>
                 <Typography className={classes.tokenValue}>
-                ${token.debt.usdValue}
+                  $
+                  <AnimatedNumber
+                    value={token.debt.usdValue}
+                    duration={500}
+                    formatValue={formatTableValue}
+                  />
                 </Typography>
               </Grid>
 
               <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
                 <Typography className={classes.tokenAmount}>
-                  {token.collateral.amount} {token.label}
+                  <AnimatedNumber
+                    value={token.collateral.amount}
+                    duration={500}
+                    formatValue={formatTableValue}
+                  />
+                  {' '}{token.label}
                 </Typography>
                 <Typography className={classes.tokenValue}>
-                ${token.collateral.usdValue}
+                  $
+                  <AnimatedNumber
+                    value={token.collateral.usdValue}
+                    duration={500}
+                    formatValue={formatTableValue}
+                  />
                 </Typography>
               </Grid>
 
               <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center' >
                 <Typography className={classNames(classes.tokenAmount, delta < 0 ? classes.negative : undefined)}>
-                  {token.debt.amount - token.collateral.amount} {token.label}
+                  <AnimatedNumber
+                    value={token.debt.amount - token.collateral.amount}
+                    duration={500}
+                    formatValue={formatTableValue}
+                  />
+                  {' '}{token.label}
                 </Typography>
                 <Typography className={classNames(classes.tokenValue, delta < 0 ? classes.negative : undefined)}>
-                ${token.debt.usdValue - token.collateral.usdValue}
+                  $
+                  <AnimatedNumber
+                    value={token.debt.usdValue - token.collateral.usdValue}
+                    duration={500}
+                    formatValue={formatTableValue}
+                  />
                 </Typography>
               </Grid>
             </Grid>

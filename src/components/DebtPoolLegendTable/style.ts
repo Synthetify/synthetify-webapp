@@ -15,12 +15,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down('sm')]: {
-      width: 300,
+      width: 'calc(45% - 16px)',
+      minWidth: 300,
       marginLeft: 16
     },
 
     [theme.breakpoints.down('xs')]: {
       width: '100%',
+      minWidth: 'unset',
       marginLeft: 0
     }
   },
@@ -39,7 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: `${colors.navy.background}00`
     },
 
-    '&.light $tokenAmount, &.light $tokenValue': {
+    '&.light, &:hover': {
+      backgroundColor: `${colors.navy.navButton}66`
+    },
+
+    '&.light $tokenAmount, &.light $tokenValue, &:hover $tokenAmount, &:hover $tokenValue': {
       color: colors.navy['8E8DEF']
     },
 

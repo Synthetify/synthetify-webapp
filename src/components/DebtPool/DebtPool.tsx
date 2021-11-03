@@ -1,7 +1,7 @@
 import React from 'react'
 import { ResponsivePie } from '@nivo/pie'
-import AnimatedNumber from '@components/AnimatedNumber'
 import { Grid, Card, CardContent, Typography } from '@material-ui/core'
+import { colors } from '@static/theme'
 import useStyles from './style'
 
 export interface Data {
@@ -24,12 +24,19 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
+  const formatVal = (value: number) => Math.abs(value) > 10000000
+    ? Number((value / 1000000).toFixed(1)).toLocaleString('pl-PL').replace(',', '.') + 'M'
+    : Number(value.toFixed(0)).toLocaleString('pl-PL')
+
   const [label, setLabel] = React.useState<String>('TOTAL DEBT')
-  const [info, setInfo] = React.useState<String>('')
-  const [display, setDisplay] = React.useState<boolean>(true)
+  const [info, setInfo] = React.useState<String>('$' + formatVal(data.reduce((sum, item) => {
+    return sum + item.debt.usdValue
+  }, 0)))
+  const [negative, setNegative] = React.useState(false)
 
   const classes = useStyles()
   data.sort((a, b) => (Math.abs(a.debt.usdValue - a.collateral.usdValue) - Math.abs(b.debt.usdValue - b.collateral.usdValue)))
+
   return (
     <Card className={classes.debtPoolCard}>
       <CardContent className={classes.debtPoolCardContent}>
@@ -41,27 +48,8 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
               <Typography component='h2' className={classes.tooltipLabel}>
                 {label}
               </Typography>
-              <Typography component='p' className={classes.tooltipValue}>
+              <Typography component='p' className={classes.tooltipValue} style={negative ? { color: colors.red.negative } : undefined}>
                 {info}
-              </Typography>
-              <Typography
-                component='p'
-                className={classes.tooltipTotal}
-                style={{ display: `${display ? 'block' : 'none'}` }}>
-                <AnimatedNumber
-                  $
-                  value={data.reduce((sum, item) => {
-                    return sum + item.debt.usdValue
-                  }, 0)}
-                  duration={500}
-                  formatValue={(value: string) =>
-                    '$' + (
-                      Math.abs(Number(value)) > 10000000
-                        ? Number((Number(value) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
-                        : Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
-                    )
-                  }
-                />
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
@@ -88,27 +76,26 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsTextColor='#000000'
                 tooltip={() => null}
                 onMouseEnter={event => {
-                  const variable: string = event.id.toString()
                   setLabel('DELTA')
                   setInfo(
-                    '$' + (
-                      Math.abs(Number(event.formattedValue)) > 10000000
-                        ? Number((Number(event.formattedValue) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
-                        : Number(Number(event.formattedValue).toFixed(0)).toLocaleString('pl-PL')
-                    )
+                    '$' + formatVal(+event.formattedValue)
                   )
-                  setDisplay(false)
-                  var element = document.getElementById(variable)
+                  setNegative(+event.formattedValue < 0)
+                  var element = document.getElementById(event.id.toString())
                   if (element != null) {
                     element.classList.add('light')
                   }
                 }}
                 onMouseLeave={event => {
-                  const variable: string = event.id.toString()
+                  const sumValue = data.reduce((sum, item) => {
+                    return sum + item.debt.usdValue
+                  }, 0)
                   setLabel('TOTAL DEBT')
-                  setInfo('')
-                  setDisplay(true)
-                  var element = document.getElementById(variable)
+                  setInfo(
+                    '$' + formatVal(sumValue)
+                  )
+                  setNegative(false)
+                  var element = document.getElementById(event.id.toString())
                   if (element != null) {
                     element.classList.remove('light')
                   }
