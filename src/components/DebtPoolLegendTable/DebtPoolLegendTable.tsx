@@ -3,8 +3,8 @@ import {
   Grid,
   Typography
 } from '@material-ui/core'
-import useStyle from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
+import useStyles from './style'
 
 export interface Data {
   id: string
@@ -24,7 +24,7 @@ export interface IProps {
   data: Data[]
 }
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
-  const classes = useStyle()
+  const classes = useStyles()
 
   return (
     <Grid className={classes.root}>

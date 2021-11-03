@@ -3,11 +3,30 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {},
-  header: {},
+  header: {
+  },
   row: {},
   column: {},
-  headerText: {},
-  tokenName: {},
+  dataCell: {},
+  headerText: {
+    ...typography.subtitle1,
+    color: colors.navy.veryLightGrey,
+
+    [theme.breakpoints.down('sm')]: {
+      ...typography.caption2
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body3
+    }
+  },
+  tokenName: {
+    ...typography.subtitle1,
+
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body3
+    }
+  },
   tokenAmount: {},
   tokenValue: {}
 }))
