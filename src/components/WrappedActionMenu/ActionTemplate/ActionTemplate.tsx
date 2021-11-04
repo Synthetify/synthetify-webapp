@@ -173,7 +173,9 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
-
+  tokens = tokens?.filter((token) => {
+    return token.symbol !== 'XYZ'
+  })
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
