@@ -62,14 +62,18 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
     const numVal = Number(value)
 
     if (Math.abs(numVal) < 1000) {
-      return numVal.toFixed(4)
+      return Number(numVal.toFixed(4)).toLocaleString('en-US')
+    }
+
+    if (Math.abs(numVal) < 100000) {
+      return Number(numVal.toFixed(2)).toLocaleString('en-US')
     }
 
     if (Math.abs(numVal) < 1000000) {
-      return numVal.toFixed(2)
+      return Number(numVal.toFixed(1)).toLocaleString('en-US')
     }
 
-    return numVal.toFixed(0)
+    return Number(numVal.toFixed(0)).toLocaleString('en-US')
   }
 
   return (

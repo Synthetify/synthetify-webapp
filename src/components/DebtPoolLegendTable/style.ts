@@ -49,6 +49,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: colors.navy['8E8DEF']
     },
 
+    '&.light $negative, &:hover $negative': {
+      color: colors.red.negativeLight
+    },
+
     [theme.breakpoints.down('sm')]: {
       height: 40
     },
@@ -95,6 +99,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenAmount: {
     color: colors.navy.info,
     ...typography.body3,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
 
     [theme.breakpoints.down('sm')]: {
       ...typography.caption4
