@@ -13,6 +13,7 @@ export interface Data {
   id: string
   label: string
   color: string
+  percent: number
   debt: {
     amount: number
     usdValue: number
@@ -101,7 +102,15 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
           return (
             <Grid key={index} id={token.id} className={classes.row} container direction='row'>
               <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
-                <Typography className={classes.tokenName} style={{ color: token.color }}>{token.label}</Typography>
+                <Typography className={classes.tokenName} style={{ color: token.color }}>
+                  {token.label}{' ('}
+                  <AnimatedNumber
+                    value={token.percent}
+                    duration={500}
+                    formatValue={(value: string) => Number(value).toFixed(2)}
+                  />
+                  {'%)'}
+                </Typography>
               </Grid>
 
               <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>

@@ -9,6 +9,7 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         id: 'xBTC',
         label: 'xBTC',
         color: '#6372BE',
+        percent: 0.01,
         debt: {
           amount: 5,
           usdValue: 3.14
@@ -22,6 +23,7 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         id: 'xETH',
         label: 'xETH',
         color: '#40BFA0',
+        percent: 0.01,
         debt: {
           amount: 5,
           usdValue: 3.14
@@ -35,6 +37,7 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         id: 'xSOL',
         label: 'xSOL',
         color: '#117098',
+        percent: 18.97,
         debt: {
           amount: 500000,
           usdValue: 30000.14
@@ -48,6 +51,7 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         id: 'xBNB',
         label: 'xBNB',
         color: '#BFB655',
+        percent: 0.01,
         debt: {
           amount: 5,
           usdValue: 3.14
@@ -61,6 +65,7 @@ storiesOf('stats/debtPoolLegendTable', module).add('legend', () => (
         id: 'xFTT',
         label: 'xFTT',
         color: '#1F70CF',
+        percent: 80,
         debt: {
           amount: 50000000,
           usdValue: 30000000.14

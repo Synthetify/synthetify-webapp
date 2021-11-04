@@ -90,10 +90,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   tokenName: {
-    ...typography.subtitle1,
+    ...typography.body3,
 
-    [theme.breakpoints.down('xs')]: {
-      ...typography.body3
+    [theme.breakpoints.down('sm')]: {
+      ...typography.caption4
     }
   },
   tokenAmount: {

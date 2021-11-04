@@ -288,21 +288,47 @@ export const getCollateralStructure = createSelector(
 export const getSyntheticsStructure = createSelector(
   synthetics,
   assets,
-  (allSynthetics, assets) => Object.values(allSynthetics).map(item => ({
-    symbol: item.symbol,
-    debt: {
-      amount: +printDecimal(item.supply),
-      usdValue: +transformBN(assets[item.assetIndex].price.val
-        .mul(item.supply.val)
-        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
-    },
-    collateral: {
-      amount: +printBN(item.borrowedSupply.val.add(item.swaplineSupply.val), item.supply.scale),
-      usdValue: +transformBN(assets[item.assetIndex].price.val
-        .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
-        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
-    }
-  }))
+  (allSynthetics, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allSynthetics).map(item => {
+      let value = assets[item.assetIndex].price.val
+        .mul(item.supply.val.sub(item.borrowedSupply.val).sub(item.swaplineSupply.val))
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      if (value.lt(new BN(0))) {
+        value = value.mul(new BN(-1))
+      }
+      totalVal = totalVal.add(value)
+      return {
+        value,
+        scale: item.supply.scale,
+        symbol: item.symbol,
+        debt: {
+          amount: +printDecimal(item.supply),
+          usdValue: +transformBN(assets[item.assetIndex].price.val
+            .mul(item.supply.val)
+            .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
+        },
+        collateral: {
+          amount: +printBN(item.borrowedSupply.val.add(item.swaplineSupply.val), item.supply.scale),
+          usdValue: +transformBN(assets[item.assetIndex].price.val
+            .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
+            .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
+        }
+      }
+    })
+    const syntheticStructure = values.map(item => {
+      return {
+        symbol: item.symbol,
+        debt: item.debt,
+        collateral: item.collateral,
+        value: +transformBN(item.value),
+        percent: +printBN(totalVal, item.scale)
+          ? (+printBN(item.value, item.scale) / +printBN(totalVal, item.scale)) * 100
+          : 0
+      }
+    })
+    return syntheticStructure
+  }
 )
 
 export const getSyntheticsValue = createSelector(

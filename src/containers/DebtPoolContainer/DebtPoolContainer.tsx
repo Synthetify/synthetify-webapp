@@ -11,6 +11,8 @@ export interface Data {
   id: string
   label: string
   color: string
+  percent: number
+  value: number
   debt: {
     amount: number
     usdValue: number
@@ -29,7 +31,9 @@ export const DebtPoolContainer: React.FC = () => {
       label: item.symbol,
       color: colors[index],
       debt: item.debt,
-      collateral: item.collateral
+      collateral: item.collateral,
+      percent: item.percent,
+      value: item.value
     }
   })
   const classes = useStyles()

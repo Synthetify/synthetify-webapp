@@ -8,6 +8,8 @@ export interface Data {
   id: string
   label: string
   color: string
+  percent: number
+  value: number
   debt: {
     amount: number
     usdValue: number
@@ -64,10 +66,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
               <ResponsivePie
-                data={data.map((element) => ({
-                  ...element,
-                  value: Math.abs(element.debt.usdValue - element.collateral.usdValue)
-                }))}
+                data={data}
                 margin={{ top: 6, right: 6, bottom: 6, left: 6 }}
                 activeOuterRadiusOffset={5}
                 borderWidth={1}
@@ -86,8 +85,8 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsTextColor='#000000'
                 tooltip={() => null}
                 onMouseEnter={event => {
-                  setLabel(event.label.toString())
                   const elementIndex = data.findIndex((element) => element.label === event.label)
+                  setLabel(`${event.label.toString()} (${data[elementIndex].percent.toFixed(2)}%)`)
                   setInfoNumber(data[elementIndex].debt.usdValue - data[elementIndex].collateral.usdValue)
                   var element = document.getElementById(event.id.toString())
                   if (element != null) {
