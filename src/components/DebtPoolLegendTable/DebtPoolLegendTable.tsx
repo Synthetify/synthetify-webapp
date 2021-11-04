@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   Grid,
-  Typography
+  Typography,
+  useMediaQuery
 } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import classNames from 'classnames'
+import { theme } from '@static/theme'
 import useStyles from './style'
 
 export interface Data {
@@ -27,6 +29,35 @@ export interface IProps {
 export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
 
+  const isXsDown = useMediaQuery(theme.breakpoints.down('xs'))
+  const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  const calcEmptyRowsToRender = () => {
+    if (isXsDown || !rootRef.current) {
+      return 0
+    }
+
+    if (isSmDown) {
+      return Math.ceil((rootRef.current.offsetHeight - ((data.length + 1) * 40)) / 40)
+    }
+
+    return Math.ceil((rootRef.current.offsetHeight - 60 - (data.length * 48)) / 48)
+  }
+
+  const calcMaxHeight = () => {
+    const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
+
+    if (!isXsDown) {
+      const tableHeight = isSmDown ? ((data.length + 1) * 40) : (60 + (data.length * 48))
+
+      return Math.max(tableHeight, plotCardHeight)
+    }
+
+    return 'unset'
+  }
+
   const formatTableValue = (value: string) => {
     const numVal = Number(value)
 
@@ -42,7 +73,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   }
 
   return (
-    <Grid className={classes.root}>
+    <Grid className={classes.root} ref={rootRef} style={{ maxHeight: calcMaxHeight() }}>
       <Grid className={classes.header} container direction='row'>
         <Grid className={classes.column} />
 
@@ -128,6 +159,14 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
             </Grid>
           )
         })}
+      {[...Array(calcEmptyRowsToRender()).keys()].map((_e, index) => (
+        <Grid key={`empty${index}`} className={classes.row} container direction='row'>
+          <Grid className={classes.column} />
+          <Grid className={classes.column} />
+          <Grid className={classes.column} />
+          <Grid className={classes.column} />
+        </Grid>
+      ))}
     </Grid>
   )
 }

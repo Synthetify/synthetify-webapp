@@ -11,8 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginRight: '8px'
     },
     [theme.breakpoints.down('xs')]: {
-      marginRight: '0',
-      marginBottom: '16px'
+      marginRight: '0'
     }
   },
   debtPoolCardContent: {

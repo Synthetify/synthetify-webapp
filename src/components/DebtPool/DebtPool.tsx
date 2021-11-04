@@ -38,7 +38,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
   data.sort((a, b) => (Math.abs(a.debt.usdValue - a.collateral.usdValue) - Math.abs(b.debt.usdValue - b.collateral.usdValue)))
 
   return (
-    <Card className={classes.debtPoolCard}>
+    <Card className={classes.debtPoolCard} id='debtPlot'>
       <CardContent className={classes.debtPoolCardContent}>
         <Typography className={classes.debtPoolCardTitle}>{title}</Typography>
         <Typography className={classes.debtPoolCardSubTitle}>{subTitle}</Typography>
