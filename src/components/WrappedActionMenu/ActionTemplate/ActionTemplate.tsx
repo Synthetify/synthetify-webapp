@@ -8,7 +8,6 @@ import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
 import AmountInput from '@components/Inputs/AmountInput/AmountInput'
-
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
 
@@ -183,10 +182,7 @@ export const ActionTemplate: React.FC<IProps> = ({
           className={classes.amountInput}
           placeholder={'0.0'}
           currency={currency}
-          tokens={
-            tokens?.filter((token) => {
-              return token.symbol !== 'XYZ'
-            })}
+          tokens={tokens}
           onSelectToken={onSelectToken}
           showArrow={showArrowInInput}
           walletConnected={walletConnected}
