@@ -173,9 +173,6 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
-  tokens = tokens?.filter((token) => {
-    return token.symbol !== 'XYZ'
-  })
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
@@ -186,7 +183,10 @@ export const ActionTemplate: React.FC<IProps> = ({
           className={classes.amountInput}
           placeholder={'0.0'}
           currency={currency}
-          tokens={tokens}
+          tokens={
+            tokens?.filter((token) => {
+              return token.symbol !== 'XYZ'
+            })}
           onSelectToken={onSelectToken}
           showArrow={showArrowInInput}
           walletConnected={walletConnected}
