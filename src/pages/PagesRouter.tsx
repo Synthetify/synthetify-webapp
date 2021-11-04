@@ -35,7 +35,7 @@ export const PagesRouter: React.FC = () => {
         <Switch>
           <Route path='/staking' component={StakingPage} />
           <Route path={'/exchange'} component={ExchangePage} />
-          <Route path={'/statistics'} component={StatisticsPage} />
+          <Route path={['/statistics', '/stats']} component={StatisticsPage} />
           <Route path={'/swapline'} component={SwaplinePage} />
           <Route path='*'>
             <Redirect to='/staking'>
