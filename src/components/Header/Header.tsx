@@ -54,7 +54,7 @@ export const Header: React.FC<IHeader> = ({
 
   const routes = ['staking', 'exchange', 'stats']
   if (typeOfNetwork !== NetworkType.TESTNET) {
-    routes.splice(2, 0, 'swapline')
+    routes.push('swapline')
   }
 
   const [activePath, setActive] = React.useState(landing)
