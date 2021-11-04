@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '24px 0px 6px 0px',
+    padding: '24px 0px 10px 0px',
     fontSize: 18,
     width: '100%',
     display: 'flex',
