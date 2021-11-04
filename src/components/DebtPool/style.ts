@@ -92,18 +92,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '30px',
     [theme.breakpoints.down('md')]: {
       ...typography.body2
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 20,
+      lineHeight: '30px'
     }
   },
   tooltipValue: {
     ...typography.heading1,
     [theme.breakpoints.down('md')]: {
-      ...typography.heading3
-    }
-  },
-  tooltipTotal: {
-    ...typography.heading1,
-    [theme.breakpoints.down('md')]: {
-      ...typography.heading3
+      ...typography.heading4
     }
   }
 }))
