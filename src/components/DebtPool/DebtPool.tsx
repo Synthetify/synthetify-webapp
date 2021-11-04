@@ -48,7 +48,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
               <Typography
                 component='p'
                 className={classes.tooltipValue}
-                style={(label === 'DELTA') && (infoNumber < 0) ? { color: colors.red.negative } : undefined}
+                style={(label !== 'TOTAL DEBT') && (infoNumber < 0) ? { color: colors.red.negative } : undefined}
               >
                 $
                 {
@@ -86,7 +86,7 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsTextColor='#000000'
                 tooltip={() => null}
                 onMouseEnter={event => {
-                  setLabel('DELTA')
+                  setLabel(event.label.toString())
                   const elementIndex = data.findIndex((element) => element.label === event.label)
                   setInfoNumber(data[elementIndex].debt.usdValue - data[elementIndex].collateral.usdValue)
                   var element = document.getElementById(event.id.toString())
