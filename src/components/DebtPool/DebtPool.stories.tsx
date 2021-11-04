@@ -11,12 +11,12 @@ storiesOf('stats/debtPool', module).add('pool', () => (
         label: 'xBTC',
         color: '#6372BE',
         debt: {
-          amount: 5,
-          usdValue: 3.14
+          amount: 500,
+          usdValue: 300.14
         },
         collateral: {
-          amount: 6,
-          usdValue: 4.14
+          amount: 600,
+          usdValue: 400.14
         }
       },
       {
@@ -24,12 +24,12 @@ storiesOf('stats/debtPool', module).add('pool', () => (
         label: 'xETH',
         color: '#40BFA0',
         debt: {
-          amount: 5,
-          usdValue: 3.14
+          amount: 50,
+          usdValue: 30.14
         },
         collateral: {
-          amount: 4,
-          usdValue: 2.14
+          amount: 40,
+          usdValue: 20.14
         }
       },
       {
@@ -37,12 +37,12 @@ storiesOf('stats/debtPool', module).add('pool', () => (
         label: 'xSOL',
         color: '#117098',
         debt: {
-          amount: 500000,
-          usdValue: 30000.14
+          amount: 5000,
+          usdValue: 300.14
         },
         collateral: {
-          amount: 60000,
-          usdValue: 40000.14
+          amount: 6000,
+          usdValue: 400.14
         }
       },
       {
@@ -50,12 +50,12 @@ storiesOf('stats/debtPool', module).add('pool', () => (
         label: 'xBNB',
         color: '#BFB655',
         debt: {
-          amount: 5,
-          usdValue: 3.14
+          amount: 200,
+          usdValue: 300.14
         },
         collateral: {
-          amount: 4,
-          usdValue: 2.14
+          amount: 400,
+          usdValue: 500.14
         }
       },
       {
@@ -63,12 +63,12 @@ storiesOf('stats/debtPool', module).add('pool', () => (
         label: 'xFTT',
         color: '#1F70CF',
         debt: {
-          amount: 50000000,
-          usdValue: 30000000.14
+          amount: 5000,
+          usdValue: 3000.14
         },
         collateral: {
-          amount: 60000000,
-          usdValue: 40000000.14
+          amount: 6000,
+          usdValue: 4000.14
         }
       }
     ]}

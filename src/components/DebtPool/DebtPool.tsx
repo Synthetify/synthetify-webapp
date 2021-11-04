@@ -24,15 +24,12 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
-  const formatVal = (value: number) => Math.abs(value) > 10000000
+  const formatVal = (value: number) => Math.abs(+value) >= 10000000
     ? Number((value / 1000000).toFixed(1)).toLocaleString('pl-PL').replace(',', '.') + 'M'
     : Number(value.toFixed(0)).toLocaleString('pl-PL')
 
   const [label, setLabel] = React.useState<String>('TOTAL DEBT')
-  const [info, setInfo] = React.useState<String>('$' + formatVal(data.reduce((sum, item) => {
-    return sum + item.debt.usdValue
-  }, 0)))
-  const [negative, setNegative] = React.useState(false)
+  const [infoNumber, setInfoNumber] = React.useState<number>(0)
 
   const classes = useStyles()
   data.sort((a, b) => (Math.abs(a.debt.usdValue - a.collateral.usdValue) - Math.abs(b.debt.usdValue - b.collateral.usdValue)))
@@ -48,8 +45,21 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
               <Typography component='h2' className={classes.tooltipLabel}>
                 {label}
               </Typography>
-              <Typography component='p' className={classes.tooltipValue} style={negative ? { color: colors.red.negative } : undefined}>
-                {info}
+              <Typography
+                component='p'
+                className={classes.tooltipValue}
+                style={(label === 'DELTA') && (infoNumber < 0) ? { color: colors.red.negative } : undefined}
+              >
+                $
+                {
+                  formatVal(
+                    label === 'TOTAL DEBT'
+                      ? data.reduce((sum, item) => {
+                        return sum + item.debt.usdValue
+                      }, 0)
+                      : infoNumber
+                  )
+                }
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
@@ -77,24 +87,16 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 tooltip={() => null}
                 onMouseEnter={event => {
                   setLabel('DELTA')
-                  setInfo(
-                    '$' + formatVal(+event.formattedValue)
-                  )
-                  setNegative(+event.formattedValue < 0)
+                  const elementIndex = data.findIndex((element) => element.label === event.label)
+                  setInfoNumber(data[elementIndex].debt.usdValue - data[elementIndex].collateral.usdValue)
                   var element = document.getElementById(event.id.toString())
                   if (element != null) {
                     element.classList.add('light')
                   }
                 }}
                 onMouseLeave={event => {
-                  const sumValue = data.reduce((sum, item) => {
-                    return sum + item.debt.usdValue
-                  }, 0)
                   setLabel('TOTAL DEBT')
-                  setInfo(
-                    '$' + formatVal(sumValue)
-                  )
-                  setNegative(false)
+                  setInfoNumber(0)
                   var element = document.getElementById(event.id.toString())
                   if (element != null) {
                     element.classList.remove('light')
