@@ -12,7 +12,8 @@ import {
   userDebtShares,
   stakedValue,
   getSNYPrice,
-  getCollateralValue
+  getCollateralValue,
+  getSyntheticsStructure
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import {
@@ -49,6 +50,7 @@ export const ActionMenuContainer: React.FC = () => {
   const depositState = useSelector(deposit)
   const burnState = useSelector(burn)
   const userStakingState = useSelector(userStaking)
+  const allDebtValue = useSelector(getSyntheticsStructure)
   const stakingState = useSelector(staking)
   const userDebtSharesState = useSelector(userDebtShares)
   const slotState = useSelector(slot)
@@ -157,6 +159,7 @@ export const ActionMenuContainer: React.FC = () => {
         ...userStakingState,
         stakedUserValue: stakedUserValue,
         SNYPrice: SNYPrice,
+        allDebtValue: allDebtValue,
         slot: slotState,
         roundLength: stakingState.roundLength,
         userDebtShares: userDebtSharesState,

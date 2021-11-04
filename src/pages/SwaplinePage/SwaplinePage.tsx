@@ -43,11 +43,11 @@ export const SwaplinePage: React.FC = () => {
                   +printDecimal(
                     pairs?.length
                       ? {
-                          val: pairs[pairIndex === null ? 0 : pairIndex].balance.val.sub(
-                            pairs[pairIndex === null ? 0 : pairIndex].accumulatedFee.val
-                          ),
-                          scale: pairs[pairIndex === null ? 0 : pairIndex].balance.scale
-                        }
+                        val: pairs[pairIndex === null ? 0 : pairIndex].balance.val.sub(
+                          pairs[pairIndex === null ? 0 : pairIndex].accumulatedFee.val
+                        ),
+                        scale: pairs[pairIndex === null ? 0 : pairIndex].balance.scale
+                      }
                       : decimalZero
                   )
                 }
