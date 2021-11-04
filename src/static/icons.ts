@@ -29,7 +29,7 @@ import devnet from './svg/devnet.svg'
 import testnet from './svg/testnet.svg'
 import renBTC from './svg/renBTC.svg'
 import whETH from './icons/whETH.png'
-import whFTT from './icons/whFTT.png'
+import whFTT from './icons/whFTT.svg'
 import slope from './svg/slope.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
