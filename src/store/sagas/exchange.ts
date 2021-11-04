@@ -369,8 +369,11 @@ export function* withdrawRewards(): SagaGenerator<string> {
   const allCollaterals = yield* select(collaterals)
 
   const userTokenAccount = yield* select(tokenAccount(Object.values(allCollaterals)[0].collateralAddress))
+  let snyAddress
   if (!userTokenAccount) {
-    return ''
+    snyAddress = yield* call(createAccount, Object.values(allCollaterals)[0].collateralAddress)
+  } else {
+    snyAddress = userTokenAccount.address
   }
   const wallet = yield* call(getWallet)
   const userExchangeAccount = yield* select(exchangeAccount)
@@ -378,7 +381,7 @@ export function* withdrawRewards(): SagaGenerator<string> {
   return yield* call([exchangeProgram, exchangeProgram.withdrawRewards], {
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
-    userTokenAccount: userTokenAccount.address
+    userTokenAccount: snyAddress
   })
 }
 
