@@ -3,7 +3,6 @@ import { printBN } from '@consts/utils'
 import { Grid, Typography } from '@material-ui/core'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import React from 'react'
-import Copy from '@static/svg/copy.svg'
 import { ResponsiveLine } from '@nivo/line'
 import { colors } from '@static/theme'
 // @ts-expect-error
@@ -12,6 +11,7 @@ import { PublicKey } from '@solana/web3.js'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { MAX_U64 } from '@consts/static'
 import useStyles from './style'
+import { CopyPopover } from '@components/CopyPopover/CopyPopover'
 interface IProps {
   tokenName: string
   supply: Decimal
@@ -35,11 +35,6 @@ const ExchangePlot: React.FC<IProps> = ({
   data
 }) => {
   const classes = useStyles()
-
-  const copyAddress = async () => {
-    await navigator.clipboard.writeText(assetAddress.toString())
-  }
-
   const isDecreasing = () => {
     const firstDataValue: IDataItem = [...data].pop() as IDataItem
     const lastDataValue: IDataItem = [...data].shift() as IDataItem
@@ -124,12 +119,8 @@ const ExchangePlot: React.FC<IProps> = ({
 
           <Grid container item className={classes.infoPosition} justifyContent='space-between' alignItems='center'>
             <Typography className={classes.positionTitle}>Asset address:</Typography>
-            <Grid container item direction='row' alignItems='center' className={classes.copy}>
-              <img src={Copy} alt='' className={classes.copyIcon} onClick={copyAddress} />
-              <Typography className={classes.positionValue}>{assetAddress.toString().substr(0, 8)}...</Typography>
-            </Grid>
+            <CopyPopover address={assetAddress} valueClass={classes.positionValue}/>
           </Grid>
-
           <Grid container item className={classes.infoPosition} justifyContent='space-between' alignItems='center'>
             <Typography className={classes.positionTitle}>Price:</Typography>
             <Typography className={classes.positionValue}>

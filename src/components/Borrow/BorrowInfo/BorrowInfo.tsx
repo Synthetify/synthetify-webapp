@@ -1,8 +1,8 @@
-import { Grid, Popover, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import React from 'react'
-import Copy from '@static/svg/copy.svg'
 import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
+import { CopyPopover } from '@components/CopyPopover/CopyPopover'
 interface IGeneralInfo {
   collateralAmount: number
   debtAmount: number
@@ -12,6 +12,9 @@ interface IGeneralInfo {
   reserve: number
   collateralAddress: PublicKey
   borrowedAddress: PublicKey
+  collateralSign: string
+  borrowedSign: string
+  amountSign: string
 }
 
 export const BorrowInfo: React.FC<IGeneralInfo> = ({
@@ -22,30 +25,12 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
   borrowedAddress,
   reserve,
   limit,
-  debtAmount
+  debtAmount,
+  collateralSign,
+  borrowedSign,
+  amountSign
 }) => {
   const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState<HTMLImageElement | null>(null)
-  const [open, setOpen] = React.useState(false)
-  const openCopiedText = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    if (event.currentTarget.id === 'collateral') {
-      navigator.clipboard
-        .writeText(collateralAddress.toString())
-        .catch(() => console.log('No copied'))
-    } else {
-      navigator.clipboard
-        .writeText(borrowedAddress.toString())
-        .catch(() => console.log('No copied'))
-    }
-    setAnchorEl(event.currentTarget)
-    setOpen(true)
-    setTimeout(() => setOpen(false), 3000)
-  }
-
-  const closeCopiedText = () => {
-    setAnchorEl(null)
-    setOpen(false)
-  }
 
   return (
     <Grid className={classes.root}>
@@ -58,10 +43,11 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Collateral amount (xUSD):</Typography>
+            <Typography className={classes.positionTitle}>
+              Collateral amount ({collateral}):
+            </Typography>
             <Typography className={classes.positionValue}>
-              {'$'}
-              {collateralAmount}
+              {amountSign} {collateralAmount}
             </Typography>
           </Grid>
           <Grid
@@ -72,8 +58,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Debt amount:</Typography>
             <Typography className={classes.positionValue}>
-              {'$'}
-              {debtAmount}
+              {amountSign} {debtAmount}
             </Typography>
           </Grid>
         </Grid>
@@ -107,8 +92,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Limit:</Typography>
             <Typography className={classes.positionValue}>
-              {'$'}
-              {limit}
+              {borrowedSign} {limit}
             </Typography>
           </Grid>
           <Grid
@@ -119,8 +103,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Reserve:</Typography>
             <Typography className={classes.positionValue}>
-              {'$'}
-              {reserve}
+              {collateralSign} {reserve}
             </Typography>
           </Grid>
           <Grid
@@ -130,33 +113,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Collateral address:</Typography>
-            <Grid container item direction='row' alignItems='center' className={classes.copy}>
-              <img
-                id={'collateral'}
-                src={Copy}
-                alt=''
-                className={classes.copyIcon}
-                onClick={openCopiedText}
-              />
-              <Typography className={classes.positionValue}>
-                {collateralAddress.toString().substr(0, 8)}...
-              </Typography>
-              <Popover
-                classes={{ paper: classes.popover }}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={closeCopiedText}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center'
-                }}
-                transformOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center'
-                }}>
-                <Typography className={classes.copiedText}>Copied</Typography>
-              </Popover>
-            </Grid>
+            <CopyPopover address={collateralAddress} />
           </Grid>
           <Grid
             container
@@ -165,19 +122,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Borrowed asset address:</Typography>
-            <Grid container item direction='row' alignItems='center' className={classes.copy}>
-              <img
-                id={'borrowed'}
-                src={Copy}
-                alt=''
-                className={classes.copyIcon}
-                onClick={openCopiedText}
-                aria-describedby={borrowedAddress.toString()}
-              />
-              <Typography className={classes.positionValue}>
-                {borrowedAddress.toString().substr(0, 8)}...
-              </Typography>
-            </Grid>
+            <CopyPopover address={borrowedAddress} />
           </Grid>
         </Grid>
       </Grid>
