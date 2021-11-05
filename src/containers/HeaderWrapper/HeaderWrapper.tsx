@@ -40,6 +40,9 @@ export const HeaderWrapper: React.FC = () => {
         case 'slope':
           enumWallet = WalletType.SLOPE
           break
+        case 'clover':
+          enumWallet = WalletType.CLOVER
+          break
         default:
           enumWallet = WalletType.PHANTOM
       }

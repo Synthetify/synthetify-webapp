@@ -6,12 +6,12 @@ import { action } from '@storybook/addon-actions'
 
 const pairs = [
   {
-    symbol1: 'xETH',
-    symbol2: 'whETH'
+    symbol1: 'xUSD',
+    symbol2: 'USDC'
   },
   {
-    symbol1: 'xFTT',
-    symbol2: 'whFTT'
+    symbol1: 'xSOL',
+    symbol2: 'WSOL'
   }
 ]
 
