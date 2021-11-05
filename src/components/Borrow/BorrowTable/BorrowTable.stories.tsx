@@ -11,10 +11,10 @@ storiesOf('Borrow/table', module).add('default', () =>
         <BorrowTable
           collateral={'WSOL'}
           borrowed={'xSOL'}
-          currentDebt={999.4325}
-          deposited={135.4215}
+          currentDebt={11999.4325}
+          deposited={101035.4215}
           depositedSign={'xSOL'}
-          cRatio={25.645}
+          cRatio={125.645}
           interestRate={25.4545}
           liquidationPrice={125.32654}
           maxBorrow={300}

@@ -17,6 +17,7 @@ import { colors } from '@static/theme'
 
 import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
+import { formatNumbersBorrowTable, showPrefix } from '@consts/utils'
 interface IProp {
   collateral: string
   borrowed: string
@@ -46,6 +47,7 @@ export const BorrowTable: React.FC<IProp> = ({
   active
 }) => {
   const classes = useStyles()
+
   return (
     <TableContainer className={classes.root} component={Paper}>
       <Table>
@@ -98,15 +100,12 @@ export const BorrowTable: React.FC<IProp> = ({
               </Grid>
             </TableCell>
             <TableCell classes={{ root: classes.rootCell }}>
-              <AnimatedNumber
-                value={currentDebt}
-                formatValue={(value: number) => value.toFixed(2)}
-              />{' '}
-              {currentDebtSign}
+              <AnimatedNumber value={currentDebt} formatValue={formatNumbersBorrowTable} />
+              {showPrefix(currentDebt)} {currentDebtSign}
             </TableCell>
             <TableCell classes={{ root: classes.rootCell }}>
-              <AnimatedNumber value={deposited} formatValue={(value: number) => value.toFixed(2)} />{' '}
-              {depositedSign}
+              <AnimatedNumber value={deposited} formatValue={formatNumbersBorrowTable} />
+              {showPrefix(deposited)} {depositedSign}
             </TableCell>
             <TableCell
               classes={{ root: classes.rootCell }}
@@ -128,10 +127,8 @@ export const BorrowTable: React.FC<IProp> = ({
             </Hidden>
             <TableCell classes={{ root: classes.rootCell }}>
               {'$'}
-              <AnimatedNumber
-                value={liquidationPrice}
-                formatValue={(value: number) => value.toFixed(2)}
-              />
+              <AnimatedNumber value={liquidationPrice} formatValue={formatNumbersBorrowTable} />
+              {showPrefix(liquidationPrice)}
             </TableCell>
             <Hidden mdDown>
               <TableCell
