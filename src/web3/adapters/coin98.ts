@@ -103,9 +103,11 @@ export class Coin98WalletAdapter
     })
   }
 
-  disconnect() {
+  disconnect(): void {
     if (this._provider) {
       this._provider.disconnect()
+        .then(() => {})
+        .catch(() => {})
       this._provider = undefined
       this.emit('disconnect')
     }
