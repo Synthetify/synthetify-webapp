@@ -105,9 +105,8 @@ export class Coin98WalletAdapter
 
   disconnect() {
     if (this._provider) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this._provider.disconnect()
-        .then(() => {})
-        .catch(() => {})
       this._provider = undefined
       this.emit('disconnect')
     }
