@@ -1,7 +1,7 @@
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
-import { Grid, Typography, Divider, Popover, Button, Input } from '@material-ui/core'
+import { Grid, Typography, Divider, Popover, Button, Input, Hidden } from '@material-ui/core'
 import React from 'react'
 import DownIcon from '@material-ui/icons/KeyboardArrowDown'
 import FlatIcon from '@material-ui/icons/TrendingFlat'
@@ -56,81 +56,86 @@ export const ActionBorrow: React.FC<IProp> = ({
   return (
     <Grid className={classes.root}>
       <Grid className={classes.middleGrid}>
-        <Grid>
-          <Typography className={classes.title}>Add collateral</Typography>
-          <ExchangeAmountInput
-            value={amountCollateral}
-            setValue={value => {
-              if (value.match(/^\d*\.?\d*$/)) {
-                setAmountCollateral(value)
-              }
-            }}
-            placeholder={'0.0'}
-            onMaxClick={() => {}}
-            pairs={pairs}
-            current={'SOL'}
-            onSelect={() => {}}
-            className={classes.input}
-          />
-          <Typography className={classes.desc}>
-            Available collateral:{' '}
-            <AnimatedNumber
-              value={availableCollateral}
-              formatValue={(value: number) => value.toFixed(5)}
-            />
-          </Typography>
-        </Grid>
-        <Grid className={classes.cRatioGrid}>
-          <Grid className={classes.cRatioBack}>
-            <Typography className={classes.cRatioTitle}>Collateral Ratio</Typography>
-            <Divider />
-            <Button
-              className={classes.cRatioButton}
-              endIcon={<DownIcon style={{ color: colors.white.main, width: '24px' }} />}
-              onClick={onClickPopover}
-              style={{
-                ...(cRatio <= 100 ? { color: colors.green.button } : { color: colors.red.error })
-              }}>
-              {cRatio}
-            </Button>
-            <Popover
-              classes={{ paper: classes.popover }}
-              open={openOption}
-              anchorEl={anchorEl}
-              onClose={onClosePopover}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center'
+        <Grid className={classes.collateralContainer}>
+          <Grid style={{ width: '100%' }}>
+            <Typography className={classes.title}>Add collateral</Typography>
+            <ExchangeAmountInput
+              value={amountCollateral}
+              setValue={value => {
+                if (value.match(/^\d*\.?\d*$/)) {
+                  setAmountCollateral(value)
+                }
               }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center'
-              }}>
-              <Grid className={classes.popoverBack}>
-                <Button className={classes.popoverButton}>
-                  Min: <span className={classes.minValue}>99%</span>
-                </Button>
-                <Input
-                  className={classes.popoverInput}
-                  classes={{ input: classes.customInput }}
-                  disableUnderline
-                  value={customCRatio}
-                  placeholder={'Custom'}
-                  onChange={event => {
-                    if (event.currentTarget.value.match(/^\d*\.?\d*$/)) {
-                      setCustomCRatio(event.currentTarget.value)
-                    }
-                  }}
-                  onBlur={changeCRatio}
-                />
-                <Button className={classes.popoverButton}>200%</Button>
-                <Button className={classes.popoverButton}>150%</Button>
-                <Button className={classes.popoverButton}>100%</Button>
-              </Grid>
-            </Popover>
+              placeholder={'0.0'}
+              onMaxClick={() => {}}
+              pairs={pairs}
+              current={'SOL'}
+              onSelect={() => {}}
+              className={classes.input}
+            />
+            <Typography className={classes.desc}>
+              Available collateral:{' '}
+              <AnimatedNumber
+                value={availableCollateral}
+                formatValue={(value: number) => value.toFixed(5)}
+              />
+            </Typography>
+          </Grid>
+          <Grid className={classes.cRatioGrid}>
+            <Grid className={classes.cRatioBack}>
+              <Typography className={classes.cRatioTitle}>
+                <Hidden xsDown>Collateral Ratio</Hidden>
+                <Hidden smUp>C-Ratio</Hidden>
+              </Typography>
+              <Divider />
+              <Button
+                className={classes.cRatioButton}
+                endIcon={<DownIcon style={{ color: colors.white.main, width: '24px' }} />}
+                onClick={onClickPopover}
+                style={{
+                  ...(cRatio <= 100 ? { color: colors.green.button } : { color: colors.red.error })
+                }}>
+                {cRatio}%
+              </Button>
+              <Popover
+                classes={{ paper: classes.popover }}
+                open={openOption}
+                anchorEl={anchorEl}
+                onClose={onClosePopover}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}>
+                <Grid className={classes.popoverBack}>
+                  <Button className={classes.popoverButton}>
+                    Min: <span className={classes.minValue}>99%</span>
+                  </Button>
+                  <Input
+                    className={classes.popoverInput}
+                    classes={{ input: classes.customInput }}
+                    disableUnderline
+                    value={customCRatio}
+                    placeholder={'Custom'}
+                    onChange={event => {
+                      if (event.currentTarget.value.match(/^\d*\.?\d*$/)) {
+                        setCustomCRatio(event.currentTarget.value)
+                      }
+                    }}
+                    onBlur={changeCRatio}
+                  />
+                  <Button className={classes.popoverButton}>200%</Button>
+                  <Button className={classes.popoverButton}>150%</Button>
+                  <Button className={classes.popoverButton}>100%</Button>
+                </Grid>
+              </Popover>
+            </Grid>
           </Grid>
         </Grid>
-        <Grid>
+        <Grid style={{ width: '100%' }}>
           <Typography className={classes.title}>Max borrow</Typography>
           <ExchangeAmountInput
             value={amountBorrow}
@@ -165,6 +170,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 value={interestRate}
                 formatValue={(value: number) => value.toFixed(3)}
               />
+              %
             </Typography>
           </Grid>
           <Grid>
@@ -192,7 +198,9 @@ export const ActionBorrow: React.FC<IProp> = ({
           <Grid>
             <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
             <Grid container>
-              <Typography className={classes.infoValueTo}>{collateralRatioTo}$</Typography>
+              <Typography className={classes.infoValueTo}>
+                {collateralRatioTo.toFixed(2)}%
+              </Typography>
               <FlatIcon
                 className={classes.flatIcon}
                 style={{
@@ -203,14 +211,14 @@ export const ActionBorrow: React.FC<IProp> = ({
                 {' '}
                 <AnimatedNumber
                   value={collateralRatioFrom}
-                  formatValue={(value: number) => value.toFixed(3)}
+                  formatValue={(value: number) => value.toFixed(2)}
                 />
-                $
+                %
               </Typography>
             </Grid>
           </Grid>
         </Grid>
-        <Grid container justifyContent='flex-end'>
+        <Grid className={classes.buttonAction} container>
           <Progress state={'success'} message='Successfully added' />
           <OutlinedButton
             name={nameButton}

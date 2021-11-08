@@ -35,12 +35,14 @@ const TabPanel = ({ children, value, index, ...other }: ITabPanelProps) => {
   )
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   tabs: {
-    width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    padding: '16px 24px'
+    padding: '16px 24px',
+    [theme.breakpoints.down('md')]: {
+      padding: '16px 16px'
+    }
   },
   root: {
     background: colors.navy.component,

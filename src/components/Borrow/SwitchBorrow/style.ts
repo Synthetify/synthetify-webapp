@@ -8,7 +8,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: '24px'
   },
   topGrid: {
-    padding: '16px 24px 16px 24px'
+    padding: '16px 24px',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      padding: '16px 16px'
+    }
   },
   buttonGrid: {
     background: colors.navy.background,
@@ -36,18 +40,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   middleGrid: {
     display: 'flex',
     flexDirection: 'row',
-    padding: '24px 24px'
+    padding: '24px 24px',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      padding: '24px 16px'
+    }
   },
-
+  collateralContainer: {
+    display: 'flex',
+    [theme.breakpoints.down('md')]: {
+      paddingBottom: 28
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingBottom: 20
+    }
+  },
   title: {
     ...typography.subtitle2,
     color: colors.navy.grey,
-    paddingBottom: 16
+    paddingBottom: 16,
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption1,
+      paddingBottom: 8
+    }
   },
   desc: {
     ...typography.subtitle2,
     color: colors.navy.info,
-    paddingTop: 12
+    paddingTop: 12,
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption1,
+      paddingTop: 8
+    }
   },
   divider: {
     background: colors.navy.darkGrey
@@ -57,23 +81,44 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     minWidth: 'max-content',
     padding: '0 16px',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      padding: '0 0 0 16px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 0 0 4px'
+    }
   },
   cRatioBack: {
-    maxHeight: '64px'
+    maxHeight: '64px',
+    marginTop: '3px',
+    display: 'flex',
+    flexDirection: 'column',
+
+    [theme.breakpoints.down('xs')]: {
+      maxHeight: '48px',
+      marginTop: '1px'
+    }
   },
   cRatioButton: {
     ...typography.body1,
     background: colors.navy.dark,
     borderRadius: '0 0 8px 8px',
-    width: '100%'
+    width: '100%',
+    padding: '4px 6px',
+    [theme.breakpoints.down('xs')]: {
+      ...typography.body3
+    }
   },
   cRatioTitle: {
     ...typography.body4,
     color: colors.navy.grey,
     background: colors.navy.dark,
     padding: ' 4px 21px 5px 21px',
-    borderRadius: '8px 8px 0 0'
+    borderRadius: '8px 8px 0 0',
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption1
+    }
   },
   input: {
     minHeight: '64px',
@@ -83,6 +128,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         minWidth: '107px',
         borderRadius: '6px'
       }
+    },
+    [theme.breakpoints.down('xs')]: {
+      minHeight: '48px'
     }
   },
   popover: {
@@ -143,37 +191,57 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     padding: '24px',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      padding: '16px'
+    }
   },
   bottomInfo: {
     display: 'flex',
     flexDirection: 'row',
     minWidth: '50%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
   },
   minValue: {
     paddingLeft: '3px'
   },
   infoTitle: {
     ...typography.subtitle1,
-    color: colors.navy.grey
+    color: colors.navy.grey,
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption1
+    }
   },
   infoValueTo: {
     ...typography.subtitle2,
     color: colors.white.main,
-    display: 'flex'
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption2
+    }
   },
   infoValueFrom: {
     ...typography.subtitle1,
     color: colors.white.main,
-    display: 'flex'
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption2
+    }
   },
   flatIcon: {
     padding: '0px 3px',
-    width: '18px'
+    width: '18px',
+    [theme.breakpoints.down('md')]: {
+      width: '0.7em',
+      height: 'min-content'
+    }
   },
   actionButton: {
-    padding: '10px auto',
+    padding: '10px 0',
     minWidth: '170px',
     ...typography.body1,
     marginLeft: '30px',
@@ -187,6 +255,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:disabled:hover': {
       backgroundColor: `${colors.navy.darkGrey} !important`,
       pointerEvents: 'auto !important'
+    },
+    [theme.breakpoints.down('xs')]: {
+      minWidth: '104px',
+      padding: '5px 0',
+      ...typography.subtitle1
+    }
+  },
+  buttonAction: {
+    justifyContent: 'flex-end',
+    display: 'flex',
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '24px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& > span  > div': {
+        height: '36px!important'
+      }
     }
   }
 }))
