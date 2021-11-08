@@ -14,10 +14,9 @@ import icons from '@static/icons'
 import classNames from 'classnames'
 import React from 'react'
 import { colors } from '@static/theme'
-
-import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { formatNumbersBorrowTable, showPrefix } from '@consts/utils'
+import useStyles from './style'
 interface IProp {
   collateral: string
   borrowed: string
@@ -136,7 +135,7 @@ export const BorrowTable: React.FC<IProp> = ({
                 style={{
                   ...(cRatio <= 100 ? { color: colors.green.button } : { color: colors.red.error })
                 }}>
-                {maxBorrow} USD left
+                {maxBorrow.toFixed(4)} {borrowed} left
               </TableCell>
             </Hidden>
           </TableRow>
