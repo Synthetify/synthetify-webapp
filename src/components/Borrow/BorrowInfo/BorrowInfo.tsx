@@ -44,7 +44,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden mdDown>Collateral amount</Hidden> <Hidden smUp>Coll. amount</Hidden>(
+              <Hidden xsDown>Collateral amount</Hidden> <Hidden smUp>Coll. amount</Hidden>(
               {collateral}):
             </Typography>
             <Typography className={classes.positionValue}>{collateralAmount}</Typography>
@@ -112,7 +112,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden mdDown>Collateral address:</Hidden> <Hidden smUp>Coll. address:</Hidden>
+              <Hidden xsDown>Collateral address:</Hidden> <Hidden smUp>Coll. address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
               <CopyPopover address={collateralAddress} />
@@ -128,7 +128,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden mdDown>Borrowed asset address:</Hidden>
+              <Hidden xsDown>Borrowed asset address:</Hidden>
               <Hidden smUp>Borr. asset address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
