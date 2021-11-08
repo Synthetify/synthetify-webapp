@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Hidden, Typography } from '@material-ui/core'
 import React from 'react'
 import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
@@ -44,11 +44,10 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              Collateral amount ({collateral}):
+              <Hidden mdDown>Collateral amount</Hidden> <Hidden smUp>Coll. amount</Hidden>(
+              {collateral}):
             </Typography>
-            <Typography className={classes.positionValue}>
-              {amountSign} {collateralAmount}
-            </Typography>
+            <Typography className={classes.positionValue}>{collateralAmount}</Typography>
           </Grid>
           <Grid
             container
@@ -92,7 +91,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Limit:</Typography>
             <Typography className={classes.positionValue}>
-              {borrowedSign} {limit}
+              {limit} {borrowedSign}
             </Typography>
           </Grid>
           <Grid
@@ -103,7 +102,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Reserve:</Typography>
             <Typography className={classes.positionValue}>
-              {collateralSign} {reserve}
+              {reserve} {collateralSign}
             </Typography>
           </Grid>
           <Grid
@@ -112,8 +111,15 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Collateral address:</Typography>
-            <CopyPopover address={collateralAddress} />
+            <Typography className={classes.positionTitle}>
+              <Hidden mdDown>Collateral address:</Hidden> <Hidden smUp>Coll. address:</Hidden>
+            </Typography>
+            <Grid container style={{ width: 'max-content' }}>
+              <CopyPopover address={collateralAddress} />
+              <Typography className={classes.positionValue}>
+                {collateralAddress.toString().substr(0, 8)}...
+              </Typography>
+            </Grid>
           </Grid>
           <Grid
             container
@@ -121,8 +127,16 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Borrowed asset address:</Typography>
-            <CopyPopover address={borrowedAddress} />
+            <Typography className={classes.positionTitle}>
+              <Hidden mdDown>Borrowed asset address:</Hidden>
+              <Hidden smUp>Borr. asset address:</Hidden>
+            </Typography>
+            <Grid container style={{ width: 'max-content' }}>
+              <CopyPopover address={borrowedAddress} />
+              <Typography className={classes.positionValue}>
+                {borrowedAddress.toString().substr(0, 8)}...
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
