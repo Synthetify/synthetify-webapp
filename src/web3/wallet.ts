@@ -5,12 +5,14 @@ import { MathWalletAdapter } from './adapters/mathwallet'
 import Wallet from '@project-serum/sol-wallet-adapter'
 import { SolflareWalletAdapter } from './adapters/solflare'
 import { Coin98WalletAdapter } from './adapters/coin98'
+import { SlopeWalletAdapter } from './adapters/slope'
 export enum WalletType {
   PHANTOM,
   SOLLET,
   MATH,
   SOLFLARE,
-  COIN98
+  COIN98,
+  SLOPE
 }
 let _wallet: WalletAdapter
 const getSolanaWallet = (): WalletAdapter => {
@@ -65,6 +67,13 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         break
       case WalletType.COIN98:
         _wallet = new Coin98WalletAdapter()
+        _wallet.on('connect', () => {
+          resolve(_wallet)
+        })
+        _wallet.connect()
+        break
+      case WalletType.SLOPE:
+        _wallet = new SlopeWalletAdapter()
         _wallet.on('connect', () => {
           resolve(_wallet)
         })

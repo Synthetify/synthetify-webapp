@@ -30,7 +30,8 @@ export const ConnectWallet: React.FC<IConnectWalletModal> = ({
     [WalletType.SOLLET]: 'sollet',
     [WalletType.MATH]: 'math wallet',
     [WalletType.SOLFLARE]: 'solflare',
-    [WalletType.COIN98]: 'coin98'
+    [WalletType.COIN98]: 'coin98',
+    [WalletType.SLOPE]: 'slope'
   }
 
   return (

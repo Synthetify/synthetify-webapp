@@ -27,6 +27,8 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
   const classes = useStyles()
   const [value, setValue] = React.useState<string>('')
 
+  const fixedTokensList = tokens.filter((token) => token.symbol !== 'XYZ')
+
   const selectTokens = (name: string): number => {
     return tokens.findIndex(token => token.symbol === name)
   }
@@ -68,7 +70,6 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
 
     return (num / 1000000).toFixed(2)
   }
-
   return (
     <Popover
       classes={{ paper: classes.paper }}
@@ -102,7 +103,7 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
         <Grid item>
           <Box className={classes.tokenList}>
             <CustomScrollbar>
-              {tokens
+              {fixedTokensList
                 .filter(token => {
                   if (!value) return true
                   return token.symbol.toLowerCase().includes(value.toLowerCase())

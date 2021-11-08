@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   line: {},
   label: {
+    ...typography.subtitle1,
     top: -1
   },
   timeGrid: {

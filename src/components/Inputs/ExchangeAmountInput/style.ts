@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   select: {
-    marginRight: 24,
-
+    margin: '0 32px 0 -3px',
+    maxHeight: 42,
     [theme.breakpoints.down('xs')]: {
-      marginRight: 16
+      margin: '0 16px 0 -1px'
     }
   },
   label: {

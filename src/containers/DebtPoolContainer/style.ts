@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '55.0%'
     },
     [theme.breakpoints.down('xs')]: {
-      width: '100%'
+      width: '100%',
+      marginBottom: 16
     }
   }
 }))
