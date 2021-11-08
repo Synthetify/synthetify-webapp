@@ -73,7 +73,8 @@ export const Header: React.FC<IHeader> = ({
     [WalletType.MATH]: 'math wallet',
     [WalletType.SOLFLARE]: 'solflare',
     [WalletType.COIN98]: 'coin98',
-    [WalletType.SLOPE]: 'slope'
+    [WalletType.SLOPE]: 'slope',
+    [WalletType.CLOVER]: 'clover'
   }
 
   return (
@@ -135,7 +136,8 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.MATH,
                 WalletType.SOLFLARE,
                 WalletType.COIN98,
-                WalletType.SLOPE
+                WalletType.SLOPE,
+                WalletType.CLOVER
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}
@@ -155,7 +157,8 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.MATH,
                 WalletType.SOLFLARE,
                 WalletType.COIN98,
-                WalletType.SLOPE
+                WalletType.SLOPE,
+                WalletType.CLOVER
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}
