@@ -7,11 +7,32 @@ import DownIcon from '@material-ui/icons/KeyboardArrowDown'
 import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
+import { ICollateral, ISynthetic } from '@reducers/exchange'
+import { Asset } from '@synthetify/sdk/lib/exchange'
+import { BN } from '@project-serum/anchor'
+import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
-interface IProp {
-  availableCollateral: number
+import { printBN } from '@consts/utils'
+type ExchangeSyntheticTokens = Asset & ISynthetic & { balance: BN }
+type ExchangeCollateralTokens = Asset & ICollateral & { balance: BN }
 
-  availableBorrow: number
+interface BorrowedPair {
+  collateralData: ExchangeCollateralTokens
+  syntheticData: ExchangeSyntheticTokens
+  //Decimal
+  balance: {
+    val: BN
+    scale: number
+  }
+}
+interface AssetPriceData {
+  priceVal: BN
+  assetScale: number
+  symbol: string | null
+  maxAvailable: BN
+  balance: BN
+}
+interface IProp {
   cRatio: number
   interestRate: number
   liquidationPriceTo: number
@@ -20,11 +41,11 @@ interface IProp {
   collateralRatioFrom: number
   nameButton: string
   onClickButton: () => void
-  pairs: Array<{ symbol1: string; symbol2: string }>
+  pairs: BorrowedPair[]
+  minCRatio: number
+  changeCRatio: (nr: number) => void
 }
 export const ActionBorrow: React.FC<IProp> = ({
-  availableCollateral,
-  availableBorrow,
   cRatio,
   interestRate,
   liquidationPriceTo,
@@ -33,7 +54,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   collateralRatioFrom,
   nameButton,
   onClickButton,
-  pairs
+  pairs,
+  minCRatio,
+  changeCRatio
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -49,9 +72,50 @@ export const ActionBorrow: React.FC<IProp> = ({
   }
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
+  const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
 
-  const changeCRatio = () => {
-    setCustomCRatio('Custom')
+  const getAssetInAndFor = (pair: BorrowedPair | null): [AssetPriceData, AssetPriceData] => {
+    if (pair === null) {
+      return [
+        {
+          priceVal: new BN(0),
+          assetScale: 0,
+          symbol: null,
+          maxAvailable: new BN(0),
+          balance: new BN(0)
+        },
+        {
+          priceVal: new BN(0),
+          assetScale: 0,
+          symbol: null,
+          maxAvailable: new BN(0),
+          balance: new BN(0)
+        }
+      ]
+    }
+    const collateral: AssetPriceData = {
+      priceVal: pair.collateralData.price.val,
+      assetScale: pair.collateralData.reserveBalance.scale,
+      symbol: pair.collateralData.symbol,
+      maxAvailable: pair.balance.val,
+      balance: pair.collateralData.balance
+    }
+
+    const synthetic: AssetPriceData = {
+      priceVal: pair.syntheticData.price.val,
+      assetScale: pair.syntheticData.supply.scale,
+      symbol: pair.syntheticData.symbol,
+      maxAvailable: pair.syntheticData.maxSupply.val,
+      balance: pair.syntheticData.balance
+    }
+
+    return [collateral, synthetic]
+  }
+  const [tokenFrom, tokenTo] = getAssetInAndFor(pairIndex !== null ? pairs[pairIndex] : null)
+
+  const changeCustomCRatio = () => {
+    customCRatio ? changeCRatio(Number(customCRatio)) : changeCRatio(minCRatio)
+    setCustomCRatio(minCRatio.toString())
   }
   return (
     <Grid className={classes.root}>
@@ -67,16 +131,26 @@ export const ActionBorrow: React.FC<IProp> = ({
                 }
               }}
               placeholder={'0.0'}
-              onMaxClick={() => {}}
-              pairs={pairs}
-              current={'SOL'}
-              onSelect={() => {}}
+              onMaxClick={() => {
+                if (pairIndex !== null) {
+                  setAmountCollateral(printBN(tokenFrom.balance, tokenFrom.assetScale))
+                }
+              }}
+              pairs={pairs.map(pair => ({
+                symbol1: pair.syntheticData.symbol,
+                symbol2: pair.collateralData.symbol
+              }))}
+              current={pairIndex !== null ? tokenFrom.symbol : null}
+              onSelect={(chosen: number) => {
+                setPairIndex(chosen)
+              }}
               className={classes.input}
+              selectText='Select'
             />
             <Typography className={classes.desc}>
               Available collateral:{' '}
               <AnimatedNumber
-                value={availableCollateral}
+                value={printBN(tokenTo.maxAvailable, tokenTo.assetScale)}
                 formatValue={(value: number) => value.toFixed(5)}
               />
             </Typography>
@@ -111,8 +185,11 @@ export const ActionBorrow: React.FC<IProp> = ({
                   horizontal: 'center'
                 }}>
                 <Grid className={classes.popoverBack}>
-                  <Button className={classes.popoverButton}>
-                    Min: <span className={classes.minValue}>99%</span>
+                  <Button
+                    className={classes.popoverButton}
+                    value={minCRatio}
+                    onClick={event => changeCRatio(Number(event.currentTarget.value))}>
+                    Min: <span className={classes.minValue}>{minCRatio.toFixed(0)}%</span>
                   </Button>
                   <Input
                     className={classes.popoverInput}
@@ -125,11 +202,26 @@ export const ActionBorrow: React.FC<IProp> = ({
                         setCustomCRatio(event.currentTarget.value)
                       }
                     }}
-                    onBlur={changeCRatio}
+                    onBlur={changeCustomCRatio}
                   />
-                  <Button className={classes.popoverButton}>200%</Button>
-                  <Button className={classes.popoverButton}>150%</Button>
-                  <Button className={classes.popoverButton}>100%</Button>
+                  <Button
+                    className={classes.popoverButton}
+                    value={200}
+                    onClick={event => changeCRatio(Number(event.currentTarget.value))}>
+                    200%
+                  </Button>
+                  <Button
+                    className={classes.popoverButton}
+                    value={150}
+                    onClick={event => changeCRatio(Number(event.currentTarget.value))}>
+                    150%
+                  </Button>
+                  <Button
+                    className={classes.popoverButton}
+                    value={100}
+                    onClick={event => changeCRatio(Number(event.currentTarget.value))}>
+                    100%
+                  </Button>
                 </Grid>
               </Popover>
             </Grid>
@@ -145,16 +237,26 @@ export const ActionBorrow: React.FC<IProp> = ({
               }
             }}
             placeholder={'0.0'}
-            onMaxClick={() => {}}
-            pairs={pairs}
-            current={'xSOL'}
-            onSelect={() => {}}
+            onMaxClick={() => {
+              if (pairIndex !== null) {
+                setAmountBorrow(printBN(tokenFrom.balance, tokenFrom.assetScale))
+              }
+            }}
+            pairs={pairs.map(pair => ({
+              symbol1: pair.syntheticData.symbol,
+              symbol2: pair.collateralData.symbol
+            }))}
+            current={pairIndex !== null ? tokenTo.symbol : null}
+            onSelect={(chosen: number) => {
+              setPairIndex(chosen)
+            }}
             className={classes.input}
+            selectText='Select'
           />
           <Typography className={classes.desc}>
             Available to borrow:{' '}
             <AnimatedNumber
-              value={availableBorrow}
+              value={printBN(tokenFrom.maxAvailable, tokenFrom.assetScale)}
               formatValue={(value: number) => value.toFixed(5)}
             />
           </Typography>

@@ -48,8 +48,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   collateralContainer: {
     display: 'flex',
+    width: '125%',
     [theme.breakpoints.down('md')]: {
-      paddingBottom: 28
+      paddingBottom: 28,
+      width: '100%'
     },
     [theme.breakpoints.down('xs')]: {
       paddingBottom: 20

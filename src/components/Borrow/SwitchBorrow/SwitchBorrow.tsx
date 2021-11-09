@@ -5,7 +5,6 @@ import { colors, typography } from '@static/theme'
 
 export interface IProps {
   menuItems: IMenuItem
-  onChange: (newValue: number) => void
 }
 
 export interface IMenuItem {
@@ -66,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export const SwitchBorrow: React.FC<IProps> = ({ menuItems, onChange }) => {
+export const SwitchBorrow: React.FC<IProps> = ({ menuItems }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const [fadeIn, setFadeIn] = React.useState(true)
@@ -74,7 +73,6 @@ export const SwitchBorrow: React.FC<IProps> = ({ menuItems, onChange }) => {
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setTimeout(() => {
       setValue(newValue)
-      onChange(newValue)
     }, 100)
     setTimeout(() => {
       setFadeIn(true)
@@ -157,7 +155,7 @@ export const SwitchBorrow: React.FC<IProps> = ({ menuItems, onChange }) => {
           </Tabs>
         </Grid>
       </Grid>
-      <Divider style={{ background: '#292956' }} />
+      <Divider style={{ background: colors.navy.darkGrey }} />
       <Fade in={fadeIn}>
         <Grid>{tabsContent}</Grid>
       </Fade>
