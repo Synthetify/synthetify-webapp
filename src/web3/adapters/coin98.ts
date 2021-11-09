@@ -1,148 +1,114 @@
-import {
-  BaseSignerWalletAdapter,
-  pollUntilReady,
-  WalletAccountError,
-  WalletNotConnectedError,
-  WalletNotFoundError,
-  WalletNotInstalledError,
-  WalletPublicKeyError,
-  WalletSignTransactionError
-} from '@solana/wallet-adapter-base'
+import EventEmitter from 'eventemitter3'
 import { PublicKey, Transaction } from '@solana/web3.js'
+import { WalletAdapter } from './types'
+import { DEFAULT_PUBLICKEY } from '@consts/static'
 import bs58 from 'bs58'
 
-interface Coin98Wallet {
-  isCoin98?: boolean;
+type Coin98Event = 'disconnect' | 'connect'
+
+interface Coin98Provider {
+  publicKey?: PublicKey;
+  isConnected?: boolean;
+  autoApprove?: boolean;
   signTransaction: (transaction: Transaction) => Promise<Transaction>;
-  isConnected: () => boolean;
-  connect: () => Promise<string[]>;
+  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>;
+  connect: () => Promise<Boolean>;
   disconnect: () => Promise<void>;
-  request: (params: { method: string; params: string | string[] | unknown }) => Promise<{
-    signature: string;
-    publicKey: string;
-  }>;
+  on: (event: Coin98Event, handler: (args: any) => void) => void;
+  request: (arg: any) => Promise<any>;
 }
 
-interface Coin98Window extends Window {
-  coin98?: {
-    sol?: Coin98Wallet;
-  };
-}
-
-declare const window: Coin98Window
-
-export interface Coin98WalletAdapterConfig {
-  pollInterval?: number;
-  pollCount?: number;
-}
-
-export class Coin98WalletAdapter extends BaseSignerWalletAdapter {
-  private _connecting: boolean
-  private _wallet: Coin98Wallet | null
-  private _publicKey: PublicKey | null
-
-  constructor(config: Coin98WalletAdapterConfig = {}) {
+export class Coin98WalletAdapter
+  extends EventEmitter
+  implements WalletAdapter {
+  _provider: Coin98Provider | undefined
+  constructor() {
     super()
-    this._connecting = false
-    this._wallet = null
-    this._publicKey = null
-
-    if (!this.ready) pollUntilReady(this, config.pollInterval || 1000, config.pollCount || 3)
+    this.connect = this.connect.bind(this)
   }
 
-  get publicKey(): PublicKey | null {
-    return this._publicKey
+  get connected() {
+    return this._provider?.isConnected || false
   }
 
-  get ready(): boolean {
-    return typeof window !== 'undefined' && !!window.coin98
+  get autoApprove() {
+    return false
   }
 
-  get connecting(): boolean {
-    return this._connecting
-  }
-
-  get connected(): boolean {
-    return !!this._wallet?.isConnected()
-  }
-
-  async connect(): Promise<void> {
-    try {
-      if (this.connected || this.connecting) return
-      this._connecting = true
-
-      const wallet = typeof window !== 'undefined' && window.coin98?.sol
-      if (!wallet) {
-        window.open('https://coin98.com/wallet', '_blank')
-        throw new WalletNotFoundError()
-      }
-      if (!wallet.isCoin98) throw new WalletNotInstalledError()
-
-      let account: string
-      try {
-        [account] = await wallet.connect()
-      } catch (error: any) {
-        throw new WalletAccountError(error?.message, error)
-      }
-
-      let publicKey: PublicKey
-      try {
-        publicKey = new PublicKey(account)
-      } catch (error: any) {
-        throw new WalletPublicKeyError(error?.message, error)
-      }
-
-      this._wallet = wallet
-      this._publicKey = publicKey
-
-      this.emit('connect')
-    } catch (error: any) {
-      this.emit('error', error)
-      throw error
-    } finally {
-      this._connecting = false
-    }
-  }
-
-  async disconnect(): Promise<void> {
-    const wallet = this._wallet
-    if (wallet) {
-      this._wallet = null
-      this._publicKey = null
-
-      await wallet.disconnect()
+  async signAllTransactions(
+    transactions: Transaction[]
+  ): Promise<Transaction[]> {
+    if (!this._provider) {
+      return transactions
     }
 
-    this.emit('disconnect')
-  }
-
-  async signTransaction(transaction: Transaction): Promise<Transaction> {
-    try {
-      const wallet = this._wallet
-      if (!wallet) throw new WalletNotConnectedError()
-
-      try {
-        const response = await wallet.request({ method: 'sol_sign', params: [transaction] })
-
-        const publicKey = new PublicKey(response.publicKey)
-        const signature = bs58.decode(response.signature)
-
-        transaction.addSignature(publicKey, signature)
-        return transaction
-      } catch (error: any) {
-        throw new WalletSignTransactionError(error?.message, error)
+    const result: Transaction[] = []
+    for (let i = 0; i < transactions.length; i++) {
+      const transaction = transactions[i]
+      if (transaction) {
+        const signed = await this.signTransaction(transaction)
+        result.push(signed)
       }
-    } catch (error: any) {
-      this.emit('error', error)
-      throw error
     }
+    return result
   }
 
-  async signAllTransactions(transactions: Transaction[]): Promise<Transaction[]> {
-    const signedTransactions: Transaction[] = []
-    for (const transaction of transactions) {
-      signedTransactions.push(await this.signTransaction(transaction))
+  get publicKey() {
+    return this._provider?.publicKey || DEFAULT_PUBLICKEY
+  }
+
+  async signTransaction(transaction: Transaction) {
+    if (!this._provider) {
+      return transaction
     }
-    return signedTransactions
+
+    const { publicKey, signature } = (await this._provider.request({
+      method: 'sol_sign',
+      params: [transaction]
+    })) as { publicKey: string; signature: string }
+    transaction.addSignature(new PublicKey(publicKey), bs58.decode(signature))
+    return transaction
+  }
+
+  connect = async () => {
+    if (this._provider) {
+      return
+    }
+
+    let provider: Coin98Provider
+    if ((window as any)?.ethereum?.isCoin98 || (window as any)?.coin98) {
+      provider = (window as any).coin98.sol
+      provider
+        .request({ method: 'sol_accounts' })
+        .then((rawAccounts: string[]) => {
+          const accounts = rawAccounts
+          if (!accounts[0]) {
+            throw new Error('No accounts found.')
+          }
+          this._provider = provider
+          this._provider.publicKey = new PublicKey(accounts[0])
+          this._provider.isConnected = true
+          this.emit('connect')
+        })
+        .catch(() => {
+          this.disconnect()
+        })
+    } else {
+      window.open('https://coin98.com/', '_blank')
+      return
+    }
+
+    provider.on('connect', () => {
+      this._provider = provider
+    })
+  }
+
+  disconnect() {
+    if (this._provider) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this._provider.disconnect()
+      this._provider = undefined
+      this.emit('disconnect')
+    }
   }
 }

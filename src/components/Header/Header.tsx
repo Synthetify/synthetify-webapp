@@ -52,9 +52,9 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-  const routes = ['staking', 'stats', 'exchange']
+  const routes = ['staking', 'exchange', 'statistics']
   if (typeOfNetwork !== NetworkType.TESTNET) {
-    routes.push('swapline')
+    routes.splice(routes.length - 1, 0, 'swapline')
   }
 
   const [activePath, setActive] = React.useState(landing)
@@ -73,7 +73,8 @@ export const Header: React.FC<IHeader> = ({
     [WalletType.MATH]: 'math wallet',
     [WalletType.SOLFLARE]: 'solflare',
     [WalletType.COIN98]: 'coin98',
-    [WalletType.SLOPE]: 'slope'
+    [WalletType.SLOPE]: 'slope',
+    [WalletType.CLOVER]: 'clover'
   }
 
   return (
@@ -135,7 +136,8 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.MATH,
                 WalletType.SOLFLARE,
                 WalletType.COIN98,
-                WalletType.SLOPE
+                WalletType.SLOPE,
+                WalletType.CLOVER
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}
@@ -155,7 +157,8 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.MATH,
                 WalletType.SOLFLARE,
                 WalletType.COIN98,
-                WalletType.SLOPE
+                WalletType.SLOPE,
+                WalletType.CLOVER
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}
