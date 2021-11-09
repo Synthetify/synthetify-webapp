@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     paddingLeft: 24,
     height: '100%',
@@ -32,11 +32,17 @@ const useStyles = makeStyles(() => ({
   },
   positionTitle: {
     color: colors.navy.grey,
-    ...typography.subtitle2
+    ...typography.subtitle2,
+    [theme.breakpoints.down('md')]: {
+      ...typography.body4
+    }
   },
   positionValue: {
     color: colors.navy.lightGrey,
-    ...typography.subtitle1
+    ...typography.subtitle1,
+    [theme.breakpoints.down('md')]: {
+      ...typography.body3
+    }
   },
 
   wrapper: {

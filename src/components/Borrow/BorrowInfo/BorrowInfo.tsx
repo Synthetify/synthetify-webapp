@@ -44,10 +44,10 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden xsDown>Collateral amount</Hidden> <Hidden smUp>Coll. amount</Hidden>(
+              <Hidden smDown>Collateral amount</Hidden> <Hidden mdUp>Coll. amount</Hidden>(
               {collateral}):
             </Typography>
-            <Typography className={classes.positionValue}>{collateralAmount}</Typography>
+            <Typography className={classes.positionValue}>{collateralAmount.toFixed(3)}</Typography>
           </Grid>
           <Grid
             container
@@ -112,12 +112,12 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden xsDown>Collateral address:</Hidden> <Hidden smUp>Coll. address:</Hidden>
+              <Hidden smDown>Collateral address:</Hidden> <Hidden mdUp>Coll. address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
               <CopyPopover address={collateralAddress} />
               <Typography className={classes.positionValue}>
-                {collateralAddress.toString().substr(0, 8)}...
+                {collateralAddress.toString().substr(0, 6)}...
               </Typography>
             </Grid>
           </Grid>
@@ -128,13 +128,13 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden xsDown>Borrowed asset address:</Hidden>
-              <Hidden smUp>Borr. asset address:</Hidden>
+              <Hidden smDown>Borrowed asset address:</Hidden>
+              <Hidden mdUp>Borr. address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
               <CopyPopover address={borrowedAddress} />
               <Typography className={classes.positionValue}>
-                {borrowedAddress.toString().substr(0, 8)}...
+                {borrowedAddress.toString().substr(0, 6)}...
               </Typography>
             </Grid>
           </Grid>
