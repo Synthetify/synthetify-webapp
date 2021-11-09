@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 24,
     padding: '8px 16px 10px',
     backgroundColor: 'rgba(12, 13, 44, 0.4)',
-    border: '1px solid #6261A3',
+    border: `1px solid ${colors.navy.info}`,
     borderRadius: 10
   },
   infoPosition: {
@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '&:hover $positionValue': {
       color: colors.navy.veryLightGrey
+    },
+    '&:hover > div p': {
+      color: colors.navy.veryLightGrey
     }
   },
   positionTitle: {
@@ -44,21 +47,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   positionValue: {
     color: colors.navy.lightGrey,
     ...typography.body3
-  },
-  copyIcon: {
-    width: 12,
-    height: 12,
-    marginRight: 8,
-    opacity: 0.7,
-    cursor: 'pointer',
-    marginTop: 1,
-
-    '&:hover': {
-      opacity: 1
-    }
-  },
-  copy: {
-    width: 'fit-content'
   },
   plotWrapper: {
     height: 220,
