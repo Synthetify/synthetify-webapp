@@ -112,14 +112,25 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.body3
     }
   },
+  endIcon: {
+    color: colors.white.main,
+    width: '24px',
+    margin: '0 0 0 2px',
+    [theme.breakpoints.down('xs')]: {
+      width: '13px'
+    }
+  },
   cRatioTitle: {
     ...typography.body4,
     color: colors.navy.grey,
     background: colors.navy.dark,
     padding: ' 4px 21px 5px 21px',
     borderRadius: '8px 8px 0 0',
+    display: 'flex',
+    justifyContent: 'center',
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1
+      ...typography.caption1,
+      padding: ' 4px 10px 5px 10px'
     }
   },
   input: {

@@ -6,23 +6,16 @@ import ActionMenuBorrow, { IActionContents } from './ActionMenuBorrow'
 import { ActionBorrow } from './ActionBorrow'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Collateral, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
-import { ICollateral, ISynthetic } from '@reducers/exchange'
+import { Asset, Collateral, Decimal, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
+import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 // interface AmountInputBorrow {
 //   amountCollateral: number
 //   setAmountCollateral: (nr: number) => void
 // }
-type ExchangeSyntheticTokens = Asset & ISynthetic & { balance: BN }
-type ExchangeCollateralTokens = Asset & ICollateral & { balance: BN }
-
 interface BorrowedPair {
   collateralData: ExchangeCollateralTokens
   syntheticData: ExchangeSyntheticTokens
-  //  Decimal
-  balance: {
-    val: BN
-    scale: number
-  }
+  balance: Decimal
 }
 storiesOf('borrow/switchBorrow', module)
   .addDecorator(withKnobs)

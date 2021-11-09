@@ -8,22 +8,16 @@ import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
-import { Asset } from '@synthetify/sdk/lib/exchange'
+import { Asset, Decimal } from '@synthetify/sdk/lib/exchange'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 import useStyles from './style'
 import { printBN } from '@consts/utils'
-type ExchangeSyntheticTokens = Asset & ISynthetic & { balance: BN }
-type ExchangeCollateralTokens = Asset & ICollateral & { balance: BN }
-
+import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 interface BorrowedPair {
   collateralData: ExchangeCollateralTokens
   syntheticData: ExchangeSyntheticTokens
-  //Decimal
-  balance: {
-    val: BN
-    scale: number
-  }
+  balance: Decimal
 }
 interface AssetPriceData {
   priceVal: BN
@@ -115,7 +109,7 @@ export const ActionBorrow: React.FC<IProp> = ({
 
   const changeCustomCRatio = () => {
     customCRatio ? changeCRatio(Number(customCRatio)) : changeCRatio(minCRatio)
-    setCustomCRatio(minCRatio.toString())
+    customCRatio ? setCustomCRatio(Number(customCRatio)) : setCustomCRatio(minCRatio.toString())
   }
   return (
     <Grid className={classes.root}>
@@ -164,7 +158,8 @@ export const ActionBorrow: React.FC<IProp> = ({
               <Divider />
               <Button
                 className={classes.cRatioButton}
-                endIcon={<DownIcon style={{ color: colors.white.main, width: '24px' }} />}
+                classes={{ endIcon: classes.endIcon }}
+                endIcon={<DownIcon />}
                 onClick={onClickPopover}
                 style={{
                   ...(cRatio <= 100 ? { color: colors.green.button } : { color: colors.red.error })
