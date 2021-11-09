@@ -104,7 +104,8 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                       <CardMedia
                         className={classNames(classes.tokenIcon, classes.secondIcon)}
                         image={icons[pair.symbol2] ?? icons.SNY}
-                      />{' '}
+                      />
+                      {' '}
                     </Grid>
                     <Grid item>
                       <Typography className={classes.tokenName}>{pairSymbol(pair)}</Typography>

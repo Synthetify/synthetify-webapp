@@ -29,8 +29,9 @@ import devnet from './svg/devnet.svg'
 import testnet from './svg/testnet.svg'
 import renBTC from './svg/renBTC.svg'
 import whETH from './icons/whETH.png'
-import whFTT from './icons/whFTT.png'
+import whFTT from './icons/whFTT.svg'
 import slope from './svg/slope.svg'
+import clover from './svg/clover.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -65,7 +66,8 @@ const icons: { [key: string]: string } = {
   renBTC: renBTC,
   whETH: whETH,
   whFTT: whFTT,
-  slope: slope
+  slope: slope,
+  clover: clover
 }
 
 export default icons
