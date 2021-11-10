@@ -25,17 +25,19 @@ export interface Data {
 
 export const DebtPoolContainer: React.FC = () => {
   const synthetics = useSelector(getSyntheticsStructure)
-  const syntheticData: Data[] = Object.values(synthetics).map((item, index) => {
-    return {
-      id: index.toString(),
-      label: item.symbol,
-      color: colors[index],
-      debt: item.debt,
-      collateral: item.collateral,
-      percent: item.percent,
-      value: item.value
-    }
-  })
+  const syntheticData: Data[] = Object.values(synthetics)
+    .filter((item) => item.symbol !== 'XYZ' && item.percent !== 0)
+    .map((item, index) => {
+      return {
+        id: index.toString(),
+        label: item.symbol,
+        color: colors[index],
+        debt: item.debt,
+        collateral: item.collateral,
+        percent: item.percent,
+        value: item.value
+      }
+    })
   const classes = useStyles()
 
   return (
