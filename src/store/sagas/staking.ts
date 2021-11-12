@@ -38,10 +38,16 @@ export function* handleCreateAccount(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
@@ -65,12 +71,18 @@ export function* handleDeposit(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield* put(actions.depositFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
@@ -90,13 +102,19 @@ export function* handleMint(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield* put(actions.mintFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
 
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
@@ -116,12 +134,17 @@ export function* handleWithdraw(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield* put(actions.withdrawFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
-
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
@@ -141,15 +164,21 @@ export function* handleBurn(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
     yield* put(actions.burnFailed({
       error: error instanceof
       Error ? error.message : 'Unknown error'
     }))
     console.log(error)
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
@@ -170,11 +199,17 @@ export function* handleClaimRewards(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield* put(actions.claimRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
@@ -195,12 +230,17 @@ export function* handleWithdrawRewards(): Generator {
         persist: false
       })
     )
-  } catch (error) {
+  } catch (error: any) {
     yield* put(actions.withdrawRewardsFailed({ error: error instanceof Error ? error.message : 'Unknown error' }))
-
+    let message
+    if (error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee') {
+      message = 'Insufficient funds for fee'
+    } else {
+      message = 'Failed to send. Please try again.'
+    }
     yield put(
       snackbarsActions.add({
-        message: 'Failed to send. Please try again.',
+        message: message,
         variant: 'error',
         persist: false
       })
