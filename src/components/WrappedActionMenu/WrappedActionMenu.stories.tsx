@@ -29,6 +29,11 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
         slot: 300000,
         userDebtShares: new BN(1e6),
         roundLength: 160000,
+        allDebtValue: [{
+          symbol: 'xUSD',
+          percent: 30,
+          value: 100
+        }],
         rounds: {
           finished: {
             roundStartSlot: new BN(1000000),
