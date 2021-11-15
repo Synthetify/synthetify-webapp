@@ -61,7 +61,7 @@ export const getAssetInAndFor = (
     priceVal: pair.syntheticData.price.val,
     assetScale: pair.syntheticData.supply.scale,
     symbol: pair.syntheticData.symbol,
-    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val).sub(pair.syntheticData.swaplineSupply.val).sub(pair.syntheticData.borrowedSupply.val),
+    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val),
     balance: pair.syntheticData.balance
   }
 
