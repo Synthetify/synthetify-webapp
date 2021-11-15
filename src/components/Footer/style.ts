@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   divider: {
     display: 'block',
-    backgroundColor: colors.navy.lightGrey
+    backgroundColor: colors.navy.darkGrey
   }
 }))
 
