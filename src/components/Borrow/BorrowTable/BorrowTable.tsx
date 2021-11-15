@@ -73,8 +73,8 @@ export const BorrowTable: React.FC<IProp> = ({
               <TableCell classes={{ root: classes.rootHeader }}>Interest rate</TableCell>
             </Hidden>
             <TableCell classes={{ root: classes.rootHeader }}>
-              <Hidden smDown>Liquidation price</Hidden>
-              <Hidden mdUp>Liq. price</Hidden>
+              <Hidden mdDown>Liquidation price</Hidden>
+              <Hidden only={['lg', 'xl']}>Liq. price</Hidden>
             </TableCell>
             <Hidden mdDown>
               <TableCell classes={{ root: classes.rootHeader }}>Max borrows limit</TableCell>
@@ -109,9 +109,7 @@ export const BorrowTable: React.FC<IProp> = ({
             <TableCell
               classes={{ root: classes.rootCell }}
               style={{
-                ...(Number(cRatio) <= 100
-                  ? { color: colors.green.button }
-                  : { color: colors.red.error })
+                color: Number(cRatio) <= 100 ? colors.green.button : colors.red.error
               }}>
               {cRatio}
               {'%'}
@@ -138,11 +136,9 @@ export const BorrowTable: React.FC<IProp> = ({
               <TableCell
                 classes={{ root: classes.rootCell }}
                 style={{
-                  ...(Number(cRatio) <= 100
-                    ? { color: colors.green.button }
-                    : { color: colors.red.error })
+                  color: Number(cRatio) <= 100 ? colors.green.button : colors.red.error
                 }}>
-                {Number(maxBorrow).toFixed(4)} {borrowed} left
+                {Number(maxBorrow).toFixed(2)} {borrowed} left
               </TableCell>
             </Hidden>
           </TableRow>

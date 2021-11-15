@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     borderRadius: '0 0 10px 10px',
-    marginBottom: '24px'
+    marginBottom: '24px',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '16px'
+    }
   },
   topGrid: {
     padding: '16px 24px',

@@ -47,8 +47,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {
     borderRadius: '5px',
-    marginBottom: '24px',
-    width: '100%'
+
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '16px'
+    }
   },
   wrapper: {
     width: '100%'

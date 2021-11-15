@@ -15,6 +15,7 @@ import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/so
 import { BorrowTable } from '../BorrowTable/BorrowTable'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 
+type ActionType = 'add' | 'withdraw'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -35,6 +36,8 @@ interface IProp {
   minCRatio: number
   changeCRatio: (nr: number) => void
   sending: boolean
+  onSelectPair: (nr: number) => void
+  hasError: boolean
 }
 export const ActionBorrow: React.FC<IProp> = ({
   cRatio,
@@ -48,7 +51,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   pairs,
   minCRatio,
   changeCRatio,
-  sending
+  sending,
+  hasError,
+  onSelectPair
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -106,20 +111,54 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [tokenFrom, tokenTo] = getAssetInAndFor(pairIndex !== null ? pairs[pairIndex] : null)
 
   const changeCustomCRatio = () => {
-    customCRatio ? changeCRatio(Number(customCRatio)) : changeCRatio(minCRatio)
-    customCRatio ? setCustomCRatio(customCRatio) : setCustomCRatio(minCRatio.toString())
+    if (customCRatio) {
+      changeCRatio(Number(customCRatio))
+      setCustomCRatio(customCRatio)
+    } else {
+      changeCRatio(minCRatio)
+      setCustomCRatio(minCRatio.toString())
+    }
   }
   const getProgressState = () => {
     if (sending) {
       return 'progress'
     }
+    if (showOperationProgressFinale && hasError) {
+      return 'failed'
+    }
+
+    if (showOperationProgressFinale && !hasError) {
+      return 'success'
+    }
     return 'none'
   }
   const getProgressMessage = () => {
+    const actionToNoun: { [key in ActionType]: string } = {
+      add: 'Adding',
+      withdraw: 'Withdrawing'
+    }
     if (sending) {
-      return 'In progress'
+      return `${actionToNoun[nameButton.toLowerCase() as ActionType]} in progress`
+    }
+    const actionToPastNoun: { [key in ActionType]: string } = {
+      add: 'added',
+      withdraw: 'withdrawn'
+    }
+    if (showOperationProgressFinale && !hasError) {
+      return `Successfully ${actionToPastNoun[nameButton.toLowerCase() as ActionType]}`
+    }
+    if (showOperationProgressFinale && hasError) {
+      return `${actionToNoun[nameButton.toLowerCase() as ActionType]} failed`
     }
   }
+  const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
+
+  React.useEffect(() => {
+    if (sending) {
+      setShowOperationProgressFinale(true)
+    }
+  }, [sending])
+
   return (
     <Grid>
       <Grid className={classes.root}>
@@ -147,6 +186,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 current={pairIndex !== null ? tokenFrom.symbol : null}
                 onSelect={(chosen: number) => {
                   setPairIndex(chosen)
+                  onSelectPair(chosen)
                 }}
                 className={classes.input}
                 selectText='Select'
@@ -254,6 +294,7 @@ export const ActionBorrow: React.FC<IProp> = ({
               current={pairIndex !== null ? tokenTo.symbol : null}
               onSelect={(chosen: number) => {
                 setPairIndex(chosen)
+                onSelectPair(chosen)
               }}
               className={classes.input}
               selectText='Select'
@@ -283,7 +324,7 @@ export const ActionBorrow: React.FC<IProp> = ({
             <Grid>
               <Typography className={classes.infoTitle}>Liquidation price:</Typography>
 
-              <Grid container>
+              <Grid container alignItems='center'>
                 <Typography className={classes.infoValueTo}>{liquidationPriceTo}$</Typography>
                 <FlatIcon
                   className={classes.flatIcon}

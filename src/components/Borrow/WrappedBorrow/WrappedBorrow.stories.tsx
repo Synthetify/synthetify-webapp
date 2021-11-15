@@ -5,6 +5,7 @@ import { BN } from '@project-serum/anchor'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
 import { Asset, Collateral, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
+import { Grid } from '@material-ui/core'
 
 storiesOf('borrow/wrappedborrow', module).add('default', () =>
   React.createElement(() => {
@@ -70,7 +71,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       },
       status: PriceStatus.Trading
     }
-    const synthetics = 'xUSD xSOL xFFT xETH'.split(' ').map(
+    const synthetics = 'xSOL xFFT xETH'.split(' ').map(
       (i): ExchangeSyntheticTokens => {
         return { symbol: i, balance: new BN(0), ...defaultAsset, ...defaultSynthetic }
       }
@@ -82,7 +83,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       scale: 4
     }
 
-    const collaterals = 'USDC WSOL FFT ETH'.split(' ').map(
+    const collaterals = 'WSOL FFT ETH'.split(' ').map(
       (i): ExchangeCollateralTokens => {
         return {
           symbol: i,
@@ -160,6 +161,10 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       },
       lastUpdate: new BN(30000)
     }))
-    return <WrappedBorrow pairs={pairs} />
+    return (
+      <Grid style={{ maxWidth: '1420px' }}>
+        <WrappedBorrow pairs={pairs} />
+      </Grid>
+    )
   })
 )
