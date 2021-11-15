@@ -36,6 +36,8 @@ const TabPanel = ({ children, value, index, ...other }: ITabPanelProps) => {
 
 const useStyles = makeStyles((theme: Theme) => ({
   tabs: {
+    borderRadius: '10px 10px 0 0 ',
+    background: colors.navy.component,
     display: 'flex',
     flexDirection: 'row',
     padding: '16px 24px',
@@ -44,7 +46,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   root: {
-    background: colors.navy.component,
     borderRadius: '5px',
     marginBottom: '24px',
     width: '100%'

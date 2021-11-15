@@ -6,20 +6,14 @@ import ActionMenuBorrow, { IActionContents } from './ActionMenuBorrow'
 import { ActionBorrow } from './ActionBorrow'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Collateral, Decimal, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
+import { Asset, Collateral, PriceStatus, Synthetic, Vault } from '@synthetify/sdk/lib/exchange'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
-// interface AmountInputBorrow {
-//   amountCollateral: number
-//   setAmountCollateral: (nr: number) => void
-// }
-interface BorrowedPair {
+interface BorrowedPair extends Vault {
   collateralData: ExchangeCollateralTokens
   syntheticData: ExchangeSyntheticTokens
-  balance: Decimal
 }
 storiesOf('borrow/switchBorrow', module)
   .addDecorator(withKnobs)
-
   .add('Actions', () =>
     React.createElement(() => {
       const defaultSynthetic: Synthetic = {
@@ -126,16 +120,53 @@ storiesOf('borrow/switchBorrow', module)
           val: new BN(30000),
           scale: 6
         },
-        balance: {
-          val: new BN(30000),
-          scale: 0
-        },
-        limit: {
-          val: new BN(30000),
-          scale: 0
-        },
         bump: 1,
-        halted: false
+        halted: false,
+        collateralRatio: {
+          val: new BN(3096),
+          scale: 2
+        },
+        liquidationThreshold: {
+          val: new BN(867),
+          scale: 2
+        },
+        liquidationRatio: {
+          val: new BN(30000),
+          scale: 0
+        },
+        liquidationPenaltyLiquidator: {
+          val: new BN(30000),
+          scale: 0
+        },
+        liquidationPenaltyExchange: {
+          val: new BN(30000),
+          scale: 0
+        },
+        debtInterestRate: {
+          val: new BN(30000),
+          scale: 0
+        },
+        accumulatedInterest: {
+          val: new BN(2175),
+          scale: 2
+        },
+        accumulatedInterestRate: {
+          val: new BN(2185),
+          scale: 2
+        },
+        mintAmount: {
+          val: new BN(30000),
+          scale: 0
+        },
+        collateralAmount: {
+          val: new BN(30000),
+          scale: 0
+        },
+        maxBorrow: {
+          val: new BN(3256349),
+          scale: 4
+        },
+        lastUpdate: new BN(30000)
       }))
 
       const [cRatio, setCRatio] = React.useState(100.0)
@@ -154,9 +185,10 @@ storiesOf('borrow/switchBorrow', module)
             collateralRatioTo={3.45}
             collateralRatioFrom={25.64}
             nameButton={'Add'}
-            onClickButton={() => {}}
+            onClickSubmitButton={() => {}}
             pairs={pairs}
             minCRatio={75}
+            sending={false}
           />
         ),
         repay: (
@@ -168,10 +200,11 @@ storiesOf('borrow/switchBorrow', module)
             collateralRatioTo={3.45}
             collateralRatioFrom={125.64}
             nameButton={'Withdraw'}
-            onClickButton={() => {}}
+            onClickSubmitButton={() => {}}
             pairs={pairs}
             minCRatio={50}
             changeCRatio={changeCRatio}
+            sending={false}
           />
         )
       }

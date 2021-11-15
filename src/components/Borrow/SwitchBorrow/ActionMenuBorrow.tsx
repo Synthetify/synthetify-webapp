@@ -10,10 +10,10 @@ export type IActionContents = {
   [type in ActionType]: React.ReactNode
 }
 
-export const ActionMenu: React.FC<IProps> = ({ actionContents }) => {
+export const ActionMenuBorrow: React.FC<IProps> = ({ actionContents }) => {
   const actions: IMenuItem = { ...actionContents }
 
   return <SwitchBorrow menuItems={actions} />
 }
 
-export default ActionMenu
+export default ActionMenuBorrow

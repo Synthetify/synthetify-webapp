@@ -24,10 +24,10 @@ interface IProp {
   currentDebtSign: string
   deposited: number
   depositedSign: string
-  cRatio: number
-  interestRate: number
-  liquidationPrice: number
-  maxBorrow: number
+  cRatio: string
+  interestRate: string
+  liquidationPrice: string
+  maxBorrow: string
   setValueWithTable: () => void
   active: boolean
 }
@@ -109,9 +109,11 @@ export const BorrowTable: React.FC<IProp> = ({
             <TableCell
               classes={{ root: classes.rootCell }}
               style={{
-                ...(cRatio <= 100 ? { color: colors.green.button } : { color: colors.red.error })
+                ...(Number(cRatio) <= 100
+                  ? { color: colors.green.button }
+                  : { color: colors.red.error })
               }}>
-              {cRatio.toFixed(2)}
+              {cRatio}
               {'%'}
             </TableCell>
             <Hidden smDown>
@@ -126,16 +128,21 @@ export const BorrowTable: React.FC<IProp> = ({
             </Hidden>
             <TableCell classes={{ root: classes.rootCell }}>
               {'$'}
-              <AnimatedNumber value={liquidationPrice} formatValue={formatNumbersBorrowTable} />
-              {showPrefix(liquidationPrice)}
+              <AnimatedNumber
+                value={Number(liquidationPrice)}
+                formatValue={formatNumbersBorrowTable}
+              />
+              {showPrefix(Number(liquidationPrice))}
             </TableCell>
             <Hidden mdDown>
               <TableCell
                 classes={{ root: classes.rootCell }}
                 style={{
-                  ...(cRatio <= 100 ? { color: colors.green.button } : { color: colors.red.error })
+                  ...(Number(cRatio) <= 100
+                    ? { color: colors.green.button }
+                    : { color: colors.red.error })
                 }}>
-                {maxBorrow.toFixed(4)} {borrowed} left
+                {Number(maxBorrow).toFixed(4)} {borrowed} left
               </TableCell>
             </Hidden>
           </TableRow>

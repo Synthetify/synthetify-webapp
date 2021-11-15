@@ -14,10 +14,10 @@ storiesOf('Borrow/table', module).add('default', () =>
           currentDebt={11999.4325}
           deposited={101035.4215}
           depositedSign={'xSOL'}
-          cRatio={125.645}
-          interestRate={25.4545}
-          liquidationPrice={125.32654}
-          maxBorrow={300}
+          cRatio={'125.645'}
+          interestRate={'25.4545'}
+          liquidationPrice={'125.32654'}
+          maxBorrow={'300'}
           setValueWithTable={() => {
             setActive(true)
             console.log('set value with tables')
