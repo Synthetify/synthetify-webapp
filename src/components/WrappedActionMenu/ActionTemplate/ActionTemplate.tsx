@@ -8,7 +8,6 @@ import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
 import AmountInput from '@components/Inputs/AmountInput/AmountInput'
-
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
 
@@ -173,7 +172,6 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
-
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>

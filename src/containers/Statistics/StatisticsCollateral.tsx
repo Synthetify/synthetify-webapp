@@ -6,13 +6,15 @@ import { colors } from '@consts/uiUtils'
 
 export const StatisticsCollateral: React.FC = () => {
   const collaterals = useSelector(getCollateralStructure)
-  const CollateralData = Object.values(collaterals).map((item, index) => {
-    return {
-      name: item.symbol,
-      percent: item.percent,
-      color: colors[index]
-    }
-  })
+  const CollateralData = Object.values(collaterals)
+    .filter((item) => item.symbol !== 'XYZ' && item.percent !== 0)
+    .map((item, index) => {
+      return {
+        name: item.symbol,
+        percent: item.percent,
+        color: colors[index]
+      }
+    })
 
   return (
     <>
