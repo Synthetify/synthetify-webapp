@@ -22,8 +22,7 @@ interface IProps {
 export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
   const classes = useStyles()
 
-  const oneMothData: Array<{ x: number; y: number }> = data.data.slice(0, 31)
-
+  const oneMothData: Array<{ x: number; y: number }> = data.data.slice(0).slice(-30)
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp)
 
