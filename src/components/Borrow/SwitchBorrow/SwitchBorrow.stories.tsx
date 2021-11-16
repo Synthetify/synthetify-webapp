@@ -189,6 +189,8 @@ storiesOf('borrow/switchBorrow', module)
             pairs={pairs}
             minCRatio={75}
             sending={false}
+            onSelectPair={() => {}}
+            hasError={false}
           />
         ),
         repay: (
@@ -205,6 +207,8 @@ storiesOf('borrow/switchBorrow', module)
             minCRatio={50}
             changeCRatio={changeCRatio}
             sending={false}
+            onSelectPair={() => {}}
+            hasError={false}
           />
         )
       }

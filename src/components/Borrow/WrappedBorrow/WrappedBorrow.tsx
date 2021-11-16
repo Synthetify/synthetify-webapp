@@ -1,3 +1,4 @@
+import { printBN } from '@consts/utils'
 import { Grid } from '@material-ui/core'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
@@ -17,34 +18,52 @@ interface IProp {
 export const WrappedBorrow: React.FC<IProp> = ({ pairs }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState(100.0)
+  const [interestRate, setInterestRate] = React.useState(1)
+  const [liquidationPrice, setLiquidationPrice] = React.useState(1)
   const changeCRatio = (nr: number) => {
     setCRatio(nr)
   }
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
 
+  const minCRatio =
+    pairIndex !== null
+      ? Math.pow(
+          Number(
+            printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
+          ) / 100,
+          -1
+        )
+      : 0
+
+  const changeValueFromTable = (cRatio: number, interestRate: number, liquidationPrice: number) => {
+    setCRatio(cRatio)
+    setInterestRate(interestRate)
+    setLiquidationPrice(liquidationPrice)
+  }
   const actionContents: IActionContents = {
     borrow: (
       <ActionBorrow
         cRatio={cRatio}
         changeCRatio={changeCRatio}
-        interestRate={0}
-        liquidationPriceTo={0}
+        interestRate={interestRate}
+        liquidationPriceTo={liquidationPrice}
         liquidationPriceFrom={0}
         collateralRatioTo={0}
         collateralRatioFrom={0}
         nameButton={'Add'}
         onClickSubmitButton={() => {}}
         pairs={pairs}
-        minCRatio={75}
+        minCRatio={minCRatio}
         sending={true}
         onSelectPair={setPairIndex}
         hasError={false}
+        changeValueFromTable={changeValueFromTable}
       />
     ),
     repay: (
       <ActionBorrow
         cRatio={cRatio}
-        interestRate={1}
+        interestRate={interestRate}
         liquidationPriceTo={1}
         liquidationPriceFrom={1}
         collateralRatioTo={1}
@@ -52,11 +71,12 @@ export const WrappedBorrow: React.FC<IProp> = ({ pairs }) => {
         nameButton={'Withdraw'}
         onClickSubmitButton={() => {}}
         pairs={pairs}
-        minCRatio={50}
+        minCRatio={minCRatio}
         changeCRatio={changeCRatio}
         sending={false}
         onSelectPair={setPairIndex}
         hasError={false}
+        changeValueFromTable={changeValueFromTable}
       />
     )
   }

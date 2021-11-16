@@ -71,7 +71,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       },
       status: PriceStatus.Trading
     }
-    const synthetics = 'xSOL xFFT xETH'.split(' ').map(
+    const synthetics = 'xSOL xETH'.split(' ').map(
       (i): ExchangeSyntheticTokens => {
         return { symbol: i, balance: new BN(0), ...defaultAsset, ...defaultSynthetic }
       }
@@ -83,7 +83,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       scale: 4
     }
 
-    const collaterals = 'WSOL FFT ETH'.split(' ').map(
+    const collaterals = 'WSOL ETH'.split(' ').map(
       (i): ExchangeCollateralTokens => {
         return {
           symbol: i,
@@ -116,12 +116,12 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       bump: 1,
       halted: false,
       collateralRatio: {
-        val: new BN(3096),
-        scale: 2
+        val: new BN(5000),
+        scale: 4
       },
       liquidationThreshold: {
         val: new BN(867),
-        scale: 2
+        scale: 3
       },
       liquidationRatio: {
         val: new BN(30000),

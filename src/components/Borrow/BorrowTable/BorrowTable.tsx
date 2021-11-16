@@ -28,7 +28,7 @@ interface IProp {
   interestRate: string
   liquidationPrice: string
   maxBorrow: string
-  setValueWithTable: () => void
+  setValueWithTable: (cRatio: number, interestRate: number, liquidationPrice: number) => void
   active: boolean
 }
 export const BorrowTable: React.FC<IProp> = ({
@@ -84,7 +84,9 @@ export const BorrowTable: React.FC<IProp> = ({
         <TableBody>
           <TableRow
             className={classNames(classes.row, active ? classes.active : null)}
-            onClick={setValueWithTable}>
+            onClick={() =>
+              setValueWithTable(Number(cRatio), Number(interestRate), Number(liquidationPrice))
+            }>
             <TableCell classes={{ root: classes.rootCell }}>
               <Grid container alignItems='center'>
                 <CardMedia className={classes.icon} image={icons[collateral] ?? icons.SNY} />

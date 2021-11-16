@@ -38,6 +38,7 @@ interface IProp {
   sending: boolean
   onSelectPair: (nr: number) => void
   hasError: boolean
+  changeValueFromTable: (cRatio: number, interestRate: number, liquidationPrice: number) => void
 }
 export const ActionBorrow: React.FC<IProp> = ({
   cRatio,
@@ -53,7 +54,8 @@ export const ActionBorrow: React.FC<IProp> = ({
   changeCRatio,
   sending,
   hasError,
-  onSelectPair
+  onSelectPair,
+  changeValueFromTable
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -158,6 +160,12 @@ export const ActionBorrow: React.FC<IProp> = ({
       setShowOperationProgressFinale(true)
     }
   }, [sending])
+
+  React.useEffect(() => {
+    if (showOperationProgressFinale) {
+      setShowOperationProgressFinale(false)
+    }
+  }, [amountBorrow, amountCollateral])
 
   return (
     <Grid>
@@ -398,20 +406,13 @@ export const ActionBorrow: React.FC<IProp> = ({
               )
             : '0'
         }
-        liquidationPrice={
-          pairIndex !== null
-            ? printBN(
-                pairs[pairIndex].liquidationThreshold.val,
-                pairs[pairIndex].liquidationThreshold.scale
-              )
-            : '0'
-        }
+        liquidationPrice={'0'}
         maxBorrow={
           pairIndex !== null
             ? printBN(pairs[pairIndex].maxBorrow.val, pairs[pairIndex].maxBorrow.scale)
             : '0'
         }
-        setValueWithTable={() => {}}
+        setValueWithTable={changeValueFromTable}
         active={false}
       />
     </Grid>
