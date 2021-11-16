@@ -21,6 +21,9 @@ interface IProps {
 }
 export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
   const classes = useStyles()
+
+  const oneMothData: Array<{ x: number; y: number }> = data.data.slice(0, 31)
+
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp)
 
@@ -37,10 +40,11 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
     }
     return maxValue * 1.01
   }
+
   return (
     <Grid className={classes.linePlot}>
       <ResponsiveLine
-        data={[{ id: data.id, data: data.data }]}
+        data={[{ id: data.id, data: oneMothData }]}
         margin={{ top: 10, right: 20, bottom: 35, left: 20 }}
         xScale={{
           type: 'point'
@@ -60,7 +64,6 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
           tickPadding: 3,
           tickRotation: 0,
           tickValues: 6,
-
           format: tick => {
             const data = new Date(tick)
             if (data.getDate() % STEP_VALUES === 0) {
