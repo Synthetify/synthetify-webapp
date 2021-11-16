@@ -91,8 +91,9 @@ const ExhcangeEvents = () => {
       allAssets.forEach((asset, index) => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
+          data.price &&
           dispatch(
-            data.price && actions.setAssetPrice({ tokenIndex: index, price: { val: new BN(data.price * (10 ** asset.price.scale)), scale: asset.price.scale } })
+            actions.setAssetPrice({ tokenIndex: index, price: { val: new BN(data.price * (10 ** asset.price.scale)), scale: asset.price.scale } })
           )
         })
       })
