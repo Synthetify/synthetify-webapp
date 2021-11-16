@@ -7,8 +7,6 @@ import { linearGradientDef } from '@nivo/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import useStyles from './style'
 
-const STEP_VALUES = 2
-
 interface Data {
   id: string
   data: Array<{ x: number; y: number }>
@@ -21,13 +19,9 @@ interface IProps {
 }
 export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
   const classes = useStyles()
-
-  const oneMothData: Array<{ x: number; y: number }> = data.data.slice(0).slice(-30)
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp)
-
-    return date.toLocaleString('en-GB', { hour12: true, timeStyle: 'short', dateStyle: 'short' })
-  }
+  const fullDateData: Array<{ x: Date; y: number }> = data.data.slice(0).slice(-30).map(({ x, y }) => ({ x: new Date(x), y }))
+  const onlyDaysData: Array<{ x: Date; y: number }> = data.data.slice(0).slice(-30).map(({ x, y }) => ({ x: new Date(x - (x % (1000 * 60 * 60 * 24))), y }))
+  const formatDate = (index: number) => fullDateData[index].x.toLocaleString('en-GB', { hour12: true, timeStyle: 'short', dateStyle: 'short' })
 
   const getPlotMax = () => {
     const values = data.data.map(point => point.y)
@@ -43,10 +37,13 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
   return (
     <Grid className={classes.linePlot}>
       <ResponsiveLine
-        data={[{ id: data.id, data: oneMothData }]}
+        data={[{ id: data.id, data: onlyDaysData }]}
         margin={{ top: 10, right: 20, bottom: 35, left: 20 }}
         xScale={{
-          type: 'point'
+          type: 'time',
+          format: 'native',
+          precision: 'day',
+          useUTC: true
         }}
         yScale={{
           type: 'linear',
@@ -62,17 +59,8 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
           tickSize: 5,
           tickPadding: 3,
           tickRotation: 0,
-          tickValues: 6,
-          format: tick => {
-            const data = new Date(tick)
-            if (data.getDate() % STEP_VALUES === 0) {
-              return `${('0' + data.getDate().toString()).slice(-2)}/${(
-                '0' + (data.getMonth() + 1).toString()
-              ).slice(-2)}`
-            } else {
-              return ''
-            }
-          }
+          tickValues: 'every 2 days',
+          format: '%d/%m'
         }}
         enableGridX={false}
         enableGridY={false}
@@ -91,11 +79,12 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
         ]}
         tooltip={({
           point: {
-            data: { x, y }
+            data: { y },
+            index
           }
         }) => (
           <div className={classes.tooltipRoot}>
-            <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
+            <Typography className={classes.tooltipDate}>{formatDate(index)}</Typography>
             <Typography className={classes.tooltipValue}>
               {sign}
               {y as number}
