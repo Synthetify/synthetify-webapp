@@ -274,9 +274,6 @@ export function* withdrawCollateral(
 
   if (!collateralAccountAddress) {
     accountAddress = yield* call(createAccount, allCollaterals[collateralTokenAddress.toString()].collateralAddress)
-    // console.log(yield* call(createAccount, Object.values(allCollaterals[collateralTokenAddress.toString()].collateralAddress)))
-    // console.log(newAccountAddress)
-    // throw new Error('Collateral token account not found')
   } else {
     accountAddress = collateralAccountAddress.address
   }
