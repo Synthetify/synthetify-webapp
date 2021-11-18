@@ -187,13 +187,12 @@ export const stakedAccountsArray = createSelector(
     const accounts: TokenAccounts[] = []
     for (const collateral of account.collaterals) {
       const collateralAddress = collateral.collateralAddress.toString()
-      console.log(allCollaterals)
-      if (allCollaterals[collateralAddress] && (allCollaterals[collateralAddress].symbol === 'WSOL' || tokensAccounts[collateralAddress])) {
+      if (allCollaterals[collateralAddress]) {
         accounts.push({
           symbol: allCollaterals[collateralAddress].symbol,
           programId: allCollaterals[collateralAddress].collateralAddress,
           decimals: allCollaterals[collateralAddress].reserveBalance.scale,
-          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
+          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress]?.address ?? 'defaultKey',
           assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
           balance: collateral.amount,
           usdValue: collateral.amount
