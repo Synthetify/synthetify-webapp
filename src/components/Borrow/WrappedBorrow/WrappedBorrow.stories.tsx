@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { BorrowedPair, WrappedBorrow } from './WrappedBorrow'
+import { BorrowedPair, OwnedVaults, WrappedBorrow } from './WrappedBorrow'
 import { BN } from '@project-serum/anchor'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
@@ -161,9 +161,45 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       },
       lastUpdate: new BN(30000)
     }))
+
+    const ownedVaults: OwnedVaults[] = [
+      {
+        collateral: 'WSOL',
+        borrowed: 'xSOL',
+        currentDebt: 11999.4325,
+        deposited: 101035.4215,
+        depositedSign: 'xSOL',
+        cRatio: '125.645',
+        interestRate: '25.4545',
+        liquidationPrice: '125.32654',
+        maxBorrow: '300',
+        currentDebtSign: '$'
+      },
+      {
+        collateral: 'ETH',
+        borrowed: 'xETH',
+        currentDebt: 11999.4325,
+        deposited: 101035.4215,
+        depositedSign: 'xETH',
+        cRatio: '25.645',
+        interestRate: '15.45',
+        liquidationPrice: '15.32654',
+        maxBorrow: '500',
+        currentDebtSign: '$'
+      }
+    ]
     return (
       <Grid style={{ maxWidth: '1420px' }}>
-        <WrappedBorrow pairs={pairs} />
+        <WrappedBorrow
+          pairs={pairs}
+          sending={false}
+          hasError={false}
+          ownedVaults={ownedVaults}
+          limit={1000}
+          reserve={200}
+          debtAmount={152.5}
+          collateralAmount={12000.05}
+        />
       </Grid>
     )
   })

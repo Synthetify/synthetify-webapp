@@ -3,6 +3,8 @@ import React from 'react'
 import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
 import { CopyPopover } from '@components/CopyPopover/CopyPopover'
+import { formatNumbers, showPrefix } from '@consts/utils'
+import AnimatedNumber from '@components/AnimatedNumber'
 interface IGeneralInfo {
   collateralAmount: number
   debtAmount: number
@@ -47,7 +49,10 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
               <Hidden mdDown>Collateral amount</Hidden>{' '}
               <Hidden only={['lg', 'xl']}>Coll. amount</Hidden>({collateral}):
             </Typography>
-            <Typography className={classes.positionValue}>{collateralAmount.toFixed(3)}</Typography>
+            <Typography className={classes.positionValue}>
+              <AnimatedNumber value={collateralAmount} formatValue={formatNumbers} />
+              {showPrefix(collateralAmount)}
+            </Typography>
           </Grid>
           <Grid
             container

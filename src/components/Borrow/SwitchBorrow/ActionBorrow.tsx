@@ -11,11 +11,9 @@ import { Decimal, Vault } from '@synthetify/sdk/lib/exchange'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { printBN } from '@consts/utils'
-import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
-import { BorrowTable } from '../BorrowTable/BorrowTable'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 
-type ActionType = 'add' | 'withdraw'
+type ActionType = 'add' | 'withdraw' | 'borrow' | 'repay'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -24,14 +22,14 @@ interface AssetPriceData {
   balance: BN
 }
 interface IProp {
+  action: string
   cRatio: number
   interestRate: number
   liquidationPriceTo: number
   liquidationPriceFrom: number
   collateralRatioTo: number
   collateralRatioFrom: number
-  nameButton: string
-  onClickSubmitButton: () => void
+  onClickSubmitButton: (action: string) => void
   pairs: BorrowedPair[]
   minCRatio: number
   changeCRatio: (nr: number) => void
@@ -41,13 +39,13 @@ interface IProp {
   changeValueFromTable: (cRatio: number, interestRate: number, liquidationPrice: number) => void
 }
 export const ActionBorrow: React.FC<IProp> = ({
+  action,
   cRatio,
   interestRate,
   liquidationPriceTo,
   liquidationPriceFrom,
   collateralRatioTo,
   collateralRatioFrom,
-  nameButton,
   onClickSubmitButton,
   pairs,
   minCRatio,
@@ -72,7 +70,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
-
+  const [nameSubmitButton, setNameSubmitButton] = React.useState<ActionType>('add')
   const getAssetInAndFor = (pair: BorrowedPair | null): [AssetPriceData, AssetPriceData] => {
     if (pair === null) {
       return [
@@ -137,20 +135,24 @@ export const ActionBorrow: React.FC<IProp> = ({
   const getProgressMessage = () => {
     const actionToNoun: { [key in ActionType]: string } = {
       add: 'Adding',
-      withdraw: 'Withdrawing'
+      withdraw: 'Withdrawing',
+      borrow: 'Borrowing',
+      repay: 'Repaying'
     }
     if (sending) {
-      return `${actionToNoun[nameButton.toLowerCase() as ActionType]} in progress`
+      return `${actionToNoun[nameSubmitButton]} in progress`
     }
     const actionToPastNoun: { [key in ActionType]: string } = {
       add: 'added',
-      withdraw: 'withdrawn'
+      withdraw: 'withdrawn',
+      borrow: 'borrowed',
+      repay: 'Repaid'
     }
     if (showOperationProgressFinale && !hasError) {
-      return `Successfully ${actionToPastNoun[nameButton.toLowerCase() as ActionType]}`
+      return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
     }
     if (showOperationProgressFinale && hasError) {
-      return `${actionToNoun[nameButton.toLowerCase() as ActionType]} failed`
+      return `${actionToNoun[nameSubmitButton]} failed`
     }
   }
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
@@ -173,7 +175,9 @@ export const ActionBorrow: React.FC<IProp> = ({
         <Grid className={classes.middleGrid}>
           <Grid className={classes.collateralContainer}>
             <Grid style={{ width: '100%' }}>
-              <Typography className={classes.title}>Add collateral</Typography>
+              <Typography className={classes.title}>
+                {action === 'borrow' ? 'Add collateral' : 'Withdraw collateral'}
+              </Typography>
               <ExchangeAmountInput
                 value={amountCollateral}
                 setValue={value => {
@@ -281,7 +285,10 @@ export const ActionBorrow: React.FC<IProp> = ({
             </Grid>
           </Grid>
           <Grid style={{ width: '100%' }}>
-            <Typography className={classes.title}>Max borrow</Typography>
+            <Typography className={classes.title}>
+              {' '}
+              {action === 'borrow' ? 'Max borrow' : 'Repay'}
+            </Typography>
             <ExchangeAmountInput
               value={amountBorrow}
               setValue={value => {
@@ -308,7 +315,7 @@ export const ActionBorrow: React.FC<IProp> = ({
               selectText='Select'
             />
             <Typography className={classes.desc}>
-              Available to borrow:{' '}
+              {action === 'borrow' ? 'Available to borrow: ' : 'Available to repay: '}
               <AnimatedNumber
                 value={printBN(tokenFrom.maxAvailable, tokenFrom.assetScale)}
                 formatValue={(value: number) => value.toFixed(5)}
@@ -378,43 +385,16 @@ export const ActionBorrow: React.FC<IProp> = ({
           <Grid className={classes.buttonAction} container>
             <Progress state={getProgressState()} message={getProgressMessage()} />
             <OutlinedButton
-              name={nameButton}
+              name={nameSubmitButton}
               color='secondary'
               className={classes.actionButton}
-              onClick={onClickSubmitButton}
+              onClick={() => {
+                onClickSubmitButton(nameSubmitButton)
+              }}
             />
           </Grid>
         </Grid>
       </Grid>
-      <BorrowTable
-        collateral={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : 'WSOL'}
-        borrowed={pairIndex !== null ? pairs[pairIndex].syntheticData.symbol : 'WSOL'}
-        currentDebt={10}
-        deposited={56}
-        depositedSign={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : 'WSOL'}
-        currentDebtSign={'$'}
-        cRatio={
-          pairIndex !== null
-            ? printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
-            : '0'
-        }
-        interestRate={
-          pairIndex !== null
-            ? printBN(
-                pairs[pairIndex].accumulatedInterestRate.val,
-                pairs[pairIndex].accumulatedInterestRate.scale
-              )
-            : '0'
-        }
-        liquidationPrice={'0'}
-        maxBorrow={
-          pairIndex !== null
-            ? printBN(pairs[pairIndex].maxBorrow.val, pairs[pairIndex].maxBorrow.scale)
-            : '0'
-        }
-        setValueWithTable={changeValueFromTable}
-        active={false}
-      />
     </Grid>
   )
 }

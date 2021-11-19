@@ -184,13 +184,20 @@ storiesOf('borrow/switchBorrow', module)
             liquidationPriceFrom={8.456}
             collateralRatioTo={3.45}
             collateralRatioFrom={25.64}
-            nameButton={'Add'}
             onClickSubmitButton={() => {}}
             pairs={pairs}
             minCRatio={75}
             sending={false}
             onSelectPair={() => {}}
             hasError={false}
+            action={''}
+            changeValueFromTable={(
+              cRatio: number,
+              interestRate: number,
+              liquidationPrice: number
+            ) => {
+              console.log(cRatio, interestRate, liquidationPrice)
+            }}
           />
         ),
         repay: (
@@ -201,7 +208,6 @@ storiesOf('borrow/switchBorrow', module)
             liquidationPriceFrom={80.456}
             collateralRatioTo={3.45}
             collateralRatioFrom={125.64}
-            nameButton={'Withdraw'}
             onClickSubmitButton={() => {}}
             pairs={pairs}
             minCRatio={50}
@@ -209,6 +215,14 @@ storiesOf('borrow/switchBorrow', module)
             sending={false}
             onSelectPair={() => {}}
             hasError={false}
+            action={''}
+            changeValueFromTable={(
+              cRatio: number,
+              interestRate: number,
+              liquidationPrice: number
+            ) => {
+              console.log(cRatio, interestRate, liquidationPrice)
+            }}
           />
         )
       }

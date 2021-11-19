@@ -155,7 +155,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   popoverBack: {
     background: colors.navy.dark,
-    border: '1px solid #292956',
+    border: `1px solid ${colors.navy.darkGrey}`,
     boxSizing: 'border-box',
     borderRadius: '5px',
     padding: '4px'
@@ -235,6 +235,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   infoValueTo: {
     ...typography.subtitle2,
     color: colors.white.main,
+    paddingTop: '2px',
     display: 'flex',
     [theme.breakpoints.down('xs')]: {
       ...typography.caption2
@@ -243,6 +244,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   infoValueFrom: {
     ...typography.subtitle1,
     color: colors.white.main,
+    paddingTop: '2px',
     display: 'flex',
     [theme.breakpoints.down('xs')]: {
       ...typography.caption2
@@ -261,6 +263,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: '170px',
     ...typography.body1,
     marginLeft: '30px',
+    textTransform: 'capitalize',
     '&:hover': {
       background: '#4ADFBA'
     },
