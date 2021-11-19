@@ -16,6 +16,11 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
       slot={578000}
       userDebtShares={new BN(1e5)}
       roundLength={100000}
+      allDebtValue={[{
+        symbol: 'xBTC',
+        percent: 0.81111,
+        value: 4212
+      }]}
       amountToClaim={{
         val: new BN(88648),
         scale: 0
