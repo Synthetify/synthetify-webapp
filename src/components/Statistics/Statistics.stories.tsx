@@ -55,11 +55,13 @@ storiesOf('cards/StatisticsAll', module).add('Container', () => (
         mint: 0,
         fee: 0
       }}
-      debtCurrent={[{
-        value: 5122,
-        symbol: 'xUSD',
-        scale: 6
-      }]}
+      debtCurrent={[
+        {
+          value: 5122,
+          symbol: 'xUSD',
+          scale: 6
+        }
+      ]}
       collateralValue={100}
     />
   </div>

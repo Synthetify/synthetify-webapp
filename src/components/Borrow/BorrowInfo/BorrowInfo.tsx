@@ -3,6 +3,8 @@ import React from 'react'
 import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
 import { CopyPopover } from '@components/CopyPopover/CopyPopover'
+import { formatNumbers, showPrefix } from '@consts/utils'
+import AnimatedNumber from '@components/AnimatedNumber'
 interface IGeneralInfo {
   collateralAmount: number
   debtAmount: number
@@ -44,10 +46,13 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden smDown>Collateral amount</Hidden> <Hidden mdUp>Coll. amount</Hidden>(
-              {collateral}):
+              <Hidden mdDown>Collateral amount</Hidden>{' '}
+              <Hidden only={['lg', 'xl']}>Coll. amount</Hidden>({collateral}):
             </Typography>
-            <Typography className={classes.positionValue}>{collateralAmount.toFixed(3)}</Typography>
+            <Typography className={classes.positionValue}>
+              <AnimatedNumber value={collateralAmount} formatValue={formatNumbers} />
+              {showPrefix(collateralAmount)}
+            </Typography>
           </Grid>
           <Grid
             container
@@ -112,7 +117,8 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden smDown>Collateral address:</Hidden> <Hidden mdUp>Coll. address:</Hidden>
+              <Hidden mdDown>Collateral address:</Hidden>{' '}
+              <Hidden only={['lg', 'xl']}>Coll. address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
               <CopyPopover address={collateralAddress} />
@@ -128,8 +134,8 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden smDown>Borrowed asset address:</Hidden>
-              <Hidden mdUp>Borr. address:</Hidden>
+              <Hidden mdDown>Borrowed asset address:</Hidden>
+              <Hidden only={['lg', 'xl']}>Borr. address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
               <CopyPopover address={borrowedAddress} />

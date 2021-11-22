@@ -61,6 +61,7 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
         scale: 0
       }}
       collateralValue={1500000}
+      allDebtValue={[]}
     />
   </div>
 ))
