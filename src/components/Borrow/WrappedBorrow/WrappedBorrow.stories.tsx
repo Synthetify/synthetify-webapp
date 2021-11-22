@@ -199,6 +199,10 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
           reserve={200}
           debtAmount={152.5}
           collateralAmount={12000.05}
+          addCollateral={() => {}}
+          borrowSynthetic={() => {}}
+          withdrawCollateral={() => {}}
+          repaySynthetic={() => {}}
         />
       </Grid>
     )

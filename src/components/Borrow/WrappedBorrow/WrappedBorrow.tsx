@@ -34,6 +34,10 @@ interface IProp {
   reserve: number
   debtAmount: number
   collateralAmount: number
+  addCollateral: () => void
+  borrowSynthetic: () => void
+  withdrawCollateral: () => void
+  repaySynthetic: () => void
 }
 export const WrappedBorrow: React.FC<IProp> = ({
   pairs,
@@ -43,7 +47,11 @@ export const WrappedBorrow: React.FC<IProp> = ({
   limit,
   reserve,
   collateralAmount,
-  debtAmount
+  debtAmount,
+  addCollateral,
+  borrowSynthetic,
+  withdrawCollateral,
+  repaySynthetic
 }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState(100.0)
@@ -77,19 +85,19 @@ export const WrappedBorrow: React.FC<IProp> = ({
   const actionOnSubmit = (action: string) => {
     switch (action) {
       case 'borrow': {
-        // todo action borrow
+        borrowSynthetic()
         break
       }
       case 'add': {
-        // todo action add
+        addCollateral()
         break
       }
       case 'withdraw': {
-        // todo action withdraw
+        withdrawCollateral()
         break
       }
       case 'repay': {
-        // todo action repay
+        repaySynthetic()
         break
       }
     }

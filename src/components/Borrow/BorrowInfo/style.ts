@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingLeft: 16
     },
     [theme.breakpoints.down('sm')]: {
-      paddingLeft: 0
+      paddingLeft: 0,
+      paddingTop: 16
     }
   },
   infoWrapper: {
