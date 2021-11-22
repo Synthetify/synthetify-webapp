@@ -39,6 +39,7 @@ export interface IRewardsProps {
   amountPerRoundValue: Decimal
   collateralValue: number
 }
+
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   timeRemainingEndSlot,
   slot

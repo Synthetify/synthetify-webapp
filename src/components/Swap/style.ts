@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.component,
     borderRadius: 10,
     padding: 24,
-
     [theme.breakpoints.down('sm')]: {
       padding: 16
     }
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenComponentInfo: {
     marginBottom: 10,
-
     [theme.breakpoints.down('sm')]: {
       marginBottom: 8
     }
@@ -33,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     ...typography.subtitle1,
     whiteSpace: 'nowrap',
-
+    marginTop: 2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body3
     }
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     ...typography.subtitle2,
     whiteSpace: 'nowrap',
-
+    marginTop: 2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
