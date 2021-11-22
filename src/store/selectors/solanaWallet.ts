@@ -192,7 +192,7 @@ export const stakedAccountsArray = createSelector(
           symbol: allCollaterals[collateralAddress].symbol,
           programId: allCollaterals[collateralAddress].collateralAddress,
           decimals: allCollaterals[collateralAddress].reserveBalance.scale,
-          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress]?.address ?? 'defaultKey',
+          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress]?.address ?? DEFAULT_PUBLICKEY,
           assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
           balance: collateral.amount,
           usdValue: collateral.amount
