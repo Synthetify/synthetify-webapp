@@ -3,9 +3,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import BN from 'bn.js'
 import { PayloadType } from './types'
-import { ExchangeState, Asset, CollateralEntry, Synthetic, Collateral, Decimal, Swapline } from '@synthetify/sdk/lib/exchange'
+import {
+  ExchangeState,
+  Asset,
+  CollateralEntry,
+  Synthetic,
+  Collateral,
+  Decimal,
+  Swapline,
+  Vault
+} from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
-
 export type SwaplineSwapType = 'nativeToSynthetic' | 'syntheticToNative'
 
 export interface SwaplineUpdate {
@@ -13,6 +21,10 @@ export interface SwaplineUpdate {
   swapline: Swapline
 }
 
+export interface VaultUpdate {
+  address: PublicKey
+  vault: Vault
+}
 export interface Swap {
   fromToken: PublicKey
   toToken: PublicKey
@@ -52,6 +64,7 @@ export interface IExchange {
   swap: Swap
   swaplineSwap: SwaplineSwap
   swaplines: { [key in string]: Swapline }
+  vaults: { [key in string]: Vault }
 }
 export type IAsset = Asset & { symbol: string }
 export type ISynthetic = Synthetic & { symbol: string }
@@ -160,7 +173,8 @@ export const defaultState: IExchange = {
     swapType: 'nativeToSynthetic',
     loading: false
   },
-  swaplines: {}
+  swaplines: {},
+  vaults: {}
 }
 export const exchangeSliceName = 'exchange'
 const exchangeSlice = createSlice({
@@ -188,10 +202,7 @@ const exchangeSlice = createSlice({
     },
     mergeAssets(state, action: PayloadAction<Asset[]>) {
       action.payload.forEach((asset, index) => {
-        state.assets[index] = R.merge(
-          state.assets[index],
-          asset
-        )
+        state.assets[index] = R.merge(state.assets[index], asset)
       })
       return state
     },
@@ -256,6 +267,9 @@ const exchangeSlice = createSlice({
       state.swaplines[action.payload.address.toString()] = action.payload.swapline
 
       return state
+    },
+    setVault(state, action: PayloadAction<VaultUpdate>) {
+      state.vaults[action.payload.address.toString()] = action.payload.vault
     }
   }
 })

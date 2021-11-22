@@ -11,6 +11,7 @@ import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/c
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
 import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
+
 import { VAULTS_MAP } from '@consts/consts'
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
@@ -88,19 +89,27 @@ const ExhcangeEvents = () => {
     if (!exchangeProgram || networkStatus !== Status.Initialized || !connection) {
       return
     }
-    const connectEvents = () => {
+    const connectEvents = async () => {
       exchangeProgram.onStateChange(state => {
         dispatch(actions.setState(state))
       })
 
-      const test = VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(vault => {
-        console.log(vault)
-        return vault
+      VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
+        const { vaultAddress } = await exchangeProgram.getVaultAddress(
+          vault.synthetic,
+          vault.collateral
+        )
+        const data = await exchangeProgram.getVaultForPair(vault.synthetic, vault.collateral)
+        // todo what is work onAccauntChange?
+        dispatch(
+          actions.setVault({
+            address: vaultAddress,
+            vault: data
+          })
+        )
       })
-      //ogarnac z jakiego pliku bierze sie funkcje do wywołania
-      // const vaultEntry= createVaultEntryInstruction({owner:, synthetic: test[0].synthetic, collateral:test[0].collateral})
     }
-    connectEvents()
+    connectEvents().catch(error => console.log(error))
   }, [dispatch, exchangeProgram, networkStatus])
 
   React.useEffect(() => {
