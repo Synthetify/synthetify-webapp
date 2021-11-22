@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:first-child': {
       paddingLeft: '14px'
     },
+    [theme.breakpoints.down('md')]: {
+      fontSize: '13px'
+    },
     [theme.breakpoints.down('sm')]: {
       padding: '14px 4px',
       '&:first-child': {

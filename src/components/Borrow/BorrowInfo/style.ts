@@ -6,7 +6,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: 24,
     height: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 16
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 0,
+      paddingTop: 16
+    }
   },
   infoWrapper: {
     marginTop: 24,
@@ -57,6 +64,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:last-child': {
       flexGrow: 1,
       minHeight: '160px'
+    },
+    [theme.breakpoints.down('md')]: {
+      '&:not(:last-child)': {
+        marginBottom: '16px'
+      }
     }
   },
   infoTitle: {

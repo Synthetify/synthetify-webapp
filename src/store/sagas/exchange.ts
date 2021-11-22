@@ -270,14 +270,19 @@ export function* withdrawCollateral(
   const exchangeProgram = yield* call(getExchangeProgram)
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
+  let accountAddress: PublicKey
+
   if (!collateralAccountAddress) {
-    throw new Error('Collateral token account not found')
+    accountAddress = yield* call(createAccount, allCollaterals[collateralTokenAddress.toString()].collateralAddress)
+  } else {
+    accountAddress = collateralAccountAddress.address
   }
+
   const signature = yield* call([exchangeProgram, exchangeProgram.withdraw], {
     amount,
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
-    userCollateralAccount: collateralAccountAddress?.address,
+    userCollateralAccount: accountAddress,
     reserveAccount: allCollaterals[collateralTokenAddress.toString()].reserveAddress
   })
   return signature
