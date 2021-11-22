@@ -185,7 +185,6 @@ export const stakedAccountsArray = createSelector(
   accounts,
   (account, allCollaterals, allAssets, wSOLAddress, tokensAccounts): TokenAccounts[] => {
     const accounts: TokenAccounts[] = []
-
     for (const collateral of account.collaterals) {
       const collateralAddress = collateral.collateralAddress.toString()
       if (allCollaterals[collateralAddress]) {
@@ -193,7 +192,7 @@ export const stakedAccountsArray = createSelector(
           symbol: allCollaterals[collateralAddress].symbol,
           programId: allCollaterals[collateralAddress].collateralAddress,
           decimals: allCollaterals[collateralAddress].reserveBalance.scale,
-          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress].address,
+          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress]?.address ?? DEFAULT_PUBLICKEY,
           assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
           balance: collateral.amount,
           usdValue: collateral.amount
@@ -206,6 +205,7 @@ export const stakedAccountsArray = createSelector(
     return accounts
   }
 )
+
 export const userMaxBurnToken = (assetAddress: PublicKey) =>
   createSelector(userDebtValue, synthetics, assets, tokenAccount(assetAddress), (debt, allSynthetics, allAssets, account) => {
     const token = allSynthetics[assetAddress.toString()]
