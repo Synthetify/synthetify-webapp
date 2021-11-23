@@ -66,7 +66,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
   USDC: 'USD Coin',
   renBTC: 'renBTC',
   whETH: 'Wormhole ETH',
-  whFTT: 'Wormhole FTT'
+  whFTT: 'Wormhole FTT',
+  mSOL: 'Marinade SOL'
 }
 
 export {
