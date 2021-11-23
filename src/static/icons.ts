@@ -32,6 +32,7 @@ import whETH from './icons/whETH.png'
 import whFTT from './icons/whFTT.svg'
 import slope from './svg/slope.svg'
 import clover from './svg/clover.svg'
+import mSOL from './svg/mSOL.svg'
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
@@ -67,7 +68,8 @@ const icons: { [key: string]: string } = {
   whETH: whETH,
   whFTT: whFTT,
   slope: slope,
-  clover: clover
+  clover: clover,
+  mSOL: mSOL
 }
 
 export default icons
