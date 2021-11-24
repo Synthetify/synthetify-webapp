@@ -37,7 +37,7 @@ export const PagesRouter: React.FC = () => {
           <Route path={'/exchange'} component={ExchangePage} />
           <Route path={'/statistics'} component={StatisticsPage} />
           <Route path={'/stats'} component={StatisticsPage} >
-            //TODO: ADD HERE REDIRECTION AS 404
+
             <Redirect to='/statistics'>
               <StatisticsPage />
             </Redirect>
