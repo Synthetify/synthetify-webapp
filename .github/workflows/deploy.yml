@@ -3,20 +3,22 @@ name: deploy
 on:
   push:
     branches:
-      - staging
+      - test
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Deploy to Staging
-        uses: amondnet/vercel-action@v20
-        id: deploy-vercel-production
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy to Vercel Action
+        uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          alias-domains: |
-            staging.app.synthetify.io
-          scope: ${{ secrets.VERCEL_ORG_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          # ALIAS_DOMAINS: |
+          #   staging.app.synthetify.io
