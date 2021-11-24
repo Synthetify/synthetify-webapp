@@ -37,7 +37,6 @@ export const PagesRouter: React.FC = () => {
           <Route path={'/exchange'} component={ExchangePage} />
           <Route path={'/statistics'} component={StatisticsPage} />
           <Route path={'/stats'} component={StatisticsPage} >
-
             <Redirect to='/statistics'>
               <StatisticsPage />
             </Redirect>
