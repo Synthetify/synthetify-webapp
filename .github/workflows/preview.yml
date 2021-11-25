@@ -1,9 +1,6 @@
-name: deploy
+name: preview
 
 on:
-  push:
-    branches:
-      - test
   pull_request:
     types: [opened, synchronize, reopened]
 
