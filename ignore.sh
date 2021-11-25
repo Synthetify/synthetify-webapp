@@ -9,6 +9,6 @@ if [[ "$VERCEL_ENV" == "production" ]] ; then
 
 else
   # Don't build
-  echo "🛑 - Build cancelled"
+  echo "🛑 - Build cancelled1"
   exit 0;
 fi
