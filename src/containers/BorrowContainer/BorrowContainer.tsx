@@ -32,8 +32,16 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs }) => {
             })
           )
         }}
-        borrowSynthetic={() => {
-          console.log('borrowSynthetic')
+        borrowSynthetic={(synthetic, collateral, collateralAmount, syntheticAmount) => {
+          dispatch(
+            actions.setVaultSwapBorrowed({
+              synthetic,
+              collateral,
+              collateralAmount,
+              syntheticAmount,
+              loading: true
+            })
+          )
         }}
         withdrawCollateral={() => {
           console.log('withdrawCollateral')

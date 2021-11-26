@@ -309,7 +309,7 @@ const exchangeSlice = createSlice({
       state.vaultSwap.loading = action.payload.loading
       return state
     },
-    setVaultSwapBorrowed(state, action: PayloadAction<VaultSwap>) {
+    setVaultSwapBorrowed(state, action: PayloadAction<Omit<VaultSwap, 'vaultEntryExist'>>) {
       state.vaultSwap.collateral = action.payload.collateral
       state.vaultSwap.synthetic = action.payload.synthetic
       state.vaultSwap.collateralAmount = action.payload.collateralAmount
@@ -317,7 +317,7 @@ const exchangeSlice = createSlice({
       state.vaultSwap.loading = action.payload.loading
       return state
     },
-    setVaultSwapWithdraw(state, action: PayloadAction<VaultSwap>) {
+    setVaultSwapWithdraw(state, action: PayloadAction<Omit<VaultSwap, 'vaultEntryExist'>>) {
       state.vaultSwap.collateral = action.payload.collateral
       state.vaultSwap.synthetic = action.payload.synthetic
       state.vaultSwap.collateralAmount = action.payload.collateralAmount
@@ -325,7 +325,7 @@ const exchangeSlice = createSlice({
       state.vaultSwap.loading = action.payload.loading
       return state
     },
-    setVaultSwapRepay(state, action: PayloadAction<VaultSwap>) {
+    setVaultSwapRepay(state, action: PayloadAction<Omit<VaultSwap, 'vaultEntryExist'>>) {
       state.vaultSwap.collateral = action.payload.collateral
       state.vaultSwap.synthetic = action.payload.synthetic
       state.vaultSwap.collateralAmount = action.payload.collateralAmount

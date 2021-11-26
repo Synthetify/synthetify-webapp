@@ -39,7 +39,12 @@ interface IProp {
     collateralAmount: BN,
     syntheticAmount: BN
   ) => void
-  borrowSynthetic: () => void
+  borrowSynthetic: (
+    synthetic: PublicKey,
+    collateral: PublicKey,
+    collateralAmount: BN,
+    syntheticAmount: BN
+  ) => void
   withdrawCollateral: () => void
   repaySynthetic: () => void
 }
@@ -93,15 +98,12 @@ export const WrappedBorrow: React.FC<IProp> = ({
   ) => {
     switch (action) {
       case 'borrow': {
-        if (amountCollateral !== '') {
-          addCollateral(
-            synthetic,
-            collateral,
-            printBNtoBN(amountCollateral, collScale),
-            printBNtoBN(amountBorrow, synScale)
-          )
-        }
-        borrowSynthetic()
+        borrowSynthetic(
+          synthetic,
+          collateral,
+          printBNtoBN(amountCollateral, collScale),
+          printBNtoBN(amountBorrow, synScale)
+        )
         break
       }
       case 'add': {
