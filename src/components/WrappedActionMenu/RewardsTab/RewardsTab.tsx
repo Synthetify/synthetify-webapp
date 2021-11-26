@@ -47,7 +47,7 @@ const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   const classes = useStyles()
 
   const calculateTimeRemaining = (): BN => {
-    const slotTime = 0.4
+    const slotTime = 0.5
     const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
     if (slotDiff.lten(0)) {
       return new BN(0)
