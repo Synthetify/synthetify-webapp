@@ -232,7 +232,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.caption1
     }
   },
-  infoValueTo: {
+  infoValueFrom: {
     ...typography.subtitle2,
     color: colors.white.main,
     paddingTop: '2px',
@@ -241,7 +241,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.caption2
     }
   },
-  infoValueFrom: {
+  infoValueTo: {
     ...typography.subtitle1,
     color: colors.white.main,
     paddingTop: '2px',

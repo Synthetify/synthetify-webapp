@@ -41,6 +41,15 @@ export interface SwaplineSwap {
   swapType: SwaplineSwapType
   txid?: string
 }
+export interface VaultSwap {
+  vaultEntryExist: boolean
+  synthetic: PublicKey
+  collateral: PublicKey
+  collateralAmount: BN
+  syntheticAmount: BN
+  loading: boolean
+  txid?: string
+}
 export interface UserStaking {
   amountToClaim: Decimal
   finishedRoundPoints: BN
@@ -65,6 +74,8 @@ export interface IExchange {
   swaplineSwap: SwaplineSwap
   swaplines: { [key in string]: Swapline }
   vaults: { [key in string]: Vault }
+  ownedVaults: { [key in string]: Vault }
+  vaultSwap: VaultSwap
 }
 export type IAsset = Asset & { symbol: string }
 export type ISynthetic = Synthetic & { symbol: string }
@@ -174,7 +185,16 @@ export const defaultState: IExchange = {
     loading: false
   },
   swaplines: {},
-  vaults: {}
+  vaults: {},
+  ownedVaults: {},
+  vaultSwap: {
+    vaultEntryExist: false,
+    synthetic: DEFAULT_PUBLICKEY,
+    collateral: DEFAULT_PUBLICKEY,
+    collateralAmount: new BN(0),
+    syntheticAmount: new BN(0),
+    loading: false
+  }
 }
 export const exchangeSliceName = 'exchange'
 const exchangeSlice = createSlice({
@@ -270,6 +290,48 @@ const exchangeSlice = createSlice({
     },
     setVault(state, action: PayloadAction<VaultUpdate>) {
       state.vaults[action.payload.address.toString()] = action.payload.vault
+      return state
+    },
+    setVaultSwap(state, action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'>>) {
+      state.vaultSwap.collateral = action.payload.collateral
+      state.vaultSwap.synthetic = action.payload.synthetic
+      return state
+    },
+    setVaultExist(state, action: PayloadAction<Pick<VaultSwap, 'vaultEntryExist'>>) {
+      state.vaultSwap.vaultEntryExist = action.payload.vaultEntryExist
+      return state
+    },
+    setVaultSwapAdded(state, action: PayloadAction<Omit<VaultSwap, 'vaultEntryExist'>>) {
+      state.vaultSwap.collateral = action.payload.collateral
+      state.vaultSwap.synthetic = action.payload.synthetic
+      state.vaultSwap.collateralAmount = action.payload.collateralAmount
+      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
+      state.vaultSwap.loading = action.payload.loading
+      return state
+    },
+    setVaultSwapBorrowed(state, action: PayloadAction<VaultSwap>) {
+      state.vaultSwap.collateral = action.payload.collateral
+      state.vaultSwap.synthetic = action.payload.synthetic
+      state.vaultSwap.collateralAmount = action.payload.collateralAmount
+      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
+      state.vaultSwap.loading = action.payload.loading
+      return state
+    },
+    setVaultSwapWithdraw(state, action: PayloadAction<VaultSwap>) {
+      state.vaultSwap.collateral = action.payload.collateral
+      state.vaultSwap.synthetic = action.payload.synthetic
+      state.vaultSwap.collateralAmount = action.payload.collateralAmount
+      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
+      state.vaultSwap.loading = action.payload.loading
+      return state
+    },
+    setVaultSwapRepay(state, action: PayloadAction<VaultSwap>) {
+      state.vaultSwap.collateral = action.payload.collateral
+      state.vaultSwap.synthetic = action.payload.synthetic
+      state.vaultSwap.collateralAmount = action.payload.collateralAmount
+      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
+      state.vaultSwap.loading = action.payload.loading
+      return state
     }
   }
 })
