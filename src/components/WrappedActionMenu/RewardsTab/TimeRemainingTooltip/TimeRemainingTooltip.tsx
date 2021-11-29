@@ -25,7 +25,7 @@ export const CountDown: React.FC<
   const classes = useStyles()
 
   const calculateTimeRemaining = (): BN => {
-    const slotTime = 0.4
+    const slotTime = 0.5
     const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
     if (slotDiff.lten(0)) {
       return new BN(0)
