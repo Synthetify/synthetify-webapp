@@ -1,12 +1,16 @@
 import React from 'react'
-import Percent from '@static/svg/percent.svg'
-import { Grid, Popover, Typography } from '@material-ui/core'
+import { Grid, Popover, Typography, useMediaQuery } from '@material-ui/core'
 import useStyles from './style'
+import icons from '@static/icons'
+import { theme } from '@static/theme'
 interface IProp {
-  avgAPY: string
+  marinade: string
 }
-export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
+export const Marinade: React.FC<IProp> = ({ marinade }) => {
   const classes = useStyles()
+
+  const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -23,15 +27,11 @@ export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
     <Grid
       className={classes.root}
       onMouseEnter={handlePopoverOpen}
-      onMouseLeave={handlePopoverClose}>
-      <img src={Percent} alt='' className={classes.percentIcon} />
-      <Typography className={classes.apy}>
-        APY: <span
-          style={{
-            color: '#40BFA0'
-          }}>
-          {avgAPY}%
-        </span>
+      onMouseLeave={handlePopoverClose}
+    >
+      <img src={icons.marinade} alt='' className={classes.marinadeIcon} />
+      <Typography className={classes.mnde}>
+        {marinade}% {!isSmDown ? 'MNDE' : ''}
       </Typography>
       <Popover
         id='mouse-over-popover'
@@ -49,7 +49,7 @@ export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus>
-        <Typography className={classes.text}>Average APY (based on total debt value)</Typography>
+        <Typography className={classes.text}>Average MNDE APY</Typography>
       </Popover>
     </Grid>
   )

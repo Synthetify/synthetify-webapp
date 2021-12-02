@@ -14,6 +14,8 @@ import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
+import { Marinade } from './Marinade/Marinade'
+import { AVERAGE_MNDE_APY } from '@consts/static'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -290,10 +292,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   return (
     <Grid container direction='column' justifyContent='space-around'>
       <Grid item className={classes.amount} justifyContent='space-between'>
-        <Grid item className={classes.timeGrid}>
-          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
-          <AverageAPY avgAPY={printBN(avgAPY, 2)} />
-        </Grid>
+        <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+        <AverageAPY avgAPY={(+printBN(avgAPY, 2)).toFixed(2)} />
+        <Marinade marinade={AVERAGE_MNDE_APY.toFixed(2)} />
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
