@@ -18,37 +18,43 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
   const classes = useStyles()
 
   return (
-    <Grid container alignItems='center' className={classes.root}>
-      <Grid item style={{ marginRight: 15 }}>
-        <Typography className={classes.text}>
-          <AnimatedNumber
-            value={printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0)}
-            duration={300}
-            formatValue={(value: string) => {
-              const num = Number(value)
+    <Grid container alignItems='center' className={classes.root} wrap='nowrap'>
+      <Typography className={classes.text}>
+        <AnimatedNumber
+          value={printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0)}
+          duration={300}
+          formatValue={(value: string) => {
+            const num = Number(value)
 
-              if (num < 1000) {
-                return num.toFixed(4)
-              }
+            if (num < 10) {
+              return num.toFixed(4)
+            }
 
-              if (num < 10000) {
-                return num.toFixed(3)
-              }
+            if (num < 100) {
+              return num.toFixed(3)
+            }
 
-              if (num < 1000000) {
-                return (num / 1000).toFixed(3)
-              }
+            if (num < 1000) {
+              return num.toFixed(2)
+            }
 
-              return (num / 1000000).toFixed(3)
-            }}
-          />
-          {+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 10000
-            ? 'K '
-            : (+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 1000000 ? 'M ' : ' ')
-          }
+            if (num < 10000) {
+              return num.toFixed(1)
+            }
+
+            if (num < 1000000) {
+              return (num / 1000).toFixed(1)
+            }
+
+            return (num / 1000000).toFixed(1)
+          }}
+        />
+        {+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 10000
+          ? 'K '
+          : (+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 1000000 ? 'M ' : ' ')
+        }
           SNY
-        </Typography>
-      </Grid>
+      </Typography>
       <MobileTooltip
         mobilePlacement='bottom-start'
         desktopPlacement='bottom-start'

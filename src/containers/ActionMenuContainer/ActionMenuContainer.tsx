@@ -21,7 +21,8 @@ import {
   stakedAccountsArray,
   userMaxBurnToken,
   userMaxDeposit,
-  status
+  status,
+  userMarinadeRewardAmount
 } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -58,6 +59,8 @@ export const ActionMenuContainer: React.FC = () => {
   const stakedUserValue = useSelector(stakedValue)
   const SNYPrice = useSelector(getSNYPrice)
   const collateralValue = useSelector(getCollateralValue)
+  const userMarinadeAmount = useSelector(userMarinadeRewardAmount)
+
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
       setDepositIndex(0)
@@ -160,6 +163,7 @@ export const ActionMenuContainer: React.FC = () => {
         stakedUserValue: stakedUserValue,
         SNYPrice: SNYPrice,
         allDebtValue: allDebtValue,
+        userMarinadeAmount: userMarinadeAmount,
         slot: slotState,
         roundLength: stakingState.roundLength,
         userDebtShares: userDebtSharesState,

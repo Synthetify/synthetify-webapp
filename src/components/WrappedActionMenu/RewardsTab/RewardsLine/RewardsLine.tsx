@@ -6,6 +6,7 @@ import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeR
 import BN from 'bn.js'
 import useStyles from './style'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
+import icons from '@static/icons'
 
 export interface IRewardsLineProps {
   name: string
@@ -19,6 +20,7 @@ export interface IRewardsLineProps {
   slot: number
   icon: string
   tooltipPlacement: Placement
+  userMarinadeAmount?: number
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -31,7 +33,8 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   slot,
   hint,
   icon,
-  tooltipPlacement
+  tooltipPlacement,
+  userMarinadeAmount
 }) => {
   const classes = useStyles()
   const processedNonBracket = (
@@ -72,6 +75,23 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
       )}
     </>
   )
+
+  const marinade = userMarinadeAmount
+    ? (
+      <>
+        {' + '}
+        <img className={classes.marinadeIcon} src={icons.marinade} />
+        {' '}
+        <AnimatedNumber
+          value={userMarinadeAmount}
+          duration={300}
+          formatValue={(value: string) => +(Number(value).toFixed(9))}
+        />
+        {' MNDE'}
+      </>
+    )
+    : null
+
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
@@ -96,6 +116,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
               {': '}
               {processedNonBracket}
               {processedBracket}
+              {marinade}
             </Typography>
           </Grid>
         </Grid>
