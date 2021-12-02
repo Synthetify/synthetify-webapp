@@ -6,6 +6,7 @@ import { BN } from '@project-serum/anchor'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import icons from '@static/icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import useStyles from './style'
 
 interface IProps {
@@ -37,7 +38,8 @@ export const AmountInput: React.FC<IProps> = ({
   showArrow,
   walletConnected,
   noWalletHandler,
-  emptyTokensHandler
+  emptyTokensHandler,
+  onMaxButtonClick
 }) => {
   const classes = useStyles({ onSelectToken })
 
@@ -99,10 +101,10 @@ export const AmountInput: React.FC<IProps> = ({
         }
       }}
     >
-      <Divider orientation='vertical' className={classes.divider} />
+      {/* <Divider orientation='vertical' className={classes.divider} /> */}
       <img alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
       <Typography className={classes.currencyText}>{currency}</Typography>
-      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
+      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -0 }} /> : null}
     </InputAdornment>
   )
 
@@ -120,8 +122,15 @@ export const AmountInput: React.FC<IProps> = ({
         value={value}
         disableUnderline={true}
         placeholder={placeholder}
-        endAdornment={!currency ? null : currencyAdornment}
         onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
+        startAdornment={!currency ? null : currencyAdornment}
+        endAdornment={
+          <OutlinedButton
+            onClick={onMaxButtonClick}
+            className={classes.maxButton}
+            name='Max'
+          />
+        }
       />
       {(tokens?.length && onSelectToken)
         ? (

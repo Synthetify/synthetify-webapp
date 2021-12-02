@@ -37,7 +37,15 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
     marginRight: 7
   },
   select: ({ onSelectToken }) => ({
-    cursor: onSelectToken ? 'pointer' : 'unset'
+    cursor: onSelectToken ? 'pointer' : 'unset',
+    textTransform: 'none',
+    boxShadow: 'none',
+    borderRadius: 10,
+    ...typography.subtitle1,
+    minWidth: 127,
+    height: 42,
+    backgroundColor: colors.navy.navButton,
+    paddingInline: 0,
   })
 }))
 

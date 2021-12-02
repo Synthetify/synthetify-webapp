@@ -17,7 +17,8 @@ interface IProps {
   current: string | null
   tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
   pairs?: Array<{ symbol1: string; symbol2: string }>
-  onSelect: (chosen: number) => void
+  //onSelect: (chosen: number) => void
+  onSelect: any
   selectText?: string
 }
 
@@ -36,7 +37,6 @@ export const AmountInput: React.FC<IProps> = ({
   selectText
 }) => {
   const classes = useStyles()
-
   const inputRef = useRef<HTMLInputElement>(null)
 
   const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = e => {

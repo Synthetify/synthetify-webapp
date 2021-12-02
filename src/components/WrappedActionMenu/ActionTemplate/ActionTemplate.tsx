@@ -172,6 +172,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
+
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
@@ -188,6 +189,21 @@ export const ActionTemplate: React.FC<IProps> = ({
           walletConnected={walletConnected}
           noWalletHandler={noWalletHandler}
           emptyTokensHandler={emptyTokensHandler}
+          onMaxButtonClick={() => {
+            if (maxBehavior === 'maxU64') {
+              setAmountBN(MAX_U64)
+              setDecimal(maxDecimal)
+              setInputValue('Max')
+            } else if (maxBehavior === 'inputOnly') {
+              setAmountBN(maxAvailable)
+              setDecimal(maxDecimal)
+              setInputValue('Max')
+            } else {
+              setAmountBN(maxAvailable)
+              setDecimal(maxDecimal)
+              setInputValue(printBN(maxAvailable, maxDecimal))
+            }
+          }}
         />
         <Grid
           item
@@ -196,7 +212,6 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <OutlinedButton onClick={onMaxButtonClick} className={classes.maxButton} name='Max' />
           <Divider orientation='vertical' className={classes.divider} />
           <Grid item className={classes.available}>
             <KeyValue
@@ -231,5 +246,4 @@ export const ActionTemplate: React.FC<IProps> = ({
     </Grid>
   )
 }
-
 export default ActionTemplate
