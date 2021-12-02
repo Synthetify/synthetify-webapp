@@ -55,11 +55,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginTop: -15
     }
   },
-  text: {
-    ...typography.subtitle2,
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption1
-    }
+  title: {
+    ...typography.subtitle1,
+    marginBottom: 10
   }
 }))
 export default useStyles

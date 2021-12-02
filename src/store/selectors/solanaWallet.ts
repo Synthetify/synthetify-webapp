@@ -7,7 +7,6 @@ import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, MARINADE_PER_POINT, ORACLE_OFFSET } from '@consts/static'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
 import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
-import { printBN } from '@consts/utils'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -281,7 +280,7 @@ export const userMarinadeRewardAmount = createSelector(
       return 0
     }
 
-    return +printBN(stakedMSol.amount.mul(debtShares), mSOL.reserveBalance.scale) * MARINADE_PER_POINT
+    return debtShares.toNumber() * Math.sqrt(stakedMSol.amount.toNumber()) / (1e9) * MARINADE_PER_POINT * 7
   }
 )
 

@@ -1,8 +1,9 @@
 import React from 'react'
-import { Grid, Popover, Typography, useMediaQuery } from '@material-ui/core'
+import { Grid, Typography, useMediaQuery } from '@material-ui/core'
 import useStyles from './style'
 import icons from '@static/icons'
-import { theme } from '@static/theme'
+import { colors, theme } from '@static/theme'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 interface IProp {
   marinade: string
 }
@@ -11,46 +12,29 @@ export const Marinade: React.FC<IProp> = ({ marinade }) => {
 
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null)
-  }
-
-  const open = Boolean(anchorEl)
-
   return (
-    <Grid
-      className={classes.root}
-      onMouseEnter={handlePopoverOpen}
-      onMouseLeave={handlePopoverClose}
-    >
-      <img src={icons.marinade} alt='' className={classes.marinadeIcon} />
-      <Typography className={classes.mnde}>
-        {marinade}% {!isSmDown ? 'MNDE' : ''}
-      </Typography>
-      <Popover
-        id='mouse-over-popover'
-        className={classes.popover}
-        classes={{ paper: classes.paper }}
-        open={open}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        transformOrigin={{
-          vertical: 'center',
-          horizontal: 'center'
-        }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus>
-        <Typography className={classes.text}>Average MNDE APY</Typography>
-      </Popover>
-    </Grid>
+    <MobileTooltip
+      mobilePlacement='bottom-start'
+      desktopPlacement='bottom-start'
+      hint={(
+        <>
+          <Typography className={classes.title}>Average MNDE APY</Typography>
+          <p style={{ margin: 0, color: colors.navy.lightGrey }}>
+            To receive MNDE tokens, you need to have deposited mSOL and minted debt.
+            Tokens are distributed once a week. Snapshots are taken once a day to determine, how much tokens you would receive.
+          </p>
+        </>
+      )}
+      anchor={(
+        <Grid
+          className={classes.root}
+        >
+          <img src={icons.marinade} alt='' className={classes.marinadeIcon} />
+          <Typography className={classes.mnde}>
+            {marinade}% {!isSmDown ? 'MNDE' : ''}
+          </Typography>
+        </Grid>
+      )}
+    />
   )
 }

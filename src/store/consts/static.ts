@@ -70,9 +70,9 @@ const descrpitionForSymbol: { [key: string]: string } = {
   mSOL: 'Marinade SOL'
 }
 
-const AVERAGE_MNDE_APY = 100
+const AVERAGE_MNDE_APY = 23.1
 
-const MARINADE_PER_POINT = 0.2137
+const MARINADE_PER_POINT = 3.17e-7
 
 export {
   SolanaNetworks,

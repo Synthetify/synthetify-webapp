@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { transformBN, printBN, formatNumbers, showPrefix } from '@consts/utils'
+import { transformBN, printBN } from '@consts/utils'
 import { ClickAwayListener, Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeRemainingTooltip/TimeRemainingTooltip'
@@ -85,9 +85,8 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
         <AnimatedNumber
           value={userMarinadeAmount}
           duration={300}
-          formatValue={formatNumbers}
+          formatValue={(value: string) => +(Number(value).toFixed(9))}
         />
-        {showPrefix(userMarinadeAmount)}
         {' MNDE'}
       </>
     )
