@@ -70,6 +70,10 @@ const descrpitionForSymbol: { [key: string]: string } = {
   mSOL: 'Marinade SOL'
 }
 
+const AVERAGE_MNDE_APY = 100
+
+const MARINADE_PER_POINT = 0.2137
+
 export {
   SolanaNetworks,
   DEFAULT_PUBLICKEY,
@@ -79,5 +83,7 @@ export {
   MAX_U64,
   MAINNET_RPCS,
   NetworkType,
-  descrpitionForSymbol
+  descrpitionForSymbol,
+  AVERAGE_MNDE_APY,
+  MARINADE_PER_POINT
 }
