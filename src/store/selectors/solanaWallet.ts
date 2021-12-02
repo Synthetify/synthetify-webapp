@@ -1,12 +1,13 @@
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { assets, collaterals, exchangeAccount, swaplines, synthetics, userDebtValue } from '@selectors/exchange'
+import { assets, collaterals, exchangeAccount, swaplines, synthetics, userDebtShares, userDebtValue } from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
-import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
+import { ACCURACY, DEFAULT_PUBLICKEY, MARINADE_PER_POINT, ORACLE_OFFSET } from '@consts/static'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
 import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
+import { printBN } from '@consts/utils'
 
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -262,6 +263,27 @@ export const userMaxDeposit = (assetAddress: PublicKey) =>
           .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
     }
   })
+
+export const userMarinadeRewardAmount = createSelector(
+  collaterals,
+  exchangeAccount,
+  userDebtShares,
+  (allCollaterals, userExchangeAccount, debtShares) => {
+    const mSOL = Object.values(allCollaterals).find((asset) => asset.symbol === 'mSOL')
+
+    if (!mSOL) {
+      return 0
+    }
+
+    const stakedMSol = userExchangeAccount.collaterals.find((collateral) => collateral.collateralAddress.equals(mSOL.collateralAddress))
+
+    if (!stakedMSol) {
+      return 0
+    }
+
+    return +printBN(stakedMSol.amount.mul(debtShares), mSOL.reserveBalance.scale) * MARINADE_PER_POINT
+  }
+)
 
 export const solanaWalletSelectors = {
   address,

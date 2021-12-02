@@ -40,6 +40,7 @@ export interface IRewardsProps {
   onWithdraw: () => void
   amountPerRoundValue: Decimal
   collateralValue: number
+  userMarinadeAmount: number
 }
 
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
@@ -89,7 +90,8 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   onClaim,
   onWithdraw,
   amountPerRoundValue,
-  allDebtValue
+  allDebtValue,
+  userMarinadeAmount
 }) => {
   const classes = useStyles()
 
@@ -283,7 +285,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     const props = rewardsLines[+key]
     return (
       <Grid item key={index} className={classes.line}>
-        <RewardsLine {...props} slot={slot} />
+        <RewardsLine {...props} slot={slot} userMarinadeAmount={index === 1 ? userMarinadeAmount : undefined} />
         <Divider className={classes.divider}/>
       </Grid>
     )
