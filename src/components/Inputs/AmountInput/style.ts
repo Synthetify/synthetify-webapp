@@ -1,10 +1,11 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import { importantStyles } from '@consts/uiUtils'
 import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }>(() => ({
+const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }>((theme: Theme) => ({
   amountInput: {
     background: colors.navy.dark,
-    color: colors.navy.grey,
+    color: colors.navy.veryLightGrey,
     borderRadius: 10,
     paddingLeft: 16,
     paddingRight: 10,
@@ -15,7 +16,7 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
   },
   input: {
     width: 'calc(100% - 102px)',
-    padding: '6px 0'
+    padding: '6px 0 6px 24px'
   },
   currency: {
     minWidth: 'fit-content',
@@ -23,8 +24,8 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
     justifyContent: 'flex-end'
   },
   currencyText: {
-    ...typography.body2,
-    color: colors.navy.grey
+    ...typography.subtitle1,
+    color: colors.navy.veryLightGrey
   },
   divider: {
     backgroundColor: colors.navy.darkGrey,
@@ -36,16 +37,48 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
     height: 30,
     marginRight: 7
   },
+  maxButton: {
+    textTransform: 'none',
+    width: 64,
+    height: 36,
+    marginRight: 6,
+    ...typography.subtitle1,
+    borderRadius: 5,
+    '&:hover': {
+      backgroundColor: '#7C76DA',
+      opacity: 1
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 74,
+      marginLeft: 12,
+      '&:active': {
+        backgroundColor: '#7C76DA',
+        opacity: 1
+      },
+      '&:hover': {
+        backgroundColor: colors.navy.button
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      // width: 'calc(50% - 8px)',
+      // marginRight: 8,
+      // marginLeft: 0,
+      // height: 56
+    }
+  },
   select: ({ onSelectToken }) => ({
     cursor: onSelectToken ? 'pointer' : 'unset',
     textTransform: 'none',
     boxShadow: 'none',
     borderRadius: 10,
     ...typography.subtitle1,
-    minWidth: 127,
+    minWidth: 116,
     height: 42,
     backgroundColor: colors.navy.navButton,
-    paddingInline: 0,
+    marginLeft: -7,
+    padding: '5px 0 5px',
+    color: colors.navy.veryLightGrey,
+    justifyContent: 'center'
   })
 }))
 

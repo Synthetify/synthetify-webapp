@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 202,
     maxHeight: 60,
     overflow: 'hidden',
+    marginLeft: 24,
     '& *': {
       margin: 0
     },
@@ -28,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   wrap: {
     flexWrap: 'nowrap',
     marginTop: 16,
-
     [theme.breakpoints.down('sm')]: {
       marginTop: 8
     },
@@ -41,20 +41,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 24,
     [theme.breakpoints.up('sm')]: {
       paddingTop: 0,
-      maxWidth: 230,
-      justifyContent: 'space-between'
+      maxWidth: 230
+      //  justifyContent: 'space-between'
     },
     [theme.breakpoints.up('md')]: {
-      maxWidth: 360,
+      maxWidth: 264,
       marginLeft: 24
     }
   },
   amountInput: {
-    [theme.breakpoints.up('sm')]: {
-      minWidth: 275
-    },
+    width: 700,
     [theme.breakpoints.up('md')]: {
-      maxWidth: 375
+      maxWidth: 504
+    },
+    [theme.breakpoints.up('sm')]: {
+      minWidth: 361
     }
   },
   inputLabel: {
@@ -115,34 +116,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   textCenter: {
     textAlign: 'center'
-  },
-  maxButton: {
-    textTransform: 'none',
-    width: 104,
-    height: 60,
-    fontWeight: 'normal',
-    '&:hover': {
-      backgroundColor: '#7C76DA',
-      opacity: 1
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: 74,
-      marginLeft: 12,
-      ...importantStyles(typography.heading4),
-      '&:active': {
-        backgroundColor: '#7C76DA',
-        opacity: 1
-      },
-      '&:hover': {
-        backgroundColor: colors.navy.button
-      }
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(50% - 8px)',
-      marginRight: 8,
-      marginLeft: 0,
-      height: 56
-    }
   },
   label: {
     marginTop: 1

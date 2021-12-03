@@ -89,22 +89,6 @@ export const ActionTemplate: React.FC<IProps> = ({
     )
   }
 
-  const onMaxButtonClick = () => {
-    if (maxBehavior === 'maxU64') {
-      setAmountBN(MAX_U64)
-      setDecimal(maxDecimal)
-      setInputValue('Max')
-    } else if (maxBehavior === 'inputOnly') {
-      setAmountBN(maxAvailable)
-      setDecimal(maxDecimal)
-      setInputValue('Max')
-    } else {
-      setAmountBN(maxAvailable)
-      setDecimal(maxDecimal)
-      setInputValue(printBN(maxAvailable, maxDecimal))
-    }
-  }
-
   const onAmountInputChange = (value: string) => {
     const { BN, decimal } = stringToMinDecimalBN(value)
     setAmountBN(BN)
