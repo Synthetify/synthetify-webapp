@@ -7,6 +7,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: 200,
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap'
+    },
+    [theme.breakpoints.down('xs')]: {
+      // height: 149,
+      // height: 250,
     }
   },
   available: {
@@ -19,11 +23,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       minWidth: 132,
-      marginBlock: 'auto'
+      marginBlock: 'auto',
+      marginLeft: 12
     },
     [theme.breakpoints.down('xs')]: {
       minWidth: 'unset',
-      width: '50%'
+      width: '40%'
     }
   },
   wrap: {
@@ -39,14 +44,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   secondHalf: {
     paddingTop: 24,
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: 0,
-      maxWidth: 230
-      //  justifyContent: 'space-between'
-    },
     [theme.breakpoints.up('md')]: {
       maxWidth: 264,
       marginLeft: 24
+    },
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: 0,
+      maxWidth: 230,
+      marginLeft: 12
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 0,
+      justifyContent: 'center'
     }
   },
   amountInput: {
@@ -69,7 +78,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   divider: {
     backgroundColor: 'rgba(163, 168, 206, 0.5)',
-    height: 60
+    height: 60,
+    [theme.breakpoints.down('sm')]: {
+      height: 56
+    }
   },
   bottom: {
     marginTop: 36,
@@ -110,9 +122,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       paddingBlock: 15,
       maxHeight: 56,
+      width: 113,
       minWidth: 'calc(50% - 8px)',
       marginRight: 16
     }
+  },
+  actionButtonXS: {
+
   },
   textCenter: {
     textAlign: 'center'

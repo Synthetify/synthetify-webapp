@@ -5,9 +5,12 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
-import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
+import { colors, theme } from '@static/theme'
 import AmountInput from '@components/Inputs/AmountInput/AmountInput'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import useStyles from './style'
+import classNames from 'classnames'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
 
@@ -51,6 +54,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   const [actionAvailable, setActionAvailable] = useState(false)
   const [amountInputTouched, setTAmountInputTouched] = useState(false)
   const [showOperationProgressFinale, setShowOperationProgressFinale] = useState(false)
+
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   useEffect(() => {
     setActionAvailable(checkActionIsAvailable())
@@ -196,6 +201,17 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
+          {
+            isXs &&
+          <OutlinedButton
+            name={capitalizeString(action)}
+            disabled={!actionAvailable}
+            color='secondary'
+            className={classNames(classes.actionButton, classes.actionButtonXS)}
+            onClick={onClick(amountBN, decimal)}
+            labelClassName={classes.label}
+          />
+          }
           <Divider orientation='vertical' className={classes.divider} />
           <Grid item className={classes.available}>
             <KeyValue
@@ -209,6 +225,8 @@ export const ActionTemplate: React.FC<IProps> = ({
           </Grid>
         </Grid>
       </Grid>
+      {
+        !isXs &&
       <Grid
         item
         container
@@ -227,6 +245,7 @@ export const ActionTemplate: React.FC<IProps> = ({
         />
         <Progress state={getProgressState()} message={getProgressMessage()} />
       </Grid>
+      }
     </Grid>
   )
 }
