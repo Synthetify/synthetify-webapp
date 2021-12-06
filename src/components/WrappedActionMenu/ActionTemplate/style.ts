@@ -1,4 +1,3 @@
-import { importantStyles } from '@consts/uiUtils'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
@@ -7,10 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: 200,
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap'
-    },
-    [theme.breakpoints.down('xs')]: {
-      // height: 149,
-      // height: 250,
     }
   },
   available: {
@@ -28,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       minWidth: 'unset',
-      width: '40%'
+      width: '50%'
     }
   },
   wrap: {

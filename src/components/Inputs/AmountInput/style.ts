@@ -1,5 +1,4 @@
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { importantStyles } from '@consts/uiUtils'
 import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }>((theme: Theme) => ({
@@ -58,12 +57,6 @@ const useStyles = makeStyles<Theme, { onSelectToken?: (chosen: number) => void }
       '&:hover': {
         backgroundColor: colors.navy.button
       }
-    },
-    [theme.breakpoints.down('xs')]: {
-      // width: 'calc(50% - 8px)',
-      // marginRight: 8,
-      // marginLeft: 0,
-      // height: 56
     }
   },
   select: ({ onSelectToken }) => ({
