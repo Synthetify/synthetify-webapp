@@ -28,6 +28,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 600,
     fontSize: 13,
     lineHeight: '16px'
+  },
+  marinadeIcon: {
+    height: 24,
+    minWidth: 24,
+    position: 'relative',
+    top: 4,
+
+    [theme.breakpoints.down('xs')]: {
+      height: 16,
+      minWidth: 16,
+      top: 3
+    }
   }
 }))
 

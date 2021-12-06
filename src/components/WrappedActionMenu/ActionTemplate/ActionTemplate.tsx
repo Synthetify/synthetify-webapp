@@ -12,7 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 import classNames from 'classnames'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
-export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
+export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
 export interface IProps {
   action: ActionType
@@ -29,6 +29,7 @@ export interface IProps {
   noWalletHandler?: () => void
   maxBehavior?: MaxBehavior
   emptyTokensHandler?: () => void
+  balance?: BN
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -45,7 +46,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   walletConnected,
   noWalletHandler,
   maxBehavior = 'number',
-  emptyTokensHandler
+  emptyTokensHandler,
+  balance
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -89,11 +91,14 @@ export const ActionTemplate: React.FC<IProps> = ({
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
     return (
       !amountBN.eqn(0) &&
-      (isLessThanMaxAmount ||
-        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)))
+      (
+        isLessThanMaxAmount ||
+        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !(maxAvailable.eqn(0))) ||
+        (maxBehavior === 'balance' && typeof balance !== 'undefined' && amountBN.eq(balance) && !(maxAvailable.eqn(0)))
+      )
     )
   }
-
+  
   const onAmountInputChange = (value: string) => {
     const { BN, decimal } = stringToMinDecimalBN(value)
     setAmountBN(BN)

@@ -35,6 +35,7 @@ export interface IProps {
   noWalletHandler: () => void
   emptyDepositTokensHandler: () => void
   emptyWithdrawTokensHandler: () => void
+  xUSDBalance?: BN
 }
 
 export const WrappedActionMenu: React.FC<IProps> = ({
@@ -63,7 +64,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   walletConnected,
   noWalletHandler,
   emptyDepositTokensHandler,
-  emptyWithdrawTokensHandler
+  emptyWithdrawTokensHandler,
+  xUSDBalance
 }) => {
   const classes = useStyles()
 
@@ -124,7 +126,8 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         currency='xUSD'
         sending={burnState.sending}
         hasError={!!burnState.error?.length}
-        maxBehavior='inputOnly'
+        maxBehavior='balance'
+        balance={xUSDBalance}
       />
     ),
     rewards: <RewardsTab {...stakingData} />
