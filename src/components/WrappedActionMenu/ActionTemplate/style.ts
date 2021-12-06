@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       marginTop: 0,
-      justifyContent: 'center'
+      justifyContent: 'space-beetwen'
     }
   },
   amountInput: {
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   inputLabel: {
     color: colors.navy.veryLightGrey,
     ...typography.body1,
-    marginTop: 28,
+    marginTop: 18,
 
     [theme.breakpoints.down('sm')]: {
       marginTop: 16
@@ -124,7 +124,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxHeight: 56,
       width: 113,
       minWidth: 'calc(50% - 8px)',
-      marginRight: 16
+      marginRight: 28
     }
   },
   actionButtonXS: {
