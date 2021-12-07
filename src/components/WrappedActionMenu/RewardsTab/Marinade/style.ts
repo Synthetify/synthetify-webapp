@@ -12,30 +12,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: '80px',
+    minWidth: '65px',
     marginLeft: '16px',
     [theme.breakpoints.down('sm')]: {
-      paddingInline: 10,
-      marginLeft: 0
+      marginLeft: 0,
+      paddingInline: 10
     },
     [theme.breakpoints.down('xs')]: {
       paddingBlock: 5,
       paddingInline: 3
     }
   },
-  percentIcon: {
-    width: 21,
-    height: 21,
+  marinadeIcon: {
+    width: 28,
+    height: 28,
     paddingRight: '6px',
     opacity: 0.75,
     [theme.breakpoints.down('xs')]: {
-      width: 13,
-      height: 13,
+      width: 14,
+      height: 14,
       paddingRight: '3px',
-      fontSize: '13px'
+      fontSize: '14px'
     }
   },
-  apy: {
+  mnde: {
     ...typography.subtitle2,
     color: colors.navy.grey,
     [theme.breakpoints.down('xs')]: {
@@ -55,11 +55,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginTop: -15
     }
   },
-  text: {
-    ...typography.subtitle2,
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption1
-    }
+  title: {
+    ...typography.subtitle1,
+    marginBottom: 10
   }
 }))
 export default useStyles
