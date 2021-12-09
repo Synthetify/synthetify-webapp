@@ -7,6 +7,7 @@ import { blurContent, unblurContent } from '@consts/uiUtils'
 import icons from '@static/icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import useStyles from './style'
 
 interface IProps {
@@ -106,11 +107,10 @@ export const AmountInput: React.FC<IProps> = ({
       <Typography className={classes.currencyText}>{currency}</Typography>
       {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -0 }} /> : null}
     </InputAdornment>
-  )
-
+  ) 
   return (
     <>
-      <Input
+      {/* <Input
         inputRef={inputRef}
         error={!!error}
         className={classNames(classes.amountInput, className)}
@@ -131,7 +131,24 @@ export const AmountInput: React.FC<IProps> = ({
             name='Max'
           />
         }
+      /> */}
+
+      <ExchangeAmountInput
+        value={value}
+        setValue={value => {
+          // if (value.match(/^\d*\.?\d*$/)) {
+          //   setAmountFrom(value)
+          //   updateEstimatedAmount(value)
+          // }
+        }}
+        placeholder={'0.0'}
+        onMaxClick={() => {
+        }}
+        tokens={tokens}
+        //current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
+        //onSelect={(chosen: number) => setTokenFromIndex(chosen)}
       />
+
       {(tokens?.length && onSelectToken)
         ? (
           <SelectTokenModal

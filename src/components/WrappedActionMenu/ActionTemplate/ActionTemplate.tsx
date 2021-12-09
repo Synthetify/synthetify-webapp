@@ -9,6 +9,7 @@ import { MAX_U64 } from '@consts/static'
 import { theme } from '@static/theme'
 import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import useStyles from './style'
 import classNames from 'classnames'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
@@ -161,37 +162,44 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
+  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(
+    tokens?.length ? 0 : null
+  )
+  const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
 
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
       <Grid container item direction='row' className={classes.wrap}>
-        <AmountInput
+        <ExchangeAmountInput
           value={inputValue}
-          setValue={onAmountInputChange}
-          className={classes.amountInput}
+          setValue={value => {
+            // if (value.match(/^\d*\.?\d*$/)) {
+            //   setAmountFrom(value)
+            //   updateEstimatedAmount(value)
+            // }
+          }}
           placeholder={'0.0'}
-          currency={currency}
-          tokens={tokens}
-          onSelectToken={onSelectToken}
-          showArrow={showArrowInInput}
-          walletConnected={walletConnected}
-          noWalletHandler={noWalletHandler}
-          emptyTokensHandler={emptyTokensHandler}
-          onMaxButtonClick={() => {
+          onMaxClick={() => {
             if (maxBehavior === 'maxU64') {
               setAmountBN(MAX_U64)
-              setDecimal(maxDecimal)
-              setInputValue('Max') 
+              setDecimal(tokens[tokenToIndex].decimals)
+              setInputValue('Max')
             } else if (maxBehavior === 'inputOnly') {
-              setAmountBN(maxAvailable)
-              setDecimal(maxDecimal)
+              setAmountBN(tokens[tokenToIndex].balance)
+              setDecimal(tokens[tokenToIndex].decimals)
               setInputValue('Max')
             } else {
-              setAmountBN(maxAvailable)
-              setDecimal(maxDecimal)
-              setInputValue(printBN(maxAvailable, maxDecimal))
+              setAmountBN(tokens[tokenToIndex].balance)
+              setDecimal(tokens[tokenToIndex].decimals)
+              setInputValue(printBN(tokens[tokenToIndex].balance, tokens[tokenToIndex].decimals))
             }
+          }}
+          tokens={tokens}
+          current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : currency}
+          onSelect={(chosen: number) => {
+            setTokenToIndex(chosen)
+            // onSelectTokenTo(chosen)
           }}
         />
         <Grid
@@ -218,9 +226,11 @@ export const ActionTemplate: React.FC<IProps> = ({
               keyName={`Available to ${action}`}
               keyClassName={classes.textCenter}
               valueClassName={classes.textCenter}
-              value={maxAvailable}
-              decimal={maxDecimal}
-              unit={currency}
+              // value={maxAvailable}
+              // decimal={maxDecimal}
+              unit={tokenToIndex ? tokens[tokenToIndex].symbol : currency}
+              value={tokenToIndex ? tokens[tokenToIndex].balance : maxAvailable}
+              decimal={tokenToIndex ? tokens[tokenToIndex].decimals : maxDecimal}
             />
           </Grid>
         </Grid>
