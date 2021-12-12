@@ -17,7 +17,7 @@ interface IProps {
   current: string | null
   tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
   pairs?: Array<{ symbol1: string; symbol2: string }>
-  onSelect: (chosen: number) => void
+  onSelect?: (chosen: number) => void
   selectText?: string
 }
 

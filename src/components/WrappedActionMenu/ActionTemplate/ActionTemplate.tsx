@@ -3,11 +3,10 @@ import { Divider, Grid, Typography } from '@material-ui/core'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
-import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
+import { capitalizeString, printBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { MAX_U64 } from '@consts/static'
 import { theme } from '@static/theme'
-import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import useStyles from './style'
@@ -41,20 +40,16 @@ export const ActionTemplate: React.FC<IProps> = ({
   sending,
   hasError,
   tokens,
-  onSelectToken,
-  showArrowInInput,
-  walletConnected,
-  noWalletHandler,
-  maxBehavior = 'number',
-  emptyTokensHandler
+  maxBehavior = 'number'
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const [actionAvailable, setActionAvailable] = useState(false)
-  const [amountInputTouched, setTAmountInputTouched] = useState(false)
+  const [amountInputTouched, setAmountInputTouched] = useState(false)
   const [showOperationProgressFinale, setShowOperationProgressFinale] = useState(false)
+  const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
 
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
@@ -93,16 +88,6 @@ export const ActionTemplate: React.FC<IProps> = ({
       (isLessThanMaxAmount ||
         (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)))
     )
-  }
-
-  const onAmountInputChange = (value: string) => {
-    const { BN, decimal } = stringToMinDecimalBN(value)
-    setAmountBN(BN)
-    setDecimal(decimal)
-    setInputValue(value)
-    if (!amountInputTouched) {
-      setTAmountInputTouched(true)
-    }
   }
 
   const checkAmountInputError = () => {
@@ -162,10 +147,6 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
-  const [tokenFromIndex, setTokenFromIndex] = React.useState<number | null>(
-    tokens?.length ? 0 : null
-  )
-  const [tokenToIndex, setTokenToIndex] = React.useState<number | null>(null)
 
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
@@ -173,13 +154,8 @@ export const ActionTemplate: React.FC<IProps> = ({
       <Grid container item direction='row' className={classes.wrap}>
         <ExchangeAmountInput
           value={inputValue}
-          setValue={value => {
-            // if (value.match(/^\d*\.?\d*$/)) {
-            //   setAmountFrom(value)
-            //   updateEstimatedAmount(value)
-            // }
-          }}
           placeholder={'0.0'}
+          setValue={() => {}}
           onMaxClick={() => {
             if (maxBehavior === 'maxU64') {
               setAmountBN(MAX_U64)
@@ -199,7 +175,6 @@ export const ActionTemplate: React.FC<IProps> = ({
           current={tokenToIndex !== null ? tokens[tokenToIndex].symbol : currency}
           onSelect={(chosen: number) => {
             setTokenToIndex(chosen)
-            // onSelectTokenTo(chosen)
           }}
         />
         <Grid
@@ -226,11 +201,9 @@ export const ActionTemplate: React.FC<IProps> = ({
               keyName={`Available to ${action}`}
               keyClassName={classes.textCenter}
               valueClassName={classes.textCenter}
-              // value={maxAvailable}
-              // decimal={maxDecimal}
-              unit={tokenToIndex ? tokens[tokenToIndex].symbol : currency}
-              value={tokenToIndex ? tokens[tokenToIndex].balance : maxAvailable}
-              decimal={tokenToIndex ? tokens[tokenToIndex].decimals : maxDecimal}
+              unit={tokenToIndex ? tokens[tokenToIndex]?.symbol : currency}
+              value={tokenToIndex ? tokens[tokenToIndex]?.balance : maxAvailable}
+              decimal={tokenToIndex ? tokens[tokenToIndex]?.decimals : maxDecimal}
             />
           </Grid>
         </Grid>
