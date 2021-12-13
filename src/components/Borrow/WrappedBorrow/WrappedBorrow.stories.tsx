@@ -164,6 +164,20 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
 
     const ownedVaults: OwnedVaults[] = [
       {
+        owner: new PublicKey(0),
+        vault: new PublicKey(0),
+        lastAccumulatedInterestRate: {
+          val: new BN(30000),
+          scale: 0
+        },
+        syntheticAmount: {
+          val: new BN(30000),
+          scale: 0
+        },
+        collateralAmount: {
+          val: new BN(30000),
+          scale: 0
+        },
         collateral: 'WSOL',
         borrowed: 'xSOL',
         currentDebt: 11999.4325,
@@ -176,6 +190,20 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         currentDebtSign: '$'
       },
       {
+        owner: new PublicKey(0),
+        vault: new PublicKey(0),
+        lastAccumulatedInterestRate: {
+          val: new BN(30),
+          scale: 0
+        },
+        syntheticAmount: {
+          val: new BN(30),
+          scale: 0
+        },
+        collateralAmount: {
+          val: new BN(30),
+          scale: 0
+        },
         collateral: 'ETH',
         borrowed: 'xETH',
         currentDebt: 11999.4325,
@@ -195,8 +223,6 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
           sending={false}
           hasError={false}
           ownedVaults={ownedVaults}
-          limit={1000}
-          reserve={200}
           debtAmount={152.5}
           collateralAmount={12000.05}
           addCollateral={() => {}}

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { assets, exchangeAccount, state } from '@selectors/exchange'
 import { network, status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
+import { actions as actionsVault } from '@reducers/vault'
 import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
@@ -13,6 +14,8 @@ import { parsePriceData } from '@pythnetwork/client'
 import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
 
 import { VAULTS_MAP } from '@consts/consts'
+import { address } from '@selectors/solanaWallet'
+import { vaultSwap } from '@selectors/vault'
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -21,6 +24,8 @@ const ExhcangeEvents = () => {
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
   const exchangeProgram = getCurrentExchangeProgram()
+  const owner = useSelector(address)
+  const vault = useSelector(vaultSwap)
   React.useEffect(() => {
     if (
       userAccount.address.equals(DEFAULT_PUBLICKEY) ||
@@ -86,6 +91,7 @@ const ExhcangeEvents = () => {
 
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
+
     if (!exchangeProgram || networkStatus !== Status.Initialized || !connection) {
       return
     }
@@ -100,17 +106,23 @@ const ExhcangeEvents = () => {
           vault.collateral
         )
         const data = await exchangeProgram.getVaultForPair(vault.synthetic, vault.collateral)
-        // todo what is work onAccauntChange?
         dispatch(
-          actions.setVault({
+          actionsVault.setVault({
             address: vaultAddress,
             vault: data
           })
         )
+        const vaultEntryAmount = await exchangeProgram.getVaultEntryForOwner(
+          vault.synthetic,
+          vault.collateral,
+          owner
+        )
+        dispatch(actionsVault.setOwnedVaults(vaultEntryAmount))
       })
     }
+
     connectEvents().catch(error => console.log(error))
-  }, [dispatch, exchangeProgram, networkStatus])
+  }, [dispatch, exchangeProgram, networkStatus, vault.loading])
 
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()

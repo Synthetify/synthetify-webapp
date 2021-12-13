@@ -3,9 +3,11 @@ import { divUp, discountData, printBN, transformBN, printDecimal } from '@consts
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
+import { VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
+import { ownedVaults, vaults } from './vault'
 
 const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
@@ -18,10 +20,7 @@ export const {
   state,
   exchangeAccount,
   swaplines,
-  swaplineSwap,
-  vaults,
-  ownedVaults,
-  vaultSwap
+  swaplineSwap
 } = keySelectors(store, [
   'assets',
   'synthetics',
@@ -31,10 +30,7 @@ export const {
   'state',
   'exchangeAccount',
   'swaplines',
-  'swaplineSwap',
-  'vaults',
-  'ownedVaults',
-  'vaultSwap'
+  'swaplineSwap'
 ])
 export const healthFactor = createSelector(state, s => {
   return s.healthFactor
@@ -381,13 +377,62 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
   return typeof snyIndex !== 'undefined'
     ? assets[snyIndex].price
     : {
-        val: new BN(0),
-        scale: 6
-      }
+      val: new BN(0),
+      scale: 6
+    }
 })
 
 export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
 
+export interface OwnedVaults extends VaultEntry {
+  borrowed: string
+  collateral: string
+  deposited: number
+  depositedSign: string
+  cRatio: string
+  currentDebt: number
+  currentDebtSign: string
+  maxBorrow: string
+  interestRate: string
+  liquidationPrice: string
+}
+
+export const getOwnedVaults = createSelector(
+  vaults,
+  ownedVaults,
+  synthetics,
+  collaterals,
+  (allVaults, allOwnedVaults, allSynthetics, allCollaterals) => {
+    return Object.values(allOwnedVaults).map(ownedVault => {
+      const currentVault = allVaults[ownedVault.vault.toString()]
+      const vaultData: OwnedVaults = {
+        ...ownedVault,
+        borrowed: allSynthetics[currentVault.synthetic.toString()].symbol,
+        collateral: allCollaterals[currentVault.collateral.toString()].symbol,
+        deposited: Number(
+          printBN(ownedVault.collateralAmount.val, ownedVault.collateralAmount.scale)
+        ),
+        depositedSign: allCollaterals[currentVault.collateral.toString()].symbol,
+        cRatio: (
+          (1 /
+            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale))) *
+          100
+        ).toFixed(2),
+        currentDebt: Number(
+          printBN(ownedVault.syntheticAmount.val, ownedVault.syntheticAmount.scale)
+        ),
+        currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
+        maxBorrow: printBN(currentVault.maxBorrow.val, currentVault.maxBorrow.scale),
+        interestRate: (
+          Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
+          100
+        ).toString(),
+        liquidationPrice: '5'
+      }
+      return vaultData
+    })
+  }
+)
 export default exchangeSelectors

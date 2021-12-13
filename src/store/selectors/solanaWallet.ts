@@ -6,9 +6,9 @@ import {
   exchangeAccount,
   swaplines,
   synthetics,
-  userDebtValue,
-  vaults
+  userDebtValue
 } from '@selectors/exchange'
+import { vaults, vaultSwap } from '@selectors/vault'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
@@ -327,6 +327,16 @@ export const userMaxDeposit = (assetAddress: PublicKey) =>
       }
     }
   )
+export const maxAvailableDeposit = createSelector(
+  vaultSwap, accounts, (allVaultSwap, tokensAccounts) => {
+    const collateralAccount = tokensAccounts[allVaultSwap.collateral.toString()]
+    if (allVaultSwap.collateral === DEFAULT_PUBLICKEY) {
+      return new BN(0)
+    } else {
+      return collateralAccount.balance || new BN(0)
+    }
+  }
+)
 
 export const solanaWalletSelectors = {
   address,
@@ -336,6 +346,7 @@ export const solanaWalletSelectors = {
   syntheticAccountsArray,
   tokenAccount,
   exchangeTokensWithUserBalance,
-  userMaxBurnToken
+  userMaxBurnToken,
+  maxAvailableDeposit
 }
 export default solanaWalletSelectors

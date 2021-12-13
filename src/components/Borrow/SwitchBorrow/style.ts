@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '0 0 8px 8px',
     width: '100%',
     padding: '4px 6px',
+    textTransform: 'capitalize',
     [theme.breakpoints.down('xs')]: {
       ...typography.body3
     }
@@ -165,6 +166,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     ...typography.subtitle2,
     textTransform: 'none',
+
     padding: '2px',
     minHeight: '28px',
     '&:hover': {

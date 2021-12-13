@@ -63,6 +63,7 @@ export const BorrowTable: React.FC<IProp> = ({ ownedVaults, setValueWithTable, a
         <TableBody>
           {ownedVaults.map(element => (
             <TableRow
+              key={element.vault.toString()}
               className={classNames(classes.row, active ? classes.active : null)}
               onClick={() =>
                 setValueWithTable(
