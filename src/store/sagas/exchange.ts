@@ -511,12 +511,12 @@ export function* handleSwaplineWSOLSwap(
   const tx =
     type === 'nativeToSynthetic'
       ? new Transaction()
-        .add(createIx)
-        .add(transferIx)
-        .add(initIx)
-        .add(approveIx)
-        .add(swaplineIx)
-        .add(unwrapIx)
+          .add(createIx)
+          .add(transferIx)
+          .add(initIx)
+          .add(approveIx)
+          .add(swaplineIx)
+          .add(unwrapIx)
       : new Transaction().add(createIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
 
   const blockhash = yield* call([connection, connection.getRecentBlockhash])
@@ -666,13 +666,14 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   const exchangeProgram = yield* call(getExchangeProgram)
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
-  const userSyntheticTokenAccount = tokensAccounts[vaultSwapData.synthetic.toString()]
   const vaultsPair = yield* select(vaults)
-  const ownedVault = yield* select(ownedVaults)
-  // const allCollaterals = yield* select(collaterals)
-  // if (allCollaterals[vaultSwapData.collateral.toString()].symbol === 'WSOL') {
-  //   return yield* call(depositCollateralWSOL, vaultSwapData.collateralAmount)
-  // }
+  let userSyntheticTokenAccount = tokensAccounts[vaultSwapData.synthetic.toString()]
+    ? tokensAccounts[vaultSwapData.synthetic.toString()].address
+    : null
+
+  if (userSyntheticTokenAccount == null) {
+    userSyntheticTokenAccount = yield* call(createAccount, vaultSwapData.synthetic)
+  }
   const userExchangeAccount = yield* select(exchangeAccount)
   const accountIx = yield* call(
     [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
@@ -706,7 +707,7 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   )
   const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultInstruction], {
     owner: wallet.publicKey,
-    to: tokensAccounts[vaultSwapData.synthetic.toString()].address,
+    to: userSyntheticTokenAccount,
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral,
     amount: vaultSwapData.syntheticAmount
@@ -777,7 +778,6 @@ export function* handleRepaySyntheticVault(vaultSwapData: VaultSwap): SagaGenera
   const exchangeProgram = yield* call(getExchangeProgram)
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
-
   const updatePricesIx = yield* call(
     [exchangeProgram, exchangeProgram.updatePricesInstruction],
     exchangeProgram.state.assetsList

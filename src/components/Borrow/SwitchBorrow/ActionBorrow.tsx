@@ -369,6 +369,7 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (value.match(/^\d*\.?\d*$/)) {
       const BNValue = stringToMinDecimalBN(value)
       const difDecimal = tokenFrom.assetScale - BNValue.decimal
+      setMaxBehaviorFrom('number')
       setAmountCollateral(BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))))
       setAmountCollateralString(value)
 
@@ -388,6 +389,7 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (value.match(/^\d*\.?\d*$/)) {
       const BNValue = stringToMinDecimalBN(value)
       const difDecimal = tokenTo.assetScale - BNValue.decimal
+      setMaxBehaviorTo('number')
       setAmountBorrow(BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))))
       setAmountBorrowString(value)
       if (cRatio != '---') {
@@ -423,6 +425,7 @@ export const ActionBorrow: React.FC<IProp> = ({
 
                     if (action != 'borrow') {
                       setAmountCollateralString('Max')
+                      setMaxBehaviorFrom('maxU64')
                     } else {
                       setAmountCollateralString(printBN(availableFrom, tokenTo.assetScale))
                       setMaxBehaviorFrom('number')
@@ -542,10 +545,17 @@ export const ActionBorrow: React.FC<IProp> = ({
               placeholder={'0.0'}
               onMaxClick={() => {
                 if (pairIndex !== null) {
-                  setMaxBehaviorTo('maxU64')
+                  
                   setAmountBorrow(availableTo)
                   // setAmountBorrowString(printBN(availableTo, tokenFrom.assetScale))
-                  setAmountBorrowString('Max')
+                  if(action!='repay'){
+                    setMaxBehaviorTo('maxU64')
+                    setAmountBorrowString('Max')
+                  }else{
+                    setMaxBehaviorTo('number')
+                     setAmountBorrowString(printBN(availableTo, tokenFrom.assetScale))
+                  }
+                  
 
                   if (cRatio != '---') {
                     const tmp = calculateAmountCollateral(tokenTo, tokenFrom, availableTo, cRatio)
