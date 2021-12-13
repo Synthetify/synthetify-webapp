@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 20,
     display: 'inline',
     float: 'left',
-    margin: '3px 8px 0px 1px',
+    margin: '2px 8px 0px 1px',
     opacity: 0.6
   }
 }))
