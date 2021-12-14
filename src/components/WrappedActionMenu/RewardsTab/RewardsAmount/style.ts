@@ -12,16 +12,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      paddingInline: 10,
+      marginLeft: 0
+    },
     [theme.breakpoints.down('xs')]: {
-      paddingBlock: 8,
+      paddingBlock: 5,
       paddingInline: 7
     }
   },
   text: {
     ...typography.subtitle2,
     color: colors.navy.grey,
+    marginRight: 15,
+    [theme.breakpoints.down('sm')]: {
+      marginRight: 10
+    },
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1
+      marginRight: 5,
+      ...typography.caption3
     }
   },
   title: {

@@ -17,7 +17,7 @@ enum SolanaNetworks {
   DEV = 'https://api.devnet.solana.com',
   TEST = 'https://api.testnet.solana.com',
   MAIN = 'https://api.mainnet-beta.solana.com',
-  MAIN_SERUM = 'https://solana-api.projectserum.com',
+  MAIN_SERUM = 'https://ssc-dao.genesysgo.net',
   LOCAL = 'http://127.0.0.1:8899'
 }
 enum NetworkType {
@@ -70,6 +70,10 @@ const descrpitionForSymbol: { [key: string]: string } = {
   mSOL: 'Marinade SOL'
 }
 
+const AVERAGE_MNDE_APY = 11.23
+
+const MARINADE_PER_POINT = 1.89e-7
+
 export {
   SolanaNetworks,
   DEFAULT_PUBLICKEY,
@@ -79,5 +83,7 @@ export {
   MAX_U64,
   MAINNET_RPCS,
   NetworkType,
-  descrpitionForSymbol
+  descrpitionForSymbol,
+  AVERAGE_MNDE_APY,
+  MARINADE_PER_POINT
 }

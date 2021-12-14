@@ -9,7 +9,7 @@ import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
 import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
-export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
+export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
 export interface IProps {
   action: ActionType
@@ -26,6 +26,7 @@ export interface IProps {
   noWalletHandler?: () => void
   maxBehavior?: MaxBehavior
   emptyTokensHandler?: () => void
+  balance?: BN
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -42,7 +43,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   walletConnected,
   noWalletHandler,
   maxBehavior = 'number',
-  emptyTokensHandler
+  emptyTokensHandler,
+  balance
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -84,8 +86,11 @@ export const ActionTemplate: React.FC<IProps> = ({
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
     return (
       !amountBN.eqn(0) &&
-      (isLessThanMaxAmount ||
-        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)))
+      (
+        isLessThanMaxAmount ||
+        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !(maxAvailable.eqn(0))) ||
+        (maxBehavior === 'balance' && typeof balance !== 'undefined' && amountBN.eq(balance) && !(maxAvailable.eqn(0)))
+      )
     )
   }
 
@@ -94,8 +99,8 @@ export const ActionTemplate: React.FC<IProps> = ({
       setAmountBN(MAX_U64)
       setDecimal(maxDecimal)
       setInputValue('Max')
-    } else if (maxBehavior === 'inputOnly') {
-      setAmountBN(maxAvailable)
+    } else if (maxBehavior === 'balance' && typeof balance !== 'undefined') {
+      setAmountBN(balance)
       setDecimal(maxDecimal)
       setInputValue('Max')
     } else {
@@ -172,6 +177,7 @@ export const ActionTemplate: React.FC<IProps> = ({
 
     return ''
   }
+
   return (
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
