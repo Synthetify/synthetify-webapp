@@ -1,4 +1,4 @@
-import { Input, InputAdornment, Typography } from '@material-ui/core'
+import { Divider, Input, InputAdornment, Typography } from '@material-ui/core'
 import React, { CSSProperties, useState, useRef } from 'react'
 import classNames from 'classnames'
 import SelectTokenModal from '@components/Modals/SelectModals/SelectTokenModal/SelectTokenModal'
@@ -6,8 +6,6 @@ import { BN } from '@project-serum/anchor'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 import icons from '@static/icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
-import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import useStyles from './style'
 
 interface IProps {
@@ -24,7 +22,6 @@ interface IProps {
   walletConnected?: boolean
   noWalletHandler?: () => void
   emptyTokensHandler?: () => void
-  onMaxButtonClick?: () => void
 }
 
 export const AmountInput: React.FC<IProps> = ({
@@ -40,8 +37,7 @@ export const AmountInput: React.FC<IProps> = ({
   showArrow,
   walletConnected,
   noWalletHandler,
-  emptyTokensHandler,
-  onMaxButtonClick
+  emptyTokensHandler
 }) => {
   const classes = useStyles({ onSelectToken })
 
@@ -103,14 +99,16 @@ export const AmountInput: React.FC<IProps> = ({
         }
       }}
     >
+      <Divider orientation='vertical' className={classes.divider} />
       <img alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
       <Typography className={classes.currencyText}>{currency}</Typography>
-      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -0 }} /> : null}
+      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
     </InputAdornment>
-  ) 
+  )
+
   return (
     <>
-      {/* <Input
+      <Input
         inputRef={inputRef}
         error={!!error}
         className={classNames(classes.amountInput, className)}
@@ -122,33 +120,9 @@ export const AmountInput: React.FC<IProps> = ({
         value={value}
         disableUnderline={true}
         placeholder={placeholder}
+        endAdornment={!currency ? null : currencyAdornment}
         onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
-        startAdornment={!currency ? null : currencyAdornment}
-        endAdornment={
-          <OutlinedButton
-            onClick={onMaxButtonClick}
-            className={classes.maxButton}
-            name='Max'
-          />
-        }
-      /> */}
-
-      <ExchangeAmountInput
-        value={value}
-        setValue={value => {
-          // if (value.match(/^\d*\.?\d*$/)) {
-          //   setAmountFrom(value)
-          //   updateEstimatedAmount(value)
-          // }
-        }}
-        placeholder={'0.0'}
-        onMaxClick={() => {
-        }}
-        tokens={tokens}
-        //current={tokenFromIndex !== null ? tokens[tokenFromIndex].symbol : null}
-        //onSelect={(chosen: number) => setTokenFromIndex(chosen)}
       />
-
       {(tokens?.length && onSelectToken)
         ? (
           <SelectTokenModal

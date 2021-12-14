@@ -12,7 +12,7 @@ import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/Exchange
 import useStyles from './style'
 import classNames from 'classnames'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
-export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly'
+export type MaxBehavior = 'number' | 'maxU64' | 'inputOnly' | 'balance' | 'inputOnly'
 
 export interface IProps {
   action: ActionType

@@ -34,11 +34,9 @@ export const Select: React.FC<ISelectModal> = ({
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (tokens?.length >= 1) {
-      setAnchorEl(event.currentTarget)
-      blurContent()
-      setOpen(true)
-    }
+    setAnchorEl(event.currentTarget)
+    blurContent()
+    setOpen(true)
   }
 
   const handleClose = () => {
@@ -59,7 +57,7 @@ export const Select: React.FC<ISelectModal> = ({
             <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={tokens?.length >= 1 && <ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8, marginRight: -4 }} />}
+        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8, marginRight: -4 }} />}
         style={!current ? (isXs ? typography.caption4 : typography.body3) : undefined}>
         <span style={{ position: 'relative', whiteSpace: 'nowrap' }}>
           {!current ? name : current}

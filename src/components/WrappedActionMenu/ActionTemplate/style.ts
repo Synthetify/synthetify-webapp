@@ -122,9 +122,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginRight: 28
     }
   },
-  actionButtonXS: {
-
-  },
   textCenter: {
     textAlign: 'center'
   },
