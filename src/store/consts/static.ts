@@ -67,7 +67,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
   renBTC: 'renBTC',
   whETH: 'Wormhole ETH',
   whFTT: 'Wormhole FTT',
-  mSOL: 'Marinade SOL'
+  mSOL: 'Marinade SOL',
+  xLUNA: 'Synthetic LUNA'
 }
 
 const AVERAGE_MNDE_APY = 11.23
