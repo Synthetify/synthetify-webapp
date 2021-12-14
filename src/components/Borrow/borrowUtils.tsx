@@ -1,6 +1,7 @@
 import React from 'react'
 import { BN } from '@project-serum/anchor'
-import { printBNtoBN } from '@consts/utils'
+import { printBN, printBNtoBN } from '@consts/utils'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -75,7 +76,30 @@ export const calculateCRatio = (
     return 'NaN'
   }
 }
-
+export const calculateLiqPrice = (
+  priceFrom: BN,
+  amountCollateral: BN,
+  priceTo: BN,
+  amountBorrow: BN,
+  liqThreshold: Decimal,
+  assetScaleTo: number,
+  assetScaleFrom: number
+) => {
+  const amountUSDBorrow = amountBorrow.mul(priceTo)
+  if (amountBorrow.eq(new BN(0)) || amountCollateral.eq(new BN(0))) {
+    return printBN(
+      priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale))),
+      assetScaleFrom + 2
+    )
+  } else {
+    return printBN(
+      amountUSDBorrow.div(
+        liqThreshold.val.mul(amountCollateral).div(new BN(10).pow(new BN(liqThreshold.scale)))
+      ),
+      assetScaleTo + 2
+    )
+  }
+}
 export const calculateAvailableBorrow = (
   assetTo: AssetPriceData,
   assetFrom: AssetPriceData,
@@ -90,7 +114,7 @@ export const calculateAvailableBorrow = (
     amountCollateral.add(vaultEntryAmountCollateral),
     cRatio
   )
-  if (amountAfterCalculation.sub(vaultEntryAmountBorrow).gt(new BN(0))) {
+  if (amountAfterCalculation.sub(vaultEntryAmountBorrow).gte(new BN(0))) {
     return amountAfterCalculation.sub(vaultEntryAmountBorrow)
   } else {
     return new BN(0)
@@ -111,8 +135,7 @@ export const calculateAvailableWithdraw = (
     vaultEntryAmountBorrow.sub(amountSynthetic),
     cRatio
   )
-
-  if (vaultEntryAmountCollateral.sub(amountAfterCalculation).gt(new BN(0))) {
+  if (amountAfterCalculation.gte(new BN(0)) && vaultEntryAmountCollateral.sub(amountAfterCalculation).gte(new BN(0))) {
     return vaultEntryAmountCollateral.sub(amountAfterCalculation)
   } else {
     return new BN(0)

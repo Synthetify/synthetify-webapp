@@ -7,7 +7,11 @@ import BN from 'bn.js'
 import React from 'react'
 import { BorrowInfo } from '../BorrowInfo/BorrowInfo'
 import { BorrowTable } from '../BorrowTable/BorrowTable'
-import { calculateAvailableBorrow, calculateAvailableWithdraw } from '../borrowUtils'
+import {
+  calculateAvailableBorrow,
+  calculateAvailableWithdraw,
+  calculateLiqPrice
+} from '../borrowUtils'
 import { ActionBorrow } from '../SwitchBorrow/ActionBorrow'
 import ActionMenuBorrow, { IActionContents } from '../SwitchBorrow/ActionMenuBorrow'
 import useStyles from './style'
@@ -143,7 +147,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
           collateralAmount: element.collateralAmount,
           borrowAmount: element.syntheticAmount
         })
-        if (pairs[pairIndex].syntheticData.balance.gt(vaultAmount.borrowAmount.val)) {
+        if (pairs[pairIndex].syntheticData.balance.gt(element.syntheticAmount.val)) {
           setAvailableRepay(element.syntheticAmount.val)
         } else {
           setAvailableRepay(pairs[pairIndex].syntheticData.balance)
@@ -156,6 +160,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
     }
   }, [pairIndex, sending, hasError])
   const calculateLiquidation = (
+    action: string,
     priceFrom: BN,
     amountCollateral: BN,
     vaultAmountCollatera: BN,
@@ -171,9 +176,13 @@ export const WrappedBorrow: React.FC<IProp> = ({
         ? Number(
           calculateLiqPrice(
             priceFrom,
-            amountCollateral.add(vaultAmountCollatera),
+            action === 'borrow'
+              ? amountCollateral.add(vaultAmountCollatera)
+              : vaultAmountCollatera.sub(amountCollateral),
             priceTo,
-            amountBorrow.add(vaultAmountBorrow),
+            action === 'borrow'
+              ? amountBorrow.add(vaultAmountBorrow)
+              : vaultAmountBorrow.sub(amountBorrow),
             liqThreshold,
             assetScaleTo,
             assetScaleFrom
@@ -234,8 +243,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
         action={'borrow'}
         cRatio={cRatio}
         changeCRatio={changeCRatio}
-        liquidationPriceTo={liquidationPriceTo}
-        liquidationPriceFrom={liquidationPriceFrom}
+        liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
+        liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         onClickSubmitButton={actionOnSubmit}
         pairs={pairs}
         sending={sending}
@@ -252,8 +261,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
       <ActionBorrow
         action={'repay'}
         cRatio={cRatio}
-        liquidationPriceTo={liquidationPriceTo}
-        liquidationPriceFrom={liquidationPriceFrom}
+        liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
+        liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         onClickSubmitButton={actionOnSubmit}
         pairs={pairs}
         changeCRatio={changeCRatio}
@@ -314,29 +323,4 @@ export const WrappedBorrow: React.FC<IProp> = ({
       </Grid>
     </Grid>
   )
-}
-
-const calculateLiqPrice = (
-  priceFrom: BN,
-  amountCollateral: BN,
-  priceTo: BN,
-  amountBorrow: BN,
-  liqThreshold: Decimal,
-  assetScaleTo: number,
-  assetScaleFrom: number
-) => {
-  const amountUSDBorrow = amountBorrow.mul(priceTo)
-  if (amountBorrow.eq(new BN(0)) || amountCollateral.eq(new BN(0))) {
-    return printBN(
-      priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale))),
-      assetScaleFrom + 2
-    )
-  } else {
-    return printBN(
-      amountUSDBorrow.div(
-        liqThreshold.val.mul(amountCollateral).div(new BN(10).pow(new BN(liqThreshold.scale)))
-      ),
-      assetScaleTo + 2
-    )
-  }
 }

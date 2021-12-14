@@ -1,4 +1,3 @@
-
 import { IVault, vaultSliceName } from '@reducers/vault'
 import { keySelectors, AnyProps } from './helpers'
 
@@ -9,7 +8,6 @@ export const { vaults, ownedVaults, vaultSwap } = keySelectors(store, [
   'ownedVaults',
   'vaultSwap'
 ])
-
 
 export const vaultSelectors = { vaults, ownedVaults, vaultSwap }
 

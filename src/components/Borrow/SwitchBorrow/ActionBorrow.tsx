@@ -50,6 +50,7 @@ interface IProp {
   availableTo: BN
   availableFrom: BN
   calculateLiquidation: (
+    action: string,
     priceFrom: BN,
     amountCollateral: BN,
     vaultAmountCollatera: BN,
@@ -93,7 +94,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [amountCollateral, setAmountCollateral] = React.useState<BN>(new BN(0))
   const [amountBorrowString, setAmountBorrowString] = React.useState('')
   const [amountCollateralString, setAmountCollateralString] = React.useState('')
-  const [minCRatio, setMinCRatio] = React.useState<number>(200)
+  const [minCRatio, setMinCRatio] = React.useState<number>(1)
   const onClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
     setOption(true)
@@ -222,7 +223,7 @@ export const ActionBorrow: React.FC<IProp> = ({
               printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
             ) / 100,
             -1
-          ).toFixed(0)
+          ).toFixed(2)
         )
       )
       calculateAvailableBorrowAndWithdraw(
@@ -237,6 +238,7 @@ export const ActionBorrow: React.FC<IProp> = ({
     }
 
     calculateLiquidation(
+      action,
       tokenFrom.priceVal,
       amountCollateral,
       vaultAmount.collateralAmount.val,
@@ -249,12 +251,16 @@ export const ActionBorrow: React.FC<IProp> = ({
     )
     const ratioTo = calculateCRatio(
       tokenTo,
-      amountBorrow.add(vaultAmount.borrowAmount.val),
+      action === 'borrow'
+        ? amountBorrow.add(vaultAmount.borrowAmount.val)
+        : vaultAmount.borrowAmount.val.sub(amountBorrow),
       tokenFrom,
-      amountCollateral.add(vaultAmount.collateralAmount.val)
+      action === 'borrow'
+        ? amountCollateral.add(vaultAmount.collateralAmount.val)
+        : vaultAmount.collateralAmount.val.sub(amountCollateral)
     )
-    if (ratioTo === 'NaN') {
-      setCRatioTo(ratioTo)
+    if (ratioTo === 'NaN' || ratioTo.lt(new BN(0))) {
+      setCRatioTo('NaN')
     } else {
       setCRatioTo(Math.floor(Number(printBN(ratioTo, 0)) / 100))
     }
@@ -274,6 +280,7 @@ export const ActionBorrow: React.FC<IProp> = ({
     setActionOnSubmitButton()
   }, [
     cRatio,
+    minCRatio,
     amountBorrow,
     amountCollateral,
     pairIndex,
@@ -545,18 +552,10 @@ export const ActionBorrow: React.FC<IProp> = ({
               placeholder={'0.0'}
               onMaxClick={() => {
                 if (pairIndex !== null) {
-                  
+                  console.log(availableTo.toString())
                   setAmountBorrow(availableTo)
-                  // setAmountBorrowString(printBN(availableTo, tokenFrom.assetScale))
-                  if(action!='repay'){
-                    setMaxBehaviorTo('maxU64')
-                    setAmountBorrowString('Max')
-                  }else{
-                    setMaxBehaviorTo('number')
-                     setAmountBorrowString(printBN(availableTo, tokenFrom.assetScale))
-                  }
-                  
-
+                  setMaxBehaviorTo('maxU64')
+                  setAmountBorrowString('Max')
                   if (cRatio != '---') {
                     const tmp = calculateAmountCollateral(tokenTo, tokenFrom, availableTo, cRatio)
                     setAmountCollateral(tmp)
@@ -592,11 +591,16 @@ export const ActionBorrow: React.FC<IProp> = ({
               <Typography className={classes.infoTitle}>Interest rate:</Typography>
               <Typography className={classes.infoValueTo}>
                 <AnimatedNumber
-                  value={pairIndex !== null
-                    ? Number(
-                      printBN(pairs[pairIndex].debtInterestRate.val, pairs[pairIndex].debtInterestRate.scale)
-                    ) * 100
-                    : 0}
+                  value={
+                    pairIndex !== null
+                      ? Number(
+                          printBN(
+                            pairs[pairIndex].debtInterestRate.val,
+                            pairs[pairIndex].debtInterestRate.scale
+                          )
+                        ) * 100
+                      : 0
+                  }
                   formatValue={(value: number) => value.toFixed(2)}
                 />
                 %
