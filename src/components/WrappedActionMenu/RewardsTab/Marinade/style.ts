@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '14px'
     }
   },
+  marinadeIconTooltip: {
+    width: 24
+  },
   mnde: {
     ...typography.subtitle2,
     color: colors.navy.grey,

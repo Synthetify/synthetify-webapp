@@ -34,6 +34,7 @@ import slope from './svg/slope.svg'
 import clover from './svg/clover.svg'
 import mSOL from './svg/mSOL.svg'
 import marinade from './icons/mnde.svg'
+import marinadeWhite from './svg/Marinade.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -72,7 +73,8 @@ const icons: { [key: string]: string } = {
   slope: slope,
   clover: clover,
   mSOL: mSOL,
-  marinade: marinade
+  marinade: marinade,
+  marinadeWhite: marinadeWhite
 }
 
 export default icons
