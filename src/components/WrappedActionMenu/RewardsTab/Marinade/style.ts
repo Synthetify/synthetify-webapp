@@ -4,7 +4,7 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: 'fit-content',
-    borderRadius: 10,
+    borderRadius: 8,
     paddingBlock: 11,
     paddingInline: 16,
     backgroundColor: colors.navy.background,
