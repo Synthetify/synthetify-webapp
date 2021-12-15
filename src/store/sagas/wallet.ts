@@ -24,7 +24,7 @@ import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getTokenDetails } from './token'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { address, status } from '@selectors/solanaWallet'
+import { address, status, balance } from '@selectors/solanaWallet'
 import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
@@ -303,6 +303,10 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  const solBalance = yield* select(balance)
+  // if (+solBalance.toString() < 0.05)) {
+
+  // }
 }
 
 export function* handleDisconnect(): Generator {

@@ -3,6 +3,15 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   warningContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backdropFilter: 'blur(5px)',
+    filter: 'blur(5px)',
+    backgroundColor: 'rgba(0,0,0, 0.5)',
+    zIndex: 2
+  },
+  warningBlock: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
