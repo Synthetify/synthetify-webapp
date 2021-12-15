@@ -19,7 +19,7 @@ import { Status } from '@reducers/solanaConnection'
 import { actions as exchangeActions } from '@reducers/exchange'
 import { BN } from '@project-serum/anchor'
 import { getCollateralTokenAirdrop } from './exchange'
-import { tou64 } from '@consts/utils'
+import { printBN, tou64 } from '@consts/utils'
 import { WalletAdapter } from '@web3/adapters/types'
 import { connectExchangeWallet, getExchangeProgram } from '@web3/programs/exchange'
 import { getTokenDetails } from './token'
@@ -303,10 +303,6 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
-  const solBalance = yield* select(balance)
-  // if (+solBalance.toString() < 0.05)) {
-
-  // }
 }
 
 export function* handleDisconnect(): Generator {

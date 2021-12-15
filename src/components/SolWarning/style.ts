@@ -7,9 +7,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: '100%',
     backdropFilter: 'blur(5px)',
-    filter: 'blur(5px)',
     backgroundColor: 'rgba(0,0,0, 0.5)',
-    zIndex: 2
+    zIndex: 5,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   warningBlock: {
     display: 'flex',
@@ -19,12 +21,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '12px 24px 24px 24px',
     width: 536,
     borderRadius: 20,
-    backgroundColor: colors.navy.component
+    backgroundColor: colors.navy.component,
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 16px'
+    }
   },
   warningHeader: {
     color: colors.red.error,
     ...typography.body1,
-    paddingBottom: 28
+    paddingBottom: 28,
+    textAlign: 'center'
   },
   warningText: {
     color: colors.navy.grey,
@@ -38,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle1,
     borderRadius: 8,
     padding: '10px 28px',
+    textTransform: 'capitalize',
     '&:hover': {
       backgroundColor: colors.navy.button
     }

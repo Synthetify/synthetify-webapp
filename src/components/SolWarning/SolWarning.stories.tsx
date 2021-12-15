@@ -4,5 +4,5 @@ import { SolWarning } from './SolWarning'
 
 storiesOf('modals/SolWarning', module)
   .add('main', () => (
-    <SolWarning />
+    <SolWarning open={true}/>
   ))

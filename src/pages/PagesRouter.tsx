@@ -14,10 +14,15 @@ import { StatisticsPage } from './StatisticsPage/StatisticsPage'
 import solanaConnectionSelector from '@selectors/solanaConnection'
 import InformationCard from '@components/InformationCard/InformationCard'
 import { SwaplinePage } from './SwaplinePage/SwaplinePage'
+import { balance, status } from '@selectors/solanaWallet'
+import { SolWarning } from '@components/SolWarning/SolWarning'
+import { printBN } from '@consts/utils'
 
 export const PagesRouter: React.FC = () => {
   const dispatch = useDispatch()
   const halted = useSelector(getHaltedState)
+  const solAmount = useSelector(balance)
+  const walletStatus = useSelector(status)
   const signerStatus = useSelector(solanaConnectionSelector.status)
 
   useEffect(() => {
@@ -29,6 +34,7 @@ export const PagesRouter: React.FC = () => {
   return (
     <Router>
       {halted ? <InformationCard /> : ''}
+      {<SolWarning open={+printBN(solAmount, 9) < 0.05 && walletStatus === Status.Initialized } />}
       {signerStatus === Status.Initialized && <EventsHandlers />}
       <div id={toBlur}>
         <HeaderWrapper />
