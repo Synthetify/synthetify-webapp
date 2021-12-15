@@ -3,6 +3,6 @@ import { storiesOf } from '@storybook/react'
 import { SolWarning } from './SolWarning'
 
 storiesOf('modals/SolWarning', module)
-  .add('default', () => (
+  .add('main', () => (
     <SolWarning />
   ))
