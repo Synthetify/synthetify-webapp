@@ -35,6 +35,7 @@ import clover from './svg/clover.svg'
 import mSOL from './svg/mSOL.svg'
 import marinade from './icons/mnde.svg'
 import exclamation from './svg/exclamation.svg'
+import marinadeWhite from './svg/Marinade.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -74,7 +75,8 @@ const icons: { [key: string]: string } = {
   clover: clover,
   mSOL: mSOL,
   marinade: marinade,
-  exclamation: exclamation
+  exclamation: exclamation,
+  marinadeWhite: marinadeWhite
 }
 
 export default icons
