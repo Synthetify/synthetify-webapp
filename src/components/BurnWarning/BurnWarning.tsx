@@ -5,6 +5,7 @@ import React from 'react'
 import { printBN } from '@consts/utils'
 
 interface IProps {
+  open: boolean,
   burnAmount: {
     amount: BN,
     decimal: number
@@ -17,10 +18,10 @@ interface IProps {
   claimTime: string
 }
 
-const BurnWarning: React.FC<IProps> = ({ burnAmount, burnTokenSymbol, rewardAmount, claimTime }) => {
+const BurnWarning: React.FC<IProps> = ({ burnAmount, burnTokenSymbol, rewardAmount, claimTime, open }) => {
   const classes = useStyles()
   return (
-    <Grid className={classes.warningContainer}>
+    <Grid className={classes.warningContainer} style={{ display: open ? 'flex' : 'none' }}>
       <Grid className={classes.warningCard}>
         <Typography component='h1' className={classes.warningHeader}>Are you sure you want to burn {printBN(burnAmount.amount, burnAmount.decimal)} {burnTokenSymbol}?</Typography>
         <Typography component='p' className={classes.warningInfo}>

@@ -7,6 +7,7 @@ import BN from 'bn.js'
 storiesOf('Modals/burnWarning', module)
   .addDecorator(withKnobs)
   .add('default', () => <BurnWarning
+    open={true}
     burnAmount={{
       amount: new BN(312456),
       decimal: 4

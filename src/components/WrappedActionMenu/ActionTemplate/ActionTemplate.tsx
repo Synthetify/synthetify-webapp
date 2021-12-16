@@ -8,6 +8,7 @@ import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
 import AmountInput from '@components/Inputs/AmountInput/AmountInput'
+import BurnWarning from '@components/BurnWarning/BurnWarning'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
@@ -26,7 +27,8 @@ export interface IProps {
   noWalletHandler?: () => void
   maxBehavior?: MaxBehavior
   emptyTokensHandler?: () => void
-  balance?: BN
+  balance?: BN,
+  showWarning?: boolean
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -44,7 +46,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   noWalletHandler,
   maxBehavior = 'number',
   emptyTokensHandler,
-  balance
+  balance,
+  showWarning = false
 }) => {
   const classes = useStyles()
   const [amountBN, setAmountBN] = useState(new BN(0))
@@ -229,11 +232,26 @@ export const ActionTemplate: React.FC<IProps> = ({
           disabled={!actionAvailable}
           color='secondary'
           className={classes.actionButton}
-          onClick={onClick(amountBN, decimal)}
+          onClick={() => {
+            // showWarning = true
+            onClick(amountBN, decimal)
+          }}
           labelClassName={classes.label}
         />
         <Progress state={getProgressState()} message={getProgressMessage()} />
       </Grid>
+      <BurnWarning
+        open={showWarning}
+        burnAmount={{
+          amount: amountBN, decimal: decimal
+        }}
+        burnTokenSymbol={currency}
+        rewardAmount={{
+          amount: new BN(12433),
+          decimal: 3
+        }}
+        claimTime={'12:12:12'}
+      />
     </Grid>
   )
 }
