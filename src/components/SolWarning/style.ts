@@ -2,12 +2,16 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  paper: {
+    position: 'unset',
+    width: 0,
+    height: 0,
+    minHeight: 0
+  },
   warningContainer: {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    backdropFilter: 'blur(5px)',
-    backgroundColor: 'rgba(0,0,0, 0.5)',
     zIndex: 5,
     display: 'flex',
     alignItems: 'center',
