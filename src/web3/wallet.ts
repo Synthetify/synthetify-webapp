@@ -16,6 +16,7 @@ export enum WalletType {
   SLOPE,
   CLOVER
 }
+
 let _wallet: WalletAdapter
 const getSolanaWallet = (): WalletAdapter => {
   if (_wallet) {
