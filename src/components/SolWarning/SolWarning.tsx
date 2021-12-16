@@ -23,11 +23,11 @@ export const SolWarning: React.FC<Props> = ({ open }) => {
       <Grid className={classes.warningBlock}>
         <Typography component='p'><img src={icons.exclamation}></img></Typography>
         <Typography component='h1' className={classes.warningHeader}>You have less than 0.05 SOL in your wallet!</Typography>
-        <Typography component='p' className={classes.warningText}> Be aware that your transactions might fail.</Typography>
+        <Typography component='p' className={classes.warningText}> Be aware that your transactions might fail, because of having not enough funds for network fees.</Typography>
         <Button className={classes.warningButton} onClick={() => {
           setShowModal(false)
           unblurContent()
-        }}>Dismiss</Button>
+        }}>Close</Button>
       </Grid>
     </Grid>
   )
