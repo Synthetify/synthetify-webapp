@@ -9,8 +9,10 @@ import {
   handleRepaySyntheticVault,
   handleWithdrawCollateralVault
 } from './exchange'
-import { vaultSwap } from '@selectors/vault'
+import { userVaults, vaults, vaultSwap } from '@selectors/vault'
 import { actions as snackbarsActions } from '@reducers/snackbars'
+import { printBN, stringToMinDecimalBN } from '@consts/utils'
+import BN from 'bn.js'
 function* checkVaultEntry(): Generator {
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -256,8 +258,36 @@ export function* handleSendAction(): Generator {
   }
 }
 
+export function* updateSyntheticAmountUserVault(): Generator {
+  const vaultsData = yield* select(vaults)
+  const userVaultsData = yield* select(userVaults)
+  const MINUTES_IN_YEAR = 525600
+  const DENUMERATOR = new BN(10).pow(new BN(12))
+  for (const [_key, userVault] of Object.entries(userVaultsData)) {
+    const currentVault = vaultsData[userVault.vault.toString()]
+    const difTimestamp = Math.floor((Date.now() / 1000 - Number(currentVault.lastUpdate.toString())) / 60)
+    if (difTimestamp > 1) {
+      const interestRate = Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) * 100
+      const minuteInterestRate = (interestRate / MINUTES_IN_YEAR)
+      const base = stringToMinDecimalBN((minuteInterestRate).toString())
+      const timePeriodIterest = (base.BN.add(new BN(10).pow(new BN(base.decimal + 2))).pow(new BN(difTimestamp)))
+      const actualAccumulatedInterestRate = currentVault.accumulatedInterestRate.val.mul(timePeriodIterest).div(new BN(10).pow(new BN(difTimestamp * (base.decimal + 2))))
+      const diffAccumulate = actualAccumulatedInterestRate.mul(DENUMERATOR).div(userVault.lastAccumulatedInterestRate.val)
+      const currentDebt = userVault.syntheticAmount.val.mul(diffAccumulate).div(DENUMERATOR)
+      console.log(currentDebt.toString())
+      yield put(actions.updateAmountSynthetic({
+        syntheticAmount: { val: currentDebt, scale: userVault.syntheticAmount.scale },
+        vault: userVault.vault
+      }))
+    }
+  }
+}
+
 export function* vaultSendActionHandler(): Generator {
   yield* takeEvery(actions.setVaultSwap, handleSendAction)
+}
+export function* updateSyntheticHandler(): Generator {
+  yield* takeEvery(actions.setUserVaults, updateSyntheticAmountUserVault)
 }
 
 export function* setActualVault(): Generator {
@@ -266,6 +296,6 @@ export function* setActualVault(): Generator {
 
 export function* vaultSaga(): Generator {
   yield all(
-    [vaultSendActionHandler, setActualVault].map(spawn)
+    [updateSyntheticHandler, vaultSendActionHandler, setActualVault].map(spawn)
   )
 }

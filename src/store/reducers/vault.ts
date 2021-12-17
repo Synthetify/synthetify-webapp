@@ -68,6 +68,9 @@ const vaultSlice = createSlice({
     setUserVaults(state, action: PayloadAction<VaultEntry>) {
       state.userVaults[action.payload.vault.toString()] = action.payload
     },
+    updateAmountSynthetic(state, action: PayloadAction<Pick<VaultEntry, 'syntheticAmount' | 'vault'>>) {
+      state.userVaults[action.payload.vault.toString()].syntheticAmount = action.payload.syntheticAmount
+    },
     actionDone(state, action: PayloadAction<Pick<VaultSwap, 'txid' >>) {
       state.vaultSwap.txid = action.payload.txid
       state.vaultSwap.loading = false

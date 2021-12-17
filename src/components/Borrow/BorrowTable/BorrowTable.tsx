@@ -21,8 +21,8 @@ import useStyles from './style'
 import { UserVaults } from '@selectors/exchange'
 interface IProp {
   userVaults: UserVaults[]
-  setValueWithTable: (cRatio: number, interestRate: number, liquidationPrice: number) => void
-  active: boolean
+  setValueWithTable: (collSymbol: string, synthSymbol: string) => void
+  active: string | null
 }
 export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, active }) => {
   const classes = useStyles()
@@ -41,12 +41,12 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
               <Hidden smUp> Borr.</Hidden>
             </TableCell>
             <TableCell classes={{ root: classes.rootHeader }}>
-              <Hidden xsDown>Current debt</Hidden>
-              <Hidden smUp>Curr. debt</Hidden>
-            </TableCell>
-            <TableCell classes={{ root: classes.rootHeader }}>
               <Hidden xsDown> Deposited</Hidden>
               <Hidden smUp> Depos.</Hidden>
+            </TableCell>
+            <TableCell classes={{ root: classes.rootHeader }}>
+              <Hidden xsDown>Current debt</Hidden>
+              <Hidden smUp>Curr. debt</Hidden>
             </TableCell>
             <TableCell classes={{ root: classes.rootHeader }}>C-Ratio</TableCell>
             <Hidden smDown>
@@ -62,16 +62,12 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
           </TableRow>
         </TableHead>
         <TableBody>
-          {userVaults.map(element => (
+          {userVaults.map((element, index) => (
             <TableRow
-              key={element.vault.toString()}
-              className={classNames(classes.row, active ? classes.active : null)}
+              key={index}
+              className={classNames(classes.row, element.collateral === active ? classes.active : null)}
               onClick={() =>
-                setValueWithTable(
-                  Number(element.cRatio),
-                  Number(element.interestRate),
-                  Number(element.liquidationPrice)
-                )
+                setValueWithTable(element.collateral, element.borrowed)
               }>
               <TableCell classes={{ root: classes.rootCell }}>
                 <Grid container alignItems='center'>
@@ -95,21 +91,6 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
               <TableCell classes={{ root: classes.rootCell }}>
                 <Tooltip
                   classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
-                  title={`${element.currentDebt} ${element.currentDebtSign}`}
-                  arrow>
-                  <Grid>
-                    {'~ '}
-                    <AnimatedNumber
-                      value={element.currentDebt}
-                      formatValue={formatNumbersBorrowTable}
-                    />
-                    {showPrefix(element.currentDebt)} {element.currentDebtSign}
-                  </Grid>
-                </Tooltip>
-              </TableCell>
-              <TableCell classes={{ root: classes.rootCell }}>
-                <Tooltip
-                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
                   title={`${element.deposited} ${element.depositedSign}`}
                   arrow>
                   <Grid>
@@ -119,6 +100,21 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       formatValue={formatNumbersBorrowTable}
                     />
                     {showPrefix(element.deposited)} {element.depositedSign}
+                  </Grid>
+                </Tooltip>
+              </TableCell>
+              <TableCell classes={{ root: classes.rootCell }}>
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  title={`${element.currentDebt} ${element.currentDebtSign}`}
+                  arrow>
+                  <Grid>
+                    {'~ '}
+                    <AnimatedNumber
+                      value={element.currentDebt}
+                      formatValue={formatNumbersBorrowTable}
+                    />
+                    {showPrefix(element.currentDebt)} {element.currentDebtSign}
                   </Grid>
                 </Tooltip>
               </TableCell>

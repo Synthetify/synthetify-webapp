@@ -414,7 +414,7 @@ export const getUserVaults = createSelector(
         userVault.syntheticAmount.val,
         userVault.collateralAmount.val
       )
-
+      const interestRate = Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) * 100
       const vaultData: UserVaults = {
         ...userVault,
         borrowed: allSynthetics[currentVault.synthetic.toString()].symbol,
@@ -432,10 +432,7 @@ export const getUserVaults = createSelector(
         ),
         currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
         maxBorrow: printBN(currentVault.maxBorrow.val.sub(currentVault.mintAmount.val), currentVault.maxBorrow.scale),
-        interestRate: (
-          Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
-          100
-        ).toString(),
+        interestRate: interestRate.toString(),
         liquidationPrice: calculateLiqPrice(
           allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
           userVault.collateralAmount.val,

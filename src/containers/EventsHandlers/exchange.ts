@@ -15,7 +15,7 @@ import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
 
 import { VAULTS_MAP } from '@consts/consts'
 import { address } from '@selectors/solanaWallet'
-import { vaultSwap } from '@selectors/vault'
+import { updateSyntheticAmountUserVault } from '@sagas/vault'
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -25,7 +25,6 @@ const ExhcangeEvents = () => {
   const allAssets = useSelector(assets)
   const exchangeProgram = getCurrentExchangeProgram()
   const owner = useSelector(address)
-  const vault = useSelector(vaultSwap)
   React.useEffect(() => {
     if (
       userAccount.address.equals(DEFAULT_PUBLICKEY) ||
@@ -119,10 +118,11 @@ const ExhcangeEvents = () => {
         )
         dispatch(actionsVault.setUserVaults(vaultEntryAmount))
       })
+      updateSyntheticAmountUserVault()
     }
 
     connectEvents().catch(error => console.log(error))
-  }, [dispatch, exchangeProgram, networkStatus, vault.loading])
+  }, [dispatch, exchangeProgram, networkStatus])
 
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()

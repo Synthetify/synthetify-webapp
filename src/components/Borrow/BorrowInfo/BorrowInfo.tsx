@@ -86,16 +86,6 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             <Typography className={classes.positionTitle}>Collateral:</Typography>
             <Typography className={classes.positionValue}>{collateral}</Typography>
           </Grid>
-
-          <Grid
-            container
-            item
-            className={classes.infoPosition}
-            justifyContent='space-between'
-            alignItems='center'>
-            <Typography className={classes.positionTitle}>Coll. price:</Typography>
-            <Typography className={classes.positionValue}>$ <AnimatedNumber value={callPrice} formatValue={(value: string) => Number(value).toFixed(2)} /></Typography>
-          </Grid>
           <Grid
             container
             item
@@ -105,7 +95,15 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             <Typography className={classes.positionTitle}>Borrowed asset:</Typography>
             <Typography className={classes.positionValue}>{borrowed}</Typography>
           </Grid>
-
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Coll. price:</Typography>
+            <Typography className={classes.positionValue}>$ <AnimatedNumber value={callPrice} formatValue={(value: string) => Number(value).toFixed(2)} /></Typography>
+          </Grid>
           <Grid
             container
             item

@@ -44,7 +44,8 @@ interface IProp {
   pairs: BorrowedPair[]
   changeCRatio: (nr: string) => void
   sending: boolean
-  onSelectPair: (nr: number) => void
+  pairIndex: number | null
+  setPairIndex: (nr: number) => void
   hasError?: boolean
   vaultAmount: { collateralAmount: Decimal; borrowAmount: Decimal }
   availableTo: BN
@@ -64,7 +65,8 @@ export const ActionBorrow: React.FC<IProp> = ({
   changeCRatio,
   sending,
   hasError,
-  onSelectPair,
+  pairIndex,
+  setPairIndex,
   vaultAmount,
   availableTo,
   availableFrom,
@@ -92,7 +94,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   }
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
-  const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
+  // const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [nameSubmitButton, setNameSubmitButton] = React.useState('add')
   const [actionSubmit, setActionSubmit] = React.useState<ActionType>(
     action === 'borrow' ? 'add' : 'withdraw'
@@ -445,7 +447,6 @@ export const ActionBorrow: React.FC<IProp> = ({
                 current={pairIndex !== null ? tokenFrom.symbol : null}
                 onSelect={(chosen: number) => {
                   setPairIndex(chosen)
-                  onSelectPair(chosen)
                 }}
                 className={classes.input}
                 selectText='Select'
@@ -559,7 +560,6 @@ export const ActionBorrow: React.FC<IProp> = ({
               current={pairIndex !== null ? tokenTo.symbol : null}
               onSelect={(chosen: number) => {
                 setPairIndex(chosen)
-                onSelectPair(chosen)
               }}
               className={classes.input}
               selectText='Select'

@@ -376,7 +376,6 @@ export const getAvailableRepay = createSelector(
       return new BN(0)
     }
   }
-
 )
 
 export const solanaWalletSelectors = {
