@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   rootCell: {
     border: 'none',
-    ...typography.subtitle1,
+    ...typography.body3,
     color: colors.navy.veryLightGrey,
     padding: '10px 10px',
     '&:first-child': {
@@ -42,14 +42,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.caption2,
-      padding: '10px 4px',
       '&:first-child': {
         paddingLeft: '12px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption4,
-      padding: '10px 4px',
       '&:first-child': {
         paddingLeft: '12px'
       }
@@ -71,6 +69,25 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   active: {
     background: colors.navy.navButton
+  },
+  tooltipNumber: {
+    background: colors.navy.navButton,
+    border: `0.5px solid ${colors.navy.tooltip}`,
+    ...typography.subtitle1,
+    color: colors.navy.veryLightGrey,
+    padding: '3px 5px',
+
+    [theme.breakpoints.down('sm')]: {
+      ...typography.caption2,
+      padding: '2px 4px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption4,
+      margin: '6px 0px'
+    }
+  },
+  arrow: {
+    color: colors.navy.navButton
   }
 }))
 

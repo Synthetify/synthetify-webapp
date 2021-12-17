@@ -13,7 +13,8 @@ export type IActionContents = {
 export const ActionMenuBorrow: React.FC<IProps> = ({ actionContents }) => {
   const actions: IMenuItem = { ...actionContents }
 
-  return <SwitchBorrow menuItems={actions} />
+  return (
+    <SwitchBorrow menuItems={actions} />
+  )
 }
-
 export default ActionMenuBorrow

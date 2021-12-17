@@ -17,11 +17,11 @@ import {
   calculateCRatio,
   calculateAmountCollateral,
   calculateAmountBorrow,
-  calculateAvailableWithdraw
+  calculateAvailableBorrowAndWithdraw,
+  calculateLiqAndCRatio
 } from '../borrowUtils'
 import { MAX_U64 } from '@consts/static'
-
-type ActionType = 'add' | 'withdraw' | 'borrow' | 'repay'
+import { ActionType } from '@reducers/vault'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -35,41 +35,24 @@ interface IProp {
   liquidationPriceTo: number
   liquidationPriceFrom: number
   onClickSubmitButton: (
-    action: string,
+    action: ActionType,
     synthetic: PublicKey,
-    amountBorrow: BN,
     collateral: PublicKey,
-    amountCollateral: BN
+    collateralAmount: BN,
+    syntheticAmount: BN
   ) => void
   pairs: BorrowedPair[]
   changeCRatio: (nr: string) => void
   sending: boolean
   onSelectPair: (nr: number) => void
-  hasError: boolean | undefined
+  hasError?: boolean
   vaultAmount: { collateralAmount: Decimal; borrowAmount: Decimal }
   availableTo: BN
   availableFrom: BN
-  calculateLiquidation: (
-    action: string,
-    priceFrom: BN,
-    amountCollateral: BN,
-    vaultAmountCollatera: BN,
-    priceTo: BN,
-    amountBorrow: BN,
-    vaultAmountBorrow: BN,
-    liqThreshold: Decimal,
-    assetScaleTo: number,
-    assetScaleFrom: number
-  ) => void
-  calculateAvailableBorrowAndWithdraw: (
-    assetTo: AssetPriceData,
-    assetFrom: AssetPriceData,
-    cRatio: string,
-    vaultEntryAmountCollateral: BN,
-    amountCollateral: BN,
-    vaultEntryAmountBorrow: BN,
-    amountBorrow: BN
-  ) => void
+  setLiquidationPriceTo: (nr: number) => void
+  setLiquidationPriceFrom: (nr: number) => void
+  setAvailableBorrow: (nr: BN) => void
+  setAvailableWithdraw: (nr: BN) => void
 }
 export const ActionBorrow: React.FC<IProp> = ({
   action,
@@ -85,8 +68,10 @@ export const ActionBorrow: React.FC<IProp> = ({
   vaultAmount,
   availableTo,
   availableFrom,
-  calculateLiquidation,
-  calculateAvailableBorrowAndWithdraw
+  setLiquidationPriceTo,
+  setLiquidationPriceFrom,
+  setAvailableBorrow,
+  setAvailableWithdraw
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -97,7 +82,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [minCRatio, setMinCRatio] = React.useState<number>(1)
   const onClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
-    setOption(true)
+    if(action==='borrow'){
+      setOption(true)
+    }
   }
   const onClosePopover = () => {
     setAnchorEl(null)
@@ -106,7 +93,8 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
-  const [nameSubmitButton, setNameSubmitButton] = React.useState<ActionType>(
+  const [nameSubmitButton, setNameSubmitButton] = React.useState('add')
+  const [actionSubmit, setActionSubmit] = React.useState<ActionType>(
     action === 'borrow' ? 'add' : 'withdraw'
   )
   const [cRatioTo, setCRatioTo] = React.useState<number | string>(0)
@@ -175,6 +163,7 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (blockButton) {
       return 'failed'
     }
+
     return 'none'
   }
   const getProgressMessage = () => {
@@ -182,22 +171,24 @@ export const ActionBorrow: React.FC<IProp> = ({
       add: 'Adding',
       withdraw: 'Withdrawing',
       borrow: 'Borrowing',
-      repay: 'Repaying'
+      repay: 'Repaying',
+      none: '---'
     }
     if (sending) {
-      return `${actionToNoun[nameSubmitButton]} in progress`
+      return `${actionToNoun[actionSubmit]} in progress`
     }
     const actionToPastNoun: { [key in ActionType]: string } = {
       add: 'added',
       withdraw: 'withdrawn',
       borrow: 'borrowed',
-      repay: 'Repaid'
+      repay: 'repaid',
+      none: '---'
     }
     if (showOperationProgressFinale && !hasError) {
       return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
     }
     if (showOperationProgressFinale && hasError) {
-      return `${actionToNoun[nameSubmitButton]} failed`
+      return `${actionToNoun[actionSubmit]} failed`
     }
     if (blockButton) {
       return 'Invalid value'
@@ -209,12 +200,18 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (sending) {
       setShowOperationProgressFinale(true)
     }
-  }, [sending])
-
-  React.useEffect(() => {
     if (showOperationProgressFinale) {
       setShowOperationProgressFinale(false)
     }
+
+
+  }, [sending])
+
+  React.useEffect(() => {
+    calculationVauleInput()
+  }, [cRatio])
+
+  React.useEffect(() => {
     if (pairIndex !== null) {
       setMinCRatio(
         Number(
@@ -226,77 +223,58 @@ export const ActionBorrow: React.FC<IProp> = ({
           ).toFixed(2)
         )
       )
-      calculateAvailableBorrowAndWithdraw(
+    }
+  }, [pairIndex])
+
+  React.useEffect(() => {
+
+    if (pairIndex !== null) {
+      const availableData = calculateAvailableBorrowAndWithdraw(
         tokenTo,
         tokenFrom,
         cRatio !== '---' ? cRatio : minCRatio.toString(),
         vaultAmount.collateralAmount.val,
         amountCollateral,
         vaultAmount.borrowAmount.val,
-        amountBorrow
+        amountBorrow,
+        minCRatio.toString()
       )
+      setAvailableBorrow(availableData.availableBorrow)
+      setAvailableWithdraw(availableData.availableWithdraw)
     }
-
-    calculateLiquidation(
-      action,
-      tokenFrom.priceVal,
-      amountCollateral,
-      vaultAmount.collateralAmount.val,
-      tokenTo.priceVal,
-      amountBorrow,
-      vaultAmount.borrowAmount.val,
-      pairIndex !== null ? pairs[pairIndex].liquidationThreshold : { val: new BN(1), scale: 1 },
-      tokenTo.assetScale,
-      tokenFrom.assetScale
-    )
-    const ratioTo = calculateCRatio(
-      tokenTo,
-      action === 'borrow'
-        ? amountBorrow.add(vaultAmount.borrowAmount.val)
-        : vaultAmount.borrowAmount.val.sub(amountBorrow),
-      tokenFrom,
-      action === 'borrow'
-        ? amountCollateral.add(vaultAmount.collateralAmount.val)
-        : vaultAmount.collateralAmount.val.sub(amountCollateral)
-    )
-    if (ratioTo === 'NaN' || ratioTo.lt(new BN(0))) {
-      setCRatioTo('NaN')
-    } else {
-      setCRatioTo(Math.floor(Number(printBN(ratioTo, 0)) / 100))
-    }
-    const ratioFrom = calculateCRatio(
-      tokenTo,
-      vaultAmount.borrowAmount.val,
-      tokenFrom,
-      vaultAmount.collateralAmount.val
-    )
-    if (ratioFrom === 'NaN') {
-      setCRatioFrom(ratioFrom)
-    } else {
-      setCRatioFrom(Math.floor(Number(printBN(ratioFrom, 0)) / 100))
-    }
-
+    
     blockSubmitButton()
     setActionOnSubmitButton()
   }, [
     cRatio,
-    minCRatio,
     amountBorrow,
     amountCollateral,
     pairIndex,
     tokenFrom.priceVal.toString(),
     tokenTo.priceVal.toString(),
-    vaultAmount,
-    sending,
-    hasError
+    vaultAmount
   ])
 
   React.useEffect(() => {
-    calculationVauleInput()
-
-    blockSubmitButton()
-    setActionOnSubmitButton()
-  }, [cRatio])
+    if (pairIndex !== null) {
+      const calculateData = calculateLiqAndCRatio(
+        action,
+        tokenFrom.priceVal,
+        amountCollateral,
+        vaultAmount.collateralAmount.val,
+        tokenTo.priceVal,
+        amountBorrow,
+        vaultAmount.borrowAmount.val,
+        pairs[pairIndex].liquidationThreshold,
+        tokenTo.assetScale,
+        tokenFrom.assetScale
+      )
+      setLiquidationPriceTo(calculateData.liquidationTo)
+      setLiquidationPriceFrom(calculateData.liquidationFrom)
+      setCRatioTo(calculateData.cRatioTo)
+      setCRatioFrom(calculateData.cRatioFrom)
+    }
+  }, [amountBorrow, amountCollateral, pairIndex])
 
   const [blockButton, setBlockButton] = React.useState(false)
   const blockSubmitButton = () => {
@@ -328,30 +306,36 @@ export const ActionBorrow: React.FC<IProp> = ({
   const setActionOnSubmitButton = () => {
     if (action === 'borrow') {
       if (!amountCollateral.isZero() && amountBorrow.isZero()) {
+        setActionSubmit('add')
         setNameSubmitButton('add')
       }
       if (amountCollateral.isZero() && !amountBorrow.isZero()) {
+        setActionSubmit('borrow')
         setNameSubmitButton('borrow')
       }
       if (!amountCollateral.isZero() && !amountBorrow.isZero()) {
-        setNameSubmitButton('borrow')
+        setActionSubmit('borrow')
+        setNameSubmitButton('Add/Borrow')
       }
     } else {
       if (!amountCollateral.isZero() && amountBorrow.isZero()) {
-        setNameSubmitButton('withdraw')
+        setActionSubmit('withdraw')
+        setNameSubmitButton('Withdraw')
       }
       if (amountCollateral.isZero() && !amountBorrow.isZero()) {
-        setNameSubmitButton('repay')
+        setActionSubmit('repay')
+        setNameSubmitButton('Repay')
       }
       if (!amountCollateral.isZero() && !amountBorrow.isZero()) {
-        setNameSubmitButton('repay')
+        setActionSubmit('repay')
+        setNameSubmitButton('Withdraw/Repay')
       }
     }
   }
 
   const calculationVauleInput = () => {
     if (!amountBorrow.eq(new BN(0))) {
-      let amount
+      let amount = new BN(0)
       if (cRatio != '---') {
         amount = calculateAmountCollateral(tokenTo, tokenFrom, amountBorrow, cRatio)
       } else {
@@ -363,9 +347,23 @@ export const ActionBorrow: React.FC<IProp> = ({
     } else if (!amountCollateral.eq(new BN(0))) {
       let amount
       if (cRatio != '---') {
-        amount = calculateAmountBorrow(tokenTo, tokenFrom, amountCollateral, cRatio)
+        amount = calculateAmountBorrow(
+          tokenTo.priceVal,
+          tokenTo.assetScale,
+          tokenFrom.priceVal,
+          tokenFrom.assetScale,
+          amountCollateral,
+          cRatio
+        )
       } else {
-        amount = calculateAmountBorrow(tokenTo, tokenFrom, amountCollateral, minCRatio.toString())
+        amount = calculateAmountBorrow(
+          tokenTo.priceVal,
+          tokenTo.assetScale,
+          tokenFrom.priceVal,
+          tokenFrom.assetScale,
+          amountCollateral,
+          minCRatio.toString()
+        )
       }
       setAmountBorrow(amount)
       setAmountBorrowString(printBN(amount, tokenTo.assetScale))
@@ -382,8 +380,10 @@ export const ActionBorrow: React.FC<IProp> = ({
 
       if (cRatio != '---') {
         const amount = calculateAmountBorrow(
-          tokenTo,
-          tokenFrom,
+          tokenTo.priceVal,
+          tokenTo.assetScale,
+          tokenFrom.priceVal,
+          tokenFrom.assetScale,
           printBNtoBN(value, tokenFrom.assetScale),
           cRatio
         )
@@ -407,7 +407,6 @@ export const ActionBorrow: React.FC<IProp> = ({
           cRatio
         )
         setAmountCollateralString(printBN(amount, tokenFrom.assetScale))
-
         setAmountCollateral(amount)
       }
     }
@@ -429,18 +428,13 @@ export const ActionBorrow: React.FC<IProp> = ({
                 onMaxClick={() => {
                   if (pairIndex !== null) {
                     setAmountCollateral(availableFrom)
-
                     if (action != 'borrow') {
                       setAmountCollateralString('Max')
                       setMaxBehaviorFrom('maxU64')
+                      changeCRatio('---')
                     } else {
-                      setAmountCollateralString(printBN(availableFrom, tokenTo.assetScale))
+                      setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
                       setMaxBehaviorFrom('number')
-                    }
-                    if (cRatio != '---') {
-                      const tmp = calculateAmountBorrow(tokenTo, tokenFrom, availableFrom, cRatio)
-                      setAmountBorrow(tmp)
-                      setAmountBorrowString(printBN(tmp, tokenTo.assetScale))
                     }
                   }
                 }}
@@ -482,8 +476,8 @@ export const ActionBorrow: React.FC<IProp> = ({
                         ? colors.green.button
                         : colors.red.error
                   }}>
-                  {cRatio}
-                  {cRatio != '---' ? '%' : null}
+                  {action==='borrow'? cRatio: minCRatio.toFixed(0)}
+                  {cRatio != '---'|| action === 'repay' ? '%' : null}
                 </Button>
                 <Popover
                   classes={{ paper: classes.popover }}
@@ -552,15 +546,10 @@ export const ActionBorrow: React.FC<IProp> = ({
               placeholder={'0.0'}
               onMaxClick={() => {
                 if (pairIndex !== null) {
-                  console.log(availableTo.toString())
                   setAmountBorrow(availableTo)
                   setMaxBehaviorTo('maxU64')
                   setAmountBorrowString('Max')
-                  if (cRatio != '---') {
-                    const tmp = calculateAmountCollateral(tokenTo, tokenFrom, availableTo, cRatio)
-                    setAmountCollateral(tmp)
-                    setAmountCollateralString(printBN(tmp, tokenFrom.assetScale))
-                  }
+                  changeCRatio('---')
                 }
               }}
               pairs={pairs.map(pair => ({
@@ -633,7 +622,7 @@ export const ActionBorrow: React.FC<IProp> = ({
             </Grid>
             <Grid>
               <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
-              <Grid container>
+              <Grid container alignItems='center'>
                 <Typography className={classes.infoValueFrom}>
                   {cRatioFrom}
                   {cRatioFrom != 'NaN' ? '%' : ''}
@@ -663,11 +652,11 @@ export const ActionBorrow: React.FC<IProp> = ({
               className={classes.actionButton}
               onClick={() => {
                 onClickSubmitButton(
-                  nameSubmitButton,
+                  actionSubmit,
                   pairIndex != null ? pairs[pairIndex].synthetic : new PublicKey('0'),
-                  maxBehaviorTo === 'maxU64' ? MAX_U64 : amountBorrow,
                   pairIndex != null ? pairs[pairIndex].collateral : new PublicKey('0'),
-                  maxBehaviorFrom === 'maxU64' ? MAX_U64 : amountCollateral
+                  maxBehaviorFrom === 'maxU64' ? MAX_U64 : amountCollateral,
+                  maxBehaviorTo === 'maxU64' ? MAX_U64 : amountBorrow
                 )
               }}
               disabled={blockButton}

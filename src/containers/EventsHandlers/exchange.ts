@@ -117,7 +117,7 @@ const ExhcangeEvents = () => {
           vault.collateral,
           owner
         )
-        dispatch(actionsVault.setOwnedVaults(vaultEntryAmount))
+        dispatch(actionsVault.setUserVaults(vaultEntryAmount))
       })
     }
 

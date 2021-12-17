@@ -8,7 +8,8 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  Tooltip
 } from '@material-ui/core'
 import icons from '@static/icons'
 import classNames from 'classnames'
@@ -17,13 +18,13 @@ import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { formatNumbersBorrowTable, showPrefix } from '@consts/utils'
 import useStyles from './style'
-import { OwnedVaults } from '../WrappedBorrow/WrappedBorrow'
+import { UserVaults } from '@selectors/exchange'
 interface IProp {
-  ownedVaults: OwnedVaults[]
+  userVaults: UserVaults[]
   setValueWithTable: (cRatio: number, interestRate: number, liquidationPrice: number) => void
   active: boolean
 }
-export const BorrowTable: React.FC<IProp> = ({ ownedVaults, setValueWithTable, active }) => {
+export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, active }) => {
   const classes = useStyles()
 
   return (
@@ -61,7 +62,7 @@ export const BorrowTable: React.FC<IProp> = ({ ownedVaults, setValueWithTable, a
           </TableRow>
         </TableHead>
         <TableBody>
-          {ownedVaults.map(element => (
+          {userVaults.map(element => (
             <TableRow
               key={element.vault.toString()}
               className={classNames(classes.row, active ? classes.active : null)}
@@ -92,22 +93,44 @@ export const BorrowTable: React.FC<IProp> = ({ ownedVaults, setValueWithTable, a
                 </Grid>
               </TableCell>
               <TableCell classes={{ root: classes.rootCell }}>
-                <AnimatedNumber
-                  value={element.currentDebt}
-                  formatValue={formatNumbersBorrowTable}
-                />
-                {showPrefix(element.currentDebt)} {element.currentDebtSign}
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  title={`${element.currentDebt} ${element.currentDebtSign}`}
+                  arrow>
+                  <Grid>
+                    {'~ '}
+                    <AnimatedNumber
+                      value={element.currentDebt}
+                      formatValue={formatNumbersBorrowTable}
+                    />
+                    {showPrefix(element.currentDebt)} {element.currentDebtSign}
+                  </Grid>
+                </Tooltip>
               </TableCell>
               <TableCell classes={{ root: classes.rootCell }}>
-                <AnimatedNumber value={element.deposited} formatValue={formatNumbersBorrowTable} />
-                {showPrefix(element.deposited)} {element.depositedSign}
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  title={`${element.deposited} ${element.depositedSign}`}
+                  arrow>
+                  <Grid>
+                    {'~ '}
+                    <AnimatedNumber
+                      value={element.deposited}
+                      formatValue={formatNumbersBorrowTable}
+                    />
+                    {showPrefix(element.deposited)} {element.depositedSign}
+                  </Grid>
+                </Tooltip>
               </TableCell>
               <TableCell
                 classes={{ root: classes.rootCell }}
                 style={{
-                  color: Number(element.cRatio) <= 100 ? colors.green.button : colors.red.error
+                  color:
+                    Number(element.cRatio) * 10000 >= element.minCRatio
+                      ? colors.green.button
+                      : colors.red.error
                 }}>
-                {element.cRatio}
+                {(Number(element.cRatio) * 10000).toFixed(2)}
                 {'%'}
               </TableCell>
               <Hidden smDown>
@@ -121,20 +144,42 @@ export const BorrowTable: React.FC<IProp> = ({ ownedVaults, setValueWithTable, a
                 </TableCell>
               </Hidden>
               <TableCell classes={{ root: classes.rootCell }}>
-                {'$'}
-                <AnimatedNumber
-                  value={Number(element.liquidationPrice)}
-                  formatValue={formatNumbersBorrowTable}
-                />
-                {showPrefix(Number(element.liquidationPrice))}
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  title={`${Number(element.liquidationPrice).toFixed(6)} $`}
+                  arrow>
+                  <Grid container direction='row' alignItems='center'>
+                    <CardMedia
+                      className={classes.icon}
+                      image={icons[element.collateral] ?? icons.SNY}
+                    />
+                    {'$'}
+                    <AnimatedNumber
+                      value={Number(element.liquidationPrice)}
+                      formatValue={formatNumbersBorrowTable}
+                    />
+                    {showPrefix(Number(element.liquidationPrice))}
+                  </Grid>
+                </Tooltip>
               </TableCell>
               <Hidden mdDown>
                 <TableCell
                   classes={{ root: classes.rootCell }}
                   style={{
-                    color: Number(element.cRatio) <= 100 ? colors.green.button : colors.red.error
+                    color: Number(element.cRatio) * 10000 >= element.minCRatio ? colors.green.button : colors.red.error
                   }}>
-                  {Number(element.maxBorrow).toFixed(2)} {element.borrowed} left
+                  <Tooltip
+                    classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                    title={`${element.maxBorrow} ${element.borrowed}`}
+                    arrow>
+                    <Grid>
+                      <AnimatedNumber
+                        value={element.maxBorrow}
+                        formatValue={formatNumbersBorrowTable}
+                      />
+                      {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
+                    </Grid>
+                  </Tooltip>
                 </TableCell>
               </Hidden>
             </TableRow>

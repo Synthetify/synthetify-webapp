@@ -3,7 +3,12 @@ import { getWallet } from './wallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { actions } from '@reducers/vault'
-import { handleAddCollateralVault, handleBorrowedVault, handleRepaySyntheticVault, handleWithdrawCollateralVault } from './exchange'
+import {
+  handleAddCollateralVault,
+  handleBorrowedVault,
+  handleRepaySyntheticVault,
+  handleWithdrawCollateralVault
+} from './exchange'
 import { vaultSwap } from '@selectors/vault'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 function* checkVaultEntry(): Generator {
@@ -23,6 +28,7 @@ function* checkVaultEntry(): Generator {
   }
 }
 function* setVaultAddress(): Generator {
+  yield* call(checkVaultEntry)
   try {
     const exchangeProgram = yield* call(getExchangeProgram)
     const vaultSwapData = yield* select(vaultSwap)
@@ -63,7 +69,12 @@ export function* handleAddCollateral(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: error instanceof Error && error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee' ? 'Insufficient funds for fee' : 'Failed to send. Please try again.',
+        message:
+          error instanceof Error &&
+          error.message ===
+            'failed to send transaction: Transaction simulation failed: Insufficient funds for fee'
+            ? 'Insufficient funds for fee'
+            : 'Failed to send. Please try again.',
         variant: 'error',
         persist: false
       })
@@ -98,7 +109,12 @@ export function* handleBorrow(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: error instanceof Error && error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee' ? 'Insufficient funds for fee' : 'Failed to send. Please try again.',
+        message:
+          error instanceof Error &&
+          error.message ===
+            'failed to send transaction: Transaction simulation failed: Insufficient funds for fee'
+            ? 'Insufficient funds for fee'
+            : 'Failed to send. Please try again.',
         variant: 'error',
         persist: false
       })
@@ -133,7 +149,12 @@ export function* handleWithdraw(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: error instanceof Error && error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee' ? 'Insufficient funds for fee' : 'Failed to send. Please try again.',
+        message:
+          error instanceof Error &&
+          error.message ===
+            'failed to send transaction: Transaction simulation failed: Insufficient funds for fee'
+            ? 'Insufficient funds for fee'
+            : 'Failed to send. Please try again.',
         variant: 'error',
         persist: false
       })
@@ -168,31 +189,83 @@ export function* handleRepay(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: error instanceof Error && error.message === 'failed to send transaction: Transaction simulation failed: Insufficient funds for fee' ? 'Insufficient funds for fee' : 'Failed to send. Please try again.',
+        message:
+          error instanceof Error &&
+          error.message ===
+            'failed to send transaction: Transaction simulation failed: Insufficient funds for fee'
+            ? 'Insufficient funds for fee'
+            : 'Failed to send. Please try again.',
         variant: 'error',
         persist: false
       })
     )
   }
 }
-export function* vaultCalculateAvailable(): Generator {
+
+export function* handleSendAction(): Generator {
+  yield* call(checkVaultEntry)
+  yield* call(setVaultAddress)
+  const vaultSwapData = yield* select(vaultSwap)
+  try {
+    switch (vaultSwapData.action) {
+      case 'add': {
+        yield* call(handleAddCollateral)
+        break
+      }
+      case 'borrow': {
+        yield* call(handleBorrow)
+        break
+      }
+      case 'withdraw': {
+        yield* call(handleWithdraw)
+        break
+      }
+      case 'repay': {
+        yield* call(handleRepay)
+        break
+      }
+      default: {
+        yield put(
+          snackbarsActions.add({
+            message:
+           'Failed to send. Please try again.',
+            variant: 'error',
+            persist: false
+          })
+        )
+      }
+    }
+  } catch (error) {
+    yield* put(
+      actions.actionFailed({
+        error: true
+      })
+    )
+    yield put(
+      snackbarsActions.add({
+        message:
+          error instanceof Error &&
+          error.message ===
+            'failed to send transaction: Transaction simulation failed: Insufficient funds for fee'
+            ? 'Insufficient funds for fee'
+            : 'Failed to send. Please try again.',
+        variant: 'error',
+        persist: false
+      })
+    )
+  }
+}
+
+export function* vaultSendActionHandler(): Generator {
+  yield* takeEvery(actions.setVaultSwap, handleSendAction)
+}
+
+export function* setActualVault(): Generator {
   yield* takeEvery(actions.setActualVaultSwap, setVaultAddress)
 }
 
-export function* vaultAddHandler(): Generator {
-  yield* takeEvery(actions.setVaultSwapAdded, handleAddCollateral)
-}
-
-export function* vaultBorrowHandler(): Generator {
-  yield* takeEvery(actions.setVaultSwapBorrowed, handleBorrow)
-}
-export function* vaultWithrawHandler(): Generator {
-  yield* takeEvery(actions.setVaultSwapWithdraw, handleWithdraw)
-}
-export function* vaultRepayHandler(): Generator {
-  yield* takeEvery(actions.setVaultSwapRepay, handleRepay)
-}
-
 export function* vaultSaga(): Generator {
-  yield all([vaultAddHandler, vaultBorrowHandler, vaultWithrawHandler, vaultRepayHandler].map(spawn))
+  yield all(
+    [vaultSendActionHandler, setActualVault].map(spawn)
+  )
 }

@@ -264,6 +264,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '10px 0',
     minWidth: '170px',
     ...typography.body1,
+    fontSize: '18px',
     marginLeft: '30px',
     textTransform: 'capitalize',
     '&:hover': {

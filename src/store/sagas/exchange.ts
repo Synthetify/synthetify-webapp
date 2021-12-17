@@ -22,8 +22,8 @@ import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-import { ownedVaults, vaults } from '@selectors/vault'
 import { VaultSwap } from '@reducers/vault'
+import { vaults } from '@selectors/vault'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -511,13 +511,18 @@ export function* handleSwaplineWSOLSwap(
   const tx =
     type === 'nativeToSynthetic'
       ? new Transaction()
-          .add(createIx)
-          .add(transferIx)
-          .add(initIx)
-          .add(approveIx)
-          .add(swaplineIx)
-          .add(unwrapIx)
-      : new Transaction().add(createIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
+        .add(createIx)
+        .add(transferIx)
+        .add(initIx)
+        .add(approveIx)
+        .add(swaplineIx)
+        .add(unwrapIx)
+      : new Transaction()
+        .add(createIx)
+        .add(initIx)
+        .add(approveIx)
+        .add(swaplineIx)
+        .add(unwrapIx)
 
   const blockhash = yield* call([connection, connection.getRecentBlockhash])
   tx.feePayer = wallet.publicKey
@@ -658,7 +663,7 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
-  yield* call(sleep, 1500)
+  yield* call(sleep, 1500) // Give time to subscribe to account
   return signature
 }
 export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<string> {
@@ -744,7 +749,7 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
-  yield* call(sleep, 1500)
+  yield* call(sleep, 1500) // Give time to subscribe to account
   return signature
 }
 
@@ -769,7 +774,7 @@ export function* handleWithdrawCollateralVault(vaultSwapData: VaultSwap): SagaGe
 
   const tx = new Transaction().add(updatePricesIx).add(withdrawIx)
   const signature = yield* call(signAndSend, wallet, tx)
-  yield* call(sleep, 1500)
+  yield* call(sleep, 1500) // Give time to subscribe to account
   return signature
 }
 
@@ -827,7 +832,7 @@ export function* handleRepaySyntheticVault(vaultSwapData: VaultSwap): SagaGenera
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
-  yield* call(sleep, 1500)
+  yield* call(sleep, 1500) // Give time to subscribe to account
   return signature
 }
 

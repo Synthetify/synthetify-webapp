@@ -10,6 +10,7 @@ export interface VaultUpdate {
   vault: Vault
 }
 export interface VaultSwap {
+  action: ActionType,
   vaultEntryExist: boolean
   vaultAddress: PublicKey
   synthetic: PublicKey
@@ -20,17 +21,18 @@ export interface VaultSwap {
   error?: boolean
   txid?: string
 }
-
+export type ActionType = 'add' | 'borrow'| 'withdraw'| 'repay' |'none'
 export interface IVault {
   vaults: { [key in string]: Vault }
-  ownedVaults: { [key in string]: VaultEntry }
+  userVaults: { [key in string]: VaultEntry }
   vaultSwap: VaultSwap
 }
 
 export const defaultState: IVault = {
   vaults: {},
-  ownedVaults: {},
+  userVaults: {},
   vaultSwap: {
+    action: 'none',
     vaultEntryExist: false,
     vaultAddress: DEFAULT_PUBLICKEY,
     synthetic: DEFAULT_PUBLICKEY,
@@ -63,19 +65,8 @@ const vaultSlice = createSlice({
       state.vaultSwap.vaultAddress = action.payload.vaultAddress
       return state
     },
-    setOwnedVaults(state, action: PayloadAction<VaultEntry>) {
-      state.ownedVaults[action.payload.vault.toString()] = action.payload
-    },
-    setVaultSwapAdded(
-      state,
-      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'| 'collateralAmount'|'syntheticAmount'>>
-    ) {
-      state.vaultSwap.collateral = action.payload.collateral
-      state.vaultSwap.synthetic = action.payload.synthetic
-      state.vaultSwap.collateralAmount = action.payload.collateralAmount
-      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
-      state.vaultSwap.loading = true
-      return state
+    setUserVaults(state, action: PayloadAction<VaultEntry>) {
+      state.userVaults[action.payload.vault.toString()] = action.payload
     },
     actionDone(state, action: PayloadAction<Pick<VaultSwap, 'txid' >>) {
       state.vaultSwap.txid = action.payload.txid
@@ -88,32 +79,11 @@ const vaultSlice = createSlice({
       state.vaultSwap.error = action.payload.error
       return state
     },
-    setVaultSwapBorrowed(
+    setVaultSwap(
       state,
-      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'| 'collateralAmount'|'syntheticAmount'>>
+      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'| 'collateralAmount'|'syntheticAmount'| 'action'>>
     ) {
-      state.vaultSwap.collateral = action.payload.collateral
-      state.vaultSwap.synthetic = action.payload.synthetic
-      state.vaultSwap.collateralAmount = action.payload.collateralAmount
-      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
-      state.vaultSwap.loading = true
-      return state
-    },
-    setVaultSwapWithdraw(
-      state,
-      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'| 'collateralAmount'|'syntheticAmount'>>
-    ) {
-      state.vaultSwap.collateral = action.payload.collateral
-      state.vaultSwap.synthetic = action.payload.synthetic
-      state.vaultSwap.collateralAmount = action.payload.collateralAmount
-      state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
-      state.vaultSwap.loading = true
-      return state
-    },
-    setVaultSwapRepay(
-      state,
-      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'| 'collateralAmount'|'syntheticAmount'>>
-    ) {
+      state.vaultSwap.action = action.payload.action
       state.vaultSwap.collateral = action.payload.collateral
       state.vaultSwap.synthetic = action.payload.synthetic
       state.vaultSwap.collateralAmount = action.payload.collateralAmount

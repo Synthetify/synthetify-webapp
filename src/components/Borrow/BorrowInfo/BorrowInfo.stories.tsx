@@ -14,8 +14,8 @@ storiesOf('Borrow/Info', module).add('default', () => (
       paddingBottom: '50px'
     }}>
     <BorrowInfo
-      collateralAmount={12.075884}
-      debtAmount={0.1723}
+      collateralAmount={'12.075884'}
+      debtAmount={'0.1723'}
       collateral={'WSOL'}
       borrowed={'xSOL'}
       limit={20.3453}
@@ -25,6 +25,9 @@ storiesOf('Borrow/Info', module).add('default', () => (
       collateralSign={'WSOL'}
       borrowedSign={'xSOL'}
       amountSign={'$'}
+      callPrice={''}
+      borrPrice={''}
+      interestRate={''}
     />
   </Grid>
 ))

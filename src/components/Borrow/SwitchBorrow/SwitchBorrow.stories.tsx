@@ -169,8 +169,8 @@ storiesOf('borrow/switchBorrow', module)
         lastUpdate: new BN(30000)
       }))
 
-      const [cRatio, setCRatio] = React.useState(100.0)
-      const changeCRatio = (nr: number) => {
+      const [cRatio, setCRatio] = React.useState('100.0')
+      const changeCRatio = (nr: string) => {
         setCRatio(nr)
       }
 
@@ -179,50 +179,48 @@ storiesOf('borrow/switchBorrow', module)
           <ActionBorrow
             cRatio={cRatio}
             changeCRatio={changeCRatio}
-            interestRate={24.68}
             liquidationPriceTo={3.458}
             liquidationPriceFrom={8.456}
-            collateralRatioTo={3.45}
-            collateralRatioFrom={25.64}
             onClickSubmitButton={() => {}}
             pairs={pairs}
-            minCRatio={75}
             sending={false}
             onSelectPair={() => {}}
             hasError={false}
             action={''}
-            changeValueFromTable={(
-              cRatio: number,
-              interestRate: number,
-              liquidationPrice: number
-            ) => {
-              console.log(cRatio, interestRate, liquidationPrice)
+            vaultAmount={{
+              collateralAmount: { val: new BN(0), scale: 0 },
+              borrowAmount: { val: new BN(0), scale: 0 }
             }}
+            availableTo={new BN(10)}
+            availableFrom={new BN(10)}
+            setLiquidationPriceTo={(nr: number) => { console.log(nr) }}
+            setLiquidationPriceFrom={(nr: number) => { console.log(nr) }}
+            setAvailableBorrow={(nr: BN) => { console.log(nr) }}
+            setAvailableWithdraw={(nr: BN) => { console.log(nr) }}
           />
         ),
         repay: (
           <ActionBorrow
-            cRatio={cRatio}
-            interestRate={2.68}
-            liquidationPriceTo={3.458}
-            liquidationPriceFrom={80.456}
-            collateralRatioTo={3.45}
-            collateralRatioFrom={125.64}
+            action={''}
+            cRatio={''}
+            liquidationPriceTo={0}
+            liquidationPriceFrom={0}
             onClickSubmitButton={() => {}}
             pairs={pairs}
-            minCRatio={50}
-            changeCRatio={changeCRatio}
             sending={false}
             onSelectPair={() => {}}
             hasError={false}
-            action={''}
-            changeValueFromTable={(
-              cRatio: number,
-              interestRate: number,
-              liquidationPrice: number
-            ) => {
-              console.log(cRatio, interestRate, liquidationPrice)
+            changeCRatio={changeCRatio}
+            vaultAmount={{
+              collateralAmount: { val: new BN(0), scale: 0 },
+              borrowAmount: { val: new BN(0), scale: 0 }
             }}
+            availableTo={new BN(10)}
+            availableFrom={new BN(10)}
+            setLiquidationPriceTo={(nr: number) => { console.log(nr) }}
+            setLiquidationPriceFrom={(nr: number) => { console.log(nr) }}
+            setAvailableBorrow={(nr: BN) => { console.log(nr) }}
+            setAvailableWithdraw={(nr: BN) => { console.log(nr) }}
           />
         )
       }

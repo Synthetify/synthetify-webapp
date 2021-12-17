@@ -1,3 +1,4 @@
+import { calculateCRatio, calculateLiqPrice } from '@components/Borrow/borrowUtils'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import { divUp, discountData, printBN, transformBN, printDecimal } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
@@ -7,7 +8,7 @@ import { VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
-import { ownedVaults, vaults } from './vault'
+import { userVaults, vaults } from './vault'
 
 const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
@@ -247,18 +248,12 @@ export const getSwaplineCollateralBalance = createSelector(
   collaterals,
   assets,
   (allSwaplines, allCollaterals, allAssets) => {
-    const balanceUSD = Object.values(allSwaplines).map(swapline => {
+    const balanceUSD = Object.values(allSwaplines).map((swapline) => {
       const collateral = allCollaterals[swapline.collateral.toString()]
       if (!collateral) {
         return 0
       } else {
-        return (
-          (+printBN(swapline.balance.val, swapline.balance.scale) -
-            +printBN(swapline.accumulatedFee.val, swapline.accumulatedFee.scale)) *
-          +printBN(
-            allAssets[collateral.assetIndex].price.val,
-            allAssets[collateral.assetIndex].price.scale
-          )
+        return ((+printBN(swapline.balance.val, swapline.balance.scale) - +printBN(swapline.accumulatedFee.val, swapline.accumulatedFee.scale)) * +printBN(allAssets[collateral.assetIndex].price.val, allAssets[collateral.assetIndex].price.scale)
         )
       }
     })
@@ -313,18 +308,16 @@ export const getSyntheticsStructure = createSelector(
         symbol: item.symbol,
         debt: {
           amount: +printDecimal(item.supply),
-          usdValue: +transformBN(
-            assets[item.assetIndex].price.val
-              .mul(item.supply.val)
-              .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+          usdValue: +transformBN(assets[item.assetIndex].price.val
+            .mul(item.supply.val)
+            .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
           )
         },
         collateral: {
           amount: +printBN(item.borrowedSupply.val.add(item.swaplineSupply.val), item.supply.scale),
-          usdValue: +transformBN(
-            assets[item.assetIndex].price.val
-              .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
-              .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+          usdValue: +transformBN(assets[item.assetIndex].price.val
+            .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
+            .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
           )
         }
       }
@@ -344,21 +337,25 @@ export const getSyntheticsStructure = createSelector(
   }
 )
 
-export const getSyntheticsValue = createSelector(synthetics, assets, (allSynthetics, assets) => {
-  let totalVal = new BN(0)
-  const values = Object.values(allSynthetics).map(item => {
-    const value = assets[item.assetIndex].price.val
-      .mul(item.supply.val)
-      .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
-    totalVal = totalVal.add(value)
-    return {
-      value: +transformBN(value),
-      symbol: item.symbol,
-      scale: item.supply.scale
-    }
-  })
-  return values
-})
+export const getSyntheticsValue = createSelector(
+  synthetics,
+  assets,
+  (allSynthetics, assets) => {
+    let totalVal = new BN(0)
+    const values = Object.values(allSynthetics).map(item => {
+      const value = assets[item.assetIndex].price.val
+        .mul(item.supply.val)
+        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+      totalVal = totalVal.add(value)
+      return {
+        value: +transformBN(value),
+        symbol: item.symbol,
+        scale: item.supply.scale
+      }
+    })
+    return values
+  }
+)
 
 export const getCollateralValue = createSelector(collaterals, assets, (allColaterals, assets) => {
   let totalVal = new BN(0)
@@ -386,12 +383,13 @@ export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
 
-export interface OwnedVaults extends VaultEntry {
+export interface UserVaults extends VaultEntry {
   borrowed: string
   collateral: string
   deposited: number
   depositedSign: string
   cRatio: string
+  minCRatio: number,
   currentDebt: number
   currentDebtSign: string
   maxBorrow: string
@@ -399,37 +397,54 @@ export interface OwnedVaults extends VaultEntry {
   liquidationPrice: string
 }
 
-export const getOwnedVaults = createSelector(
+export const getUserVaults = createSelector(
   vaults,
-  ownedVaults,
+  userVaults,
   synthetics,
   collaterals,
-  (allVaults, allOwnedVaults, allSynthetics, allCollaterals) => {
-    return Object.values(allOwnedVaults).map(ownedVault => {
-      const currentVault = allVaults[ownedVault.vault.toString()]
-      const vaultData: OwnedVaults = {
-        ...ownedVault,
+  assets,
+  (allVaults, allUserVaults, allSynthetics, allCollaterals, allAssets) => {
+    return Object.values(allUserVaults).map(userVault => {
+      const currentVault = allVaults[userVault.vault.toString()]
+      const cRatioCalculated = calculateCRatio(
+        allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
+        allSynthetics[currentVault.synthetic.toString()].supply.scale,
+        allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
+        allCollaterals[currentVault.collateral.toString()].reserveBalance.scale,
+        userVault.syntheticAmount.val,
+        userVault.collateralAmount.val
+      )
+
+      const vaultData: UserVaults = {
+        ...userVault,
         borrowed: allSynthetics[currentVault.synthetic.toString()].symbol,
         collateral: allCollaterals[currentVault.collateral.toString()].symbol,
         deposited: Number(
-          printBN(ownedVault.collateralAmount.val, ownedVault.collateralAmount.scale)
+          printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
         ),
         depositedSign: allCollaterals[currentVault.collateral.toString()].symbol,
-        cRatio: (
-          (1 /
-            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale))) *
-          100
-        ).toFixed(2),
+        cRatio: cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN',
+        minCRatio: Number(Math.pow(Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)) / 100,
+          -1
+        )),
         currentDebt: Number(
-          printBN(ownedVault.syntheticAmount.val, ownedVault.syntheticAmount.scale)
+          printBN(userVault.syntheticAmount.val, userVault.syntheticAmount.scale)
         ),
         currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
-        maxBorrow: printBN(currentVault.maxBorrow.val, currentVault.maxBorrow.scale),
+        maxBorrow: printBN(currentVault.maxBorrow.val.sub(currentVault.mintAmount.val), currentVault.maxBorrow.scale),
         interestRate: (
           Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
           100
         ).toString(),
-        liquidationPrice: '5'
+        liquidationPrice: calculateLiqPrice(
+          allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
+          userVault.collateralAmount.val,
+          allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
+          userVault.syntheticAmount.val,
+          currentVault.liquidationThreshold,
+          allSynthetics[currentVault.synthetic.toString()].supply.scale,
+          allCollaterals[currentVault.collateral.toString()].reserveBalance.scale
+        )
       }
       return vaultData
     })

@@ -1,11 +1,12 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { BorrowedPair, OwnedVaults, WrappedBorrow } from './WrappedBorrow'
+import { BorrowedPair, WrappedBorrow } from './WrappedBorrow'
 import { BN } from '@project-serum/anchor'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
 import { Asset, Collateral, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { Grid } from '@material-ui/core'
+import { UserVaults } from '@selectors/exchange'
 
 storiesOf('borrow/wrappedborrow', module).add('default', () =>
   React.createElement(() => {
@@ -162,7 +163,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       lastUpdate: new BN(30000)
     }))
 
-    const ownedVaults: OwnedVaults[] = [
+    const userVaults: UserVaults[] = [
       {
         owner: new PublicKey(0),
         vault: new PublicKey(0),
@@ -187,7 +188,8 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
         maxBorrow: '300',
-        currentDebtSign: '$'
+        currentDebtSign: '$',
+        minCRatio: 100
       },
       {
         owner: new PublicKey(0),
@@ -213,7 +215,8 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         interestRate: '15.45',
         liquidationPrice: '15.32654',
         maxBorrow: '500',
-        currentDebtSign: '$'
+        currentDebtSign: '$',
+        minCRatio: 100
       }
     ]
     return (
@@ -222,14 +225,15 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
           pairs={pairs}
           sending={false}
           hasError={false}
-          ownedVaults={ownedVaults}
-          debtAmount={152.5}
-          collateralAmount={12000.05}
-          addCollateral={() => {}}
-          borrowSynthetic={() => {}}
-          withdrawCollateral={() => {}}
-          repaySynthetic={() => {}}
-        />
+          userVaults={userVaults}
+          onClickSubmitButton={() => {}}
+          setActualPair={() => {}}
+          availableCollateral={new BN(0)}
+          availableRepay={new BN(0)}
+          actualVault={{
+            collateralAmount: { val: new BN(0), scale: 0 },
+            borrowAmount: { val: new BN(0), scale: 0 }
+          }} />
       </Grid>
     )
   })
