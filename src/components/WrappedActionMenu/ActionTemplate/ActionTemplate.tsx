@@ -7,7 +7,7 @@ import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
-import AmountInput from '@components/Inputs/AmountInput/AmountInput'
+import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
@@ -182,18 +182,19 @@ export const ActionTemplate: React.FC<IProps> = ({
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
       <Grid container item direction='row' className={classes.wrap}>
-        <AmountInput
+        <ExchangeAmountInput
           value={inputValue}
           setValue={onAmountInputChange}
           className={classes.amountInput}
           placeholder={'0.0'}
-          currency={currency}
+          current={currency}
           tokens={tokens}
-          onSelectToken={onSelectToken}
-          showArrow={showArrowInInput}
+          onSelect={onSelectToken}
+          hideArrow={!showArrowInInput}
           walletConnected={walletConnected}
           noWalletHandler={noWalletHandler}
           emptyTokensHandler={emptyTokensHandler}
+          onMaxClick={onMaxButtonClick}
         />
         <Grid
           item
@@ -202,7 +203,6 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <OutlinedButton onClick={onMaxButtonClick} className={classes.maxButton} name='Max' />
           <Divider orientation='vertical' className={classes.divider} />
           <Grid item className={classes.available}>
             <KeyValue
