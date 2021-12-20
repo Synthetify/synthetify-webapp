@@ -152,13 +152,23 @@ export const WrappedBorrow: React.FC<IProp> = ({
               Math.pow(
                 Number(
                   printBN(
-                    pairs[pairIndex].liquidationRatio.val,
-                    pairs[pairIndex].liquidationRatio.scale
+                    pairs[pairIndex].liquidationThreshold.val,
+                    pairs[pairIndex].liquidationThreshold.scale
                   )
                 ),
                 -1
               )
             )}
+            cRatio={
+              Math.pow(
+                Number(
+                  printBN(
+                    pairs[pairIndex].collateralRatio.val,
+                    pairs[pairIndex].collateralRatio.scale
+                  )
+                ),
+                -1
+              ) * 100}
             collateralAddress={pairs[pairIndex].collateral}
             borrowedAddress={pairs[pairIndex].synthetic}
             borrowedSign={pairs[pairIndex].syntheticData.symbol}
@@ -182,6 +192,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
             collateral={' '}
             borrowed={' '}
+            cRatio={0}
             limit={0}
             liqRatio={0}
             collateralAddress={DEFAULT_PUBLICKEY}

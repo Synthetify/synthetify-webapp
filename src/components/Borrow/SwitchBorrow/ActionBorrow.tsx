@@ -225,6 +225,8 @@ export const ActionBorrow: React.FC<IProp> = ({
           ).toString()
         )
       )
+      setLiquidationPriceTo(0)
+      setLiquidationPriceFrom(0)
     }
   }, [pairIndex])
 
@@ -279,8 +281,9 @@ export const ActionBorrow: React.FC<IProp> = ({
       setCRatioTo(calculateData.cRatioTo)
       setCRatioFrom(calculateData.cRatioFrom)
     }
-  }, [amountBorrow, amountCollateral, pairIndex])
+  }, [amountBorrow, amountCollateral])
 
+  
   const [blockButton, setBlockButton] = React.useState(false)
   const blockSubmitButton = () => {
     if (pairIndex === null) {

@@ -18,7 +18,8 @@ interface IGeneralInfo {
   amountSign: string
   callPrice: string
   borrPrice: string
-  interestRate: string
+  interestRate: string,
+  cRatio: number
 }
 
 export const BorrowInfo: React.FC<IGeneralInfo> = ({
@@ -34,7 +35,8 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
   amountSign,
   callPrice,
   borrPrice,
-  interestRate
+  interestRate,
+  cRatio
 }) => {
   const classes = useStyles()
 
@@ -132,7 +134,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Limit:</Typography>
+            <Typography className={classes.positionTitle}>Left to borrow:</Typography>
             <Typography className={classes.positionValue}>
               {limit.toFixed(3)} {borrowedSign}
             </Typography>
@@ -153,7 +155,22 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
               {showPrefix(Number(liqRatio))} %
             </Typography>
           </Grid>
-
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Collateral ratio:</Typography>
+            <Typography className={classes.positionValue}>
+              <AnimatedNumber
+                value={cRatio}
+                formatValue={(value: number) => value.toFixed(2)}
+                duration={300}
+              />
+              {showPrefix(Number(cRatio))} %
+            </Typography>
+          </Grid>
           <Grid
             container
             item
