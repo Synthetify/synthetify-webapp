@@ -31,5 +31,4 @@ export const getActualUserVault = createSelector(
     }
   }
 )
-
 export default vaultSelectors

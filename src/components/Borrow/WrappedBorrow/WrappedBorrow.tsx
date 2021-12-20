@@ -32,10 +32,14 @@ interface IProp {
   ) => void
   setActualPair: (synthetic: PublicKey, collateral: PublicKey) => void
   availableCollateral: BN
-  availableRepay: BN,
+  availableRepay: BN
   actualVault: {
-    collateralAmount: Decimal,
+    collateralAmount: Decimal
     borrowAmount: Decimal
+  }
+  totalGeneralAmount: {
+    totalCollateralAmount: number
+    totalDebtAmount: number
   }
 }
 export const WrappedBorrow: React.FC<IProp> = ({
@@ -47,7 +51,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
   setActualPair,
   availableCollateral,
   availableRepay,
-  actualVault
+  actualVault,
+  totalGeneralAmount
 }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState('---')
@@ -61,7 +66,10 @@ export const WrappedBorrow: React.FC<IProp> = ({
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
 
   const changeValueFromTable = (collSymbol: string, synthSymbol: string) => {
-    const index = pairs.findIndex(element => element.collateralData.symbol === collSymbol && element.syntheticData.symbol === synthSymbol)
+    const index = pairs.findIndex(
+      element =>
+        element.collateralData.symbol === collSymbol && element.syntheticData.symbol === synthSymbol
+    )
     setPairIndex(index)
   }
   React.useEffect(() => {
@@ -120,7 +128,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
   return (
     <Grid className={classes.root}>
       <Grid className={classes.actionGrid}>
-        <ActionMenuBorrow actionContents={actionContents}/>
+        <ActionMenuBorrow actionContents={actionContents} />
         <BorrowTable
           userVaults={userVaults}
           setValueWithTable={changeValueFromTable}
@@ -128,56 +136,63 @@ export const WrappedBorrow: React.FC<IProp> = ({
         />
       </Grid>
       <Grid className={classes.borrowInfoGrid}>
-        {pairIndex !== null
-          ? <BorrowInfo
-            collateralAmount={printBN(actualVault.collateralAmount.val.mul(pairs[pairIndex].collateralData.price.val), actualVault.collateralAmount.scale + 8) }
-            debtAmount={printBN(actualVault.borrowAmount.val.mul(pairs[pairIndex].syntheticData.price.val), actualVault.borrowAmount.scale + 8) }
+        {pairIndex !== null ? (
+          <BorrowInfo
+            collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
+            debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
             collateral={pairs[pairIndex].collateralData.symbol}
-            borrowed={pairs[pairIndex].syntheticData.symbol }
+            borrowed={pairs[pairIndex].syntheticData.symbol}
             limit={Number(
               printBN(
-                pairs[pairIndex].maxBorrow.val,
+                pairs[pairIndex].maxBorrow.val.sub(pairs[pairIndex].mintAmount.val),
                 pairs[pairIndex].maxBorrow.scale
               )
-            )
-            }
-            reserve={
-              Number(
-                printBN(
-                  pairs[pairIndex].collateralAmount.val,
-                  pairs[pairIndex].collateralAmount.scale
-                )
+            )}
+            liqRatio={Number(
+              Math.pow(
+                Number(
+                  printBN(
+                    pairs[pairIndex].liquidationRatio.val,
+                    pairs[pairIndex].liquidationRatio.scale
+                  )
+                ),
+                -1
               )
-            }
-            collateralAddress={pairs[pairIndex].collateral }
-            borrowedAddress={pairs[pairIndex].synthetic }
-            collateralSign={pairs[pairIndex].collateralData.symbol }
-            borrowedSign={pairs[pairIndex].syntheticData.symbol }
+            )}
+            collateralAddress={pairs[pairIndex].collateral}
+            borrowedAddress={pairs[pairIndex].synthetic}
+            borrowedSign={pairs[pairIndex].syntheticData.symbol}
             amountSign={'$'}
-            callPrice={printBN(pairs[pairIndex].collateralData.price.val, pairs[pairIndex].collateralData.price.scale)}
-            borrPrice={printBN(pairs[pairIndex].syntheticData.price.val, pairs[pairIndex].syntheticData.price.scale)}
-            interestRate={
-              printBN(
-                pairs[pairIndex].debtInterestRate.val,
-                pairs[pairIndex].debtInterestRate.scale - 4
-              )
-            }/>
-          : <BorrowInfo
-            collateralAmount={'0'}
-            debtAmount={'0'}
+            callPrice={printBN(
+              pairs[pairIndex].collateralData.price.val,
+              pairs[pairIndex].collateralData.price.scale
+            )}
+            borrPrice={printBN(
+              pairs[pairIndex].syntheticData.price.val,
+              pairs[pairIndex].syntheticData.price.scale
+            )}
+            interestRate={printBN(
+              pairs[pairIndex].debtInterestRate.val,
+              pairs[pairIndex].debtInterestRate.scale - 4
+            )}
+          />
+        ) : (
+          <BorrowInfo
+            collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
+            debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
             collateral={' '}
             borrowed={' '}
             limit={0}
-            reserve={0}
+            liqRatio={0}
             collateralAddress={DEFAULT_PUBLICKEY}
             borrowedAddress={DEFAULT_PUBLICKEY}
-            collateralSign={' '}
             borrowedSign={' '}
             amountSign={'$'}
             callPrice={'0'}
             borrPrice={'0'}
-            interestRate={'0'}/>
-        }
+            interestRate={'0'}
+          />
+        )}
       </Grid>
     </Grid>
   )

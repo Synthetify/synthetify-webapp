@@ -5,7 +5,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '@reducers/vault'
 import useStyles from './style'
-import { UserVaults } from '@selectors/exchange'
+import { getGeneralTotals, UserVaults } from '@selectors/exchange'
 import { getActualUserVault, vaultSwap } from '@selectors/vault'
 interface IProp {
   pairs: BorrowedPair[]
@@ -18,6 +18,7 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs, userVaults }) => {
   const availableCollateral = useSelector(getAvailableCollateral)
   const availableRepay = useSelector(getAvailableRepay)
   const actualVault = useSelector(getActualUserVault)
+  const totalGeneralAmount = useSelector(getGeneralTotals)
   return (
     <Grid className={classes.root}>
       <Typography className={classes.text}>Borrow</Typography>
@@ -26,7 +27,7 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs, userVaults }) => {
         userVaults={userVaults}
         sending={vaultSwapData.loading}
         hasError={vaultSwapData.error}
-        onClickSubmitButton= {(action, synthetic, collateral, collateralAmount, syntheticAmount) => {
+        onClickSubmitButton={(action, synthetic, collateral, collateralAmount, syntheticAmount) => {
           dispatch(
             actions.setVaultSwap({
               action,
@@ -40,9 +41,10 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs, userVaults }) => {
         setActualPair={(synthetic, collateral) => {
           dispatch(actions.setActualVaultSwap({ collateral, synthetic }))
         }}
-        availableCollateral = {availableCollateral}
+        availableCollateral={availableCollateral}
         availableRepay={availableRepay}
         actualVault={actualVault}
+        totalGeneralAmount={totalGeneralAmount}
       />
     </Grid>
   )

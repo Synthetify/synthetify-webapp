@@ -11,10 +11,9 @@ interface IGeneralInfo {
   collateral: string
   borrowed: string
   limit: number
-  reserve: number
+  liqRatio: number
   collateralAddress: PublicKey
   borrowedAddress: PublicKey
-  collateralSign: string
   borrowedSign: string
   amountSign: string
   callPrice: string
@@ -28,10 +27,9 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
   collateralAmount,
   borrowed,
   borrowedAddress,
-  reserve,
+  liqRatio,
   limit,
   debtAmount,
-  collateralSign,
   borrowedSign,
   amountSign,
   callPrice,
@@ -56,7 +54,8 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
               <Hidden only={['lg', 'xl']}>Coll. amount</Hidden>:
             </Typography>
             <Typography className={classes.positionValue}>
-              {amountSign} <AnimatedNumber value={collateralAmount} formatValue={formatNumbers} />
+              {amountSign}{' '}
+              <AnimatedNumber value={collateralAmount} formatValue={formatNumbers} duration={300} />
               {showPrefix(Number(collateralAmount))}
             </Typography>
           </Grid>
@@ -68,7 +67,8 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Debt amount:</Typography>
             <Typography className={classes.positionValue}>
-              {amountSign} <AnimatedNumber value={debtAmount} formatValue={formatNumbers} />
+              {amountSign}{' '}
+              <AnimatedNumber value={debtAmount} formatValue={formatNumbers} duration={300} />
               {showPrefix(Number(debtAmount))}
             </Typography>
           </Grid>
@@ -102,7 +102,13 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Coll. price:</Typography>
-            <Typography className={classes.positionValue}>$ <AnimatedNumber value={callPrice} formatValue={(value: string) => Number(value).toFixed(2)} /></Typography>
+            <Typography className={classes.positionValue}>
+              ${' '}
+              <AnimatedNumber
+                value={callPrice}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
+            </Typography>
           </Grid>
           <Grid
             container
@@ -111,7 +117,13 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Borr. asset price:</Typography>
-            <Typography className={classes.positionValue}>$ <AnimatedNumber value={borrPrice} formatValue={(value: string) => Number(value).toFixed(2)} /></Typography>
+            <Typography className={classes.positionValue}>
+              ${' '}
+              <AnimatedNumber
+                value={borrPrice}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
+            </Typography>
           </Grid>
 
           <Grid
@@ -131,10 +143,14 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Reserve:</Typography>
+            <Typography className={classes.positionTitle}>Liquidation ratio:</Typography>
             <Typography className={classes.positionValue}>
-              <AnimatedNumber value={reserve} formatValue={formatNumbers} />
-              {showPrefix(Number(reserve))} {collateralSign}
+              <AnimatedNumber
+                value={liqRatio}
+                formatValue={(value: number) => value.toFixed(2)}
+                duration={300}
+              />
+              {showPrefix(Number(liqRatio))} %
             </Typography>
           </Grid>
 
@@ -184,7 +200,6 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
               </Typography>
             </Grid>
           </Grid>
-
         </Grid>
       </Grid>
     </Grid>

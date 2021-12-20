@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { assets, exchangeAccount, state } from '@selectors/exchange'
 import { network, status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
-import { actions as actionsVault } from '@reducers/vault'
 import { Status } from '@reducers/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { getCurrentExchangeProgram } from '@web3/programs/exchange'
@@ -12,10 +11,6 @@ import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/c
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
 import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
-
-import { VAULTS_MAP } from '@consts/consts'
-import { address } from '@selectors/solanaWallet'
-import { updateSyntheticAmountUserVault } from '@sagas/vault'
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -24,7 +19,6 @@ const ExhcangeEvents = () => {
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
   const exchangeProgram = getCurrentExchangeProgram()
-  const owner = useSelector(address)
   React.useEffect(() => {
     if (
       userAccount.address.equals(DEFAULT_PUBLICKEY) ||
@@ -87,43 +81,6 @@ const ExhcangeEvents = () => {
     }
     connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
-
-  React.useEffect(() => {
-    const connection = getCurrentSolanaConnection()
-
-    if (!exchangeProgram || networkStatus !== Status.Initialized || !connection) {
-      return
-    }
-    const connectEvents = async () => {
-      exchangeProgram.onStateChange(state => {
-        dispatch(actions.setState(state))
-      })
-
-      VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
-        const { vaultAddress } = await exchangeProgram.getVaultAddress(
-          vault.synthetic,
-          vault.collateral
-        )
-        const data = await exchangeProgram.getVaultForPair(vault.synthetic, vault.collateral)
-        dispatch(
-          actionsVault.setVault({
-            address: vaultAddress,
-            vault: data
-          })
-        )
-        const vaultEntryAmount = await exchangeProgram.getVaultEntryForOwner(
-          vault.synthetic,
-          vault.collateral,
-          owner
-        )
-        dispatch(actionsVault.setUserVaults(vaultEntryAmount))
-      })
-      updateSyntheticAmountUserVault()
-    }
-
-    connectEvents().catch(error => console.log(error))
-  }, [dispatch, exchangeProgram, networkStatus])
-
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()
     const connection = getCurrentSolanaConnection()

@@ -65,10 +65,11 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
           {userVaults.map((element, index) => (
             <TableRow
               key={index}
-              className={classNames(classes.row, element.collateral === active ? classes.active : null)}
-              onClick={() =>
-                setValueWithTable(element.collateral, element.borrowed)
-              }>
+              className={classNames(
+                classes.row,
+                element.collateral === active ? classes.active : null
+              )}
+              onClick={() => setValueWithTable(element.collateral, element.borrowed)}>
               <TableCell classes={{ root: classes.rootCell }}>
                 <Grid container alignItems='center'>
                   <CardMedia
@@ -90,9 +91,9 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
               </TableCell>
               <TableCell classes={{ root: classes.rootCell }}>
                 <Tooltip
-                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  classes={{ tooltip: classes.tooltipNumber }}
                   title={`${element.deposited} ${element.depositedSign}`}
-                  arrow>
+                  placement="bottom-start">
                   <Grid>
                     {'~ '}
                     <AnimatedNumber
@@ -105,9 +106,9 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
               </TableCell>
               <TableCell classes={{ root: classes.rootCell }}>
                 <Tooltip
-                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  classes={{ tooltip: classes.tooltipNumber }}
                   title={`${element.currentDebt} ${element.currentDebtSign}`}
-                  arrow>
+                  placement="bottom-start">
                   <Grid>
                     {'~ '}
                     <AnimatedNumber
@@ -141,9 +142,9 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
               </Hidden>
               <TableCell classes={{ root: classes.rootCell }}>
                 <Tooltip
-                  classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                  classes={{ tooltip: classes.tooltipNumber }}
                   title={`${Number(element.liquidationPrice).toFixed(6)} $`}
-                  arrow>
+                  placement="bottom-start">
                   <Grid container direction='row' alignItems='center'>
                     <CardMedia
                       className={classes.icon}
@@ -162,12 +163,15 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                 <TableCell
                   classes={{ root: classes.rootCell }}
                   style={{
-                    color: Number(element.cRatio) * 10000 >= element.minCRatio ? colors.green.button : colors.red.error
+                    color:
+                      Number(element.cRatio) * 10000 >= element.minCRatio
+                        ? colors.green.button
+                        : colors.red.error
                   }}>
                   <Tooltip
-                    classes={{ tooltip: classes.tooltipNumber, arrow: classes.arrow }}
+                    classes={{ tooltip: classes.tooltipNumber }}
                     title={`${element.maxBorrow} ${element.borrowed}`}
-                    arrow>
+                    placement="bottom-start">
                     <Grid>
                       <AnimatedNumber
                         value={element.maxBorrow}

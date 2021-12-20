@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
     ...typography.body3,
     color: colors.navy.veryLightGrey,
-    padding: '10px 10px',
+    padding: '12px 10px',
+    cursor: 'pointer',
     '&:first-child': {
       paddingLeft: '12px'
     },
@@ -72,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tooltipNumber: {
     background: colors.navy.navButton,
-    border: `0.5px solid ${colors.navy.tooltip}`,
+    barderRadius: '5px',
     ...typography.subtitle1,
     color: colors.navy.veryLightGrey,
     padding: '3px 5px',
@@ -85,9 +86,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.caption4,
       margin: '6px 0px'
     }
-  },
-  arrow: {
-    color: colors.navy.navButton
   }
 }))
 
