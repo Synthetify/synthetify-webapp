@@ -82,7 +82,7 @@ export const Select: React.FC<ISelectModal> = ({
         style={{
           ...(!current ? (isXs ? typography.caption4 : typography.body3) : {}),
 
-          cursor: !hideArrow ? 'pointer' : 'auto'
+          cursor: onSelect ? 'pointer' : 'auto'
         }}>
         <span style={{ position: 'relative', whiteSpace: 'nowrap' }}>
           {!current ? name : current}
