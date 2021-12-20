@@ -225,8 +225,8 @@ export const calculateLiqAndCRatio = (
       ratioTo === 'NaN'
         ? 'NaN'
         : ratioTo.lt(new BN(0))
-        ? 'NaN'
-        : Math.floor(Number(printBN(ratioTo, 0)) / 100),
+          ? 'NaN'
+          : Math.floor(Number(printBN(ratioTo, 0)) / 100),
     cRatioFrom: ratioFrom === 'NaN' ? 'NaN' : Math.floor(Number(printBN(ratioFrom, 0)) / 100)
   }
 }

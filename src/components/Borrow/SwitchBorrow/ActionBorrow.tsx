@@ -167,6 +167,12 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (showOperationProgressFinale) {
       setShowOperationProgressFinale(false)
     }
+    if (!sending) {
+      setAmountBorrowString('')
+      setAmountCollateralString('')
+      setAmountBorrow(new BN(0))
+      setAmountCollateral(new BN(0))
+    }
   }, [sending])
 
   React.useCallback(() => {
@@ -237,10 +243,6 @@ export const ActionBorrow: React.FC<IProp> = ({
       setAvailableBorrow(availableData.availableBorrow)
       setAvailableWithdraw(availableData.availableWithdraw)
     }
-    blockSubmitButton()
-    const buttonDetails = setActionOnSubmitButton(action, amountCollateral, amountBorrow)
-    setActionSubmit(buttonDetails.actionSubmit)
-    setNameSubmitButton(buttonDetails.nameSubmitButton)
   }, [
     cRatio,
     amountBorrow,
@@ -250,6 +252,13 @@ export const ActionBorrow: React.FC<IProp> = ({
     tokenTo.priceVal.toString(),
     vaultAmount
   ])
+
+  React.useEffect(() => {
+    blockSubmitButton()
+    const buttonDetails = setActionOnSubmitButton(action, amountCollateral, amountBorrow)
+    setActionSubmit(buttonDetails.actionSubmit)
+    setNameSubmitButton(buttonDetails.nameSubmitButton)
+  }, [availableFrom, availableTo])
 
   React.useEffect(() => {
     if (pairIndex !== null) {

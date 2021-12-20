@@ -93,6 +93,10 @@ const vaultSlice = createSlice({
       state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
       state.vaultSwap.loading = true
       return state
+    },
+
+    clearUserVault(state) {
+      state.userVaults = { }
     }
   }
 })
