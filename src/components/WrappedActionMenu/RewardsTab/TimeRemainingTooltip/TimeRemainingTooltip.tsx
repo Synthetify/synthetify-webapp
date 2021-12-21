@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React, { useEffect, useState } from 'react'
 import BN from 'bn.js'
 import { displayDate } from '@consts/utils'
