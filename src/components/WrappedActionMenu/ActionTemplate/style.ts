@@ -4,26 +4,14 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    minHeight: 200,
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap'
     }
   },
   available: {
-    minWidth: 202,
+    flex: '1 1 0%',
     maxHeight: 60,
-    overflow: 'hidden',
-    '& *': {
-      margin: 0
-    },
-    [theme.breakpoints.down('sm')]: {
-      minWidth: 132,
-      marginBlock: 'auto'
-    },
-    [theme.breakpoints.down('xs')]: {
-      minWidth: 'unset',
-      width: '50%'
-    }
+    marginBlock: 'auto'
   },
   wrap: {
     flexWrap: 'nowrap',
@@ -38,23 +26,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   secondHalf: {
-    paddingTop: 24,
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: 0,
-      maxWidth: 230,
-      justifyContent: 'space-between'
+    marginLeft: 24,
+    paddingTop: 0,
+    maxWidth: 264,
+    justifyContent: 'space-between',
+
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 157,
+      marginLeft: 12
     },
-    [theme.breakpoints.up('md')]: {
-      maxWidth: 360,
-      marginLeft: 24
-    }
-  },
-  amountInput: {
-    [theme.breakpoints.up('sm')]: {
-      minWidth: 275
-    },
-    [theme.breakpoints.up('md')]: {
-      maxWidth: 375
+
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: '100%',
+      width: '100%',
+      marginLeft: 0,
+      paddingTop: 24
     }
   },
   inputLabel: {
@@ -74,6 +60,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 36,
     [theme.breakpoints.down('sm')]: {
       marginTop: 24
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 0,
+      height: 0,
+      transition: 'height 300ms linear',
+      overflow: 'hidden'
+    }
+  },
+  progressMobile: {
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 24,
+      marginInline: 'auto'
     }
   },
   actionButton: {
@@ -81,6 +79,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 136,
     maxHeight: 48,
     marginRight: 36,
+
+    '&:hover': {
+      backgroundColor: '#40BFA0 !important'
+    },
 
     '&:disabled': {
       pointerEvents: 'auto !important'
@@ -94,15 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       marginRight: 24,
       maxHeight: 46,
-      '&:hover': {
-        backgroundColor: '#40BFA0 !important'
-      },
       '&:active': {
-        backgroundColor: '#4ADFBA !important'
-      }
-    },
-    [theme.breakpoints.up('md')]: {
-      '&:hover': {
         backgroundColor: '#4ADFBA !important'
       }
     },

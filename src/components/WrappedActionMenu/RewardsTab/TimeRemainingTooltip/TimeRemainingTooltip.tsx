@@ -21,7 +21,7 @@ export interface ITimeRemainingTooltipInterface {
 }
 
 export const CountDown: React.FC<
-  Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement' | 'isPopoverOpen' | 'setIsPopoverOpen'>
+Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement' | 'isPopoverOpen' | 'setIsPopoverOpen'>
 > = ({ timeRemainingEndSlot, slot, hint }) => {
   const classes = useStyles()
 
