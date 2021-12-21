@@ -18,8 +18,8 @@ export const calculateAmountCollateral = (
   const cRatioBN = stringToMinDecimalBN(cRatio)
   const amountBeforeCalculations = assetTo.priceVal
     .mul(amount)
-    .div(assetFrom.priceVal)
     .mul(cRatioBN.BN)
+    .div(assetFrom.priceVal)
     .div(new BN(10).pow(new BN(cRatioBN.decimal + 2)))
 
   const decimalChange = 10 ** (assetTo.assetScale - assetFrom.assetScale)
@@ -225,8 +225,8 @@ export const calculateLiqAndCRatio = (
       ratioTo === 'NaN'
         ? 'NaN'
         : ratioTo.lt(new BN(0))
-        ? 'NaN'
-        : Math.floor(Number(printBN(ratioTo, 0)) / 100),
+          ? 'NaN'
+          : Math.floor(Number(printBN(ratioTo, 0)) / 100),
     cRatioFrom: ratioFrom === 'NaN' ? 'NaN' : Math.floor(Number(printBN(ratioFrom, 0)) / 100)
   }
 }
@@ -277,17 +277,12 @@ export const checkActionIsAvailable = (
   if (maxBehaviorFrom === 'maxU64' || maxBehaviorTo === 'maxU64') {
     return true
   }
-  if (!amountCollateral.isZero()) {
-    if (availableFrom.lt(amountCollateral)) {
-      return false
-    }
+  if (availableFrom.lt(amountCollateral)) {
+    return false
   }
-  if (!amountBorrow.isZero()) {
-    if (availableTo.lt(amountBorrow)) {
-      return false
-    }
+  if (availableTo.lt(amountBorrow)) {
+    return false
   }
-
   return true
 }
 

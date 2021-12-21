@@ -321,10 +321,8 @@ export const userMaxDeposit = (assetAddress: PublicKey) =>
 export const maxAvailableDeposit = createSelector(
   vaultSwap, accounts, (allVaultSwap, tokensAccounts) => {
     const collateralAccount = tokensAccounts[allVaultSwap.collateral.toString()]
-    if (allVaultSwap.collateral === DEFAULT_PUBLICKEY) {
-      return new BN(0)
-    } else {
-      return collateralAccount.balance || new BN(0)
+    if (allVaultSwap.collateral === DEFAULT_PUBLICKEY && collateralAccount) {
+      return collateralAccount.balance ?? new BN(0)
     }
   }
 )
@@ -335,17 +333,13 @@ export const userMarinadeRewardAmount = createSelector(
   userDebtShares,
   (allCollaterals, userExchangeAccount, debtShares) => {
     const mSOL = Object.values(allCollaterals).find((asset) => asset.symbol === 'mSOL')
-
     if (!mSOL) {
       return 0
     }
-
     const stakedMSol = userExchangeAccount.collaterals.find((collateral) => collateral.collateralAddress.equals(mSOL.collateralAddress))
-
     if (!stakedMSol) {
       return 0
     }
-
     return debtShares.toNumber() * Math.sqrt(stakedMSol.amount.toNumber()) / (1e9) * MARINADE_PER_POINT * 7
   }
 )
@@ -354,7 +348,7 @@ export const getAvailableCollateral = createSelector(
   accounts,
   vaultSwap,
   (tokensAccounts, allVaultSwap) => {
-    if (tokensAccounts[allVaultSwap.collateral.toString()] !== undefined) {
+    if (typeof tokensAccounts[allVaultSwap.collateral.toString()] !== 'undefined') {
       return tokensAccounts[allVaultSwap.collateral.toString()].balance
     } else {
       return new BN(0)
@@ -366,7 +360,7 @@ export const getAvailableRepay = createSelector(
   vaultSwap,
   userVaults,
   (tokensAccounts, allVaultSwap, allUserVaults) => {
-    if (tokensAccounts[allVaultSwap.synthetic.toString()] !== undefined && allUserVaults[allVaultSwap.vaultAddress.toString()] !== undefined) {
+    if (typeof tokensAccounts[allVaultSwap.synthetic.toString()] !== 'undefined' && typeof allUserVaults[allVaultSwap.vaultAddress.toString()] !== 'undefined') {
       if (tokensAccounts[allVaultSwap.synthetic.toString()].balance.gt(allUserVaults[allVaultSwap.vaultAddress.toString()].syntheticAmount.val)) {
         return allUserVaults[allVaultSwap.vaultAddress.toString()].syntheticAmount.val
       } else {

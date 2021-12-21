@@ -488,7 +488,7 @@ export const getGeneralTotals = createSelector(
   (allVaults, allUserVaults, allSynthetics, allCollaterals, allAssets) => {
     let totalCollatera = 0
     let totalDebt = 0
-    Object.values(allUserVaults).map(userVault => {
+    Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
       totalCollatera =
         totalCollatera +

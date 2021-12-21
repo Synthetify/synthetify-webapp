@@ -41,6 +41,8 @@ interface IProp {
     totalCollateralAmount: number
     totalDebtAmount: number
   }
+  walletStatus: boolean
+  noWalletHandler: () => void
 }
 export const WrappedBorrow: React.FC<IProp> = ({
   pairs,
@@ -52,7 +54,9 @@ export const WrappedBorrow: React.FC<IProp> = ({
   availableCollateral,
   availableRepay,
   actualVault,
-  totalGeneralAmount
+  totalGeneralAmount,
+  walletStatus,
+  noWalletHandler
 }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState('---')
@@ -99,6 +103,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
         setLiquidationPriceFrom={setLiquidationPriceFrom}
         setAvailableBorrow={setAvailableBorrow}
         setAvailableWithdraw={setAvailableWithdraw}
+        walletStatus={walletStatus}
+        noWalletHandler={noWalletHandler}
       />
     ),
     repay: (
@@ -121,6 +127,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
         setLiquidationPriceFrom={setLiquidationPriceFrom}
         setAvailableBorrow={setAvailableBorrow}
         setAvailableWithdraw={setAvailableWithdraw}
+        walletStatus={walletStatus}
+        noWalletHandler={noWalletHandler}
       />
     )
   }

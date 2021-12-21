@@ -63,6 +63,8 @@ interface IProp {
   setLiquidationPriceFrom: (nr: number) => void
   setAvailableBorrow: (nr: BN) => void
   setAvailableWithdraw: (nr: BN) => void
+  walletStatus: boolean
+  noWalletHandler: () => void
 }
 export const ActionBorrow: React.FC<IProp> = ({
   action,
@@ -82,7 +84,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   setLiquidationPriceTo,
   setLiquidationPriceFrom,
   setAvailableBorrow,
-  setAvailableWithdraw
+  setAvailableWithdraw,
+  walletStatus,
+  noWalletHandler
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -180,14 +184,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   const setMaxAmountInputFrom = () => {
     if (pairIndex !== null) {
       setAmountCollateral(availableFrom)
-      if (action != 'borrow') {
-        if (Number(cRatio).toFixed(2) !== minCRatio.toFixed(2)) {
-          setAmountCollateralString('Max')
-          setMaxBehaviorFrom('maxU64')
-        } else {
-          setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
-          setMaxBehaviorFrom('number')
-        }
+      if (action !== 'borrow' && Number(cRatio).toFixed(2) !== minCRatio.toFixed(2)) {
+        setAmountCollateralString('Max')
+        setMaxBehaviorFrom('maxU64')
       } else {
         setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
         setMaxBehaviorFrom('number')
@@ -212,7 +211,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   React.useEffect(() => {
     if (!amountCollateral.eq(new BN(0))) {
       let amount
-      if (cRatio != '---') {
+      if (cRatio !== '---') {
         amount = calculateAmountBorrow(
           tokenTo.priceVal,
           tokenTo.assetScale,
@@ -239,13 +238,11 @@ export const ActionBorrow: React.FC<IProp> = ({
   React.useEffect(() => {
     if (pairIndex !== null) {
       setMinCRatio(
-        Number(
-          Math.pow(
-            Number(
-              printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
-            ) / 100,
-            -1
-          ).toString()
+        Math.pow(
+          Number(
+            printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
+          ) / 100,
+          -1
         )
       )
       setLiquidationPriceTo(0)
@@ -347,7 +344,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                     setMaxBehaviorFrom('number')
                     setAmountCollateral(inputData.amountCollBN)
                     setAmountCollateralString(value)
-                    if (cRatio != '---') {
+                    if (cRatio !== '---') {
                       setAmountBorrow(inputData.amountBorBN)
                       setAmountBorrowString(inputData.amountBorBNString)
                     }
@@ -365,6 +362,8 @@ export const ActionBorrow: React.FC<IProp> = ({
                 }}
                 className={classes.input}
                 selectText='Select'
+                walletConnected={walletStatus}
+                noWalletHandler={noWalletHandler}
               />
               <Typography
                 className={classes.desc}
@@ -393,7 +392,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                   style={{
                     color:
                       Number(
-                        cRatio === '---' ? (cRatioTo === 'NaN' ? cRatio : cRatioTo) : cRatio
+                        cRatio === '---' && cRatioTo !== 'NaN'? cRatioTo : cRatio
                       ) >= Number(minCRatio)
                         ? colors.green.button
                         : colors.red.error
@@ -491,7 +490,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                   setMaxBehaviorTo('number')
                   setAmountBorrow(inputData.amountBorBN)
                   setAmountBorrowString(value)
-                  if (cRatio != '---') {
+                  if (cRatio !== '---') {
                     setAmountCollateralString(inputData.amountCollString)
                     setAmountCollateral(inputData.amountCollBN)
                   }
@@ -509,6 +508,8 @@ export const ActionBorrow: React.FC<IProp> = ({
               }}
               className={classes.input}
               selectText='Select'
+              walletConnected={walletStatus}
+              noWalletHandler={noWalletHandler}
             />
             <Typography
               className={classes.desc}
@@ -582,7 +583,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                     ) : (
                       <AllInclusiveIcon style={{ height: '0.75em' }} />
                     )}
-                    {cRatioFrom != 'NaN' ? '%' : ''}
+                    {cRatioFrom !== 'NaN' ? '%' : ''}
                   </Grid>
                 </Typography>
                 <FlatIcon
@@ -608,7 +609,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                         }}
                       />
                     )}
-                    {cRatioTo != 'NaN' ? '%' : ''}
+                    {cRatioTo !== 'NaN' ? '%' : ''}
                   </Grid>
                 </Typography>
               </Grid>
@@ -633,8 +634,8 @@ export const ActionBorrow: React.FC<IProp> = ({
               onClick={() => {
                 onClickSubmitButton(
                   actionSubmit,
-                  pairIndex != null ? pairs[pairIndex].synthetic : new PublicKey('0'),
-                  pairIndex != null ? pairs[pairIndex].collateral : new PublicKey('0'),
+                  pairIndex !== null ? pairs[pairIndex].synthetic : new PublicKey('0'),
+                  pairIndex !== null ? pairs[pairIndex].collateral : new PublicKey('0'),
                   maxBehaviorFrom === 'maxU64' ? MAX_U64 : amountCollateral,
                   maxBehaviorTo === 'maxU64' ? MAX_U64 : amountBorrow
                 )

@@ -30,7 +30,9 @@ const VaultEvents = () => {
       exchangeProgram.onStateChange(state => {
         dispatch(actions.setState(state))
       })
-
+      if (!actualVaultEntry.loading) {
+        return
+      }
       if (owner !== DEFAULT_PUBLICKEY) {
         VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
           const { vaultAddress } = await exchangeProgram.getVaultAddress(

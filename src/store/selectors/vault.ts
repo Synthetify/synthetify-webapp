@@ -17,7 +17,7 @@ export const getActualUserVault = createSelector(
   vaultSwap,
   userVaults,
   (vaultSwap, allUserVaults) => {
-    if (allUserVaults[vaultSwap.vaultAddress.toString()] !== undefined) {
+    if (typeof allUserVaults[vaultSwap.vaultAddress.toString()] !== 'undefined') {
       const actualUserVault = allUserVaults[vaultSwap.vaultAddress.toString()]
       return {
         collateralAmount: actualUserVault.collateralAmount,
