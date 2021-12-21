@@ -28,7 +28,6 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs, userVaults }) => {
         sending={vaultSwapData.loading}
         hasError={vaultSwapData.error}
         onClickSubmitButton={(action, synthetic, collateral, collateralAmount, syntheticAmount) => {
-          console.log('Amount borrow/repay= (string)', syntheticAmount.toString())
           dispatch(
             actions.setVaultSwap({
               action,

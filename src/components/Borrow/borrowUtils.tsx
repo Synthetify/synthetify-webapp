@@ -225,8 +225,8 @@ export const calculateLiqAndCRatio = (
       ratioTo === 'NaN'
         ? 'NaN'
         : ratioTo.lt(new BN(0))
-          ? 'NaN'
-          : Math.floor(Number(printBN(ratioTo, 0)) / 100),
+        ? 'NaN'
+        : Math.floor(Number(printBN(ratioTo, 0)) / 100),
     cRatioFrom: ratioFrom === 'NaN' ? 'NaN' : Math.floor(Number(printBN(ratioFrom, 0)) / 100)
   }
 }
@@ -267,10 +267,15 @@ export const checkActionIsAvailable = (
   amountCollateral: BN,
   amountBorrow: BN,
   availableFrom: BN,
-  availableTo: BN
+  availableTo: BN,
+  maxBehaviorTo: string,
+  maxBehaviorFrom: string
 ) => {
   if (pairIndex === null) {
     return false
+  }
+  if (maxBehaviorFrom === 'maxU64' || maxBehaviorTo === 'maxU64') {
+    return true
   }
   if (!amountCollateral.isZero()) {
     if (availableFrom.lt(amountCollateral)) {

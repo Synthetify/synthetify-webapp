@@ -157,7 +157,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
                   )
                 ),
                 -1
-              )
+              ) * 100
             )}
             cRatio={
               Math.pow(

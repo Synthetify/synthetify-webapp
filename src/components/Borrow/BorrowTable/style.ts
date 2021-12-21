@@ -65,11 +65,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   row: {
     '&:hover': {
-      background: colors.navy.navButton
+      background: `${colors.navy.navButton}40`
     }
   },
   active: {
-    background: colors.navy.navButton
+    background: `${colors.navy.navButton}85`
   },
   tooltipNumber: {
     background: colors.navy.navButton,

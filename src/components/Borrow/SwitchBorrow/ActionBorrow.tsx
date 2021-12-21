@@ -9,7 +9,6 @@ import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { Decimal, Vault } from '@synthetify/sdk/lib/exchange'
 import { BN } from '@project-serum/anchor'
-import useStyles from './style'
 import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 import { PublicKey } from '@solana/web3.js'
@@ -28,6 +27,10 @@ import {
 } from '../borrowUtils'
 import { MAX_U64 } from '@consts/static'
 import { ActionType } from '@reducers/vault'
+import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
+import AllInclusiveOutlinedIcon from '@material-ui/icons/AllInclusiveOutlined'
+import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded'
+import useStyles from './style'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -160,6 +163,37 @@ export const ActionBorrow: React.FC<IProp> = ({
 
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
 
+  const setMaxAmountInputTo = () => {
+    if (pairIndex !== null) {
+      if (Number(cRatio).toFixed(2) !== minCRatio.toFixed(2)) {
+        setAmountBorrow(availableTo)
+        setMaxBehaviorTo('maxU64')
+        setAmountBorrowString('Max')
+      } else {
+        setAmountBorrow(availableTo)
+        setMaxBehaviorTo('number')
+        setAmountBorrowString(printBN(availableTo, tokenTo.assetScale))
+      }
+    }
+  }
+
+  const setMaxAmountInputFrom = () => {
+    if (pairIndex !== null) {
+      setAmountCollateral(availableFrom)
+      if (action != 'borrow') {
+        if (Number(cRatio).toFixed(2) !== minCRatio.toFixed(2)) {
+          setAmountCollateralString('Max')
+          setMaxBehaviorFrom('maxU64')
+        } else {
+          setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
+          setMaxBehaviorFrom('number')
+        }
+      } else {
+        setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
+        setMaxBehaviorFrom('number')
+      }
+    }
+  }
   React.useEffect(() => {
     if (sending) {
       setShowOperationProgressFinale(true)
@@ -175,19 +209,8 @@ export const ActionBorrow: React.FC<IProp> = ({
     }
   }, [sending])
 
-  React.useCallback(() => {
-    console.log('test')
-    if (!amountBorrow.eq(new BN(0))) {
-      let amount = new BN(0)
-      if (cRatio != '---') {
-        amount = calculateAmountCollateral(tokenTo, tokenFrom, amountBorrow, cRatio)
-      } else {
-        amount = calculateAmountCollateral(tokenTo, tokenFrom, amountBorrow, minCRatio.toString())
-      }
-
-      setAmountCollateral(amount)
-      setAmountCollateralString(printBN(amount, tokenFrom.assetScale))
-    } else if (!amountCollateral.eq(new BN(0))) {
+  React.useEffect(() => {
+    if (!amountCollateral.eq(new BN(0))) {
       let amount
       if (cRatio != '---') {
         amount = calculateAmountBorrow(
@@ -283,7 +306,6 @@ export const ActionBorrow: React.FC<IProp> = ({
     }
   }, [amountBorrow, amountCollateral])
 
-  
   const [blockButton, setBlockButton] = React.useState(false)
   const blockSubmitButton = () => {
     if (pairIndex === null) {
@@ -298,7 +320,9 @@ export const ActionBorrow: React.FC<IProp> = ({
             amountCollateral,
             amountBorrow,
             availableFrom,
-            availableTo
+            availableTo,
+            maxBehaviorTo,
+            maxBehaviorFrom
           )
         )
       }
@@ -330,19 +354,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                   }
                 }}
                 placeholder={'0.0'}
-                onMaxClick={() => {
-                  if (pairIndex !== null) {
-                    setAmountCollateral(availableFrom)
-                    if (action != 'borrow') {
-                      setAmountCollateralString('Max')
-                      setMaxBehaviorFrom('maxU64')
-                      changeCRatio('---')
-                    } else {
-                      setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
-                      setMaxBehaviorFrom('number')
-                    }
-                  }
-                }}
+                onMaxClick={setMaxAmountInputFrom}
                 pairs={pairs.map(pair => ({
                   symbol1: pair.syntheticData.symbol,
                   symbol2: pair.collateralData.symbol
@@ -356,15 +368,12 @@ export const ActionBorrow: React.FC<IProp> = ({
               />
               <Typography
                 className={classes.desc}
-                onClick={() => {
-                  setAmountCollateral(availableFrom)
-                  setAmountCollateralString(printBN(availableFrom, tokenFrom.assetScale))
-                  setMaxBehaviorFrom('number')
-                }}>
+                onClick={setMaxAmountInputFrom}
+                style={{ cursor: 'pointer' }}>
                 Available collateral:{' '}
                 <AnimatedNumber
                   value={printBN(availableFrom, tokenFrom.assetScale)}
-                  formatValue={(value: number) => value.toFixed(4)}
+                  formatValue={(value: number) => value.toFixed(8)}
                   duration={300}
                 />
               </Typography>
@@ -389,13 +398,28 @@ export const ActionBorrow: React.FC<IProp> = ({
                         ? colors.green.button
                         : colors.red.error
                   }}>
-                  {action === 'borrow'
-                    ? cRatio === '---'
-                      ? cRatioTo === 'NaN'
-                        ? cRatio
-                        : cRatioTo
-                      : cRatio
-                    : minCRatio.toFixed(2)}
+                  {action === 'borrow' ? (
+                    cRatio === '---' ? (
+                      cRatioTo === 'NaN' ? (
+                        cRatio
+                      ) : cRatioTo < 9999 ? (
+                        cRatioTo
+                      ) : (
+                        <AllInclusiveIcon
+                          style={{
+                            height: '0.75em',
+                            fontWeight: 900,
+                            stroke: 'currentcolor',
+                            strokeWidth: 1.5
+                          }}
+                        />
+                      )
+                    ) : (
+                      cRatio
+                    )
+                  ) : (
+                    minCRatio.toFixed(2)
+                  )}
                   {'%'}
                 </Button>
                 <Popover
@@ -474,14 +498,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 }
               }}
               placeholder={'0.0'}
-              onMaxClick={() => {
-                if (pairIndex !== null) {
-                  setAmountBorrow(availableTo)
-                  setMaxBehaviorTo('maxU64')
-                  setAmountBorrowString('Max')
-                  changeCRatio('---')
-                }
-              }}
+              onMaxClick={setMaxAmountInputTo}
               pairs={pairs.map(pair => ({
                 symbol1: pair.syntheticData.symbol,
                 symbol2: pair.collateralData.symbol
@@ -495,15 +512,12 @@ export const ActionBorrow: React.FC<IProp> = ({
             />
             <Typography
               className={classes.desc}
-              onClick={() => {
-                setAmountBorrow(availableTo)
-                setMaxBehaviorTo('number')
-                setAmountBorrowString(printBN(availableTo, tokenTo.assetScale))
-              }}>
+              onClick={setMaxAmountInputTo}
+              style={{ cursor: 'pointer' }}>
               {action === 'borrow' ? 'Available to borrow: ' : 'Available to repay: '}
               <AnimatedNumber
                 value={printBN(availableTo, tokenTo.assetScale)}
-                formatValue={(value: string) => Number(value).toFixed(6)}
+                formatValue={(value: string) => Number(value).toFixed(8)}
                 duration={300}
               />
             </Typography>
@@ -562,8 +576,14 @@ export const ActionBorrow: React.FC<IProp> = ({
               <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
               <Grid container alignItems='center'>
                 <Typography className={classes.infoValueFrom}>
-                  {cRatioFrom}
-                  {cRatioFrom != 'NaN' ? '%' : ''}
+                  <Grid container direction='row' alignItems='center'>
+                    {cRatioFrom < 9999 ? (
+                      cRatioFrom
+                    ) : (
+                      <AllInclusiveIcon style={{ height: '0.75em' }} />
+                    )}
+                    {cRatioFrom != 'NaN' ? '%' : ''}
+                  </Grid>
                 </Typography>
                 <FlatIcon
                   className={classes.flatIcon}
@@ -575,9 +595,21 @@ export const ActionBorrow: React.FC<IProp> = ({
                   }}
                 />
                 <Typography className={classes.infoValueTo}>
-                  {' '}
-                  {cRatioTo}
-                  {cRatioTo != 'NaN' ? '%' : ''}
+                  <Grid container direction='row' alignItems='center'>
+                    {cRatioTo < 9999 ? (
+                      cRatioTo
+                    ) : (
+                      <AllInclusiveIcon
+                        style={{
+                          height: '0.75em',
+                          fontWeight: 900,
+                          stroke: 'currentcolor',
+                          strokeWidth: 1.2
+                        }}
+                      />
+                    )}
+                    {cRatioTo != 'NaN' ? '%' : ''}
+                  </Grid>
                 </Typography>
               </Grid>
             </Grid>

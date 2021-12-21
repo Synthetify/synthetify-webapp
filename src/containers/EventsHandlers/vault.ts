@@ -76,7 +76,7 @@ const VaultEvents = () => {
     }
 
     connectEvents().catch(error => console.log(error))
-  }, [dispatch, exchangeProgram, networkStatus, owner, actualVaultEntry.vaultAddress])
+  }, [dispatch, exchangeProgram, networkStatus, owner, actualVaultEntry.loading])
 
   return null
 }
