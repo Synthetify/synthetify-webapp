@@ -30,48 +30,47 @@ const VaultEvents = () => {
       exchangeProgram.onStateChange(state => {
         dispatch(actions.setState(state))
       })
-      if (!actualVaultEntry.loading) {
-        return
-      }
       if (owner !== DEFAULT_PUBLICKEY) {
-        VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
-          const { vaultAddress } = await exchangeProgram.getVaultAddress(
-            vault.synthetic,
-            vault.collateral
-          )
-          const data = await exchangeProgram.getVaultForPair(vault.synthetic, vault.collateral)
-          dispatch(
-            actionsVault.setVault({
-              address: vaultAddress,
-              vault: data
-            })
-          )
-          exchangeProgram.onVaultChange(actualVaultEntry.vaultAddress, state => {
+        if (!actualVaultEntry.loading) {
+          VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
+            const { vaultAddress } = await exchangeProgram.getVaultAddress(
+              vault.synthetic,
+              vault.collateral
+            )
+            const data = await exchangeProgram.getVaultForPair(vault.synthetic, vault.collateral)
             dispatch(
               actionsVault.setVault({
-                address: actualVaultEntry.vaultAddress,
-                vault: state
+                address: vaultAddress,
+                vault: data
               })
             )
-          })
+            exchangeProgram.onVaultChange(actualVaultEntry.vaultAddress, state => {
+              dispatch(
+                actionsVault.setVault({
+                  address: actualVaultEntry.vaultAddress,
+                  vault: state
+                })
+              )
+            })
 
-          const vaultEntryAmount = await exchangeProgram.getVaultEntryForOwner(
-            vault.synthetic,
-            vault.collateral,
-            owner
-          )
-          dispatch(actionsVault.setUserVaults(vaultEntryAmount))
+            const vaultEntryAmount = await exchangeProgram.getVaultEntryForOwner(
+              vault.synthetic,
+              vault.collateral,
+              owner
+            )
+            dispatch(actionsVault.setUserVaults(vaultEntryAmount))
 
-          const { vaultEntryAddress } = await exchangeProgram.getVaultEntryAddress(
-            actualVaultEntry.synthetic,
-            actualVaultEntry.collateral,
-            owner
-          )
-          exchangeProgram.onVaultEntryChange(vaultEntryAddress, state => {
-            dispatch(actionsVault.setUserVaults(state))
+            const { vaultEntryAddress } = await exchangeProgram.getVaultEntryAddress(
+              actualVaultEntry.synthetic,
+              actualVaultEntry.collateral,
+              owner
+            )
+            exchangeProgram.onVaultEntryChange(vaultEntryAddress, state => {
+              dispatch(actionsVault.setUserVaults(state))
+            })
           })
-        })
-        updateSyntheticAmountUserVault()
+          updateSyntheticAmountUserVault()
+        }
       } else {
         dispatch(actionsVault.clearUserVault())
       }
