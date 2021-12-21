@@ -1,4 +1,4 @@
-import { Hidden, Tooltip } from '@material-ui/core'
+import { Tooltip } from '@material-ui/core'
 import classNames from 'classnames'
 import React, { ReactChild, ReactElement, useEffect } from 'react'
 import useStyles from './style'

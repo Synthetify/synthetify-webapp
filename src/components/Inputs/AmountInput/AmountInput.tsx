@@ -16,7 +16,7 @@ interface IProps {
   className?: string
   placeholder?: string
   style?: CSSProperties
-  tokens?: Array<{ symbol: string, balance?: BN, decimals?: number }>
+  tokens?: Array<{ symbol: string; balance?: BN; decimals?: number }>
   onSelectToken?: (chosen: number) => void
   showArrow?: boolean
   walletConnected?: boolean
@@ -45,7 +45,7 @@ export const AmountInput: React.FC<IProps> = ({
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const allowOnlyDigitsAndTrimUnnecessaryZeros: React.ChangeEventHandler<HTMLInputElement> = e => {
     const regex = /^\d*\.?\d*$/
     if (e.target.value === '' || e.target.value === 'Max' || regex.test(e.target.value)) {
       const startValue = e.target.value
@@ -97,12 +97,11 @@ export const AmountInput: React.FC<IProps> = ({
           blurContent()
           setOpen(true)
         }
-      }}
-    >
+      }}>
       <Divider orientation='vertical' className={classes.divider} />
-      <img alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon}/>
+      <img alt='' src={icons[currency ?? 'SNY']} className={classes.avatarIcon} />
       <Typography className={classes.currencyText}>{currency}</Typography>
-      {(showArrow) ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
+      {showArrow ? <ExpandMoreIcon style={{ marginRight: -5 }} /> : null}
     </InputAdornment>
   )
 
@@ -123,22 +122,19 @@ export const AmountInput: React.FC<IProps> = ({
         endAdornment={!currency ? null : currencyAdornment}
         onChange={allowOnlyDigitsAndTrimUnnecessaryZeros}
       />
-      {(tokens?.length && onSelectToken)
-        ? (
-          <SelectTokenModal
-            tokens={tokens}
-            open={open}
-            centered={true}
-            anchorEl={null}
-            onSelect={onSelectToken}
-            handleClose={() => {
-              unblurContent()
-              setOpen(false)
-            }}
-          />
-        )
-        : null
-      }
+      {tokens?.length && onSelectToken ? (
+        <SelectTokenModal
+          tokens={tokens}
+          open={open}
+          centered={true}
+          anchorEl={null}
+          onSelect={onSelectToken}
+          handleClose={() => {
+            unblurContent()
+            setOpen(false)
+          }}
+        />
+      ) : null}
     </>
   )
 }

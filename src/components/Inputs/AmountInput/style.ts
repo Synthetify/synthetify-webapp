@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-parens */
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
