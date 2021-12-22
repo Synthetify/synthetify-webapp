@@ -16,7 +16,8 @@ import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, MARINADE_PER_POINT, ORACLE_OFFSET } from '@consts/static'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
-import { Asset, Swapline, Vault } from '@synthetify/sdk/lib/exchange'
+import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
+import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
 export const { address, balance, accounts, status } = keySelectors(store, [
@@ -107,10 +108,6 @@ export const swaplinePairs = createSelector(
     })
   }
 )
-export interface BorrowedPair extends Vault {
-  collateralData: ExchangeCollateralTokens
-  syntheticData: ExchangeSyntheticTokens
-}
 export const vaultPairs = createSelector(
   vaults,
   synthetics,

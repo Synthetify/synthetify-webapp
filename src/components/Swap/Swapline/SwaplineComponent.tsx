@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
@@ -29,7 +28,7 @@ interface AssetPriceData {
 export const getAssetInAndFor = (
   pair: SwaplinePair | null,
   swapType: SwaplineSwapType
-): [AssetPriceData, AssetPriceData] => {
+) => {
   if (pair === null) {
     return [
       {

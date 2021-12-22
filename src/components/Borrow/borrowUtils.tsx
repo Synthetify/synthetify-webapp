@@ -2,6 +2,7 @@ import { BN } from '@project-serum/anchor'
 import { printBN, printBNtoBN, stringToMinDecimalBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { ActionType } from '@reducers/vault'
+import { BorrowedPair } from './WrappedBorrow/WrappedBorrow'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -452,4 +453,46 @@ export const changeInputCollateral = (
     amountBorBNString: printBN(amountBorBN, tokenTo.assetScale),
     amountBorBN: amountBorBN
   }
+}
+
+export const getAssetFromAndTo = (
+  pair: BorrowedPair | null,
+  availableFrom: BN,
+  availableTo: BN
+) => {
+  if (pair === null) {
+    return [
+      {
+        priceVal: new BN(0),
+        assetScale: 0,
+        symbol: null,
+        maxAvailable: new BN(0),
+        balance: new BN(0)
+      },
+      {
+        priceVal: new BN(0),
+        assetScale: 0,
+        symbol: null,
+        maxAvailable: new BN(0),
+        balance: new BN(0)
+      }
+    ]
+  }
+  const collateral: AssetPriceData = {
+    priceVal: pair.collateralData.price.val,
+    assetScale: pair.collateralData.reserveBalance.scale,
+    symbol: pair.collateralData.symbol,
+    maxAvailable: availableFrom,
+    balance: pair.collateralData.balance
+  }
+
+  const synthetic: AssetPriceData = {
+    priceVal: pair.syntheticData.price.val,
+    assetScale: pair.syntheticData.supply.scale,
+    symbol: pair.syntheticData.symbol,
+    maxAvailable: availableTo,
+    balance: pair.syntheticData.balance
+  }
+
+  return [collateral, synthetic]
 }

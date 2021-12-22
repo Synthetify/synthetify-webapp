@@ -8,12 +8,10 @@ import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { BN } from '@project-serum/anchor'
-import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
+import { printBN } from '@consts/utils'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 import { PublicKey } from '@solana/web3.js'
 import {
-  calculateCRatio,
-  calculateAmountCollateral,
   calculateAmountBorrow,
   calculateAvailableBorrowAndWithdraw,
   calculateLiqAndCRatio,
@@ -22,22 +20,14 @@ import {
   getProgressState,
   setActionOnSubmitButton,
   changeInputSynthetic,
-  changeInputCollateral
+  changeInputCollateral,
+  getAssetFromAndTo
 } from '../borrowUtils'
 import { MAX_U64 } from '@consts/static'
 import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
-import AllInclusiveOutlinedIcon from '@material-ui/icons/AllInclusiveOutlined'
-import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded'
 import useStyles from './style'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-interface AssetPriceData {
-  priceVal: BN
-  assetScale: number
-  symbol: string | null
-  maxAvailable: BN
-  balance: BN
-}
 interface IProp {
   action: string
   cRatio: string
@@ -115,44 +105,12 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [cRatioFrom, setCRatioFrom] = React.useState<number | string>(0)
   const [maxBehaviorTo, setMaxBehaviorTo] = React.useState('number')
   const [maxBehaviorFrom, setMaxBehaviorFrom] = React.useState('number')
-  const getAssetInAndFor = (pair: BorrowedPair | null): [AssetPriceData, AssetPriceData] => {
-    if (pair === null) {
-      return [
-        {
-          priceVal: new BN(0),
-          assetScale: 0,
-          symbol: null,
-          maxAvailable: new BN(0),
-          balance: new BN(0)
-        },
-        {
-          priceVal: new BN(0),
-          assetScale: 0,
-          symbol: null,
-          maxAvailable: new BN(0),
-          balance: new BN(0)
-        }
-      ]
-    }
-    const collateral: AssetPriceData = {
-      priceVal: pair.collateralData.price.val,
-      assetScale: pair.collateralData.reserveBalance.scale,
-      symbol: pair.collateralData.symbol,
-      maxAvailable: availableFrom,
-      balance: pair.collateralData.balance
-    }
 
-    const synthetic: AssetPriceData = {
-      priceVal: pair.syntheticData.price.val,
-      assetScale: pair.syntheticData.supply.scale,
-      symbol: pair.syntheticData.symbol,
-      maxAvailable: availableTo,
-      balance: pair.syntheticData.balance
-    }
-
-    return [collateral, synthetic]
-  }
-  const [tokenFrom, tokenTo] = getAssetInAndFor(pairIndex !== null ? pairs[pairIndex] : null)
+  const [tokenFrom, tokenTo] = getAssetFromAndTo(
+    pairIndex !== null ? pairs[pairIndex] : null,
+    availableFrom,
+    availableTo
+  )
 
   const changeCustomCRatio = () => {
     if (customCRatio) {
@@ -541,11 +499,11 @@ export const ActionBorrow: React.FC<IProp> = ({
                   value={
                     pairIndex !== null
                       ? Number(
-                          printBN(
-                            pairs[pairIndex].debtInterestRate.val,
-                            pairs[pairIndex].debtInterestRate.scale
-                          )
-                        ) * 100
+                        printBN(
+                          pairs[pairIndex].debtInterestRate.val,
+                          pairs[pairIndex].debtInterestRate.scale
+                        )
+                      ) * 100
                       : 0
                   }
                   formatValue={(value: number) => value.toFixed(2)}
