@@ -184,7 +184,6 @@ storiesOf('borrow/switchBorrow', module)
             onClickSubmitButton={() => {}}
             pairs={pairs}
             sending={false}
-            onSelectPair={() => {}}
             hasError={false}
             action={''}
             vaultAmount={{
@@ -193,10 +192,22 @@ storiesOf('borrow/switchBorrow', module)
             }}
             availableTo={new BN(10)}
             availableFrom={new BN(10)}
-            setLiquidationPriceTo={(nr: number) => { console.log(nr) }}
-            setLiquidationPriceFrom={(nr: number) => { console.log(nr) }}
-            setAvailableBorrow={(nr: BN) => { console.log(nr) }}
-            setAvailableWithdraw={(nr: BN) => { console.log(nr) }}
+            setLiquidationPriceTo={(nr: number) => {
+              console.log(nr)
+            }}
+            setLiquidationPriceFrom={(nr: number) => {
+              console.log(nr)
+            }}
+            setAvailableBorrow={(nr: BN) => {
+              console.log(nr)
+            }}
+            setAvailableWithdraw={(nr: BN) => {
+              console.log(nr)
+            }}
+            pairIndex={1}
+            setPairIndex={() => {}}
+            walletStatus={true}
+            noWalletHandler={() => {}}
           />
         ),
         repay: (
@@ -208,7 +219,6 @@ storiesOf('borrow/switchBorrow', module)
             onClickSubmitButton={() => {}}
             pairs={pairs}
             sending={false}
-            onSelectPair={() => {}}
             hasError={false}
             changeCRatio={changeCRatio}
             vaultAmount={{
@@ -217,10 +227,22 @@ storiesOf('borrow/switchBorrow', module)
             }}
             availableTo={new BN(10)}
             availableFrom={new BN(10)}
-            setLiquidationPriceTo={(nr: number) => { console.log(nr) }}
-            setLiquidationPriceFrom={(nr: number) => { console.log(nr) }}
-            setAvailableBorrow={(nr: BN) => { console.log(nr) }}
-            setAvailableWithdraw={(nr: BN) => { console.log(nr) }}
+            setLiquidationPriceTo={(nr: number) => {
+              console.log(nr)
+            }}
+            setLiquidationPriceFrom={(nr: number) => {
+              console.log(nr)
+            }}
+            setAvailableBorrow={(nr: BN) => {
+              console.log(nr)
+            }}
+            setAvailableWithdraw={(nr: BN) => {
+              console.log(nr)
+            }}
+            pairIndex={1}
+            setPairIndex={() => {}}
+            walletStatus={true}
+            noWalletHandler={() => {}}
           />
         )
       }

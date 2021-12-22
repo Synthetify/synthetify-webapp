@@ -233,7 +233,14 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
           actualVault={{
             collateralAmount: { val: new BN(0), scale: 0 },
             borrowAmount: { val: new BN(0), scale: 0 }
-          }} />
+          }}
+          totalGeneralAmount={{
+            totalCollateralAmount: 0,
+            totalDebtAmount: 0
+          }}
+          walletStatus={false}
+          noWalletHandler={() => {}}
+        />
       </Grid>
     )
   })

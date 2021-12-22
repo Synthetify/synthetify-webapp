@@ -7,7 +7,6 @@ import { PublicKey } from '@solana/web3.js'
 
 storiesOf('Borrow/table', module).add('default', () =>
   React.createElement(() => {
-    const [active, setActive] = React.useState(false)
     const userVaults: UserVaults[] = [
       {
         collateral: 'WSOL',
@@ -51,10 +50,9 @@ storiesOf('Borrow/table', module).add('default', () =>
         <BorrowTable
           userVaults={userVaults}
           setValueWithTable={() => {
-            setActive(true)
             console.log('set value with tables')
           }}
-          active={active}
+          active={'Sol'}
         />
       </div>
     )

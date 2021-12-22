@@ -168,10 +168,19 @@ export const ActionBorrow: React.FC<IProp> = ({
 
   const setMaxAmountInputTo = () => {
     if (pairIndex !== null) {
-      if (Number(cRatio).toFixed(2) !== minCRatio.toFixed(2)) {
-        setAmountBorrow(availableTo)
-        setMaxBehaviorTo('maxU64')
-        setAmountBorrowString('Max')
+      if (cRatio === '---') {
+        if (
+          pairs[pairIndex].syntheticData.balance.gte(vaultAmount.borrowAmount.val) &&
+          action === 'repay'
+        ) {
+          setAmountBorrow(availableTo)
+          setMaxBehaviorTo('maxU64')
+          setAmountBorrowString('Max')
+        } else {
+          setAmountBorrow(availableTo)
+          setMaxBehaviorTo('number')
+          setAmountBorrowString(printBN(availableTo, tokenTo.assetScale))
+        }
       } else {
         setAmountBorrow(availableTo)
         setMaxBehaviorTo('number')
@@ -183,7 +192,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   const setMaxAmountInputFrom = () => {
     if (pairIndex !== null) {
       setAmountCollateral(availableFrom)
-      if (action !== 'borrow' && Number(cRatio).toFixed(2) !== minCRatio.toFixed(2)) {
+      if (action !== 'borrow' && cRatio === '---') {
         setAmountCollateralString('Max')
         setMaxBehaviorFrom('maxU64')
       } else {

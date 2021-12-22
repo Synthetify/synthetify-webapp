@@ -19,15 +19,15 @@ storiesOf('Borrow/Info', module).add('default', () => (
       collateral={'WSOL'}
       borrowed={'xSOL'}
       limit={20.3453}
-      reserve={100}
       collateralAddress={DEFAULT_PUBLICKEY}
       borrowedAddress={DEFAULT_PUBLICKEY}
-      collateralSign={'WSOL'}
       borrowedSign={'xSOL'}
       amountSign={'$'}
       callPrice={''}
       borrPrice={''}
       interestRate={''}
+      liqRatio={0}
+      cRatio={0}
     />
   </Grid>
 ))
