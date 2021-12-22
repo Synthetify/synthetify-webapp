@@ -55,6 +55,7 @@ interface IProp {
   setAvailableWithdraw: (nr: BN) => void
   walletStatus: boolean
   noWalletHandler: () => void
+  cRatioStatic: string[]
 }
 export const ActionBorrow: React.FC<IProp> = ({
   action,
@@ -76,7 +77,8 @@ export const ActionBorrow: React.FC<IProp> = ({
   setAvailableBorrow,
   setAvailableWithdraw,
   walletStatus,
-  noWalletHandler
+  noWalletHandler,
+  cRatioStatic
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -292,7 +294,6 @@ export const ActionBorrow: React.FC<IProp> = ({
     }
   }
 
-  const cRatioStatic = ['300', '400', '500', '750', '1000']
   return (
     <Grid>
       <Grid className={classes.root}>
@@ -425,16 +426,14 @@ export const ActionBorrow: React.FC<IProp> = ({
                       }}
                       onBlur={changeCustomCRatio}
                     />
-                    {cRatioStatic.map(element => {
+                    {cRatioStatic.forEach(element => {
                       if (Number(element) > minCRatio) {
-                        return (
-                          <Button
-                            className={classes.popoverButton}
-                            value={Number(element)}
-                            onClick={event => changeCRatio(event.currentTarget.value)}>
-                            {element}%
-                          </Button>
-                        )
+                        <Button
+                          className={classes.popoverButton}
+                          value={Number(element)}
+                          onClick={event => changeCRatio(event.currentTarget.value)}>
+                          {element}%
+                        </Button>
                       }
                     })}
                   </Grid>

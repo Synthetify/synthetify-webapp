@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { printBN } from '@consts/utils'
 import { Grid } from '@material-ui/core'
@@ -106,6 +105,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
         setAvailableWithdraw={setAvailableWithdraw}
         walletStatus={walletStatus}
         noWalletHandler={noWalletHandler}
+        cRatioStatic={['300', '400', '500', '750', '1000']}
       />
     ),
     repay: (
@@ -130,6 +130,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
         setAvailableWithdraw={setAvailableWithdraw}
         walletStatus={walletStatus}
         noWalletHandler={noWalletHandler}
+        cRatioStatic={[]}
       />
     )
   }
