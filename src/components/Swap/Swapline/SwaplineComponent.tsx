@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
@@ -9,11 +10,9 @@ import Arrows from '@static/svg/swapArrows.svg'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
-import Output from '@static/svg/output.svg'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
 import RedExclamationMark from '@static/svg/redExclamationMark.svg'
-import { pyth } from '@static/links'
-import { colors, theme } from '@static/theme'
+import { theme } from '@static/theme'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import useStyles from '../style'
 import { SwaplinePair } from '@selectors/solanaWallet'
@@ -272,7 +271,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                 <b style={{ wordWrap: 'break-word' }}>{` ${printBN(
                   tokenTo.maxAvailable,
                   tokenTo.assetScale
-                )} ${tokenTo.symbol}`}</b>
+                )} ${tokenTo.symbol ? tokenTo.symbol : ''}`}</b>
               </>
             }
             anchor={<img src={RedExclamationMark} alt='' className={classes.exclamationMark} />}
@@ -311,7 +310,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                     ? 'M'
                     : 'K'
                   : ''}
-                {` ${tokenFrom.symbol}`}
+                {` ${tokenFrom.symbol ? tokenFrom.symbol : ''}`}
               </>
             ) : (
               ''
@@ -384,7 +383,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                   formatValue={formatNumbers}
                 />
                 {showPrefix(+printBN(tokenTo.balance, tokenTo.assetScale))}
-                {` ${tokenTo.symbol}`}
+                {` ${tokenTo.symbol ? tokenTo.symbol : ''}`}
               </>
             ) : (
               ''

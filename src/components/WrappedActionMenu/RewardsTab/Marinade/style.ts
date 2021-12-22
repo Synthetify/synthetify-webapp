@@ -4,7 +4,7 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: 'fit-content',
-    borderRadius: 10,
+    borderRadius: 8,
     paddingBlock: 11,
     paddingInline: 16,
     backgroundColor: colors.navy.background,
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingInline: 10
     },
     [theme.breakpoints.down('xs')]: {
-      paddingBlock: 5,
       paddingInline: 3
     }
   },
@@ -34,6 +33,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingRight: '3px',
       fontSize: '14px'
     }
+  },
+  marinadeIconTooltip: {
+    width: 24
   },
   mnde: {
     ...typography.subtitle2,

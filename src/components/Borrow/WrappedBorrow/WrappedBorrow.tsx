@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { printBN } from '@consts/utils'
 import { Grid } from '@material-ui/core'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
@@ -57,7 +58,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
   const [cRatio, setCRatio] = React.useState(100.0)
   const [interestRate, setInterestRate] = React.useState(1)
   const [liquidationPriceTo, setLiquidationPriceTo] = React.useState(1)
-  const [liquidationPriceFrom, setLiquidationPriceFrom] = React.useState(1)
+  const [liquidationPriceFrom, _] = React.useState(1)
 
   const changeCRatio = (nr: number) => {
     setCRatioTo(cRatio / 10)
