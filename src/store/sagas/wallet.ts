@@ -300,7 +300,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     default:
       enumWallet = 'phantom'
   }
-  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
+  yield call([localStorage, localStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
 }
@@ -308,7 +308,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
 export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
-    yield call([sessionStorage, sessionStorage.removeItem], 'SYNTHETIFY_SESSION_WALLET')
+    yield call([localStorage, localStorage.removeItem], 'SYNTHETIFY_SESSION_WALLET')
     yield* put(actions.resetState())
     yield* put(
       exchangeActions.setExchangeAccount({

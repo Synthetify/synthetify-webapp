@@ -245,12 +245,19 @@ export const getSwaplineCollateralBalance = createSelector(
   collaterals,
   assets,
   (allSwaplines, allCollaterals, allAssets) => {
-    const balanceUSD = Object.values(allSwaplines).map((swapline) => {
+    const balanceUSD = Object.values(allSwaplines).map(swapline => {
       const collateral = allCollaterals[swapline.collateral.toString()]
       if (!collateral) {
         return 0
       } else {
-        return (+printBN(swapline.balance.val, swapline.balance.scale) - +printBN(swapline.accumulatedFee.val, swapline.accumulatedFee.scale)) * +printBN(allAssets[collateral.assetIndex].price.val, allAssets[collateral.assetIndex].price.scale)
+        return (
+          (+printBN(swapline.balance.val, swapline.balance.scale) -
+            +printBN(swapline.accumulatedFee.val, swapline.accumulatedFee.scale)) *
+          +printBN(
+            allAssets[collateral.assetIndex].price.val,
+            allAssets[collateral.assetIndex].price.scale
+          )
+        )
       }
     })
     return balanceUSD.reduce((sum, val) => sum + val, 0)
@@ -304,15 +311,19 @@ export const getSyntheticsStructure = createSelector(
         symbol: item.symbol,
         debt: {
           amount: +printDecimal(item.supply),
-          usdValue: +transformBN(assets[item.assetIndex].price.val
-            .mul(item.supply.val)
-            .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
+          usdValue: +transformBN(
+            assets[item.assetIndex].price.val
+              .mul(item.supply.val)
+              .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+          )
         },
         collateral: {
           amount: +printBN(item.borrowedSupply.val.add(item.swaplineSupply.val), item.supply.scale),
-          usdValue: +transformBN(assets[item.assetIndex].price.val
-            .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
-            .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY))))
+          usdValue: +transformBN(
+            assets[item.assetIndex].price.val
+              .mul(item.borrowedSupply.val.add(item.swaplineSupply.val))
+              .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+          )
         }
       }
     })
@@ -331,25 +342,21 @@ export const getSyntheticsStructure = createSelector(
   }
 )
 
-export const getSyntheticsValue = createSelector(
-  synthetics,
-  assets,
-  (allSynthetics, assets) => {
-    let totalVal = new BN(0)
-    const values = Object.values(allSynthetics).map(item => {
-      const value = assets[item.assetIndex].price.val
-        .mul(item.supply.val)
-        .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
-      totalVal = totalVal.add(value)
-      return {
-        value: +transformBN(value),
-        symbol: item.symbol,
-        scale: item.supply.scale
-      }
-    })
-    return values
-  }
-)
+export const getSyntheticsValue = createSelector(synthetics, assets, (allSynthetics, assets) => {
+  let totalVal = new BN(0)
+  const values = Object.values(allSynthetics).map(item => {
+    const value = assets[item.assetIndex].price.val
+      .mul(item.supply.val)
+      .div(new BN(10 ** (item.supply.scale + ORACLE_OFFSET - ACCURACY)))
+    totalVal = totalVal.add(value)
+    return {
+      value: +transformBN(value),
+      symbol: item.symbol,
+      scale: item.supply.scale
+    }
+  })
+  return values
+})
 
 export const getCollateralValue = createSelector(collaterals, assets, (allColaterals, assets) => {
   let totalVal = new BN(0)
@@ -368,9 +375,9 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
   return typeof snyIndex !== 'undefined'
     ? assets[snyIndex].price
     : {
-      val: new BN(0),
-      scale: 6
-    }
+        val: new BN(0),
+        scale: 6
+      }
 })
 
 export const getHaltedState = createSelector(state, allState => {

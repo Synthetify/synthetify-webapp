@@ -10,7 +10,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 127,
     height: 42,
     backgroundColor: colors.navy.navButton,
-    paddingInline: 0,
+    width: 'fit-content',
+    flexShrink: 0,
+    paddingInline: 5,
 
     '&:hover': {
       backgroundColor: colors.navy.navButton
@@ -37,7 +39,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   startIcon: {
-    marginRight: 5
+    marginRight: 5,
+    marginLeft: 0
   }
 }))
 
