@@ -7,7 +7,6 @@ import DownIcon from '@material-ui/icons/KeyboardArrowDown'
 import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
-import { Decimal, Vault } from '@synthetify/sdk/lib/exchange'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
 import { printBN } from '@consts/utils'
@@ -52,8 +51,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   changeCRatio,
   sending,
   hasError,
-  onSelectPair,
-  changeValueFromTable
+  onSelectPair
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -70,7 +68,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
-  const [nameSubmitButton, setNameSubmitButton] = React.useState<ActionType>('add')
+  const [nameSubmitButton, _] = React.useState<ActionType>('add')
   const getAssetInAndFor = (pair: BorrowedPair | null): [AssetPriceData, AssetPriceData] => {
     if (pair === null) {
       return [

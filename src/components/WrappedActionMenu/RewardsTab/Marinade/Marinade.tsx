@@ -16,25 +16,27 @@ export const Marinade: React.FC<IProp> = ({ marinade }) => {
     <MobileTooltip
       mobilePlacement='bottom-start'
       desktopPlacement='bottom-start'
-      hint={(
+      hint={
         <>
-          <Typography className={classes.title}>Average MNDE APY</Typography>
+          <Grid style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between' }}>
+            <Typography className={classes.title}>Average MNDE APY</Typography>{' '}
+            <img src={icons.marinadeWhite} alt='' className={classes.marinadeIconTooltip} />
+          </Grid>
           <p style={{ margin: 0, color: colors.navy.lightGrey }}>
-            To receive MNDE tokens, you need to have deposited mSOL and minted debt.
-            Tokens are distributed once a week. Snapshots are taken once a day to determine, how much tokens you would receive.
+            To receive MNDE tokens, you need to have deposited mSOL and minted debt. Tokens are
+            distributed once a week. Snapshots are taken once a day to determine, how much tokens
+            you would receive.
           </p>
         </>
-      )}
-      anchor={(
-        <Grid
-          className={classes.root}
-        >
+      }
+      anchor={
+        <Grid className={classes.root}>
           <img src={icons.marinade} alt='' className={classes.marinadeIcon} />
           <Typography className={classes.mnde}>
             {marinade}% {!isSmDown ? 'MNDE' : ''}
           </Typography>
         </Grid>
-      )}
+      }
     />
   )
 }
