@@ -510,19 +510,8 @@ export function* handleSwaplineWSOLSwap(
   )
   const tx =
     type === 'nativeToSynthetic'
-      ? new Transaction()
-        .add(createIx)
-        .add(transferIx)
-        .add(initIx)
-        .add(approveIx)
-        .add(swaplineIx)
-        .add(unwrapIx)
-      : new Transaction()
-        .add(createIx)
-        .add(initIx)
-        .add(approveIx)
-        .add(swaplineIx)
-        .add(unwrapIx)
+      ? new Transaction().add(createIx).add(transferIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
+      : new Transaction().add(createIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
 
   const blockhash = yield* call([connection, connection.getRecentBlockhash])
   tx.feePayer = wallet.publicKey
@@ -624,11 +613,6 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
   // if (allCollaterals[vaultSwapData.collateral.toString()].symbol === 'WSOL') {
   //   return yield* call(depositCollateralWSOL, vaultSwapData.collateralAmount)
   // }
-  const userExchangeAccount = yield* select(exchangeAccount)
-  const accountIx = yield* call(
-    [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
-    wallet.publicKey
-  )
 
   const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
     owner: wallet.publicKey,
@@ -652,14 +636,11 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
     tou64(vaultSwapData.collateralAmount)
   )
   let tx
-  if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
-    tx = new Transaction().add(accountIx.ix).add(ix).add(approveDepositIx).add(depositIx)
+
+  if (!vaultSwapData.vaultEntryExist) {
+    tx = new Transaction().add(ix).add(approveDepositIx).add(depositIx)
   } else {
-    if (!vaultSwapData.vaultEntryExist) {
-      tx = new Transaction().add(ix).add(approveDepositIx).add(depositIx)
-    } else {
-      tx = new Transaction().add(approveDepositIx).add(depositIx)
-    }
+    tx = new Transaction().add(approveDepositIx).add(depositIx)
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
@@ -679,12 +660,6 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   if (userSyntheticTokenAccount == null) {
     userSyntheticTokenAccount = yield* call(createAccount, vaultSwapData.synthetic)
   }
-  const userExchangeAccount = yield* select(exchangeAccount)
-  const accountIx = yield* call(
-    [exchangeProgram, exchangeProgram.createExchangeAccountInstruction],
-    wallet.publicKey
-  )
-
   const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
@@ -720,29 +695,19 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   let tx
 
   if (vaultSwapData.collateralAmount.gt(new BN(0))) {
-    if (userExchangeAccount.address.equals(DEFAULT_PUBLICKEY)) {
+    if (!vaultSwapData.vaultEntryExist) {
       tx = new Transaction()
-        .add(accountIx.ix)
         .add(ix)
         .add(approveDepositIx)
         .add(depositIx)
         .add(updatePricesIx)
         .add(borrowedIx)
     } else {
-      if (!vaultSwapData.vaultEntryExist) {
-        tx = new Transaction()
-          .add(ix)
-          .add(approveDepositIx)
-          .add(depositIx)
-          .add(updatePricesIx)
-          .add(borrowedIx)
-      } else {
-        tx = new Transaction()
-          .add(approveDepositIx)
-          .add(depositIx)
-          .add(updatePricesIx)
-          .add(borrowedIx)
-      }
+      tx = new Transaction()
+        .add(approveDepositIx)
+        .add(depositIx)
+        .add(updatePricesIx)
+        .add(borrowedIx)
     }
   } else {
     tx = new Transaction().add(updatePricesIx).add(borrowedIx)

@@ -28,6 +28,7 @@ const ExhcangeEvents = () => {
       return
     }
     const connectEvents = () => {
+      console.log('test')
       exchangeProgram.onAccountChange(userAccount.address, a => {
         dispatch(
           actions.setExchangeAccount({

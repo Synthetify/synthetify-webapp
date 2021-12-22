@@ -496,12 +496,7 @@ export const getGeneralTotals = createSelector(
           printBN(
             userVault.collateralAmount.val.mul(
               allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val
-                .div(new BN(
-                  10 **
-                allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.scale -
-                userVault.collateralAmount.scale
-                ))
-            ),
+            ).div(new BN(10 ** allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.scale)),
             allCollaterals[currentVault.collateral.toString()].reserveBalance.scale
           )
         )
@@ -510,13 +505,9 @@ export const getGeneralTotals = createSelector(
         Number(
           printBN(
             userVault.syntheticAmount.val.mul(
-              allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val.div(
-                new BN(
-                  10 **
-                    allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.scale -
-                    userVault.syntheticAmount.scale
-                )
-              )
+              allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val
+            ).div(
+              new BN(10 ** allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.scale)
             ),
             allSynthetics[currentVault.synthetic.toString()].supply.scale
           )
