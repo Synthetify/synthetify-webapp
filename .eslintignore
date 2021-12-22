@@ -2,3 +2,7 @@ ServiceWorker.ts
 react-app-env.d.ts
 config-overrides.js
 build
+dist
+vite.config.ts
+custom.d.ts
+.eslintrc.js

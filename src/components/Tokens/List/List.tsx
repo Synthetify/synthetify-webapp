@@ -13,34 +13,32 @@ export const List: React.FC<IProps> = ({ tokens, type }) => {
 
   return (
     <Grid item xs={12}>
-      <Grid container className={classes.header} wrap='nowrap' alignItems='center' justifyContent='space-between'>
+      <Grid
+        container
+        className={classes.header}
+        wrap='nowrap'
+        alignItems='center'
+        justifyContent='space-between'>
         <Grid className={classes.column} container item alignItems='center'>
-          <Typography className={classes.headerFont}>
-                Token
-          </Typography>
+          <Typography className={classes.headerFont}>Token</Typography>
         </Grid>
         <Grid className={classes.column} container item alignItems='center'>
-          <Typography className={classes.headerFont}>
-                Balance
-          </Typography>
+          <Typography className={classes.headerFont}>Balance</Typography>
         </Grid>
         <Grid className={classes.column} container item alignItems='center'>
-          <Typography className={classes.headerFont}>
-                USD value
-          </Typography>
+          <Typography className={classes.headerFont}>USD value</Typography>
         </Grid>
       </Grid>
-      {tokens.length > 0
-        ? tokens.map((token, index) => (
-          <Item key={index} {...token} />
-        ))
-        : (
-          <Grid className={classes.emptyTokens} container direction='column' justifyContent='center'>
-            <Typography>No tokens to show.</Typography>
-            <Typography>{type === 'Staked' ? 'Please deposit some collaterals.' : 'Please connect an account.'}</Typography>
-          </Grid>
-        )
-      }
+      {tokens.length > 0 ? (
+        tokens.map((token, index) => <Item key={index} {...token} />)
+      ) : (
+        <Grid className={classes.emptyTokens} container direction='column' justifyContent='center'>
+          <Typography>No tokens to show.</Typography>
+          <Typography>
+            {type === 'Staked' ? 'Please deposit some collaterals.' : 'Please connect an account.'}
+          </Typography>
+        </Grid>
+      )}
     </Grid>
   )
 }

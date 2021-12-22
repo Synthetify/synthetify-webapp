@@ -7,7 +7,6 @@ import DownIcon from '@material-ui/icons/KeyboardArrowDown'
 import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
-import { Decimal, Vault } from '@synthetify/sdk/lib/exchange'
 import { BN } from '@project-serum/anchor'
 import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
@@ -31,6 +30,7 @@ import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
 import AllInclusiveOutlinedIcon from '@material-ui/icons/AllInclusiveOutlined'
 import AllInclusiveRoundedIcon from '@material-ui/icons/AllInclusiveRounded'
 import useStyles from './style'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -107,7 +107,6 @@ export const ActionBorrow: React.FC<IProp> = ({
   }
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
-
   const [nameSubmitButton, setNameSubmitButton] = React.useState('add')
   const [actionSubmit, setActionSubmit] = React.useState<ActionType>(
     action === 'borrow' ? 'add' : 'withdraw'
@@ -391,9 +390,8 @@ export const ActionBorrow: React.FC<IProp> = ({
                   onClick={onClickPopover}
                   style={{
                     color:
-                      Number(
-                        cRatio === '---' && cRatioTo !== 'NaN'? cRatioTo : cRatio
-                      ) >= Number(minCRatio)
+                      Number(cRatio === '---' && cRatioTo !== 'NaN' ? cRatioTo : cRatio) >=
+                      Number(minCRatio)
                         ? colors.green.button
                         : colors.red.error
                   }}>

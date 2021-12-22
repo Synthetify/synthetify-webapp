@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { printBN } from '@consts/utils'
 import { Grid } from '@material-ui/core'
@@ -176,7 +177,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
                   )
                 ),
                 -1
-              ) * 100}
+              ) * 100
+            }
             collateralAddress={pairs[pairIndex].collateral}
             borrowedAddress={pairs[pairIndex].synthetic}
             borrowedSign={pairs[pairIndex].syntheticData.symbol}

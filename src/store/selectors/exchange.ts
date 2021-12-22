@@ -382,9 +382,9 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
   return typeof snyIndex !== 'undefined'
     ? assets[snyIndex].price
     : {
-      val: new BN(0),
-      scale: 6
-    }
+        val: new BN(0),
+        scale: 6
+      }
 })
 
 export const getHaltedState = createSelector(state, allState => {
@@ -494,9 +494,17 @@ export const getGeneralTotals = createSelector(
         totalCollatera +
         Number(
           printBN(
-            userVault.collateralAmount.val.mul(
-              allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val
-            ).div(new BN(10 ** allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.scale)),
+            userVault.collateralAmount.val
+              .mul(
+                allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val
+              )
+              .div(
+                new BN(
+                  10 **
+                    allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price
+                      .scale
+                )
+              ),
             allCollaterals[currentVault.collateral.toString()].reserveBalance.scale
           )
         )
@@ -504,11 +512,15 @@ export const getGeneralTotals = createSelector(
         totalDebt +
         Number(
           printBN(
-            userVault.syntheticAmount.val.mul(
-              allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val
-            ).div(
-              new BN(10 ** allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.scale)
-            ),
+            userVault.syntheticAmount.val
+              .mul(allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val)
+              .div(
+                new BN(
+                  10 **
+                    allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price
+                      .scale
+                )
+              ),
             allSynthetics[currentVault.synthetic.toString()].supply.scale
           )
         )
