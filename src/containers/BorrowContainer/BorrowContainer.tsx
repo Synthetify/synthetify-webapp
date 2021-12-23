@@ -1,6 +1,6 @@
-import { WrappedBorrow } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
+import { BorrowedPair, WrappedBorrow } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
 import { Grid, Typography } from '@material-ui/core'
-import { BorrowedPair, getAvailableCollateral, getAvailableRepay, status } from '@selectors/solanaWallet'
+import { getAvailableCollateral, getAvailableRepay, status } from '@selectors/solanaWallet'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '@reducers/vault'

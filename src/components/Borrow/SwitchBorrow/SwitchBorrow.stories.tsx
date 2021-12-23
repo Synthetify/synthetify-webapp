@@ -6,7 +6,7 @@ import ActionMenuBorrow, { IActionContents } from './ActionMenuBorrow'
 import { ActionBorrow } from './ActionBorrow'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Collateral, PriceStatus, Synthetic, Vault } from '@synthetify/sdk/lib/exchange'
+import { Asset, Collateral, OracleType, PriceStatus, Synthetic, Vault } from '@synthetify/sdk/lib/exchange'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 interface BorrowedPair extends Vault {
   collateralData: ExchangeCollateralTokens
@@ -78,11 +78,11 @@ storiesOf('borrow/switchBorrow', module)
         },
         status: PriceStatus.Trading
       }
-      const synthetics = 'xUSD xDOGE xSOL xFFT xETH x1INCH xAAVE xAERGO xAETH xAKRO'.split(' ').map(
-        (i): ExchangeSyntheticTokens => {
+      const synthetics = 'xUSD xDOGE xSOL xFFT xETH x1INCH xAAVE xAERGO xAETH xAKRO'
+        .split(' ')
+        .map((i): ExchangeSyntheticTokens => {
           return { symbol: i, balance: new BN(0), ...defaultAsset, ...defaultSynthetic }
-        }
-      )
+        })
       synthetics[0].balance = new BN(100).mul(new BN(10000))
       synthetics[1].balance = new BN(10).mul(new BN(10000))
       synthetics[1].price = {
@@ -90,8 +90,9 @@ storiesOf('borrow/switchBorrow', module)
         scale: 4
       }
 
-      const collaterals = 'USDC DOGE WSOL FFT ETH 1INCH AAVE AERGO AETH AKRO'.split(' ').map(
-        (i): ExchangeCollateralTokens => {
+      const collaterals = 'USDC DOGE WSOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
+        .split(' ')
+        .map((i): ExchangeCollateralTokens => {
           return {
             symbol: i,
             balance: new BN(0),
@@ -102,8 +103,7 @@ storiesOf('borrow/switchBorrow', module)
               val: new BN(3).mul(new BN(1000))
             }
           }
-        }
-      )
+        })
       collaterals[0].balance = new BN(100).mul(new BN(10000))
       collaterals[1].balance = new BN(10).mul(new BN(10000))
       collaterals[1].price = {
@@ -116,57 +116,56 @@ storiesOf('borrow/switchBorrow', module)
         synthetic: new PublicKey(0),
         collateral: new PublicKey(0),
         collateralReserve: new PublicKey(0),
-        fee: {
-          val: new BN(30000),
-          scale: 6
-        },
-        bump: 1,
         halted: false,
         collateralRatio: {
-          val: new BN(3096),
-          scale: 2
+          val: new BN(30000),
+          scale: 5
         },
         liquidationThreshold: {
-          val: new BN(867),
-          scale: 2
+          val: new BN(50000),
+          scale: 5
         },
         liquidationRatio: {
-          val: new BN(30000),
-          scale: 0
+          val: new BN(50000),
+          scale: 5
         },
         liquidationPenaltyLiquidator: {
-          val: new BN(30000),
-          scale: 0
+          val: new BN(50000),
+          scale: 6
         },
         liquidationPenaltyExchange: {
-          val: new BN(30000),
-          scale: 0
+          val: new BN(50000),
+          scale: 6
         },
         debtInterestRate: {
-          val: new BN(30000),
-          scale: 0
+          val: new BN(50000),
+          scale: 6
         },
         accumulatedInterest: {
-          val: new BN(2175),
-          scale: 2
+          val: new BN(50000),
+          scale: 6
         },
         accumulatedInterestRate: {
-          val: new BN(2185),
-          scale: 2
+          val: new BN(50000),
+          scale: 6
         },
         mintAmount: {
-          val: new BN(30000),
-          scale: 0
+          val: new BN(5000000),
+          scale: 6
         },
         collateralAmount: {
-          val: new BN(30000),
-          scale: 0
+          val: new BN(1000000),
+          scale: 6
         },
         maxBorrow: {
-          val: new BN(3256349),
-          scale: 4
+          val: new BN(1000000000),
+          scale: 6
         },
-        lastUpdate: new BN(30000)
+        lastUpdate: new BN(30000),
+        oracleType: 0 as OracleType,
+        collateralPriceFeed: new PublicKey(0),
+        liquidationFund: new PublicKey(0),
+        openFee: { val: new BN(10), scale: 3 }
       }))
 
       const [cRatio, setCRatio] = React.useState('100.0')
@@ -185,13 +184,13 @@ storiesOf('borrow/switchBorrow', module)
             pairs={pairs}
             sending={false}
             hasError={false}
-            action={''}
+            action={'borrow'}
             vaultAmount={{
               collateralAmount: { val: new BN(0), scale: 0 },
               borrowAmount: { val: new BN(0), scale: 0 }
             }}
-            availableTo={new BN(10)}
-            availableFrom={new BN(10)}
+            availableTo={new BN(1000000)}
+            availableFrom={new BN(1000000)}
             setLiquidationPriceTo={(nr: number) => {
               console.log(nr)
             }}
@@ -208,11 +207,12 @@ storiesOf('borrow/switchBorrow', module)
             setPairIndex={() => {}}
             walletStatus={true}
             noWalletHandler={() => {}}
+            cRatioStatic={['300', '500']}
           />
         ),
         repay: (
           <ActionBorrow
-            action={''}
+            action={'repay'}
             cRatio={''}
             liquidationPriceTo={0}
             liquidationPriceFrom={0}
@@ -225,8 +225,8 @@ storiesOf('borrow/switchBorrow', module)
               collateralAmount: { val: new BN(0), scale: 0 },
               borrowAmount: { val: new BN(0), scale: 0 }
             }}
-            availableTo={new BN(10)}
-            availableFrom={new BN(10)}
+            availableTo={new BN(1000000)}
+            availableFrom={new BN(1000000)}
             setLiquidationPriceTo={(nr: number) => {
               console.log(nr)
             }}
@@ -243,6 +243,7 @@ storiesOf('borrow/switchBorrow', module)
             setPairIndex={() => {}}
             walletStatus={true}
             noWalletHandler={() => {}}
+            cRatioStatic={['300', '500']}
           />
         )
       }

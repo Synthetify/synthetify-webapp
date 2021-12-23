@@ -28,6 +28,7 @@ storiesOf('Borrow/Info', module).add('default', () => (
       interestRate={''}
       liqRatio={0}
       cRatio={0}
+      openFee={0}
     />
   </Grid>
 ))

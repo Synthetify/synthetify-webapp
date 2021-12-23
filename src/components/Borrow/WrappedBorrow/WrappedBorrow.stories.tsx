@@ -4,7 +4,7 @@ import { BorrowedPair, WrappedBorrow } from './WrappedBorrow'
 import { BN } from '@project-serum/anchor'
 import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Collateral, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
+import { Asset, Collateral, OracleType, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { Grid } from '@material-ui/core'
 import { UserVaults } from '@selectors/exchange'
 
@@ -72,11 +72,9 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       },
       status: PriceStatus.Trading
     }
-    const synthetics = 'xSOL xETH'.split(' ').map(
-      (i): ExchangeSyntheticTokens => {
-        return { symbol: i, balance: new BN(0), ...defaultAsset, ...defaultSynthetic }
-      }
-    )
+    const synthetics = 'xSOL xETH'.split(' ').map((i): ExchangeSyntheticTokens => {
+      return { symbol: i, balance: new BN(0), ...defaultAsset, ...defaultSynthetic }
+    })
     synthetics[0].balance = new BN(100).mul(new BN(10000))
     synthetics[1].balance = new BN(10).mul(new BN(10000))
     synthetics[1].price = {
@@ -84,20 +82,18 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       scale: 4
     }
 
-    const collaterals = 'WSOL ETH'.split(' ').map(
-      (i): ExchangeCollateralTokens => {
-        return {
-          symbol: i,
-          balance: new BN(0),
-          ...defaultAsset,
-          ...defaultCollateral,
-          price: {
-            ...defaultAsset.price,
-            val: new BN(3).mul(new BN(1000))
-          }
+    const collaterals = 'WSOL ETH'.split(' ').map((i): ExchangeCollateralTokens => {
+      return {
+        symbol: i,
+        balance: new BN(0),
+        ...defaultAsset,
+        ...defaultCollateral,
+        price: {
+          ...defaultAsset.price,
+          val: new BN(3).mul(new BN(1000))
         }
       }
-    )
+    })
     collaterals[0].balance = new BN(100).mul(new BN(10000))
     collaterals[1].balance = new BN(10).mul(new BN(10000))
     collaterals[1].price = {
@@ -160,7 +156,11 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         val: new BN(3256349),
         scale: 4
       },
-      lastUpdate: new BN(30000)
+      lastUpdate: new BN(30000),
+      oracleType: 0 as OracleType,
+      collateralPriceFeed: new PublicKey(0),
+      liquidationFund: new PublicKey(0),
+      openFee: { val: new BN(10), scale: 3 }
     }))
 
     const userVaults: UserVaults[] = [

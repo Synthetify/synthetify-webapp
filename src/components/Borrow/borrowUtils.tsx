@@ -44,15 +44,15 @@ export const calculateAmountBorrow = (
     return collateraPrice
       .mul(amount)
       .div(new BN(1 / decimalChange))
-      .div(syntheticPrice)
       .mul(new BN(10).pow(new BN(cRatioBN.decimal + 2)))
+      .div(syntheticPrice)
       .div(cRatioBN.BN)
   } else {
     return collateraPrice
       .mul(amount)
       .mul(new BN(decimalChange))
-      .div(syntheticPrice)
       .mul(new BN(10).pow(new BN(cRatioBN.decimal + 2)))
+      .div(syntheticPrice)
       .div(cRatioBN.BN)
   }
 }
@@ -66,7 +66,7 @@ export const calculateCRatio = (
   assetFromAmount: BN
 ) => {
   if (assetToAmount > new BN(0)) {
-    const difDecimal = 10 ** (syntheticScale - collateralScale + 4)
+    const difDecimal = 10 ** (syntheticScale - collateralScale)
     if (difDecimal < 1) {
       return assetFromAmount
         .mul(collateraPrice)
@@ -113,8 +113,10 @@ export const calculateAvailableBorrow = (
   vaultEntryAmountCollateral: BN,
   amountCollateral: BN,
   vaultEntryAmountBorrow: BN,
-  minCRatio: string
+  minCRatio: string,
+  openFee: string
 ) => {
+  const openFeeBN = stringToMinDecimalBN(openFee)
   const amountInputAfterCalculation = calculateAmountBorrow(
     assetTo.priceVal,
     assetTo.assetScale,
@@ -133,9 +135,14 @@ export const calculateAvailableBorrow = (
   )
 
   if (amountVaultAfterCalculation.sub(vaultEntryAmountBorrow).gte(new BN(0))) {
-    return amountInputAfterCalculation.add(amountVaultAfterCalculation.sub(vaultEntryAmountBorrow))
+    return amountInputAfterCalculation
+      .add(amountVaultAfterCalculation.sub(vaultEntryAmountBorrow))
+      .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+      .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
   } else {
     return amountInputAfterCalculation
+      .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+      .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
   }
 }
 
@@ -223,11 +230,12 @@ export const calculateLiqAndCRatio = (
       )
     ),
     cRatioTo:
+      /* eslint-disable @typescript-eslint/indent */
       ratioTo === 'NaN'
         ? 'NaN'
         : ratioTo.lt(new BN(0))
-          ? 'NaN'
-          : Math.floor(Number(printBN(ratioTo, 0)) / 100),
+        ? 'NaN'
+        : Math.floor(Number(printBN(ratioTo, 0)) / 100),
     cRatioFrom: ratioFrom === 'NaN' ? 'NaN' : Math.floor(Number(printBN(ratioFrom, 0)) / 100)
   }
 }
@@ -240,7 +248,8 @@ export const calculateAvailableBorrowAndWithdraw = (
   amountCollateral: BN,
   vaultEntryAmountBorrow: BN,
   amountBorrow: BN,
-  minCRatio: string
+  minCRatio: string,
+  openFee: string
 ) => {
   return {
     availableBorrow: calculateAvailableBorrow(
@@ -250,7 +259,8 @@ export const calculateAvailableBorrowAndWithdraw = (
       vaultEntryAmountCollateral,
       amountCollateral,
       vaultEntryAmountBorrow,
-      minCRatio
+      minCRatio,
+      openFee
     ),
     availableWithdraw: calculateAvailableWithdraw(
       assetTo,
@@ -420,7 +430,12 @@ export const changeInputSynthetic = (
       cRatio
     )
   }
-
+  console.log(
+    'BN: ',
+    printBN(new BN(Number(BNValue.BN.toString()) * (10 ** difDecimal)), tokenTo.assetScale),
+    'deciimal ',
+    BNValue.decimal
+  )
   return {
     amountBorBN: BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))),
     amountCollString: printBN(amountCollBN, tokenFrom.assetScale),

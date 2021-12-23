@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: colors.navy.darkGrey,
     ...typography.subtitle2,
     color: colors.navy.info,
-    padding: '14px 10px',
+    padding: '14px 0 14px 10px ',
     '&:first-child': {
       paddingLeft: '14px'
     },
@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '13px'
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '14px 4px',
+      padding: '14px 0 14px 4px',
       '&:first-child': {
         paddingLeft: '12px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      padding: '10px 4px',
+      padding: '10px 0 10px 4px',
       '&:first-child': {
         paddingLeft: '12px'
       }
@@ -36,19 +36,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
     ...typography.body3,
     color: colors.navy.veryLightGrey,
-    padding: '12px 10px',
+    padding: '12px 0 12px 10px',
     cursor: 'pointer',
     '&:first-child': {
-      paddingLeft: '12px'
+      paddingLeft: '14px'
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.caption2,
+      padding: '12px 0 12px 4px',
       '&:first-child': {
         paddingLeft: '12px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption4,
+      padding: '10px 0 10px 4px',
       '&:first-child': {
         paddingLeft: '12px'
       }
@@ -86,6 +88,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.caption4,
       margin: '6px 0px'
     }
+  },
+  dualIcon: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 'fit-content'
+  },
+  secondIcon: {
+    marginLeft: '-0.35em'
   }
 }))
 

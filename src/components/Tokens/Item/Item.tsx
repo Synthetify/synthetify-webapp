@@ -62,7 +62,7 @@ export const Item: React.FC<IToken> = ({ ticker, balance, decimals, usdValue, as
       </Grid>
       <Grid className={classes.column} container item alignItems='center'>
         <Typography className={classes.font}>
-          ${' '}
+          {'$ '}
           <AnimatedNumber
             value={printBN(usdValue, decimals)}
             duration={300}

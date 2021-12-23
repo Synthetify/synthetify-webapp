@@ -196,6 +196,9 @@ export const WrappedBorrow: React.FC<IProp> = ({
               pairs[pairIndex].debtInterestRate.val,
               pairs[pairIndex].debtInterestRate.scale - 4
             )}
+            openFee={
+              Number(printBN(pairs[pairIndex].openFee.val, pairs[pairIndex].openFee.scale)) * 100
+            }
           />
         ) : (
           <BorrowInfo
@@ -213,6 +216,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
             callPrice={'0'}
             borrPrice={'0'}
             interestRate={'0'}
+            openFee={0}
           />
         )}
       </Grid>

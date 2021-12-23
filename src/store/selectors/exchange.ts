@@ -4,7 +4,14 @@ import {
   calculateLiqPrice
 } from '@components/Borrow/borrowUtils'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
-import { divUp, discountData, printBN, transformBN, printDecimal } from '@consts/utils'
+import {
+  divUp,
+  discountData,
+  printBN,
+  transformBN,
+  printDecimal,
+  stringToMinDecimalBN
+} from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
@@ -425,6 +432,28 @@ export const getUserVaults = createSelector(
       const interestRate =
         Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
         100
+
+      const openFeeBN = stringToMinDecimalBN(
+        (Number(printBN(currentVault.openFee.val, currentVault.openFee.scale)) * 100).toString()
+      )
+
+      const maxBorrow = calculateAmountBorrow(
+        allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
+        allSynthetics[currentVault.synthetic.toString()].supply.scale,
+        allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
+        allCollaterals[currentVault.collateral.toString()].reserveBalance.scale,
+        userVault.collateralAmount.val,
+        Number(
+          Math.pow(
+            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)) /
+              100,
+            -1
+          )
+        ).toString()
+      )
+        .sub(userVault.syntheticAmount.val)
+        .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+        .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
       const vaultData: UserVaults = {
         ...userVault,
         borrowed: allSynthetics[currentVault.synthetic.toString()].symbol,
@@ -446,21 +475,7 @@ export const getUserVaults = createSelector(
         ),
         currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
         maxBorrow: printBN(
-          calculateAmountBorrow(
-            allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
-            allSynthetics[currentVault.synthetic.toString()].supply.scale,
-            allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
-            allCollaterals[currentVault.collateral.toString()].reserveBalance.scale,
-            userVault.collateralAmount.val,
-            Number(
-              Math.pow(
-                Number(
-                  printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)
-                ) / 100,
-                -1
-              )
-            ).toString()
-          ).sub(userVault.syntheticAmount.val),
+          maxBorrow.gt(new BN(0)) ? maxBorrow : new BN(0),
           allSynthetics[currentVault.synthetic.toString()].supply.scale
         ),
         interestRate: interestRate.toString(),

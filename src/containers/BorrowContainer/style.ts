@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     maxWidth: '1400px',
     width: 'unset',
-    paddingInline: 20
+    paddingInline: 18
   },
   text: {
     ...typography.heading1,

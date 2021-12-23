@@ -6,6 +6,7 @@ import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
+  Account,
   Keypair,
   PublicKey,
   sendAndConfirmRawTransaction,
@@ -508,9 +509,16 @@ export function* handleSwaplineWSOLSwap(
     wallet.publicKey,
     []
   )
+  /* eslint-disable @typescript-eslint/indent */
   const tx =
     type === 'nativeToSynthetic'
-      ? new Transaction().add(createIx).add(transferIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
+      ? new Transaction()
+          .add(createIx)
+          .add(transferIx)
+          .add(initIx)
+          .add(approveIx)
+          .add(swaplineIx)
+          .add(unwrapIx)
       : new Transaction().add(createIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
 
   const blockhash = yield* call([connection, connection.getRecentBlockhash])
@@ -609,38 +617,33 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
   const vaultsPair = yield* select(vaults)
-  // const allCollaterals = yield* select(collaterals)
-  // if (allCollaterals[vaultSwapData.collateral.toString()].symbol === 'WSOL') {
-  //   return yield* call(depositCollateralWSOL, vaultSwapData.collateralAmount)
-  // }
-
+  const connection = yield* call(getConnection)
+  const token = new Token(
+    connection,
+    tokensAccounts[vaultSwapData.collateral.toString()].address,
+    TOKEN_PROGRAM_ID,
+    new Account()
+  )
   const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral
   })
-  const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositInstruction], {
-    owner: wallet.publicKey,
-    synthetic: vaultSwapData.synthetic,
+  const depositTx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
     collateral: vaultSwapData.collateral,
+    synthetic: vaultSwapData.synthetic,
+    owner: wallet.publicKey,
+    amount: vaultSwapData.collateralAmount,
     userCollateralAccount: userCollateralTokenAccount.address,
     reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
-    amount: vaultSwapData.collateralAmount
+    collateralToken: token
   })
-  const approveDepositIx = Token.createApproveInstruction(
-    TOKEN_PROGRAM_ID,
-    userCollateralTokenAccount.address,
-    exchangeProgram.exchangeAuthority,
-    wallet.publicKey,
-    [],
-    tou64(vaultSwapData.collateralAmount)
-  )
   let tx
 
   if (!vaultSwapData.vaultEntryExist) {
-    tx = new Transaction().add(ix).add(approveDepositIx).add(depositIx)
+    tx = new Transaction().add(ix).add(depositTx)
   } else {
-    tx = new Transaction().add(approveDepositIx).add(depositIx)
+    tx = new Transaction().add(depositTx)
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
@@ -653,6 +656,13 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
   const vaultsPair = yield* select(vaults)
+  const connection = yield* call(getConnection)
+  const token = new Token(
+    connection,
+    tokensAccounts[vaultSwapData.collateral.toString()].address,
+    TOKEN_PROGRAM_ID,
+    new Account()
+  )
   let userSyntheticTokenAccount = tokensAccounts[vaultSwapData.synthetic.toString()]
     ? tokensAccounts[vaultSwapData.synthetic.toString()].address
     : null
@@ -665,52 +675,34 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral
   })
-  const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositInstruction], {
-    owner: wallet.publicKey,
-    synthetic: vaultSwapData.synthetic,
+  const depositTx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
     collateral: vaultSwapData.collateral,
+    synthetic: vaultSwapData.synthetic,
+    owner: wallet.publicKey,
+    amount: vaultSwapData.collateralAmount,
     userCollateralAccount: userCollateralTokenAccount.address,
     reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
-    amount: vaultSwapData.collateralAmount
+    collateralToken: token
   })
-  const approveDepositIx = Token.createApproveInstruction(
-    TOKEN_PROGRAM_ID,
-    userCollateralTokenAccount.address,
-    exchangeProgram.exchangeAuthority,
-    wallet.publicKey,
-    [],
-    tou64(vaultSwapData.collateralAmount)
-  )
-  const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
-  )
-  const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultInstruction], {
+
+  const borrowedTx = yield* call([exchangeProgram, exchangeProgram.borrowVaultTransaction], {
     owner: wallet.publicKey,
     to: userSyntheticTokenAccount,
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral,
-    amount: vaultSwapData.syntheticAmount
+    amount: vaultSwapData.syntheticAmount,
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
   })
   let tx
 
   if (vaultSwapData.collateralAmount.gt(new BN(0))) {
     if (!vaultSwapData.vaultEntryExist) {
-      tx = new Transaction()
-        .add(ix)
-        .add(approveDepositIx)
-        .add(depositIx)
-        .add(updatePricesIx)
-        .add(borrowedIx)
+      tx = new Transaction().add(ix).add(depositTx).add(borrowedTx)
     } else {
-      tx = new Transaction()
-        .add(approveDepositIx)
-        .add(depositIx)
-        .add(updatePricesIx)
-        .add(borrowedIx)
+      tx = new Transaction().add(depositTx).add(borrowedTx)
     }
   } else {
-    tx = new Transaction().add(updatePricesIx).add(borrowedIx)
+    tx = new Transaction().add(borrowedTx)
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
@@ -723,21 +715,19 @@ export function* handleWithdrawCollateralVault(vaultSwapData: VaultSwap): SagaGe
   const exchangeProgram = yield* call(getExchangeProgram)
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
+  const vaultsPair = yield* select(vaults)
 
-  const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
-  )
-
-  const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
+  const withdrawTx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
     amount: vaultSwapData.collateralAmount,
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral,
-    userCollateralAccount: userCollateralTokenAccount.address
+    userCollateralAccount: userCollateralTokenAccount.address,
+    reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
   })
 
-  const tx = new Transaction().add(updatePricesIx).add(withdrawIx)
+  const tx = new Transaction().add(withdrawTx)
   const signature = yield* call(signAndSend, wallet, tx)
   yield* call(sleep, 1500) // Give time to subscribe to account
   return signature
@@ -748,54 +738,32 @@ export function* handleRepaySyntheticVault(vaultSwapData: VaultSwap): SagaGenera
   const exchangeProgram = yield* call(getExchangeProgram)
   const tokensAccounts = yield* select(accounts)
   const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
-  const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
-  )
-  const repayApproveIx = Token.createApproveInstruction(
-    TOKEN_PROGRAM_ID,
-    tokensAccounts[vaultSwapData.synthetic.toString()].address,
-    exchangeProgram.exchangeAuthority,
-    wallet.publicKey,
-    [],
-    tou64(vaultSwapData.syntheticAmount)
-  )
-  const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultInstruction], {
+  const vaultsPair = yield* select(vaults)
+
+  const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultTransaction], {
     collateral: vaultSwapData.collateral,
     synthetic: vaultSwapData.synthetic,
     amount: vaultSwapData.syntheticAmount,
     owner: wallet.publicKey,
     userTokenAccountRepay: tokensAccounts[vaultSwapData.synthetic.toString()].address
   })
-  const withdrawApproveIx = Token.createApproveInstruction(
-    TOKEN_PROGRAM_ID,
-    userCollateralTokenAccount.address,
-    exchangeProgram.exchangeAuthority,
-    wallet.publicKey,
-    [],
-    tou64(vaultSwapData.syntheticAmount)
-  )
-  const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
+
+  const withdrawTx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
     amount: vaultSwapData.collateralAmount,
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral,
-    userCollateralAccount: userCollateralTokenAccount.address
+    userCollateralAccount: userCollateralTokenAccount.address,
+    reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
   })
   let tx
 
   if (vaultSwapData.collateralAmount.gt(new BN(0))) {
-    tx = new Transaction()
-      .add(repayApproveIx)
-      .add(updatePricesIx)
-      .add(repayIx)
-      .add(withdrawApproveIx)
-      .add(updatePricesIx)
-      .add(withdrawIx)
+    tx = new Transaction().add(repayIx).add(withdrawTx)
   } else {
-    tx = new Transaction().add(repayApproveIx).add(updatePricesIx).add(repayIx)
+    tx = new Transaction().add(repayIx)
   }
-
   const signature = yield* call(signAndSend, wallet, tx)
   yield* call(sleep, 1500) // Give time to subscribe to account
   return signature
