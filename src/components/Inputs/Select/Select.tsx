@@ -16,8 +16,12 @@ export interface ISelectModal {
   centered?: boolean
   tokens?: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
   pairs?: Array<{ symbol1: string, symbol2: string }>
-  onSelect: (chosen: number) => void
+  onSelect?: (chosen: number) => void
   className?: string
+  hideArrow?: boolean
+  walletConnected?: boolean
+  noWalletHandler?: () => void
+  emptyTokensHandler?: () => void
 }
 export const Select: React.FC<ISelectModal> = ({
   name = 'Select a token',
@@ -26,7 +30,11 @@ export const Select: React.FC<ISelectModal> = ({
   tokens,
   pairs,
   onSelect,
-  className
+  className,
+  hideArrow,
+  walletConnected,
+  noWalletHandler,
+  emptyTokensHandler
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -34,9 +42,21 @@ export const Select: React.FC<ISelectModal> = ({
   const isXs = useMediaQuery(theme.breakpoints.down('xs'))
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-    blurContent()
-    setOpen(true)
+    if (!walletConnected && noWalletHandler) {
+      noWalletHandler()
+      return
+    }
+
+    if (!!walletConnected && !tokens?.length && emptyTokensHandler) {
+      emptyTokensHandler()
+      return
+    }
+
+    if (onSelect) {
+      setAnchorEl(event.currentTarget)
+      blurContent()
+      setOpen(true)
+    }
   }
 
   const handleClose = () => {
@@ -47,6 +67,7 @@ export const Select: React.FC<ISelectModal> = ({
   return (
     <>
       <Button
+        disableRipple
         className={classNames(classes.button, className)}
         classes={{ startIcon: classes.startIcon }}
         color='primary'
@@ -57,8 +78,12 @@ export const Select: React.FC<ISelectModal> = ({
             <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={<ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8, marginRight: -4 }} />}
-        style={!current ? (isXs ? typography.caption4 : typography.body3) : undefined}>
+        endIcon={!hideArrow ? <ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} /> : undefined}
+        style={{
+          ...(!current ? (isXs ? typography.caption4 : typography.body3) : {}),
+
+          cursor: onSelect ? 'pointer' : 'auto'
+        }}>
         <span style={{ position: 'relative', whiteSpace: 'nowrap' }}>
           {!current ? name : current}
         </span>
@@ -69,7 +94,7 @@ export const Select: React.FC<ISelectModal> = ({
           open={open}
           centered={centered}
           anchorEl={anchorEl}
-          onSelect={onSelect}
+          onSelect={onSelect ?? (() => {})}
           handleClose={handleClose}
         />
       )}
@@ -79,7 +104,7 @@ export const Select: React.FC<ISelectModal> = ({
           open={open}
           centered={centered}
           anchorEl={anchorEl}
-          onSelect={onSelect}
+          onSelect={onSelect ?? (() => {})}
           handleClose={handleClose}
         />
       )}

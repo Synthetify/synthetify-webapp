@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Divider, Grid, Typography } from '@material-ui/core'
+import { Divider, Grid, Hidden, Typography, useMediaQuery } from '@material-ui/core'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
-import useStyles from './style'
 import { MAX_U64 } from '@consts/static'
-import AmountInput from '@components/Inputs/AmountInput/AmountInput'
 import BurnWarning from '@components/BurnWarning/BurnWarning'
+import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
+import { theme } from '@static/theme'
+import useStyles from './style'
+
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
@@ -27,7 +29,7 @@ export interface IProps {
   noWalletHandler?: () => void
   maxBehavior?: MaxBehavior
   emptyTokensHandler?: () => void
-  balance?: BN,
+  balance?: BN
   showWarning?: boolean
 }
 
@@ -50,6 +52,9 @@ export const ActionTemplate: React.FC<IProps> = ({
   showWarning = false
 }) => {
   const classes = useStyles()
+
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
+
   const [amountBN, setAmountBN] = useState(new BN(0))
   const [decimal, setDecimal] = useState(0)
   const [inputValue, setInputValue] = useState('')
@@ -89,11 +94,12 @@ export const ActionTemplate: React.FC<IProps> = ({
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
     return (
       !amountBN.eqn(0) &&
-      (
-        isLessThanMaxAmount ||
-        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !(maxAvailable.eqn(0))) ||
-        (maxBehavior === 'balance' && typeof balance !== 'undefined' && amountBN.eq(balance) && !(maxAvailable.eqn(0)))
-      )
+      (isLessThanMaxAmount ||
+        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)) ||
+        (maxBehavior === 'balance' &&
+          typeof balance !== 'undefined' &&
+          amountBN.eq(balance) &&
+          !maxAvailable.eqn(0)))
     )
   }
 
@@ -185,18 +191,18 @@ export const ActionTemplate: React.FC<IProps> = ({
     <Grid container alignItems='flex-start' direction='column' className={classes.root}>
       <Typography className={classes.inputLabel}>Amount</Typography>
       <Grid container item direction='row' className={classes.wrap}>
-        <AmountInput
+        <ExchangeAmountInput
           value={inputValue}
           setValue={onAmountInputChange}
-          className={classes.amountInput}
           placeholder={'0.0'}
-          currency={currency}
+          current={currency}
           tokens={tokens}
-          onSelectToken={onSelectToken}
-          showArrow={showArrowInInput}
+          onSelect={onSelectToken}
+          hideArrow={!showArrowInInput}
           walletConnected={walletConnected}
           noWalletHandler={noWalletHandler}
           emptyTokensHandler={emptyTokensHandler}
+          onMaxClick={onMaxButtonClick}
         />
         <Grid
           item
@@ -205,7 +211,16 @@ export const ActionTemplate: React.FC<IProps> = ({
           alignItems='flex-end'
           wrap='nowrap'
           className={classes.secondHalf}>
-          <OutlinedButton onClick={onMaxButtonClick} className={classes.maxButton} name='Max' />
+          <Hidden smUp>
+            <OutlinedButton
+              name={capitalizeString(action)}
+              disabled={!actionAvailable}
+              color='secondary'
+              className={classes.actionButton}
+              onClick={onClick(amountBN, decimal)}
+              labelClassName={classes.label}
+            />
+          </Hidden>
           <Divider orientation='vertical' className={classes.divider} />
           <Grid item className={classes.available}>
             <KeyValue
@@ -226,24 +241,29 @@ export const ActionTemplate: React.FC<IProps> = ({
         wrap='nowrap'
         direction='row'
         justifyContent='flex-start'
-        className={classes.bottom}>
-        <OutlinedButton
-          name={capitalizeString(action)}
-          disabled={!actionAvailable}
-          color='secondary'
-          className={classes.actionButton}
-          onClick={() => {
-            // showWarning = true
-            onClick(amountBN, decimal)
-          }}
-          labelClassName={classes.label}
+        className={classes.bottom}
+        style={getProgressState() !== 'none' && isXs ? { height: 76 } : undefined}>
+        <Hidden xsDown>
+          <OutlinedButton
+            name={capitalizeString(action)}
+            disabled={!actionAvailable}
+            color='secondary'
+            className={classes.actionButton}
+            onClick={onClick(amountBN, decimal)}
+            labelClassName={classes.label}
+          />
+        </Hidden>
+        <Progress
+          className={classes.progressMobile}
+          state={getProgressState()}
+          message={getProgressMessage()}
         />
-        <Progress state={getProgressState()} message={getProgressMessage()} />
       </Grid>
       <BurnWarning
         open={showWarning}
         burnAmount={{
-          amount: amountBN, decimal: decimal
+          amount: amountBN,
+          decimal: decimal
         }}
         burnTokenSymbol={currency}
         rewardAmount={{
