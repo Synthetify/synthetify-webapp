@@ -66,11 +66,11 @@ export const calculateCRatio = (
   assetFromAmount: BN
 ) => {
   if (assetToAmount > new BN(0)) {
-    const difDecimal = 10 ** (syntheticScale - collateralScale)
+    const difDecimal = 10 ** (syntheticScale - collateralScale + 4)
     if (difDecimal < 1) {
       return assetFromAmount
         .mul(collateraPrice)
-        .mul(new BN(1 / difDecimal))
+        .div(new BN(1 / difDecimal))
         .div(assetToAmount.mul(syntheticPrice))
     } else {
       return assetFromAmount
