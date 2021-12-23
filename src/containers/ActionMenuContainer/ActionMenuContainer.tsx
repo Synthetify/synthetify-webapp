@@ -29,12 +29,12 @@ import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { Status } from '@reducers/solanaWallet'
 import { BN } from '@project-serum/anchor'
-
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
   const [depositIndex, setDepositIndex] = useState(0)
   const [withdrawIndex, setWithdrawIndex] = useState(0)
+  const [showWarning, setShowWarning] = useState(false)
 
   const availableToMint = useSelector(userMaxMintUsd)
   const userCollaterals = useSelector(collateralAccountsArray)
@@ -124,6 +124,9 @@ export const ActionMenuContainer: React.FC = () => {
       onMint={(amount, decimal) => () => {
         dispatch(actions.mint({ amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)) }))
       }}
+      onWarning={() => () => {
+        setShowWarning(!showWarning)
+      }}
       onBurn={(amount, decimal) => () => {
         dispatch(
           actions.burn({
@@ -161,6 +164,7 @@ export const ActionMenuContainer: React.FC = () => {
       depositState={depositState}
       burnState={burnState}
       xUSDBalance={xUSDTokenAddress.equals(DEFAULT_PUBLICKEY) ? new BN(0) : xUSDBalance.balance}
+      showWarning={showWarning}
       stakingData={{
         ...userStakingState,
         stakedUserValue: stakedUserValue,

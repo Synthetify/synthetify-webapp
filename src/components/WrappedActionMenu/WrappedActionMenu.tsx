@@ -14,6 +14,7 @@ export interface IProps {
   onDeposit: (amount: BN, decimals: number) => () => void
   onWithdraw: (amount: BN, decimals: number) => () => void
   onBurn: (amount: BN, decimals: number) => () => void
+  onWarning: (amount: BN, decimals: number) => () => void
   showWarning?: boolean
   availableToMint: BN
   availableToDeposit: BN
@@ -46,6 +47,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   onWithdraw,
   onBurn,
   showWarning,
+  onWarning,
   availableToMint,
   availableToDeposit,
   availableToWithdraw,
@@ -119,12 +121,13 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         emptyTokensHandler={emptyWithdrawTokensHandler}
       />
     ),
-    burn: (
+    repay: (
       <ActionTemplate
         maxAvailable={availableToBurn}
         maxDecimal={6}
-        action='burn'
-        onClick={onBurn}
+        action='repay'
+        onClick={onWarning}
+        onBurn={onBurn}
         currency='xUSD'
         sending={burnState.sending}
         hasError={!!burnState.error?.length}

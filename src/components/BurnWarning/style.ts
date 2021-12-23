@@ -3,9 +3,14 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   warningContainer: {
+    backgroundColor: 'rgba(0,0,0,0.75)',
     width: '100%',
     height: '100%',
     display: 'flex',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 50,
     alignItems: 'center',
     justifyContent: 'center'
   },

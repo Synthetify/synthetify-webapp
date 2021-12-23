@@ -11,7 +11,7 @@ import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/Exchange
 import { theme } from '@static/theme'
 import useStyles from './style'
 
-export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
+export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'repay'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
 export interface IProps {
@@ -19,6 +19,7 @@ export interface IProps {
   maxAvailable: BN
   maxDecimal: number
   onClick: (amount: BN, decimals: number) => () => void
+  onBurn?: (amount: BN, decimals: number) => () => void
   currency: string
   sending: boolean
   hasError: boolean
@@ -39,6 +40,7 @@ export const ActionTemplate: React.FC<IProps> = ({
   maxDecimal,
   onClick,
   currency,
+  onBurn,
   sending,
   hasError,
   tokens,
@@ -157,7 +159,7 @@ export const ActionTemplate: React.FC<IProps> = ({
     const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
-      burn: 'Burning',
+      repay: 'Burning',
       deposit: 'Depositing'
     }
 
@@ -172,7 +174,7 @@ export const ActionTemplate: React.FC<IProps> = ({
     const actionToPastNoun: { [key in ActionType]: string } = {
       mint: 'minted',
       withdraw: 'withdrawn',
-      burn: 'burned',
+      repay: 'burned',
       deposit: 'deposited'
     }
 
@@ -259,19 +261,25 @@ export const ActionTemplate: React.FC<IProps> = ({
           message={getProgressMessage()}
         />
       </Grid>
-      <BurnWarning
-        open={showWarning}
-        burnAmount={{
-          amount: amountBN,
-          decimal: decimal
-        }}
-        burnTokenSymbol={currency}
-        rewardAmount={{
-          amount: new BN(12433),
-          decimal: 3
-        }}
-        claimTime={'12:12:12'}
-      />
+      {onBurn ? (
+        <BurnWarning
+          open={showWarning}
+          burnAmount={{
+            amount: amountBN,
+            decimal: decimal
+          }}
+          onBurn={onBurn}
+          burnTokenSymbol={currency}
+          rewardAmount={{
+            amount: new BN(12433),
+            decimal: 3
+          }}
+          claimTime={'12:12:12'}
+          onCancel={onClick}
+        />
+      ) : (
+        ''
+      )}
     </Grid>
   )
 }
