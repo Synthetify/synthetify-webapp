@@ -53,8 +53,9 @@ const VaultEvents = () => {
                 vault: data
               })
             )
-
+            console.log('subscribe to vault', vaultAddress.toBase58())
             exchangeProgram.onVaultChange(vaultAddress, state => {
+              console.log('vault changed', state)
               console.log(state)
               dispatch(
                 actionsVault.setVault({
@@ -63,6 +64,7 @@ const VaultEvents = () => {
                 })
               )
             })
+            console.log('subscribe to vault', vaultAddress)
           }
           const vaultEntryAmount = await exchangeProgram.getVaultEntryForOwner(
             vault.synthetic,
@@ -77,9 +79,13 @@ const VaultEvents = () => {
             owner
           )
           if (typeof userVaultsState[vaultAddress.toString()] === 'undefined') {
+            console.log('subscribe to vaultEntry', vaultAddress)
+
             exchangeProgram.onVaultEntryChange(vaultEntryAddress, state => {
+              console.log('vaultEntry changed', state)
               dispatch(actionsVault.setUserVaults(state))
             })
+            console.log('subscribe to vaultEntry', vaultAddress)
           }
         }
       })
