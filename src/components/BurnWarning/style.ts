@@ -10,9 +10,10 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     top: 0,
     left: 0,
-    zIndex: 50,
+    zIndex: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backdropFilter: 'blur(4px) brightness(1.2)'
   },
   warningCard: {
     backgroundColor: colors.navy.component,
@@ -20,6 +21,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
+    zIndex: 11,
     padding: '36px 35px',
     borderRadius: 20,
     textAlign: 'center',

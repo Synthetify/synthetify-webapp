@@ -128,6 +128,7 @@ export const ActionMenuContainer: React.FC = () => {
         setShowWarning(!showWarning)
       }}
       onBurn={(amount, decimal) => () => {
+        setShowWarning(false)
         dispatch(
           actions.burn({
             amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)),
