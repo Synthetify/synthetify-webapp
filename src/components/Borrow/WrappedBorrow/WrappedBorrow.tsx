@@ -82,6 +82,11 @@ export const WrappedBorrow: React.FC<IProp> = ({
     }
   }, [pairIndex])
 
+  React.useEffect(() => {
+    if (pairs.length === 0) {
+      setPairIndex(null)
+    }
+  }, [pairs])
   const actionContents: IActionContents = {
     borrow: (
       <ActionBorrow
@@ -93,7 +98,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
         onClickSubmitButton={onClickSubmitButton}
         pairs={pairs}
         sending={sending}
-        pairIndex={pairIndex}
+        pairIndex={pairs.length !== 0 ? pairIndex : null}
         setPairIndex={setPairIndex}
         hasError={hasError}
         vaultAmount={actualVault}
@@ -118,7 +123,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
         pairs={pairs}
         changeCRatio={changeCRatio}
         sending={sending}
-        pairIndex={pairIndex}
+        pairIndex={pairs.length !== 0 ? pairIndex : null}
         setPairIndex={setPairIndex}
         hasError={hasError}
         vaultAmount={actualVault}
@@ -139,14 +144,16 @@ export const WrappedBorrow: React.FC<IProp> = ({
     <Grid className={classes.root}>
       <Grid className={classes.actionGrid}>
         <ActionMenuBorrow actionContents={actionContents} />
-        <BorrowTable
-          userVaults={userVaults}
-          setValueWithTable={changeValueFromTable}
-          active={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null}
-        />
+        {userVaults.length !== 0 ? (
+          <BorrowTable
+            userVaults={userVaults}
+            setValueWithTable={changeValueFromTable}
+            active={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null}
+          />
+        ) : null}
       </Grid>
       <Grid className={classes.borrowInfoGrid}>
-        {pairIndex !== null ? (
+        {pairs.length !== 0 && pairIndex !== null ? (
           <BorrowInfo
             collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}

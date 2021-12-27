@@ -96,6 +96,7 @@ const ExhcangeEvents = () => {
     const connectEvents = () => {
       allAssets.forEach((asset, index) => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
+          console.log('update asset price')
           const data = parsePriceData(accountInfo.data)
           data.price &&
             dispatch(

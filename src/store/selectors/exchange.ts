@@ -16,7 +16,7 @@ import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { VaultEntry } from '@synthetify/sdk/lib/exchange'
-import { toEffectiveFee } from '@synthetify/sdk/lib/utils'
+import { addressToAssetSymbol, toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 import { userVaults, vaults } from './vault'
@@ -425,7 +425,7 @@ export const getUserVaults = createSelector(
         allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
         allSynthetics[currentVault.synthetic.toString()].supply.scale,
         allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
-        allCollaterals[currentVault.collateral.toString()].reserveBalance.scale,
+        currentVault.maxBorrow.scale,
         userVault.syntheticAmount.val,
         userVault.collateralAmount.val
       )
@@ -441,7 +441,7 @@ export const getUserVaults = createSelector(
         allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
         allSynthetics[currentVault.synthetic.toString()].supply.scale,
         allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
-        allCollaterals[currentVault.collateral.toString()].reserveBalance.scale,
+        currentVault.maxBorrow.scale,
         userVault.collateralAmount.val,
         Number(
           Math.pow(
@@ -456,12 +456,12 @@ export const getUserVaults = createSelector(
         .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
       const vaultData: UserVaults = {
         ...userVault,
-        borrowed: allSynthetics[currentVault.synthetic.toString()].symbol,
-        collateral: allCollaterals[currentVault.collateral.toString()].symbol,
+        borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
+        collateral: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
         deposited: Number(
           printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
         ),
-        depositedSign: allCollaterals[currentVault.collateral.toString()].symbol,
+        depositedSign: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
         cRatio: cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN',
         minCRatio: Number(
           Math.pow(
@@ -486,7 +486,7 @@ export const getUserVaults = createSelector(
           userVault.syntheticAmount.val,
           currentVault.liquidationThreshold,
           allSynthetics[currentVault.synthetic.toString()].supply.scale,
-          allCollaterals[currentVault.collateral.toString()].reserveBalance.scale
+          currentVault.maxBorrow.scale
         )
       }
       return vaultData

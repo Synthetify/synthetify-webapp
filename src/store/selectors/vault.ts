@@ -5,10 +5,11 @@ import { keySelectors, AnyProps } from './helpers'
 
 const store = (s: AnyProps) => s[vaultSliceName] as IVault
 
-export const { vaults, userVaults, vaultSwap } = keySelectors(store, [
+export const { vaults, userVaults, vaultSwap, newVaultEntryAddress } = keySelectors(store, [
   'vaults',
   'userVaults',
-  'vaultSwap'
+  'vaultSwap',
+  'newVaultEntryAddress'
 ])
 
 export const vaultSelectors = { vaults, userVaults, vaultSwap }

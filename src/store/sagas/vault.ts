@@ -1,8 +1,8 @@
-import { call, put, takeEvery, spawn, all, select } from 'typed-redux-saga'
+import { call, put, takeEvery, spawn, all, select, throttle } from 'typed-redux-saga'
 import { getWallet } from './wallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { actions } from '@reducers/vault'
+import { actions, PayloadTypes } from '@reducers/vault'
 import {
   handleAddCollateralVault,
   handleBorrowedVault,
@@ -13,6 +13,7 @@ import { userVaults, vaults, vaultSwap } from '@selectors/vault'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import BN from 'bn.js'
+import { PayloadAction } from '@reduxjs/toolkit'
 function* checkVaultEntry(): Generator {
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -293,6 +294,25 @@ export function* updateSyntheticAmountUserVault(): Generator {
   }
 }
 
+const pendingUpdates: { [x: string]: BN } = {}
+
+export function* batchAssetsPrices(
+  action: PayloadAction<PayloadTypes['setAssetPrice']>
+): Generator {
+  console.log('test co 1 sekunde')
+  pendingUpdates[action.payload.address.toString()] = action.payload.price
+}
+export function* handleAssetPrice(): Generator {
+  yield* put(actions.batchSetAssetPrice(pendingUpdates))
+}
+
+export function* assetPriceHandler(): Generator {
+  yield* throttle(1000, actions.setAssetPrice, handleAssetPrice)
+}
+export function* assetPriceBatcher(): Generator {
+  yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)
+}
+
 export function* vaultSendActionHandler(): Generator {
   yield* takeEvery(actions.setVaultSwap, handleSendAction)
 }
@@ -305,5 +325,13 @@ export function* setActualVault(): Generator {
 }
 
 export function* vaultSaga(): Generator {
-  yield all([updateSyntheticHandler, vaultSendActionHandler, setActualVault].map(spawn))
+  yield all(
+    [
+      updateSyntheticHandler,
+      vaultSendActionHandler,
+      setActualVault,
+      assetPriceBatcher,
+      assetPriceHandler
+    ].map(spawn)
+  )
 }

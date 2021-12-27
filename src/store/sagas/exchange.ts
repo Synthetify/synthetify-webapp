@@ -23,8 +23,8 @@ import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-import { VaultSwap } from '@reducers/vault'
-import { vaults } from '@selectors/vault'
+import { VaultSwap, actions as actionsVault } from '@reducers/vault'
+import { userVaults, vaults } from '@selectors/vault'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -624,6 +624,7 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
     TOKEN_PROGRAM_ID,
     new Account()
   )
+  const userVaultState = yield* select(userVaults)
   const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
@@ -648,6 +649,14 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
 
   const signature = yield* call(signAndSend, wallet, tx)
   yield* call(sleep, 1500) // Give time to subscribe to account
+  if (typeof userVaultState[vaultSwapData.vaultAddress.toString()] === 'undefined') {
+    yield* put(
+      actionsVault.setNewVaultEntryAddress({
+        newVaultEntryAddress: vaultSwapData.vaultAddress
+      })
+    )
+  }
+
   return signature
 }
 export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<string> {
@@ -663,6 +672,7 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
     TOKEN_PROGRAM_ID,
     new Account()
   )
+  const userVaultState = yield* select(userVaults)
   let userSyntheticTokenAccount = tokensAccounts[vaultSwapData.synthetic.toString()]
     ? tokensAccounts[vaultSwapData.synthetic.toString()].address
     : null
@@ -707,6 +717,13 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
 
   const signature = yield* call(signAndSend, wallet, tx)
   yield* call(sleep, 1500) // Give time to subscribe to account
+  if (typeof userVaultState[vaultSwapData.vaultAddress.toString()] === 'undefined') {
+    yield* put(
+      actionsVault.setNewVaultEntryAddress({
+        newVaultEntryAddress: vaultSwapData.vaultAddress
+      })
+    )
+  }
   return signature
 }
 

@@ -430,12 +430,6 @@ export const changeInputSynthetic = (
       cRatio
     )
   }
-  console.log(
-    'BN: ',
-    printBN(new BN(Number(BNValue.BN.toString()) * (10 ** difDecimal)), tokenTo.assetScale),
-    'deciimal ',
-    BNValue.decimal
-  )
   return {
     amountBorBN: BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))),
     amountCollString: printBN(amountCollBN, tokenFrom.assetScale),
