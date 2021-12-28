@@ -57,15 +57,12 @@ const useStyles = makeStyles(() => ({
     color: colors.navy.background,
     marginRight: 16,
     '&:hover': {
-      backgroundColor: colors.green.button
+      backgroundColor: '#4ADFBA !important'
     }
   },
   btnCancel: {
     backgroundColor: colors.navy.button,
-    color: colors.navy.veryLightGrey,
-    '&:hover': {
-      backgroundColor: colors.navy.button
-    }
+    color: colors.navy.veryLightGrey
   }
 }))
 
