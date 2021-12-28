@@ -86,7 +86,8 @@ const VaultEvents = () => {
       })
       setInitializedVault(tempSet)
     }
-    connectEvents().catch(error => console.log(error))
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    connectEvents()
   }, [dispatch, exchangeProgram, networkStatus, walletStat, Object.keys(vaultsState).length])
 
   React.useEffect(() => {

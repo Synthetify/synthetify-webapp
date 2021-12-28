@@ -376,7 +376,7 @@ export function* initVaultEntry(): Generator {
   }
 }
 
-export function* addNewVaultEntryHangle(): Generator {
+export function* addNewVaultEntryHandle(): Generator {
   const actualVaultSwap = yield* select(vaultSwap)
   const vaultEntry = yield* call(
     getVaultEntryIFExist,
@@ -416,7 +416,7 @@ export function* setActualVault(): Generator {
   yield* takeEvery(actions.setActualVaultSwap, setVaultAddress)
 }
 export function* addNewVaultEntry(): Generator {
-  yield* takeEvery(actions.setNewVaultEntryAddress, addNewVaultEntryHangle)
+  yield* takeEvery(actions.setNewVaultEntryAddress, addNewVaultEntryHandle)
 }
 export function* initVaults(): Generator {
   yield* takeEvery(actions.initVault, initVault)
@@ -425,7 +425,6 @@ export function* vaultSaga(): Generator {
   yield all(
     [
       initVaults,
-      initVaultEntry,
       updateSyntheticHandler,
       vaultSendActionHandler,
       setActualVault,

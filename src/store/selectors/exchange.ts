@@ -421,12 +421,6 @@ export const getUserVaults = createSelector(
     const vaultData: UserVaults[] = []
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
-
-      // console.log(
-      //   allAssetPrice[currentVault.collateral.toString()],
-      //   ' ===  ',
-      //   allAssetPrice[currentVault.synthetic.toString()]
-      // )
       if (
         typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined' &&
         typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'

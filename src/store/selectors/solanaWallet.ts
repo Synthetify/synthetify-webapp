@@ -416,7 +416,6 @@ export const getAvailableRepay = createSelector(
 
 export const getAddressFromIndex = (nr: number) =>
   createSelector(synthetics, collaterals, (allSynthetic, allCollaterals) => {
-    // zapytać jak bardzo ta funkcja szukanmai indeksu spowalnia program
     let syntheticAddress: string = ''
     R.forEachObj(allSynthetic, element => {
       if (element.assetIndex === nr) {
