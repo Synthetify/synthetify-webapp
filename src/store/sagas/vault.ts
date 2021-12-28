@@ -20,6 +20,7 @@ import { networkTypetoProgramNetwork } from '@web3/connection'
 import { network } from '@selectors/solanaConnection'
 import { getConnection } from './connection'
 import { PublicKey } from '@solana/web3.js'
+import { address } from '@selectors/solanaWallet'
 function* checkVaultEntry(): Generator {
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -302,8 +303,7 @@ export function* updateSyntheticAmountUserVault(): Generator {
 
 export function* initVault(): Generator {
   const networkType = yield* select(network)
-  const connection = yield* call(getConnection)
-  const wallet = yield* call(getWallet)
+  const owner = yield* select(address)
   const exchangeProgram = yield* call(getExchangeProgram)
   const vaultsState = yield* select(vaults)
 
@@ -326,46 +326,11 @@ export function* initVault(): Generator {
           vault: data
         })
       )
-      // exchangeProgram.onVaultChange(vaultAddress, state => {
-      //   yield *
-      //     put(
-      //       actions.setVault({
-      //         address: vaultAddress,
-      //         vault: state
-      //       })
-      //     )
-      // })
-      // if (data.collateralPriceFeed.toString() === DEFAULT_PUBLICKEY.toString()) {
-      //   yield* put(
-      //     actions.setAssetPrice({
-      //       address: vault.collateral.toString(),
-      //       price: {
-      //         val: new BN(1 * 10 ** 8),
-      //         scale: 8
-      //       }
-      //     })
-      //   )
-      // }
-
-      // connection.onAccountChange(data.collateralPriceFeed, priceInfo => {
-      //   const parsedData = parsePriceData(priceInfo.data)
-      //   parsedData.price &&
-      //     dispatch(
-      //       actionsVault.setAssetPrice({
-      //         address: vault.collateral.toString(),
-      //         price: {
-      //           val: new BN(parsedData.price * 10 ** data.collateralAmount.scale),
-      //           scale: data.collateralAmount.scale
-      //         }
-      //       })
-      //     )
-      // })
-
       const vaultEntry = yield* call(
         [exchangeProgram, exchangeProgram.getVaultEntryForOwner],
         vault.synthetic,
         vault.collateral,
-        wallet.publicKey
+        owner
       )
       if (vaultEntry) {
         yield* put(actions.setUserVaults(vaultEntry))

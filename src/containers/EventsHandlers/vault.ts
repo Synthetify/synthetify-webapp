@@ -8,7 +8,6 @@ import { getCurrentExchangeProgram } from '@web3/programs/exchange'
 import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/connection'
 import { address, status as walletStatus } from '@selectors/solanaWallet'
 import { newVaultEntryAddress, userVaults, vaults } from '@selectors/vault'
-import { updateSyntheticAmountUserVault } from '@sagas/vault'
 import { VAULTS_MAP } from '@synthetify/sdk/lib/utils'
 import * as R from 'remeda'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -97,7 +96,7 @@ const VaultEvents = () => {
       setInitializedVault(tempSet)
     }
     connectEvents().catch(error => console.log(error))
-  }, [dispatch, exchangeProgram, networkStatus, walletStat, vaultsState])
+  }, [dispatch, exchangeProgram, networkStatus, walletStat, vaultsState.length])
 
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
