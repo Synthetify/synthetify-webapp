@@ -3,7 +3,7 @@ import { printBN } from '@consts/utils'
 import { Grid } from '@material-ui/core'
 import { ActionType } from '@reducers/vault'
 import { UserVaults } from '@selectors/exchange'
-import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
 import { Decimal, Vault } from '@synthetify/sdk/lib/exchange'
 import BN from 'bn.js'
@@ -14,7 +14,7 @@ import { ActionBorrow } from '../SwitchBorrow/ActionBorrow'
 import ActionMenuBorrow, { IActionContents } from '../SwitchBorrow/ActionMenuBorrow'
 import useStyles from './style'
 export interface BorrowedPair extends Vault {
-  collateralData: ExchangeCollateralTokens
+  collateralData: { reserveBalance: number; symbol: string; price: Decimal; balance: BN }
   syntheticData: ExchangeSyntheticTokens
 }
 

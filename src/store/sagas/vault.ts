@@ -1,4 +1,4 @@
-import { call, put, takeEvery, spawn, all, select, throttle } from 'typed-redux-saga'
+import { call, put, takeEvery, spawn, all, select, throttle, SagaGenerator } from 'typed-redux-saga'
 import { getWallet } from './wallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -14,6 +14,12 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import BN from 'bn.js'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { VAULTS_MAP } from '@synthetify/sdk/lib/utils'
+import { networkTypetoProgramNetwork } from '@web3/connection'
+import { network } from '@selectors/solanaConnection'
+import { getConnection } from './connection'
+import { PublicKey } from '@solana/web3.js'
 function* checkVaultEntry(): Generator {
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -294,12 +300,85 @@ export function* updateSyntheticAmountUserVault(): Generator {
   }
 }
 
-const pendingUpdates: { [x: string]: BN } = {}
+export function* initVault(): Generator {
+  const networkType = yield* select(network)
+  const connection = yield* call(getConnection)
+  const wallet = yield* call(getWallet)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const vaultsState = yield* select(vaults)
+
+  for (const vault of VAULTS_MAP[networkTypetoProgramNetwork(networkType)]) {
+    const { vaultAddress } = yield* call(
+      [exchangeProgram, exchangeProgram.getVaultAddress],
+      vault.synthetic,
+      vault.collateral
+    )
+    if (typeof vaultsState[vaultAddress.toString()] === 'undefined') {
+      const data = yield* call(
+        [exchangeProgram, exchangeProgram.getVaultForPair],
+        vault.synthetic,
+        vault.collateral
+      )
+
+      yield* put(
+        actions.setVault({
+          address: vaultAddress,
+          vault: data
+        })
+      )
+      // exchangeProgram.onVaultChange(vaultAddress, state => {
+      //   yield *
+      //     put(
+      //       actions.setVault({
+      //         address: vaultAddress,
+      //         vault: state
+      //       })
+      //     )
+      // })
+      // if (data.collateralPriceFeed.toString() === DEFAULT_PUBLICKEY.toString()) {
+      //   yield* put(
+      //     actions.setAssetPrice({
+      //       address: vault.collateral.toString(),
+      //       price: {
+      //         val: new BN(1 * 10 ** 8),
+      //         scale: 8
+      //       }
+      //     })
+      //   )
+      // }
+
+      // connection.onAccountChange(data.collateralPriceFeed, priceInfo => {
+      //   const parsedData = parsePriceData(priceInfo.data)
+      //   parsedData.price &&
+      //     dispatch(
+      //       actionsVault.setAssetPrice({
+      //         address: vault.collateral.toString(),
+      //         price: {
+      //           val: new BN(parsedData.price * 10 ** data.collateralAmount.scale),
+      //           scale: data.collateralAmount.scale
+      //         }
+      //       })
+      //     )
+      // })
+
+      const vaultEntry = yield* call(
+        [exchangeProgram, exchangeProgram.getVaultEntryForOwner],
+        vault.synthetic,
+        vault.collateral,
+        wallet.publicKey
+      )
+      if (vaultEntry) {
+        yield* put(actions.setUserVaults(vaultEntry))
+      }
+    }
+  }
+}
+
+const pendingUpdates: { [x: string]: Decimal } = {}
 
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
-  console.log('test co 1 sekunde')
   pendingUpdates[action.payload.address.toString()] = action.payload.price
 }
 export function* handleAssetPrice(): Generator {
@@ -319,14 +398,16 @@ export function* vaultSendActionHandler(): Generator {
 export function* updateSyntheticHandler(): Generator {
   yield* takeEvery(actions.setUserVaults, updateSyntheticAmountUserVault)
 }
-
 export function* setActualVault(): Generator {
   yield* takeEvery(actions.setActualVaultSwap, setVaultAddress)
 }
-
+export function* initVaults(): Generator {
+  yield* takeEvery(actions.initVault, initVault)
+}
 export function* vaultSaga(): Generator {
   yield all(
     [
+      initVaults,
       updateSyntheticHandler,
       vaultSendActionHandler,
       setActualVault,

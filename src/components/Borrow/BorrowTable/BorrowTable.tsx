@@ -28,7 +28,6 @@ interface IProp {
 }
 export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, active }) => {
   const classes = useStyles()
-
   return (
     <TableContainer className={classes.root} component={Paper}>
       <Table>

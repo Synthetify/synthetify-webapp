@@ -81,6 +81,7 @@ const ExhcangeEvents = () => {
     }
     connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
+
   React.useEffect(() => {
     const oracleProgram = getOracleProgram()
     const connection = getCurrentSolanaConnection()
@@ -96,7 +97,6 @@ const ExhcangeEvents = () => {
     const connectEvents = () => {
       allAssets.forEach((asset, index) => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
-          console.log('update asset price')
           const data = parsePriceData(accountInfo.data)
           data.price &&
             dispatch(

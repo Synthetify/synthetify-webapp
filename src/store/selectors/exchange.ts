@@ -19,7 +19,7 @@ import { VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { addressToAssetSymbol, toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
-import { userVaults, vaults } from './vault'
+import { assetPrice, userVaults, vaults } from './vault'
 
 const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
@@ -416,81 +416,94 @@ export const getUserVaults = createSelector(
   vaults,
   userVaults,
   synthetics,
-  collaterals,
-  assets,
-  (allVaults, allUserVaults, allSynthetics, allCollaterals, allAssets) => {
-    return Object.values(allUserVaults).map(userVault => {
+  assetPrice,
+  (allVaults, allUserVaults, allSynthetics, allAssetPrice) => {
+    const vaultData: UserVaults[] = []
+    Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
-      const cRatioCalculated = calculateCRatio(
-        allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
-        allSynthetics[currentVault.synthetic.toString()].supply.scale,
-        allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
-        currentVault.maxBorrow.scale,
-        userVault.syntheticAmount.val,
-        userVault.collateralAmount.val
-      )
-      const interestRate =
-        Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
-        100
 
-      const openFeeBN = stringToMinDecimalBN(
-        (Number(printBN(currentVault.openFee.val, currentVault.openFee.scale)) * 100).toString()
-      )
-
-      const maxBorrow = calculateAmountBorrow(
-        allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
-        allSynthetics[currentVault.synthetic.toString()].supply.scale,
-        allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
-        currentVault.maxBorrow.scale,
-        userVault.collateralAmount.val,
-        Number(
-          Math.pow(
-            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)) /
-              100,
-            -1
-          )
-        ).toString()
-      )
-        .sub(userVault.syntheticAmount.val)
-        .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
-        .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
-      const vaultData: UserVaults = {
-        ...userVault,
-        borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
-        collateral: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
-        deposited: Number(
-          printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
-        ),
-        depositedSign: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
-        cRatio: cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN',
-        minCRatio: Number(
-          Math.pow(
-            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)) /
-              100,
-            -1
-          )
-        ),
-        currentDebt: Number(
-          printBN(userVault.syntheticAmount.val, userVault.syntheticAmount.scale)
-        ),
-        currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
-        maxBorrow: printBN(
-          maxBorrow.gt(new BN(0)) ? maxBorrow : new BN(0),
-          allSynthetics[currentVault.synthetic.toString()].supply.scale
-        ),
-        interestRate: interestRate.toString(),
-        liquidationPrice: calculateLiqPrice(
-          allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val,
-          userVault.collateralAmount.val,
-          allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val,
-          userVault.syntheticAmount.val,
-          currentVault.liquidationThreshold,
+      // console.log(
+      //   allAssetPrice[currentVault.collateral.toString()],
+      //   ' ===  ',
+      //   allAssetPrice[currentVault.synthetic.toString()]
+      // )
+      if (
+        typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined' &&
+        typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
+      ) {
+        const cRatioCalculated = calculateCRatio(
+          allAssetPrice[currentVault.synthetic.toString()].val,
           allSynthetics[currentVault.synthetic.toString()].supply.scale,
-          currentVault.maxBorrow.scale
+          allAssetPrice[currentVault.collateral.toString()].val,
+          currentVault.collateralAmount.scale,
+          userVault.syntheticAmount.val,
+          userVault.collateralAmount.val
         )
+        const interestRate =
+          Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
+          100
+
+        const openFeeBN = stringToMinDecimalBN(
+          (Number(printBN(currentVault.openFee.val, currentVault.openFee.scale)) * 100).toString()
+        )
+
+        const maxBorrow = calculateAmountBorrow(
+          allAssetPrice[currentVault.synthetic.toString()].val,
+          allSynthetics[currentVault.synthetic.toString()].supply.scale,
+          allAssetPrice[currentVault.collateral.toString()].val,
+          currentVault.collateralAmount.scale,
+          userVault.collateralAmount.val,
+          Number(
+            Math.pow(
+              Number(
+                printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)
+              ) / 100,
+              -1
+            )
+          ).toString()
+        )
+          .sub(userVault.syntheticAmount.val)
+          .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+          .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
+        vaultData.push({
+          ...userVault,
+          borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
+          collateral: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
+          deposited: Number(
+            printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
+          ),
+          depositedSign: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
+          cRatio: cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN',
+          minCRatio: Number(
+            Math.pow(
+              Number(
+                printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)
+              ) / 100,
+              -1
+            )
+          ),
+          currentDebt: Number(
+            printBN(userVault.syntheticAmount.val, userVault.syntheticAmount.scale)
+          ),
+          currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
+          maxBorrow: printBN(
+            maxBorrow.gt(new BN(0)) ? maxBorrow : new BN(0),
+            allSynthetics[currentVault.synthetic.toString()].supply.scale
+          ),
+          interestRate: interestRate.toString(),
+          liquidationPrice: calculateLiqPrice(
+            allAssetPrice[currentVault.collateral.toString()].val,
+            userVault.collateralAmount.val,
+            allAssetPrice[currentVault.synthetic.toString()].val,
+            userVault.syntheticAmount.val,
+            currentVault.liquidationThreshold,
+            allSynthetics[currentVault.synthetic.toString()].supply.scale,
+            currentVault.collateralAmount.scale
+          )
+        })
       }
-      return vaultData
     })
+    return vaultData
   }
 )
 
@@ -498,29 +511,34 @@ export const getGeneralTotals = createSelector(
   vaults,
   userVaults,
   synthetics,
-  collaterals,
-  assets,
-  (allVaults, allUserVaults, allSynthetics, allCollaterals, allAssets) => {
+  assetPrice,
+  (allVaults, allUserVaults, allSynthetics, allAssetPrice) => {
     let totalCollatera = 0
     let totalDebt = 0
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
+      const actualPriceCollateral =
+        typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
+          ? allAssetPrice[currentVault.collateral.toString()]
+          : {
+              val: new BN(100000),
+              scale: currentVault.collateralAmount.scale
+            }
+      const actualPriceSynthetic =
+        typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
+          ? allAssetPrice[currentVault.collateral.toString()]
+          : {
+              val: new BN(100000),
+              scale: currentVault.collateralAmount.scale
+            }
       totalCollatera =
         totalCollatera +
         Number(
           printBN(
             userVault.collateralAmount.val
-              .mul(
-                allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price.val
-              )
-              .div(
-                new BN(
-                  10 **
-                    allAssets[allCollaterals[currentVault.collateral.toString()].assetIndex].price
-                      .scale
-                )
-              ),
-            allCollaterals[currentVault.collateral.toString()].reserveBalance.scale
+              .mul(actualPriceCollateral.val)
+              .div(new BN(10 ** actualPriceCollateral.scale)),
+            currentVault.collateralAmount.scale
           )
         )
       totalDebt =
@@ -528,14 +546,8 @@ export const getGeneralTotals = createSelector(
         Number(
           printBN(
             userVault.syntheticAmount.val
-              .mul(allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price.val)
-              .div(
-                new BN(
-                  10 **
-                    allAssets[allSynthetics[currentVault.synthetic.toString()].assetIndex].price
-                      .scale
-                )
-              ),
+              .mul(actualPriceSynthetic.val)
+              .div(new BN(10 ** actualPriceSynthetic.scale)),
             allSynthetics[currentVault.synthetic.toString()].supply.scale
           )
         )

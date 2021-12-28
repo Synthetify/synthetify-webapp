@@ -3,7 +3,7 @@ import { PayloadType } from './types'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { Vault, VaultEntry } from '@synthetify/sdk/lib/exchange'
+import { Decimal, Vault, VaultEntry } from '@synthetify/sdk/lib/exchange'
 export interface VaultUpdate {
   address: PublicKey
   vault: Vault
@@ -26,11 +26,11 @@ export interface IVault {
   userVaults: { [key in string]: VaultEntry }
   vaultSwap: VaultSwap
   newVaultEntryAddress: PublicKey
-  assetPrice: { [key in string]: BN }
+  assetPrice: { [key in string]: Decimal }
 }
 interface ISetAssetPrice {
   address: string
-  price: BN
+  price: Decimal
 }
 export const defaultState: IVault = {
   vaults: {},
@@ -56,6 +56,9 @@ const vaultSlice = createSlice({
   reducers: {
     setVault(state, action: PayloadAction<VaultUpdate>) {
       state.vaults[action.payload.address.toString()] = action.payload.vault
+      return state
+    },
+    initVault(state) {
       return state
     },
     setActualVaultSwap(state, action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'>>) {
@@ -119,7 +122,7 @@ const vaultSlice = createSlice({
       state.newVaultEntryAddress = action.payload.newVaultEntryAddress
     },
     setAssetPrice(_state, _action: PayloadAction<ISetAssetPrice>) {},
-    batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: BN }>) {
+    batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: Decimal }>) {
       for (const [key, value] of Object.entries(action.payload)) {
         state.assetPrice[key] = value
       }

@@ -14,6 +14,7 @@ import * as R from 'remeda'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { BN } from '@project-serum/anchor'
 import { parsePriceData } from '@pythnetwork/client'
+import { Vault } from '@synthetify/sdk/lib/exchange'
 const VaultEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -25,6 +26,7 @@ const VaultEvents = () => {
   const userVaultsState = useSelector(userVaults)
   const newVaultEntryAddressState = useSelector(newVaultEntryAddress)
   const [initializedVaultEntry, setInitializedVaultEntry] = useState<Set<string>>(new Set())
+  const [initializedVault, setInitializedVault] = useState<Set<string>>(new Set())
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
     if (
@@ -40,76 +42,73 @@ const VaultEvents = () => {
       exchangeProgram.onStateChange(state => {
         dispatch(actions.setState(state))
       })
-
-      VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
-        if (vault.collateral.toString() !== '76qqFEokX3VgTxXX8dZYkDMijFtoYbJcxZZU4DgrDnUF') {
-          const { vaultAddress } = await exchangeProgram.getVaultAddress(
-            vault.synthetic,
-            vault.collateral
-          )
-
-          if (typeof vaultsState[vaultAddress.toString()] === 'undefined') {
-            const data = await exchangeProgram.getVaultForPair(vault.synthetic, vault.collateral)
-            
-            dispatch(
-              actionsVault.setVault({
-                address: vaultAddress,
-                vault: data
-              })
-            )
-            // console.log('subscribe to v/ault', vaultAddress.toBase58())
-
-            exchangeProgram.onVaultChange(vaultAddress, state => {
-              console.log('vault changed', state)
-              // console.log(state)
-              dispatch(
-                actionsVault.setVault({
-                  address: vaultAddress,
-                  vault: state
+      const tempSet = new Set<string>()
+      R.forEachObj(vaultsState, vault => {
+        // let vaultAddress = DEFAULT_PUBLICKEY
+        exchangeProgram
+          .getVaultAddress(vault.synthetic, vault.collateral)
+          .then(response => {
+            tempSet.add(response.vaultAddress.toString())
+            if (!initializedVault.has(response.vaultAddress.toString())) {
+              let currentVault: Vault
+              exchangeProgram
+                .getVaultForPair(vault.synthetic, vault.collateral)
+                .then(response => {
+                  if (response.collateralPriceFeed.toString() === DEFAULT_PUBLICKEY.toString()) {
+                    dispatch(
+                      actionsVault.setAssetPrice({
+                        address: vault.collateral.toString(),
+                        price: {
+                          val: new BN(1 * 10 ** 8),
+                          scale: 8
+                        }
+                      })
+                    )
+                  }
+                  connection.onAccountChange(response.collateralPriceFeed, priceInfo => {
+                    const parsedData = parsePriceData(priceInfo.data)
+                    parsedData.price &&
+                      dispatch(
+                        actionsVault.setAssetPrice({
+                          address: vault.collateral.toString(),
+                          price: {
+                            val: new BN(
+                              parsedData.price * 10 ** currentVault.collateralAmount.scale
+                            ),
+                            scale: currentVault.collateralAmount.scale
+                          }
+                        })
+                      )
+                  })
                 })
-              )
-            })
-            // console.log('subscribe to vault', vaultAddress)
-
-            connection.onAccountChange(data.collateralPriceFeed, priceInfo => {
-              console.log('work')
-              const parsedData = parsePriceData(priceInfo.data)
-              parsedData.price &&
+                .catch(() => {})
+              exchangeProgram.onVaultChange(response.vaultAddress, state => {
                 dispatch(
-                  actionsVault.setAssetPrice({
-                    address: vault.collateral.toString(),
-                    price: new BN(parsedData.price * 10 ** data.collateralAmount.scale)
+                  actionsVault.setVault({
+                    address: response.vaultAddress,
+                    vault: state
                   })
                 )
-            })
-
-            void exchangeProgram
-              .getVaultEntryForOwner(vault.synthetic, vault.collateral, owner)
-              .then(response => {
-                dispatch(actionsVault.setUserVaults(response))
-                // console.log('added vaultEntry')
               })
-              .catch(() => {
-                // console.log('vaultEntry not exist')
-              })
-          }
-        }
+            }
+          })
+          .catch(() => {})
       })
+      setInitializedVault(tempSet)
     }
     connectEvents().catch(error => console.log(error))
-  }, [dispatch, exchangeProgram, networkStatus, walletStat])
+  }, [dispatch, exchangeProgram, networkStatus, walletStat, vaultsState])
 
   React.useEffect(() => {
-    // const connection = getCurrentSolanaConnection()
-    // if (
-    //   !exchangeProgram ||
-    //   walletStat !== Status.Initialized ||
-    //   networkStatus !== Status.Initialized ||
-    //   !connection
-    // ) {
-    //   dispatch(actionsVault.clearUserVault())
-    //   return
-    // }
+    const connection = getCurrentSolanaConnection()
+    if (
+      !exchangeProgram ||
+      walletStat !== Status.Initialized ||
+      networkStatus !== Status.Initialized ||
+      !connection
+    ) {
+      return
+    }
     if (newVaultEntryAddressState === DEFAULT_PUBLICKEY) {
       return
     }
@@ -118,17 +117,12 @@ const VaultEvents = () => {
         dispatch(actions.setState(state))
       })
       VAULTS_MAP[networkTypetoProgramNetwork(networkType)].map(async vault => {
-        if (vault.collateral.toString() !== '76qqFEokX3VgTxXX8dZYkDMijFtoYbJcxZZU4DgrDnUF') {
-          void exchangeProgram
-            .getVaultEntryForOwner(vault.synthetic, vault.collateral, owner)
-            .then(response => {
-              dispatch(actionsVault.setUserVaults(response))
-              // console.log('added vaultEntry newAddress')
-            })
-            .catch(() => {
-              // console.log('vaultEntry not exist')
-            })
-        }
+        void exchangeProgram
+          .getVaultEntryForOwner(vault.synthetic, vault.collateral, owner)
+          .then(response => {
+            dispatch(actionsVault.setUserVaults(response))
+          })
+          .catch(() => {})
       })
     }
     connectEvents().catch(error => console.log(error))
@@ -148,7 +142,6 @@ const VaultEvents = () => {
       exchangeProgram.onStateChange(state => {
         dispatch(actions.setState(state))
       })
-
       const tempSet = new Set<string>()
       R.forEachObj(userVaultsState, userVault => {
         tempSet.add(userVault.vault.toString())
@@ -163,53 +156,31 @@ const VaultEvents = () => {
           )
           .then(response => {
             exchangeProgram.onVaultEntryChange(response.vaultEntryAddress, state => {
-              console.log('vaultEntry changed', state)
               dispatch(actionsVault.setUserVaults(state))
             })
-            console.log('subscribe to vaultEntry', response.vaultEntryAddress)
           })
           .catch(() => {})
       })
       setInitializedVaultEntry(tempSet)
-      // updateSyntheticAmountUserVault()
     }
     connectEvents().catch(error => console.log(error))
   }, [dispatch, exchangeProgram, networkStatus, userVaultsState])
 
-  const [initializedAsset, setInitializedAsset] = useState<Set<string>>(new Set())
   React.useEffect(() => {
     const connection = getCurrentSolanaConnection()
-    if (!connection || walletStat !== Status.Initialized || networkStatus !== Status.Initialized) {
+    if (
+      !exchangeProgram ||
+      walletStat !== Status.Initialized ||
+      networkStatus !== Status.Initialized ||
+      !connection
+    ) {
       return
     }
-
     const connectEvents = () => {
-      const tempSet = new Set<string>()
-      R.forEachObj(vaultsState, vault => {
-        tempSet.add(vault.collateral.toString())
-        if (initializedAsset.has(vault.collateral.toString())) {
-          console.log('juz dodane')
-          return
-        }
-        console.log('subscribe price')
-        console.log(vault.collateralPriceFeed.toString())
-        connection.onAccountChange(vault.collateralPriceFeed, priceInfo => {
-          console.log('work')
-          const parsedData = parsePriceData(priceInfo.data)
-          parsedData.price &&
-            dispatch(
-              actionsVault.setAssetPrice({
-                address: vault.collateral.toString(),
-                price: new BN(parsedData.price * 10 ** vault.collateralAmount.scale)
-              })
-            )
-        })
-      })
-      setInitializedAsset(tempSet)
+      dispatch(actionsVault.initVault())
     }
-
     connectEvents()
-  }, [dispatch, Object.keys(vaultsState).length, networkStatus])
+  }, [dispatch, exchangeProgram, networkStatus])
 
   return null
 }

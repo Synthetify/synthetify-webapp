@@ -1,8 +1,14 @@
 import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, ExchangeAccount, PayloadTypes, SwaplineSwapType } from '@reducers/exchange'
-import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
-import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
+import {
+  collaterals,
+  exchangeAccount,
+  swap,
+  swaplineSwap,
+  xUSDAddress
+} from '@selectors/exchange'
+import { accounts, address, getAddressFromIndex, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
@@ -793,14 +799,22 @@ export function* swaplineSwapHandler(): Generator {
   yield* takeEvery(actions.swaplineSwap, handleSwaplineSwap)
 }
 const pendingUpdates: { [x: string]: Decimal } = {}
+const pendingUpdatesVaults: { [x: string]: Decimal } = {}
 
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
   pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
+  const state = yield* select(getAddressFromIndex(action.payload.tokenIndex))
+  state.forEach(element => {
+    if (element !== '') {
+      pendingUpdatesVaults[element] = action.payload.price
+    }
+  })
 }
 export function* handleAssetPrice(): Generator {
   yield* put(actions.batchSetAssetPrice(pendingUpdates))
+  yield* put(actionsVault.batchSetAssetPrice(pendingUpdatesVaults))
 }
 
 export function* assetPriceHandler(): Generator {

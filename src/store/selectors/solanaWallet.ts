@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { userVaults, vaults, vaultSwap } from '@selectors/vault'
+import { assetPrice, userVaults, vaults, vaultSwap } from '@selectors/vault'
 import {
   assets,
   collaterals,
@@ -18,6 +18,8 @@ import { ACCURACY, DEFAULT_PUBLICKEY, MARINADE_PER_POINT, ORACLE_OFFSET } from '
 import { ICollateral, ISynthetic } from '@reducers/exchange'
 import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
 import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
+import * as R from 'remeda'
+import { addressToAssetSymbol } from '@synthetify/sdk'
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
 export const { address, balance, accounts, status } = keySelectors(store, [
@@ -111,11 +113,11 @@ export const swaplinePairs = createSelector(
 export const vaultPairs = createSelector(
   vaults,
   synthetics,
-  collaterals,
   accounts,
   assets,
   balance,
-  (allVaults, allSynthetics, allCollaterals, tokensAccounts, allAssets, wSOLBalance) => {
+  assetPrice,
+  (allVaults, allSynthetics, tokensAccounts, allAssets, wSOLBalance, allAssetPrice) => {
     return Object.values(allVaults).map(vault => {
       const syntheticAccount = tokensAccounts[vault.synthetic.toString()]
       const collateralAccount = tokensAccounts[vault.collateral.toString()]
@@ -127,15 +129,29 @@ export const vaultPairs = createSelector(
           balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
         },
         collateralData:
-          allCollaterals[vault.collateral.toString()].symbol !== 'WSOL'
+          addressToAssetSymbol[vault.collateral.toString()] !== 'WSOL'
             ? {
-                ...allAssets[allCollaterals[vault.collateral.toString()].assetIndex],
-                ...allCollaterals[vault.collateral.toString()],
+                reserveBalance: vault.collateralAmount.scale,
+                symbol: addressToAssetSymbol[vault.collateral.toString()],
+                price:
+                  typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
+                    ? allAssetPrice[vault.collateral.toString()]
+                    : {
+                        val: new BN(100000),
+                        scale: vault.collateralAmount.scale
+                      },
                 balance: collateralAccount ? collateralAccount.balance : new BN(0)
               }
             : {
-                ...allAssets[allCollaterals[vault.collateral.toString()].assetIndex],
-                ...allCollaterals[vault.collateral.toString()],
+                reserveBalance: vault.collateralAmount.scale,
+                symbol: addressToAssetSymbol[vault.collateral.toString()],
+                price:
+                  typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
+                    ? allAssetPrice[vault.collateral.toString()]
+                    : {
+                        val: new BN(0),
+                        scale: vault.collateralAmount.scale
+                      },
                 balance: wSOLBalance
               }
       }
@@ -397,6 +413,26 @@ export const getAvailableRepay = createSelector(
     }
   }
 )
+
+export const getAddressFromIndex = (nr: number) =>
+  createSelector(synthetics, collaterals, (allSynthetic, allCollaterals) => {
+    // zapytać jak bardzo ta funkcja szukanmai indeksu spowalnia program
+    let syntheticAddress: string = ''
+    R.forEachObj(allSynthetic, element => {
+      if (element.assetIndex === nr) {
+        syntheticAddress = element.assetAddress.toString()
+      }
+    })
+
+    let collateralAddress: string = ''
+    R.forEachObj(allCollaterals, element => {
+      if (element.assetIndex === nr) {
+        collateralAddress = element.collateralAddress.toString()
+      }
+    })
+
+    return [syntheticAddress, collateralAddress]
+  })
 
 export const solanaWalletSelectors = {
   address,

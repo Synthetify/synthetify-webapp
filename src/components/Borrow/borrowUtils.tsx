@@ -489,7 +489,7 @@ export const getAssetFromAndTo = (
   }
   const collateral: AssetPriceData = {
     priceVal: pair.collateralData.price.val,
-    assetScale: pair.collateralData.reserveBalance.scale,
+    assetScale: pair.collateralData.reserveBalance,
     symbol: pair.collateralData.symbol,
     maxAvailable: availableFrom,
     balance: pair.collateralData.balance
