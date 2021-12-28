@@ -14,13 +14,12 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import BN from 'bn.js'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { Decimal, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { VAULTS_MAP } from '@synthetify/sdk/lib/utils'
 import { networkTypetoProgramNetwork } from '@web3/connection'
 import { network } from '@selectors/solanaConnection'
-import { getConnection } from './connection'
-import { PublicKey } from '@solana/web3.js'
 import { address } from '@selectors/solanaWallet'
+import { PublicKey } from '@solana/web3.js'
 function* checkVaultEntry(): Generator {
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -301,9 +300,26 @@ export function* updateSyntheticAmountUserVault(): Generator {
   }
 }
 
+export function* getVaultEntryIFExist(
+  synthetic: PublicKey,
+  collateral: PublicKey
+): SagaGenerator<VaultEntry | null> {
+  const owner = yield* select(address)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  try {
+    return yield* call(
+      [exchangeProgram, exchangeProgram.getVaultEntryForOwner],
+      synthetic,
+      collateral,
+      owner
+    )
+  } catch (error) {
+    return null
+  }
+}
+
 export function* initVault(): Generator {
   const networkType = yield* select(network)
-  const owner = yield* select(address)
   const exchangeProgram = yield* call(getExchangeProgram)
   const vaultsState = yield* select(vaults)
 
@@ -319,23 +335,56 @@ export function* initVault(): Generator {
         vault.synthetic,
         vault.collateral
       )
-
       yield* put(
         actions.setVault({
           address: vaultAddress,
           vault: data
         })
       )
-      const vaultEntry = yield* call(
-        [exchangeProgram, exchangeProgram.getVaultEntryForOwner],
+    }
+  }
+}
+
+export function* initVaultEntry(): Generator {
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const userVaultState = yield* select(userVaults)
+  const networkType = yield* select(network)
+
+  for (const vault of VAULTS_MAP[networkTypetoProgramNetwork(networkType)]) {
+    const { vaultAddress } = yield* call(
+      [exchangeProgram, exchangeProgram.getVaultAddress],
+      vault.synthetic,
+      vault.collateral
+    )
+    if (typeof userVaultState[vaultAddress.toString()] === 'undefined') {
+      const data = yield* call(
+        [exchangeProgram, exchangeProgram.getVaultForPair],
         vault.synthetic,
-        vault.collateral,
-        owner
+        vault.collateral
       )
-      if (vaultEntry) {
+      yield* put(
+        actions.setVault({
+          address: vaultAddress,
+          vault: data
+        })
+      )
+      const vaultEntry = yield* call(getVaultEntryIFExist, vault.synthetic, vault.collateral)
+      if (vaultEntry !== null) {
         yield* put(actions.setUserVaults(vaultEntry))
       }
     }
+  }
+}
+
+export function* addNewVaultEntryHangle(): Generator {
+  const actualVaultSwap = yield* select(vaultSwap)
+  const vaultEntry = yield* call(
+    getVaultEntryIFExist,
+    actualVaultSwap.synthetic,
+    actualVaultSwap.collateral
+  )
+  if (vaultEntry !== null) {
+    yield* put(actions.setUserVaults(vaultEntry))
   }
 }
 
@@ -366,6 +415,9 @@ export function* updateSyntheticHandler(): Generator {
 export function* setActualVault(): Generator {
   yield* takeEvery(actions.setActualVaultSwap, setVaultAddress)
 }
+export function* addNewVaultEntry(): Generator {
+  yield* takeEvery(actions.setNewVaultEntryAddress, addNewVaultEntryHangle)
+}
 export function* initVaults(): Generator {
   yield* takeEvery(actions.initVault, initVault)
 }
@@ -373,11 +425,13 @@ export function* vaultSaga(): Generator {
   yield all(
     [
       initVaults,
+      initVaultEntry,
       updateSyntheticHandler,
       vaultSendActionHandler,
       setActualVault,
       assetPriceBatcher,
-      assetPriceHandler
+      assetPriceHandler,
+      addNewVaultEntry
     ].map(spawn)
   )
 }
