@@ -68,7 +68,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
   whETH: 'Wormhole ETH',
   whFTT: 'Wormhole FTT',
   mSOL: 'Marinade SOL',
-  xLUNA: 'Synthetic LUNA'
+  xLUNA: 'Synthetic LUNA',
+  xAVAX: 'Synthetic Avalanche'
 }
 
 const AVERAGE_MNDE_APY = 11.23
