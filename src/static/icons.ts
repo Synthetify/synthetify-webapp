@@ -37,6 +37,7 @@ import marinade from './icons/mnde.svg'
 import exclamation from './svg/exclamation.svg'
 import marinadeWhite from './svg/Marinade.svg'
 import xAVAXIcon from './icons/xavax.svg'
+import xDOTIcon from './icons/xdot.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -57,6 +58,7 @@ const icons: { [key: string]: string } = {
   xSUSHI: xSUSHIIcon,
   xUNI: xUNIIcon,
   xYFI: xYFIIcon,
+  xDOT: xDOTIcon,
   WSOL: WSOLIcon,
   stSOL: WSOLIcon,
   USDC: USDCIcon,

@@ -9,10 +9,11 @@ export type ProgressState = 'progress' | 'success' | 'failed' | 'none'
 
 export interface IProps {
   state: ProgressState
-  message?: string
+  message?: string,
+  className?: string
 }
 
-export const Progress: React.FC<IProps> = ({ state, message }) => {
+export const Progress: React.FC<IProps> = ({ state, message, className }) => {
   const classes = useStyles()
 
   const progressIcon = (state: ProgressState) => {
@@ -36,7 +37,7 @@ export const Progress: React.FC<IProps> = ({ state, message }) => {
   }
 
   return (
-    <Typography component={'span'}>
+    <Typography component={'span'} className={className}>
       {state !== 'none' ? (
         <Grid container direction='row' alignItems='center' wrap='nowrap' style={{ height: 52 }}>
           <Grid item className={classes.icon}>

@@ -1,6 +1,15 @@
+/* eslint-disable @typescript-eslint/indent */
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
-import { assets, collaterals, exchangeAccount, swaplines, synthetics, userDebtShares, userDebtValue } from '@selectors/exchange'
+import {
+  assets,
+  collaterals,
+  exchangeAccount,
+  swaplines,
+  synthetics,
+  userDebtShares,
+  userDebtValue
+} from '@selectors/exchange'
 import { ISolanaWallet, solanaWalletSliceName, ITokenAccount } from '../reducers/solanaWallet'
 import { keySelectors, AnyProps } from './helpers'
 import { PublicKey } from '@solana/web3.js'
@@ -44,16 +53,15 @@ export const exchangeTokensWithUserBalance = createSelector(
   synthetics,
   assets,
   (tokensAccounts, allSynthetics, exchangeAssets) => {
-    return Object.values(allSynthetics)
-      .map(asset => {
-        const userAccount = tokensAccounts[asset.assetAddress.toString()]
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        return {
-          ...exchangeAssets[allSynthetics[asset.assetAddress.toString()].assetIndex],
-          ...allSynthetics[asset.assetAddress.toString()],
-          balance: userAccount ? userAccount.balance : new BN(0)
-        } as ExchangeSyntheticTokens
-      })
+    return Object.values(allSynthetics).map(asset => {
+      const userAccount = tokensAccounts[asset.assetAddress.toString()]
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      return {
+        ...exchangeAssets[allSynthetics[asset.assetAddress.toString()].assetIndex],
+        ...allSynthetics[asset.assetAddress.toString()],
+        balance: userAccount ? userAccount.balance : new BN(0)
+      } as ExchangeSyntheticTokens
+    })
   }
 )
 
@@ -71,7 +79,7 @@ export const swaplinePairs = createSelector(
   assets,
   balance,
   (allSwaplines, allSynthetics, allCollaterals, tokensAccounts, allAssets, wSOLBalance) => {
-    return Object.values(allSwaplines).map((swapline) => {
+    return Object.values(allSwaplines).map(swapline => {
       const syntheticAccount = tokensAccounts[swapline.synthetic.toString()]
       const collateralAccount = tokensAccounts[swapline.collateral.toString()]
       const pair: SwaplinePair = {
@@ -81,16 +89,18 @@ export const swaplinePairs = createSelector(
           ...allSynthetics[swapline.synthetic.toString()],
           balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
         },
-        collateralData: allCollaterals[swapline.collateral.toString()].symbol !== 'WSOL'
-          ? {
-            ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
-            ...allCollaterals[swapline.collateral.toString()],
-            balance: collateralAccount ? collateralAccount.balance : new BN(0)
-          } : {
-            ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
-            ...allCollaterals[swapline.collateral.toString()],
-            balance: wSOLBalance
-          }
+        collateralData:
+          allCollaterals[swapline.collateral.toString()].symbol !== 'WSOL'
+            ? {
+                ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
+                ...allCollaterals[swapline.collateral.toString()],
+                balance: collateralAccount ? collateralAccount.balance : new BN(0)
+              }
+            : {
+                ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
+                ...allCollaterals[swapline.collateral.toString()],
+                balance: wSOLBalance
+              }
       }
 
       return pair
@@ -99,8 +109,8 @@ export const swaplinePairs = createSelector(
 )
 
 export type TokenAccounts = ITokenAccount & {
-  symbol: string,
-  usdValue: BN,
+  symbol: string
+  usdValue: BN
   assetDecimals: number
 }
 export const syntheticAccountsArray = createSelector(
@@ -118,7 +128,7 @@ export const syntheticAccountsArray = createSelector(
           usdValue: exchangeAssets[asset.assetIndex].price.val
             .mul(account.balance)
             .mul(new BN(10 ** account.decimals))
-            .div(new BN(10 ** (exchangeAssets[asset.assetIndex].price.scale)))
+            .div(new BN(10 ** exchangeAssets[asset.assetIndex].price.scale))
             .div(new BN(10 ** asset.supply.scale))
         })
       }
@@ -144,7 +154,7 @@ export const collateralAccountsArray = createSelector(
           assetDecimals: collateral.reserveBalance.scale,
           usdValue: exchangeAssets[collateral.assetIndex].price.val
             .mul(wSOLBalance)
-            .div(new BN(10 ** (exchangeAssets[collateral.assetIndex].price.scale))),
+            .div(new BN(10 ** exchangeAssets[collateral.assetIndex].price.scale)),
           decimals: collateral.reserveBalance.scale,
           programId: collateral.collateralAddress,
           balance: wSOLBalance,
@@ -158,7 +168,7 @@ export const collateralAccountsArray = createSelector(
           usdValue: exchangeAssets[collateral.assetIndex].price.val
             .mul(account.balance)
             .mul(new BN(10 ** account.decimals))
-            .div(new BN(10 ** (exchangeAssets[collateral.assetIndex].price.scale)))
+            .div(new BN(10 ** exchangeAssets[collateral.assetIndex].price.scale))
             .div(new BN(10 ** collateral.reserveBalance.scale))
         })
       } else {
@@ -192,12 +202,15 @@ export const stakedAccountsArray = createSelector(
           symbol: allCollaterals[collateralAddress].symbol,
           programId: allCollaterals[collateralAddress].collateralAddress,
           decimals: allCollaterals[collateralAddress].reserveBalance.scale,
-          address: allCollaterals[collateralAddress].symbol === 'WSOL' ? wSOLAddress : tokensAccounts[collateralAddress]?.address ?? DEFAULT_PUBLICKEY,
+          address:
+            allCollaterals[collateralAddress].symbol === 'WSOL'
+              ? wSOLAddress
+              : tokensAccounts[collateralAddress]?.address ?? DEFAULT_PUBLICKEY,
           assetDecimals: allCollaterals[collateralAddress].reserveBalance.scale,
           balance: collateral.amount,
           usdValue: collateral.amount
             .mul(allAssets[allCollaterals[collateralAddress].assetIndex].price.val)
-            .div(new BN(10 ** (allAssets[allCollaterals[collateralAddress].assetIndex].price.scale)))
+            .div(new BN(10 ** allAssets[allCollaterals[collateralAddress].assetIndex].price.scale))
         })
       }
     }
@@ -207,80 +220,99 @@ export const stakedAccountsArray = createSelector(
 )
 
 export const userMaxBurnToken = (assetAddress: PublicKey) =>
-  createSelector(userDebtValue, synthetics, assets, tokenAccount(assetAddress), (debt, allSynthetics, allAssets, account) => {
-    const token = allSynthetics[assetAddress.toString()]
-    if (debt.eq(new BN(0)) || !token) {
-      return new BN(0)
+  createSelector(
+    userDebtValue,
+    synthetics,
+    assets,
+    tokenAccount(assetAddress),
+    (debt, allSynthetics, allAssets, account) => {
+      const token = allSynthetics[assetAddress.toString()]
+      if (debt.eq(new BN(0)) || !token) {
+        return new BN(0)
+      }
+      const decimalChange = 10 ** (token.supply.scale + ORACLE_OFFSET - ACCURACY)
+
+      const assetToBurnBalance = account
+        ? allAssets[token.assetIndex].price.val.mul(account.balance).div(new BN(decimalChange))
+        : new BN(0)
+
+      const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
+
+      return val.mul(new BN(decimalChange)).div(allAssets[token.assetIndex].price.val)
     }
-    const decimalChange = 10 ** (token.supply.scale + ORACLE_OFFSET - ACCURACY)
-
-    const assetToBurnBalance = account ? allAssets[token.assetIndex].price.val.mul(account.balance).div(new BN(decimalChange)) : new BN(0)
-
-    const val = debt.lt(assetToBurnBalance) ? debt : assetToBurnBalance
-
-    return val.mul(new BN(decimalChange)).div(allAssets[token.assetIndex].price.val)
-  })
+  )
 
 export const userMaxDeposit = (assetAddress: PublicKey) =>
-  createSelector(tokenBalance(assetAddress), collaterals, balance, (assetBalance, allCollaterals, wSOLBalance) => {
-    if (!allCollaterals[assetAddress.toString()]) {
-      return {
-        maxDeposit: new BN(0),
-        decimals: 6
+  createSelector(
+    tokenBalance(assetAddress),
+    collaterals,
+    balance,
+    (assetBalance, allCollaterals, wSOLBalance) => {
+      if (!allCollaterals[assetAddress.toString()]) {
+        return {
+          maxDeposit: new BN(0),
+          decimals: 6
+        }
       }
-    }
 
-    if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
-      let newBalance = wSOLBalance.sub(
-        new BN(21 *
-          (10 **
-            (allCollaterals[assetAddress.toString()].reserveBalance.scale - 4)
+      if (allCollaterals[assetAddress.toString()]?.symbol === 'WSOL') {
+        let newBalance = wSOLBalance.sub(
+          new BN(21 * 10 ** (allCollaterals[assetAddress.toString()].reserveBalance.scale - 4))
+        )
+        newBalance = newBalance.lt(
+          allCollaterals[assetAddress.toString()].maxCollateral.val.sub(
+            allCollaterals[assetAddress.toString()].reserveBalance.val
           )
         )
-      )
-      newBalance = newBalance.lt(
-        allCollaterals[assetAddress.toString()].maxCollateral.val
-          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
-      )
-        ? newBalance
-        : allCollaterals[assetAddress.toString()].maxCollateral.val
-          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
+          ? newBalance
+          : allCollaterals[assetAddress.toString()].maxCollateral.val.sub(
+              allCollaterals[assetAddress.toString()].reserveBalance.val
+            )
+        return {
+          maxDeposit: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
+          decimals: allCollaterals[assetAddress.toString()].reserveBalance.scale
+        }
+      }
+
       return {
-        maxDeposit: newBalance.lt(new BN(0)) ? new BN(0) : newBalance,
-        decimals: allCollaterals[assetAddress.toString()].reserveBalance.scale
+        decimals: assetBalance.decimals,
+        maxDeposit: assetBalance.balance.lt(
+          allCollaterals[assetAddress.toString()].maxCollateral.val.sub(
+            allCollaterals[assetAddress.toString()].reserveBalance.val
+          )
+        )
+          ? assetBalance.balance
+          : allCollaterals[assetAddress.toString()].maxCollateral.val.sub(
+              allCollaterals[assetAddress.toString()].reserveBalance.val
+            )
       }
     }
-
-    return {
-      decimals: assetBalance.decimals,
-      maxDeposit: assetBalance.balance.lt(
-        allCollaterals[assetAddress.toString()].maxCollateral.val
-          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
-      )
-        ? assetBalance.balance
-        : allCollaterals[assetAddress.toString()].maxCollateral.val
-          .sub(allCollaterals[assetAddress.toString()].reserveBalance.val)
-    }
-  })
+  )
 
 export const userMarinadeRewardAmount = createSelector(
   collaterals,
   exchangeAccount,
   userDebtShares,
   (allCollaterals, userExchangeAccount, debtShares) => {
-    const mSOL = Object.values(allCollaterals).find((asset) => asset.symbol === 'mSOL')
+    const mSOL = Object.values(allCollaterals).find(asset => asset.symbol === 'mSOL')
 
     if (!mSOL) {
       return 0
     }
 
-    const stakedMSol = userExchangeAccount.collaterals.find((collateral) => collateral.collateralAddress.equals(mSOL.collateralAddress))
+    const stakedMSol = userExchangeAccount.collaterals.find(collateral =>
+      collateral.collateralAddress.equals(mSOL.collateralAddress)
+    )
 
     if (!stakedMSol) {
       return 0
     }
 
-    return debtShares.toNumber() * Math.sqrt(stakedMSol.amount.toNumber()) / (1e9) * MARINADE_PER_POINT * 7
+    return (
+      ((debtShares.toNumber() * Math.sqrt(stakedMSol.amount.toNumber())) / 1e9) *
+      MARINADE_PER_POINT *
+      7
+    )
   }
 )
 
