@@ -14,7 +14,7 @@ declare global {
 }
 
 enum SolanaNetworks {
-  DEV = 'https://api.devnet.solana.com',
+  DEV = 'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899',
   TEST = 'https://api.testnet.solana.com',
   MAIN = 'https://api.mainnet-beta.solana.com',
   MAIN_SERUM = 'https://ssc-dao.genesysgo.net',
@@ -69,6 +69,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
   whFTT: 'Wormhole FTT',
   mSOL: 'Marinade SOL',
   xLUNA: 'Synthetic LUNA',
+  xAVAX: 'Synthetic Avalanche',
   xDOT: 'Synthetic Polkadot'
 }
 
