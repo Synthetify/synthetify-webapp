@@ -134,6 +134,7 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         maxBehavior='balance'
         balance={xUSDBalance}
         showWarning={showWarning}
+        rewards={stakingData}
       />
     ),
     rewards: <RewardsTab {...stakingData} />

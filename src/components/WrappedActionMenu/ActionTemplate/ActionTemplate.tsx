@@ -10,6 +10,7 @@ import BurnWarning from '@components/BurnWarning/BurnWarning'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { theme } from '@static/theme'
 import useStyles from './style'
+import { IRewardsProps } from '../RewardsTab/RewardsTab'
 
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'repay'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
@@ -32,6 +33,7 @@ export interface IProps {
   emptyTokensHandler?: () => void
   balance?: BN
   showWarning?: boolean
+  rewards?: IRewardsProps
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -51,7 +53,8 @@ export const ActionTemplate: React.FC<IProps> = ({
   maxBehavior = 'number',
   emptyTokensHandler,
   balance,
-  showWarning = false
+  showWarning = false,
+  rewards
 }) => {
   const classes = useStyles()
 
@@ -270,12 +273,8 @@ export const ActionTemplate: React.FC<IProps> = ({
           }}
           onBurn={onBurn}
           burnTokenSymbol={currency}
-          rewardAmount={{
-            amount: new BN(12433),
-            decimal: 3
-          }}
-          claimTime={'12:12:12'}
           onCancel={onClick}
+          rewards={rewards}
         />
       ) : (
         ''

@@ -33,7 +33,7 @@ export interface IRewardsProps {
   roundLength: number
   stakedUserValue: BN
   SNYPrice: Decimal
-  allDebtValue: Array<{symbol: string, percent: number, value: number}>
+  allDebtValue: Array<{ symbol: string; percent: number; value: number }>
   userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
@@ -199,9 +199,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     return !userDebtShares.eq(new BN(0))
       ? calculateTokensBasedOnPoints(roundPoints, roundAllPoints, roundAmount)
-        .mul(SNYPrice.val)
-        .mul(new BN(52))
-        .div(userDebtShares)
+          .mul(SNYPrice.val)
+          .mul(new BN(52))
+          .div(userDebtShares)
       : new BN(0)
   }
   const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
@@ -241,8 +241,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracketValue: apyValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount),
       bracket: nextRoundPoints.eqn(0) ? '' : '%',
-      hint:
-        'In this round you receive or lose pro rata shares proportionally to the value of your debt when you mint or burn your xUSD.',
+      hint: 'In this round you receive or lose pro rata shares proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards1,
       tooltipPlacement: 'left-end'
@@ -257,8 +256,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: 'SNY',
       bracketValue: apyValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount),
       bracket: currentRoundPoints.eqn(0) ? '' : '%',
-      hint:
-        'In this round you join with the pro rata shares from the previous round. You will lose those when you burn your xUSD.',
+      hint: 'In this round you join with the pro rata shares from the previous round. You will lose those when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards2,
       tooltipPlacement: 'left'
@@ -273,8 +271,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: 'SNY',
       bracketValue: apyValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount),
       bracket: finishedRoundPoints.eqn(0) ? '' : '%',
-      hint:
-        'In this round you join with the pro rata shares from the previous phase. You can now claim your reward in SNY tokens, being proportional to the number of your shares.',
+      hint: 'In this round you join with the pro rata shares from the previous phase. You can now claim your reward in SNY tokens, being proportional to the number of your shares.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards3,
       tooltipPlacement: 'left-start'
@@ -285,8 +282,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     const props = rewardsLines[+key]
     return (
       <Grid item key={index} className={classes.line}>
-        <RewardsLine {...props} slot={slot} userMarinadeAmount={index === 1 ? userMarinadeAmount : undefined} />
-        <Divider className={classes.divider}/>
+        <RewardsLine
+          {...props}
+          slot={slot}
+          userMarinadeAmount={index === 1 ? userMarinadeAmount : undefined}
+        />
+        <Divider className={classes.divider} />
       </Grid>
     )
   })
@@ -300,7 +301,12 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
-      <Grid item container justifyContent='space-between' direction='column' style={{ marginTop: 18 }}>
+      <Grid
+        item
+        container
+        justifyContent='space-between'
+        direction='column'
+        style={{ marginTop: 18 }}>
         {lines}
       </Grid>
       <Grid
