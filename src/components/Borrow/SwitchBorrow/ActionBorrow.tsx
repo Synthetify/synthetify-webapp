@@ -8,7 +8,7 @@ import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { BN } from '@project-serum/anchor'
-import { printBN } from '@consts/utils'
+import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 import { PublicKey } from '@solana/web3.js'
 import {
@@ -196,6 +196,13 @@ export const ActionBorrow: React.FC<IProp> = ({
 
   React.useEffect(() => {
     if (!amountCollateral.eq(new BN(0))) {
+      const openFeeBN = stringToMinDecimalBN(
+        pairIndex !== null
+          ? (
+              Number(printBN(pairs[pairIndex].openFee.val, pairs[pairIndex].openFee.scale)) * 100
+            ).toString()
+          : '0'
+      )
       const amount = calculateAmountBorrow(
         tokenTo.priceVal,
         tokenTo.assetScale,
@@ -204,6 +211,8 @@ export const ActionBorrow: React.FC<IProp> = ({
         amountCollateral,
         cRatio !== '---' ? cRatio : minCRatio.toString()
       )
+        .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+        .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
       setAmountBorrow(amount)
       setAmountBorrowString(printBN(amount, tokenTo.assetScale))
     }
