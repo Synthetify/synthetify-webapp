@@ -2,10 +2,11 @@ import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } fro
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, ExchangeAccount, PayloadTypes, SwaplineSwapType } from '@reducers/exchange'
 import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
-import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
+import { accounts, address, getAddressFromIndex, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
+  Account,
   Keypair,
   PublicKey,
   sendAndConfirmRawTransaction,
@@ -22,6 +23,8 @@ import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
+import { VaultSwap, actions as actionsVault } from '@reducers/vault'
+import { userVaults, vaults } from '@selectors/vault'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -30,7 +33,10 @@ export function* pullExchangeState(): Generator {
   yield* call(pullAssetPrices)
   yield* call(updateSlot)
 }
-export function* getCollateralTokenAirdrop(collateralTokenAddress: PublicKey, quantity: number): Generator {
+export function* getCollateralTokenAirdrop(
+  collateralTokenAddress: PublicKey,
+  quantity: number
+): Generator {
   const wallet = yield* call(getWallet)
   const tokensAccounts = yield* select(accounts)
   const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
@@ -273,7 +279,10 @@ export function* withdrawCollateral(
   let accountAddress: PublicKey
 
   if (!collateralAccountAddress) {
-    accountAddress = yield* call(createAccount, allCollaterals[collateralTokenAddress.toString()].collateralAddress)
+    accountAddress = yield* call(
+      createAccount,
+      allCollaterals[collateralTokenAddress.toString()].collateralAddress
+    )
   } else {
     accountAddress = collateralAccountAddress.address
   }
@@ -373,7 +382,9 @@ export function* withdrawRewards(): SagaGenerator<string> {
   const exchangeProgram = yield* call(getExchangeProgram)
   const allCollaterals = yield* select(collaterals)
 
-  const userTokenAccount = yield* select(tokenAccount(Object.values(allCollaterals)[0].collateralAddress))
+  const userTokenAccount = yield* select(
+    tokenAccount(Object.values(allCollaterals)[0].collateralAddress)
+  )
   let snyAddress
   if (!userTokenAccount) {
     snyAddress = yield* call(createAccount, Object.values(allCollaterals)[0].collateralAddress)
@@ -475,11 +486,7 @@ export function* handleSwaplineWSOLSwap(
     wrappedSolAccount.publicKey,
     wallet.publicKey
   )
-  const swaplineIx = yield* call([
-    exchangeProgram,
-    exchangeProgram[type]
-  ],
-  {
+  const swaplineIx = yield* call([exchangeProgram, exchangeProgram[type]], {
     amount,
     signer,
     userSyntheticAccount,
@@ -502,20 +509,17 @@ export function* handleSwaplineWSOLSwap(
     wallet.publicKey,
     []
   )
-  const tx = type === 'nativeToSynthetic'
-    ? new Transaction()
-      .add(createIx)
-      .add(transferIx)
-      .add(initIx)
-      .add(approveIx)
-      .add(swaplineIx)
-      .add(unwrapIx)
-    : new Transaction()
-      .add(createIx)
-      .add(initIx)
-      .add(approveIx)
-      .add(swaplineIx)
-      .add(unwrapIx)
+  /* eslint-disable @typescript-eslint/indent */
+  const tx =
+    type === 'nativeToSynthetic'
+      ? new Transaction()
+          .add(createIx)
+          .add(transferIx)
+          .add(initIx)
+          .add(approveIx)
+          .add(swaplineIx)
+          .add(unwrapIx)
+      : new Transaction().add(createIx).add(initIx).add(approveIx).add(swaplineIx).add(unwrapIx)
 
   const blockhash = yield* call([connection, connection.getRecentBlockhash])
   tx.feePayer = wallet.publicKey
@@ -567,11 +571,7 @@ export function* handleSwaplineSwap(): Generator {
       userCollateralAccount = yield* call(createAccount, swapData.collateral)
     }
     const exchangeProgram = yield* call(getExchangeProgram)
-    const swaplineIx = yield* call([
-      exchangeProgram,
-      exchangeProgram[swapData.swapType]
-    ],
-    {
+    const swaplineIx = yield* call([exchangeProgram, exchangeProgram[swapData.swapType]], {
       amount: swapData.amount,
       signer: walletAddress,
       userSyntheticAccount,
@@ -611,6 +611,179 @@ export function* handleSwaplineSwap(): Generator {
   }
 }
 
+export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerator<string> {
+  const wallet = yield* call(getWallet)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const tokensAccounts = yield* select(accounts)
+  const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
+  const vaultsPair = yield* select(vaults)
+  const connection = yield* call(getConnection)
+  const token = new Token(
+    connection,
+    tokensAccounts[vaultSwapData.collateral.toString()].address,
+    TOKEN_PROGRAM_ID,
+    new Account()
+  )
+  const userVaultState = yield* select(userVaults)
+  const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
+    owner: wallet.publicKey,
+    synthetic: vaultSwapData.synthetic,
+    collateral: vaultSwapData.collateral
+  })
+  const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
+    collateral: vaultSwapData.collateral,
+    synthetic: vaultSwapData.synthetic,
+    owner: wallet.publicKey,
+    amount: vaultSwapData.collateralAmount,
+    userCollateralAccount: userCollateralTokenAccount.address,
+    reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
+    collateralToken: token
+  })
+  let tx
+
+  if (!vaultSwapData.vaultEntryExist) {
+    tx = new Transaction().add(ix).add(depositIx)
+  } else {
+    tx = new Transaction().add(depositIx)
+  }
+
+  const signature = yield* call(signAndSend, wallet, tx)
+  yield* call(sleep, 1000)
+  if (typeof userVaultState[vaultSwapData.vaultAddress.toString()] === 'undefined') {
+    yield* put(
+      actionsVault.setNewVaultEntryAddress({
+        newVaultEntryAddress: vaultSwapData.vaultAddress
+      })
+    )
+  }
+
+  return signature
+}
+export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<string> {
+  const wallet = yield* call(getWallet)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const tokensAccounts = yield* select(accounts)
+  const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
+  const vaultsPair = yield* select(vaults)
+  const connection = yield* call(getConnection)
+  const token = new Token(
+    connection,
+    tokensAccounts[vaultSwapData.collateral.toString()].address,
+    TOKEN_PROGRAM_ID,
+    new Account()
+  )
+  const userVaultState = yield* select(userVaults)
+  let userSyntheticTokenAccount = tokensAccounts[vaultSwapData.synthetic.toString()]
+    ? tokensAccounts[vaultSwapData.synthetic.toString()].address
+    : null
+
+  if (userSyntheticTokenAccount == null) {
+    userSyntheticTokenAccount = yield* call(createAccount, vaultSwapData.synthetic)
+  }
+  const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
+    owner: wallet.publicKey,
+    synthetic: vaultSwapData.synthetic,
+    collateral: vaultSwapData.collateral
+  })
+  const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
+    collateral: vaultSwapData.collateral,
+    synthetic: vaultSwapData.synthetic,
+    owner: wallet.publicKey,
+    amount: vaultSwapData.collateralAmount,
+    userCollateralAccount: userCollateralTokenAccount.address,
+    reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
+    collateralToken: token
+  })
+
+  const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultTransaction], {
+    owner: wallet.publicKey,
+    to: userSyntheticTokenAccount,
+    synthetic: vaultSwapData.synthetic,
+    collateral: vaultSwapData.collateral,
+    amount: vaultSwapData.syntheticAmount,
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
+  })
+  let tx
+
+  if (vaultSwapData.collateralAmount.gt(new BN(0))) {
+    if (!vaultSwapData.vaultEntryExist) {
+      tx = new Transaction().add(ix).add(depositIx).add(borrowedIx)
+    } else {
+      tx = new Transaction().add(depositIx).add(borrowedIx)
+    }
+  } else {
+    tx = new Transaction().add(borrowedIx)
+  }
+
+  const signature = yield* call(signAndSend, wallet, tx)
+  yield* call(sleep, 1000)
+  if (typeof userVaultState[vaultSwapData.vaultAddress.toString()] === 'undefined') {
+    yield* put(
+      actionsVault.setNewVaultEntryAddress({
+        newVaultEntryAddress: vaultSwapData.vaultAddress
+      })
+    )
+  }
+  return signature
+}
+
+export function* handleWithdrawCollateralVault(vaultSwapData: VaultSwap): SagaGenerator<string> {
+  const wallet = yield* call(getWallet)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const tokensAccounts = yield* select(accounts)
+  const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
+  const vaultsPair = yield* select(vaults)
+
+  const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
+    amount: vaultSwapData.collateralAmount,
+    owner: wallet.publicKey,
+    synthetic: vaultSwapData.synthetic,
+    collateral: vaultSwapData.collateral,
+    userCollateralAccount: userCollateralTokenAccount.address,
+    reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
+  })
+
+  const tx = new Transaction().add(withdrawIx)
+  const signature = yield* call(signAndSend, wallet, tx)
+  return signature
+}
+
+export function* handleRepaySyntheticVault(vaultSwapData: VaultSwap): SagaGenerator<string> {
+  const wallet = yield* call(getWallet)
+  const exchangeProgram = yield* call(getExchangeProgram)
+  const tokensAccounts = yield* select(accounts)
+  const userCollateralTokenAccount = tokensAccounts[vaultSwapData.collateral.toString()]
+  const vaultsPair = yield* select(vaults)
+
+  const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultTransaction], {
+    collateral: vaultSwapData.collateral,
+    synthetic: vaultSwapData.synthetic,
+    amount: vaultSwapData.syntheticAmount,
+    owner: wallet.publicKey,
+    userTokenAccountRepay: tokensAccounts[vaultSwapData.synthetic.toString()].address
+  })
+
+  const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
+    amount: vaultSwapData.collateralAmount,
+    owner: wallet.publicKey,
+    synthetic: vaultSwapData.synthetic,
+    collateral: vaultSwapData.collateral,
+    userCollateralAccount: userCollateralTokenAccount.address,
+    reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
+  })
+  let tx
+
+  if (vaultSwapData.collateralAmount.gt(new BN(0))) {
+    tx = new Transaction().add(repayIx).add(withdrawIx)
+  } else {
+    tx = new Transaction().add(repayIx)
+  }
+  const signature = yield* call(signAndSend, wallet, tx)
+  return signature
+}
+
 export function* swapHandler(): Generator {
   yield* takeEvery(actions.swap, handleSwap)
 }
@@ -618,14 +791,22 @@ export function* swaplineSwapHandler(): Generator {
   yield* takeEvery(actions.swaplineSwap, handleSwaplineSwap)
 }
 const pendingUpdates: { [x: string]: Decimal } = {}
+const pendingUpdatesVaults: { [x: string]: Decimal } = {}
 
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
   pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
+  const state = yield* select(getAddressFromIndex(action.payload.tokenIndex))
+  state.forEach(element => {
+    if (element !== '') {
+      pendingUpdatesVaults[element] = action.payload.price
+    }
+  })
 }
 export function* handleAssetPrice(): Generator {
   yield* put(actions.batchSetAssetPrice(pendingUpdates))
+  yield* put(actionsVault.batchSetAssetPrice(pendingUpdatesVaults))
 }
 
 export function* assetPriceHandler(): Generator {

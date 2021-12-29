@@ -24,7 +24,8 @@ const useStyles = makeStyles(() => ({
   popover: {
     maxWidth: '36px',
     maxHeight: '14px',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    pointerEvents: 'none'
   },
   copiedText: {
     ...typography.caption3,

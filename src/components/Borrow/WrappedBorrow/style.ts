@@ -12,9 +12,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%'
   },
   borrowInfoGrid: {
-    minWidth: '380px',
+    minWidth: '420px',
     [theme.breakpoints.down('md')]: {
-      minWidth: '277px'
+      minWidth: '327px'
     },
     [theme.breakpoints.down('sm')]: {
       minWidth: '200px'

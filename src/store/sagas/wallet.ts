@@ -27,6 +27,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
 import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
+import { initVaultEntry } from './vault'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -218,6 +219,7 @@ export function* init(): Generator {
     [exchangeProgram, exchangeProgram.getExchangeAccountAddress],
     wallet.publicKey
   )
+
   try {
     const account = yield* call([exchangeProgram, exchangeProgram.getExchangeAccount], address)
 
@@ -303,6 +305,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield call([localStorage, localStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  yield* call(initVaultEntry)
 }
 
 export function* handleDisconnect(): Generator {

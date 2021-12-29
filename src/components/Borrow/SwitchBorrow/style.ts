@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   collateralContainer: {
     display: 'flex',
-    width: '125%',
+    width: '130%',
     [theme.breakpoints.down('md')]: {
       paddingBottom: 28,
       width: '100%'
@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '0 0 8px 8px',
     width: '100%',
     padding: '4px 6px',
+    textTransform: 'capitalize',
     [theme.breakpoints.down('xs')]: {
       ...typography.body3
     }
@@ -165,6 +166,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     ...typography.subtitle2,
     textTransform: 'none',
+
     padding: '2px',
     minHeight: '28px',
     '&:hover': {
@@ -232,7 +234,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.caption1
     }
   },
-  infoValueTo: {
+  infoValueFrom: {
     ...typography.subtitle2,
     color: colors.white.main,
     paddingTop: '2px',
@@ -241,7 +243,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       ...typography.caption2
     }
   },
-  infoValueFrom: {
+  infoValueTo: {
     ...typography.subtitle1,
     color: colors.white.main,
     paddingTop: '2px',
@@ -262,6 +264,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '10px 0',
     minWidth: '170px',
     ...typography.body1,
+    fontSize: '18px',
     marginLeft: '30px',
     textTransform: 'capitalize',
     '&:hover': {
