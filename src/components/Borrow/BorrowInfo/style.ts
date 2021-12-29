@@ -61,10 +61,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:not(:last-child)': {
       marginBottom: '24px'
     },
-    '&:last-child': {
-      flexGrow: 1,
-      minHeight: '160px'
-    },
+
     [theme.breakpoints.down('md')]: {
       '&:not(:last-child)': {
         marginBottom: '16px'

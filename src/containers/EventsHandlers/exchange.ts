@@ -11,7 +11,6 @@ import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/c
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
 import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
-
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -53,24 +52,32 @@ const ExhcangeEvents = () => {
         dispatch(actions.setState(state))
       })
 
-      SWAPLINE_MAP[networkTypetoProgramNetwork(networkType)].map(
-        async (swapline) => {
-          const { swaplineAddress } = await exchangeProgram.getSwaplineAddress(swapline.synthetic, swapline.collateral)
-          const data = await exchangeProgram.getSwapline(swaplineAddress)
-          dispatch(actions.setSwapline({
+      SWAPLINE_MAP[networkTypetoProgramNetwork(networkType)].map(async swapline => {
+        const { swaplineAddress } = await exchangeProgram.getSwaplineAddress(
+          swapline.synthetic,
+          swapline.collateral
+        )
+        const data = await exchangeProgram.getSwapline(swaplineAddress)
+        dispatch(
+          actions.setSwapline({
             address: swaplineAddress,
             swapline: data
-          }))
-          connection.onAccountChange(swaplineAddress, () => {
-            exchangeProgram.getSwapline(swaplineAddress).then((swaplineData) => {
-              dispatch(actions.setSwapline({
-                address: swaplineAddress,
-                swapline: swaplineData
-              }))
-            }, () => {})
           })
-        }
-      )
+        )
+        connection.onAccountChange(swaplineAddress, () => {
+          exchangeProgram.getSwapline(swaplineAddress).then(
+            swaplineData => {
+              dispatch(
+                actions.setSwapline({
+                  address: swaplineAddress,
+                  swapline: swaplineData
+                })
+              )
+            },
+            () => {}
+          )
+        })
+      })
     }
     connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
@@ -92,9 +99,15 @@ const ExhcangeEvents = () => {
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           data.price &&
-          dispatch(
-            actions.setAssetPrice({ tokenIndex: index, price: { val: new BN(data.price * (10 ** asset.price.scale)), scale: asset.price.scale } })
-          )
+            dispatch(
+              actions.setAssetPrice({
+                tokenIndex: index,
+                price: {
+                  val: new BN(data.price * 10 ** asset.price.scale),
+                  scale: asset.price.scale
+                }
+              })
+            )
         })
       })
     }

@@ -6,17 +6,21 @@ import { CopyPopover } from '@components/CopyPopover/CopyPopover'
 import { formatNumbers, showPrefix } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
 interface IGeneralInfo {
-  collateralAmount: number
-  debtAmount: number
+  collateralAmount: string
+  debtAmount: string
   collateral: string
   borrowed: string
   limit: number
-  reserve: number
+  liqRatio: number
   collateralAddress: PublicKey
   borrowedAddress: PublicKey
-  collateralSign: string
   borrowedSign: string
   amountSign: string
+  callPrice: string
+  borrPrice: string
+  interestRate: string
+  cRatio: number
+  openFee: number
 }
 
 export const BorrowInfo: React.FC<IGeneralInfo> = ({
@@ -25,12 +29,16 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
   collateralAmount,
   borrowed,
   borrowedAddress,
-  reserve,
+  liqRatio,
   limit,
   debtAmount,
-  collateralSign,
   borrowedSign,
-  amountSign
+  amountSign,
+  callPrice,
+  borrPrice,
+  interestRate,
+  cRatio,
+  openFee
 }) => {
   const classes = useStyles()
 
@@ -46,12 +54,13 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden mdDown>Collateral amount</Hidden>{' '}
-              <Hidden only={['lg', 'xl']}>Coll. amount</Hidden>({collateral}):
+              <Hidden mdDown>Collateral amount</Hidden>
+              <Hidden only={['lg', 'xl']}>Coll. amount</Hidden>:
             </Typography>
             <Typography className={classes.positionValue}>
-              <AnimatedNumber value={collateralAmount} formatValue={formatNumbers} />
-              {showPrefix(collateralAmount)}
+              {amountSign}{' '}
+              <AnimatedNumber value={collateralAmount} formatValue={formatNumbers} duration={300} />
+              {showPrefix(Number(collateralAmount))}
             </Typography>
           </Grid>
           <Grid
@@ -62,7 +71,9 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             alignItems='center'>
             <Typography className={classes.positionTitle}>Debt amount:</Typography>
             <Typography className={classes.positionValue}>
-              {amountSign} {debtAmount}
+              {amountSign}{' '}
+              <AnimatedNumber value={debtAmount} formatValue={formatNumbers} duration={300} />
+              {showPrefix(Number(debtAmount))}
             </Typography>
           </Grid>
         </Grid>
@@ -94,9 +105,13 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Limit:</Typography>
+            <Typography className={classes.positionTitle}>Coll. price:</Typography>
             <Typography className={classes.positionValue}>
-              {limit} {borrowedSign}
+              {'$ '}
+              <AnimatedNumber
+                value={callPrice}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
             </Typography>
           </Grid>
           <Grid
@@ -105,9 +120,79 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             className={classes.infoPosition}
             justifyContent='space-between'
             alignItems='center'>
-            <Typography className={classes.positionTitle}>Reserve:</Typography>
+            <Typography className={classes.positionTitle}>Borr. asset price:</Typography>
             <Typography className={classes.positionValue}>
-              {reserve} {collateralSign}
+              {'$ '}
+              <AnimatedNumber
+                value={borrPrice}
+                formatValue={(value: string) => Number(value).toFixed(2)}
+              />
+            </Typography>
+          </Grid>
+
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Left to borrow:</Typography>
+            <Typography className={classes.positionValue}>
+              {limit.toFixed(3)} {borrowedSign}
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Liquidation ratio:</Typography>
+            <Typography className={classes.positionValue}>
+              <AnimatedNumber
+                value={liqRatio}
+                formatValue={(value: number) => value.toFixed(2)}
+                duration={300}
+              />
+              {showPrefix(Number(liqRatio))} %
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Collateral ratio:</Typography>
+            <Typography className={classes.positionValue}>
+              <AnimatedNumber
+                value={cRatio}
+                formatValue={(value: number) => value.toFixed(2)}
+                duration={300}
+              />
+              {showPrefix(Number(cRatio))} %
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Interest rate:</Typography>
+            <Typography className={classes.positionValue}>
+              {(Number(interestRate) / 100).toFixed(2)} %
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Open fee:</Typography>
+            <Typography className={classes.positionValue}>
+              {openFee.toFixed(2)} %
             </Typography>
           </Grid>
           <Grid
@@ -117,7 +202,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>
-              <Hidden mdDown>Collateral address:</Hidden>{' '}
+              <Hidden mdDown>Collateral address:</Hidden>
               <Hidden only={['lg', 'xl']}>Coll. address:</Hidden>
             </Typography>
             <Grid container style={{ width: 'max-content' }}>
