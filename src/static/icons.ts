@@ -36,6 +36,7 @@ import mSOL from './svg/mSOL.svg'
 import marinade from './icons/mnde.svg'
 import exclamation from './svg/exclamation.svg'
 import marinadeWhite from './svg/Marinade.svg'
+import xAVAXIcon from './icons/xavax.svg'
 import xDOTIcon from './icons/xdot.svg'
 
 const icons: { [key: string]: string } = {
@@ -78,7 +79,8 @@ const icons: { [key: string]: string } = {
   mSOL: mSOL,
   marinade: marinade,
   exclamation: exclamation,
-  marinadeWhite: marinadeWhite
+  marinadeWhite: marinadeWhite,
+  xAVAX: xAVAXIcon
 }
 
 export default icons

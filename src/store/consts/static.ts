@@ -69,6 +69,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
   whFTT: 'Wormhole FTT',
   mSOL: 'Marinade SOL',
   xLUNA: 'Synthetic LUNA',
+  xAVAX: 'Synthetic Avalanche',
   xDOT: 'Synthetic Polkadot'
 }
 
