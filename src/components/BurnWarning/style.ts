@@ -54,6 +54,7 @@ const useStyles = makeStyles(() => ({
   },
   btnBurn: {
     backgroundColor: colors.green.button,
+    ...typography.subtitle1,
     color: colors.navy.background,
     marginRight: 16,
     '&:hover': {
@@ -62,6 +63,7 @@ const useStyles = makeStyles(() => ({
   },
   btnCancel: {
     backgroundColor: colors.navy.button,
+    ...typography.subtitle1,
     color: colors.navy.veryLightGrey
   }
 }))
