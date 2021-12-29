@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React from 'react'
 import { Divider, Grid, Typography } from '@material-ui/core'
 import { displayDate, divUpNumber, printBN, transformBN } from '@consts/utils'
