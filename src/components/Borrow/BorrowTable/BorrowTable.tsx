@@ -111,7 +111,7 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                 <TableCell classes={{ root: classes.rootCell }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.deposited} ${element.depositedSign}`}
+                    title={`${element.deposited} ${element.collateral}`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
@@ -119,14 +119,14 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                         value={element.deposited}
                         formatValue={formatNumbersBorrowTable}
                       />
-                      {showPrefix(element.deposited)} {element.depositedSign}
+                      {showPrefix(element.deposited)} {element.collateral}
                     </Grid>
                   </Tooltip>
                 </TableCell>
                 <TableCell classes={{ root: classes.rootCell }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.currentDebt} ${element.currentDebtSign}`}
+                    title={`${element.currentDebt} ${element.borrowed}`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
@@ -134,7 +134,7 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                         value={element.currentDebt}
                         formatValue={formatNumbersBorrowTable}
                       />
-                      {showPrefix(element.currentDebt)} {element.currentDebtSign}
+                      {showPrefix(element.currentDebt)} {element.borrowed}
                     </Grid>
                   </Tooltip>
                 </TableCell>

@@ -402,11 +402,9 @@ export interface UserVaults extends VaultEntry {
   borrowed: string
   collateral: string
   deposited: number
-  depositedSign: string
   cRatio: string
   minCRatio: number
   currentDebt: number
-  currentDebtSign: string
   maxBorrow: string
   interestRate: string
   liquidationPrice: string
@@ -422,80 +420,80 @@ export const getUserVaults = createSelector(
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
       if (
-        typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined' &&
-        typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
+        typeof allAssetPrice[currentVault.collateral.toString()] === 'undefined' ||
+        typeof allAssetPrice[currentVault.synthetic.toString()] === 'undefined'
       ) {
-        const cRatioCalculated = calculateCRatio(
-          allAssetPrice[currentVault.synthetic.toString()].val,
-          allSynthetics[currentVault.synthetic.toString()].supply.scale,
-          allAssetPrice[currentVault.collateral.toString()].val,
-          currentVault.collateralAmount.scale,
-          userVault.syntheticAmount.val,
-          userVault.collateralAmount.val
-        )
-        const interestRate =
-          Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
-          100
-
-        const openFeeBN = stringToMinDecimalBN(
-          (Number(printBN(currentVault.openFee.val, currentVault.openFee.scale)) * 100).toString()
-        )
-
-        const maxBorrow = calculateAmountBorrow(
-          allAssetPrice[currentVault.synthetic.toString()].val,
-          allSynthetics[currentVault.synthetic.toString()].supply.scale,
-          allAssetPrice[currentVault.collateral.toString()].val,
-          currentVault.collateralAmount.scale,
-          userVault.collateralAmount.val,
-          Number(
-            Math.pow(
-              Number(
-                printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)
-              ) / 100,
-              -1
-            )
-          ).toString()
-        )
-          .sub(userVault.syntheticAmount.val)
-          .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
-          .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
-        vaultData.push({
-          ...userVault,
-          borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
-          collateral: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
-          deposited: Number(
-            printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
-          ),
-          depositedSign: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
-          cRatio: cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN',
-          minCRatio: Number(
-            Math.pow(
-              Number(
-                printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)
-              ) / 100,
-              -1
-            )
-          ),
-          currentDebt: Number(
-            printBN(userVault.syntheticAmount.val, userVault.syntheticAmount.scale)
-          ),
-          currentDebtSign: allSynthetics[currentVault.synthetic.toString()].symbol,
-          maxBorrow: printBN(
-            maxBorrow.gt(new BN(0)) ? maxBorrow : new BN(0),
-            allSynthetics[currentVault.synthetic.toString()].supply.scale
-          ),
-          interestRate: interestRate.toString(),
-          liquidationPrice: calculateLiqPrice(
-            allAssetPrice[currentVault.collateral.toString()].val,
-            userVault.collateralAmount.val,
-            allAssetPrice[currentVault.synthetic.toString()].val,
-            userVault.syntheticAmount.val,
-            currentVault.liquidationThreshold,
-            allSynthetics[currentVault.synthetic.toString()].supply.scale,
-            currentVault.collateralAmount.scale
-          )
-        })
+        return
       }
+      const cRatioCalculated = calculateCRatio(
+        allAssetPrice[currentVault.synthetic.toString()].val,
+        allSynthetics[currentVault.synthetic.toString()].supply.scale,
+        allAssetPrice[currentVault.collateral.toString()].val,
+        currentVault.collateralAmount.scale,
+        userVault.syntheticAmount.val,
+        userVault.collateralAmount.val
+      )
+      const cRatioCalculatedString =
+        cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN'
+
+      const interestRate =
+        Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
+        100
+
+      const openFeeBN = stringToMinDecimalBN(
+        (Number(printBN(currentVault.openFee.val, currentVault.openFee.scale)) * 100).toString()
+      )
+
+      const maxBorrow = calculateAmountBorrow(
+        allAssetPrice[currentVault.synthetic.toString()].val,
+        allSynthetics[currentVault.synthetic.toString()].supply.scale,
+        allAssetPrice[currentVault.collateral.toString()].val,
+        currentVault.collateralAmount.scale,
+        userVault.collateralAmount.val,
+        Number(
+          Math.pow(
+            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)) /
+              100,
+            -1
+          )
+        ).toString()
+      )
+        .sub(userVault.syntheticAmount.val)
+        .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+        .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
+      vaultData.push({
+        ...userVault,
+        borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
+        collateral: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
+        deposited: Number(
+          printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
+        ),
+        cRatio: cRatioCalculatedString,
+        minCRatio: Number(
+          Math.pow(
+            Number(printBN(currentVault.collateralRatio.val, currentVault.collateralRatio.scale)) /
+              100,
+            -1
+          )
+        ),
+        currentDebt: Number(
+          printBN(userVault.syntheticAmount.val, userVault.syntheticAmount.scale)
+        ),
+        maxBorrow: printBN(
+          maxBorrow.gt(new BN(0)) ? maxBorrow : new BN(0),
+          allSynthetics[currentVault.synthetic.toString()].supply.scale
+        ),
+        interestRate: interestRate.toString(),
+        liquidationPrice: calculateLiqPrice(
+          allAssetPrice[currentVault.collateral.toString()].val,
+          userVault.collateralAmount.val,
+          allAssetPrice[currentVault.synthetic.toString()].val,
+          userVault.syntheticAmount.val,
+          currentVault.liquidationThreshold,
+          allSynthetics[currentVault.synthetic.toString()].supply.scale,
+          currentVault.collateralAmount.scale
+        )
+      })
     })
     return vaultData
   }

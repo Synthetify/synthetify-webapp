@@ -105,23 +105,20 @@ const VaultEvents = () => {
         dispatch(actions.setState(state))
       })
       const tempSet = new Set<string>()
-      R.forEachObj(userVaultsState, userVault => {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      R.forEachObj(userVaultsState, async userVault => {
         tempSet.add(userVault.vault.toString())
         if (initializedVaultEntry.has(userVault.vault.toString())) {
           return
         }
-        void exchangeProgram
-          .getVaultEntryAddress(
-            vaultsState[userVault.vault.toString()].synthetic,
-            vaultsState[userVault.vault.toString()].collateral,
-            owner
-          )
-          .then(response => {
-            exchangeProgram.onVaultEntryChange(response.vaultEntryAddress, state => {
-              dispatch(actionsVault.setUserVaults(state))
-            })
-          })
-          .catch(() => {})
+        const { vaultEntryAddress } = await exchangeProgram.getVaultEntryAddress(
+          vaultsState[userVault.vault.toString()].synthetic,
+          vaultsState[userVault.vault.toString()].collateral,
+          owner
+        )
+        exchangeProgram.onVaultEntryChange(vaultEntryAddress, state => {
+          dispatch(actionsVault.setUserVaults(state))
+        })
       })
       setInitializedVaultEntry(tempSet)
     }

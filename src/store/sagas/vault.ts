@@ -1,5 +1,5 @@
 import { call, put, takeEvery, spawn, all, select, throttle, SagaGenerator } from 'typed-redux-saga'
-import { getWallet } from './wallet'
+import { getWallet, sleep } from './wallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { actions, PayloadTypes } from '@reducers/vault'
