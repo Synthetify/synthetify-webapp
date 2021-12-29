@@ -441,8 +441,10 @@ export const changeInputCollateral = (
   value: string,
   tokenTo: AssetPriceData,
   tokenFrom: AssetPriceData,
-  cRatio: string
+  cRatio: string,
+  openFee: string
 ) => {
+  const openFeeBN = stringToMinDecimalBN(openFee)
   const BNValue = stringToMinDecimalBN(value)
   const difDecimal = tokenFrom.assetScale - BNValue.decimal
   let amountBorBN = new BN(0)
@@ -455,7 +457,8 @@ export const changeInputCollateral = (
       tokenFrom.assetScale,
       printBNtoBN(value, tokenFrom.assetScale),
       cRatio
-    )
+    ).mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+    .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
   }
   return {
     amountCollBN: BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))),

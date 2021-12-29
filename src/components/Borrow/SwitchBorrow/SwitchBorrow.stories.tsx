@@ -6,12 +6,16 @@ import ActionMenuBorrow, { IActionContents } from './ActionMenuBorrow'
 import { ActionBorrow } from './ActionBorrow'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Collateral, OracleType, PriceStatus, Synthetic, Vault } from '@synthetify/sdk/lib/exchange'
-import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
-interface BorrowedPair extends Vault {
-  collateralData: ExchangeCollateralTokens
-  syntheticData: ExchangeSyntheticTokens
-}
+import {
+  Asset,
+  Decimal,
+  OracleType,
+  PriceStatus,
+  Synthetic
+} from '@synthetify/sdk/lib/exchange'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
+import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
+
 storiesOf('borrow/switchBorrow', module)
   .addDecorator(withKnobs)
   .add('Actions', () =>
@@ -35,25 +39,6 @@ storiesOf('borrow/switchBorrow', module)
         swaplineSupply: {
           val: new BN(1e6),
           scale: 6
-        }
-      }
-
-      const defaultCollateral: Collateral = {
-        assetIndex: 0,
-        collateralAddress: new PublicKey(0),
-        reserveAddress: new PublicKey(0),
-        liquidationFund: new PublicKey(0),
-        reserveBalance: {
-          val: new BN(1e6),
-          scale: 6
-        },
-        collateralRatio: {
-          val: new BN(30000),
-          scale: 6
-        },
-        maxCollateral: {
-          val: new BN(1e6),
-          scale: 0
         }
       }
 
@@ -92,12 +77,11 @@ storiesOf('borrow/switchBorrow', module)
 
       const collaterals = 'USDC DOGE WSOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
         .split(' ')
-        .map((i): ExchangeCollateralTokens => {
+        .map((i): { reserveBalance: number; symbol: string; price: Decimal; balance: BN } => {
           return {
             symbol: i,
             balance: new BN(0),
-            ...defaultAsset,
-            ...defaultCollateral,
+            reserveBalance: 6,
             price: {
               ...defaultAsset.price,
               val: new BN(3).mul(new BN(1000))

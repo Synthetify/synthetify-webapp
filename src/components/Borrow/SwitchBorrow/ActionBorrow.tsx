@@ -115,11 +115,11 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [blockButton, setBlockButton] = React.useState(false)
   const changeCustomCRatio = () => {
-    if (customCRatio) {
+    if (customCRatio && customCRatio >= minCRatio.toFixed(2)) {
       changeCRatio(customCRatio)
       setCustomCRatio(customCRatio)
     } else {
-      changeCRatio(minCRatio.toString())
+      changeCRatio(minCRatio.toFixed(2))
       setCustomCRatio(minCRatio.toFixed(2))
     }
   }
@@ -323,7 +323,14 @@ export const ActionBorrow: React.FC<IProp> = ({
                       limitedNumber,
                       tokenTo,
                       tokenFrom,
-                      cRatio
+                      cRatio,
+                      pairIndex !== null
+                        ? (
+                            Number(
+                              printBN(pairs[pairIndex].openFee.val, pairs[pairIndex].openFee.scale)
+                            ) * 100
+                          ).toString()
+                        : '0'
                     )
                     setMaxBehaviorFrom('number')
                     setAmountCollateral(inputData.amountCollBN)

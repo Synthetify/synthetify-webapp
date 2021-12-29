@@ -2,9 +2,9 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { BorrowedPair, WrappedBorrow } from './WrappedBorrow'
 import { BN } from '@project-serum/anchor'
-import { ExchangeCollateralTokens, ExchangeSyntheticTokens } from '@selectors/solanaWallet'
+import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
-import { Asset, Collateral, OracleType, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
+import { Asset, Decimal, OracleType, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { Grid } from '@material-ui/core'
 import { UserVaults } from '@selectors/exchange'
 
@@ -29,25 +29,6 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       swaplineSupply: {
         val: new BN(1e6),
         scale: 6
-      }
-    }
-
-    const defaultCollateral: Collateral = {
-      assetIndex: 0,
-      collateralAddress: new PublicKey(0),
-      reserveAddress: new PublicKey(0),
-      liquidationFund: new PublicKey(0),
-      reserveBalance: {
-        val: new BN(1e6),
-        scale: 6
-      },
-      collateralRatio: {
-        val: new BN(30000),
-        scale: 6
-      },
-      maxCollateral: {
-        val: new BN(1e6),
-        scale: 0
       }
     }
 
@@ -82,18 +63,19 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
       scale: 4
     }
 
-    const collaterals = 'WSOL ETH'.split(' ').map((i): ExchangeCollateralTokens => {
-      return {
-        symbol: i,
-        balance: new BN(0),
-        ...defaultAsset,
-        ...defaultCollateral,
-        price: {
-          ...defaultAsset.price,
-          val: new BN(3).mul(new BN(1000))
+    const collaterals = 'WSOL ETH'
+      .split(' ')
+      .map((i): { reserveBalance: number; symbol: string; price: Decimal; balance: BN } => {
+        return {
+          symbol: i,
+          balance: new BN(0),
+          reserveBalance: 6,
+          price: {
+            ...defaultAsset.price,
+            val: new BN(3).mul(new BN(1000))
+          }
         }
-      }
-    })
+      })
     collaterals[0].balance = new BN(100).mul(new BN(10000))
     collaterals[1].balance = new BN(10).mul(new BN(10000))
     collaterals[1].price = {
