@@ -120,7 +120,6 @@ const vaultSlice = createSlice({
 
     clearUserVault(state) {
       state.userVaults = {}
-      state.vaults = {}
     },
     setNewVaultEntryAddress(state, action: PayloadAction<Pick<IVault, 'newVaultEntryAddress'>>) {
       state.newVaultEntryAddress = action.payload.newVaultEntryAddress
