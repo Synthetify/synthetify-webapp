@@ -42,15 +42,12 @@ const VaultEvents = () => {
       R.forEachObj(vaultsState, async vault => {
         const { vaultAddress } = await exchangeProgram.getVaultAddress(
           vault.synthetic,
-          vault.collateral
+          vault.collateral,
+          vault.vaultType
         )
         tempSet.add(vaultAddress.toString())
         if (!initializedVault.has(vaultAddress.toString())) {
-          const currentVault = await exchangeProgram.getVaultForPair(
-            vault.synthetic,
-            vault.collateral
-          )
-          if (currentVault.collateralPriceFeed.toString() === DEFAULT_PUBLICKEY.toString()) {
+          if (vault.collateralPriceFeed.toString() === DEFAULT_PUBLICKEY.toString()) {
             dispatch(
               actionsVault.setAssetPrice({
                 address: vault.collateral.toString(),
@@ -61,15 +58,15 @@ const VaultEvents = () => {
               })
             )
           }
-          connection.onAccountChange(currentVault.collateralPriceFeed, priceInfo => {
+          connection.onAccountChange(vault.collateralPriceFeed, priceInfo => {
             const parsedData = parsePriceData(priceInfo.data)
             parsedData.price &&
               dispatch(
                 actionsVault.setAssetPrice({
                   address: vault.collateral.toString(),
                   price: {
-                    val: new BN(parsedData.price * 10 ** currentVault.collateralAmount.scale),
-                    scale: currentVault.collateralAmount.scale
+                    val: new BN(parsedData.price * 10 ** vault.collateralAmount.scale),
+                    scale: vault.collateralAmount.scale
                   }
                 })
               )
@@ -114,6 +111,7 @@ const VaultEvents = () => {
         const { vaultEntryAddress } = await exchangeProgram.getVaultEntryAddress(
           vaultsState[userVault.vault.toString()].synthetic,
           vaultsState[userVault.vault.toString()].collateral,
+          vaultsState[userVault.vault.toString()].vaultType,
           owner
         )
         exchangeProgram.onVaultEntryChange(vaultEntryAddress, state => {
