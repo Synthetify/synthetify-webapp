@@ -104,6 +104,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   gridRow: {
     justifyContent: 'space-between',
     transition: 'box-shadow 300ms',
+    padding: '5px 0px',
     '&:hover': {
       background: `${colors.navy.navButton}40`,
       boxShadow: `0px 0px 6px ${colors.navy.button}`
@@ -139,10 +140,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   interestDebtColumn: {
-    minWidth: '90px',
+    minWidth: '85px',
     justifyContent: 'flex-start',
     [theme.breakpoints.down('md')]: {
-      minWidth: '70px'
+      minWidth: '65px'
     }
   },
   liquidationColumn: {
@@ -150,13 +151,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'flex-start',
     [theme.breakpoints.down('md')]: {
       minWidth: '60px'
-    },
-    [theme.breakpoints.down('sm')]: {
-      minWidth: '50px'
     }
   },
   maxBorrowColumn: {
-    minWidth: '130px',
+    minWidth: '135px',
     justifyContent: 'flex-start'
   }
 }))

@@ -11,10 +11,16 @@ import useStyles from './style'
 
 interface IProp {
   userVaults: UserVaults[]
-  setValueWithTable: (collSymbol: string, synthSymbol: string) => void
+  setValueWithTable: (collSymbol: string, synthSymbol: string, vaultType: number) => void
   active: string | null
+  vaultType: number
 }
-export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, active }) => {
+export const BorrowTable: React.FC<IProp> = ({
+  userVaults,
+  setValueWithTable,
+  active,
+  vaultType
+}) => {
   const classes = useStyles()
   return (
     <Grid className={classes.root} component={Paper}>
@@ -70,9 +76,13 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                 key={index}
                 className={classNames(
                   classes.gridRow,
-                  element.collateral === active ? classes.active : null
+                  element.collateral === active && element.vaultType === vaultType
+                    ? classes.active
+                    : null
                 )}
-                onClick={() => setValueWithTable(element.collateral, element.borrowed)}
+                onClick={() =>
+                  setValueWithTable(element.collateral, element.borrowed, element.vaultType)
+                }
                 container
                 direction='row'>
                 <Hidden xsDown>
