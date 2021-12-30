@@ -30,14 +30,15 @@ import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { Status } from '@reducers/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import BurnWarning from '@components/BurnWarning/BurnWarning'
-import { blurContent, unblurContent } from '@consts/uiUtils'
 import { XUSD_DECIMALS } from '@synthetify/sdk/lib/utils'
+import { printBNtoBN } from '@consts/utils'
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
   const [depositIndex, setDepositIndex] = useState(0)
   const [withdrawIndex, setWithdrawIndex] = useState(0)
   const [showWarning, setShowWarning] = useState(false)
+  const [burnAmount, setBurnAmount] = useState(new BN(0))
 
   const availableToMint = useSelector(userMaxMintUsd)
   const userCollaterals = useSelector(collateralAccountsArray)
@@ -127,7 +128,7 @@ export const ActionMenuContainer: React.FC = () => {
       <BurnWarning
         open={showWarning}
         burnAmount={{
-          amount: xUSDTokenAddress.equals(DEFAULT_PUBLICKEY) ? new BN(0) : xUSDBalance.balance,
+          amount: burnAmount,
           decimal: XUSD_DECIMALS
         }}
         onBurn={(amount, decimal) => () => {
@@ -182,8 +183,10 @@ export const ActionMenuContainer: React.FC = () => {
         onMint={(amount, decimal) => () => {
           dispatch(actions.mint({ amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)) }))
         }}
-        onWarning={() => () => {
+        onWarning={(amount: BN, decimals: number) => () => {
           setShowWarning(true)
+          setBurnAmount(printBNtoBN(amount.toString(), XUSD_DECIMALS - decimals))
+          console.log(printBNtoBN(amount.toString(), XUSD_DECIMALS - decimals).toString(), decimals)
         }}
         onBurn={(amount, decimal) => () => {
           setShowWarning(false)
