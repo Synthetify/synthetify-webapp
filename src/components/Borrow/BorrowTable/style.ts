@@ -5,8 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     boxShadow: 'none',
-    borderRadius: '10px',
-    padding: '0px 4px 4px 4px'
+    borderRadius: '10px'
   },
   rootHeader: {
     borderColor: colors.navy.darkGrey,
@@ -66,14 +65,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: '1.5em'
     }
   },
-  row: {
-    transition: 'box-shadow 300ms',
-    borderRadius: '5px',
-    '&:hover': {
-      background: `${colors.navy.navButton}40`,
-      boxShadow: `0px 0px 6px ${colors.navy.button}`
-    }
-  },
   active: {
     '& td': {
       background: `${colors.navy.navButton}85`,
@@ -111,6 +102,46 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   secondIcon: {
     marginLeft: '-0.35em'
+  },
+  headerRow: {
+    justifyContent: 'space-between'
+  },
+  gridRow: {
+    justifyContent: 'space-between',
+    transition: 'box-shadow 300ms',
+    '&:hover': {
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`
+    },
+    '&:hover:last-child': {
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`,
+      borderRadius: '0px 0px 10px 10px'
+    }
+  },
+  symbolColumn: {
+    minWidth: '80px',
+    justifyContent: 'flex-start'
+  },
+  amountColumn: {
+    minWidth: '95px',
+    justifyContent: 'flex-start'
+  },
+  cRatioColumn: {
+    minWidth: '55px',
+    justifyContent: 'flex-start'
+  },
+  interestDebtColumn: {
+    minWidth: '90px',
+    justifyContent: 'flex-start'
+  },
+  liquidationColumn: {
+    minWidth: '121px',
+    justifyContent: 'flex-start'
+  },
+  maxBorrowColumn: {
+    minWidth: '130px',
+    justifyContent: 'flex-start'
   }
 }))
 
