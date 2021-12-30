@@ -3,7 +3,6 @@ import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
   warningContainer: {
-    backgroundColor: 'rgba(0,0,0,0.75)',
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -12,17 +11,20 @@ const useStyles = makeStyles(() => ({
     left: 0,
     zIndex: 10,
     alignItems: 'center',
-    justifyContent: 'center',
-    backdropFilter: 'blur(4px) brightness(1.2)'
+    justifyContent: 'center'
   },
-  warningCard: {
-    backgroundColor: colors.navy.component,
+  test: {
+    backgroundColor: 'transparent',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
+  },
+  warningCard: {
+    backgroundColor: colors.navy.component,
     position: 'relative',
     zIndex: 11,
+    background: 'transparent',
     padding: '36px 35px',
     borderRadius: 20,
     textAlign: 'center',

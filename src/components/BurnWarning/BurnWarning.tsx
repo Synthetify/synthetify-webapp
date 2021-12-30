@@ -1,10 +1,11 @@
-import { Button, Grid, Typography } from '@material-ui/core'
+import { Button, Grid, Popover, Typography } from '@material-ui/core'
 import { BN } from '@project-serum/anchor'
 import useStyles from './style'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { displayDate, divUpNumber, printBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { IRewardsProps, RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
+import { blurContent, unblurContent } from '@consts/uiUtils'
 
 interface IProps {
   open: boolean
@@ -12,8 +13,8 @@ interface IProps {
     amount: BN
     decimal: number
   }
-  onBurn: (amount: BN, decimal: number) => () => void
-  onCancel: (amount: BN, decimal: number) => () => void
+  onBurn: (amount: BN, decimals: number) => () => void
+  onCancel: () => void
   burnTokenSymbol: string
   rewards: IRewardsProps
 }
@@ -27,7 +28,13 @@ const BurnWarning: React.FC<IProps> = ({
   rewards
 }) => {
   const classes = useStyles()
-
+  useEffect(() => {
+    if (open) {
+      blurContent()
+    } else {
+      unblurContent()
+    }
+  }, [open])
   const { userDebtShares, roundLength, rounds, slot, amountToClaim } = rewards
   const estimateRounds = (): RoundData => {
     const { current, next } = rounds
@@ -116,7 +123,7 @@ const BurnWarning: React.FC<IProps> = ({
   }
   return (
     <Grid className={classes.warningContainer} style={{ display: open ? 'flex' : 'none' }}>
-      <Grid className={classes.warningCard}>
+      <Popover className={classes.test} open={open} classes={{ paper: classes.warningCard }}>
         <Typography component='h1' className={classes.warningHeader}>
           Are you sure you want to repay {printBN(burnAmount.amount, burnAmount.decimal)}{' '}
           {burnTokenSymbol}?
@@ -145,13 +152,11 @@ const BurnWarning: React.FC<IProps> = ({
             onClick={onBurn(burnAmount.amount, burnAmount.decimal)}>
             Repay
           </Button>
-          <Button
-            className={classes.btnCancel}
-            onClick={onCancel(burnAmount.amount, burnAmount.decimal)}>
+          <Button className={classes.btnCancel} onClick={onCancel}>
             Cancel
           </Button>
         </Grid>
-      </Grid>
+      </Popover>
     </Grid>
   )
 }

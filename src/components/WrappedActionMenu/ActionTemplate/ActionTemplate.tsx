@@ -6,11 +6,9 @@ import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { capitalizeString, printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
 import { MAX_U64 } from '@consts/static'
-import BurnWarning from '@components/BurnWarning/BurnWarning'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { theme } from '@static/theme'
 import useStyles from './style'
-import { IRewardsProps } from '../RewardsTab/RewardsTab'
 
 export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'repay'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
@@ -32,8 +30,6 @@ export interface IProps {
   maxBehavior?: MaxBehavior
   emptyTokensHandler?: () => void
   balance?: BN
-  showWarning?: boolean
-  rewards?: IRewardsProps
 }
 
 export const ActionTemplate: React.FC<IProps> = ({
@@ -42,7 +38,6 @@ export const ActionTemplate: React.FC<IProps> = ({
   maxDecimal,
   onClick,
   currency,
-  onBurn,
   sending,
   hasError,
   tokens,
@@ -52,9 +47,7 @@ export const ActionTemplate: React.FC<IProps> = ({
   noWalletHandler,
   maxBehavior = 'number',
   emptyTokensHandler,
-  balance,
-  showWarning = false,
-  rewards
+  balance
 }) => {
   const classes = useStyles()
 
@@ -162,7 +155,7 @@ export const ActionTemplate: React.FC<IProps> = ({
     const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
-      repay: 'Burning',
+      repay: 'Repaying',
       deposit: 'Depositing'
     }
 
@@ -264,21 +257,6 @@ export const ActionTemplate: React.FC<IProps> = ({
           message={getProgressMessage()}
         />
       </Grid>
-      {onBurn ? (
-        <BurnWarning
-          open={showWarning}
-          burnAmount={{
-            amount: amountBN,
-            decimal: decimal
-          }}
-          onBurn={onBurn}
-          burnTokenSymbol={currency}
-          onCancel={onClick}
-          rewards={rewards}
-        />
-      ) : (
-        ''
-      )}
     </Grid>
   )
 }

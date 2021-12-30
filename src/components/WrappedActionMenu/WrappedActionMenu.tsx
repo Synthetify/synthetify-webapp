@@ -46,7 +46,6 @@ export const WrappedActionMenu: React.FC<IProps> = ({
   onDeposit,
   onWithdraw,
   onBurn,
-  showWarning,
   onWarning,
   availableToMint,
   availableToDeposit,
@@ -133,8 +132,6 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         hasError={!!burnState.error?.length}
         maxBehavior='balance'
         balance={xUSDBalance}
-        showWarning={showWarning}
-        rewards={stakingData}
       />
     ),
     rewards: <RewardsTab {...stakingData} />
