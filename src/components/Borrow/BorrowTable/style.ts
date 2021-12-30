@@ -66,17 +66,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   active: {
-    '& td': {
-      background: `${colors.navy.navButton}85`,
-      '&:first-child': {
-        borderRadius: '5px 0 0 5px'
-      },
-      '&:last-child': {
-        borderRadius: ' 0 5px 5px 0'
-      },
-      '&:hover': {
-        background: `${colors.navy.navButton}90`
-      }
+    background: `${colors.navy.navButton}85`,
+    '&:last-child': {
+      borderRadius: ' 0px 0px 10px 10px'
+    },
+    '&:hover': {
+      background: `${colors.navy.navButton}90`
     }
   },
   tooltipNumber: {
@@ -121,23 +116,44 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   symbolColumn: {
     minWidth: '80px',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '70px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '50px'
+    }
   },
   amountColumn: {
     minWidth: '95px',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '65px'
+    }
   },
   cRatioColumn: {
     minWidth: '55px',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '35px'
+    }
   },
   interestDebtColumn: {
     minWidth: '90px',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '70px'
+    }
   },
   liquidationColumn: {
-    minWidth: '121px',
-    justifyContent: 'flex-start'
+    minWidth: '120px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '60px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '50px'
+    }
   },
   maxBorrowColumn: {
     minWidth: '130px',
