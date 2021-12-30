@@ -30,19 +30,27 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs, userVaults }) => {
         userVaults={userVaults}
         sending={vaultSwapData.loading}
         hasError={vaultSwapData.error}
-        onClickSubmitButton={(action, synthetic, collateral, collateralAmount, syntheticAmount) => {
+        onClickSubmitButton={(
+          action,
+          synthetic,
+          collateral,
+          collateralAmount,
+          syntheticAmount,
+          vaultType
+        ) => {
           dispatch(
             actions.setVaultSwap({
               action,
               synthetic,
               collateral,
               collateralAmount,
-              syntheticAmount
+              syntheticAmount,
+              vaultType
             })
           )
         }}
-        setActualPair={(synthetic, collateral) => {
-          dispatch(actions.setActualVaultSwap({ collateral, synthetic }))
+        setActualPair={(synthetic, collateral, vaultType) => {
+          dispatch(actions.setActualVaultSwap({ collateral, synthetic, vaultType }))
         }}
         availableCollateral={availableCollateral}
         availableRepay={availableRepay}

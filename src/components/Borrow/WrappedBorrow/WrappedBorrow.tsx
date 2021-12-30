@@ -28,9 +28,10 @@ interface IProp {
     synthetic: PublicKey,
     collateral: PublicKey,
     collateralAmount: BN,
-    syntheticAmount: BN
+    syntheticAmount: BN,
+    vaultType: number
   ) => void
-  setActualPair: (synthetic: PublicKey, collateral: PublicKey) => void
+  setActualPair: (synthetic: PublicKey, collateral: PublicKey, vaultType: number) => void
   availableCollateral: BN
   availableRepay: BN
   actualVault: {
@@ -78,7 +79,11 @@ export const WrappedBorrow: React.FC<IProp> = ({
   }
   React.useEffect(() => {
     if (pairIndex !== null) {
-      setActualPair(pairs[pairIndex].synthetic, pairs[pairIndex].collateral)
+      setActualPair(
+        pairs[pairIndex].synthetic,
+        pairs[pairIndex].collateral,
+        pairs[pairIndex].vaultType
+      )
     }
   }, [pairIndex])
 

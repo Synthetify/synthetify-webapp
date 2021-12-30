@@ -628,7 +628,8 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
   const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
-    collateral: vaultSwapData.collateral
+    collateral: vaultSwapData.collateral,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
   const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
     collateral: vaultSwapData.collateral,
@@ -637,7 +638,8 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
     amount: vaultSwapData.collateralAmount,
     userCollateralAccount: userCollateralTokenAccount.address,
     reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
-    collateralToken: token
+    collateralToken: token,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
   let tx
 
@@ -683,7 +685,8 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   const { ix } = yield* call([exchangeProgram, exchangeProgram.createVaultEntryInstruction], {
     owner: wallet.publicKey,
     synthetic: vaultSwapData.synthetic,
-    collateral: vaultSwapData.collateral
+    collateral: vaultSwapData.collateral,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
   const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
     collateral: vaultSwapData.collateral,
@@ -692,7 +695,8 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
     amount: vaultSwapData.collateralAmount,
     userCollateralAccount: userCollateralTokenAccount.address,
     reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
-    collateralToken: token
+    collateralToken: token,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
 
   const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultTransaction], {
@@ -701,7 +705,8 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
     synthetic: vaultSwapData.synthetic,
     collateral: vaultSwapData.collateral,
     amount: vaultSwapData.syntheticAmount,
-    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
   let tx
 
@@ -741,7 +746,8 @@ export function* handleWithdrawCollateralVault(vaultSwapData: VaultSwap): SagaGe
     collateral: vaultSwapData.collateral,
     userCollateralAccount: userCollateralTokenAccount.address,
     reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
-    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
 
   const tx = new Transaction().add(withdrawIx)
@@ -761,7 +767,8 @@ export function* handleRepaySyntheticVault(vaultSwapData: VaultSwap): SagaGenera
     synthetic: vaultSwapData.synthetic,
     amount: vaultSwapData.syntheticAmount,
     owner: wallet.publicKey,
-    userTokenAccountRepay: tokensAccounts[vaultSwapData.synthetic.toString()].address
+    userTokenAccountRepay: tokensAccounts[vaultSwapData.synthetic.toString()].address,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
 
   const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
@@ -771,7 +778,8 @@ export function* handleRepaySyntheticVault(vaultSwapData: VaultSwap): SagaGenera
     collateral: vaultSwapData.collateral,
     userCollateralAccount: userCollateralTokenAccount.address,
     reserveAddress: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralReserve,
-    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed
+    collateralPriceFeed: vaultsPair[vaultSwapData.vaultAddress.toString()].collateralPriceFeed,
+    vaultType: vaultsPair[vaultSwapData.vaultAddress.toString()].vaultType
   })
   let tx
 

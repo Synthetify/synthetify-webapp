@@ -29,7 +29,8 @@ function* checkVaultEntry(): Generator {
       [exchangeProgram, exchangeProgram.getVaultEntryForOwner],
       vaultSwapData.synthetic,
       vaultSwapData.collateral,
-      wallet.publicKey
+      wallet.publicKey,
+      vaultSwapData.vaultType
     )
     yield* put(actions.setVaultExist({ vaultEntryExist: true }))
   } catch (error) {
@@ -44,7 +45,8 @@ function* setVaultAddress(): Generator {
     const address = yield* call(
       [exchangeProgram, exchangeProgram.getVaultAddress],
       vaultSwapData.synthetic,
-      vaultSwapData.collateral
+      vaultSwapData.collateral,
+      vaultSwapData.vaultType
     )
     yield* put(actions.setVaultAddress({ vaultAddress: address.vaultAddress }))
   } catch (error) {
@@ -302,7 +304,8 @@ export function* updateSyntheticAmountUserVault(): Generator {
 
 export function* getVaultEntryIFExist(
   synthetic: PublicKey,
-  collateral: PublicKey
+  collateral: PublicKey,
+  vaultType: number
 ): SagaGenerator<VaultEntry | null> {
   const owner = yield* select(address)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -311,7 +314,8 @@ export function* getVaultEntryIFExist(
       [exchangeProgram, exchangeProgram.getVaultEntryForOwner],
       synthetic,
       collateral,
-      owner
+      owner,
+      vaultType
     )
   } catch (error) {
     return null
@@ -327,13 +331,15 @@ export function* initVault(): Generator {
     const { vaultAddress } = yield* call(
       [exchangeProgram, exchangeProgram.getVaultAddress],
       vault.synthetic,
-      vault.collateral
+      vault.collateral,
+      vault.vaultType
     )
     if (typeof vaultsState[vaultAddress.toString()] === 'undefined') {
       const data = yield* call(
         [exchangeProgram, exchangeProgram.getVaultForPair],
         vault.synthetic,
-        vault.collateral
+        vault.collateral,
+        vault.vaultType
       )
       yield* put(
         actions.setVault({
@@ -354,13 +360,15 @@ export function* initVaultEntry(): Generator {
     const { vaultAddress } = yield* call(
       [exchangeProgram, exchangeProgram.getVaultAddress],
       vault.synthetic,
-      vault.collateral
+      vault.collateral,
+      vault.vaultType
     )
     if (typeof userVaultState[vaultAddress.toString()] === 'undefined') {
       const data = yield* call(
         [exchangeProgram, exchangeProgram.getVaultForPair],
         vault.synthetic,
-        vault.collateral
+        vault.collateral,
+        vault.vaultType
       )
       yield* put(
         actions.setVault({
@@ -368,7 +376,7 @@ export function* initVaultEntry(): Generator {
           vault: data
         })
       )
-      const vaultEntry = yield* call(getVaultEntryIFExist, vault.synthetic, vault.collateral)
+      const vaultEntry = yield* call(getVaultEntryIFExist, vault.synthetic, vault.collateral, vault.vaultType)
       if (vaultEntry !== null) {
         yield* put(actions.setUserVaults(vaultEntry))
       }
@@ -381,7 +389,8 @@ export function* addNewVaultEntryHandle(): Generator {
   const vaultEntry = yield* call(
     getVaultEntryIFExist,
     actualVaultSwap.synthetic,
-    actualVaultSwap.collateral
+    actualVaultSwap.collateral,
+    actualVaultSwap.vaultType
   )
   if (vaultEntry !== null) {
     yield* put(actions.setUserVaults(vaultEntry))
