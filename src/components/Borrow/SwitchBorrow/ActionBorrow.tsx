@@ -28,6 +28,7 @@ import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
 import useStyles from './style'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
+import classNames from 'classnames'
 interface IProp {
   action: string
   cRatio: string
@@ -38,7 +39,8 @@ interface IProp {
     synthetic: PublicKey,
     collateral: PublicKey,
     collateralAmount: BN,
-    syntheticAmount: BN
+    syntheticAmount: BN,
+    vaultType: number
   ) => void
   pairs: BorrowedPair[]
   changeCRatio: (nr: string) => void
@@ -633,17 +635,22 @@ export const ActionBorrow: React.FC<IProp> = ({
             <OutlinedButton
               name={nameSubmitButton}
               color='secondary'
-              className={classes.actionButton}
+              className={classNames(
+                classes.actionButton,
+                action === 'repay' ? classes.fontRepay : null
+              )}
               onClick={() => {
                 onClickSubmitButton(
                   actionSubmit,
                   pairIndex !== null ? pairs[pairIndex].synthetic : new PublicKey('0'),
                   pairIndex !== null ? pairs[pairIndex].collateral : new PublicKey('0'),
                   maxBehaviorFrom === 'maxU64' ? MAX_U64 : amountCollateral,
-                  maxBehaviorTo === 'maxU64' ? MAX_U64 : amountBorrow
+                  maxBehaviorTo === 'maxU64' ? MAX_U64 : amountBorrow,
+                  pairIndex !== null ? pairs[pairIndex].vaultType : 0
                 )
               }}
               disabled={blockButton}
+              fontWeight={900}
             />
           </Grid>
         </Grid>

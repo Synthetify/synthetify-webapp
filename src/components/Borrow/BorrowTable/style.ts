@@ -5,7 +5,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     boxShadow: 'none',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    padding: '0px 4px 4px 4px'
   },
   rootHeader: {
     borderColor: colors.navy.darkGrey,
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.info,
     padding: '14px 0 14px 10px ',
     '&:first-child': {
-      paddingLeft: '14px'
+      paddingLeft: '10px'
     },
     [theme.breakpoints.down('md')]: {
       fontSize: '13px'
@@ -21,14 +22,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: '14px 0 14px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
       padding: '10px 0 10px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     }
   },
@@ -39,20 +40,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '12px 0 12px 10px',
     cursor: 'pointer',
     '&:first-child': {
-      paddingLeft: '14px'
+      paddingLeft: '10px'
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.caption2,
       padding: '12px 0 12px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption4,
       padding: '10px 0 10px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     }
   },
@@ -66,12 +67,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   row: {
+    transition: 'box-shadow 300ms',
+    borderRadius: '5px',
     '&:hover': {
-      background: `${colors.navy.navButton}40`
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`
     }
   },
   active: {
-    background: `${colors.navy.navButton}85`
+    '& td': {
+      background: `${colors.navy.navButton}85`,
+      '&:first-child': {
+        borderRadius: '5px 0 0 5px'
+      },
+      '&:last-child': {
+        borderRadius: ' 0 5px 5px 0'
+      },
+      '&:hover': {
+        background: `${colors.navy.navButton}90`
+      }
+    }
   },
   tooltipNumber: {
     background: colors.navy.navButton,

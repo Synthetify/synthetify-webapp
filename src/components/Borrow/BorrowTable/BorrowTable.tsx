@@ -200,6 +200,7 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       title={`${element.maxBorrow} ${element.borrowed}`}
                       placement='bottom-start'>
                       <Grid>
+                        {'~ '}
                         <AnimatedNumber
                           value={element.maxBorrow}
                           formatValue={formatNumbersBorrowTable}

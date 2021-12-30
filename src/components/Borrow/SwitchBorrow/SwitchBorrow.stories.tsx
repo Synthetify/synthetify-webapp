@@ -149,7 +149,8 @@ storiesOf('borrow/switchBorrow', module)
         oracleType: 0 as OracleType,
         collateralPriceFeed: new PublicKey(0),
         liquidationFund: new PublicKey(0),
-        openFee: { val: new BN(10), scale: 3 }
+        openFee: { val: new BN(10), scale: 3 },
+        vaultType: 1
       }))
 
       const [cRatio, setCRatio] = React.useState('100.0')
