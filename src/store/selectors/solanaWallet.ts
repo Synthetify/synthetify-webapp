@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
+import { assetPrice, userVaults, vaults, vaultSwap } from '@selectors/vault'
 import {
   assets,
   collaterals,
@@ -16,7 +17,9 @@ import { PublicKey } from '@solana/web3.js'
 import { ACCURACY, DEFAULT_PUBLICKEY, MARINADE_PER_POINT, ORACLE_OFFSET } from '@consts/static'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
 import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
-
+import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
+import * as R from 'remeda'
+import { addressToAssetSymbol } from '@synthetify/sdk'
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
 export const { address, balance, accounts, status } = keySelectors(store, [
@@ -99,6 +102,56 @@ export const swaplinePairs = createSelector(
             : {
                 ...allAssets[allCollaterals[swapline.collateral.toString()].assetIndex],
                 ...allCollaterals[swapline.collateral.toString()],
+                balance: wSOLBalance
+              }
+      }
+
+      return pair
+    })
+  }
+)
+export const vaultPairs = createSelector(
+  vaults,
+  synthetics,
+  accounts,
+  assets,
+  balance,
+  assetPrice,
+  (allVaults, allSynthetics, tokensAccounts, allAssets, wSOLBalance, allAssetPrice) => {
+    return Object.values(allVaults).map(vault => {
+      const syntheticAccount = tokensAccounts[vault.synthetic.toString()]
+      const collateralAccount = tokensAccounts[vault.collateral.toString()]
+      const pair: BorrowedPair = {
+        ...vault,
+        syntheticData: {
+          ...allAssets[allSynthetics[vault.synthetic.toString()].assetIndex],
+          ...allSynthetics[vault.synthetic.toString()],
+          balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
+        },
+        collateralData:
+          addressToAssetSymbol[vault.collateral.toString()] !== 'WSOL'
+            ? {
+                reserveBalance: vault.collateralAmount.scale,
+                symbol: addressToAssetSymbol[vault.collateral.toString()],
+                price:
+                  typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
+                    ? allAssetPrice[vault.collateral.toString()]
+                    : {
+                        val: new BN(100000),
+                        scale: vault.collateralAmount.scale
+                      },
+                balance: collateralAccount ? collateralAccount.balance : new BN(0)
+              }
+            : {
+                reserveBalance: vault.collateralAmount.scale,
+                symbol: addressToAssetSymbol[vault.collateral.toString()],
+                price:
+                  typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
+                    ? allAssetPrice[vault.collateral.toString()]
+                    : {
+                        val: new BN(0),
+                        scale: vault.collateralAmount.scale
+                      },
                 balance: wSOLBalance
               }
       }
@@ -288,6 +341,16 @@ export const userMaxDeposit = (assetAddress: PublicKey) =>
       }
     }
   )
+export const maxAvailableDeposit = createSelector(
+  vaultSwap,
+  accounts,
+  (allVaultSwap, tokensAccounts) => {
+    const collateralAccount = tokensAccounts[allVaultSwap.collateral.toString()]
+    if (allVaultSwap.collateral === DEFAULT_PUBLICKEY && collateralAccount) {
+      return collateralAccount.balance ?? new BN(0)
+    }
+  }
+)
 
 export const userMarinadeRewardAmount = createSelector(
   collaterals,
@@ -316,6 +379,60 @@ export const userMarinadeRewardAmount = createSelector(
   }
 )
 
+export const getAvailableCollateral = createSelector(
+  accounts,
+  vaultSwap,
+  (tokensAccounts, allVaultSwap) => {
+    if (typeof tokensAccounts[allVaultSwap.collateral.toString()] !== 'undefined') {
+      return tokensAccounts[allVaultSwap.collateral.toString()].balance
+    } else {
+      return new BN(0)
+    }
+  }
+)
+export const getAvailableRepay = createSelector(
+  accounts,
+  vaultSwap,
+  userVaults,
+  (tokensAccounts, allVaultSwap, allUserVaults) => {
+    if (
+      typeof tokensAccounts[allVaultSwap.synthetic.toString()] !== 'undefined' &&
+      typeof allUserVaults[allVaultSwap.vaultAddress.toString()] !== 'undefined'
+    ) {
+      if (
+        tokensAccounts[allVaultSwap.synthetic.toString()].balance.gt(
+          allUserVaults[allVaultSwap.vaultAddress.toString()].syntheticAmount.val
+        )
+      ) {
+        return allUserVaults[allVaultSwap.vaultAddress.toString()].syntheticAmount.val
+      } else {
+        return tokensAccounts[allVaultSwap.synthetic.toString()].balance
+      }
+    } else {
+      return new BN(0)
+    }
+  }
+)
+
+export const getAddressFromIndex = (nr: number) =>
+  createSelector(synthetics, collaterals, (allSynthetic, allCollaterals) => {
+    let syntheticAddress: string = ''
+    R.forEachObj(allSynthetic, element => {
+      if (element.assetIndex === nr) {
+        syntheticAddress = element.assetAddress.toString()
+      }
+    })
+
+    let collateralAddress: string = ''
+    R.forEachObj(allCollaterals, element => {
+      if (element.assetIndex === nr) {
+        collateralAddress = element.collateralAddress.toString()
+      }
+    })
+
+    return [syntheticAddress, collateralAddress]
+  })
+
 export const solanaWalletSelectors = {
   address,
   balance,
@@ -324,6 +441,7 @@ export const solanaWalletSelectors = {
   syntheticAccountsArray,
   tokenAccount,
   exchangeTokensWithUserBalance,
-  userMaxBurnToken
+  userMaxBurnToken,
+  maxAvailableDeposit
 }
 export default solanaWalletSelectors
