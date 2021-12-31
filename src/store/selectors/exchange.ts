@@ -408,6 +408,7 @@ export interface UserVaults extends VaultEntry {
   maxBorrow: string
   interestRate: string
   liquidationPrice: string
+  vaultType: number
 }
 
 export const getUserVaults = createSelector(
@@ -492,7 +493,8 @@ export const getUserVaults = createSelector(
           currentVault.liquidationThreshold,
           allSynthetics[currentVault.synthetic.toString()].supply.scale,
           currentVault.collateralAmount.scale
-        )
+        ),
+        vaultType: currentVault.vaultType
       })
     })
     return vaultData

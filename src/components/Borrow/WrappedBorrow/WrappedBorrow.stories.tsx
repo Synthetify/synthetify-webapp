@@ -170,7 +170,8 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
         maxBorrow: '300',
-        minCRatio: 100
+        minCRatio: 100,
+        vaultType: 0
       },
       {
         owner: new PublicKey(0),
@@ -195,7 +196,8 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         interestRate: '15.45',
         liquidationPrice: '15.32654',
         maxBorrow: '500',
-        minCRatio: 100
+        minCRatio: 100,
+        vaultType: 0
       }
     ]
     return (
