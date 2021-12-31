@@ -65,6 +65,20 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: '1.5em'
     }
   },
+  gridRow: {
+    justifyContent: 'space-between',
+    transition: 'box-shadow 300ms',
+    padding: '5px 0px',
+    '&:hover': {
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`
+    },
+    '&:hover:last-child': {
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`,
+      borderRadius: '0px 0px 10px 10px'
+    }
+  },
   active: {
     background: `${colors.navy.navButton}85`,
     '&:last-child': {
@@ -101,20 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   headerRow: {
     justifyContent: 'space-between'
   },
-  gridRow: {
-    justifyContent: 'space-between',
-    transition: 'box-shadow 300ms',
-    padding: '5px 0px',
-    '&:hover': {
-      background: `${colors.navy.navButton}40`,
-      boxShadow: `0px 0px 6px ${colors.navy.button}`
-    },
-    '&:hover:last-child': {
-      background: `${colors.navy.navButton}40`,
-      boxShadow: `0px 0px 6px ${colors.navy.button}`,
-      borderRadius: '0px 0px 10px 10px'
-    }
-  },
+
   symbolColumn: {
     minWidth: '80px',
     justifyContent: 'flex-start',
