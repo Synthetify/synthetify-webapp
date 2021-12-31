@@ -191,9 +191,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             justifyContent='space-between'
             alignItems='center'>
             <Typography className={classes.positionTitle}>Open fee:</Typography>
-            <Typography className={classes.positionValue}>
-              {openFee.toFixed(2)} %
-            </Typography>
+            <Typography className={classes.positionValue}>{openFee.toFixed(2)} %</Typography>
           </Grid>
           <Grid
             container
