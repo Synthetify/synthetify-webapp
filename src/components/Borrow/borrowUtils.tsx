@@ -457,8 +457,9 @@ export const changeInputCollateral = (
       tokenFrom.assetScale,
       printBNtoBN(value, tokenFrom.assetScale),
       cRatio
-    ).mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
-    .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
+    )
+      .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
+      .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
   }
   return {
     amountCollBN: BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))),

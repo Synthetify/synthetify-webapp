@@ -63,7 +63,10 @@ const vaultSlice = createSlice({
     initVault(state) {
       return state
     },
-    setActualVaultSwap(state, action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'| 'vaultType'>>) {
+    setActualVaultSwap(
+      state,
+      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic' | 'vaultType'>>
+    ) {
       state.vaultSwap.collateral = action.payload.collateral
       state.vaultSwap.synthetic = action.payload.synthetic
       state.vaultSwap.vaultType = action.payload.vaultType
@@ -104,7 +107,12 @@ const vaultSlice = createSlice({
       action: PayloadAction<
         Pick<
           VaultSwap,
-          'collateral' | 'synthetic' | 'collateralAmount' | 'syntheticAmount' | 'action'| 'vaultType'
+          | 'collateral'
+          | 'synthetic'
+          | 'collateralAmount'
+          | 'syntheticAmount'
+          | 'action'
+          | 'vaultType'
         >
       >
     ) {
