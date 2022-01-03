@@ -60,6 +60,7 @@
     "remeda": "0.0.21",
     "storybook-builder-vite": "0.0.12",
     "stream-browserify": "^3.0.0",
+    "ts-jest": "^27.1.2",
     "typed-redux-saga": "^1.2.0",
     "typescript": "4.4.4",
     "vite": "^2.3.8",
@@ -74,7 +75,8 @@
     "storybook": "start-storybook -p 9009 -c .storybook watch-css -s public",
     "build-storybook": "build-storybook -s public",
     "build": "vite build",
-    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions"
+    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -106,7 +108,7 @@
     "@storybook/react": "^6.2.9",
     "@storybook/theming": "^6.2.9",
     "@types/classnames": "^2.2.10",
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^27.4.0",
     "@types/react": "^16.9.44",
     "@types/react-copy-to-clipboard": "^5.0.0",
     "@types/react-dom": "^16.9.8",
@@ -134,7 +136,6 @@
     "immer": "^9.0.6",
     "set-value": "^4.0.1",
     "nth-check": "^2.0.1",
-    "ansi-regex": "^5.0.1",
     "node-fetch": "^2.6.1",
     "trim": "^1.0.1",
     "glob-parent": "^5.1.2"

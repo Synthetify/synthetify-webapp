@@ -1,0 +1,15 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^@components/(.*)$": ["<rootDir>/src/components/$1"],
+    "^@containers/(.*)$": ["<rootDir>/src/containers/$1"],
+    "^@reducers/(.*)$": ["<rootDir>/src/store/reducers/$1"],
+    "^@selectors/(.*)$": ["<rootDir>/src/store/selectors/$1"],
+    "^@sagas/(.*)$": ["<rootDir>/src/store/sagas/$1"],
+    "^@consts/(.*)$": ["<rootDir>/src/store/consts/$1"],
+    "^@web3/(.*)$": ["<rootDir>/src/web3/$1"],
+    "^@static/(.*)$": ["<rootDir>/src/static/$1"],
+    "^@store/(.*)$": ["<rootDir>/src/store/$1"]
+  }
+}

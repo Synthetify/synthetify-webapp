@@ -1,8 +1,4 @@
-import {
-  calculateAmountBorrow,
-  calculateCRatio,
-  calculateLiqPrice
-} from '@components/Borrow/borrowUtils'
+import { calculateAmountBorrow, calculateCRatio, calculateLiqPrice } from '@consts/borrowUtils'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import {
   divUp,
