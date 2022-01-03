@@ -67,10 +67,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:nth-child(2n+1)': {
       backgroundColor: `${colors.navy.background}00`
+    },
+    '&:nth-child(1)': {
+      flexGrow: 1
+    },
+    '&:nth-child(2)': {
+      flexGrow: 3
     }
   },
   dataCell: {
     paddingLeft: 8,
+    textAlign: 'center',
 
     [theme.breakpoints.down('sm')]: {
       paddingLeft: 5
