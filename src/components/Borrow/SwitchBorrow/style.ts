@@ -43,10 +43,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   middleGrid: {
     display: 'flex',
     flexDirection: 'row',
-    padding: '24px 24px',
+    padding: '18px 24px 24px 24px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
-      padding: '24px 16px'
+      padding: '18px 16px 24px 16px'
     }
   },
   collateralContainer: {
@@ -63,10 +63,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     ...typography.subtitle2,
     color: colors.navy.grey,
-    paddingBottom: 16,
+    paddingBottom: 12,
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
-      paddingBottom: 8
+      paddingBottom: 6
     }
   },
   desc: {
@@ -139,8 +139,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   input: {
     minHeight: '64px',
-
     '& $button:first-child': {
+      margin: '0 10px 0 0',
       [theme.breakpoints.up('md')]: {
         minWidth: '107px',
         borderRadius: '6px'
@@ -171,11 +171,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: '28px',
     '&:hover': {
       background: colors.navy.info,
-      color: colors.white.main,
-      ...typography.body4,
-      '& $minValue': {
-        ...typography.body3
-      }
+      color: colors.white.main
     }
   },
   popoverInput: {
@@ -228,7 +224,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: '3px'
   },
   infoTitle: {
-    ...typography.subtitle1,
+    ...typography.subtitle2,
     color: colors.navy.grey,
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1
@@ -264,7 +260,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '10px 0',
     minWidth: '170px',
     ...typography.body1,
-    fontSize: '18px',
+    fontSize: '22px',
     marginLeft: '30px',
     textTransform: 'capitalize',
     '&:hover': {
@@ -283,6 +279,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: '5px 0',
       ...typography.subtitle1
     }
+  },
+  fontRepay: {
+    fontSize: '18px'
   },
   buttonAction: {
     justifyContent: 'flex-end',

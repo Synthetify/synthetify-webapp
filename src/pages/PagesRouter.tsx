@@ -37,7 +37,10 @@ export const PagesRouter: React.FC = () => {
   return (
     <Router>
       {halted ? <InformationCard /> : ''}
-      <SolWarning open={+printBN(solAmount, 9) < 0.05 && walletStatus === Status.Initialized && !loaderState.open}
+      <SolWarning
+        open={
+          +printBN(solAmount, 9) < 0.05 && walletStatus === Status.Initialized && !loaderState.open
+        }
       />
       {signerStatus === Status.Initialized && <EventsHandlers />}
       <div id={toBlur}>

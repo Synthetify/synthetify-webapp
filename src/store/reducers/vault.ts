@@ -19,6 +19,7 @@ export interface VaultSwap {
   loading: boolean
   error?: boolean
   txid?: string
+  vaultType: number
 }
 export type ActionType = 'add' | 'borrow' | 'withdraw' | 'repay' | 'none'
 export interface IVault {
@@ -43,7 +44,8 @@ export const defaultState: IVault = {
     collateral: DEFAULT_PUBLICKEY,
     collateralAmount: new BN(0),
     syntheticAmount: new BN(0),
-    loading: false
+    loading: false,
+    vaultType: 0
   },
   newVaultEntryAddress: DEFAULT_PUBLICKEY,
   assetPrice: {}
@@ -61,9 +63,13 @@ const vaultSlice = createSlice({
     initVault(state) {
       return state
     },
-    setActualVaultSwap(state, action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic'>>) {
+    setActualVaultSwap(
+      state,
+      action: PayloadAction<Pick<VaultSwap, 'collateral' | 'synthetic' | 'vaultType'>>
+    ) {
       state.vaultSwap.collateral = action.payload.collateral
       state.vaultSwap.synthetic = action.payload.synthetic
+      state.vaultSwap.vaultType = action.payload.vaultType
       return state
     },
     setVaultExist(state, action: PayloadAction<Pick<VaultSwap, 'vaultEntryExist'>>) {
@@ -101,7 +107,12 @@ const vaultSlice = createSlice({
       action: PayloadAction<
         Pick<
           VaultSwap,
-          'collateral' | 'synthetic' | 'collateralAmount' | 'syntheticAmount' | 'action'
+          | 'collateral'
+          | 'synthetic'
+          | 'collateralAmount'
+          | 'syntheticAmount'
+          | 'action'
+          | 'vaultType'
         >
       >
     ) {
@@ -111,12 +122,12 @@ const vaultSlice = createSlice({
       state.vaultSwap.collateralAmount = action.payload.collateralAmount
       state.vaultSwap.syntheticAmount = action.payload.syntheticAmount
       state.vaultSwap.loading = true
+      state.vaultSwap.vaultType = action.payload.vaultType
       return state
     },
 
     clearUserVault(state) {
       state.userVaults = {}
-      state.vaults = {}
     },
     setNewVaultEntryAddress(state, action: PayloadAction<Pick<IVault, 'newVaultEntryAddress'>>) {
       state.newVaultEntryAddress = action.payload.newVaultEntryAddress

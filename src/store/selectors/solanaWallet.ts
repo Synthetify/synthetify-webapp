@@ -400,7 +400,7 @@ export const getAvailableRepay = createSelector(
       typeof allUserVaults[allVaultSwap.vaultAddress.toString()] !== 'undefined'
     ) {
       if (
-        tokensAccounts[allVaultSwap.synthetic.toString()].balance.gt(
+        tokensAccounts[allVaultSwap.synthetic.toString()].balance.gte(
           allUserVaults[allVaultSwap.vaultAddress.toString()].syntheticAmount.val
         )
       ) {

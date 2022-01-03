@@ -28,9 +28,10 @@ interface IProp {
     synthetic: PublicKey,
     collateral: PublicKey,
     collateralAmount: BN,
-    syntheticAmount: BN
+    syntheticAmount: BN,
+    vaultType: number
   ) => void
-  setActualPair: (synthetic: PublicKey, collateral: PublicKey) => void
+  setActualPair: (synthetic: PublicKey, collateral: PublicKey, vaultType: number) => void
   availableCollateral: BN
   availableRepay: BN
   actualVault: {
@@ -69,16 +70,22 @@ export const WrappedBorrow: React.FC<IProp> = ({
   }
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
 
-  const changeValueFromTable = (collSymbol: string, synthSymbol: string) => {
+  const changeValueFromTable = (collSymbol: string, synthSymbol: string, vaultType: number) => {
     const index = pairs.findIndex(
       element =>
-        element.collateralData.symbol === collSymbol && element.syntheticData.symbol === synthSymbol
+        element.collateralData.symbol === collSymbol &&
+        element.syntheticData.symbol === synthSymbol &&
+        element.vaultType === vaultType
     )
     setPairIndex(index)
   }
   React.useEffect(() => {
     if (pairIndex !== null) {
-      setActualPair(pairs[pairIndex].synthetic, pairs[pairIndex].collateral)
+      setActualPair(
+        pairs[pairIndex].synthetic,
+        pairs[pairIndex].collateral,
+        pairs[pairIndex].vaultType
+      )
     }
   }, [pairIndex])
 
@@ -149,6 +156,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
             userVaults={userVaults}
             setValueWithTable={changeValueFromTable}
             active={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null}
+            vaultType={pairIndex !== null ? pairs[pairIndex].vaultType : 0}
           />
         ) : null}
       </Grid>

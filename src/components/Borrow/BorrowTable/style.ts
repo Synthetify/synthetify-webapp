@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.info,
     padding: '14px 0 14px 10px ',
     '&:first-child': {
-      paddingLeft: '14px'
+      paddingLeft: '10px'
     },
     [theme.breakpoints.down('md')]: {
       fontSize: '13px'
@@ -21,14 +21,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: '14px 0 14px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1,
       padding: '10px 0 10px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     }
   },
@@ -39,20 +39,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '12px 0 12px 10px',
     cursor: 'pointer',
     '&:first-child': {
-      paddingLeft: '14px'
+      paddingLeft: '10px'
     },
     [theme.breakpoints.down('sm')]: {
       ...typography.caption2,
       padding: '12px 0 12px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption4,
       padding: '10px 0 10px 4px',
       '&:first-child': {
-        paddingLeft: '12px'
+        paddingLeft: '8px'
       }
     }
   },
@@ -65,13 +65,28 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: '1.5em'
     }
   },
-  row: {
+  gridRow: {
+    justifyContent: 'space-between',
+    transition: 'box-shadow 300ms',
+    padding: '5px 0px',
     '&:hover': {
-      background: `${colors.navy.navButton}40`
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`
+    },
+    '&:hover:last-child': {
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`,
+      borderRadius: '0px 0px 10px 10px'
     }
   },
   active: {
-    background: `${colors.navy.navButton}85`
+    background: `${colors.navy.navButton}85`,
+    '&:last-child': {
+      borderRadius: ' 0px 0px 10px 10px'
+    },
+    '&:hover': {
+      background: `${colors.navy.navButton}90`
+    }
   },
   tooltipNumber: {
     background: colors.navy.navButton,
@@ -96,6 +111,52 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   secondIcon: {
     marginLeft: '-0.35em'
+  },
+  headerRow: {
+    justifyContent: 'space-between'
+  },
+
+  symbolColumn: {
+    minWidth: '80px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '70px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '50px'
+    }
+  },
+  amountColumn: {
+    minWidth: '95px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '65px'
+    }
+  },
+  cRatioColumn: {
+    minWidth: '55px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '35px'
+    }
+  },
+  interestDebtColumn: {
+    minWidth: '85px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '65px'
+    }
+  },
+  liquidationColumn: {
+    minWidth: '120px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '60px'
+    }
+  },
+  maxBorrowColumn: {
+    minWidth: '135px',
+    justifyContent: 'flex-start'
   }
 }))
 

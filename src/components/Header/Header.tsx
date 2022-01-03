@@ -146,9 +146,7 @@ export const Header: React.FC<IHeader> = ({
             />
           ) : (
             <ChangeWalletButton
-              name={`${address
-                .toString()
-                .substr(0, isSmDown ? 2 : isMdDown ? 3 : 6)}...${address
+              name={`${address.toString().substr(0, isSmDown ? 2 : isMdDown ? 3 : 6)}...${address
                 .toString()
                 .substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
               options={[
