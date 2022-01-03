@@ -1,3 +1,4 @@
+import { IRewardsProps, RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { BN } from '@project-serum/anchor'
 import { u64 } from '@solana/spl-token'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
@@ -183,4 +184,78 @@ export const formatNumbersBorrowTable = (num: number) => {
   }
 
   return (num / 1000000).toFixed(0)
+}
+
+export const estimateRounds = (rewards: IRewardsProps): RoundData => {
+  const { userDebtShares, roundLength, rounds, slot } = rewards
+  const { current, next } = rounds
+
+  if (next.roundStartSlot.toNumber() >= slot) {
+    return rounds
+  }
+  const slotDiff = slot - next.roundStartSlot.toNumber()
+  const roundDiff = divUpNumber(slotDiff, roundLength)
+
+  switch (roundDiff) {
+    case 1: {
+      return {
+        finished: current,
+        current: next,
+        next: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        }
+      }
+    }
+    case 2: {
+      return {
+        finished: next,
+        current: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        },
+        next: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        }
+      }
+    }
+    default: {
+      return {
+        finished: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        },
+        current: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        },
+        next: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        }
+      }
+    }
+  }
+}
+
+export const calculateTimeRemaining = (slot: number, nextRoundStartSlot: BN): BN => {
+  const slotTime = 0.5
+  const slotDiff = nextRoundStartSlot.sub(new BN(slot))
+  if (slotDiff.lten(0)) {
+    return new BN(1)
+  }
+  return slotDiff.muln(slotTime)
 }

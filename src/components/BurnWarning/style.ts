@@ -1,24 +1,16 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
-const useStyles = makeStyles(() => ({
-  warningContainer: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
+const useStyles = makeStyles((theme: Theme) => ({
   test: {
     backgroundColor: 'transparent',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      margin: '0 18px'
+    }
   },
   warningCard: {
     backgroundColor: colors.navy.component,

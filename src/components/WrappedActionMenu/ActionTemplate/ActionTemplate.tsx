@@ -18,7 +18,6 @@ export interface IProps {
   maxAvailable: BN
   maxDecimal: number
   onClick: (amount: BN, decimals: number) => () => void
-  onBurn?: (amount: BN, decimals: number) => () => void
   currency: string
   sending: boolean
   hasError: boolean

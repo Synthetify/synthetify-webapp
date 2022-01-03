@@ -183,19 +183,9 @@ export const ActionMenuContainer: React.FC = () => {
         onMint={(amount, decimal) => () => {
           dispatch(actions.mint({ amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)) }))
         }}
-        onWarning={(amount: BN, decimals: number) => () => {
+        onBurn={(amount: BN, decimals: number) => () => {
           setShowWarning(true)
           setBurnAmount(printBNtoBN(amount.toString(), XUSD_DECIMALS - decimals))
-          console.log(printBNtoBN(amount.toString(), XUSD_DECIMALS - decimals).toString(), decimals)
-        }}
-        onBurn={(amount, decimal) => () => {
-          setShowWarning(false)
-          dispatch(
-            actions.burn({
-              amount: amount.mul(new BN(10 ** 6)).div(new BN(10 ** decimal)),
-              tokenAddress: xUSDTokenAddress
-            })
-          )
         }}
         onDeposit={(amount, decimal) => () => {
           dispatch(
