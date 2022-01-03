@@ -112,6 +112,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   scrollbarTrack: {
     background: colors.navy.navButton,
+    opacity: 0,
     borderRadius: 10,
     height: '96%',
     margin: 5,

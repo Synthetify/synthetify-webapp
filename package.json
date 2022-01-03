@@ -37,6 +37,7 @@
     "history": "^4.7.2",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.19",
+    "node": "^16.13.0",
     "node-polyfill-webpack-plugin": "^1.1.2",
     "notistack": "^1.0.0",
     "patch-package": "^6.4.7",

@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: 496,
     borderRadius: 10,
-    overflow: 'hidden',
+    position: 'relative',
+    overflowX: 'hidden',
+    overflowY: 'scroll',
+    zIndex: 1,
     backgroundColor: colors.navy.component,
     marginLeft: 32,
 
@@ -24,6 +27,28 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
       minWidth: 'unset',
       marginLeft: 0
+    },
+    '&:hover': {
+    },
+    '&::-webkit-scrollbar': {
+      width: 9,
+      position: 'absolute',
+      top: 0,
+      zIndex: -1,
+      paddingLeft: 5
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: colors.navy.navButton,
+      position: 'absolute',
+      borderRadius: 10,
+      zIndex: -1,
+      left: 10,
+      top: 10
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: colors.green.main,
+      width: 5,
+      borderRadius: 10
     }
   },
   header: {

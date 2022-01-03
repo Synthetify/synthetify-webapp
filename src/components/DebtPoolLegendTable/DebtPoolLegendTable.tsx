@@ -4,7 +4,6 @@ import AnimatedNumber from '@components/AnimatedNumber'
 import classNames from 'classnames'
 import { theme } from '@static/theme'
 import useStyles from './style'
-
 export interface Data {
   id: string
   label: string
