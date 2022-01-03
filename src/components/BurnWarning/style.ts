@@ -8,19 +8,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    [theme.breakpoints.down('md')]: {
-      margin: '0 18px'
-    }
+    left: 0
   },
   warningCard: {
     backgroundColor: colors.navy.component,
     position: 'relative',
     zIndex: 11,
     background: 'transparent',
+    left: 0,
     padding: '36px 35px',
     borderRadius: 20,
     textAlign: 'center',
-    color: colors.navy.grey
+    color: colors.navy.grey,
+    [theme.breakpoints.down('md')]: {
+      margin: '0 18px'
+    }
   },
   warningHeader: {
     color: colors.navy.veryLightGrey,
