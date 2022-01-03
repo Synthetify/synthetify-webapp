@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     zIndex: 11,
     background: 'transparent',
-    left: 0,
+    left: '0 !important',
     padding: '36px 35px',
     borderRadius: 20,
     textAlign: 'center',
