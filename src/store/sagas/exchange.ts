@@ -650,7 +650,7 @@ export function* handleAddCollateralVault(vaultSwapData: VaultSwap): SagaGenerat
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
-  yield* call(sleep, 1000)
+  yield* call(sleep, 1500)
   if (typeof userVaultState[vaultSwapData.vaultAddress.toString()] === 'undefined') {
     yield* put(
       actionsVault.setNewVaultEntryAddress({
@@ -721,7 +721,7 @@ export function* handleBorrowedVault(vaultSwapData: VaultSwap): SagaGenerator<st
   }
 
   const signature = yield* call(signAndSend, wallet, tx)
-  yield* call(sleep, 1000)
+  yield* call(sleep, 1500)
   if (typeof userVaultState[vaultSwapData.vaultAddress.toString()] === 'undefined') {
     yield* put(
       actionsVault.setNewVaultEntryAddress({
