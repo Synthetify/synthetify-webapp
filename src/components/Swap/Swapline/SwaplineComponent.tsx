@@ -303,8 +303,8 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                 />
                 {+printBN(tokenFrom.balance, tokenFrom.assetScale) >= 10000
                   ? +printBN(tokenFrom.balance, tokenFrom.assetScale) >= 1000000
-                      ? 'M'
-                      : 'K'
+                    ? 'M'
+                    : 'K'
                   : ''}
                 {` ${tokenFrom.symbol ? tokenFrom.symbol : ''}`}
               </>

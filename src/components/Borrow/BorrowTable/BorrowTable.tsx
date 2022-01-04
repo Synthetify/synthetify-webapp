@@ -1,16 +1,4 @@
-import {
-  CardMedia,
-  Grid,
-  Hidden,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip
-} from '@material-ui/core'
+import { CardMedia, Grid, Hidden, Paper, Tooltip } from '@material-ui/core'
 import icons from '@static/icons'
 import classNames from 'classnames'
 import React from 'react'
@@ -23,58 +11,82 @@ import useStyles from './style'
 
 interface IProp {
   userVaults: UserVaults[]
-  setValueWithTable: (collSymbol: string, synthSymbol: string) => void
+  setValueWithTable: (collSymbol: string, synthSymbol: string, vaultType: number) => void
   active: string | null
+  vaultType: number
 }
-export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, active }) => {
+export const BorrowTable: React.FC<IProp> = ({
+  userVaults,
+  setValueWithTable,
+  active,
+  vaultType
+}) => {
   const classes = useStyles()
   return (
-    <TableContainer className={classes.root} component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
+    <Grid className={classes.root} component={Paper}>
+      <Grid>
+        <Grid>
+          <Grid container direction='row' className={classes.headerRow}>
             <Hidden xsDown>
-              <TableCell classes={{ root: classes.rootHeader }}>Collateral</TableCell>
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
+                Collateral
+              </Grid>
             </Hidden>
             <Hidden xsDown>
-              <TableCell classes={{ root: classes.rootHeader }}>Borrowed</TableCell>
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
+                Borrowed
+              </Grid>
             </Hidden>
             <Hidden smUp>
-              <TableCell classes={{ root: classes.rootHeader }}>Coll./Borr.</TableCell>
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
+                Coll./Borr.
+              </Grid>
             </Hidden>
-            <TableCell classes={{ root: classes.rootHeader }}>
+            <Grid classes={{ root: classNames(classes.rootHeader, classes.amountColumn) }}>
               <Hidden xsDown> Deposited</Hidden>
               <Hidden smUp> Depos.</Hidden>
-            </TableCell>
-            <TableCell classes={{ root: classes.rootHeader }}>
+            </Grid>
+            <Grid classes={{ root: classNames(classes.rootHeader, classes.amountColumn) }}>
               <Hidden xsDown>Current debt</Hidden>
               <Hidden smUp>Curr. debt</Hidden>
-            </TableCell>
-            <TableCell classes={{ root: classes.rootHeader }}>C-Ratio</TableCell>
+            </Grid>
+            <Grid classes={{ root: classNames(classes.rootHeader, classes.cRatioColumn) }}>
+              C-Ratio
+            </Grid>
             <Hidden smDown>
-              <TableCell classes={{ root: classes.rootHeader }}>Interest rate</TableCell>
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.interestDebtColumn) }}>
+                Interest rate
+              </Grid>
             </Hidden>
-            <TableCell classes={{ root: classes.rootHeader }}>
+            <Grid classes={{ root: classNames(classes.rootHeader, classes.liquidationColumn) }}>
               <Hidden mdDown>Liquidation price</Hidden>
               <Hidden only={['lg', 'xl']}>Liq. price</Hidden>
-            </TableCell>
+            </Grid>
             <Hidden mdDown>
-              <TableCell classes={{ root: classes.rootHeader }}>Max borrows limit</TableCell>
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.maxBorrowColumn) }}>
+                Max borrows limit
+              </Grid>
             </Hidden>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+          </Grid>
+        </Grid>
+        <Grid>
           {userVaults.map((element, index) =>
             element.deposited !== 0 || element.currentDebt !== 0 ? (
-              <TableRow
+              <Grid
                 key={index}
                 className={classNames(
-                  classes.row,
-                  element.collateral === active ? classes.active : null
+                  classes.gridRow,
+                  element.collateral === active && element.vaultType === vaultType
+                    ? classes.active
+                    : null
                 )}
-                onClick={() => setValueWithTable(element.collateral, element.borrowed)}>
+                onClick={() =>
+                  setValueWithTable(element.collateral, element.borrowed, element.vaultType)
+                }
+                container
+                direction='row'>
                 <Hidden xsDown>
-                  <TableCell classes={{ root: classes.rootCell }}>
+                  <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
                     <Grid container alignItems='center'>
                       <CardMedia
                         className={classes.icon}
@@ -82,8 +94,8 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       />
                       {element.collateral}
                     </Grid>
-                  </TableCell>
-                  <TableCell classes={{ root: classes.rootCell }}>
+                  </Grid>
+                  <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
                     <Grid container alignItems='center'>
                       <CardMedia
                         className={classes.icon}
@@ -91,10 +103,10 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       />
                       {element.borrowed}
                     </Grid>
-                  </TableCell>
+                  </Grid>
                 </Hidden>
                 <Hidden smUp>
-                  <TableCell classes={{ root: classes.rootCell }}>
+                  <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
                     <Grid className={classes.dualIcon} style={{ marginLeft: '8px' }}>
                       <CardMedia
                         className={classes.icon}
@@ -106,9 +118,9 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                         image={icons[element.borrowed] ?? icons.SNY}
                       />
                     </Grid>
-                  </TableCell>
+                  </Grid>
                 </Hidden>
-                <TableCell classes={{ root: classes.rootCell }}>
+                <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
                     title={`${element.deposited} ${element.collateral}`}
@@ -122,8 +134,8 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       {showPrefix(element.deposited)} {element.collateral}
                     </Grid>
                   </Tooltip>
-                </TableCell>
-                <TableCell classes={{ root: classes.rootCell }}>
+                </Grid>
+                <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
                     title={`${element.currentDebt} ${element.borrowed}`}
@@ -137,9 +149,9 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       {showPrefix(element.currentDebt)} {element.borrowed}
                     </Grid>
                   </Tooltip>
-                </TableCell>
-                <TableCell
-                  classes={{ root: classes.rootCell }}
+                </Grid>
+                <Grid
+                  classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
                   style={{
                     color:
                       element.cRatio === 'NaN' ||
@@ -155,18 +167,19 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                     )}
                     {'%'}
                   </Grid>
-                </TableCell>
+                </Grid>
                 <Hidden smDown>
-                  <TableCell classes={{ root: classes.rootCell }}>
+                  <Grid
+                    classes={{ root: classNames(classes.rootCell, classes.interestDebtColumn) }}>
                     <AnimatedNumber
                       value={element.interestRate}
                       formatValue={(value: number) => value.toFixed(2)}
                     />
 
                     {'%'}
-                  </TableCell>
+                  </Grid>
                 </Hidden>
-                <TableCell classes={{ root: classes.rootCell }}>
+                <Grid classes={{ root: classNames(classes.rootCell, classes.liquidationColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
                     title={`${Number(element.liquidationPrice).toFixed(6)} $`}
@@ -184,10 +197,10 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                       {showPrefix(Number(element.liquidationPrice))}
                     </Grid>
                   </Tooltip>
-                </TableCell>
+                </Grid>
                 <Hidden mdDown>
-                  <TableCell
-                    classes={{ root: classes.rootCell }}
+                  <Grid
+                    classes={{ root: classNames(classes.rootCell, classes.maxBorrowColumn) }}
                     style={{
                       color:
                         element.cRatio === 'NaN' ||
@@ -208,13 +221,13 @@ export const BorrowTable: React.FC<IProp> = ({ userVaults, setValueWithTable, ac
                         {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
                       </Grid>
                     </Tooltip>
-                  </TableCell>
+                  </Grid>
                 </Hidden>
-              </TableRow>
+              </Grid>
             ) : null
           )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </Grid>
+      </Grid>
+    </Grid>
   )
 }

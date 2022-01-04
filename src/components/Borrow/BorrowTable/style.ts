@@ -5,8 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     boxShadow: 'none',
-    borderRadius: '10px',
-    padding: '0px 4px 4px 4px'
+    borderRadius: '10px'
   },
   rootHeader: {
     borderColor: colors.navy.darkGrey,
@@ -66,26 +65,27 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: '1.5em'
     }
   },
-  row: {
+  gridRow: {
+    justifyContent: 'space-between',
     transition: 'box-shadow 300ms',
-    borderRadius: '5px',
+    padding: '5px 0px',
     '&:hover': {
       background: `${colors.navy.navButton}40`,
       boxShadow: `0px 0px 6px ${colors.navy.button}`
+    },
+    '&:hover:last-child': {
+      background: `${colors.navy.navButton}40`,
+      boxShadow: `0px 0px 6px ${colors.navy.button}`,
+      borderRadius: '0px 0px 10px 10px'
     }
   },
   active: {
-    '& td': {
-      background: `${colors.navy.navButton}85`,
-      '&:first-child': {
-        borderRadius: '5px 0 0 5px'
-      },
-      '&:last-child': {
-        borderRadius: ' 0 5px 5px 0'
-      },
-      '&:hover': {
-        background: `${colors.navy.navButton}90`
-      }
+    background: `${colors.navy.navButton}85`,
+    '&:last-child': {
+      borderRadius: ' 0px 0px 10px 10px'
+    },
+    '&:hover': {
+      background: `${colors.navy.navButton}90`
     }
   },
   tooltipNumber: {
@@ -111,6 +111,52 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   secondIcon: {
     marginLeft: '-0.35em'
+  },
+  headerRow: {
+    justifyContent: 'space-between'
+  },
+
+  symbolColumn: {
+    minWidth: '80px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '70px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '50px'
+    }
+  },
+  amountColumn: {
+    minWidth: '95px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '65px'
+    }
+  },
+  cRatioColumn: {
+    minWidth: '55px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '35px'
+    }
+  },
+  interestDebtColumn: {
+    minWidth: '85px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '65px'
+    }
+  },
+  liquidationColumn: {
+    minWidth: '120px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '60px'
+    }
+  },
+  maxBorrowColumn: {
+    minWidth: '135px',
+    justifyContent: 'flex-start'
   }
 }))
 

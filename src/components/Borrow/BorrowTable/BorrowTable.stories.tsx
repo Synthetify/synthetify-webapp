@@ -22,7 +22,8 @@ storiesOf('Borrow/table', module).add('default', () =>
         syntheticAmount: { val: new BN(0), scale: 0 },
         collateralAmount: { val: new BN(0), scale: 0 },
         owner: new PublicKey(0),
-        vault: new PublicKey(0)
+        vault: new PublicKey(0),
+        vaultType: 0
       },
       {
         collateral: 'WSOL',
@@ -38,7 +39,8 @@ storiesOf('Borrow/table', module).add('default', () =>
         syntheticAmount: { val: new BN(0), scale: 0 },
         collateralAmount: { val: new BN(0), scale: 0 },
         owner: new PublicKey(0),
-        vault: new PublicKey(0)
+        vault: new PublicKey(0),
+        vaultType: 0
       }
     ]
     return (
@@ -49,6 +51,7 @@ storiesOf('Borrow/table', module).add('default', () =>
             console.log('set value with tables')
           }}
           active={'Sol'}
+          vaultType={0}
         />
       </div>
     )

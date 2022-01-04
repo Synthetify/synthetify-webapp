@@ -376,7 +376,12 @@ export function* initVaultEntry(): Generator {
           vault: data
         })
       )
-      const vaultEntry = yield* call(getVaultEntryIFExist, vault.synthetic, vault.collateral, vault.vaultType)
+      const vaultEntry = yield* call(
+        getVaultEntryIFExist,
+        vault.synthetic,
+        vault.collateral,
+        vault.vaultType
+      )
       if (vaultEntry !== null) {
         yield* put(actions.setUserVaults(vaultEntry))
       }

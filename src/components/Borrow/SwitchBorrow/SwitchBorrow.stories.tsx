@@ -6,13 +6,7 @@ import ActionMenuBorrow, { IActionContents } from './ActionMenuBorrow'
 import { ActionBorrow } from './ActionBorrow'
 import { BN } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
-import {
-  Asset,
-  Decimal,
-  OracleType,
-  PriceStatus,
-  Synthetic
-} from '@synthetify/sdk/lib/exchange'
+import { Asset, Decimal, OracleType, PriceStatus, Synthetic } from '@synthetify/sdk/lib/exchange'
 import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 
