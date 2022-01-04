@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginLeft: 0
     },
     '&:hover': {
+      '&::-webkit-scrollbar-thumb': {
+        visibility: 'visible'
+      }
     },
     '&::-webkit-scrollbar': {
       width: 9,
@@ -38,22 +41,30 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingLeft: 5
     },
     '&::-webkit-scrollbar-track': {
-      backgroundColor: colors.navy.navButton,
+      backgroundColor: 'transparent',
       position: 'absolute',
       borderRadius: 10,
-      zIndex: -1,
+      zIndex: -5,
       left: 10,
       top: 10
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: colors.green.main,
+      visibility: 'hidden',
       width: 5,
       borderRadius: 10
     }
   },
   header: {
     height: 60,
-
+    position: 'sticky',
+    top: 0,
+    '& $column:nth-child(1)': {
+      backgroundColor: colors.navy.component
+    },
+    '& $column:nth-child(2)': {
+      backgroundColor: 'rgba(12, 13, 44, .7)'
+    },
     [theme.breakpoints.down('sm')]: {
       height: 40
     }
@@ -93,10 +104,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:nth-child(2n+1)': {
       backgroundColor: `${colors.navy.background}00`
     },
-    '&:nth-child(1)': {
+    '&:nth-child(1n)': {
       flexGrow: 1
     },
-    '&:nth-child(2)': {
+    '&:nth-child(2n)': {
+      flexGrow: 3
+    }
+  },
+  emptyColumn: {
+    width: '25%',
+    backgroundColor: `${colors.navy.background}4D`,
+    '&:nth-child(2n+1)': {
+      backgroundColor: `${colors.navy.background}00`
+    },
+    '&:nth-child(1n)': {
+      flexGrow: 1
+    },
+    '&:nth-child(2n)': {
       flexGrow: 3
     }
   },
