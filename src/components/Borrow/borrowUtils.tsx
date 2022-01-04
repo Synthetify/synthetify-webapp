@@ -95,16 +95,15 @@ export const calculateLiqPrice = (
   if (amountBorrow.eq(new BN(0)) || amountCollateral.eq(new BN(0))) {
     return printBN(
       priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale))),
-      assetScaleFrom + 2
-    )
-  } else {
-    return printBN(
-      amountUSDBorrow.div(
-        liqThreshold.val.mul(amountCollateral).div(new BN(10).pow(new BN(liqThreshold.scale)))
-      ),
-      assetScaleTo + 2
+      8
     )
   }
+  return printBN(
+    amountUSDBorrow.div(
+      liqThreshold.val.mul(amountCollateral).div(new BN(10).pow(new BN(liqThreshold.scale)))
+    ),
+    8
+  )
 }
 export const calculateAvailableBorrow = (
   assetTo: AssetPriceData,
