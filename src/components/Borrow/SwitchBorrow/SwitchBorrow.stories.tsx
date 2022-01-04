@@ -192,17 +192,17 @@ storiesOf('borrow/switchBorrow', module)
         repay: (
           <ActionBorrow
             action={'repay'}
-            cRatio={''}
-            liquidationPriceTo={0}
-            liquidationPriceFrom={0}
+            cRatio={'---'}
+            liquidationPriceTo={2}
+            liquidationPriceFrom={1.5}
             onClickSubmitButton={() => {}}
             pairs={pairs}
             sending={false}
             hasError={false}
             changeCRatio={changeCRatio}
             vaultAmount={{
-              collateralAmount: { val: new BN(0), scale: 0 },
-              borrowAmount: { val: new BN(0), scale: 0 }
+              collateralAmount: { val: new BN(1000000), scale: 6 },
+              borrowAmount: { val: new BN(1000000), scale: 6 }
             }}
             availableTo={new BN(1000000)}
             availableFrom={new BN(1000000)}
@@ -218,7 +218,7 @@ storiesOf('borrow/switchBorrow', module)
             setAvailableWithdraw={(nr: BN) => {
               console.log(nr)
             }}
-            pairIndex={1}
+            pairIndex={0}
             setPairIndex={() => {}}
             walletStatus={true}
             noWalletHandler={() => {}}

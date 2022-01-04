@@ -26,9 +26,10 @@ import {
 import { MAX_U64 } from '@consts/static'
 import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
-import useStyles from './style'
+import Slider from '@material-ui/core/Slider'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import classNames from 'classnames'
+import useStyles from './style'
 interface IProp {
   action: string
   cRatio: string
@@ -436,42 +437,33 @@ export const ActionBorrow: React.FC<IProp> = ({
                     horizontal: 'center'
                   }}>
                   <Grid className={classes.popoverBack}>
-                    <Button
-                      className={classes.popoverButton}
-                      value={'---'}
-                      onClick={event => changeCRatio(event.currentTarget.value)}>
-                      ---
-                    </Button>
-                    <Button
-                      className={classes.popoverButton}
-                      value={minCRatio}
-                      onClick={() => changeCRatio(minCRatio.toFixed(2))}>
-                      Min: <span className={classes.minValue}>{minCRatio.toFixed(0)}%</span>
-                    </Button>
-                    <Input
-                      className={classes.popoverInput}
-                      classes={{ input: classes.customInput }}
-                      disableUnderline
-                      value={customCRatio}
-                      placeholder={'custom'}
-                      onChange={event => {
-                        if (event.currentTarget.value.match(/^\d/)) {
-                          setCustomCRatio(event.currentTarget.value)
-                        }
-                      }}
-                      onBlur={changeCustomCRatio}
+                    <Typography className={classes.sliderTitle}>Adjust your multiply</Typography>
+                    <Grid>
+                      <Grid>
+                        <Typography className={classes.sliderSubTitle}>
+                          Liquidation price
+                        </Typography>
+                        <Typography className={classes.sliderNumber}>$ 32332,5</Typography>
+                      </Grid>
+                      <Grid>
+                        <Typography className={classes.sliderSubTitle}>Collateral ratio</Typography>
+                        <Typography className={classes.sliderNumber}>250.55%</Typography>
+                      </Grid>
+                    </Grid>
+                    <Slider
+                      defaultValue={500}
+                      // getAriaValueText={valuetext}
+                      aria-labelledby='discrete-slider-small-steps'
+                      step={1}
+                      marks
+                      min={300}
+                      max={1000}
+                      valueLabelDisplay='auto'
                     />
-                    {cRatioStatic.map(element =>
-                      Number(element) > minCRatio ? (
-                        <Button
-                          key={element}
-                          className={classes.popoverButton}
-                          value={Number(element)}
-                          onClick={event => changeCRatio(event.currentTarget.value)}>
-                          {element}%
-                        </Button>
-                      ) : null
-                    )}
+                    <Grid container item justifyContent={'space-between'}>
+                      <Typography className={classes.sliderRisk}>Decrease risk</Typography>
+                      <Typography className={classes.sliderRisk}>Increase risk</Typography>
+                    </Grid>
                   </Grid>
                 </Popover>
               </Grid>

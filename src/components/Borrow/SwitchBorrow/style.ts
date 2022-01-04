@@ -151,56 +151,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   popover: {
-    maxWidth: '90px',
-    borderRadius: '5px'
+    minWidth: '328px',
+    borderRadius: '20px'
   },
   popoverBack: {
-    background: colors.navy.dark,
+    background: colors.navy.darkGrey,
     border: `1px solid ${colors.navy.darkGrey}`,
     boxSizing: 'border-box',
     borderRadius: '5px',
-    padding: '4px'
+    padding: 16
   },
-  popoverButton: {
-    width: '100%',
-    color: colors.navy.grey,
-    ...typography.subtitle2,
-    textTransform: 'none',
+  sliderTitle: {
+    ...typography.subtitle1
+  },
+  sliderSubTitle: {
+    ...typography.body4,
+    color: colors.navy.grey
+  },
+  sliderNumber: {
+    ...typography.subtitle1
+  },
+  sliderRisk: {
+    ...typography.caption1
+  },
 
-    padding: '2px',
-    minHeight: '28px',
-    '&:hover': {
-      background: colors.navy.info,
-      color: colors.white.main
-    }
-  },
-  popoverInput: {
-    color: colors.navy.grey,
-    ...typography.subtitle2,
-    padding: '2px',
-    borderRadius: '5px',
-    '&:hover': {
-      background: colors.navy.info,
-      color: colors.white.main,
-      ...typography.body4
-    }
-  },
-  customInput: {
-    padding: 0,
-    textAlign: 'center',
-    minHeight: '28px',
-    '&::placeholder': {
-      color: colors.navy.grey,
-      opacity: 1
-    },
-    '&:hover': {
-      '&::placeholder': {
-        background: colors.navy.info,
-        color: colors.white.main,
-        ...typography.body4
-      }
-    }
-  },
   bottomGrid: {
     display: 'flex',
     flexDirection: 'row',
