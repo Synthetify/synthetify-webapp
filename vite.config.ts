@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import { ViteAliases } from 'vite-aliases'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-
 export default defineConfig({
   plugins: [
     reactRefresh(),
