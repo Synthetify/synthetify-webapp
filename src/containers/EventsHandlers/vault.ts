@@ -58,6 +58,18 @@ const VaultEvents = () => {
               })
             )
           }
+          console.log(vault.synthetic.toString())
+          if (vault.synthetic.toString() === '83LGLCm7QKpYZbX8q4W2kYWbtt8NJBwbVwEepzkVnJ9y') {
+            dispatch(
+              actionsVault.setAssetPrice({
+                address: vault.synthetic.toString(),
+                price: {
+                  val: new BN(1 * 10 ** 8),
+                  scale: 8
+                }
+              })
+            )
+          }
           connection.onAccountChange(vault.collateralPriceFeed, priceInfo => {
             const parsedData = parsePriceData(priceInfo.data)
             parsedData.price &&
