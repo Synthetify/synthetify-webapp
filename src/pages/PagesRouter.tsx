@@ -14,6 +14,7 @@ import { StatisticsPage } from './StatisticsPage/StatisticsPage'
 import solanaConnectionSelector from '@selectors/solanaConnection'
 import InformationCard from '@components/InformationCard/InformationCard'
 import { SwaplinePage } from './SwaplinePage/SwaplinePage'
+import { BorrowPage } from './BorrowPage/BorrowPage'
 import { loader } from '@selectors/ui'
 import { balance, status } from '@selectors/solanaWallet'
 import { SolWarning } from '@components/SolWarning/SolWarning'
@@ -36,7 +37,10 @@ export const PagesRouter: React.FC = () => {
   return (
     <Router>
       {halted ? <InformationCard /> : ''}
-      <SolWarning open={+printBN(solAmount, 9) < 0.05 && walletStatus === Status.Initialized && !loaderState.open}
+      <SolWarning
+        open={
+          +printBN(solAmount, 9) < 0.05 && walletStatus === Status.Initialized && !loaderState.open
+        }
       />
       {signerStatus === Status.Initialized && <EventsHandlers />}
       <div id={toBlur}>
@@ -45,11 +49,12 @@ export const PagesRouter: React.FC = () => {
           <Route path='/staking' component={StakingPage} />
           <Route path={'/exchange'} component={ExchangePage} />
           <Route path={'/statistics'} component={StatisticsPage} />
-          <Route path={'/stats'} component={StatisticsPage} >
+          <Route path={'/stats'} component={StatisticsPage}>
             <Redirect to='/statistics'>
               <StatisticsPage />
             </Redirect>
           </Route>
+          <Route path={'/vaults'} component={BorrowPage} />
           <Route path={'/swapline'} component={SwaplinePage} />
           <Route path='*'>
             <Redirect to='/staking'>

@@ -52,7 +52,7 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-  const routes = ['staking', 'exchange', 'statistics']
+  const routes = ['staking', 'exchange', 'vaults', 'statistics']
   if (typeOfNetwork !== NetworkType.TESTNET) {
     routes.splice(routes.length - 1, 0, 'swapline')
   }
@@ -146,9 +146,7 @@ export const Header: React.FC<IHeader> = ({
             />
           ) : (
             <ChangeWalletButton
-              name={`${address
-                .toString()
-                .substr(0, isSmDown ? 2 : isMdDown ? 3 : 6)}...${address
+              name={`${address.toString().substr(0, isSmDown ? 2 : isMdDown ? 3 : 6)}...${address
                 .toString()
                 .substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
               options={[

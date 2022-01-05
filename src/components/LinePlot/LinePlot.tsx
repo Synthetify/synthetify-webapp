@@ -19,12 +19,23 @@ interface IProps {
 }
 export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
   const classes = useStyles()
-  const fullDateData: Array<{ x: Date; y: number }> = data.data.slice(0).slice(-30).map(({ x, y }) => ({ x: new Date(x), y }))
-  const onlyDaysData: Array<{ x: Date; y: number }> = data.data.slice(0).slice(-30).map(({ x, y }) => ({ x: new Date(x - (x % (1000 * 60 * 60 * 24))), y }))
-  const formatDate = (index: number) => fullDateData[index].x.toLocaleString('en-GB', { hour12: true, timeStyle: 'short', dateStyle: 'short' })
+  const fullDateData: Array<{ x: Date; y: number }> = data.data
+    .slice(0)
+    .slice(-30)
+    .map(({ x, y }) => ({ x: new Date(x), y }))
+  const onlyDaysData: Array<{ x: Date; y: number }> = data.data
+    .slice(0)
+    .slice(-30)
+    .map(({ x, y }) => ({ x: new Date(x - (x % (1000 * 60 * 60 * 24))), y }))
+  const formatDate = (index: number) =>
+    fullDateData[index].x.toLocaleString('en-GB', {
+      hour12: true,
+      timeStyle: 'short',
+      dateStyle: 'short'
+    })
 
   const getPlotMax = () => {
-    const values = data.data.map(point => point.y)
+    const values = fullDateData.map(point => point.y)
     const minValue = Math.min(...values)
     const maxValue = Math.max(...values)
 
@@ -74,7 +85,7 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
         defs={[
           linearGradientDef('gradient', [
             { offset: 0, color: 'inherit' },
-            { offset: 100, color: 'inherit', opacity: 0 }
+            { offset: 100, color: 'inherit', opacity: 0.2 }
           ])
         ]}
         tooltip={({
