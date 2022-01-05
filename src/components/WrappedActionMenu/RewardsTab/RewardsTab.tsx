@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/indent */
 import React from 'react'
 import { Divider, Grid, Typography } from '@material-ui/core'
-import { displayDate, divUpNumber, printBN, transformBN } from '@consts/utils'
+import {
+  calculateTimeRemaining,
+  displayDate,
+  divUpNumber,
+  estimateRounds,
+  printBN,
+  transformBN
+} from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -50,15 +57,9 @@ const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
 }) => {
   const classes = useStyles()
 
-  const calculateTimeRemaining = (): BN => {
-    const slotTime = 0.5
-    const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
-    if (slotDiff.lten(0)) {
-      return new BN(0)
-    }
-    return slotDiff.muln(slotTime)
-  }
-  const [timeRemaining, setTimeRemaining] = React.useState(calculateTimeRemaining())
+  const [timeRemaining, setTimeRemaining] = React.useState(
+    calculateTimeRemaining(slot, timeRemainingEndSlot)
+  )
   React.useEffect(() => {
     const interval = setInterval(() => {
       setTimeRemaining(time => {
@@ -72,7 +73,7 @@ const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   }, [])
 
   React.useEffect(() => {
-    setTimeRemaining(calculateTimeRemaining())
+    setTimeRemaining(calculateTimeRemaining(slot, timeRemainingEndSlot))
   }, [slot])
   return (
     <Grid className={classes.rootTimer}>
@@ -96,71 +97,13 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 }) => {
   const classes = useStyles()
 
-  const estimateRounds = (): RoundData => {
-    const { current, next } = rounds
-
-    if (next.roundStartSlot.toNumber() >= slot) {
-      return rounds
-    }
-    const slotDiff = slot - next.roundStartSlot.toNumber()
-    const roundDiff = divUpNumber(slotDiff, roundLength)
-
-    switch (roundDiff) {
-      case 1: {
-        return {
-          finished: current,
-          current: next,
-          next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          }
-        }
-      }
-      case 2: {
-        return {
-          finished: next,
-          current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          },
-          next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          }
-        }
-      }
-      default: {
-        return {
-          finished: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          },
-          current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          },
-          next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          }
-        }
-      }
-    }
-  }
-
-  const { finished, current, next } = estimateRounds()
+  const { finished, current, next } = estimateRounds({
+    slot,
+    amountToClaim,
+    rounds,
+    roundLength,
+    userDebtShares
+  })
   const {
     roundAllPoints: finishedRoundAllPoints,
     roundPoints: finishedRoundPoints,
