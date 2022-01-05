@@ -12,7 +12,7 @@ import useStyles from './style'
 interface IProp {
   userVaults: UserVaults[]
   setValueWithTable: (collSymbol: string, synthSymbol: string, vaultType: number) => void
-  active: string | null
+  active: { collateral: string | null; synthetic: string | null }
   vaultType: number
 }
 export const BorrowTable: React.FC<IProp> = ({
@@ -76,7 +76,9 @@ export const BorrowTable: React.FC<IProp> = ({
                 key={index}
                 className={classNames(
                   classes.gridRow,
-                  element.collateral === active && element.vaultType === vaultType
+                  element.collateral === active.collateral &&
+                    element.borrowed === active.synthetic &&
+                    element.vaultType === vaultType
                     ? classes.active
                     : null
                 )}

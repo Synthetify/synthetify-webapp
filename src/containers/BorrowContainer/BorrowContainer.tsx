@@ -24,7 +24,7 @@ export const BorrowContainer: React.FC<IProp> = ({ pairs, userVaults }) => {
   const walletStatus = useSelector(status)
   return (
     <Grid className={classes.root}>
-      <Typography className={classes.text}>Borrow</Typography>
+      <Typography className={classes.text}>Vaults</Typography>
       <WrappedBorrow
         pairs={pairs}
         userVaults={userVaults}
