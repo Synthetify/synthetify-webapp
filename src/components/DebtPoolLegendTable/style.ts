@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: colors.navy.component
     },
     '& $column:nth-child(2)': {
-      backgroundColor: 'rgba(12, 13, 44, .7)'
+      backgroundColor: '#111234'
     },
     [theme.breakpoints.down('sm')]: {
       height: 40
