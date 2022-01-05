@@ -457,26 +457,25 @@ export const ActionBorrow: React.FC<IProp> = ({
                         <Typography className={classes.sliderSubTitle}>
                           Liquidation price
                         </Typography>
-                        <Typography className={classes.sliderNumber}>$ 32332,5</Typography>
+                        <Typography className={classes.sliderNumber}>$32332.5</Typography>
                       </Grid>
                       <Grid>
                         <Typography className={classes.sliderSubTitle}>Collateral ratio</Typography>
                         <Typography className={classes.sliderNumber}>250.55%</Typography>
                       </Grid>
                     </Grid>
-                    <Slider
-                      defaultValue={500}
-                      // getAriaValueText={valuetext}
-                      // aria-labelledby='discrete-slider-small-steps'
-                      step={1}
-                      marks
-                      min={300}
-                      max={1000}
-                      // valueLabelDisplay='auto'
-                    />
+                    <Slider defaultValue={500} step={1} marks min={300} max={1000} />
                     <Grid container item justifyContent={'space-between'}>
-                      <Typography className={classes.sliderRisk}>Decrease risk</Typography>
-                      <Typography className={classes.sliderRisk}>Increase risk</Typography>
+                      <Typography
+                        className={classes.sliderRisk}
+                        style={{ color: colors.green.button }}>
+                        Decrease risk
+                      </Typography>
+                      <Typography
+                        className={classes.sliderRisk}
+                        style={{ color: colors.red.error }}>
+                        Increase risk
+                      </Typography>
                     </Grid>
                   </Grid>
                 </Popover>
