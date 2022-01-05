@@ -11,5 +11,10 @@ export default defineConfig({
   ],
   define: {
     'process.env.NODE_DEBUG': 'false'
+  },
+  server: {
+    watch: {
+      usePolling: true
+    }
   }
 })
