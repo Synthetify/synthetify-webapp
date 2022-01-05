@@ -1,4 +1,4 @@
-import { IRewardsProps, RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
+import { RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { BN } from '@project-serum/anchor'
 import { u64 } from '@solana/spl-token'
 import { Decimal } from '@synthetify/sdk/lib/exchange'

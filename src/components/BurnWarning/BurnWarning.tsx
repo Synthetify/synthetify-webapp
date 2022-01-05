@@ -4,7 +4,7 @@ import useStyles from './style'
 import React, { useEffect } from 'react'
 import { calculateTimeRemaining, displayDate, estimateRounds, printBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-import { IRewardsProps, RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
+import { RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 
 interface IProps {
