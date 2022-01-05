@@ -452,7 +452,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                   }}>
                   <Grid className={classes.popoverBack}>
                     <Typography className={classes.sliderTitle}>Adjust your multiply</Typography>
-                    <Grid>
+                    <Grid container direction={'row'} justifyContent='space-between'>
                       <Grid>
                         <Typography className={classes.sliderSubTitle}>
                           Liquidation price
@@ -467,12 +467,12 @@ export const ActionBorrow: React.FC<IProp> = ({
                     <Slider
                       defaultValue={500}
                       // getAriaValueText={valuetext}
-                      aria-labelledby='discrete-slider-small-steps'
+                      // aria-labelledby='discrete-slider-small-steps'
                       step={1}
                       marks
                       min={300}
                       max={1000}
-                      valueLabelDisplay='auto'
+                      // valueLabelDisplay='auto'
                     />
                     <Grid container item justifyContent={'space-between'}>
                       <Typography className={classes.sliderRisk}>Decrease risk</Typography>
