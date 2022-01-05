@@ -313,6 +313,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield call([localStorage, localStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  yield* call(sleep, 1000)
   yield* call(initVaultEntry)
 }
 

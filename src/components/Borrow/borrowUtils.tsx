@@ -98,9 +98,23 @@ export const calculateLiqPrice = (
       8
     )
   }
+  const difDecimal = 10 ** (assetScaleTo - assetScaleFrom)
+  if (difDecimal < 1) {
+    return printBN(
+      amountUSDBorrow.div(
+        liqThreshold.val
+          .mul(amountCollateral.div(new BN(1 / difDecimal)))
+          .div(new BN(10).pow(new BN(liqThreshold.scale)))
+      ),
+      8
+    )
+  }
+
   return printBN(
     amountUSDBorrow.div(
-      liqThreshold.val.mul(amountCollateral).div(new BN(10).pow(new BN(liqThreshold.scale)))
+      liqThreshold.val
+        .mul(amountCollateral.mul(new BN(difDecimal)))
+        .div(new BN(10).pow(new BN(liqThreshold.scale)))
     ),
     8
   )
@@ -444,7 +458,7 @@ export const changeInputCollateral = (
   openFee: string
 ) => {
   const openFeeBN = stringToMinDecimalBN(openFee)
-  const BNValue = stringToMinDecimalBN(value)
+  const BNValue = stringToMinDecimalBN(value === '' ? '0' : value)
   const difDecimal = tokenFrom.assetScale - BNValue.decimal
   let amountBorBN = new BN(0)
 
@@ -454,7 +468,7 @@ export const changeInputCollateral = (
       tokenTo.assetScale,
       tokenFrom.priceVal,
       tokenFrom.assetScale,
-      printBNtoBN(value, tokenFrom.assetScale),
+      printBNtoBN(value === '' ? '0' : value, tokenFrom.assetScale),
       cRatio
     )
       .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))

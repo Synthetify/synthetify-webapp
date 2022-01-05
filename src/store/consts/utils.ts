@@ -96,20 +96,7 @@ export const discountData = (userCollateralBalance: BN) => {
   // decimals of token = 6
   const ONE_SNY = new BN(1000000)
   const thresholds = [
-    100,
-    200,
-    500,
-    1000,
-    2000,
-    5000,
-    10000,
-    25000,
-    50000,
-    100000,
-    250000,
-    500000,
-    1000000,
-    2000000,
+    100, 200, 500, 1000, 2000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000,
     5000000
   ]
 
@@ -168,7 +155,8 @@ export const formatNumbers = (value: string) => {
   return (num / 1000000000).toFixed(2)
 }
 
-export const formatNumbersBorrowTable = (num: number) => {
+export const formatNumbersBorrowTable = (value: string) => {
+  const num = Number(value)
   if (num < 0) {
     return num.toFixed(3)
   }
