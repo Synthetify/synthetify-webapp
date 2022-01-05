@@ -189,13 +189,27 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (showOperationProgressFinale) {
       setShowOperationProgressFinale(false)
     }
-    if (!sending) {
+    if (!sending || hasError) {
       setAmountBorrowString('')
       setAmountCollateralString('')
       setAmountBorrow(new BN(0))
       setAmountCollateral(new BN(0))
+      setMaxBehaviorTo('number')
+      setMaxBehaviorFrom('number')
     }
   }, [sending])
+
+  React.useEffect(() => {
+    if (pairIndex !== null) {
+      setAmountBorrowString('')
+      setAmountCollateralString('')
+      setAmountBorrow(new BN(0))
+      setAmountCollateral(new BN(0))
+      changeCRatio('---')
+      setMaxBehaviorTo('number')
+      setMaxBehaviorFrom('number')
+    }
+  }, [pairIndex])
 
   React.useEffect(() => {
     if (!amountCollateral.eq(new BN(0))) {
@@ -356,8 +370,8 @@ export const ActionBorrow: React.FC<IProp> = ({
                 placeholder={'0.0'}
                 onMaxClick={setMaxAmountInputFrom}
                 pairs={pairs.map(pair => ({
-                  symbol1: pair.syntheticData.symbol,
-                  symbol2: pair.collateralData.symbol
+                  symbol2: pair.syntheticData.symbol,
+                  symbol1: pair.collateralData.symbol
                 }))}
                 current={pairIndex !== null ? tokenFrom.symbol : null}
                 onSelect={(chosen: number) => {
@@ -375,7 +389,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 Available collateral:{' '}
                 <AnimatedNumber
                   value={printBN(availableFrom, tokenFrom.assetScale)}
-                  formatValue={(value: number) => value.toFixed(8)}
+                  formatValue={(value: number) => value.toFixed(10)}
                   duration={300}
                 />
               </Typography>
@@ -495,8 +509,8 @@ export const ActionBorrow: React.FC<IProp> = ({
               placeholder={'0.0'}
               onMaxClick={setMaxAmountInputTo}
               pairs={pairs.map(pair => ({
-                symbol1: pair.syntheticData.symbol,
-                symbol2: pair.collateralData.symbol
+                symbol2: pair.syntheticData.symbol,
+                symbol1: pair.collateralData.symbol
               }))}
               current={pairIndex !== null ? tokenTo.symbol : null}
               onSelect={(chosen: number) => {
@@ -514,7 +528,7 @@ export const ActionBorrow: React.FC<IProp> = ({
               {action === 'borrow' ? 'Available to borrow: ' : 'Available to repay: '}
               <AnimatedNumber
                 value={printBN(availableTo, tokenTo.assetScale)}
-                formatValue={(value: string) => Number(value).toFixed(8)}
+                formatValue={(value: string) => Number(value).toFixed(10)}
                 duration={300}
               />
             </Typography>
