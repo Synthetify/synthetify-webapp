@@ -155,7 +155,10 @@ export const WrappedBorrow: React.FC<IProp> = ({
           <BorrowTable
             userVaults={userVaults}
             setValueWithTable={changeValueFromTable}
-            active={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null}
+            active={{
+              collateral: pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null,
+              synthetic: pairIndex !== null ? pairs[pairIndex].syntheticData.symbol : null
+            }}
             vaultType={pairIndex !== null ? pairs[pairIndex].vaultType : 0}
           />
         ) : null}

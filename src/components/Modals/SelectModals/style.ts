@@ -101,6 +101,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body2
   },
   hideScroll: {
+    display: 'block',
     '& > *:first-child': {
       paddingRight: '20px'
     }
