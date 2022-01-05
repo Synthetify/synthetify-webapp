@@ -17,14 +17,21 @@ import {
 import { pullAssetPrices } from './oracle'
 import { createAccount, getToken, getWallet, signAndSend, sleep } from './wallet'
 import { BN } from '@project-serum/anchor'
-import { NATIVE_MINT, Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import {
+  NATIVE_MINT,
+  Token,
+  TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID
+} from '@solana/spl-token'
 import { tou64 } from '@consts/utils'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { getConnection, updateSlot } from './connection'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { VaultSwap, actions as actionsVault } from '@reducers/vault'
+import { actions as walletActions } from '@reducers/solanaWallet'
 import { userVaults, vaults } from '@selectors/vault'
+import { getTokenDetails } from './token'
 
 export function* pullExchangeState(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -33,28 +40,90 @@ export function* pullExchangeState(): Generator {
   yield* call(pullAssetPrices)
   yield* call(updateSlot)
 }
+
+export function* setEmptyAccounts(collateralsAddresses: PublicKey[]): Generator {
+  const tokensAccounts = yield* select(accounts)
+  const acc: PublicKey[] = []
+  for (const collateral of collateralsAddresses) {
+    const collateralTokenProgram = yield* call(getToken, collateral)
+    const accountAddress = tokensAccounts[collateral.toString()]
+      ? tokensAccounts[collateral.toString()].address
+      : null
+    if (accountAddress == null) {
+      acc.push(collateralTokenProgram.publicKey)
+    }
+  }
+  if (acc.length !== 0) {
+    yield* call(createMultipleAccounts, acc)
+  }
+}
+
+export function* createMultipleAccounts(tokenAddress: PublicKey[]): SagaGenerator<PublicKey[]> {
+  const wallet = yield* call(getWallet)
+  const ixs: TransactionInstruction[] = []
+  const associatedAccs: PublicKey[] = []
+
+  for (const address of tokenAddress) {
+    const associatedAccount = yield* call(
+      Token.getAssociatedTokenAddress,
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      address,
+      wallet.publicKey
+    )
+    associatedAccs.push(associatedAccount)
+    const ix = Token.createAssociatedTokenAccountInstruction(
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      address,
+      associatedAccount,
+      wallet.publicKey,
+      wallet.publicKey
+    )
+    ixs.push(ix)
+  }
+  yield* call(
+    signAndSend,
+    wallet,
+    ixs.reduce((tx, ix) => tx.add(ix), new Transaction())
+  )
+  for (const [index, address] of tokenAddress.entries()) {
+    const token = yield* call(getTokenDetails, tokenAddress[index].toString())
+    yield* put(
+      walletActions.addTokenAccount({
+        programId: address,
+        balance: new BN(0),
+        address: associatedAccs[index],
+        decimals: token.decimals
+      })
+    )
+    // Give time to subscribe to new token
+    yield* call(sleep, 1000)
+  }
+  return associatedAccs
+}
+
 export function* getCollateralTokenAirdrop(
-  collateralTokenAddress: PublicKey,
-  quantity: number
+  collateralTokenAddress: PublicKey[],
+  collateralsQuantities: number[]
 ): Generator {
   const wallet = yield* call(getWallet)
+  const instructions: TransactionInstruction[] = []
+  yield* call(setEmptyAccounts, collateralTokenAddress)
   const tokensAccounts = yield* select(accounts)
-  const collateralTokenProgram = yield* call(getToken, collateralTokenAddress)
-  let accountAddress = tokensAccounts[collateralTokenAddress.toString()]
-    ? tokensAccounts[collateralTokenAddress.toString()].address
-    : null
-  if (accountAddress == null) {
-    accountAddress = yield* call(createAccount, collateralTokenProgram.publicKey)
+  for (const [index, collateral] of collateralTokenAddress.entries()) {
+    instructions.push(
+      Token.createMintToInstruction(
+        TOKEN_PROGRAM_ID,
+        collateral,
+        tokensAccounts[collateral.toString()].address,
+        testAdmin.publicKey,
+        [],
+        collateralsQuantities[index]
+      )
+    )
   }
-  const ix = Token.createMintToInstruction(
-    TOKEN_PROGRAM_ID,
-    collateralTokenAddress,
-    accountAddress,
-    testAdmin.publicKey,
-    [],
-    quantity
-  )
-  const tx = new Transaction().add(ix)
+  const tx = instructions.reduce((tx, ix) => tx.add(ix), new Transaction())
   const connection = yield* call(getConnection)
   const blockhash = yield* call([connection, connection.getRecentBlockhash])
   tx.feePayer = wallet.publicKey
