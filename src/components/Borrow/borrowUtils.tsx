@@ -100,6 +100,7 @@ export const calculateLiqPrice = (
   }
   const difDecimal = 10 ** (assetScaleTo - assetScaleFrom)
   if (difDecimal < 1) {
+    console.log(liqThreshold.val.toString())
     return printBN(
       amountUSDBorrow.div(
         liqThreshold.val

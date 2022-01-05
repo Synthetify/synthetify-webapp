@@ -355,8 +355,8 @@ export const ActionBorrow: React.FC<IProp> = ({
                 placeholder={'0.0'}
                 onMaxClick={setMaxAmountInputFrom}
                 pairs={pairs.map(pair => ({
-                  symbol1: pair.syntheticData.symbol,
-                  symbol2: pair.collateralData.symbol
+                  symbol2: pair.syntheticData.symbol,
+                  symbol1: pair.collateralData.symbol
                 }))}
                 current={pairIndex !== null ? tokenFrom.symbol : null}
                 onSelect={(chosen: number) => {
@@ -503,8 +503,8 @@ export const ActionBorrow: React.FC<IProp> = ({
               placeholder={'0.0'}
               onMaxClick={setMaxAmountInputTo}
               pairs={pairs.map(pair => ({
-                symbol1: pair.syntheticData.symbol,
-                symbol2: pair.collateralData.symbol
+                symbol2: pair.syntheticData.symbol,
+                symbol1: pair.collateralData.symbol
               }))}
               current={pairIndex !== null ? tokenTo.symbol : null}
               onSelect={(chosen: number) => {
