@@ -188,13 +188,26 @@ export const ActionBorrow: React.FC<IProp> = ({
     if (showOperationProgressFinale) {
       setShowOperationProgressFinale(false)
     }
-    if (!sending) {
+    if (!sending || hasError) {
       setAmountBorrowString('')
       setAmountCollateralString('')
       setAmountBorrow(new BN(0))
       setAmountCollateral(new BN(0))
+      setMaxBehaviorTo('number')
+      setMaxBehaviorFrom('number')
     }
   }, [sending])
+
+  React.useEffect(() => {
+    if (pairIndex !== null) {
+      setAmountBorrowString('')
+      setAmountCollateralString('')
+      setAmountBorrow(new BN(0))
+      setAmountCollateral(new BN(0))
+      changeCRatio('---'), setMaxBehaviorTo('number')
+      setMaxBehaviorFrom('number')
+    }
+  }, [pairIndex])
 
   React.useEffect(() => {
     if (!amountCollateral.eq(new BN(0))) {

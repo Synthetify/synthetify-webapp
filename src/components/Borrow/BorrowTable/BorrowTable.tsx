@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import React from 'react'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
-import { formatNumbersBorrowTable, showPrefix } from '@consts/utils'
+import { formatNumbersBorrowTable, printBN, showPrefix } from '@consts/utils'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
 import { UserVaults } from '@selectors/exchange'
 import useStyles from './style'
@@ -71,7 +71,8 @@ export const BorrowTable: React.FC<IProp> = ({
         </Grid>
         <Grid>
           {userVaults.map((element, index) =>
-            element.deposited !== 0 || element.currentDebt !== 0 ? (
+            +printBN(element.deposited.val, element.deposited.scale) !== 0 ||
+            +printBN(element.currentDebt.val, element.currentDebt.scale) !== 0 ? (
               <Grid
                 key={index}
                 className={classNames(
@@ -125,32 +126,42 @@ export const BorrowTable: React.FC<IProp> = ({
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.deposited.toFixed(7)} ${element.collateral}`}
+                    title={`${printBN(element.deposited.val, element.deposited.scale)} ${
+                      element.collateral
+                    }`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
                       <AnimatedNumber
-                        value={element.deposited.toFixed(6)}
+                        value={Number(
+                          printBN(element.deposited.val, element.deposited.scale)
+                        ).toFixed(6)}
                         formatValue={formatNumbersBorrowTable}
                         duration={300}
                       />
-                      {showPrefix(element.deposited)} {element.collateral}
+                      {showPrefix(+printBN(element.deposited.val, element.deposited.scale))}{' '}
+                      {element.collateral}
                     </Grid>
                   </Tooltip>
                 </Grid>
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.currentDebt.toFixed(7)} ${element.borrowed}`}
+                    title={`${printBN(element.currentDebt.val, element.currentDebt.scale)} ${
+                      element.borrowed
+                    }`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
                       <AnimatedNumber
-                        value={element.currentDebt.toFixed(6)}
+                        value={Number(
+                          printBN(element.currentDebt.val, element.currentDebt.scale)
+                        ).toFixed(6)}
                         formatValue={formatNumbersBorrowTable}
                         duration={300}
                       />
-                      {showPrefix(element.currentDebt)} {element.borrowed}
+                      {showPrefix(+printBN(element.currentDebt.val, element.currentDebt.scale))}{' '}
+                      {element.borrowed}
                     </Grid>
                   </Tooltip>
                 </Grid>
