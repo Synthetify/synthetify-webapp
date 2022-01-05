@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       minWidth: 'unset',
-      marginLeft: 0,
+      marginLeft: 0
     },
     '&::-webkit-scrollbar': {
       width: 7,
