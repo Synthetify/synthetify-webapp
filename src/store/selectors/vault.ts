@@ -46,7 +46,6 @@ export const getVaultCollateralBalance = createSelector(
         +printBN(collateralPrice.val, collateralPrice.scale)
       )
     })
-    console.log(balanceUSD.reduce((sum, val) => sum + val, 0))
     return balanceUSD.reduce((sum, val) => sum + val, 0)
   }
 )
