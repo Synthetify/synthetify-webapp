@@ -125,13 +125,14 @@ export const BorrowTable: React.FC<IProp> = ({
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.deposited} ${element.collateral}`}
+                    title={`${element.deposited.toFixed(7)} ${element.collateral}`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
                       <AnimatedNumber
-                        value={element.deposited}
+                        value={element.deposited.toFixed(6)}
                         formatValue={formatNumbersBorrowTable}
+                        duration={300}
                       />
                       {showPrefix(element.deposited)} {element.collateral}
                     </Grid>
@@ -140,13 +141,14 @@ export const BorrowTable: React.FC<IProp> = ({
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.currentDebt} ${element.borrowed}`}
+                    title={`${element.currentDebt.toFixed(7)} ${element.borrowed}`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
                       <AnimatedNumber
-                        value={element.currentDebt}
+                        value={element.currentDebt.toFixed(6)}
                         formatValue={formatNumbersBorrowTable}
+                        duration={300}
                       />
                       {showPrefix(element.currentDebt)} {element.borrowed}
                     </Grid>
@@ -176,6 +178,7 @@ export const BorrowTable: React.FC<IProp> = ({
                     <AnimatedNumber
                       value={element.interestRate}
                       formatValue={(value: number) => value.toFixed(2)}
+                      duration={300}
                     />
 
                     {'%'}
@@ -195,6 +198,7 @@ export const BorrowTable: React.FC<IProp> = ({
                       <AnimatedNumber
                         value={Number(element.liquidationPrice)}
                         formatValue={formatNumbersBorrowTable}
+                        duration={300}
                       />
                       {showPrefix(Number(element.liquidationPrice))}
                     </Grid>
@@ -219,6 +223,7 @@ export const BorrowTable: React.FC<IProp> = ({
                         <AnimatedNumber
                           value={element.maxBorrow}
                           formatValue={formatNumbersBorrowTable}
+                          duration={300}
                         />
                         {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
                       </Grid>

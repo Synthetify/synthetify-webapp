@@ -374,7 +374,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 Available collateral:{' '}
                 <AnimatedNumber
                   value={printBN(availableFrom, tokenFrom.assetScale)}
-                  formatValue={(value: number) => value.toFixed(8)}
+                  formatValue={(value: number) => value.toFixed(10)}
                   duration={300}
                 />
               </Typography>
@@ -522,7 +522,7 @@ export const ActionBorrow: React.FC<IProp> = ({
               {action === 'borrow' ? 'Available to borrow: ' : 'Available to repay: '}
               <AnimatedNumber
                 value={printBN(availableTo, tokenTo.assetScale)}
-                formatValue={(value: string) => Number(value).toFixed(8)}
+                formatValue={(value: string) => Number(value).toFixed(10)}
                 duration={300}
               />
             </Typography>
