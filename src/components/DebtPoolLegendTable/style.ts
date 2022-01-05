@@ -11,6 +11,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 1,
     backgroundColor: colors.navy.component,
     marginLeft: 32,
+    scrollbarColor: `${colors.green.main} transparent`,
+    scrollbarWidth: 'auto',
 
     [theme.breakpoints.down('md')]: {
       width: 464,
@@ -26,15 +28,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       minWidth: 'unset',
-      marginLeft: 0
-    },
-    '&:hover': {
-      '&::-webkit-scrollbar-thumb': {
-        visibility: 'visible'
-      }
+      marginLeft: 0,
     },
     '&::-webkit-scrollbar': {
-      width: 9,
+      width: 7,
       position: 'absolute',
       top: 0,
       zIndex: -1,
@@ -50,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: colors.green.main,
-      visibility: 'hidden',
+      visibility: 'visible',
       width: 5,
       borderRadius: 10
     }
