@@ -14,7 +14,6 @@ export interface IProps {
   onDeposit: (amount: BN, decimals: number) => () => void
   onWithdraw: (amount: BN, decimals: number) => () => void
   onBurn: (amount: BN, decimals: number) => () => void
-  showWarning?: boolean
   availableToMint: BN
   availableToDeposit: BN
   availableToWithdraw: BN

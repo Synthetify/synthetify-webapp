@@ -173,7 +173,13 @@ export const formatNumbersBorrowTable = (num: number) => {
   return (num / 1000000).toFixed(0)
 }
 
-export const estimateRounds = (rewards: IRewardsProps): RoundData => {
+export const estimateRounds = (rewards: {
+  slot: number
+  amountToClaim: Decimal
+  rounds: RoundData
+  roundLength: number
+  userDebtShares: BN
+}): RoundData => {
   const { userDebtShares, roundLength, rounds, slot } = rewards
   const { current, next } = rounds
 

@@ -143,13 +143,9 @@ export const ActionMenuContainer: React.FC = () => {
         onCancel={() => {
           setShowWarning(false)
         }}
-        burnTokenSymbol={userStaked[withdrawIndex]?.symbol ?? 'SNY'}
+        burnTokenSymbol={'xUSD'}
         rewards={{
           ...userStakingState,
-          stakedUserValue: stakedUserValue,
-          SNYPrice: SNYPrice,
-          allDebtValue: allDebtValue,
-          userMarinadeAmount: userMarinadeAmount,
           slot: slotState,
           roundLength: stakingState.roundLength,
           userDebtShares: userDebtSharesState,
@@ -172,11 +168,7 @@ export const ActionMenuContainer: React.FC = () => {
               roundStartSlot: stakingState.finishedRound.start,
               roundAmount: stakingState.finishedRound.amount
             }
-          },
-          onClaim: () => dispatch(actions.claimRewards()),
-          onWithdraw: () => dispatch(actions.withdrawRewards()),
-          amountPerRoundValue: stakingState.amountPerRound,
-          collateralValue: collateralValue
+          }
         }}
       />
       <WrappedActionMenu
@@ -216,7 +208,6 @@ export const ActionMenuContainer: React.FC = () => {
         depositState={depositState}
         burnState={burnState}
         xUSDBalance={xUSDTokenAddress.equals(DEFAULT_PUBLICKEY) ? new BN(0) : xUSDBalance.balance}
-        showWarning={showWarning}
         stakingData={{
           ...userStakingState,
           stakedUserValue: stakedUserValue,

@@ -4,7 +4,7 @@ import useStyles from './style'
 import React, { useEffect } from 'react'
 import { calculateTimeRemaining, displayDate, estimateRounds, printBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-import { IRewardsProps } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
+import { IRewardsProps, RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 
 interface IProps {
@@ -16,7 +16,13 @@ interface IProps {
   onBurn: (amount: BN, decimals: number) => () => void
   onCancel: () => void
   burnTokenSymbol: string
-  rewards: IRewardsProps
+  rewards: {
+    slot: number
+    amountToClaim: Decimal
+    rounds: RoundData
+    roundLength: number
+    userDebtShares: BN
+  }
 }
 
 const BurnWarning: React.FC<IProps> = ({
