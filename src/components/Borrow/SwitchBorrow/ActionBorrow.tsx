@@ -204,7 +204,8 @@ export const ActionBorrow: React.FC<IProp> = ({
       setAmountCollateralString('')
       setAmountBorrow(new BN(0))
       setAmountCollateral(new BN(0))
-      changeCRatio('---'), setMaxBehaviorTo('number')
+      changeCRatio('---')
+      setMaxBehaviorTo('number')
       setMaxBehaviorFrom('number')
     }
   }, [pairIndex])
