@@ -49,5 +49,18 @@ export const getVaultCollateralBalance = createSelector(
     return balanceUSD.reduce((sum, val) => sum + val, 0)
   }
 )
+export const getVaultDebtValue = createSelector(vaults, assetPrice, (allVaults, allAssetPrice) => {
+  const balanceUSD = Object.values(allVaults).map(vault => {
+    const syntheticPrice = allAssetPrice[vault.synthetic.toString()]
+    if (!syntheticPrice) {
+      return 0
+    }
+    return (
+      +printBN(vault.mintAmount.val, vault.mintAmount.scale) *
+      +printBN(syntheticPrice.val, syntheticPrice.scale)
+    )
+  })
+  return balanceUSD.reduce((sum, val) => sum + val, 0)
+})
 
 export default vaultSelectors

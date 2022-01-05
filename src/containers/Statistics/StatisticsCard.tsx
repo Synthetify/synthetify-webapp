@@ -8,13 +8,14 @@ import {
   getSyntheticsValue,
   getSwaplineCollateralBalance
 } from '@selectors/exchange'
-import { getVaultCollateralBalance } from '@selectors/vault'
+import { getVaultCollateralBalance, getVaultDebtValue } from '@selectors/vault'
 
 export const StatisticsCard: React.FC = () => {
   const statsData = useSelector(statsSelector.last24)
   const synthetics = useSelector(getSyntheticsValue)
   const swaplineCollateralValue = useSelector(getSwaplineCollateralBalance)
   const vaultColllateralValue = useSelector(getVaultCollateralBalance)
+  const vaultDebtValue = useSelector(getVaultDebtValue)
   const collateralValue = useSelector(getCollateralValue)
   const syntheticData: Array<{
     value: number
@@ -31,6 +32,7 @@ export const StatisticsCard: React.FC = () => {
     <StatisticCardAll
       data={statsData}
       debtCurrent={syntheticData}
+      debtVault={vaultDebtValue}
       collateralValue={collateralValue + swaplineCollateralValue + vaultColllateralValue}
     />
   )
