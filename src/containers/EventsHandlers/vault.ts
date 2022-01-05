@@ -58,7 +58,6 @@ const VaultEvents = () => {
               })
             )
           }
-          console.log(vault.synthetic.toString())
           if (vault.synthetic.toString() === '83LGLCm7QKpYZbX8q4W2kYWbtt8NJBwbVwEepzkVnJ9y') {
             dispatch(
               actionsVault.setAssetPrice({

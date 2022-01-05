@@ -8,7 +8,6 @@ import {
   select,
   takeLatest
 } from 'typed-redux-saga'
-
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
 import { getSolanaWallet, connectWallet, disconnectWallet, WalletType } from '@web3/wallet'
@@ -110,34 +109,43 @@ export function* handleAirdrop(): Generator {
   }
 
   const allCollaterals = yield* select(collaterals)
-  const snyToken = Object.values(allCollaterals)[0]
-  const stSolToken = Object.values(allCollaterals).find(collateral => collateral.symbol === 'stSOL')
-  const whETH = Object.values(allCollaterals).find(collateral => collateral.symbol === 'whETH')
-  const usdcToken = Object.values(allCollaterals).find(collateral => collateral.symbol === 'USDC')
-  try {
-    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
 
-    if (stSolToken) {
-      yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
+  const airdropTokens: Array<{
+    collateralAddress?: PublicKey
+    quantity: number
+  }> = [
+    {
+      collateralAddress: Object.values(allCollaterals)[0].collateralAddress,
+      quantity: 1e8
+    },
+    {
+      collateralAddress: Object.values(allCollaterals).find(
+        collateral => collateral.symbol === 'whETH'
+      )?.collateralAddress,
+      quantity: 1e8
+    },
+    {
+      collateralAddress: Object.values(allCollaterals).find(
+        collateral => collateral.symbol === 'stSOL'
+      )?.collateralAddress,
+      quantity: 1e11
+    },
+    {
+      collateralAddress: Object.values(allCollaterals).find(
+        collateral => collateral.symbol === 'USDC'
+      )?.collateralAddress,
+      quantity: 1e8
     }
-    if (whETH) {
-      yield* call(getCollateralTokenAirdrop, whETH.collateralAddress, 1e8)
-    }
+  ]
 
-    if (usdcToken) {
-      yield* call(getCollateralTokenAirdrop, usdcToken.collateralAddress, 1e8)
-    }
-  } catch (error) {
-    if (error instanceof Error && error.message === 'Signature request denied') return
-    console.error(error)
-    return put(
-      snackbarsActions.add({
-        message: 'The airdrop failed',
-        variant: 'error',
-        persist: false
-      })
-    )
-  }
+  const airdropTokenAdresses = airdropTokens
+    .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
+    .map(collateral => collateral.collateralAddress) as PublicKey[]
+  const airdropTokenQuantities = airdropTokens
+    .filter(collateral => typeof collateral.quantity !== 'undefined')
+    .map(collateral => collateral.quantity)
+
+  yield* call(getCollateralTokenAirdrop, airdropTokenAdresses, airdropTokenQuantities)
   yield put(
     snackbarsActions.add({
       message: 'You will receive an airdrop soon',
@@ -305,6 +313,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield call([localStorage, localStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  yield* call(sleep, 1000)
   yield* call(initVaultEntry)
 }
 

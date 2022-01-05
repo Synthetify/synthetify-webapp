@@ -123,7 +123,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
     repay: (
       <ActionBorrow
         action={'repay'}
-        cRatio={cRatio}
+        cRatio={'---'}
         liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
         liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         onClickSubmitButton={onClickSubmitButton}

@@ -52,7 +52,7 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-  const routes = ['staking', 'exchange', 'borrow', 'statistics']
+  const routes = ['staking', 'exchange', 'vaults', 'statistics']
   if (typeOfNetwork !== NetworkType.TESTNET) {
     routes.splice(routes.length - 1, 0, 'swapline')
   }
