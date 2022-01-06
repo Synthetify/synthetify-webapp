@@ -169,7 +169,7 @@ export const ActionTemplate: React.FC<IProps> = ({
     const actionToPastNoun: { [key in ActionType]: string } = {
       mint: 'minted',
       withdraw: 'withdrawn',
-      repay: 'burned',
+      repay: 'repaid',
       deposit: 'deposited'
     }
 

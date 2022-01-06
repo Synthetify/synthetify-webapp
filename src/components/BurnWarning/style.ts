@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: colors.green.button,
     ...typography.subtitle1,
     color: colors.navy.background,
+    textTransform: 'capitalize',
     marginRight: 16,
     '&:hover': {
       backgroundColor: '#4ADFBA !important'
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   btnCancel: {
     backgroundColor: colors.navy.button,
+    textTransform: 'capitalize',
     ...typography.subtitle1,
     color: colors.navy.veryLightGrey
   }

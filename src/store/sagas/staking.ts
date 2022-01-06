@@ -134,7 +134,7 @@ export function* handleBurn(): Generator {
     yield* put(actions.burnDone({ txid: txid }))
     yield put(
       snackbarsActions.add({
-        message: 'Tokens burnt successfully.',
+        message: 'Tokens repaid successfully.',
         variant: 'success',
         txid: txid,
         persist: false
