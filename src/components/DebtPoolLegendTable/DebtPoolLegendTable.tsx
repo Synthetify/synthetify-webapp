@@ -147,12 +147,6 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
             </Grid>
           )
         })}
-      {[...Array(calcEmptyRowsToRender()).keys()].map((_e, index) => (
-        <Grid key={`empty${index}`} className={classes.row} container direction='row'>
-          <Grid className={classes.column} />
-          <Grid className={classes.column} />
-        </Grid>
-      ))}
     </Grid>
   )
 }

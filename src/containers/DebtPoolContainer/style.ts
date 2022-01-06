@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    alignItems: 'flex-start',
     [theme.breakpoints.down('sm')]: {
       padding: '0 0 4px 0'
     },
