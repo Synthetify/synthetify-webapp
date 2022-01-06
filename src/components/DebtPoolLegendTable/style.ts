@@ -146,18 +146,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body3,
 
     [theme.breakpoints.down('sm')]: {
-      ...typography.caption4
+      ...typography.caption4,
+      fontSize: 13
     }
   },
   tokenAmount: {
     color: colors.navy.info,
     ...typography.body3,
+    
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
 
     [theme.breakpoints.down('sm')]: {
-      ...typography.caption4
+      ...typography.caption4,
+      fontSize: 13
     }
   },
   tokenValue: {
