@@ -102,6 +102,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [openOption, setOption] = React.useState(false)
   const [customCRatio, setCustomCRatio] = React.useState('')
   const [nameSubmitButton, setNameSubmitButton] = React.useState('add')
+  const [submitMessage, setSubmitMessage] = React.useState('add')
   const [actionSubmit, setActionSubmit] = React.useState<ActionType>(
     action === 'borrow' ? 'add' : 'withdraw'
   )
@@ -116,6 +117,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   )
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [blockButton, setBlockButton] = React.useState(false)
+  const [amountInputTouched, setAmountInputTouched] = React.useState(false)
+  const [resultStatus, setResultStatus] = React.useState('none')
+
   const changeCustomCRatio = () => {
     if (customCRatio && customCRatio >= minCRatio.toFixed(2)) {
       changeCRatio(customCRatio)
@@ -181,32 +185,33 @@ export const ActionBorrow: React.FC<IProp> = ({
       }
     }
   }
+  const resetValue = () => {
+    setAmountBorrowString('')
+    setAmountCollateralString('')
+    setAmountBorrow(new BN(0))
+    setAmountCollateral(new BN(0))
+    setMaxBehaviorTo('number')
+    setMaxBehaviorFrom('number')
+    setAmountInputTouched(false)
+  }
   React.useEffect(() => {
     if (sending) {
       setShowOperationProgressFinale(true)
     }
-    if (showOperationProgressFinale) {
-      setShowOperationProgressFinale(false)
-    }
     if (!sending || hasError) {
-      setAmountBorrowString('')
-      setAmountCollateralString('')
-      setAmountBorrow(new BN(0))
-      setAmountCollateral(new BN(0))
-      setMaxBehaviorTo('number')
-      setMaxBehaviorFrom('number')
+      resetValue()
     }
   }, [sending])
 
   React.useEffect(() => {
+    if (showOperationProgressFinale) {
+      setShowOperationProgressFinale(false)
+    }
+  }, [amountCollateralString, amountBorrowString])
+
+  React.useEffect(() => {
     if (pairIndex !== null) {
-      setAmountBorrowString('')
-      setAmountCollateralString('')
-      setAmountBorrow(new BN(0))
-      setAmountCollateral(new BN(0))
-      changeCRatio('---')
-      setMaxBehaviorTo('number')
-      setMaxBehaviorFrom('number')
+      resetValue()
     }
   }, [pairIndex])
 
@@ -282,6 +287,9 @@ export const ActionBorrow: React.FC<IProp> = ({
     const buttonDetails = setActionOnSubmitButton(action, amountCollateral, amountBorrow)
     setActionSubmit(buttonDetails.actionSubmit)
     setNameSubmitButton(buttonDetails.nameSubmitButton)
+    if (resultStatus === 'none') {
+      setSubmitMessage(buttonDetails.actionSubmit)
+    }
   }, [availableFrom, availableTo])
 
   React.useEffect(() => {
@@ -339,6 +347,9 @@ export const ActionBorrow: React.FC<IProp> = ({
               <ExchangeAmountInput
                 value={amountCollateralString}
                 setValue={(value: string) => {
+                  if (!amountInputTouched) {
+                    setAmountInputTouched(true)
+                  }
                   if (value.match(/^\d*\.?\d*$/)) {
                     const limitedNumber = value.includes('.')
                       ? value.substr(0, value.indexOf('.')) +
@@ -499,6 +510,9 @@ export const ActionBorrow: React.FC<IProp> = ({
             <ExchangeAmountInput
               value={amountBorrowString}
               setValue={(value: string) => {
+                if (!amountInputTouched) {
+                  setAmountInputTouched(true)
+                }
                 if (value.match(/^\d*\.?\d*$/)) {
                   const limitedNumber = value.includes('.')
                     ? value.substr(0, value.indexOf('.')) +
@@ -636,14 +650,24 @@ export const ActionBorrow: React.FC<IProp> = ({
           </Grid>
           <Grid className={classes.buttonAction} container>
             <Progress
-              state={getProgressState(sending, hasError, showOperationProgressFinale, blockButton)}
+              state={getProgressState(
+                sending,
+                hasError,
+                showOperationProgressFinale,
+                blockButton,
+                amountInputTouched,
+                resultStatus,
+                setResultStatus
+              )}
               message={getProgressMessage(
                 sending,
                 hasError,
                 actionSubmit,
                 showOperationProgressFinale,
-                nameSubmitButton,
-                blockButton
+                submitMessage,
+                blockButton,
+                amountInputTouched,
+                resultStatus
               )}
             />
             <OutlinedButton

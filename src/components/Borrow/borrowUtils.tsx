@@ -316,7 +316,9 @@ export const getProgressMessage = (
   actionSubmit: ActionType,
   showOperationProgressFinale: boolean,
   nameSubmitButton: string,
-  blockButton: boolean
+  blockButton: boolean,
+  amountInputTouched: boolean,
+  resultStatus: string
 ) => {
   const actionToNoun: { [key in ActionType]: string } = {
     add: 'Adding',
@@ -335,37 +337,62 @@ export const getProgressMessage = (
     repay: 'repaid',
     none: '---'
   }
+  if (resultStatus === 'success') {
+    return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
+  }
   if (showOperationProgressFinale && !hasError) {
     return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
+  }
+
+  if (resultStatus === 'failed') {
+    return `${actionToNoun[actionSubmit]} failed`
   }
   if (showOperationProgressFinale && hasError) {
     return `${actionToNoun[actionSubmit]} failed`
   }
-  if (blockButton) {
+
+  if (blockButton && amountInputTouched) {
     return 'Invalid value'
   }
+
+  return 'Invalid value'
 }
 
 export const getProgressState = (
   sending: boolean,
   hasError: boolean | undefined,
   showOperationProgressFinale: boolean,
-  blockButton: boolean
+  blockButton: boolean,
+  amountInputTouched: boolean,
+  resultStatus: string,
+  setResultStatus: (vault: string) => void
 ) => {
   if (sending) {
     return 'progress'
   }
-  if (showOperationProgressFinale && hasError) {
+  if (resultStatus === 'failed') {
     return 'failed'
   }
-
-  if (showOperationProgressFinale && !hasError) {
+  if (showOperationProgressFinale && hasError) {
+    setResultStatus('failed')
+    setTimeout(() => {
+      setResultStatus('none')
+    }, 2000)
+    return 'failed'
+  }
+  if (resultStatus === 'success') {
     return 'success'
   }
-  if (blockButton) {
+  if (showOperationProgressFinale && !hasError) {
+    setResultStatus('success')
+    setTimeout(() => {
+      setResultStatus('none')
+    }, 2000)
+    return 'success'
+  }
+  if (blockButton && amountInputTouched) {
     return 'failed'
   }
-
   return 'none'
 }
 
