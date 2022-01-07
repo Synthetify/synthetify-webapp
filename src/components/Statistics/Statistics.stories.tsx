@@ -63,7 +63,6 @@ storiesOf('cards/StatisticsAll', module).add('Container', () => (
         }
       ]}
       collateralValue={100}
-      debtVault={1000}
     />
   </div>
 ))

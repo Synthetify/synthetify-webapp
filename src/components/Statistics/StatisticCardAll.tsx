@@ -15,16 +15,10 @@ interface IProp {
     symbol: string
     scale: number
   }>
-  debtVault: number
   collateralValue: number
 }
 
-export const StatisticCardAll: React.FC<IProp> = ({
-  data,
-  debtCurrent,
-  collateralValue,
-  debtVault
-}) => {
+export const StatisticCardAll: React.FC<IProp> = ({ data, debtCurrent, collateralValue }) => {
   const classes = useStyles()
   return (
     <div className={classes.gridContainer}>
@@ -39,7 +33,7 @@ export const StatisticCardAll: React.FC<IProp> = ({
         <Grid id='debt' item xs={12} sm={5}>
           <StatisticsCard
             name='Debt'
-            value={debtCurrent.reduce((a, b) => a + b.value, 0) + debtVault}
+            value={debtCurrent.reduce((a, b) => a + b.value, 0)}
             desc={'Total debt owed'}
           />
         </Grid>
