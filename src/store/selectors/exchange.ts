@@ -435,7 +435,7 @@ export const getUserVaults = createSelector(
         userVault.collateralAmount.val
       )
       const cRatioCalculatedString =
-        cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN'
+        cRatioCalculated !== 'NaN' ? printBN(cRatioCalculated, 2) : 'NaN'
 
       const interestRate =
         Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *

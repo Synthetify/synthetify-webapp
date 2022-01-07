@@ -1,5 +1,5 @@
 import { BN } from '@project-serum/anchor'
-import { printBN, printBNtoBN, stringToMinDecimalBN } from '@consts/utils'
+import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { ActionType } from '@reducers/vault'
 import { BorrowedPair } from './WrappedBorrow/WrappedBorrow'
@@ -66,16 +66,16 @@ export const calculateCRatio = (
   assetFromAmount: BN
 ) => {
   if (assetToAmount > new BN(0)) {
-    const difDecimal = 10 ** (syntheticScale - collateralScale + 4)
+    const difDecimal = 10 ** (syntheticScale - collateralScale)
     if (difDecimal < 1) {
       return assetFromAmount
         .mul(collateraPrice)
-        .div(new BN(1 / difDecimal))
+        .div(new BN(1 / (difDecimal / 10 ** 4)))
         .div(assetToAmount.mul(syntheticPrice))
     } else {
       return assetFromAmount
         .mul(collateraPrice)
-        .mul(new BN(difDecimal))
+        .mul(new BN(difDecimal * 10 ** 4))
         .div(assetToAmount.mul(syntheticPrice))
     }
   } else {
@@ -193,15 +193,22 @@ export const calculateLiqAndCRatio = (
   vaultAmountBorrow: BN,
   liqThreshold: Decimal,
   assetScaleTo: number,
-  assetScaleFrom: number
+  assetScaleFrom: number,
+  openFee: BN
 ) => {
+  const openFeeBN = stringToMinDecimalBN(transformBN(openFee))
+  const openFeePercent = new BN(10 ** (openFeeBN.decimal - 1) + +openFeeBN.BN.toString())
   const ratioTo = calculateCRatio(
     priceTo,
     assetScaleTo,
     priceFrom,
     assetScaleFrom,
-    action === 'borrow' ? amountBorrow.add(vaultAmountBorrow) : vaultAmountBorrow.sub(amountBorrow),
-
+    action === 'borrow'
+      ? amountBorrow
+          .mul(openFeePercent.mul(new BN(10 ** assetScaleTo)))
+          .div(new BN(10 ** (openFeeBN.decimal + assetScaleTo - 1)))
+          .add(vaultAmountBorrow)
+      : vaultAmountBorrow.sub(amountBorrow),
     action === 'borrow'
       ? amountCollateral.add(vaultAmountCollatera)
       : vaultAmountCollatera.sub(amountCollateral)
@@ -343,18 +350,15 @@ export const getProgressMessage = (
   if (showOperationProgressFinale && !hasError) {
     return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
   }
-
   if (resultStatus === 'failed') {
     return `${actionToNoun[actionSubmit]} failed`
   }
   if (showOperationProgressFinale && hasError) {
     return `${actionToNoun[actionSubmit]} failed`
   }
-
   if (blockButton && amountInputTouched) {
     return 'Invalid value'
   }
-
   return 'Invalid value'
 }
 

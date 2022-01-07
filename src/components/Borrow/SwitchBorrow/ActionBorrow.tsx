@@ -8,7 +8,7 @@ import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { BN } from '@project-serum/anchor'
-import { printBN, stringToMinDecimalBN } from '@consts/utils'
+import { printBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 import { PublicKey } from '@solana/web3.js'
 import {
@@ -121,7 +121,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [resultStatus, setResultStatus] = React.useState('none')
 
   const changeCustomCRatio = () => {
-    if (customCRatio && customCRatio >= minCRatio.toFixed(2)) {
+    if (customCRatio && Number(customCRatio) >= Number(minCRatio.toFixed(2))) {
       changeCRatio(customCRatio)
       setCustomCRatio(customCRatio)
     } else {
@@ -304,7 +304,8 @@ export const ActionBorrow: React.FC<IProp> = ({
         vaultAmount.borrowAmount.val,
         pairs[pairIndex].liquidationThreshold,
         tokenTo.assetScale,
-        tokenFrom.assetScale
+        tokenFrom.assetScale,
+        pairs[pairIndex].openFee.val
       )
       setLiquidationPriceTo(calculateData.liquidationTo)
       setLiquidationPriceFrom(calculateData.liquidationFrom)
@@ -414,7 +415,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 <Button
                   className={classes.cRatioButton}
                   classes={{ endIcon: classes.endIcon }}
-                  endIcon={<DownIcon />}
+                  endIcon={action === 'borrow' ? <DownIcon /> : null}
                   onClick={onClickPopover}
                   style={{
                     color:
