@@ -8,7 +8,7 @@ import {
   getSyntheticsValue,
   getSwaplineCollateralBalance
 } from '@selectors/exchange'
-import { getVaultCollateralBalance, getVaultDebtValue } from '@selectors/vault'
+import { getVaultCollateralBalance } from '@selectors/vault'
 
 export const StatisticsCard: React.FC = () => {
   const statsData = useSelector(statsSelector.last24)
