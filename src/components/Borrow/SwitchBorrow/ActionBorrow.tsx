@@ -8,7 +8,7 @@ import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { BN } from '@project-serum/anchor'
-import { printBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
+import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import { BorrowedPair } from '../WrappedBorrow/WrappedBorrow'
 import { PublicKey } from '@solana/web3.js'
 import {
