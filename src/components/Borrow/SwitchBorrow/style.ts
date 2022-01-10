@@ -150,33 +150,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       minHeight: '48px'
     }
   },
-  popover: {
-    minWidth: '328px',
-    borderRadius: '20px'
-  },
-  popoverBack: {
-    background: colors.navy.darkGrey,
-    border: `1px solid ${colors.navy.darkGrey}`,
-    boxSizing: 'border-box',
-    borderRadius: '5px',
-    padding: 16
-  },
-  sliderTitle: {
-    ...typography.subtitle1,
-    paddingBottom: '14px'
-  },
-  sliderSubTitle: {
-    ...typography.body4,
-    color: colors.navy.grey
-  },
-  sliderNumber: {
-    ...typography.subtitle1,
-    paddingBottom: '10px',
-    paddingTop: '4px'
-  },
-  sliderRisk: {
-    ...typography.caption1
-  },
 
   bottomGrid: {
     display: 'flex',

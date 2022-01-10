@@ -246,7 +246,7 @@ export const calculateLiqAndCRatio = (
       /* eslint-disable @typescript-eslint/indent */
       ratioTo === 'NaN'
         ? 'NaN'
-        : ratioTo.lt(new BN(0))
+        : ratioTo.lte(new BN(0))
         ? 'NaN'
         : Math.floor(Number(printBN(ratioTo, 0)) / 100),
     cRatioFrom: ratioFrom === 'NaN' ? 'NaN' : Math.floor(Number(printBN(ratioFrom, 0)) / 100)

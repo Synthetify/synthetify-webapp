@@ -30,6 +30,7 @@ import Slider from '@material-ui/core/Slider'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import classNames from 'classnames'
 import useStyles from './style'
+import { SliderRatio } from '../SliderRatio/SliderRatio'
 interface IProp {
   action: string
   cRatio: string
@@ -58,7 +59,6 @@ interface IProp {
   setAvailableWithdraw: (nr: BN) => void
   walletStatus: boolean
   noWalletHandler: () => void
-  cRatioStatic: string[]
 }
 export const ActionBorrow: React.FC<IProp> = ({
   action,
@@ -80,8 +80,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   setAvailableBorrow,
   setAvailableWithdraw,
   walletStatus,
-  noWalletHandler,
-  cRatioStatic
+  noWalletHandler
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -117,13 +116,13 @@ export const ActionBorrow: React.FC<IProp> = ({
   )
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [blockButton, setBlockButton] = React.useState(false)
-  const changeCustomCRatio = () => {
-    if (customCRatio && customCRatio >= minCRatio.toFixed(2)) {
-      changeCRatio(customCRatio)
-      setCustomCRatio(customCRatio)
+  const changeCustomCRatio = (newCRatio: string) => {
+    if (newCRatio && Number(newCRatio) >= minCRatio) {
+      changeCRatio(newCRatio)
+      // setCustomCRatio(customCRatio)
     } else {
       changeCRatio(minCRatio.toFixed(2))
-      setCustomCRatio(minCRatio.toFixed(2))
+      // setCustomCRatio(minCRatio.toFixed(2))
     }
   }
 
@@ -437,48 +436,20 @@ export const ActionBorrow: React.FC<IProp> = ({
                   )}
                   {'%'}
                 </Button>
-                <Popover
-                  classes={{ paper: classes.popover }}
-                  open={openOption}
+                <SliderRatio
+                  openOption={openOption}
                   anchorEl={anchorEl}
-                  onClose={onClosePopover}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center'
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center'
-                  }}>
-                  <Grid className={classes.popoverBack}>
-                    <Typography className={classes.sliderTitle}>Adjust your multiply</Typography>
-                    <Grid container direction={'row'} justifyContent='space-between'>
-                      <Grid>
-                        <Typography className={classes.sliderSubTitle}>
-                          Liquidation price
-                        </Typography>
-                        <Typography className={classes.sliderNumber}>$32332.5</Typography>
-                      </Grid>
-                      <Grid>
-                        <Typography className={classes.sliderSubTitle}>Collateral ratio</Typography>
-                        <Typography className={classes.sliderNumber}>250.55%</Typography>
-                      </Grid>
-                    </Grid>
-                    <Slider defaultValue={500} step={1} marks min={300} max={1000} />
-                    <Grid container item justifyContent={'space-between'}>
-                      <Typography
-                        className={classes.sliderRisk}
-                        style={{ color: colors.green.button }}>
-                        Decrease risk
-                      </Typography>
-                      <Typography
-                        className={classes.sliderRisk}
-                        style={{ color: colors.red.error }}>
-                        Increase risk
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Popover>
+                  onClosePopover={onClosePopover}
+                  liquidityPrice={liquidationPriceTo}
+                  cRatio={
+                    cRatio === '---'
+                      ? cRatioTo === 'NaN'
+                        ? minCRatio
+                        : Number(cRatioTo)
+                      : Number(cRatio)
+                  }
+                  changeCustomCRatio={changeCustomCRatio}
+                />
               </Grid>
             </Grid>
           </Grid>

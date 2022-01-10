@@ -186,7 +186,6 @@ storiesOf('borrow/switchBorrow', module)
             setPairIndex={() => {}}
             walletStatus={true}
             noWalletHandler={() => {}}
-            cRatioStatic={['300', '500']}
           />
         ),
         repay: (
@@ -222,7 +221,6 @@ storiesOf('borrow/switchBorrow', module)
             setPairIndex={() => {}}
             walletStatus={true}
             noWalletHandler={() => {}}
-            cRatioStatic={['300', '500']}
           />
         )
       }
