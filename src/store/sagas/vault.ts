@@ -186,7 +186,7 @@ export function* handleRepay(): Generator {
     )
     yield put(
       snackbarsActions.add({
-        message: 'Synthetic repay successfully.',
+        message: 'Synthetic repaid successfully.',
         variant: 'success',
         txid: txid,
         persist: false

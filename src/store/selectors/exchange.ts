@@ -435,7 +435,7 @@ export const getUserVaults = createSelector(
         userVault.collateralAmount.val
       )
       const cRatioCalculatedString =
-        cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN'
+        cRatioCalculated !== 'NaN' ? printBN(cRatioCalculated, 2) : 'NaN'
 
       const interestRate =
         Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
@@ -515,11 +515,11 @@ export const getGeneralTotals = createSelector(
               scale: currentVault.collateralAmount.scale
             }
       const actualPriceSynthetic =
-        typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
-          ? allAssetPrice[currentVault.collateral.toString()]
+        typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
+          ? allAssetPrice[currentVault.synthetic.toString()]
           : {
               val: new BN(100000),
-              scale: currentVault.collateralAmount.scale
+              scale: currentVault.maxBorrow.scale
             }
       totalCollatera =
         totalCollatera +
