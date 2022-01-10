@@ -212,6 +212,17 @@ export const ActionBorrow: React.FC<IProp> = ({
   React.useEffect(() => {
     if (pairIndex !== null) {
       resetValue()
+
+      setMinCRatio(
+        Math.pow(
+          Number(
+            printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
+          ) / 100,
+          -1
+        )
+      )
+      setLiquidationPriceTo(0)
+      setLiquidationPriceFrom(0)
     }
   }, [pairIndex])
 
@@ -238,21 +249,6 @@ export const ActionBorrow: React.FC<IProp> = ({
       setAmountBorrowString(printBN(amount, tokenTo.assetScale))
     }
   }, [cRatio])
-
-  React.useEffect(() => {
-    if (pairIndex !== null) {
-      setMinCRatio(
-        Math.pow(
-          Number(
-            printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
-          ) / 100,
-          -1
-        )
-      )
-      setLiquidationPriceTo(0)
-      setLiquidationPriceFrom(0)
-    }
-  }, [pairIndex])
 
   React.useEffect(() => {
     if (pairIndex !== null) {
@@ -312,7 +308,7 @@ export const ActionBorrow: React.FC<IProp> = ({
       setCRatioTo(calculateData.cRatioTo)
       setCRatioFrom(calculateData.cRatioFrom)
     }
-  }, [amountBorrow, amountCollateral])
+  }, [amountBorrow, amountCollateral, vaultAmount])
 
   const blockSubmitButton = () => {
     if (pairIndex === null) {
