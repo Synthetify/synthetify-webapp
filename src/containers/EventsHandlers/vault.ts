@@ -133,7 +133,7 @@ const VaultEvents = () => {
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     connectEvents()
-  }, [dispatch, exchangeProgram, networkStatus, Object.keys(userVaultsState).length])
+  }, [dispatch, exchangeProgram, networkStatus, walletStat, Object.keys(userVaultsState).length])
 
   return null
 }

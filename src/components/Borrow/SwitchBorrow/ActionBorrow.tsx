@@ -2,7 +2,7 @@ import React from 'react'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
-import { Grid, Typography, Divider, Popover, Button, Input, Hidden } from '@material-ui/core'
+import { Grid, Typography, Divider, Button, Hidden } from '@material-ui/core'
 import DownIcon from '@material-ui/icons/KeyboardArrowDown'
 import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
@@ -26,7 +26,6 @@ import {
 import { MAX_U64 } from '@consts/static'
 import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
-import Slider from '@material-ui/core/Slider'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import classNames from 'classnames'
 import useStyles from './style'
@@ -100,8 +99,8 @@ export const ActionBorrow: React.FC<IProp> = ({
     setOption(false)
   }
   const [openOption, setOption] = React.useState(false)
-  const [customCRatio, setCustomCRatio] = React.useState('')
   const [nameSubmitButton, setNameSubmitButton] = React.useState('add')
+  const [submitMessage, setSubmitMessage] = React.useState('add')
   const [actionSubmit, setActionSubmit] = React.useState<ActionType>(
     action === 'borrow' ? 'add' : 'withdraw'
   )
@@ -116,13 +115,15 @@ export const ActionBorrow: React.FC<IProp> = ({
   )
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [blockButton, setBlockButton] = React.useState(false)
+
+  const [amountInputTouched, setAmountInputTouched] = React.useState(false)
+  const [resultStatus, setResultStatus] = React.useState('none')
+
   const changeCustomCRatio = (newCRatio: string) => {
-    if (newCRatio && Number(newCRatio) >= minCRatio) {
+    if (newCRatio && Number(newCRatio) > minCRatio) {
       changeCRatio(newCRatio)
-      // setCustomCRatio(customCRatio)
     } else {
-      changeCRatio(minCRatio.toFixed(2))
-      // setCustomCRatio(minCRatio.toFixed(2))
+      changeCRatio('---')
     }
   }
 
@@ -181,32 +182,45 @@ export const ActionBorrow: React.FC<IProp> = ({
       }
     }
   }
+  const resetValue = () => {
+    setAmountBorrowString('')
+    setAmountCollateralString('')
+    setAmountBorrow(new BN(0))
+    setAmountCollateral(new BN(0))
+    setMaxBehaviorTo('number')
+    setMaxBehaviorFrom('number')
+    setAmountInputTouched(false)
+  }
   React.useEffect(() => {
     if (sending) {
       setShowOperationProgressFinale(true)
     }
-    if (showOperationProgressFinale) {
-      setShowOperationProgressFinale(false)
-    }
     if (!sending || hasError) {
-      setAmountBorrowString('')
-      setAmountCollateralString('')
-      setAmountBorrow(new BN(0))
-      setAmountCollateral(new BN(0))
-      setMaxBehaviorTo('number')
-      setMaxBehaviorFrom('number')
+      resetValue()
     }
   }, [sending])
 
   React.useEffect(() => {
+    if (showOperationProgressFinale) {
+      setShowOperationProgressFinale(false)
+    }
+  }, [amountCollateralString, amountBorrowString])
+
+  React.useEffect(() => {
     if (pairIndex !== null) {
-      setAmountBorrowString('')
-      setAmountCollateralString('')
-      setAmountBorrow(new BN(0))
-      setAmountCollateral(new BN(0))
+      resetValue()
+
+      setMinCRatio(
+        Math.pow(
+          Number(
+            printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
+          ) / 100,
+          -1
+        )
+      )
       changeCRatio('---')
-      setMaxBehaviorTo('number')
-      setMaxBehaviorFrom('number')
+      setLiquidationPriceTo(0)
+      setLiquidationPriceFrom(0)
     }
   }, [pairIndex])
 
@@ -233,21 +247,6 @@ export const ActionBorrow: React.FC<IProp> = ({
       setAmountBorrowString(printBN(amount, tokenTo.assetScale))
     }
   }, [cRatio])
-
-  React.useEffect(() => {
-    if (pairIndex !== null) {
-      setMinCRatio(
-        Math.pow(
-          Number(
-            printBN(pairs[pairIndex].collateralRatio.val, pairs[pairIndex].collateralRatio.scale)
-          ) / 100,
-          -1
-        )
-      )
-      setLiquidationPriceTo(0)
-      setLiquidationPriceFrom(0)
-    }
-  }, [pairIndex])
 
   React.useEffect(() => {
     if (pairIndex !== null) {
@@ -282,6 +281,9 @@ export const ActionBorrow: React.FC<IProp> = ({
     const buttonDetails = setActionOnSubmitButton(action, amountCollateral, amountBorrow)
     setActionSubmit(buttonDetails.actionSubmit)
     setNameSubmitButton(buttonDetails.nameSubmitButton)
+    if (resultStatus === 'none') {
+      setSubmitMessage(buttonDetails.actionSubmit)
+    }
   }, [availableFrom, availableTo])
 
   React.useEffect(() => {
@@ -296,14 +298,15 @@ export const ActionBorrow: React.FC<IProp> = ({
         vaultAmount.borrowAmount.val,
         pairs[pairIndex].liquidationThreshold,
         tokenTo.assetScale,
-        tokenFrom.assetScale
+        tokenFrom.assetScale,
+        pairs[pairIndex].openFee.val
       )
       setLiquidationPriceTo(calculateData.liquidationTo)
       setLiquidationPriceFrom(calculateData.liquidationFrom)
       setCRatioTo(calculateData.cRatioTo)
       setCRatioFrom(calculateData.cRatioFrom)
     }
-  }, [amountBorrow, amountCollateral])
+  }, [amountBorrow, amountCollateral, vaultAmount, cRatio])
 
   const blockSubmitButton = () => {
     if (pairIndex === null) {
@@ -339,6 +342,9 @@ export const ActionBorrow: React.FC<IProp> = ({
               <ExchangeAmountInput
                 value={amountCollateralString}
                 setValue={(value: string) => {
+                  if (!amountInputTouched) {
+                    setAmountInputTouched(true)
+                  }
                   if (value.match(/^\d*\.?\d*$/)) {
                     const limitedNumber = value.includes('.')
                       ? value.substr(0, value.indexOf('.')) +
@@ -403,7 +409,7 @@ export const ActionBorrow: React.FC<IProp> = ({
                 <Button
                   className={classes.cRatioButton}
                   classes={{ endIcon: classes.endIcon }}
-                  endIcon={<DownIcon />}
+                  endIcon={action === 'borrow' ? <DownIcon /> : null}
                   onClick={onClickPopover}
                   style={{
                     color:
@@ -444,11 +450,12 @@ export const ActionBorrow: React.FC<IProp> = ({
                   cRatio={
                     cRatio === '---'
                       ? cRatioTo === 'NaN'
-                        ? minCRatio
+                        ? Number(minCRatio.toFixed(2))
                         : Number(cRatioTo)
                       : Number(cRatio)
                   }
                   changeCustomCRatio={changeCustomCRatio}
+                  minCRatio={Number(minCRatio.toFixed(2))}
                 />
               </Grid>
             </Grid>
@@ -461,6 +468,9 @@ export const ActionBorrow: React.FC<IProp> = ({
             <ExchangeAmountInput
               value={amountBorrowString}
               setValue={(value: string) => {
+                if (!amountInputTouched) {
+                  setAmountInputTouched(true)
+                }
                 if (value.match(/^\d*\.?\d*$/)) {
                   const limitedNumber = value.includes('.')
                     ? value.substr(0, value.indexOf('.')) +
@@ -598,14 +608,24 @@ export const ActionBorrow: React.FC<IProp> = ({
           </Grid>
           <Grid className={classes.buttonAction} container>
             <Progress
-              state={getProgressState(sending, hasError, showOperationProgressFinale, blockButton)}
+              state={getProgressState(
+                sending,
+                hasError,
+                showOperationProgressFinale,
+                blockButton,
+                amountInputTouched,
+                resultStatus,
+                setResultStatus
+              )}
               message={getProgressMessage(
                 sending,
                 hasError,
                 actionSubmit,
                 showOperationProgressFinale,
-                nameSubmitButton,
-                blockButton
+                submitMessage,
+                blockButton,
+                amountInputTouched,
+                resultStatus
               )}
             />
             <OutlinedButton

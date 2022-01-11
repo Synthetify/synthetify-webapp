@@ -11,6 +11,7 @@ interface IProp {
   liquidityPrice: number
   cRatio: number
   changeCustomCRatio: (value: string) => void
+  minCRatio: number
 }
 export const SliderRatio: React.FC<IProp> = ({
   openOption,
@@ -18,7 +19,8 @@ export const SliderRatio: React.FC<IProp> = ({
   onClosePopover,
   liquidityPrice,
   cRatio,
-  changeCustomCRatio
+  changeCustomCRatio,
+  minCRatio
 }) => {
   const classes = useStyles()
   return (
@@ -40,11 +42,15 @@ export const SliderRatio: React.FC<IProp> = ({
         <Grid container direction={'row'} justifyContent='space-between'>
           <Grid>
             <Typography className={classes.sliderSubTitle}>Liquidation price</Typography>
-            <Typography className={classes.sliderNumber}>${liquidityPrice.toFixed(3)}</Typography>
+            <Typography className={classes.sliderNumber} style={{ textAlign: 'start' }}>
+              ${liquidityPrice.toFixed(3)}
+            </Typography>
           </Grid>
           <Grid>
             <Typography className={classes.sliderSubTitle}>Collateral ratio</Typography>
-            <Typography className={classes.sliderNumber}>{cRatio}%</Typography>
+            <Typography className={classes.sliderNumber} style={{ textAlign: 'end' }}>
+              {cRatio}%
+            </Typography>
           </Grid>
         </Grid>
         <Slider
@@ -55,12 +61,12 @@ export const SliderRatio: React.FC<IProp> = ({
             thumb: classes.sliderThumb
           }}
           onChange={(_event, newValue) => {
-            changeCustomCRatio(newValue.toString())
+            changeCustomCRatio((-newValue).toString())
           }}
-          defaultValue={300}
-          step={10}
-          min={100}
-          max={500}
+          defaultValue={-minCRatio}
+          step={-1}
+          min={-600}
+          max={-minCRatio * 0.95}
         />
         <Grid container item justifyContent={'space-between'}>
           <Typography className={classes.sliderRisk} style={{ color: colors.green.button }}>

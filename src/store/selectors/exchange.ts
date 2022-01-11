@@ -421,6 +421,7 @@ export const getUserVaults = createSelector(
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
       if (
+        typeof currentVault === 'undefined' ||
         typeof allAssetPrice[currentVault.collateral.toString()] === 'undefined' ||
         typeof allAssetPrice[currentVault.synthetic.toString()] === 'undefined'
       ) {
@@ -435,7 +436,7 @@ export const getUserVaults = createSelector(
         userVault.collateralAmount.val
       )
       const cRatioCalculatedString =
-        cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN'
+        cRatioCalculated !== 'NaN' ? printBN(cRatioCalculated, 2) : 'NaN'
 
       const interestRate =
         Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
@@ -507,11 +508,14 @@ export const getGeneralTotals = createSelector(
     let totalDebt = 0
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
+      if (typeof currentVault === 'undefined') {
+        return
+      }
       const actualPriceCollateral =
         typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.collateral.toString()]
           : {
-              val: new BN(100 ** currentVault.maxBorrow.scale),
+              val: new BN(10 ** currentVault.maxBorrow.scale),
               scale: currentVault.collateralAmount.scale
             }
       const actualPriceSynthetic =

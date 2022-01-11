@@ -142,7 +142,7 @@ export function* handleAirdrop(): Generator {
     .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
     .map(collateral => collateral.collateralAddress) as PublicKey[]
   const airdropTokenQuantities = airdropTokens
-    .filter(collateral => typeof collateral.quantity !== 'undefined')
+    .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
     .map(collateral => collateral.quantity)
 
   yield* call(getCollateralTokenAirdrop, airdropTokenAdresses, airdropTokenQuantities)

@@ -42,7 +42,7 @@ export const getVaultCollateralBalance = createSelector(
         return 0
       }
       return (
-        +printBN(vault.mintAmount.val, vault.mintAmount.scale) *
+        +printBN(vault.collateralAmount.val, vault.collateralAmount.scale) *
         +printBN(collateralPrice.val, collateralPrice.scale)
       )
     })

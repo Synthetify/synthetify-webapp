@@ -150,7 +150,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       minHeight: '48px'
     }
   },
-
   bottomGrid: {
     display: 'flex',
     flexDirection: 'row',
