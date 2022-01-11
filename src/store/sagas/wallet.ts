@@ -142,7 +142,7 @@ export function* handleAirdrop(): Generator {
     .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
     .map(collateral => collateral.collateralAddress) as PublicKey[]
   const airdropTokenQuantities = airdropTokens
-    .filter(collateral => typeof collateral.quantity !== 'undefined')
+    .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
     .map(collateral => collateral.quantity)
 
   yield* call(getCollateralTokenAirdrop, airdropTokenAdresses, airdropTokenQuantities)
@@ -313,6 +313,7 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
   yield call([localStorage, localStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  yield* call(sleep, 1000)
   yield* call(initVaultEntry)
 }
 

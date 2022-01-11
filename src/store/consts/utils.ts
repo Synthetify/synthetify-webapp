@@ -156,7 +156,8 @@ export const formatNumbers = (value: string) => {
   return (num / 1000000000).toFixed(2)
 }
 
-export const formatNumbersBorrowTable = (num: number) => {
+export const formatNumbersBorrowTable = (value: string) => {
+  const num = Number(value)
   if (num < 0) {
     return num.toFixed(3)
   }

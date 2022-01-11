@@ -180,24 +180,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '2px',
     borderRadius: '5px',
     '&:hover': {
+      borderRadius: '5px',
       background: colors.navy.info,
-      color: colors.white.main,
-      ...typography.body4
+      color: colors.white.main
     }
   },
   customInput: {
     padding: 0,
     textAlign: 'center',
     minHeight: '28px',
+    borderRadius: '5px',
+
     '&::placeholder': {
       color: colors.navy.grey,
       opacity: 1
     },
     '&:hover': {
       '&::placeholder': {
-        background: colors.navy.info,
-        color: colors.white.main,
-        ...typography.body4
+        // borderRadius: '5px',
+        // background: colors.navy.info,
+        color: colors.white.main
       }
     }
   },

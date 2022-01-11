@@ -15,7 +15,7 @@ import {
 import { BN } from '@project-serum/anchor'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
-import { VaultEntry } from '@synthetify/sdk/lib/exchange'
+import { Decimal, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { addressToAssetSymbol, toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
@@ -401,10 +401,10 @@ export const getHaltedState = createSelector(state, allState => {
 export interface UserVaults extends VaultEntry {
   borrowed: string
   collateral: string
-  deposited: number
+  deposited: Decimal
   cRatio: string
   minCRatio: number
-  currentDebt: number
+  currentDebt: Decimal
   maxBorrow: string
   interestRate: string
   liquidationPrice: string
@@ -435,7 +435,7 @@ export const getUserVaults = createSelector(
         userVault.collateralAmount.val
       )
       const cRatioCalculatedString =
-        cRatioCalculated !== 'NaN' ? transformBN(cRatioCalculated) : 'NaN'
+        cRatioCalculated !== 'NaN' ? printBN(cRatioCalculated, 2) : 'NaN'
 
       const interestRate =
         Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
@@ -466,9 +466,7 @@ export const getUserVaults = createSelector(
         ...userVault,
         borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
         collateral: addressToAssetSymbol[currentVault.collateral.toString()] || 'XYZ',
-        deposited: Number(
-          printBN(userVault.collateralAmount.val, userVault.collateralAmount.scale)
-        ),
+        deposited: userVault.collateralAmount,
         cRatio: cRatioCalculatedString,
         minCRatio: Number(
           Math.pow(
@@ -477,9 +475,7 @@ export const getUserVaults = createSelector(
             -1
           )
         ),
-        currentDebt: Number(
-          printBN(userVault.syntheticAmount.val, userVault.syntheticAmount.scale)
-        ),
+        currentDebt: userVault.syntheticAmount,
         maxBorrow: printBN(
           maxBorrow.gt(new BN(0)) ? maxBorrow : new BN(0),
           allSynthetics[currentVault.synthetic.toString()].supply.scale
@@ -519,11 +515,11 @@ export const getGeneralTotals = createSelector(
               scale: currentVault.collateralAmount.scale
             }
       const actualPriceSynthetic =
-        typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
-          ? allAssetPrice[currentVault.collateral.toString()]
+        typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
+          ? allAssetPrice[currentVault.synthetic.toString()]
           : {
               val: new BN(100000),
-              scale: currentVault.collateralAmount.scale
+              scale: currentVault.maxBorrow.scale
             }
       totalCollatera =
         totalCollatera +
