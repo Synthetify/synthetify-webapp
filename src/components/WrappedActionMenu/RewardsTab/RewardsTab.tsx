@@ -4,7 +4,6 @@ import { Divider, Grid, Typography } from '@material-ui/core'
 import {
   calculateTimeRemaining,
   displayDate,
-  divUpNumber,
   estimateRounds,
   printBN,
   transformBN
