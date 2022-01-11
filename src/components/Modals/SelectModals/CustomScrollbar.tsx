@@ -7,7 +7,7 @@ export const CustonScrollbar: React.FC<{}> = props => {
 
   return (
     <Scrollbars
-      autoHide
+      autoHide={true}
       autoHideDuration={200}
       autoHideTimeout={200}
       renderThumbVertical={() => {
