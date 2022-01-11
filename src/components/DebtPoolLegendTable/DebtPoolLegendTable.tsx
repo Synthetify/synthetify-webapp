@@ -30,18 +30,6 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
 
   const rootRef = useRef<HTMLDivElement>(null)
 
-  const calcEmptyRowsToRender = () => {
-    if (isXsDown || !rootRef.current) {
-      return 0
-    }
-
-    if (isSmDown) {
-      return Math.ceil((rootRef.current.offsetHeight - (data.length + 1) * 40) / 40)
-    }
-
-    return Math.ceil((rootRef.current.offsetHeight - 60 - data.length * 48) / 48)
-  }
-
   const calcMaxHeight = () => {
     const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
 
@@ -73,7 +61,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   }
 
   return (
-    <Grid className={classes.root} ref={rootRef} style={{ maxHeight: calcMaxHeight() }}>
+    <Grid className={classes.root} ref={rootRef} style={{ height: calcMaxHeight() }}>
       <Grid className={classes.header} container direction='row'>
         <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
           <Typography className={classes.headerText}>TOKEN</Typography>
@@ -111,7 +99,6 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                   {'%)'}
                 </Typography>
               </Grid>
-
               <Grid
                 className={classNames(classes.column, classes.dataCell)}
                 container

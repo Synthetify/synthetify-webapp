@@ -153,7 +153,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   tokenAmount: {
     color: colors.navy.info,
     ...typography.body3,
-    
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
