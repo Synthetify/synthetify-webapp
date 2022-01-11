@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 10,
     position: 'relative',
     overflowX: 'hidden',
-    overflowY: 'scroll',
     zIndex: 1,
     backgroundColor: colors.navy.component,
     marginLeft: 32,
