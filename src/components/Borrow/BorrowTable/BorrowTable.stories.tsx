@@ -11,8 +11,8 @@ storiesOf('Borrow/table', module).add('default', () =>
       {
         collateral: 'WSOL',
         borrowed: 'xSOL',
-        currentDebt: 11999.4325,
-        deposited: 101035.4215,
+        currentDebt: { val: new BN(1000000), scale: 6 },
+        deposited: { val: new BN(10000000), scale: 6 },
         cRatio: '125.645',
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
@@ -28,8 +28,8 @@ storiesOf('Borrow/table', module).add('default', () =>
       {
         collateral: 'WSOL',
         borrowed: 'xSOL',
-        currentDebt: 11999.4325,
-        deposited: 101035.4215,
+        currentDebt: { val: new BN(1000000), scale: 6 },
+        deposited: { val: new BN(10000000), scale: 6 },
         cRatio: '125.645',
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
@@ -50,7 +50,7 @@ storiesOf('Borrow/table', module).add('default', () =>
           setValueWithTable={() => {
             console.log('set value with tables')
           }}
-          active={'Sol'}
+          active={{ collateral: 'Sol', synthetic: 'xUSD' }}
           vaultType={0}
         />
       </div>
