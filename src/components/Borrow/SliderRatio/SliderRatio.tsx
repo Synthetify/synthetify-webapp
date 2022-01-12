@@ -1,4 +1,4 @@
-import { Popover, Grid, Typography } from '@material-ui/core'
+import { Popover, Grid, Typography, Input } from '@material-ui/core'
 import React from 'react'
 import Slider from '@material-ui/core/Slider'
 import { colors } from '@static/theme'
@@ -23,6 +23,7 @@ export const SliderRatio: React.FC<IProp> = ({
   minCRatio
 }) => {
   const classes = useStyles()
+  const [customCRatio, setCustomCRatio] = React.useState(cRatio.toString())
   return (
     <Popover
       classes={{ paper: classes.popover }}
@@ -42,15 +43,26 @@ export const SliderRatio: React.FC<IProp> = ({
         <Grid container direction={'row'} justifyContent='space-between'>
           <Grid>
             <Typography className={classes.sliderSubTitle}>Liquidation price</Typography>
-            <Typography className={classes.sliderNumber} style={{ textAlign: 'start' }}>
-              ${liquidityPrice.toFixed(3)}
-            </Typography>
+            <Typography className={classes.sliderNumber}>${liquidityPrice.toFixed(3)}</Typography>
           </Grid>
           <Grid>
-            <Typography className={classes.sliderSubTitle}>Collateral ratio</Typography>
-            <Typography className={classes.sliderNumber} style={{ textAlign: 'end' }}>
-              {cRatio}%
+            <Typography className={classes.sliderSubTitle} style={{ textAlign: 'end' }}>
+              Collateral ratio
             </Typography>
+            <Input
+              className={classes.sliderNumber}
+              classes={{ input: classes.customInput }}
+              disableUnderline
+              value={customCRatio}
+              placeholder={'custom'}
+              onChange={event => {
+                if (event.currentTarget.value.match(/^\d/)) {
+                  setCustomCRatio(event.currentTarget.value)
+                }
+              }}
+              onBlur={() => changeCustomCRatio(customCRatio)}
+            />
+            <span className={classes.percentSign}>%</span>
           </Grid>
         </Grid>
         <Slider
@@ -62,10 +74,13 @@ export const SliderRatio: React.FC<IProp> = ({
           }}
           onChange={(_event, newValue) => {
             changeCustomCRatio((-newValue).toString())
+            setCustomCRatio((-newValue).toString())
           }}
+          value={-cRatio}
+          aria-labelledby='input-slider'
           defaultValue={-minCRatio}
           step={-1}
-          min={-600}
+          min={-800}
           max={-minCRatio * 0.95}
         />
         <Grid container item justifyContent={'space-between'}>

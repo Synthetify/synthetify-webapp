@@ -14,6 +14,10 @@ const useStyles = makeStyles(() => ({
     borderRadius: '5px',
     padding: 14
   },
+
+  customInput: {
+    textAlign: 'end'
+  },
   sliderTitle: {
     ...typography.subtitle1,
     paddingBottom: '10px'
@@ -25,7 +29,11 @@ const useStyles = makeStyles(() => ({
   sliderNumber: {
     ...typography.subtitle1,
     paddingBottom: '5px',
-    paddingTop: '4px'
+    paddingTop: '4px',
+    maxWidth: '100px'
+  },
+  percentSign: {
+    ...typography.subtitle1
   },
   sliderRisk: {
     ...typography.body4
