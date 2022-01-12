@@ -120,6 +120,9 @@ export const ActionBorrow: React.FC<IProp> = ({
   const [resultStatus, setResultStatus] = React.useState('none')
 
   const changeCustomCRatio = (newCRatio: string) => {
+    if (action === 'borrow') {
+      setMaxBehaviorTo('number')
+    }
     if (newCRatio && Number(newCRatio) > minCRatio) {
       changeCRatio(newCRatio)
     } else {

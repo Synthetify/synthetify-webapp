@@ -62,10 +62,14 @@ export const SliderRatio: React.FC<IProp> = ({
               }}
               onBlur={() => {
                 changeCustomCRatio(
-                  Number(customCRatio) <= minCRatio ? minCRatio.toFixed(2) : customCRatio
+                  Number(customCRatio) <= Number(minCRatio.toFixed(2))
+                    ? minCRatio.toFixed(2)
+                    : customCRatio
                 )
                 setCustomCRatio(
-                  Number(customCRatio) <= minCRatio ? minCRatio.toFixed(2) : customCRatio
+                  Number(customCRatio) <= Number(minCRatio.toFixed(2))
+                    ? minCRatio.toFixed(2)
+                    : customCRatio
                 )
               }}
             />
@@ -81,14 +85,17 @@ export const SliderRatio: React.FC<IProp> = ({
           }}
           onChange={(_event, newValue) => {
             changeCustomCRatio((-newValue).toString())
-            setCustomCRatio((-newValue).toString())
+            setCustomCRatio(
+              Number(-newValue) > Number(minCRatio.toFixed(2))
+                ? (-newValue).toString()
+                : minCRatio.toFixed(2)
+            )
           }}
           value={Number(customCRatio) < minCRatio ? -cRatio : -Number(customCRatio)}
-          aria-labelledby='input-slider'
           defaultValue={-minCRatio}
           step={-1}
           min={-800}
-          max={-minCRatio}
+          max={-Number(minCRatio.toFixed(2)) * 0.99}
         />
         <Grid container item justifyContent={'space-between'}>
           <Typography className={classes.sliderRisk} style={{ color: colors.green.button }}>
