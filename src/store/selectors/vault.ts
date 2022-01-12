@@ -1,3 +1,4 @@
+import { printBN } from '@consts/utils'
 import { IVault, vaultSliceName } from '@reducers/vault'
 import { createSelector } from '@reduxjs/toolkit'
 import BN from 'bn.js'
@@ -30,4 +31,23 @@ export const getActualUserVault = createSelector(
     }
   }
 )
+
+export const getVaultCollateralBalance = createSelector(
+  vaults,
+  assetPrice,
+  (allVaults, allAssetPrice) => {
+    const balanceUSD = Object.values(allVaults).map(vault => {
+      const collateralPrice = allAssetPrice[vault.collateral.toString()]
+      if (!collateralPrice) {
+        return 0
+      }
+      return (
+        +printBN(vault.collateralAmount.val, vault.collateralAmount.scale) *
+        +printBN(collateralPrice.val, collateralPrice.scale)
+      )
+    })
+    return balanceUSD.reduce((sum, val) => sum + val, 0)
+  }
+)
+
 export default vaultSelectors

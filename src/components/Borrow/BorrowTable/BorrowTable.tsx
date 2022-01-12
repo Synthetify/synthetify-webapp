@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import React from 'react'
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
-import { formatNumbersBorrowTable, showPrefix } from '@consts/utils'
+import { formatNumbersBorrowTable, printBN, showPrefix } from '@consts/utils'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
 import { UserVaults } from '@selectors/exchange'
 import useStyles from './style'
@@ -12,7 +12,7 @@ import useStyles from './style'
 interface IProp {
   userVaults: UserVaults[]
   setValueWithTable: (collSymbol: string, synthSymbol: string, vaultType: number) => void
-  active: string | null
+  active: { collateral: string | null; synthetic: string | null }
   vaultType: number
 }
 export const BorrowTable: React.FC<IProp> = ({
@@ -71,12 +71,15 @@ export const BorrowTable: React.FC<IProp> = ({
         </Grid>
         <Grid>
           {userVaults.map((element, index) =>
-            element.deposited !== 0 || element.currentDebt !== 0 ? (
+            +printBN(element.deposited.val, element.deposited.scale) !== 0 ||
+            +printBN(element.currentDebt.val, element.currentDebt.scale) !== 0 ? (
               <Grid
                 key={index}
                 className={classNames(
                   classes.gridRow,
-                  element.collateral === active && element.vaultType === vaultType
+                  element.collateral === active.collateral &&
+                    element.borrowed === active.synthetic &&
+                    element.vaultType === vaultType
                     ? classes.active
                     : null
                 )}
@@ -123,30 +126,42 @@ export const BorrowTable: React.FC<IProp> = ({
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.deposited} ${element.collateral}`}
+                    title={`${printBN(element.deposited.val, element.deposited.scale)} ${
+                      element.collateral
+                    }`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
                       <AnimatedNumber
-                        value={element.deposited}
+                        value={Number(
+                          printBN(element.deposited.val, element.deposited.scale)
+                        ).toFixed(6)}
                         formatValue={formatNumbersBorrowTable}
+                        duration={300}
                       />
-                      {showPrefix(element.deposited)} {element.collateral}
+                      {showPrefix(+printBN(element.deposited.val, element.deposited.scale))}{' '}
+                      {element.collateral}
                     </Grid>
                   </Tooltip>
                 </Grid>
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.currentDebt} ${element.borrowed}`}
+                    title={`${printBN(element.currentDebt.val, element.currentDebt.scale)} ${
+                      element.borrowed
+                    }`}
                     placement='bottom-start'>
                     <Grid>
                       {'~ '}
                       <AnimatedNumber
-                        value={element.currentDebt}
+                        value={Number(
+                          printBN(element.currentDebt.val, element.currentDebt.scale)
+                        ).toFixed(6)}
                         formatValue={formatNumbersBorrowTable}
+                        duration={300}
                       />
-                      {showPrefix(element.currentDebt)} {element.borrowed}
+                      {showPrefix(+printBN(element.currentDebt.val, element.currentDebt.scale))}{' '}
+                      {element.borrowed}
                     </Grid>
                   </Tooltip>
                 </Grid>
@@ -154,14 +169,13 @@ export const BorrowTable: React.FC<IProp> = ({
                   classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
                   style={{
                     color:
-                      element.cRatio === 'NaN' ||
-                      Number(element.cRatio) * 10000 >= element.minCRatio
+                      element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
                         ? colors.green.button
                         : colors.red.error
                   }}>
                   <Grid container direction='row' alignItems='center'>
-                    {Number(element.cRatio) * 10000 < 9999 ? (
-                      (Number(element.cRatio) * 10000).toFixed(2)
+                    {Number(element.cRatio) < 9999 ? (
+                      Number(element.cRatio).toFixed(2)
                     ) : (
                       <AllInclusiveIcon style={{ height: '0.70em' }} />
                     )}
@@ -174,6 +188,7 @@ export const BorrowTable: React.FC<IProp> = ({
                     <AnimatedNumber
                       value={element.interestRate}
                       formatValue={(value: number) => value.toFixed(2)}
+                      duration={300}
                     />
 
                     {'%'}
@@ -193,6 +208,7 @@ export const BorrowTable: React.FC<IProp> = ({
                       <AnimatedNumber
                         value={Number(element.liquidationPrice)}
                         formatValue={formatNumbersBorrowTable}
+                        duration={300}
                       />
                       {showPrefix(Number(element.liquidationPrice))}
                     </Grid>
@@ -217,6 +233,7 @@ export const BorrowTable: React.FC<IProp> = ({
                         <AnimatedNumber
                           value={element.maxBorrow}
                           formatValue={formatNumbersBorrowTable}
+                          duration={300}
                         />
                         {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
                       </Grid>

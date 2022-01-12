@@ -54,7 +54,7 @@ export const PagesRouter: React.FC = () => {
               <StatisticsPage />
             </Redirect>
           </Route>
-          <Route path={'/borrow'} component={BorrowPage} />
+          <Route path={'/vaults'} component={BorrowPage} />
           <Route path={'/swapline'} component={SwaplinePage} />
           <Route path='*'>
             <Redirect to='/staking'>

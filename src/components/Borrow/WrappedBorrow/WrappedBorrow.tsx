@@ -123,7 +123,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
     repay: (
       <ActionBorrow
         action={'repay'}
-        cRatio={cRatio}
+        cRatio={'---'}
         liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
         liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         onClickSubmitButton={onClickSubmitButton}
@@ -155,7 +155,10 @@ export const WrappedBorrow: React.FC<IProp> = ({
           <BorrowTable
             userVaults={userVaults}
             setValueWithTable={changeValueFromTable}
-            active={pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null}
+            active={{
+              collateral: pairIndex !== null ? pairs[pairIndex].collateralData.symbol : null,
+              synthetic: pairIndex !== null ? pairs[pairIndex].syntheticData.symbol : null
+            }}
             vaultType={pairIndex !== null ? pairs[pairIndex].vaultType : 0}
           />
         ) : null}

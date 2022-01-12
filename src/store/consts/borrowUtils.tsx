@@ -1,5 +1,5 @@
 import { BN } from '@project-serum/anchor'
-import { printBN, printBNtoBN, stringToMinDecimalBN } from '@consts/utils'
+import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { ActionType } from '@reducers/vault'
 import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
@@ -66,16 +66,16 @@ export const calculateCRatio = (
   assetFromAmount: BN
 ) => {
   if (assetToAmount > new BN(0)) {
-    const difDecimal = 10 ** (syntheticScale - collateralScale + 4)
+    const difDecimal = 10 ** (syntheticScale - collateralScale)
     if (difDecimal < 1) {
       return assetFromAmount
         .mul(collateraPrice)
-        .div(new BN(1 / difDecimal))
+        .div(new BN(1 / (difDecimal / 10 ** 4)))
         .div(assetToAmount.mul(syntheticPrice))
     } else {
       return assetFromAmount
         .mul(collateraPrice)
-        .mul(new BN(difDecimal))
+        .mul(new BN(difDecimal * 10 ** 4))
         .div(assetToAmount.mul(syntheticPrice))
     }
   } else {
@@ -95,16 +95,29 @@ export const calculateLiqPrice = (
   if (amountBorrow.eq(new BN(0)) || amountCollateral.eq(new BN(0))) {
     return printBN(
       priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale))),
-      assetScaleFrom + 2
-    )
-  } else {
-    return printBN(
-      amountUSDBorrow.div(
-        liqThreshold.val.mul(amountCollateral).div(new BN(10).pow(new BN(liqThreshold.scale)))
-      ),
-      assetScaleTo + 2
+      8
     )
   }
+  const difDecimal = 10 ** (assetScaleTo - assetScaleFrom)
+  if (difDecimal < 1) {
+    return printBN(
+      amountUSDBorrow.div(
+        liqThreshold.val
+          .mul(amountCollateral.div(new BN(1 / difDecimal)))
+          .div(new BN(10).pow(new BN(liqThreshold.scale)))
+      ),
+      8
+    )
+  }
+
+  return printBN(
+    amountUSDBorrow.div(
+      liqThreshold.val
+        .mul(amountCollateral.mul(new BN(difDecimal)))
+        .div(new BN(10).pow(new BN(liqThreshold.scale)))
+    ),
+    8
+  )
 }
 export const calculateAvailableBorrow = (
   assetTo: AssetPriceData,
@@ -180,15 +193,22 @@ export const calculateLiqAndCRatio = (
   vaultAmountBorrow: BN,
   liqThreshold: Decimal,
   assetScaleTo: number,
-  assetScaleFrom: number
+  assetScaleFrom: number,
+  openFee: BN
 ) => {
+  const openFeeBN = stringToMinDecimalBN(transformBN(openFee))
+  const openFeePercent = new BN(10 ** (openFeeBN.decimal - 1) + +openFeeBN.BN.toString())
   const ratioTo = calculateCRatio(
     priceTo,
     assetScaleTo,
     priceFrom,
     assetScaleFrom,
-    action === 'borrow' ? amountBorrow.add(vaultAmountBorrow) : vaultAmountBorrow.sub(amountBorrow),
-
+    action === 'borrow'
+      ? amountBorrow
+          .mul(openFeePercent.mul(new BN(10 ** assetScaleTo)))
+          .div(new BN(10 ** (openFeeBN.decimal + assetScaleTo - 1)))
+          .add(vaultAmountBorrow)
+      : vaultAmountBorrow.sub(amountBorrow),
     action === 'borrow'
       ? amountCollateral.add(vaultAmountCollatera)
       : vaultAmountCollatera.sub(amountCollateral)
@@ -303,7 +323,9 @@ export const getProgressMessage = (
   actionSubmit: ActionType,
   showOperationProgressFinale: boolean,
   nameSubmitButton: string,
-  blockButton: boolean
+  blockButton: boolean,
+  amountInputTouched: boolean,
+  resultStatus: string
 ) => {
   const actionToNoun: { [key in ActionType]: string } = {
     add: 'Adding',
@@ -322,37 +344,59 @@ export const getProgressMessage = (
     repay: 'repaid',
     none: '---'
   }
+  if (resultStatus === 'success') {
+    return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
+  }
   if (showOperationProgressFinale && !hasError) {
     return `Successfully ${actionToPastNoun[nameSubmitButton.toLowerCase() as ActionType]}`
+  }
+  if (resultStatus === 'failed') {
+    return `${actionToNoun[actionSubmit]} failed`
   }
   if (showOperationProgressFinale && hasError) {
     return `${actionToNoun[actionSubmit]} failed`
   }
-  if (blockButton) {
+  if (blockButton && amountInputTouched) {
     return 'Invalid value'
   }
+  return 'Invalid value'
 }
 
 export const getProgressState = (
   sending: boolean,
   hasError: boolean | undefined,
   showOperationProgressFinale: boolean,
-  blockButton: boolean
+  blockButton: boolean,
+  amountInputTouched: boolean,
+  resultStatus: string,
+  setResultStatus: (vault: string) => void
 ) => {
   if (sending) {
     return 'progress'
   }
-  if (showOperationProgressFinale && hasError) {
+  if (resultStatus === 'failed') {
     return 'failed'
   }
-
-  if (showOperationProgressFinale && !hasError) {
+  if (showOperationProgressFinale && hasError) {
+    setResultStatus('failed')
+    setTimeout(() => {
+      setResultStatus('none')
+    }, 2000)
+    return 'failed'
+  }
+  if (resultStatus === 'success') {
     return 'success'
   }
-  if (blockButton) {
+  if (showOperationProgressFinale && !hasError) {
+    setResultStatus('success')
+    setTimeout(() => {
+      setResultStatus('none')
+    }, 2000)
+    return 'success'
+  }
+  if (blockButton && amountInputTouched) {
     return 'failed'
   }
-
   return 'none'
 }
 
@@ -445,7 +489,7 @@ export const changeInputCollateral = (
   openFee: string
 ) => {
   const openFeeBN = stringToMinDecimalBN(openFee)
-  const BNValue = stringToMinDecimalBN(value)
+  const BNValue = stringToMinDecimalBN(value === '' ? '0' : value)
   const difDecimal = tokenFrom.assetScale - BNValue.decimal
   let amountBorBN = new BN(0)
 
@@ -455,7 +499,7 @@ export const changeInputCollateral = (
       tokenTo.assetScale,
       tokenFrom.priceVal,
       tokenFrom.assetScale,
-      printBNtoBN(value, tokenFrom.assetScale),
+      printBNtoBN(value === '' ? '0' : value, tokenFrom.assetScale),
       cRatio
     )
       .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
