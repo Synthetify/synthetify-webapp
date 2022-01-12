@@ -14,8 +14,8 @@ export interface ISelectModal {
   name?: string
   current: string | null
   centered?: boolean
-  tokens?: Array<{ symbol: string, balance?: BN, assetDecimals?: number }>
-  pairs?: Array<{ symbol1: string, symbol2: string }>
+  tokens?: Array<{ symbol: string; balance?: BN; assetDecimals?: number }>
+  pairs?: Array<{ symbol1: string; symbol2: string }>
   onSelect?: (chosen: number) => void
   className?: string
   hideArrow?: boolean
@@ -78,7 +78,9 @@ export const Select: React.FC<ISelectModal> = ({
             <CardMedia className={classes.icon} image={icons[current] ?? icons.SNY} />
           )
         }
-        endIcon={!hideArrow ? <ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} /> : undefined}
+        endIcon={
+          !hideArrow ? <ExpandMoreIcon style={{ minWidth: 20, marginLeft: -8 }} /> : undefined
+        }
         style={{
           ...(!current ? (isXs ? typography.caption4 : typography.body3) : {}),
 

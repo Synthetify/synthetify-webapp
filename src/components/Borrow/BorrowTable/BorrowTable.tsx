@@ -169,14 +169,13 @@ export const BorrowTable: React.FC<IProp> = ({
                   classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
                   style={{
                     color:
-                      element.cRatio === 'NaN' ||
-                      Number(element.cRatio) * 10000 >= element.minCRatio
+                      element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
                         ? colors.green.button
                         : colors.red.error
                   }}>
                   <Grid container direction='row' alignItems='center'>
-                    {Number(element.cRatio) * 10000 < 9999 ? (
-                      (Number(element.cRatio) * 10000).toFixed(2)
+                    {Number(element.cRatio) < 9999 ? (
+                      Number(element.cRatio).toFixed(2)
                     ) : (
                       <AllInclusiveIcon style={{ height: '0.70em' }} />
                     )}
