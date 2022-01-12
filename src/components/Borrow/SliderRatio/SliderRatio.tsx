@@ -60,7 +60,12 @@ export const SliderRatio: React.FC<IProp> = ({
                   setCustomCRatio(event.currentTarget.value)
                 }
               }}
-              onBlur={() => changeCustomCRatio(customCRatio)}
+              onBlur={() => {
+                changeCustomCRatio(
+                  Number(customCRatio) <= minCRatio ? minCRatio.toFixed(2) : customCRatio
+                )
+                setCustomCRatio(minCRatio.toFixed(2))
+              }}
             />
             <span className={classes.percentSign}>%</span>
           </Grid>
@@ -76,12 +81,12 @@ export const SliderRatio: React.FC<IProp> = ({
             changeCustomCRatio((-newValue).toString())
             setCustomCRatio((-newValue).toString())
           }}
-          value={-cRatio}
+          value={Number(customCRatio) < minCRatio ? -cRatio : -Number(customCRatio)}
           aria-labelledby='input-slider'
           defaultValue={-minCRatio}
           step={-1}
           min={-800}
-          max={-minCRatio * 0.95}
+          max={-minCRatio}
         />
         <Grid container item justifyContent={'space-between'}>
           <Typography className={classes.sliderRisk} style={{ color: colors.green.button }}>
