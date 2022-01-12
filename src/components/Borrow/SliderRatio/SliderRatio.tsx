@@ -64,7 +64,9 @@ export const SliderRatio: React.FC<IProp> = ({
                 changeCustomCRatio(
                   Number(customCRatio) <= minCRatio ? minCRatio.toFixed(2) : customCRatio
                 )
-                setCustomCRatio(minCRatio.toFixed(2))
+                setCustomCRatio(
+                  Number(customCRatio) <= minCRatio ? minCRatio.toFixed(2) : customCRatio
+                )
               }}
             />
             <span className={classes.percentSign}>%</span>
