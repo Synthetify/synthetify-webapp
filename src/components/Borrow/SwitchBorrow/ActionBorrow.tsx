@@ -2,7 +2,7 @@ import React from 'react'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
-import { Grid, Typography, Divider, Popover, Button, Input, Hidden } from '@material-ui/core'
+import { Grid, Typography, Divider, Button, Hidden } from '@material-ui/core'
 import DownIcon from '@material-ui/icons/KeyboardArrowDown'
 import FlatIcon from '@material-ui/icons/TrendingFlat'
 import { colors } from '@static/theme'
@@ -26,9 +26,10 @@ import {
 import { MAX_U64 } from '@consts/static'
 import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
-import useStyles from './style'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import classNames from 'classnames'
+import useStyles from './style'
+import { SliderRatio } from '../SliderRatio/SliderRatio'
 interface IProp {
   action: string
   cRatio: string
@@ -57,7 +58,6 @@ interface IProp {
   setAvailableWithdraw: (nr: BN) => void
   walletStatus: boolean
   noWalletHandler: () => void
-  cRatioStatic: string[]
 }
 export const ActionBorrow: React.FC<IProp> = ({
   action,
@@ -79,8 +79,7 @@ export const ActionBorrow: React.FC<IProp> = ({
   setAvailableBorrow,
   setAvailableWithdraw,
   walletStatus,
-  noWalletHandler,
-  cRatioStatic
+  noWalletHandler
 }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -100,7 +99,6 @@ export const ActionBorrow: React.FC<IProp> = ({
     setOption(false)
   }
   const [openOption, setOption] = React.useState(false)
-  const [customCRatio, setCustomCRatio] = React.useState('')
   const [nameSubmitButton, setNameSubmitButton] = React.useState('add')
   const [submitMessage, setSubmitMessage] = React.useState('add')
   const [actionSubmit, setActionSubmit] = React.useState<ActionType>(
@@ -117,16 +115,18 @@ export const ActionBorrow: React.FC<IProp> = ({
   )
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [blockButton, setBlockButton] = React.useState(false)
+
   const [amountInputTouched, setAmountInputTouched] = React.useState(false)
   const [resultStatus, setResultStatus] = React.useState('none')
 
-  const changeCustomCRatio = () => {
-    if (customCRatio && Number(customCRatio) >= Number(minCRatio.toFixed(2))) {
-      changeCRatio(customCRatio)
-      setCustomCRatio(customCRatio)
+  const changeCustomCRatio = (newCRatio: string) => {
+    if (action === 'borrow') {
+      setMaxBehaviorTo('number')
+    }
+    if (newCRatio && Number(newCRatio) > minCRatio) {
+      changeCRatio(newCRatio)
     } else {
-      changeCRatio(minCRatio.toFixed(2))
-      setCustomCRatio(minCRatio.toFixed(2))
+      changeCRatio('---')
     }
   }
 
@@ -221,6 +221,7 @@ export const ActionBorrow: React.FC<IProp> = ({
           -1
         )
       )
+      changeCRatio('---')
       setLiquidationPriceTo(0)
       setLiquidationPriceFrom(0)
     }
@@ -308,7 +309,7 @@ export const ActionBorrow: React.FC<IProp> = ({
       setCRatioTo(calculateData.cRatioTo)
       setCRatioFrom(calculateData.cRatioFrom)
     }
-  }, [amountBorrow, amountCollateral, vaultAmount])
+  }, [amountBorrow, amountCollateral, vaultAmount, cRatio])
 
   const blockSubmitButton = () => {
     if (pairIndex === null) {
@@ -444,58 +445,21 @@ export const ActionBorrow: React.FC<IProp> = ({
                   )}
                   {'%'}
                 </Button>
-                <Popover
-                  classes={{ paper: classes.popover }}
-                  open={openOption}
+                <SliderRatio
+                  openOption={openOption}
                   anchorEl={anchorEl}
-                  onClose={onClosePopover}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center'
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center'
-                  }}>
-                  <Grid className={classes.popoverBack}>
-                    <Button
-                      className={classes.popoverButton}
-                      value={'---'}
-                      onClick={event => changeCRatio(event.currentTarget.value)}>
-                      ---
-                    </Button>
-                    <Button
-                      className={classes.popoverButton}
-                      value={minCRatio}
-                      onClick={() => changeCRatio(minCRatio.toFixed(2))}>
-                      Min: <span className={classes.minValue}>{minCRatio.toFixed(0)}%</span>
-                    </Button>
-                    <Input
-                      className={classes.popoverInput}
-                      classes={{ input: classes.customInput }}
-                      disableUnderline
-                      value={customCRatio}
-                      placeholder={'custom'}
-                      onChange={event => {
-                        if (event.currentTarget.value.match(/^\d/)) {
-                          setCustomCRatio(event.currentTarget.value)
-                        }
-                      }}
-                      onBlur={changeCustomCRatio}
-                    />
-                    {cRatioStatic.map(element =>
-                      Number(element) > minCRatio ? (
-                        <Button
-                          key={element}
-                          className={classes.popoverButton}
-                          value={Number(element)}
-                          onClick={event => changeCRatio(event.currentTarget.value)}>
-                          {element}%
-                        </Button>
-                      ) : null
-                    )}
-                  </Grid>
-                </Popover>
+                  onClosePopover={onClosePopover}
+                  liquidityPrice={liquidationPriceTo}
+                  cRatio={
+                    cRatio === '---'
+                      ? cRatioTo === 'NaN'
+                        ? Number(minCRatio.toFixed(2))
+                        : Number(cRatioTo)
+                      : Number(cRatio)
+                  }
+                  changeCustomCRatio={changeCustomCRatio}
+                  minCRatio={Number(minCRatio.toFixed(2))}
+                />
               </Grid>
             </Grid>
           </Grid>

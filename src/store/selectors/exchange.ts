@@ -421,6 +421,7 @@ export const getUserVaults = createSelector(
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
       if (
+        typeof currentVault === 'undefined' ||
         typeof allAssetPrice[currentVault.collateral.toString()] === 'undefined' ||
         typeof allAssetPrice[currentVault.synthetic.toString()] === 'undefined'
       ) {
@@ -507,18 +508,21 @@ export const getGeneralTotals = createSelector(
     let totalDebt = 0
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
+      if (typeof currentVault === 'undefined') {
+        return
+      }
       const actualPriceCollateral =
         typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.collateral.toString()]
           : {
-              val: new BN(100000),
+              val: new BN(10 ** currentVault.maxBorrow.scale),
               scale: currentVault.collateralAmount.scale
             }
       const actualPriceSynthetic =
         typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.synthetic.toString()]
           : {
-              val: new BN(100000),
+              val: new BN(10 ** currentVault.maxBorrow.scale),
               scale: currentVault.maxBorrow.scale
             }
       totalCollatera =

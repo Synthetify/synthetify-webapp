@@ -150,59 +150,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       minHeight: '48px'
     }
   },
-  popover: {
-    maxWidth: '90px',
-    borderRadius: '5px'
-  },
-  popoverBack: {
-    background: colors.navy.dark,
-    border: `1px solid ${colors.navy.darkGrey}`,
-    boxSizing: 'border-box',
-    borderRadius: '5px',
-    padding: '4px'
-  },
-  popoverButton: {
-    width: '100%',
-    color: colors.navy.grey,
-    ...typography.subtitle2,
-    textTransform: 'none',
-
-    padding: '2px',
-    minHeight: '28px',
-    '&:hover': {
-      background: colors.navy.info,
-      color: colors.white.main
-    }
-  },
-  popoverInput: {
-    color: colors.navy.grey,
-    ...typography.subtitle2,
-    padding: '2px',
-    borderRadius: '5px',
-    '&:hover': {
-      borderRadius: '5px',
-      background: colors.navy.info,
-      color: colors.white.main
-    }
-  },
-  customInput: {
-    padding: 0,
-    textAlign: 'center',
-    minHeight: '28px',
-    borderRadius: '5px',
-
-    '&::placeholder': {
-      color: colors.navy.grey,
-      opacity: 1
-    },
-    '&:hover': {
-      '&::placeholder': {
-        // borderRadius: '5px',
-        // background: colors.navy.info,
-        color: colors.white.main
-      }
-    }
-  },
   bottomGrid: {
     display: 'flex',
     flexDirection: 'row',
