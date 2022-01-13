@@ -30,6 +30,21 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
 
   const rootRef = useRef<HTMLDivElement>(null)
 
+  const calcEmptyRowsToRender = () => {
+    if (isXsDown || !rootRef.current) {
+      return 0
+    }
+
+    if (isSmDown) {
+      // console.log(Math.ceil((rootRef.current.offsetHeight - (data.length + 1) * 40) / 40))
+      return 10 - data.length - 1
+    }
+    // console.log('ref height', rootRef.current.offsetHeight)
+    console.log('data length', data.length)
+    // console.log('sm up', Math.ceil((rootRef.current.offsetHeight - 60 - data.length * 48) / 48))
+    return 10 - data.length
+  }
+
   const calcMaxHeight = () => {
     const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
 
@@ -64,7 +79,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
     <Grid
       className={classes.root}
       ref={rootRef}
-      style={{ height: calcMaxHeight(), overflowY: data.length >= 10 ? 'scroll' : 'hidden' }}>
+      style={{ maxHeight: calcMaxHeight(), overflowY: data.length >= 10 ? 'scroll' : 'hidden' }}>
       <Grid className={classes.header} container direction='row'>
         <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
           <Typography className={classes.headerText}>TOKEN</Typography>
@@ -137,10 +152,8 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
             </Grid>
           )
         })}
-      {[...Array(calcEmptyRowsToRender()).keys()].map((_e, index) => (
+      {new Array(calcEmptyRowsToRender()).map((_e, index) => (
         <Grid key={`empty${index}`} className={classes.row} container direction='row'>
-          <Grid className={classes.column} />
-          <Grid className={classes.column} />
           <Grid className={classes.column} />
           <Grid className={classes.column} />
         </Grid>
