@@ -64,7 +64,7 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
     <Grid
       className={classes.root}
       ref={rootRef}
-      style={{ maxHeight: calcMaxHeight(), overflowY: data.length >= 10 ? 'scroll' : 'hidden' }}>
+      style={{ height: calcMaxHeight(), overflowY: data.length >= 10 ? 'scroll' : 'hidden' }}>
       <Grid className={classes.header} container direction='row'>
         <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
           <Typography className={classes.headerText}>TOKEN</Typography>
