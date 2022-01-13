@@ -18,7 +18,8 @@ jobs:
         run: npm i
       - name: Trunk Check
         uses: trunk-io/trunk-action@v0.3.0-beta
-
+      - name: test
+        run: npm run test
       - name: build
         run: npm run build
   upload:

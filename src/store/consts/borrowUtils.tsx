@@ -2,7 +2,7 @@ import { BN } from '@project-serum/anchor'
 import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { ActionType } from '@reducers/vault'
-import { BorrowedPair } from './WrappedBorrow/WrappedBorrow'
+import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
