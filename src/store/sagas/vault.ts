@@ -271,8 +271,12 @@ export function* updateSyntheticAmountUserVault(): Generator {
   const userVaultsData = yield* select(userVaults)
   const MINUTES_IN_YEAR = 525600
   const DENUMERATOR = new BN(10).pow(new BN(12))
+
   for (const [_key, userVault] of Object.entries(userVaultsData)) {
     const currentVault = vaultsData[userVault.vault.toString()]
+    if (typeof currentVault === 'undefined') {
+      return
+    }
     const difTimestamp = Math.floor(
       (Date.now() / 1000 - Number(currentVault.lastUpdate.toString())) / 60
     )
@@ -364,18 +368,6 @@ export function* initVaultEntry(): Generator {
       vault.vaultType
     )
     if (typeof userVaultState[vaultAddress.toString()] === 'undefined') {
-      const data = yield* call(
-        [exchangeProgram, exchangeProgram.getVaultForPair],
-        vault.synthetic,
-        vault.collateral,
-        vault.vaultType
-      )
-      yield* put(
-        actions.setVault({
-          address: vaultAddress,
-          vault: data
-        })
-      )
       const vaultEntry = yield* call(
         getVaultEntryIFExist,
         vault.synthetic,
