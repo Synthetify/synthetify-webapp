@@ -22,7 +22,7 @@ import {
   changeInputSynthetic,
   changeInputCollateral,
   getAssetFromAndTo
-} from '../borrowUtils'
+} from '@consts/borrowUtils'
 import { MAX_U64 } from '@consts/static'
 import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'

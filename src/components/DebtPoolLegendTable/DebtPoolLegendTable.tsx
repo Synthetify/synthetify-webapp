@@ -30,16 +30,14 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
 
   const rootRef = useRef<HTMLDivElement>(null)
 
-  const calcMaxHeight = () => {
-    const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
-
-    if (!isXsDown) {
-      const tableHeight = isSmDown ? (data.length + 1) * 40 : 60 + data.length * 48
-
-      return Math.max(tableHeight, plotCardHeight)
+  const calcEmptyRowsToRender = () => {
+    if (isXsDown || !rootRef.current || !calcMaxHeight()) {
+      return 0
     }
-
-    return 'unset'
+    if (isSmDown) {
+      return Math.floor((calcMaxHeight() - 40) / 40) - data.length + 1
+    }
+    return Math.floor((calcMaxHeight() - 60) / 48) - data.length + 1
   }
 
   const formatTableValue = (value: string) => {
@@ -59,12 +57,26 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
 
     return Number(numVal.toFixed(0)).toLocaleString('en-US')
   }
+  const calcMaxHeight = () => {
+    const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
+
+    if (!isXsDown) {
+      const tableHeight = isSmDown ? (data.length + 1) * 40 : 60 + data.length * 48
+
+      return Math.max(tableHeight, plotCardHeight)
+    }
+
+    return 0
+  }
 
   return (
     <Grid
       className={classes.root}
       ref={rootRef}
-      style={{ maxHeight: calcMaxHeight(), overflowY: data.length >= 10 ? 'scroll' : 'hidden' }}>
+      style={{
+        maxHeight: calcMaxHeight() === 0 ? 'unset' : calcMaxHeight(),
+        overflowY: data.length >= 10 ? 'scroll' : 'hidden'
+      }}>
       <Grid className={classes.header} container direction='row'>
         <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
           <Typography className={classes.headerText}>TOKEN</Typography>
@@ -137,6 +149,12 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
             </Grid>
           )
         })}
+      {[...Array(calcEmptyRowsToRender()).keys()].map((_e, index) => (
+        <Grid key={`empty${index}`} className={classes.row} container direction='row'>
+          <Grid className={classes.column} />
+          <Grid className={classes.column} />
+        </Grid>
+      ))}
     </Grid>
   )
 }
