@@ -219,8 +219,7 @@ export const BorrowTable: React.FC<IProp> = ({
                     classes={{ root: classNames(classes.rootCell, classes.maxBorrowColumn) }}
                     style={{
                       color:
-                        element.cRatio === 'NaN' ||
-                        Number(element.cRatio) * 10000 >= element.minCRatio
+                        element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
                           ? colors.green.button
                           : colors.red.error
                     }}>

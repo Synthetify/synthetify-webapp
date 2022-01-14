@@ -70,8 +70,8 @@ export const calculateCRatio = (
     if (difDecimal < 1) {
       return assetFromAmount
         .mul(collateraPrice)
-        .div(new BN(1 / (difDecimal / 10 ** 4)))
-        .div(assetToAmount.mul(syntheticPrice))
+        .div(new BN((1 / difDecimal) * 10 ** 4))
+        .div(syntheticPrice.mul(assetToAmount).div(new BN(10 ** 8)))
     } else {
       return assetFromAmount
         .mul(collateraPrice)
