@@ -4,7 +4,7 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { Progress } from '@components/WrappedActionMenu/Progress/Progress'
 import { Grid, Typography, Divider, Button, Hidden } from '@material-ui/core'
 import DownIcon from '@material-ui/icons/KeyboardArrowDown'
-import FlatIcon from '@material-ui/icons/TrendingFlat'
+
 import { colors } from '@static/theme'
 import AnimatedNumber from '@components/AnimatedNumber'
 import { BN } from '@project-serum/anchor'
@@ -28,8 +28,10 @@ import { ActionType } from '@reducers/vault'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import classNames from 'classnames'
-import useStyles from './style'
+
 import { SliderRatio } from '../SliderRatio/SliderRatio'
+import useStyles from './style'
+import { BottomInfoGrid } from './BottomInfoGrid'
 interface IProp {
   action: string
   cRatio: string
@@ -118,7 +120,8 @@ export const ActionBorrow: React.FC<IProp> = ({
 
   const [amountInputTouched, setAmountInputTouched] = React.useState(false)
   const [resultStatus, setResultStatus] = React.useState('none')
-
+  // const [leverStatus, setLeverStatus] = React.useState(false)
+  const [leverageLevel, setLeverageLevel] = React.useState(1)
   const changeCustomCRatio = (newCRatio: string) => {
     if (action === 'borrow') {
       setMaxBehaviorTo('number')
@@ -464,10 +467,13 @@ export const ActionBorrow: React.FC<IProp> = ({
             </Grid>
           </Grid>
           <Grid style={{ width: '100%' }}>
-            <Typography className={classes.title}>
-              {' '}
-              {action === 'borrow' ? 'Max borrow' : 'Repay'}
-            </Typography>
+            <Grid container item direction='row' justifyContent='space-between'>
+              <Typography className={classes.title}>
+                {' '}
+                {action === 'borrow' ? 'Max borrow' : 'Repay'}
+              </Typography>
+            </Grid>
+
             <ExchangeAmountInput
               value={amountBorrowString}
               setValue={(value: string) => {
@@ -519,96 +525,15 @@ export const ActionBorrow: React.FC<IProp> = ({
         </Grid>
         <Divider className={classes.divider} />
         <Grid className={classes.bottomGrid}>
-          <Grid className={classes.bottomInfo}>
-            <Grid>
-              <Typography className={classes.infoTitle}>Interest rate:</Typography>
-              <Typography className={classes.infoValueTo}>
-                <AnimatedNumber
-                  value={
-                    /* eslint-disable @typescript-eslint/indent */
-                    pairIndex !== null
-                      ? Number(
-                          printBN(
-                            pairs[pairIndex].debtInterestRate.val,
-                            pairs[pairIndex].debtInterestRate.scale
-                          )
-                        ) * 100
-                      : 0
-                  }
-                  formatValue={(value: number) => value.toFixed(2)}
-                  duration={300}
-                />
-                %
-              </Typography>
-            </Grid>
-            <Grid>
-              <Typography className={classes.infoTitle}>Liquidation price:</Typography>
-
-              <Grid container alignItems='center'>
-                <Typography className={classes.infoValueFrom}>
-                  {liquidationPriceFrom.toFixed(3)}$
-                </Typography>
-                <FlatIcon
-                  className={classes.flatIcon}
-                  style={{
-                    color:
-                      liquidationPriceFrom >= liquidationPriceTo
-                        ? colors.green.button
-                        : colors.red.error
-                  }}
-                />
-                <Typography className={classes.infoValueTo}>
-                  <AnimatedNumber
-                    value={liquidationPriceTo}
-                    formatValue={(value: number) => value.toFixed(3)}
-                    duration={300}
-                  />{' '}
-                  $
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid>
-              <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
-              <Grid container alignItems='center'>
-                <Grid className={classes.infoValueFrom}>
-                  <Grid container direction='row' alignItems='center'>
-                    {cRatioFrom < 9999 ? (
-                      cRatioFrom
-                    ) : (
-                      <AllInclusiveIcon style={{ height: '0.75em' }} />
-                    )}
-                    {cRatioFrom !== 'NaN' ? '%' : ''}
-                  </Grid>
-                </Grid>
-                <FlatIcon
-                  className={classes.flatIcon}
-                  style={{
-                    color:
-                      Number(cRatioTo === 'NaN' ? minCRatio : cRatioTo) >= Number(cRatioFrom)
-                        ? colors.green.button
-                        : colors.red.error
-                  }}
-                />
-                <Grid className={classes.infoValueTo}>
-                  <Grid container direction='row' alignItems='center'>
-                    {cRatioTo < 9999 ? (
-                      cRatioTo
-                    ) : (
-                      <AllInclusiveIcon
-                        style={{
-                          height: '0.75em',
-                          fontWeight: 900,
-                          stroke: 'currentcolor',
-                          strokeWidth: 1.2
-                        }}
-                      />
-                    )}
-                    {cRatioTo !== 'NaN' ? '%' : ''}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+          <BottomInfoGrid
+            pairIndex={pairIndex}
+            pairs={pairs}
+            liquidationPriceTo={liquidationPriceTo}
+            liquidationPriceFrom={liquidationPriceFrom}
+            cRatioFrom={cRatioFrom}
+            cRatioTo={cRatioTo}
+            minCRatio={minCRatio}
+          />
           <Grid className={classes.buttonAction} container>
             <Progress
               state={getProgressState(

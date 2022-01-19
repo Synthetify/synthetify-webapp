@@ -12,6 +12,7 @@ import { BorrowInfo } from '../BorrowInfo/BorrowInfo'
 import { BorrowTable } from '../BorrowTable/BorrowTable'
 import { ActionBorrow } from '../SwitchBorrow/ActionBorrow'
 import ActionMenuBorrow, { IActionContents } from '../SwitchBorrow/ActionMenuBorrow'
+import { SwitchLeverage } from '../SwitchLeverage/SwitchLeverage'
 import useStyles from './style'
 export interface BorrowedPair extends Vault {
   collateralData: { reserveBalance: number; symbol: string; price: Decimal; balance: BN }
@@ -69,7 +70,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
     setCRatio(nr)
   }
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
-
+  const [leverStatus, setLeverStatus] = React.useState(false)
   const changeValueFromTable = (collSymbol: string, synthSymbol: string, vaultType: number) => {
     const index = pairs.findIndex(
       element =>
@@ -148,7 +149,16 @@ export const WrappedBorrow: React.FC<IProp> = ({
   return (
     <Grid className={classes.root}>
       <Grid className={classes.actionGrid}>
-        <ActionMenuBorrow actionContents={actionContents} />
+        <ActionMenuBorrow
+          actionContents={actionContents}
+          SwitchLeverage={
+            <SwitchLeverage
+              leverStatus={leverStatus}
+              setLeverStatus={setLeverStatus}
+              leverType={'Short'}
+            />
+          }
+        />
         {userVaults.length !== 0 ? (
           <BorrowTable
             userVaults={userVaults}

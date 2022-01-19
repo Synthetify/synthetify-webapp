@@ -243,6 +243,29 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: '36px!important'
       }
     }
+  },
+
+  selectIcon: {
+    color: colors.white.main
+  },
+  selectRoot: {
+    width: '40px',
+    background: colors.navy.background,
+    ...typography.subtitle2,
+
+    padding: '2px 0px 6px 6px',
+    display: 'flex',
+    borderRadius: '8px',
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption2,
+      width: '20px',
+      padding: '2px 0px 4px 4px'
+    },
+    '&:focus': {
+      backgroundColor: `${colors.navy.background}80`,
+      boxShadow: 'none',
+      borderRadius: '8px'
+    }
   }
 }))
 export default useStyles

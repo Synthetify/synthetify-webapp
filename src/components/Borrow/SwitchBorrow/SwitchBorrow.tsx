@@ -2,9 +2,9 @@ import React from 'react'
 import { Box, Divider, Fade, Grid, makeStyles, Tab, Tabs, Typography } from '@material-ui/core'
 import { Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
-
 export interface IProps {
   menuItems: IMenuItem
+  SwitchLeverage: React.ReactNode
 }
 
 export interface IMenuItem {
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export const SwitchBorrow: React.FC<IProps> = ({ menuItems }) => {
+export const SwitchBorrow: React.FC<IProps> = ({ menuItems, SwitchLeverage }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const [fadeIn, setFadeIn] = React.useState(true)
@@ -145,7 +145,7 @@ export const SwitchBorrow: React.FC<IProps> = ({ menuItems }) => {
   return (
     <Grid className={classes.root}>
       <Grid className={classes.wrapper}>
-        <Grid className={classes.tabs}>
+        <Grid className={classes.tabs} container direction='row' justifyContent='space-between'>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -156,6 +156,7 @@ export const SwitchBorrow: React.FC<IProps> = ({ menuItems }) => {
             <Tab disableRipple label='borrow' classes={singleTabClasses} />
             <Tab disableRipple label='repay' classes={singleTabClasses} />
           </Tabs>
+          <Grid>{SwitchLeverage}</Grid>
         </Grid>
       </Grid>
       <Divider style={{ background: colors.navy.darkGrey }} />
