@@ -74,9 +74,9 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xDOT: 'Synthetic Polkadot'
 }
 
-const AVERAGE_MNDE_APY = 6.81
+const AVERAGE_MNDE_APY = 28.24
 
-const MARINADE_PER_POINT = 1.43e-7
+const MARINADE_PER_POINT = 6.62e-7
 
 export {
   SolanaNetworks,
