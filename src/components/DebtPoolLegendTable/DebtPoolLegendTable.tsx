@@ -1,14 +1,9 @@
 import React, { useRef } from 'react'
-import {
-  Grid,
-  Typography,
-  useMediaQuery
-} from '@material-ui/core'
+import { Grid, Typography, useMediaQuery } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import classNames from 'classnames'
 import { theme } from '@static/theme'
 import useStyles from './style'
-
 export interface Data {
   id: string
   label: string
@@ -36,27 +31,13 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
   const rootRef = useRef<HTMLDivElement>(null)
 
   const calcEmptyRowsToRender = () => {
-    if (isXsDown || !rootRef.current) {
+    if (isXsDown || !rootRef.current || !calcMaxHeight()) {
       return 0
     }
-
     if (isSmDown) {
-      return Math.ceil((rootRef.current.offsetHeight - ((data.length + 1) * 40)) / 40)
+      return Math.floor((calcMaxHeight() - 40) / 40) - data.length + 1
     }
-
-    return Math.ceil((rootRef.current.offsetHeight - 60 - (data.length * 48)) / 48)
-  }
-
-  const calcMaxHeight = () => {
-    const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
-
-    if (!isXsDown) {
-      const tableHeight = isSmDown ? ((data.length + 1) * 40) : (60 + (data.length * 48))
-
-      return Math.max(tableHeight, plotCardHeight)
-    }
-
-    return 'unset'
+    return Math.floor((calcMaxHeight() - 60) / 48) - data.length + 1
   }
 
   const formatTableValue = (value: string) => {
@@ -76,18 +57,29 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
 
     return Number(numVal.toFixed(0)).toLocaleString('en-US')
   }
+  const calcMaxHeight = () => {
+    const plotCardHeight = document.getElementById('debtPlot')?.offsetHeight ?? 0
+
+    if (!isXsDown) {
+      const tableHeight = isSmDown ? (data.length + 1) * 40 : 60 + data.length * 48
+
+      return Math.max(tableHeight, plotCardHeight)
+    }
+
+    return 0
+  }
 
   return (
-    <Grid className={classes.root} ref={rootRef} style={{ maxHeight: calcMaxHeight() }}>
+    <Grid
+      className={classes.root}
+      ref={rootRef}
+      style={{
+        maxHeight: calcMaxHeight() === 0 ? 'unset' : calcMaxHeight(),
+        overflowY: data.length >= 10 ? 'scroll' : 'hidden'
+      }}>
       <Grid className={classes.header} container direction='row'>
-        <Grid className={classes.column} />
-
         <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
-          <Typography className={classes.headerText}>DEBT</Typography>
-        </Grid>
-
-        <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
-          <Typography className={classes.headerText}>COLLATERAL</Typography>
+          <Typography className={classes.headerText}>TOKEN</Typography>
         </Grid>
 
         <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
@@ -96,14 +88,24 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
       </Grid>
 
       {data
-        .sort((a, b) => (Math.abs(b.debt.usdValue - b.collateral.usdValue) - Math.abs(a.debt.usdValue - a.collateral.usdValue)))
+        .sort(
+          (a, b) =>
+            Math.abs(b.debt.usdValue - b.collateral.usdValue) -
+            Math.abs(a.debt.usdValue - a.collateral.usdValue)
+        )
         .map((token, index) => {
           const delta = token.debt.amount - token.collateral.amount
           return (
             <Grid key={index} id={token.id} className={classes.row} container direction='row'>
-              <Grid className={classes.column} container item justifyContent='center' alignItems='center'>
+              <Grid
+                className={classes.column}
+                container
+                item
+                justifyContent='center'
+                alignItems='center'>
                 <Typography className={classes.tokenName} style={{ color: token.color }}>
-                  {token.label}{' ('}
+                  {token.label}
+                  {' ('}
                   <AnimatedNumber
                     value={token.percent}
                     duration={500}
@@ -112,56 +114,31 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
                   {'%)'}
                 </Typography>
               </Grid>
-
-              <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
-                <Typography className={classes.tokenAmount}>
-                  <AnimatedNumber
-                    value={token.debt.amount}
-                    duration={500}
-                    formatValue={formatTableValue}
-                  />
-                  {' '}{token.label}
-                </Typography>
-                <Typography className={classes.tokenValue}>
-                  $
-                  <AnimatedNumber
-                    value={token.debt.usdValue}
-                    duration={500}
-                    formatValue={formatTableValue}
-                  />
-                </Typography>
-              </Grid>
-
-              <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center'>
-                <Typography className={classes.tokenAmount}>
-                  <AnimatedNumber
-                    value={token.collateral.amount}
-                    duration={500}
-                    formatValue={formatTableValue}
-                  />
-                  {' '}{token.label}
-                </Typography>
-                <Typography className={classes.tokenValue}>
-                  $
-                  <AnimatedNumber
-                    value={token.collateral.usdValue}
-                    duration={500}
-                    formatValue={formatTableValue}
-                  />
-                </Typography>
-              </Grid>
-
-              <Grid className={classNames(classes.column, classes.dataCell)} container item direction='column' justifyContent='center' >
-                <Typography className={classNames(classes.tokenAmount, delta < 0 ? classes.negative : undefined)}>
+              <Grid
+                className={classNames(classes.column, classes.dataCell)}
+                container
+                item
+                direction='row'
+                justifyContent='center'
+                alignItems='center'>
+                <Typography
+                  className={classNames(
+                    classes.tokenAmount,
+                    delta < 0 ? classes.negative : undefined
+                  )}>
                   <AnimatedNumber
                     value={token.debt.amount - token.collateral.amount}
                     duration={500}
                     formatValue={formatTableValue}
                   />
-                  {' '}{token.label}
+                  {` ${token.label} `}
                 </Typography>
-                <Typography className={classNames(classes.tokenValue, delta < 0 ? classes.negative : undefined)}>
-                  $
+                <Typography
+                  className={classNames(
+                    classes.tokenValue,
+                    delta < 0 ? classes.negative : undefined
+                  )}>
+                  &nbsp;{'/ $'}
                   <AnimatedNumber
                     value={token.debt.usdValue - token.collateral.usdValue}
                     duration={500}
@@ -174,8 +151,6 @@ export const LegendDebtPool: React.FC<IProps> = ({ data }) => {
         })}
       {[...Array(calcEmptyRowsToRender()).keys()].map((_e, index) => (
         <Grid key={`empty${index}`} className={classes.row} container direction='row'>
-          <Grid className={classes.column} />
-          <Grid className={classes.column} />
           <Grid className={classes.column} />
           <Grid className={classes.column} />
         </Grid>

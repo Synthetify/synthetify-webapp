@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React from 'react'
 import { Grid, CardContent, Card, Button, Paper, Typography } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
@@ -76,10 +77,10 @@ export const LinePlotContainer: React.FC<IProp> = ({
                     ...(infoData.percent === 'NaN'
                       ? { color: '#40BFA0' }
                       : Number(infoData.percent) >= 0
-                        ? Number(infoData.percent) === 0
-                          ? { color: '#777777' }
-                          : { color: '#40BFA0' }
-                        : { color: '#C52727' }),
+                      ? Number(infoData.percent) === 0
+                        ? { color: '#777777' }
+                        : { color: '#40BFA0' }
+                      : { color: '#C52727' }),
                     display: 'flex',
                     alignContent: 'center'
                   }}>
@@ -151,10 +152,10 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
-                      setMenuOption('Burn')
+                      setMenuOption('Repay')
                       changeData('burn')
                     }}>
-                    Burn
+                    Repay
                   </Button>
                   <Button
                     className={classes.optionItem}

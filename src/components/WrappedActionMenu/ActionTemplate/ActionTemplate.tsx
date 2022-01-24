@@ -10,7 +10,7 @@ import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/Exchange
 import { theme } from '@static/theme'
 import useStyles from './style'
 
-export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn'
+export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'repay'
 export type MaxBehavior = 'number' | 'maxU64' | 'balance'
 
 export interface IProps {
@@ -91,11 +91,12 @@ export const ActionTemplate: React.FC<IProps> = ({
     const isLessThanMaxAmount = amountBN.mul(new BN(10).pow(new BN(decimalDiff))).lte(maxAvailable)
     return (
       !amountBN.eqn(0) &&
-      (
-        isLessThanMaxAmount ||
-        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !(maxAvailable.eqn(0))) ||
-        (maxBehavior === 'balance' && typeof balance !== 'undefined' && amountBN.eq(balance) && !(maxAvailable.eqn(0)))
-      )
+      (isLessThanMaxAmount ||
+        (maxBehavior === 'maxU64' && amountBN.eq(MAX_U64) && !maxAvailable.eqn(0)) ||
+        (maxBehavior === 'balance' &&
+          typeof balance !== 'undefined' &&
+          amountBN.eq(balance) &&
+          !maxAvailable.eqn(0)))
     )
   }
 
@@ -153,7 +154,7 @@ export const ActionTemplate: React.FC<IProps> = ({
     const actionToNoun: { [key in ActionType]: string } = {
       mint: 'Minting',
       withdraw: 'Withdrawing',
-      burn: 'Burning',
+      repay: 'Repaying',
       deposit: 'Depositing'
     }
 
@@ -168,7 +169,7 @@ export const ActionTemplate: React.FC<IProps> = ({
     const actionToPastNoun: { [key in ActionType]: string } = {
       mint: 'minted',
       withdraw: 'withdrawn',
-      burn: 'burned',
+      repay: 'repaid',
       deposit: 'deposited'
     }
 
@@ -238,8 +239,7 @@ export const ActionTemplate: React.FC<IProps> = ({
         direction='row'
         justifyContent='flex-start'
         className={classes.bottom}
-        style={getProgressState() !== 'none' && isXs ? { height: 76 } : undefined}
-      >
+        style={getProgressState() !== 'none' && isXs ? { height: 76 } : undefined}>
         <Hidden xsDown>
           <OutlinedButton
             name={capitalizeString(action)}

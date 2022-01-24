@@ -74,8 +74,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       boxShadow: `0px 0px 6px ${colors.navy.button}`
     },
     '&:hover:last-child': {
-      background: `${colors.navy.navButton}40`,
-      boxShadow: `0px 0px 6px ${colors.navy.button}`,
       borderRadius: '0px 0px 10px 10px'
     }
   },
