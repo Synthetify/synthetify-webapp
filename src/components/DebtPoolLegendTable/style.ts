@@ -5,9 +5,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: 496,
     borderRadius: 10,
-    overflow: 'hidden',
+    position: 'relative',
+    overflowX: 'hidden',
+    zIndex: 1,
     backgroundColor: colors.navy.component,
     marginLeft: 32,
+    scrollbarColor: `${colors.green.main} transparent`,
+    scrollbarWidth: 'auto',
 
     [theme.breakpoints.down('md')]: {
       width: 464,
@@ -24,11 +28,39 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
       minWidth: 'unset',
       marginLeft: 0
+    },
+    '&::-webkit-scrollbar': {
+      width: 7,
+      position: 'absolute',
+      top: 0,
+      zIndex: -1,
+      paddingLeft: 5
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      borderRadius: 10,
+      zIndex: -5,
+      left: 10,
+      top: 10
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: colors.green.main,
+      visibility: 'visible',
+      width: 5,
+      borderRadius: 10
     }
   },
   header: {
     height: 60,
-
+    position: 'sticky',
+    top: 0,
+    '& $column:nth-child(1)': {
+      backgroundColor: colors.navy.component
+    },
+    '& $column:nth-child(2)': {
+      backgroundColor: '#171740'
+    },
     [theme.breakpoints.down('sm')]: {
       height: 40
     }
@@ -67,10 +99,30 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     '&:nth-child(2n+1)': {
       backgroundColor: `${colors.navy.background}00`
+    },
+    '&:nth-child(1n)': {
+      flexGrow: 1
+    },
+    '&:nth-child(2n)': {
+      flexGrow: 3
+    }
+  },
+  emptyColumn: {
+    width: '25%',
+    backgroundColor: `${colors.navy.background}4D`,
+    '&:nth-child(2n+1)': {
+      backgroundColor: `${colors.navy.background}00`
+    },
+    '&:nth-child(1n)': {
+      flexGrow: 1
+    },
+    '&:nth-child(2n)': {
+      flexGrow: 3
     }
   },
   dataCell: {
     paddingLeft: 8,
+    textAlign: 'center',
 
     [theme.breakpoints.down('sm')]: {
       paddingLeft: 5
@@ -93,7 +145,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body3,
 
     [theme.breakpoints.down('sm')]: {
-      ...typography.caption4
+      ...typography.caption4,
+      fontSize: 13
     }
   },
   tokenAmount: {
@@ -104,7 +157,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textOverflow: 'ellipsis',
 
     [theme.breakpoints.down('sm')]: {
-      ...typography.caption4
+      ...typography.caption4,
+      fontSize: 13
     }
   },
   tokenValue: {

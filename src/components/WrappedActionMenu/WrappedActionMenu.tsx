@@ -117,11 +117,11 @@ export const WrappedActionMenu: React.FC<IProps> = ({
         emptyTokensHandler={emptyWithdrawTokensHandler}
       />
     ),
-    burn: (
+    repay: (
       <ActionTemplate
         maxAvailable={availableToBurn}
         maxDecimal={6}
-        action='burn'
+        action='repay'
         onClick={onBurn}
         currency='xUSD'
         sending={burnState.sending}

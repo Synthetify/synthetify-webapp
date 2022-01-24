@@ -19,7 +19,7 @@ const actionContents: IActionContents = {
   mint: 'mint',
   deposit: 'deposit',
   withdraw: 'withdraw',
-  burn: 'burn',
+  repay: 'repay',
   rewards: 'rewards'
 }
 
