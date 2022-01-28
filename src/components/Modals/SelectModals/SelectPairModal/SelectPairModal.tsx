@@ -121,6 +121,7 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                       <Typography className={classes.tokenName}>
                         {pairSymbol(pair)}
                         {typeof pair.type !== 'undefined' &&
+                        pair.type !== 3 &&
                         getCountSameVaults(pairs, pair.symbol2, pair.symbol1) > 1
                           ? ` - ${alphabetTable[pair.type]}`
                           : null}
