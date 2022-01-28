@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assets, exchangeAccount, state } from '@selectors/exchange'
+import { assets, collaterals, exchangeAccount, state, synthetics } from '@selectors/exchange'
 import { network, status } from '@selectors/solanaConnection'
 import { actions } from '@reducers/exchange'
 import { Status } from '@reducers/solanaConnection'
@@ -11,6 +11,7 @@ import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/c
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
 import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
+import { getAddressFromIndex } from '@consts/utils'
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -19,6 +20,8 @@ const ExhcangeEvents = () => {
   const userAccount = useSelector(exchangeAccount)
   const allAssets = useSelector(assets)
   const exchangeProgram = getCurrentExchangeProgram()
+  const allSynthetics = useSelector(synthetics)
+  const allCollaterals = useSelector(collaterals)
   React.useEffect(() => {
     if (
       userAccount.address.equals(DEFAULT_PUBLICKEY) ||
@@ -96,11 +99,13 @@ const ExhcangeEvents = () => {
     }
     const connectEvents = () => {
       allAssets.forEach((asset, index) => {
+        const table = getAddressFromIndex(allSynthetics, allCollaterals, index)
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           data.price &&
             dispatch(
               actions.setAssetPrice({
+                tableAddress: table,
                 tokenIndex: index,
                 price: {
                   val: new BN(data.price * 10 ** asset.price.scale),

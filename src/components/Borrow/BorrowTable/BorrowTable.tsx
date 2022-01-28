@@ -11,9 +11,9 @@ import useStyles from './style'
 
 interface IProp {
   userVaults: UserVaults[]
-  setValueWithTable: (collSymbol: string, synthSymbol: string, vaultType: number) => void
-  active: { collateral: string | null; synthetic: string | null }
-  vaultType: number
+  setValueWithTable?: (collSymbol: string, synthSymbol: string, vaultType: number) => void
+  active?: { collateral: string | null; synthetic: string | null }
+  vaultType?: number
 }
 export const BorrowTable: React.FC<IProp> = ({
   userVaults,
@@ -77,14 +77,17 @@ export const BorrowTable: React.FC<IProp> = ({
                 key={index}
                 className={classNames(
                   classes.gridRow,
-                  element.collateral === active.collateral &&
+                  typeof active !== 'undefined' &&
+                    element.collateral === active.collateral &&
                     element.borrowed === active.synthetic &&
                     element.vaultType === vaultType
                     ? classes.active
                     : null
                 )}
                 onClick={() =>
-                  setValueWithTable(element.collateral, element.borrowed, element.vaultType)
+                  setValueWithTable
+                    ? setValueWithTable(element.collateral, element.borrowed, element.vaultType)
+                    : null
                 }
                 container
                 direction='row'>

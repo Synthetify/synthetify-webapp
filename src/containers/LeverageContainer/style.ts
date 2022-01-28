@@ -5,7 +5,7 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '1480px',
+    maxWidth: '1400px',
     width: 'unset',
     paddingInline: 18
   },

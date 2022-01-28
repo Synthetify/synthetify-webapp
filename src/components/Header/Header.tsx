@@ -52,9 +52,9 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-  const routes = ['staking', 'exchange', 'vaults', 'statistics']
+  const routes = ['staking', 'exchange', 'vaults', 'leverage', 'statistics']
   if (typeOfNetwork !== NetworkType.TESTNET) {
-    routes.splice(routes.length - 1, 0, 'swapline')
+    routes.splice(routes.length - 3, 0, 'swapline')
   }
 
   const [activePath, setActive] = React.useState(landing)

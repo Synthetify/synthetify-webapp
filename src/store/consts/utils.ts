@@ -1,8 +1,9 @@
 import { RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { BN } from '@project-serum/anchor'
+import { ICollateral, ISynthetic } from '@reducers/exchange'
 import { u64 } from '@solana/spl-token'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
-
+import * as R from 'remeda'
 export const tou64 = (amount: BN | String) => {
   // eslint-disable-next-line new-cap
   return new u64(amount.toString())
@@ -252,4 +253,25 @@ export const calculateTimeRemaining = (slot: number, nextRoundStartSlot: BN): BN
     return new BN(1)
   }
   return slotDiff.muln(slotTime)
+}
+export const getAddressFromIndex = (
+  synthetics: { [x: string]: ISynthetic },
+  collateral: { [x: string]: ICollateral },
+  nr: number
+) => {
+  let syntheticAddress: string = ''
+  R.forEachObj(synthetics, element => {
+    if (element.assetIndex === nr) {
+      syntheticAddress = element.assetAddress.toString()
+    }
+  })
+
+  let collateralAddress: string = ''
+  R.forEachObj(collateral, element => {
+    if (element.assetIndex === nr) {
+      collateralAddress = element.collateralAddress.toString()
+    }
+  })
+
+  return [syntheticAddress, collateralAddress]
 }

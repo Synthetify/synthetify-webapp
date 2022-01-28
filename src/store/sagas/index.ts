@@ -5,9 +5,12 @@ import { exchangeSaga } from './exchange'
 import { stakingSaga } from './staking'
 import { statsSaga } from './stats'
 import { vaultSaga } from './vault'
+import { leverageSaga } from './leverage'
 export function* rootSaga(): Generator {
   yield all(
-    [connectionSaga, walletSaga, exchangeSaga, stakingSaga, statsSaga, vaultSaga].map(spawn)
+    [connectionSaga, walletSaga, exchangeSaga, stakingSaga, statsSaga, vaultSaga, leverageSaga].map(
+      spawn
+    )
   )
 }
 export default rootSaga
