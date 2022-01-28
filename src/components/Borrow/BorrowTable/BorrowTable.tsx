@@ -22,26 +22,23 @@ export const BorrowTable: React.FC<IProp> = ({
   vaultType
 }) => {
   const classes = useStyles()
+  const alphabetTable = ['A', 'B', 'C', 'D', 'E', 'F']
+  const getCountSameVaults = (array: UserVaults[], tokenBorr: string, tokenColl: string) => {
+    let count = 0
+    array.forEach(
+      element => element.borrowed === tokenBorr && element.collateral === tokenColl && count++
+    )
+    return count
+  }
   return (
     <Grid className={classes.root} component={Paper}>
       <Grid>
         <Grid>
           <Grid container direction='row' className={classes.headerRow}>
-            <Hidden xsDown>
-              <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
-                Collateral
-              </Grid>
-            </Hidden>
-            <Hidden xsDown>
-              <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
-                Borrowed
-              </Grid>
-            </Hidden>
-            <Hidden smUp>
-              <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
-                Coll./Borr.
-              </Grid>
-            </Hidden>
+            <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
+              Coll./Borr.
+            </Grid>
+            <Grid classes={{ root: classNames(classes.rootHeader, classes.typeColumn) }}>Type</Grid>
             <Grid classes={{ root: classNames(classes.rootHeader, classes.amountColumn) }}>
               <Hidden xsDown> Deposited</Hidden>
               <Hidden smUp> Depos.</Hidden>
@@ -92,22 +89,22 @@ export const BorrowTable: React.FC<IProp> = ({
                 container
                 direction='row'>
                 <Hidden xsDown>
-                  <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
-                    <Grid container alignItems='center'>
+                  <Grid
+                    classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}
+                    style={{ display: 'flex' }}>
+                    <Grid className={classes.dualIcon}>
                       <CardMedia
                         className={classes.icon}
                         image={icons[element.collateral] ?? icons.SNY}
+                        style={{ marginRight: 0 }}
                       />
-                      {element.collateral}
-                    </Grid>
-                  </Grid>
-                  <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
-                    <Grid container alignItems='center'>
                       <CardMedia
-                        className={classes.icon}
+                        className={classNames(classes.icon, classes.secondIcon)}
                         image={icons[element.borrowed] ?? icons.SNY}
                       />
-                      {element.borrowed}
+                    </Grid>
+                    <Grid>
+                      {element.collateral}/{element.borrowed}
                     </Grid>
                   </Grid>
                 </Hidden>
@@ -126,6 +123,14 @@ export const BorrowTable: React.FC<IProp> = ({
                     </Grid>
                   </Grid>
                 </Hidden>
+                <Grid
+                  classes={{
+                    root: classNames(classes.rootCell, classes.typeColumn)
+                  }}>
+                  {getCountSameVaults(userVaults, element.borrowed, element.collateral) > 1
+                    ? alphabetTable[element.vaultType]
+                    : null}
+                </Grid>
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
