@@ -3,6 +3,7 @@ import { IVault, vaultSliceName } from '@reducers/vault'
 import { createSelector } from '@reduxjs/toolkit'
 import BN from 'bn.js'
 import { keySelectors, AnyProps } from './helpers'
+import { currentlySelected } from './leverage'
 
 const store = (s: AnyProps) => s[vaultSliceName] as IVault
 
@@ -31,7 +32,24 @@ export const getActualUserVault = createSelector(
     }
   }
 )
-
+export const getCurrentVaultLeverage = createSelector(
+  currentlySelected,
+  userVaults,
+  (selected, allUserVaults) => {
+    if (typeof allUserVaults[selected.vaultAddress.toString()] !== 'undefined') {
+      const actualUserVault = allUserVaults[selected.vaultAddress.toString()]
+      return {
+        collateralAmount: actualUserVault.collateralAmount,
+        borrowAmount: actualUserVault.syntheticAmount
+      }
+    } else {
+      return {
+        collateralAmount: { val: new BN(0), scale: 0 },
+        borrowAmount: { val: new BN(0), scale: 0 }
+      }
+    }
+  }
+)
 export const getVaultCollateralBalance = createSelector(
   vaults,
   assetPrice,

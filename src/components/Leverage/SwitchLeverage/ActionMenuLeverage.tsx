@@ -11,6 +11,8 @@ export interface IProps {
   onClickRestartButton: () => void
   minCRatio: number
   changeCustomCRatio: (value: string) => void
+  currentLeverage: string
+  maxLeverage: string
 }
 export type ActionType = 'open' | 'close'
 
@@ -25,7 +27,9 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
   minCRatio,
   liquidationPriceTo,
   cRatio,
-  changeCustomCRatio
+  changeCustomCRatio,
+  currentLeverage,
+  maxLeverage
 }) => {
   const actions: IMenuItem = { ...actionContents }
 
@@ -39,6 +43,8 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
         liquidationPriceTo={liquidationPriceTo}
         cRatio={cRatio}
         changeCustomCRatio={changeCustomCRatio}
+        currentLeverage={currentLeverage}
+        maxLeverage={maxLeverage}
       />
     </Grid>
   )

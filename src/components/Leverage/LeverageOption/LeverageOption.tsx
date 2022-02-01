@@ -4,7 +4,6 @@ import { colors } from '@static/theme'
 
 import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
-import { getLeverageLevel } from '@consts/leverageUtils'
 
 interface IProp {
   onClickSubmitButton: () => void
@@ -13,6 +12,8 @@ interface IProp {
   liquidationPriceTo: number
   cRatio: string
   changeCustomCRatio: (value: string) => void
+  currentLeverage: string
+  maxLeverage: string
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -20,7 +21,9 @@ export const LeverageOption: React.FC<IProp> = ({
   minCRatio,
   liquidationPriceTo,
   cRatio,
-  changeCustomCRatio
+  changeCustomCRatio,
+  currentLeverage,
+  maxLeverage
 }) => {
   const classes = useStyles()
   return (
@@ -34,7 +37,9 @@ export const LeverageOption: React.FC<IProp> = ({
           <Grid container justifyContent='space-between'>
             <Grid>
               <Typography className={classes.infoTitle}>Liquidation price</Typography>
-              <Typography className={classes.headerTitle}>${liquidationPriceTo}</Typography>
+              <Typography className={classes.headerTitle}>
+                ${liquidationPriceTo.toFixed(3)}
+              </Typography>
             </Grid>
             <Grid>
               <Typography className={classes.infoTitle}>Collateral ratio</Typography>
@@ -60,7 +65,7 @@ export const LeverageOption: React.FC<IProp> = ({
             }}
             value={-cRatio}
             defaultValue={-minCRatio}
-            step={-5}
+            step={-2}
             min={-600}
             max={-minCRatio}
           />
@@ -81,16 +86,11 @@ export const LeverageOption: React.FC<IProp> = ({
           justifyContent='space-between'>
           <Grid>
             <Typography className={classes.infoTitle}>Leverage:</Typography>
-            <Typography className={classes.infoValue}>
-              {getLeverageLevel(Number(cRatio))}x
-            </Typography>
+            <Typography className={classes.infoValue}>{currentLeverage}x</Typography>
           </Grid>
           <Grid>
             <Typography className={classes.infoTitle}>Max leverage:</Typography>
-            <Typography className={classes.infoValue}>
-              {' '}
-              {getLeverageLevel(Number(minCRatio))}x
-            </Typography>
+            <Typography className={classes.infoValue}> {maxLeverage}x</Typography>
           </Grid>
           <Grid>
             <Typography className={classes.infoTitle}>Slippage limit:</Typography>

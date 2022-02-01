@@ -8,9 +8,9 @@ import {
 } from '@selectors/solanaWallet'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions } from '@reducers/vault'
+import { actions } from '@reducers/leverage'
 import { getGeneralTotals, UserVaults } from '@selectors/exchange'
-import { getActualUserVault, vaultSwap } from '@selectors/vault'
+import { getCurrentVaultLeverage, vaultSwap } from '@selectors/vault'
 import { Status } from '@reducers/solanaWallet'
 import { actions as snackbarActions } from '@reducers/snackbars'
 import { WrappedLeverage } from '@components/Leverage/WrappedLeverage/WrappedLeverage'
@@ -28,7 +28,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
   const vaultSwapData = useSelector(vaultSwap)
   const availableCollateral = useSelector(getAvailableCollateral)
   const availableRepay = useSelector(getAvailableRepay)
-  const actualVault = useSelector(getActualUserVault)
+  const actualVault = useSelector(getCurrentVaultLeverage)
   const totalGeneralAmount = useSelector(getGeneralTotals)
   const walletStatus = useSelector(status)
   const shortPairs = useSelector(short)
@@ -44,7 +44,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         hasError={vaultSwapData.error}
         onClickSubmitButton={() => {}}
         setActualPair={(synthetic, collateral, vaultType) => {
-          dispatch(actions.setActualVaultSwap({ collateral, synthetic, vaultType }))
+          dispatch(actions.setCurrentPair({ collateral, synthetic, vaultType }))
         }}
         availableCollateral={availableCollateral}
         availableRepay={availableRepay}

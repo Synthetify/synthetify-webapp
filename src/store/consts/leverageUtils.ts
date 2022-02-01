@@ -1,5 +1,6 @@
 import { ILeverageSynthetic } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
+import { ILeveragePair } from '@reducers/leverage'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -7,19 +8,48 @@ interface AssetPriceData {
   maxAvailable: BN
   balance: BN
 }
-export const getAssetFromAndTo = (allSynthetic: ILeverageSynthetic | null) => {
-  if (allSynthetic === null) {
+export const getAssetFromAndTo = (leveragePair: ILeveragePair | null) => {
+  if (leveragePair === null) {
     return [
       {
-        priceVal: new BN(0),
-        assetScale: 0,
+        priceVal: new BN(1),
+        assetScale: 1,
         symbol: null,
         maxAvailable: new BN(0),
         balance: new BN(0)
       },
       {
-        priceVal: new BN(0),
-        assetScale: 0,
+        priceVal: new BN(1),
+        assetScale: 1,
+        symbol: null,
+        maxAvailable: new BN(0),
+        balance: new BN(0)
+      }
+    ]
+  }
+
+  const syntheticFrom: AssetPriceData = {
+    priceVal: leveragePair.collateralPrice.val,
+    assetScale: leveragePair.collateralBalance.scale,
+    symbol: leveragePair.collateralSymbol,
+    maxAvailable: leveragePair.collateralBalance.val,
+    balance: leveragePair.collateralBalance.val
+  }
+  const syntheticTo: AssetPriceData = {
+    priceVal: leveragePair.syntheticPrice.val,
+    assetScale: leveragePair.syntheticBalance.scale,
+    symbol: leveragePair.syntheticSymbol,
+    maxAvailable: leveragePair.syntheticBalance.val,
+    balance: leveragePair.syntheticBalance.val
+  }
+  return [syntheticFrom, syntheticTo]
+}
+export const getSytnehticAsCollateral = (allSynthetic: ILeverageSynthetic | null) => {
+  if (allSynthetic === null) {
+    return [
+      {
+        priceVal: new BN(1),
+        assetScale: 1,
         symbol: null,
         maxAvailable: new BN(0),
         balance: new BN(0)
@@ -34,17 +64,9 @@ export const getAssetFromAndTo = (allSynthetic: ILeverageSynthetic | null) => {
     balance: allSynthetic.syntheticData.balance
   }
 
-  const synthetic: AssetPriceData = {
-    priceVal: allSynthetic.syntheticData.price.val,
-    assetScale: allSynthetic.syntheticData.supply.scale,
-    symbol: allSynthetic.syntheticData.symbol,
-    maxAvailable: allSynthetic.syntheticData.balance,
-    balance: allSynthetic.syntheticData.balance
-  }
-
-  return [collateral, synthetic]
+  return [collateral]
 }
 
 export const getLeverageLevel = (percentageCRatio: number) => {
-  return percentageCRatio !== 0 ? (1 / (1 - 1 / (percentageCRatio / 100))).toFixed(2) : '0'
+  return percentageCRatio > 100 ? (1 / (1 - 1 / (percentageCRatio / 100))).toFixed(2) : '1'
 }

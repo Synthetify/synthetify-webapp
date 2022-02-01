@@ -7,13 +7,14 @@ import { BN } from '@project-serum/anchor'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import { ILeverageSynthetic } from '@selectors/solanaWallet'
-import { getAssetFromAndTo } from '@consts/leverageUtils'
+import { getAssetFromAndTo, getSytnehticAsCollateral } from '@consts/leverageUtils'
 import { Select } from '@components/Inputs/Select/Select'
 import { ILeveragePair } from '@reducers/leverage'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
 import useStyles from './style'
+import { calculateAmountBorrow, calculateLiqPrice } from '@consts/borrowUtils'
 interface IProp {
   action: string
   liquidationPriceTo: number
@@ -29,6 +30,10 @@ interface IProp {
   leveragePairs: ILeveragePair[]
   leverageIndex: number | null
   setLeverageIndex: (nr: number) => void
+  currentLeverage: string
+  setLiquidationPriceTo: (nr: number) => void
+  setLiquidationPriceFrom: (nr: number) => void
+  cRatio: string
 }
 export const ActionLeverage: React.FC<IProp> = ({
   action,
@@ -43,22 +48,28 @@ export const ActionLeverage: React.FC<IProp> = ({
   noWalletHandler,
   leveragePairs,
   leverageIndex,
-  setLeverageIndex
+  setLeverageIndex,
+  currentLeverage,
+  setLiquidationPriceFrom,
+  setLiquidationPriceTo,
+  vaultAmount,
+  cRatio
 }) => {
   const classes = useStyles()
   const [amountToken, setAmountToken] = React.useState<BN>(new BN(0))
   const [amountTokenString, setAmountTokenString] = React.useState('')
-  const [availableBorrow, setAvailableBorrow] = React.useState(new BN(0))
-  const [buyingPower, setBuyingPower] = React.useState(0)
+  // const [availableBorrow, setAvailableBorrow] = React.useState(new BN(0))
   const [totalExposure, setTotalExposure] = React.useState(0)
   const [tokenFrom, tokenTo] = getAssetFromAndTo(
+    leverageIndex !== null ? leveragePairs[leverageIndex] : null
+  )
+  const [collateralToken] = getSytnehticAsCollateral(
     pairIndex !== null ? allSynthetic[pairIndex] : null
   )
-  // przemyśleć ra zmienna, zastapić dwoma różnymi obiektami?
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [amountInputTouched, setAmountInputTouched] = React.useState(false)
   const [changeOnOtherSynthtic, setChangeOnOtherSynthtic] = React.useState(false)
-
+  const [debtValue, setDebtValue] = React.useState<BN>(new BN(0))
   React.useEffect(() => {
     if (sending) {
       setShowOperationProgressFinale(true)
@@ -74,8 +85,71 @@ export const ActionLeverage: React.FC<IProp> = ({
     }
   }, [amountTokenString])
 
-  React.useEffect(() => {}, [pairIndex])
+  React.useEffect(() => {
+    setChangeOnOtherSynthtic(true)
+  }, [pairIndex])
+  React.useEffect(() => {
+    if (leverageIndex !== null && pairIndex !== null) {
+      setDebtValue(
+        calculateAmountBorrow(
+          tokenTo.priceVal,
+          tokenTo.assetScale,
+          collateralToken.priceVal,
+          collateralToken.assetScale,
+          amountToken
+            .mul(new BN(Number(currentLeverage) * 10 ** collateralToken.assetScale))
+            .div(new BN(10 ** collateralToken.assetScale)),
+          cRatio
+        )
+      )
+      setTotalExposure(
+        (+printBN(amountToken, collateralToken.assetScale) *
+          +printBN(collateralToken.priceVal, 8) *
+          Number(currentLeverage)) /
+          +printBN(tokenFrom.priceVal, 8) +
+          +printBN(vaultAmount.collateralAmount.val, vaultAmount.collateralAmount.scale)
+      )
+    }
+  }, [amountTokenString, cRatio, pairIndex, leverageIndex])
 
+  React.useEffect(() => {
+    if (leverageIndex !== null && pairIndex !== null) {
+      setLiquidationPriceFrom(
+        +calculateLiqPrice(
+          tokenFrom.priceVal,
+          vaultAmount.collateralAmount.val,
+          tokenTo.priceVal,
+          vaultAmount.borrowAmount.val,
+          leveragePairs[leverageIndex].liquidationThreshold,
+          tokenTo.assetScale,
+          tokenFrom.assetScale
+        )
+      )
+
+      const actualAmountCollateral = amountToken
+        .mul(new BN(Number(currentLeverage) * 10 ** collateralToken.assetScale))
+        .div(new BN(10 ** collateralToken.assetScale))
+        .mul(collateralToken.priceVal)
+        .div(tokenFrom.priceVal)
+      setLiquidationPriceTo(
+        +calculateLiqPrice(
+          tokenFrom.priceVal,
+          action === 'open'
+            ? actualAmountCollateral.add(vaultAmount.collateralAmount.val)
+            : vaultAmount.collateralAmount.val,
+
+          // przemyslec liquidacje kiedy zwracamy, jak ja policzyc poprawnie
+          tokenTo.priceVal,
+          action === 'open'
+            ? debtValue.add(vaultAmount.borrowAmount.val)
+            : vaultAmount.borrowAmount.val.sub(debtValue),
+          leveragePairs[leverageIndex].liquidationThreshold,
+          tokenTo.assetScale,
+          tokenFrom.assetScale
+        )
+      )
+    }
+  }, [debtValue])
   return (
     <Grid>
       <Grid className={classes.root}>
@@ -91,8 +165,16 @@ export const ActionLeverage: React.FC<IProp> = ({
                       hint={
                         <>
                           <img src={ExclamationMark} alt='' className={classes.circleIcon} />
-                          <Typography className={classes.tooltipTitle}>Max supply</Typography>
-                          Your amount exceeded current supply of token. Available to trade:
+                          <Typography className={classes.tooltipTitle}>!! Warning !!</Typography>
+                          There's no such pair, we'll exchange{' '}
+                          {pairIndex !== null
+                            ? allSynthetic[pairIndex].syntheticData.symbol
+                            : null}{' '}
+                          to{' '}
+                          {leverageIndex !== null
+                            ? leveragePairs[leverageIndex].collateralSymbol
+                            : null}{' '}
+                          and make a lever.
                         </>
                       }
                       anchor={
@@ -109,7 +191,9 @@ export const ActionLeverage: React.FC<IProp> = ({
                 <Typography className={classes.balance}>
                   Balance:{' '}
                   {action === 'open'
-                    ? Number(printBN(tokenFrom.maxAvailable, tokenFrom.assetScale)).toFixed(4)
+                    ? Number(
+                        printBN(collateralToken.maxAvailable, collateralToken.assetScale)
+                      ).toFixed(4)
                     : Number(printBN(tokenTo.maxAvailable, tokenTo.assetScale)).toFixed(4)}
                 </Typography>
               </Grid>
@@ -123,17 +207,14 @@ export const ActionLeverage: React.FC<IProp> = ({
                     if (value.match(/^\d*\.?\d*$/)) {
                       const limitedNumber = value.includes('.')
                         ? value.substr(0, value.indexOf('.')) +
-                          value.substr(
-                            value.indexOf('.'),
-                            action === 'open' ? tokenFrom.assetScale + 1 : tokenTo.assetScale + 1
-                          )
+                          value.substr(value.indexOf('.'), collateralToken.assetScale + 1)
                         : value
 
                       const BNValue = stringToMinDecimalBN(limitedNumber)
                       const difDecimal =
                         action === 'open'
-                          ? tokenFrom.assetScale - BNValue.decimal
-                          : tokenTo.assetScale - BNValue.decimal
+                          ? collateralToken.assetScale - BNValue.decimal
+                          : tokenFrom.assetScale - BNValue.decimal
                       setAmountTokenString(limitedNumber)
                       setAmountToken(BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))))
                     }
@@ -148,7 +229,7 @@ export const ActionLeverage: React.FC<IProp> = ({
                   current={
                     pairIndex !== null
                       ? action === 'open'
-                        ? tokenFrom.symbol
+                        ? collateralToken.symbol
                         : tokenTo.symbol
                       : null
                   }
@@ -188,7 +269,9 @@ export const ActionLeverage: React.FC<IProp> = ({
             <Grid container justifyContent='space-between'>
               <Typography className={classes.infoTitle}>Liquidation price:</Typography>
               <Grid className={classes.valueContainer}>
-                <Typography className={classes.infoValueFrom}>${liquidationPriceFrom}</Typography>
+                <Typography className={classes.infoValueFrom}>
+                  ${liquidationPriceFrom.toFixed(3)}
+                </Typography>
                 <FlatIcon
                   className={classes.flatIcon}
                   style={{
@@ -198,23 +281,23 @@ export const ActionLeverage: React.FC<IProp> = ({
                         : colors.red.error
                   }}
                 />
-                <Typography className={classes.infoValueTo}>${liquidationPriceTo}</Typography>
+                <Typography className={classes.infoValueTo}>
+                  ${liquidationPriceTo.toFixed(3)}
+                </Typography>
               </Grid>
             </Grid>
             <Grid container justifyContent='space-between'>
-              <Typography className={classes.infoTitle}>Buying power:</Typography>
+              <Typography className={classes.infoTitle}>Buying {tokenFrom.symbol}:</Typography>
               <Grid className={classes.valueContainer}>
-                <Typography className={classes.infoValueFrom}>0.0 {tokenFrom.symbol}</Typography>
-                <FlatIcon
-                  className={classes.flatIcon}
-                  style={{
-                    color:
-                      liquidationPriceFrom >= liquidationPriceTo
-                        ? colors.green.button
-                        : colors.red.error
-                  }}
-                />
-                <Typography className={classes.infoValueTo}>4.55 {tokenFrom.symbol}</Typography>
+                <Typography className={classes.infoValueFrom}>
+                  {Number(
+                    (+printBN(amountToken, collateralToken.assetScale) *
+                      +printBN(collateralToken.priceVal, 8) *
+                      (Number(currentLeverage) - 1)) /
+                      +printBN(tokenFrom.priceVal, 8)
+                  ).toFixed(2)}{' '}
+                  {tokenFrom.symbol}
+                </Typography>
               </Grid>
             </Grid>
             <Grid container justifyContent='space-between'>
@@ -222,7 +305,10 @@ export const ActionLeverage: React.FC<IProp> = ({
                 Total {tokenFrom.symbol} exposure:
               </Typography>
               <Grid className={classes.valueContainer}>
-                <Typography className={classes.infoValueFrom}>0.0 {tokenFrom.symbol}</Typography>
+                <Typography className={classes.infoValueFrom}>
+                  {printBN(vaultAmount.collateralAmount.val, vaultAmount.collateralAmount.scale)}{' '}
+                  {tokenFrom.symbol}
+                </Typography>
                 <FlatIcon
                   className={classes.flatIcon}
                   style={{
@@ -232,13 +318,20 @@ export const ActionLeverage: React.FC<IProp> = ({
                         : colors.red.error
                   }}
                 />
-                <Typography className={classes.infoValueTo}>4.55 {tokenFrom.symbol}</Typography>
+                <Typography className={classes.infoValueTo}>
+                  {' '}
+                  {totalExposure.toFixed(2)}
+                  {tokenFrom.symbol}
+                </Typography>
               </Grid>
             </Grid>
             <Grid container justifyContent='space-between'>
               <Typography className={classes.infoTitle}>Vault {tokenTo.symbol} Debt:</Typography>
               <Grid className={classes.valueContainer}>
-                <Typography className={classes.infoValueFrom}> 0.0 {tokenTo.symbol}</Typography>
+                <Typography className={classes.infoValueFrom}>
+                  {printBN(vaultAmount.borrowAmount.val, vaultAmount.borrowAmount.scale)}{' '}
+                  {tokenTo.symbol}
+                </Typography>
                 <FlatIcon
                   className={classes.flatIcon}
                   style={{
@@ -248,16 +341,18 @@ export const ActionLeverage: React.FC<IProp> = ({
                         : colors.red.error
                   }}
                 />
-                <Typography className={classes.infoValueTo}>4.55 {tokenTo.symbol}</Typography>
+                <Typography className={classes.infoValueTo}>
+                  {(+printBN(debtValue, tokenTo.assetScale)).toFixed(4)} {tokenTo.symbol}
+                </Typography>
               </Grid>
             </Grid>
             <Grid container justifyContent='space-between'>
-              <Typography className={classes.infoTitle}>Current price:</Typography>
+              <Typography className={classes.infoTitle}>
+                Current price {collateralToken.symbol}:
+              </Typography>
               <Grid className={classes.valueContainer}>
                 <Typography className={classes.infoValueFrom}>
-                  {action === 'open'
-                    ? Number(printBN(tokenFrom.priceVal, 8)).toFixed(4)
-                    : Number(printBN(tokenTo.priceVal, 8)).toFixed(4)}
+                  ${Number(printBN(collateralToken.priceVal, 8)).toFixed(4)}
                 </Typography>
               </Grid>
             </Grid>

@@ -13,6 +13,7 @@ import { ActionLeverage } from '../SwitchLeverage/ActionLeverage'
 import ActionMenuLeverage, { IActionContents } from '../SwitchLeverage/ActionMenuLeverage'
 import useStyles from './style'
 import { ILeveragePair } from '@reducers/leverage'
+import { getLeverageLevel } from '@consts/leverageUtils'
 export interface BorrowedPair extends Vault {
   collateralData: { reserveBalance: number; symbol: string; price: Decimal; balance: BN }
   syntheticData: ExchangeSyntheticTokens
@@ -62,32 +63,43 @@ export const WrappedLeverage: React.FC<IProp> = ({
   const [cRatio, setCRatio] = React.useState('500')
   const [liquidationPriceTo, setLiquidationPriceTo] = React.useState(0)
   const [liquidationPriceFrom, setLiquidationPriceFrom] = React.useState(0)
-  const [minCRatio, setMinCRatio] = React.useState<number>(1)
+  const [minCRatio, setMinCRatio] = React.useState<number>(100)
   const [leverageType, setLeverageType] = React.useState<string>('short')
-
-  // const changeCRatio = (nr: string) => {
-  //   setCRatio(nr)
-  // }
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [leverageIndex, setLeverageIndex] = React.useState<number | null>(pairs.length ? 0 : null)
-
-  // const changeValueFromTable = (collSymbol: string, synthSymbol: string, vaultType: number) => {
-  //   const index = allSynthetic.findIndex(element => element.syntheticData.symbol === collSymbol)
-  //   const leverageIndex = shortPairs
-  //     .concat(longPairs)
-  //     .findIndex(element => element.syntheticSymbol === synthSymbol)
-  //   setPairIndex(index)
-  //   setLeverageIndex(leverageIndex)
-  // }
-
+  const [currentLeverageTable, setCurrentLeverageTable] = React.useState<ILeveragePair[]>(
+    leverageType === 'short' ? shortPairs : longPairs
+  )
   const onClickRestartButton = () => {}
-  React.useEffect(() => {}, [pairIndex])
 
   React.useEffect(() => {
     if (allSynthetic.length === 0) {
       setPairIndex(null)
     }
   }, [allSynthetic])
+  React.useEffect(() => {
+    setCurrentLeverageTable(leverageType === 'short' ? shortPairs : longPairs)
+  }, [leverageType, leverageIndex])
+  React.useEffect(() => {
+    if (currentLeverageTable.length > 0 && leverageIndex !== null) {
+      setMinCRatio(
+        Math.pow(
+          Number(
+            printBN(
+              currentLeverageTable[leverageIndex].collateralRatio.val,
+              currentLeverageTable[leverageIndex].collateralRatio.scale
+            )
+          ) / 100,
+          -1
+        )
+      )
+      setActualPair(
+        currentLeverageTable[leverageIndex].synthetic,
+        currentLeverageTable[leverageIndex].collateral,
+        currentLeverageTable[leverageIndex].vaultType
+      )
+    }
+  }, [leverageIndex])
 
   const actionContents: IActionContents = {
     open: (
@@ -106,6 +118,10 @@ export const WrappedLeverage: React.FC<IProp> = ({
         noWalletHandler={noWalletHandler}
         leverageIndex={leverageIndex}
         setLeverageIndex={setLeverageIndex}
+        currentLeverage={getLeverageLevel(Number(cRatio))}
+        setLiquidationPriceTo={setLiquidationPriceTo}
+        setLiquidationPriceFrom={setLiquidationPriceFrom}
+        cRatio={cRatio}
       />
     ),
     close: (
@@ -124,6 +140,10 @@ export const WrappedLeverage: React.FC<IProp> = ({
         noWalletHandler={noWalletHandler}
         leverageIndex={leverageIndex}
         setLeverageIndex={setLeverageIndex}
+        currentLeverage={getLeverageLevel(Number(cRatio))}
+        setLiquidationPriceTo={setLiquidationPriceTo}
+        setLiquidationPriceFrom={setLiquidationPriceFrom}
+        cRatio={cRatio}
       />
     )
   }
@@ -142,30 +162,34 @@ export const WrappedLeverage: React.FC<IProp> = ({
             changeCustomCRatio={(value: string) => {
               setCRatio(value)
             }}
+            currentLeverage={getLeverageLevel(Number(cRatio))}
+            maxLeverage={getLeverageLevel(Number(minCRatio))}
           />
         </Grid>
 
         {userVaults.length !== 0 ? <BorrowTable userVaults={userVaults} /> : null}
       </Grid>
       <Grid className={classes.borrowInfoGrid}>
-        {/* {pairs.length !== 0 && pairIndex !== null ? (
+        {currentLeverageTable.length > 0 && leverageIndex !== null ? (
           <BorrowInfo
             collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
-            collateral={pairs[pairIndex].collateralData.symbol}
-            borrowed={pairs[pairIndex].syntheticData.symbol}
+            collateral={currentLeverageTable[leverageIndex].collateralSymbol}
+            borrowed={currentLeverageTable[leverageIndex].syntheticSymbol}
             limit={Number(
               printBN(
-                pairs[pairIndex].maxBorrow.val.sub(pairs[pairIndex].mintAmount.val),
-                pairs[pairIndex].maxBorrow.scale
+                currentLeverageTable[leverageIndex].maxBorrow.val.sub(
+                  currentLeverageTable[leverageIndex].mintAmount.val
+                ),
+                currentLeverageTable[leverageIndex].maxBorrow.scale
               )
             )}
             liqRatio={Number(
               Math.pow(
                 Number(
                   printBN(
-                    pairs[pairIndex].liquidationThreshold.val,
-                    pairs[pairIndex].liquidationThreshold.scale
+                    currentLeverageTable[leverageIndex].liquidationThreshold.val,
+                    currentLeverageTable[leverageIndex].liquidationThreshold.scale
                   )
                 ),
                 -1
@@ -175,31 +199,36 @@ export const WrappedLeverage: React.FC<IProp> = ({
               Math.pow(
                 Number(
                   printBN(
-                    pairs[pairIndex].collateralRatio.val,
-                    pairs[pairIndex].collateralRatio.scale
+                    currentLeverageTable[leverageIndex].collateralRatio.val,
+                    currentLeverageTable[leverageIndex].collateralRatio.scale
                   )
                 ),
                 -1
               ) * 100
             }
-            collateralAddress={pairs[pairIndex].collateral}
-            borrowedAddress={pairs[pairIndex].synthetic}
-            borrowedSign={pairs[pairIndex].syntheticData.symbol}
+            collateralAddress={currentLeverageTable[leverageIndex].collateral}
+            borrowedAddress={currentLeverageTable[leverageIndex].synthetic}
+            borrowedSign={currentLeverageTable[leverageIndex].syntheticSymbol}
             amountSign={'$'}
             callPrice={printBN(
-              pairs[pairIndex].collateralData.price.val,
-              pairs[pairIndex].collateralData.price.scale
+              currentLeverageTable[leverageIndex].collateralPrice.val,
+              currentLeverageTable[leverageIndex].collateralPrice.scale
             )}
             borrPrice={printBN(
-              pairs[pairIndex].syntheticData.price.val,
-              pairs[pairIndex].syntheticData.price.scale
+              currentLeverageTable[leverageIndex].syntheticPrice.val,
+              currentLeverageTable[leverageIndex].syntheticPrice.scale
             )}
             interestRate={printBN(
-              pairs[pairIndex].debtInterestRate.val,
-              pairs[pairIndex].debtInterestRate.scale - 4
+              currentLeverageTable[leverageIndex].debtInterestRate.val,
+              currentLeverageTable[leverageIndex].debtInterestRate.scale - 4
             )}
             openFee={
-              Number(printBN(pairs[pairIndex].openFee.val, pairs[pairIndex].openFee.scale)) * 100
+              Number(
+                printBN(
+                  currentLeverageTable[leverageIndex].openFee.val,
+                  currentLeverageTable[leverageIndex].openFee.scale
+                )
+              ) * 100
             }
           />
         ) : (
@@ -220,7 +249,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             interestRate={'0'}
             openFee={0}
           />
-        )} */}
+        )}
       </Grid>
     </Grid>
   )
