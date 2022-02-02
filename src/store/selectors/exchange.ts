@@ -511,15 +511,15 @@ export const getGeneralTotals = createSelector(
         typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.collateral.toString()]
           : {
-              val: new BN(10 ** currentVault.maxBorrow.scale),
+              val: new BN(10 ** currentVault.collateralAmount.scale),
               scale: currentVault.collateralAmount.scale
             }
       const actualPriceSynthetic =
         typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.synthetic.toString()]
           : {
-              val: new BN(10 ** currentVault.maxBorrow.scale),
-              scale: currentVault.maxBorrow.scale
+              val: new BN(10 ** currentVault.mintAmount.scale),
+              scale: currentVault.mintAmount.scale
             }
       totalCollatera =
         totalCollatera +

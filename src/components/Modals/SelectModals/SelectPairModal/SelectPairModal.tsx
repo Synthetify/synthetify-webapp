@@ -42,6 +42,11 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
       <Search className={classes.searchIcon} />
     </>
   )
+  const selectTokens = (token1: string, token2: string, type: number): number => {
+    return pairs.findIndex(
+      token => token.symbol1 === token1 && token.symbol2 === token2 && token.type === type
+    )
+  }
 
   const pairSymbol = (pair: { symbol1: string; symbol2: string }) =>
     `${pair.symbol1}/${pair.symbol2}`
@@ -103,7 +108,11 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(index)
+                      onSelect(
+                        pair.type === undefined
+                          ? index
+                          : selectTokens(pair.symbol1, pair.symbol2, pair.type)
+                      )
                       handleClose()
                     }}>
                     <Grid className={classes.dualIcon}>
