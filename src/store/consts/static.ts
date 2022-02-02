@@ -78,6 +78,8 @@ const AVERAGE_MNDE_APY = 6.81
 
 const MARINADE_PER_POINT = 1.43e-7
 
+const MNDE_WEEK_AMOUNT = 9700
+
 export {
   SolanaNetworks,
   DEFAULT_PUBLICKEY,
@@ -89,5 +91,6 @@ export {
   NetworkType,
   descrpitionForSymbol,
   AVERAGE_MNDE_APY,
-  MARINADE_PER_POINT
+  MARINADE_PER_POINT,
+  MNDE_WEEK_AMOUNT
 }

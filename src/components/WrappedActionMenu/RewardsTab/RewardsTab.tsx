@@ -22,7 +22,7 @@ import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
 import { Marinade } from './Marinade/Marinade'
-import { AVERAGE_MNDE_APY } from '@consts/static'
+import { MNDE_WEEK_AMOUNT } from '@consts/static'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -48,6 +48,8 @@ export interface IRewardsProps {
   amountPerRoundValue: Decimal
   collateralValue: number
   userMarinadeAmount: number
+  mndePrice: number
+  mSolTvl: number
 }
 
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
@@ -92,7 +94,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   onWithdraw,
   amountPerRoundValue,
   allDebtValue,
-  userMarinadeAmount
+  userMarinadeAmount,
+  mndePrice,
+  mSolTvl
 }) => {
   const classes = useStyles()
 
@@ -160,6 +164,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     .mul(new BN(52))
     .div(new BN(100))
   const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
+
+  const mndeAPR = mSolTvl === 0 ? 0 : (((MNDE_WEEK_AMOUNT * mndePrice) / mSolTvl) * 52) / 100
+  const mndeAPY = ((mndeAPR / 52 + 1) ** 52 - 1) * 10000
 
   const rewardsLines: {
     [index: number]: {
@@ -240,7 +247,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       <Grid item className={classes.amount} justifyContent='space-between'>
         <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
         <AverageAPY avgAPY={(+printBN(avgAPY, 2)).toFixed(2)} />
-        <Marinade marinade={AVERAGE_MNDE_APY.toFixed(2)} />
+        <Marinade marinade={mndeAPY.toFixed(2)} />
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>

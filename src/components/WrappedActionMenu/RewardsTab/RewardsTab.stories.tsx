@@ -64,6 +64,8 @@ storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
       }}
       collateralValue={1500000}
       userMarinadeAmount={0}
+      mndePrice={1}
+      mSolTvl={10000}
     />
   </div>
 ))
