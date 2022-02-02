@@ -200,7 +200,8 @@ describe('changeInputSynthetic', () => {
         maxAvailable: new BN(100000000),
         balance: new BN(10000000)
       },
-      '200'
+      '200',
+      '1'
     )
     expect(result.amountCollBN.toString()).toBe('370000000')
   })
