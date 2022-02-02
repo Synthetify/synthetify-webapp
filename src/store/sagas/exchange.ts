@@ -875,7 +875,6 @@ export function* batchAssetsPrices(
 ): Generator {
   pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
   const state = yield* select(getAddressFromIndex(action.payload.tokenIndex))
-  // console.log(action.payload.tokenIndex.toString(), state)
   state.forEach(element => {
     if (element !== '') {
       pendingUpdatesVaults[element] = action.payload.price
