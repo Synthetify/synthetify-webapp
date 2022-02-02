@@ -178,25 +178,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       minHeight: '48px'
     }
   },
-  bottomGrid: {
-    display: 'flex',
-    flexDirection: 'row',
-    padding: '24px',
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-      padding: '16px'
-    }
-  },
-  bottomInfo: {
-    display: 'flex',
-    flexDirection: 'row',
-    minWidth: '50%',
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]: {
-      width: '100%'
-    }
-  },
   minValue: {
     paddingLeft: '3px'
   },

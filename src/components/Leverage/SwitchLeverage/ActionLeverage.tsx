@@ -245,10 +245,10 @@ export const ActionLeverage: React.FC<IProp> = ({
                   <Select
                     className={classes.select}
                     centered={true}
-                    tokens={leveragePairs.map(tokens => ({
-                      symbol: tokens.syntheticSymbol,
-                      balance: tokens.syntheticBalance.val,
-                      decimals: tokens.syntheticBalance.scale
+                    pairs={leveragePairs.map(tokens => ({
+                      symbol1: tokens.collateralSymbol,
+                      symbol2: tokens.syntheticSymbol,
+                      type: tokens.vaultType
                     }))}
                     onSelect={(chosen: number) => {
                       setLeverageIndex(chosen)

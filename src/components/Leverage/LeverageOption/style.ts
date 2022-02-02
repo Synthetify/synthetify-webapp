@@ -2,6 +2,10 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
+  wrapperOption: {
+    width: '100%',
+    maxWidth: '480px'
+  },
   root: {
     background: colors.navy.component,
     borderRadius: '10px 10px',

@@ -13,6 +13,7 @@ export interface IProps {
   changeCustomCRatio: (value: string) => void
   currentLeverage: string
   maxLeverage: string
+  switchButton: React.ReactNode
 }
 export type ActionType = 'open' | 'close'
 
@@ -29,14 +30,18 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
   cRatio,
   changeCustomCRatio,
   currentLeverage,
-  maxLeverage
+  maxLeverage,
+  switchButton
 }) => {
   const actions: IMenuItem = { ...actionContents }
-
+  const [action, setAction] = React.useState('open')
   return (
-    <Grid container style={{ borderRadius: '10px 10px' }}>
-      <SwitchLeverage menuItems={actions} />
+    <Grid
+      container
+      style={{ borderRadius: '10px 10px', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
+      <SwitchLeverage menuItems={actions} switchButton={switchButton} setAction={setAction} />
       <LeverageOption
+        action={action}
         onClickSubmitButton={onClickSubmitButton}
         onClickRestartButton={onClickRestartButton}
         minCRatio={minCRatio}

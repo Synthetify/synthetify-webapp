@@ -14,6 +14,7 @@ import ActionMenuLeverage, { IActionContents } from '../SwitchLeverage/ActionMen
 import useStyles from './style'
 import { ILeveragePair } from '@reducers/leverage'
 import { getLeverageLevel } from '@consts/leverageUtils'
+import { SwitchButton } from '../SwitchButton/SwitchButton'
 export interface BorrowedPair extends Vault {
   collateralData: { reserveBalance: number; symbol: string; price: Decimal; balance: BN }
   syntheticData: ExchangeSyntheticTokens
@@ -65,6 +66,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
   const [liquidationPriceFrom, setLiquidationPriceFrom] = React.useState(0)
   const [minCRatio, setMinCRatio] = React.useState<number>(100)
   const [leverageType, setLeverageType] = React.useState<string>('short')
+  const [leverageStatus, setLeverageStatus] = React.useState(false)
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [leverageIndex, setLeverageIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [currentLeverageTable, setCurrentLeverageTable] = React.useState<ILeveragePair[]>(
@@ -100,6 +102,14 @@ export const WrappedLeverage: React.FC<IProp> = ({
       )
     }
   }, [leverageIndex])
+
+  React.useEffect(() => {
+    if (leverageStatus) {
+      setLeverageType('long')
+    } else {
+      setLeverageType('short')
+    }
+  }, [leverageStatus])
 
   const actionContents: IActionContents = {
     open: (
@@ -164,6 +174,13 @@ export const WrappedLeverage: React.FC<IProp> = ({
             }}
             currentLeverage={getLeverageLevel(Number(cRatio))}
             maxLeverage={getLeverageLevel(Number(minCRatio))}
+            switchButton={
+              <SwitchButton
+                leverStatus={leverageStatus}
+                setLeverStatus={setLeverageStatus}
+                leverType={leverageType}
+              />
+            }
           />
         </Grid>
 

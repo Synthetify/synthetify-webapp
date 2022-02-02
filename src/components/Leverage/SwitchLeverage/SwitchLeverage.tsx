@@ -5,6 +5,8 @@ import { colors, typography } from '@static/theme'
 
 export interface IProps {
   menuItems: IMenuItem
+  switchButton: React.ReactNode
+  setAction: (value: string) => void
 }
 
 export interface IMenuItem {
@@ -47,7 +49,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {
     borderRadius: '10px 10px 0 0',
-    width: '50%',
     [theme.breakpoints.down('sm')]: {
       marginBottom: '16px'
     }
@@ -68,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export const SwitchLeverage: React.FC<IProps> = ({ menuItems }) => {
+export const SwitchLeverage: React.FC<IProps> = ({ menuItems, switchButton, setAction }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const [fadeIn, setFadeIn] = React.useState(true)
@@ -76,6 +77,7 @@ export const SwitchLeverage: React.FC<IProps> = ({ menuItems }) => {
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setTimeout(() => {
       setValue(newValue)
+      setAction(newValue === 0 ? 'open' : 'close')
     }, 100)
     setTimeout(() => {
       setFadeIn(true)
@@ -145,7 +147,7 @@ export const SwitchLeverage: React.FC<IProps> = ({ menuItems }) => {
   return (
     <Grid className={classes.root}>
       <Grid className={classes.wrapper}>
-        <Grid className={classes.tabs}>
+        <Grid className={classes.tabs} container direction='row' justifyContent='space-between'>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -156,6 +158,7 @@ export const SwitchLeverage: React.FC<IProps> = ({ menuItems }) => {
             <Tab disableRipple label='open' classes={singleTabClasses} />
             <Tab disableRipple label='close' classes={singleTabClasses} />
           </Tabs>
+          <Grid>{switchButton}</Grid>
         </Grid>
       </Grid>
       <Divider style={{ background: colors.navy.darkGrey }} />

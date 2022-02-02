@@ -14,6 +14,7 @@ interface IProp {
   changeCustomCRatio: (value: string) => void
   currentLeverage: string
   maxLeverage: string
+  action: string
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -23,11 +24,12 @@ export const LeverageOption: React.FC<IProp> = ({
   cRatio,
   changeCustomCRatio,
   currentLeverage,
-  maxLeverage
+  maxLeverage,
+  action
 }) => {
   const classes = useStyles()
   return (
-    <Grid style={{ width: '50%' }}>
+    <Grid className={classes.wrapperOption}>
       <Grid className={classes.root}>
         <Grid className={classes.header}>
           <Typography className={classes.headerTitle}>Adjust your multiply</Typography>
@@ -68,6 +70,7 @@ export const LeverageOption: React.FC<IProp> = ({
             step={-2}
             min={-600}
             max={-minCRatio}
+            disabled={action === 'close'}
           />
           <Grid container item justifyContent={'space-between'}>
             <Typography className={classes.sliderRisk} style={{ color: colors.green.button }}>
@@ -117,7 +120,7 @@ export const LeverageOption: React.FC<IProp> = ({
             fontWeight={900}
           />
           <OutlinedButton
-            name={'Long'}
+            name={action}
             className={classes.actionButton}
             color='secondary'
             onClick={() => {
