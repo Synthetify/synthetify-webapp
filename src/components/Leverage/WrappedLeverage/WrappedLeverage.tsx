@@ -105,8 +105,11 @@ export const WrappedLeverage: React.FC<IProp> = ({
 
   React.useEffect(() => {
     if (leverageStatus) {
+      setLeverageIndex(null)
       setLeverageType('long')
     } else {
+      setLeverageIndex(null)
+
       setLeverageType('short')
     }
   }, [leverageStatus])
