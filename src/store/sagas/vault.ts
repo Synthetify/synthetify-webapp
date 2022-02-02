@@ -1,5 +1,5 @@
 import { call, put, takeEvery, spawn, all, select, throttle, SagaGenerator } from 'typed-redux-saga'
-import { getWallet } from './wallet'
+import { getWallet, sleep } from './wallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { actions, PayloadTypes } from '@reducers/vault'
@@ -383,6 +383,7 @@ export function* initVaultEntry(): Generator {
 
 export function* addNewVaultEntryHandle(): Generator {
   const actualVaultSwap = yield* select(vaultSwap)
+  yield* call(sleep, 1500)
   const vaultEntry = yield* call(
     getVaultEntryIFExist,
     actualVaultSwap.synthetic,

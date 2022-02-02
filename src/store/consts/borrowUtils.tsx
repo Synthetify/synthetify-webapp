@@ -461,7 +461,8 @@ export const changeInputSynthetic = (
   value: string,
   tokenTo: AssetPriceData,
   tokenFrom: AssetPriceData,
-  cRatio: string
+  cRatio: string,
+  openFee: string
 ) => {
   let amountCollBN = new BN(0)
   const BNValue = stringToMinDecimalBN(value)
@@ -470,7 +471,10 @@ export const changeInputSynthetic = (
     amountCollBN = calculateAmountCollateral(
       tokenTo,
       tokenFrom,
-      printBNtoBN(value, tokenTo.assetScale),
+      printBNtoBN(
+        (Number(value) * Number(openFee)).toFixed(tokenTo.assetScale),
+        tokenTo.assetScale
+      ),
       cRatio
     )
   }
