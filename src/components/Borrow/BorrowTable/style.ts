@@ -115,14 +115,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   symbolColumn: {
-    minWidth: '80px',
+    minWidth: '105px',
     justifyContent: 'flex-start',
-    [theme.breakpoints.down('md')]: {
-      minWidth: '70px'
-    },
     [theme.breakpoints.down('sm')]: {
-      minWidth: '50px'
+      minWidth: '40px'
     }
+  },
+  typeColumn: {
+    minWidth: '40px',
+    justifyContent: 'flex-start'
   },
   amountColumn: {
     minWidth: '95px',
