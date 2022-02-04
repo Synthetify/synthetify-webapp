@@ -61,184 +61,180 @@ export const BorrowTable: React.FC<IProp> = ({
           </Grid>
         </Grid>
         <Grid>
-          {userVaults.map((element, index) =>
-            +printBN(element.deposited.val, element.deposited.scale) !== 0 ||
-            +printBN(element.currentDebt.val, element.currentDebt.scale) !== 0 ? (
+          {userVaults.map((element, index) => (
+            <Grid
+              key={index}
+              className={classNames(
+                classes.gridRow,
+                element.collateral === active.collateral &&
+                  element.borrowed === active.synthetic &&
+                  element.vaultType === vaultType
+                  ? classes.active
+                  : null
+              )}
+              onClick={() =>
+                setValueWithTable(element.collateral, element.borrowed, element.vaultType)
+              }
+              container
+              direction='row'>
+              <Hidden xsDown>
+                <Grid
+                  classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}
+                  style={{ display: 'flex' }}>
+                  <Grid className={classes.dualIcon}>
+                    <CardMedia
+                      className={classes.icon}
+                      image={icons[element.collateral] ?? icons.SNY}
+                      style={{ marginRight: 0 }}
+                    />
+                    <CardMedia
+                      className={classNames(classes.icon, classes.secondIcon)}
+                      image={icons[element.borrowed] ?? icons.SNY}
+                    />
+                  </Grid>
+                  <Grid>
+                    {element.collateral}/{element.borrowed}
+                  </Grid>
+                </Grid>
+              </Hidden>
+              <Hidden smUp>
+                <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
+                  <Grid className={classes.dualIcon} style={{ marginLeft: '8px' }}>
+                    <CardMedia
+                      className={classes.icon}
+                      image={icons[element.collateral] ?? icons.SNY}
+                      style={{ marginRight: 0 }}
+                    />
+                    <CardMedia
+                      className={classNames(classes.icon, classes.secondIcon)}
+                      image={icons[element.borrowed] ?? icons.SNY}
+                    />
+                  </Grid>
+                </Grid>
+              </Hidden>
               <Grid
-                key={index}
-                className={classNames(
-                  classes.gridRow,
-                  element.collateral === active.collateral &&
-                    element.borrowed === active.synthetic &&
-                    element.vaultType === vaultType
-                    ? classes.active
-                    : null
-                )}
-                onClick={() =>
-                  setValueWithTable(element.collateral, element.borrowed, element.vaultType)
-                }
-                container
-                direction='row'>
-                <Hidden xsDown>
-                  <Grid
-                    classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}
-                    style={{ display: 'flex' }}>
-                    <Grid className={classes.dualIcon}>
-                      <CardMedia
-                        className={classes.icon}
-                        image={icons[element.collateral] ?? icons.SNY}
-                        style={{ marginRight: 0 }}
-                      />
-                      <CardMedia
-                        className={classNames(classes.icon, classes.secondIcon)}
-                        image={icons[element.borrowed] ?? icons.SNY}
-                      />
-                    </Grid>
-                    <Grid>
-                      {element.collateral}/{element.borrowed}
-                    </Grid>
+                classes={{
+                  root: classNames(classes.rootCell, classes.typeColumn)
+                }}>
+                {alphabetTable[element.vaultType]}
+              </Grid>
+              <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber }}
+                  title={`${printBN(element.deposited.val, element.deposited.scale)} ${
+                    element.collateral
+                  }`}
+                  placement='bottom-start'>
+                  <Grid>
+                    {'~ '}
+                    <AnimatedNumber
+                      value={Number(
+                        printBN(element.deposited.val, element.deposited.scale)
+                      ).toFixed(6)}
+                      formatValue={formatNumbersBorrowTable}
+                      duration={300}
+                    />
+                    {showPrefix(+printBN(element.deposited.val, element.deposited.scale))}{' '}
+                    {element.collateral}
                   </Grid>
-                </Hidden>
-                <Hidden smUp>
-                  <Grid classes={{ root: classNames(classes.rootCell, classes.symbolColumn) }}>
-                    <Grid className={classes.dualIcon} style={{ marginLeft: '8px' }}>
-                      <CardMedia
-                        className={classes.icon}
-                        image={icons[element.collateral] ?? icons.SNY}
-                        style={{ marginRight: 0 }}
-                      />
-                      <CardMedia
-                        className={classNames(classes.icon, classes.secondIcon)}
-                        image={icons[element.borrowed] ?? icons.SNY}
-                      />
-                    </Grid>
+                </Tooltip>
+              </Grid>
+              <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber }}
+                  title={`${printBN(element.currentDebt.val, element.currentDebt.scale)} ${
+                    element.borrowed
+                  }`}
+                  placement='bottom-start'>
+                  <Grid>
+                    {'~ '}
+                    <AnimatedNumber
+                      value={Number(
+                        printBN(element.currentDebt.val, element.currentDebt.scale)
+                      ).toFixed(6)}
+                      formatValue={formatNumbersBorrowTable}
+                      duration={300}
+                    />
+                    {showPrefix(+printBN(element.currentDebt.val, element.currentDebt.scale))}{' '}
+                    {element.borrowed}
                   </Grid>
-                </Hidden>
+                </Tooltip>
+              </Grid>
+              <Grid
+                classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
+                style={{
+                  color:
+                    element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
+                      ? colors.green.button
+                      : colors.red.error
+                }}>
+                <Grid container direction='row' alignItems='center'>
+                  {Number(element.cRatio) < 9999 ? (
+                    Number(element.cRatio).toFixed(2)
+                  ) : (
+                    <AllInclusiveIcon style={{ height: '0.70em' }} />
+                  )}
+                  {'%'}
+                </Grid>
+              </Grid>
+              <Hidden smDown>
+                <Grid classes={{ root: classNames(classes.rootCell, classes.interestDebtColumn) }}>
+                  <AnimatedNumber
+                    value={element.interestRate}
+                    formatValue={(value: number) => value.toFixed(2)}
+                    duration={300}
+                  />
+
+                  {'%'}
+                </Grid>
+              </Hidden>
+              <Grid classes={{ root: classNames(classes.rootCell, classes.liquidationColumn) }}>
+                <Tooltip
+                  classes={{ tooltip: classes.tooltipNumber }}
+                  title={`${Number(element.liquidationPrice).toFixed(6)} $`}
+                  placement='bottom-start'>
+                  <Grid container direction='row' alignItems='center'>
+                    <CardMedia
+                      className={classes.icon}
+                      image={icons[element.collateral] ?? icons.SNY}
+                    />
+                    {'$'}
+                    <AnimatedNumber
+                      value={Number(element.liquidationPrice)}
+                      formatValue={formatNumbersBorrowTable}
+                      duration={300}
+                    />
+                    {showPrefix(Number(element.liquidationPrice))}
+                  </Grid>
+                </Tooltip>
+              </Grid>
+              <Hidden mdDown>
                 <Grid
-                  classes={{
-                    root: classNames(classes.rootCell, classes.typeColumn)
-                  }}>
-                  {alphabetTable[element.vaultType]}
-                </Grid>
-                <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${printBN(element.deposited.val, element.deposited.scale)} ${
-                      element.collateral
-                    }`}
-                    placement='bottom-start'>
-                    <Grid>
-                      {'~ '}
-                      <AnimatedNumber
-                        value={Number(
-                          printBN(element.deposited.val, element.deposited.scale)
-                        ).toFixed(6)}
-                        formatValue={formatNumbersBorrowTable}
-                        duration={300}
-                      />
-                      {showPrefix(+printBN(element.deposited.val, element.deposited.scale))}{' '}
-                      {element.collateral}
-                    </Grid>
-                  </Tooltip>
-                </Grid>
-                <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${printBN(element.currentDebt.val, element.currentDebt.scale)} ${
-                      element.borrowed
-                    }`}
-                    placement='bottom-start'>
-                    <Grid>
-                      {'~ '}
-                      <AnimatedNumber
-                        value={Number(
-                          printBN(element.currentDebt.val, element.currentDebt.scale)
-                        ).toFixed(6)}
-                        formatValue={formatNumbersBorrowTable}
-                        duration={300}
-                      />
-                      {showPrefix(+printBN(element.currentDebt.val, element.currentDebt.scale))}{' '}
-                      {element.borrowed}
-                    </Grid>
-                  </Tooltip>
-                </Grid>
-                <Grid
-                  classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
+                  classes={{ root: classNames(classes.rootCell, classes.maxBorrowColumn) }}
                   style={{
                     color:
                       element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
                         ? colors.green.button
                         : colors.red.error
                   }}>
-                  <Grid container direction='row' alignItems='center'>
-                    {Number(element.cRatio) < 9999 ? (
-                      Number(element.cRatio).toFixed(2)
-                    ) : (
-                      <AllInclusiveIcon style={{ height: '0.70em' }} />
-                    )}
-                    {'%'}
-                  </Grid>
-                </Grid>
-                <Hidden smDown>
-                  <Grid
-                    classes={{ root: classNames(classes.rootCell, classes.interestDebtColumn) }}>
-                    <AnimatedNumber
-                      value={element.interestRate}
-                      formatValue={(value: number) => value.toFixed(2)}
-                      duration={300}
-                    />
-
-                    {'%'}
-                  </Grid>
-                </Hidden>
-                <Grid classes={{ root: classNames(classes.rootCell, classes.liquidationColumn) }}>
                   <Tooltip
                     classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${Number(element.liquidationPrice).toFixed(6)} $`}
+                    title={`${element.maxBorrow} ${element.borrowed}`}
                     placement='bottom-start'>
-                    <Grid container direction='row' alignItems='center'>
-                      <CardMedia
-                        className={classes.icon}
-                        image={icons[element.collateral] ?? icons.SNY}
-                      />
-                      {'$'}
+                    <Grid>
+                      {'~ '}
                       <AnimatedNumber
-                        value={Number(element.liquidationPrice)}
+                        value={element.maxBorrow}
                         formatValue={formatNumbersBorrowTable}
                         duration={300}
                       />
-                      {showPrefix(Number(element.liquidationPrice))}
+                      {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
                     </Grid>
                   </Tooltip>
                 </Grid>
-                <Hidden mdDown>
-                  <Grid
-                    classes={{ root: classNames(classes.rootCell, classes.maxBorrowColumn) }}
-                    style={{
-                      color:
-                        element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
-                          ? colors.green.button
-                          : colors.red.error
-                    }}>
-                    <Tooltip
-                      classes={{ tooltip: classes.tooltipNumber }}
-                      title={`${element.maxBorrow} ${element.borrowed}`}
-                      placement='bottom-start'>
-                      <Grid>
-                        {'~ '}
-                        <AnimatedNumber
-                          value={element.maxBorrow}
-                          formatValue={formatNumbersBorrowTable}
-                          duration={300}
-                        />
-                        {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
-                      </Grid>
-                    </Tooltip>
-                  </Grid>
-                </Hidden>
-              </Grid>
-            ) : null
-          )}
+              </Hidden>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     </Grid>

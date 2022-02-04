@@ -507,7 +507,15 @@ export const getUserVaults = createSelector(
         vaultType: currentVault.vaultType
       })
     })
-    return vaultData
+
+    return vaultData.filter(
+      element =>
+        Number(
+          (+printBN(element.deposited.val, element.deposited.scale)).toFixed(
+            element.deposited.scale - 2
+          )
+        ) !== 0 || +printBN(element.currentDebt.val, element.currentDebt.scale) !== 0
+    )
   }
 )
 

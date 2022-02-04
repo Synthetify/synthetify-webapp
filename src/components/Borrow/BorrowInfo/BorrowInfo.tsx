@@ -6,7 +6,6 @@ import { formatNumbers, showPrefix } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
-import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import useStyles from './style'
 interface IGeneralInfo {
   collateralAmount: string
@@ -118,9 +117,14 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                   <>
                     <img src={ExclamationMark} alt='' className={classes.circleIcon} />
                     <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
-                      What is Type?
+                      What is types?
                     </Typography>
-                    Text about what is type and what are the differences between vaults.
+                    Some of the pairs appear multiple times, they are distinguished by type.
+                    Depending on the type, the following pairs change: <br />
+                    <span style={{ fontWeight: 900 }}>
+                      Liquidation ratio, collateral ratio, interest rate <br />
+                      and open fee
+                    </span>
                   </>
                 }
                 anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
