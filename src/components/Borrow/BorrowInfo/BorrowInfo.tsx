@@ -120,7 +120,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                       What are types?
                     </Typography>
                     Some of the pairs appear multiple times, they are distinguished by type.
-                    Depending on the type, the following pairs change: <br />
+                    Depending on the type, the following parameters change: <br />
                     <span style={{ fontWeight: 900 }}>
                       Liquidation ratio, collateral ratio, interest rate <br />
                       and open fee
