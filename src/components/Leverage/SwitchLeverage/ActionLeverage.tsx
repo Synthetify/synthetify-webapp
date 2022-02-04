@@ -7,7 +7,7 @@ import { BN } from '@project-serum/anchor'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import { ILeverageSynthetic } from '@selectors/solanaWallet'
-import { getAssetFromAndTo, getSytnehticAsCollateral } from '@consts/leverageUtils'
+import { getAssetFromAndTo, getSyntheticAsCollateral } from '@consts/leverageUtils'
 import { ILeveragePair } from '@reducers/leverage'
 import { calculateAmountBorrow, calculateLiqPrice } from '@consts/borrowUtils'
 import useStyles from './style'
@@ -32,6 +32,8 @@ interface IProp {
   setLiquidationPriceFrom: (nr: number) => void
   cRatio: string
   leverageType: string
+  amountToken: BN
+  setAmountToken: (value: BN) => void
 }
 export const ActionLeverage: React.FC<IProp> = ({
   action,
@@ -52,22 +54,23 @@ export const ActionLeverage: React.FC<IProp> = ({
   setLiquidationPriceTo,
   vaultAmount,
   cRatio,
-  leverageType
+  leverageType,
+  amountToken,
+  setAmountToken
 }) => {
   const classes = useStyles()
-  const [amountToken, setAmountToken] = React.useState<BN>(new BN(0))
   const [amountTokenString, setAmountTokenString] = React.useState('')
-  // const [availableBorrow, setAvailableBorrow] = React.useState(new BN(0))
   const [totalExposure, setTotalExposure] = React.useState(0)
   const [tokenFrom, tokenTo] = getAssetFromAndTo(
     leverageIndex !== null ? leveragePairs[leverageIndex] : null
   )
-  const [collateralToken] = getSytnehticAsCollateral(
+  const [collateralToken] = getSyntheticAsCollateral(
     pairIndex !== null ? allSynthetic[pairIndex] : null
   )
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [amountInputTouched, setAmountInputTouched] = React.useState(false)
   const [debtValue, setDebtValue] = React.useState<BN>(new BN(0))
+  const [buyingValue, setBuyingValue] = React.useState<number>(0)
   React.useEffect(() => {
     if (sending) {
       setShowOperationProgressFinale(true)
@@ -103,6 +106,14 @@ export const ActionLeverage: React.FC<IProp> = ({
           +printBN(tokenFrom.priceVal, 8) +
           +printBN(vaultAmount.collateralAmount.val, vaultAmount.collateralAmount.scale)
       )
+      setBuyingValue(
+        Number(
+          (+printBN(amountToken, collateralToken.assetScale) *
+            +printBN(collateralToken.priceVal, 8) *
+            (Number(currentLeverage) - 1)) /
+            +printBN(tokenFrom.priceVal, 8)
+        )
+      )
     }
   }, [amountTokenString, cRatio, pairIndex, leverageIndex])
 
@@ -119,24 +130,29 @@ export const ActionLeverage: React.FC<IProp> = ({
           tokenFrom.assetScale
         )
       )
-
-      const actualAmountCollateral = amountToken
-        .mul(new BN(Number(currentLeverage) * 10 ** collateralToken.assetScale))
-        .div(new BN(10 ** collateralToken.assetScale))
-        .mul(collateralToken.priceVal)
-        .div(tokenFrom.priceVal)
+      const difDecimal = 10 ** (tokenFrom.assetScale - collateralToken.assetScale)
+      let actualAmountCollateral
+      if (difDecimal < 1) {
+        actualAmountCollateral = amountToken
+          .div(new BN(1 / difDecimal))
+          .mul(new BN(Number(currentLeverage) * 10 ** collateralToken.assetScale))
+          .div(new BN(10 ** collateralToken.assetScale))
+          .mul(collateralToken.priceVal)
+          .div(tokenFrom.priceVal)
+      } else {
+        actualAmountCollateral = amountToken
+          .mul(new BN(difDecimal))
+          .mul(new BN(Number(currentLeverage) * 10 ** collateralToken.assetScale))
+          .div(new BN(10 ** collateralToken.assetScale))
+          .mul(collateralToken.priceVal)
+          .div(tokenFrom.priceVal)
+      }
       setLiquidationPriceTo(
         +calculateLiqPrice(
           tokenFrom.priceVal,
-          action === 'open'
-            ? actualAmountCollateral.add(vaultAmount.collateralAmount.val)
-            : vaultAmount.collateralAmount.val,
-
-          // przemyslec liquidacje kiedy zwracamy, jak ja policzyc poprawnie
+          actualAmountCollateral.add(vaultAmount.collateralAmount.val),
           tokenTo.priceVal,
-          action === 'open'
-            ? debtValue.add(vaultAmount.borrowAmount.val)
-            : vaultAmount.borrowAmount.val.sub(debtValue),
+          debtValue.add(vaultAmount.borrowAmount.val),
           leveragePairs[leverageIndex].liquidationThreshold,
           tokenTo.assetScale,
           tokenFrom.assetScale
@@ -275,12 +291,7 @@ export const ActionLeverage: React.FC<IProp> = ({
               <Typography className={classes.infoTitle}>Buying {tokenFrom.symbol}:</Typography>
               <Grid className={classes.valueContainer}>
                 <Typography className={classes.infoValueFrom}>
-                  {Number(
-                    (+printBN(amountToken, collateralToken.assetScale) *
-                      +printBN(collateralToken.priceVal, 8) *
-                      (Number(currentLeverage) - 1)) /
-                      +printBN(tokenFrom.priceVal, 8)
-                  ).toFixed(2)}{' '}
+                  {buyingValue.toFixed(2)}
                   {tokenFrom.symbol}
                 </Typography>
               </Grid>

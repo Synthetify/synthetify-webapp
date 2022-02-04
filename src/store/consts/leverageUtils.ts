@@ -12,15 +12,15 @@ export const getAssetFromAndTo = (leveragePair: ILeveragePair | null) => {
   if (leveragePair === null) {
     return [
       {
-        priceVal: new BN(1),
-        assetScale: 1,
+        priceVal: new BN(1000000),
+        assetScale: 6,
         symbol: null,
         maxAvailable: new BN(0),
         balance: new BN(0)
       },
       {
-        priceVal: new BN(1),
-        assetScale: 1,
+        priceVal: new BN(1000000),
+        assetScale: 6,
         symbol: null,
         maxAvailable: new BN(0),
         balance: new BN(0)
@@ -44,12 +44,12 @@ export const getAssetFromAndTo = (leveragePair: ILeveragePair | null) => {
   }
   return [syntheticFrom, syntheticTo]
 }
-export const getSytnehticAsCollateral = (allSynthetic: ILeverageSynthetic | null) => {
+export const getSyntheticAsCollateral = (allSynthetic: ILeverageSynthetic | null) => {
   if (allSynthetic === null) {
     return [
       {
-        priceVal: new BN(1),
-        assetScale: 1,
+        priceVal: new BN(1000000),
+        assetScale: 6,
         symbol: null,
         maxAvailable: new BN(0),
         balance: new BN(0)

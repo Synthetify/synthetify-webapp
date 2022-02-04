@@ -26,10 +26,16 @@ interface IProp {
   userVaults: UserVaults[]
   sending: boolean
   hasError: boolean | undefined
-  onClickSubmitButton: () => void
+  onClickSubmitButton: (
+    action: string,
+    vaultSynthetic: PublicKey,
+    vaultCollateral: PublicKey,
+    actualCollateral: PublicKey,
+    amountToken: BN,
+    vaultType: number,
+    leverage: number
+  ) => void
   setActualPair: (synthetic: PublicKey, collateral: PublicKey, vaultType: number) => void
-  availableCollateral: BN
-  availableRepay: BN
   actualVault: {
     collateralAmount: Decimal
     borrowAmount: Decimal
@@ -51,8 +57,6 @@ export const WrappedLeverage: React.FC<IProp> = ({
   userVaults,
   onClickSubmitButton,
   setActualPair,
-  availableCollateral,
-  availableRepay,
   actualVault,
   totalGeneralAmount,
   walletStatus,
@@ -62,6 +66,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
 }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState('500')
+  const [amountToken, setAmountToken] = React.useState<BN>(new BN(0))
   const [liquidationPriceTo, setLiquidationPriceTo] = React.useState(0)
   const [liquidationPriceFrom, setLiquidationPriceFrom] = React.useState(0)
   const [minCRatio, setMinCRatio] = React.useState<number>(100)
@@ -73,7 +78,19 @@ export const WrappedLeverage: React.FC<IProp> = ({
     leverageType === 'short' ? shortPairs : longPairs
   )
   const onClickRestartButton = () => {}
-
+  const onClickOpenLeverage = () => {
+    if (pairIndex !== null && leverageIndex !== null) {
+      onClickSubmitButton(
+        'open',
+        currentLeverageTable[leverageIndex].synthetic,
+        currentLeverageTable[leverageIndex].collateral,
+        allSynthetic[pairIndex].syntheticData.assetAddress,
+        amountToken,
+        currentLeverageTable[leverageIndex].vaultType,
+        Number(getLeverageLevel(Number(cRatio)))
+      )
+    }
+  }
   React.useEffect(() => {
     if (allSynthetic.length === 0) {
       setPairIndex(null)
@@ -135,6 +152,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
         setLiquidationPriceTo={setLiquidationPriceTo}
         setLiquidationPriceFrom={setLiquidationPriceFrom}
         cRatio={cRatio}
+        amountToken={amountToken}
+        setAmountToken={setAmountToken}
       />
     ),
     close: (
@@ -158,6 +177,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
         setLiquidationPriceTo={setLiquidationPriceTo}
         setLiquidationPriceFrom={setLiquidationPriceFrom}
         cRatio={cRatio}
+        amountToken={amountToken}
+        setAmountToken={setAmountToken}
       />
     )
   }
@@ -170,7 +191,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             actionContents={actionContents}
             liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
             cRatio={cRatio}
-            onClickSubmitButton={onClickSubmitButton}
+            onClickSubmitButton={onClickOpenLeverage}
             onClickRestartButton={onClickRestartButton}
             minCRatio={minCRatio}
             changeCustomCRatio={(value: string) => {

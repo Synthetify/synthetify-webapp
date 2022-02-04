@@ -1,11 +1,6 @@
 import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
 import { Grid, Typography } from '@material-ui/core'
-import {
-  getAvailableCollateral,
-  getAvailableRepay,
-  ILeverageSynthetic,
-  status
-} from '@selectors/solanaWallet'
+import { ILeverageSynthetic, status } from '@selectors/solanaWallet'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '@reducers/leverage'
@@ -26,8 +21,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
   const classes = useStyles()
   const dispatch = useDispatch()
   const vaultSwapData = useSelector(vaultSwap)
-  const availableCollateral = useSelector(getAvailableCollateral)
-  const availableRepay = useSelector(getAvailableRepay)
+
   const actualVault = useSelector(getCurrentVaultLeverage)
   const totalGeneralAmount = useSelector(getGeneralTotals)
   const walletStatus = useSelector(status)
@@ -42,12 +36,36 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         userVaults={userVaults}
         sending={vaultSwapData.loading}
         hasError={vaultSwapData.error}
-        onClickSubmitButton={() => {}}
-        setActualPair={(synthetic, collateral, vaultType) => {
-          dispatch(actions.setCurrentPair({ collateral, synthetic, vaultType }))
+        onClickSubmitButton={(
+          action,
+          vaultSynthetic,
+          vaultCollateral,
+          actualCollateral,
+          amountToken,
+          vaultType,
+          leverage
+        ) => {
+          dispatch(
+            actions.setOpenLeverage({
+              action,
+              vaultSynthetic: vaultSynthetic,
+              vaultCollateral: vaultCollateral,
+              actualCollateral: actualCollateral,
+              amountToken,
+              vaultType,
+              leverage
+            })
+          )
         }}
-        availableCollateral={availableCollateral}
-        availableRepay={availableRepay}
+        setActualPair={(synthetic, collateral, vaultType) => {
+          dispatch(
+            actions.setCurrentPair({
+              vaultSynthetic: synthetic,
+              vaultCollateral: collateral,
+              vaultType
+            })
+          )
+        }}
         actualVault={actualVault}
         totalGeneralAmount={totalGeneralAmount}
         walletStatus={walletStatus === Status.Initialized}

@@ -17,8 +17,9 @@ export interface ILeverageSelected {
   action: string
   vaultEntryExist: boolean
   vaultAddress: PublicKey
-  synthetic: PublicKey
-  collateral: PublicKey
+  vaultSynthetic: PublicKey
+  vaultCollateral: PublicKey
+  actualCollateral: PublicKey
   loading: boolean
   error?: boolean
   txid?: string
@@ -39,8 +40,9 @@ export const defaultState: ILeverage = {
     action: 'open',
     vaultEntryExist: false,
     vaultAddress: new PublicKey(0),
-    synthetic: new PublicKey(0),
-    collateral: new PublicKey(0),
+    vaultSynthetic: new PublicKey(0),
+    vaultCollateral: new PublicKey(0),
+    actualCollateral: new PublicKey(0),
     loading: false,
     vaultType: 0,
     leverage: 1,
@@ -61,10 +63,36 @@ const leverageSlice = createSlice({
     },
     setCurrentPair(
       state,
-      action: PayloadAction<Pick<ILeverageSelected, 'collateral' | 'synthetic' | 'vaultType'>>
+      action: PayloadAction<
+        Pick<ILeverageSelected, 'vaultCollateral' | 'vaultSynthetic' | 'vaultType'>
+      >
     ) {
-      state.currentlySelected.collateral = action.payload.collateral
-      state.currentlySelected.synthetic = action.payload.synthetic
+      state.currentlySelected.vaultCollateral = action.payload.vaultCollateral
+      state.currentlySelected.vaultSynthetic = action.payload.vaultSynthetic
+      state.currentlySelected.vaultType = action.payload.vaultType
+      return state
+    },
+    setOpenLeverage(
+      state,
+      action: PayloadAction<
+        Pick<
+          ILeverageSelected,
+          | 'vaultCollateral'
+          | 'vaultSynthetic'
+          | 'actualCollateral'
+          | 'amountToken'
+          | 'action'
+          | 'vaultType'
+          | 'leverage'
+        >
+      >
+    ) {
+      state.currentlySelected.action = action.payload.action
+      state.currentlySelected.vaultCollateral = action.payload.vaultCollateral
+      state.currentlySelected.actualCollateral = action.payload.actualCollateral
+      state.currentlySelected.vaultSynthetic = action.payload.vaultSynthetic
+      state.currentlySelected.amountToken = action.payload.amountToken
+      state.currentlySelected.leverage = action.payload.leverage
       state.currentlySelected.vaultType = action.payload.vaultType
       return state
     }

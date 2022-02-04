@@ -140,6 +140,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       boxShadow: 'none'
     }
+  },
+  blur: {
+    filter: 'blur(4px) brightness(0.7)'
   }
 }))
 export default useStyles

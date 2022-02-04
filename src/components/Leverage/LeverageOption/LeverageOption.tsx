@@ -3,6 +3,7 @@ import React from 'react'
 import { colors } from '@static/theme'
 import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import classNames from 'classnames'
 interface IProp {
   onClickSubmitButton: () => void
   onClickRestartButton: () => void
@@ -29,7 +30,7 @@ export const LeverageOption: React.FC<IProp> = ({
   const classes = useStyles()
 
   return (
-    <Grid className={classes.wrapperOption}>
+    <Grid className={classNames(classes.wrapperOption, action === 'close' ? classes.blur : null)}>
       <Grid className={classes.root}>
         <Grid className={classes.header}>
           <Typography className={classes.headerTitle}>Adjust your multiply</Typography>
@@ -78,7 +79,6 @@ export const LeverageOption: React.FC<IProp> = ({
             step={-2}
             min={-600}
             max={-minCRatio}
-            disabled={action === 'close'}
           />
         </Grid>
 
@@ -88,7 +88,9 @@ export const LeverageOption: React.FC<IProp> = ({
           direction='row'
           style={{ padding: ' 0 24px' }}
           justifyContent='space-between'>
-          <Grid>{switchButton}</Grid>
+          <Grid alignItems='center' style={{ display: 'flex' }}>
+            {switchButton}
+          </Grid>
           <Grid>
             <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
             <Typography className={classes.infoValue}>{cRatio}%</Typography>

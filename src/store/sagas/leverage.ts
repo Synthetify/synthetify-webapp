@@ -27,7 +27,6 @@ export function* initLeveragePairs(): Generator {
       syntheticTokens[vault.collateral.toString()].symbol === 'xUSD' &&
       syntheticTokens[vault.synthetic.toString()].symbol[0] === 'x'
     ) {
-      // add short
       yield* put(
         actions.setShortPair({
           collateralSymbol: syntheticTokens[vault.collateral.toString()].symbol,
@@ -37,14 +36,14 @@ export function* initLeveragePairs(): Generator {
             : { val: new BN(0), scale: vault.collateralAmount.scale },
           syntheticBalance: syntheticAccount
             ? { val: syntheticAccount.balance, scale: syntheticAccount.decimals }
-            : { val: new BN(0), scale: vault.maxBorrow.scale },
+            : { val: new BN(0), scale: vault.mintAmount.scale },
           vaultAddress: vaultAddress,
           syntheticPrice: assetPrices[vault.synthetic.toString()]
             ? assetPrices[vault.synthetic.toString()]
-            : { val: new BN(0), scale: 8 },
+            : { val: new BN(100000000), scale: 8 },
           collateralPrice: assetPrices[vault.collateral.toString()]
             ? assetPrices[vault.collateral.toString()]
-            : { val: new BN(0), scale: 8 },
+            : { val: new BN(100000000), scale: 8 },
           ...vault
         })
       )
@@ -62,14 +61,14 @@ export function* initLeveragePairs(): Generator {
             : { val: new BN(0), scale: vault.collateralAmount.scale },
           syntheticBalance: syntheticAccount
             ? { val: syntheticAccount.balance, scale: syntheticAccount.decimals }
-            : { val: new BN(0), scale: vault.maxBorrow.scale },
+            : { val: new BN(0), scale: vault.mintAmount.scale },
           vaultAddress: vaultAddress,
           syntheticPrice: assetPrices[vault.synthetic.toString()]
             ? assetPrices[vault.synthetic.toString()]
-            : { val: new BN(0), scale: 8 },
+            : { val: new BN(100000000), scale: 8 },
           collateralPrice: assetPrices[vault.collateral.toString()]
             ? assetPrices[vault.collateral.toString()]
-            : { val: new BN(0), scale: 8 },
+            : { val: new BN(100000000), scale: 8 },
           ...vault
         })
       )
