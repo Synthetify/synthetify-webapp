@@ -38,8 +38,13 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
   return (
     <Grid
       container
-      style={{ borderRadius: '10px 10px', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
-      <SwitchLeverage menuItems={actions} switchButton={switchButton} setAction={setAction} />
+      style={{
+        borderRadius: '10px 10px',
+        flexWrap: 'nowrap',
+        justifyContent: 'space-between',
+        paddingBottom: '24px'
+      }}>
+      <SwitchLeverage menuItems={actions} setAction={setAction} />
       <LeverageOption
         action={action}
         onClickSubmitButton={onClickSubmitButton}
@@ -50,6 +55,7 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
         changeCustomCRatio={changeCustomCRatio}
         currentLeverage={currentLeverage}
         maxLeverage={maxLeverage}
+        switchButton={switchButton}
       />
     </Grid>
   )

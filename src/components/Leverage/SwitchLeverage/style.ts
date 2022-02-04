@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     ...typography.subtitle2,
+    minWidth: 'max-content',
     color: colors.navy.grey,
     paddingBottom: 12,
     [theme.breakpoints.down('xs')]: {
@@ -166,14 +167,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.background,
     padding: '12px',
     borderRadius: '10px',
-    marginLeft: '16px',
-    minWidth: 'auto'
+    minWidth: 'min-content'
   },
   select: {
     maxWidth: '105px',
     minWidth: '80px',
     borderRadius: '6px',
-
+    color: colors.navy.background,
+    background: colors.green.button,
     [theme.breakpoints.down('xs')]: {
       minHeight: '48px'
     }

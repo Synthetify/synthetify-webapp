@@ -2,10 +2,11 @@ import React from 'react'
 import { Box, Divider, Fade, Grid, makeStyles, Tab, Tabs, Typography } from '@material-ui/core'
 import { Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import HintIcon from '@static/svg/questionMark.svg'
 
 export interface IProps {
   menuItems: IMenuItem
-  switchButton: React.ReactNode
   setAction: (value: string) => void
 }
 
@@ -66,10 +67,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   slide: {
     animation: '$slide .2s'
+  },
+
+  tooltipTitle: {
+    ...typography.subtitle1
+  },
+  tooltipDescription: {
+    ...typography.body4,
+    color: colors.navy.lightGrey
+  },
+  questionMark: {
+    height: 12,
+    width: 12
   }
 }))
 
-export const SwitchLeverage: React.FC<IProps> = ({ menuItems, switchButton, setAction }) => {
+export const SwitchLeverage: React.FC<IProps> = ({ menuItems, setAction }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
   const [fadeIn, setFadeIn] = React.useState(true)
@@ -158,12 +171,32 @@ export const SwitchLeverage: React.FC<IProps> = ({ menuItems, switchButton, setA
             <Tab disableRipple label='open' classes={singleTabClasses} />
             <Tab disableRipple label='close' classes={singleTabClasses} />
           </Tabs>
-          <Grid>{switchButton}</Grid>
+          <Grid>
+            {' '}
+            <MobileTooltip
+              hint={
+                <>
+                  <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
+                    When can you Short and Long?
+                  </Typography>
+                  <Typography className={classes.tooltipDescription} style={{ marginBottom: 10 }}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum justo
+                    dui, vel gravida mi vulputate et. Nunc luctus hendrerit metus eget convallis.
+                    Praesent elementum dignissim tristique. Pellentesque ante eros, venenatis id
+                    nisl eu,
+                  </Typography>
+                </>
+              }
+              anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
+              mobilePlacement='top-end'
+              desktopPlacement='top-end'
+            />
+          </Grid>
         </Grid>
       </Grid>
       <Divider style={{ background: colors.navy.darkGrey }} />
       <Fade in={fadeIn}>
-        <Grid>{tabsContent}</Grid>
+        <Grid className={slide ? classes.slide : ''}>{tabsContent}</Grid>
       </Fade>
     </Grid>
   )

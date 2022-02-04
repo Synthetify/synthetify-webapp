@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 
 const useStyles = makeStyles(() => ({
@@ -6,78 +6,54 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start'
-  },
-  questionMark: {
-    height: 12,
-    width: 12
-  },
-  leverText: {
-    ...typography.subtitle2,
-    color: colors.navy.grey,
-    paddingRight: '4px',
-    textTransform: 'capitalize',
-    textAlign: 'center',
-    lineHeight: '18px'
-  },
-  tooltipTitle: {
-    ...typography.subtitle1
-  },
-  tooltipDescription: {
-    ...typography.body4,
-    color: colors.navy.lightGrey
-  },
-  switch: {
-    width: '45px',
-    padding: '3px',
-    transform: 'rotate(0.25turn)',
-    alignItems: 'center'
-  },
-  switchThumb: {
-    height: '18px',
-    width: '18px',
-    border: '1px solid transparent',
-    background: 'linear-gradient(#9D97FF 0%, #433BBA 100%)',
-    position: 'relative',
-    borderRadius: '50%',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: '-1px',
-      bottom: '-1px',
-      left: '-1px',
-      right: '-1px',
-      background: '#7A73EA',
-      borderRadius: '50%'
-    },
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: '4px',
-      bottom: '4px',
-      left: '4px',
-      right: '4px',
-      background: colors.navy.veryLightGrey,
-      borderRadius: '50%',
-      zIndex: 2
-    },
-    '&:hover': {
-      boxShadow: 'none'
-    }
-  },
-  switchBase: {
-    padding: '1px',
-    top: 'auto',
-    '&$switchChecked': {
-      transform: 'translateX(22px)',
-      '& + $switchTrack': {
-        backgroundColor: colors.green.button
-      }
-    }
-  },
-  switchTrack: {
-    height: '16px',
-    width: '46px'
-  },
-  switchChecked: {}
+  }
 }))
 export default useStyles
+
+export const useSingleTabStyles = makeStyles<Theme, { value: number }>(() => ({
+  root: {
+    zIndex: 1,
+    textTransform: 'capitalize',
+    ...typography.subtitle2,
+    minWidth: '95px',
+    color: colors.navy.info,
+    maxHeight: '34px',
+    minHeight: '34px',
+
+    '&:hover': {
+      color: colors.navy.grey
+    }
+  },
+  selected: ({ value }) => ({
+    ...typography.subtitle1,
+    color: value === 0 ? colors.navy.background : colors.navy.veryLightGrey,
+    transition: 'color 300ms',
+    maxHeight: '34px',
+
+    '&:hover': {
+      color: value === 0 ? colors.navy.background : colors.navy.veryLightGrey
+    }
+  })
+}))
+
+export const useTabsStyles = makeStyles<Theme, { value: number }>(() => ({
+  root: { overflow: 'visible', minHeight: '34px' },
+  indicator: ({ value }) => ({
+    height: '100%',
+    borderRadius: 5,
+    backgroundColor: value === 0 ? colors.green.button : colors.red.error
+  }),
+  scrollable: {
+    overflow: 'visible',
+    maxHeight: '34px'
+  },
+  scrollButtons: {
+    color: 'white'
+  },
+  flexContainer: {
+    justifyContent: 'space-around',
+    borderRadius: '5px',
+    background: colors.navy.background,
+    maxHeight: '34px'
+  }
+}))

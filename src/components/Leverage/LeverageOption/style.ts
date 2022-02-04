@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
     borderRadius: '10px 10px',
-    margin: ' 0px 0px 24px 24px'
+    marginLeft: '24px',
+    height: '100%'
   },
   header: {
     padding: '24px 0px 15px 24px'

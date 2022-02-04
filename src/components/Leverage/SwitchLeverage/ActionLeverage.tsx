@@ -8,13 +8,10 @@ import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import { ILeverageSynthetic } from '@selectors/solanaWallet'
 import { getAssetFromAndTo, getSytnehticAsCollateral } from '@consts/leverageUtils'
-import { Select } from '@components/Inputs/Select/Select'
 import { ILeveragePair } from '@reducers/leverage'
-import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
-import RedExclamationMark from '@static/svg/redExclamationMark.svg'
-import ExclamationMark from '@static/svg/exclamationMark.svg'
-import useStyles from './style'
 import { calculateAmountBorrow, calculateLiqPrice } from '@consts/borrowUtils'
+import useStyles from './style'
+import { Select } from '@components/Inputs/Select/Select'
 interface IProp {
   action: string
   liquidationPriceTo: number
@@ -34,6 +31,7 @@ interface IProp {
   setLiquidationPriceTo: (nr: number) => void
   setLiquidationPriceFrom: (nr: number) => void
   cRatio: string
+  leverageType: string
 }
 export const ActionLeverage: React.FC<IProp> = ({
   action,
@@ -53,7 +51,8 @@ export const ActionLeverage: React.FC<IProp> = ({
   setLiquidationPriceFrom,
   setLiquidationPriceTo,
   vaultAmount,
-  cRatio
+  cRatio,
+  leverageType
 }) => {
   const classes = useStyles()
   const [amountToken, setAmountToken] = React.useState<BN>(new BN(0))
@@ -68,7 +67,6 @@ export const ActionLeverage: React.FC<IProp> = ({
   )
   const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [amountInputTouched, setAmountInputTouched] = React.useState(false)
-  const [changeOnOtherSynthtic, setChangeOnOtherSynthtic] = React.useState(false)
   const [debtValue, setDebtValue] = React.useState<BN>(new BN(0))
   React.useEffect(() => {
     if (sending) {
@@ -84,10 +82,6 @@ export const ActionLeverage: React.FC<IProp> = ({
       setShowOperationProgressFinale(false)
     }
   }, [amountTokenString])
-
-  React.useEffect(() => {
-    setChangeOnOtherSynthtic(true)
-  }, [pairIndex])
   React.useEffect(() => {
     if (leverageIndex !== null && pairIndex !== null) {
       setDebtValue(
@@ -155,100 +149,91 @@ export const ActionLeverage: React.FC<IProp> = ({
       <Grid className={classes.root}>
         <Grid className={classes.middleGrid}>
           <Grid className={classes.collateralContainer}>
-            <Grid style={{ width: '100%' }}>
-              <Grid container justifyContent='space-between'>
-                <Grid container alignItems='center' style={{ width: 'auto' }}>
-                  <Typography className={classes.title}>Choose your token</Typography>
-                  {changeOnOtherSynthtic ? (
-                    <MobileTooltip
-                      tooltipClasses={{ tooltip: classes.supplyTooltip }}
-                      hint={
-                        <>
-                          <img src={ExclamationMark} alt='' className={classes.circleIcon} />
-                          <Typography className={classes.tooltipTitle}>!! Warning !!</Typography>
-                          There's no such pair, we'll exchange{' '}
-                          {pairIndex !== null
-                            ? allSynthetic[pairIndex].syntheticData.symbol
-                            : null}{' '}
-                          to{' '}
-                          {leverageIndex !== null
-                            ? leveragePairs[leverageIndex].collateralSymbol
-                            : null}{' '}
-                          and make a lever.
-                        </>
-                      }
-                      anchor={
-                        <img
-                          src={RedExclamationMark}
-                          alt=''
-                          className={classes.exclamationMark}
-                          style={{ marginLeft: 16 }}
-                        />
-                      }
-                    />
-                  ) : null}{' '}
+            <Grid
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                display: 'flex',
+                paddingRight: '24px'
+              }}>
+              <Grid>
+                <Grid container justifyContent='space-between'>
+                  <Grid container alignItems='center' style={{ width: 'auto' }}>
+                    <Typography className={classes.title}>Choose your token</Typography>
+                  </Grid>
+                  <Typography className={classes.balance}>
+                    Balance:{' '}
+                    {Number(
+                      printBN(collateralToken.maxAvailable, collateralToken.assetScale)
+                    ).toFixed(4)}{' '}
+                    {collateralToken.symbol}
+                  </Typography>
                 </Grid>
-                <Typography className={classes.balance}>
-                  Balance:{' '}
-                  {action === 'open'
-                    ? Number(
-                        printBN(collateralToken.maxAvailable, collateralToken.assetScale)
-                      ).toFixed(4)
-                    : Number(printBN(tokenTo.maxAvailable, tokenTo.assetScale)).toFixed(4)}
-                </Typography>
-              </Grid>
-              <Grid className={classes.inputGrid}>
-                <ExchangeAmountInput
-                  value={amountTokenString}
-                  setValue={(value: string) => {
-                    if (!amountInputTouched) {
-                      setAmountInputTouched(true)
-                    }
-                    if (value.match(/^\d*\.?\d*$/)) {
-                      const limitedNumber = value.includes('.')
-                        ? value.substr(0, value.indexOf('.')) +
-                          value.substr(value.indexOf('.'), collateralToken.assetScale + 1)
-                        : value
+                <Grid className={classes.inputGrid}>
+                  <ExchangeAmountInput
+                    value={amountTokenString}
+                    setValue={(value: string) => {
+                      if (!amountInputTouched) {
+                        setAmountInputTouched(true)
+                      }
+                      if (value.match(/^\d*\.?\d*$/)) {
+                        const limitedNumber = value.includes('.')
+                          ? value.substr(0, value.indexOf('.')) +
+                            value.substr(value.indexOf('.'), collateralToken.assetScale + 1)
+                          : value
 
-                      const BNValue = stringToMinDecimalBN(limitedNumber)
-                      const difDecimal =
-                        action === 'open'
-                          ? collateralToken.assetScale - BNValue.decimal
-                          : tokenFrom.assetScale - BNValue.decimal
-                      setAmountTokenString(limitedNumber)
-                      setAmountToken(BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))))
+                        const BNValue = stringToMinDecimalBN(limitedNumber)
+                        const difDecimal =
+                          action === 'open'
+                            ? collateralToken.assetScale - BNValue.decimal
+                            : tokenFrom.assetScale - BNValue.decimal
+                        setAmountTokenString(limitedNumber)
+                        setAmountToken(BNValue.BN.mul(new BN(10).pow(new BN(difDecimal))))
+                      }
+                    }}
+                    placeholder={'0.0'}
+                    onMaxClick={() => {}}
+                    tokens={allSynthetic.map(tokens => ({
+                      symbol: tokens.syntheticData.symbol,
+                      balance: tokens.syntheticData.balance,
+                      decimals: tokens.syntheticData.supply.scale
+                    }))}
+                    current={
+                      pairIndex !== null
+                        ? action === 'open'
+                          ? collateralToken.symbol
+                          : tokenTo.symbol
+                        : null
                     }
-                  }}
-                  placeholder={'0.0'}
-                  onMaxClick={() => {}}
-                  tokens={allSynthetic.map(tokens => ({
-                    symbol: tokens.syntheticData.symbol,
-                    balance: tokens.syntheticData.balance,
-                    decimals: tokens.syntheticData.supply.scale
-                  }))}
-                  current={
-                    pairIndex !== null
-                      ? action === 'open'
-                        ? collateralToken.symbol
-                        : tokenTo.symbol
-                      : null
-                  }
-                  onSelect={(chosen: number) => {
-                    setPairIndex(chosen)
-                  }}
-                  className={classes.input}
-                  selectText='Select'
-                  walletConnected={walletStatus}
-                  noWalletHandler={noWalletHandler}
-                />
+                    onSelect={(chosen: number) => {
+                      setPairIndex(chosen)
+                    }}
+                    className={classes.input}
+                    selectText='Select'
+                    walletConnected={walletStatus}
+                    noWalletHandler={noWalletHandler}
+                  />
+                </Grid>
+              </Grid>
+              <Grid style={{ marginLeft: '24px' }}>
+                <Grid container alignItems='center'>
+                  <Typography className={classes.title}>Leverage token</Typography>
+                </Grid>
                 <Grid className={classes.selectGrid}>
                   <Select
                     className={classes.select}
                     centered={true}
-                    pairs={leveragePairs.map(tokens => ({
-                      symbol1: tokens.collateralSymbol,
-                      symbol2: tokens.syntheticSymbol,
-                      type: tokens.vaultType
+                    tokens={leveragePairs.map(tokens => ({
+                      symbol:
+                        leverageType === 'short' ? tokens.syntheticSymbol : tokens.collateralSymbol,
+                      balance:
+                        leverageType === 'short'
+                          ? tokens.syntheticBalance.val
+                          : tokens.collateralBalance.val,
+                      decimals:
+                        leverageType === 'short'
+                          ? tokens.syntheticBalance.scale
+                          : tokens.collateralBalance.scale
                     }))}
                     onSelect={(chosen: number) => {
                       setLeverageIndex(chosen)

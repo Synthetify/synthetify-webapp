@@ -1,56 +1,33 @@
-import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
-import { FormGroup, Grid, Switch, Typography } from '@material-ui/core'
+import { Grid, Tab, Tabs } from '@material-ui/core'
 import React from 'react'
-import HintIcon from '@static/svg/questionMark.svg'
-import useStyles from './style'
-export interface ILeverProps {
-  leverStatus: boolean
-  setLeverStatus: (val: boolean) => void
-  leverType: string
-}
-export const SwitchButton: React.FC<ILeverProps> = ({ leverStatus, setLeverStatus, leverType }) => {
-  const classes = useStyles()
 
+import useStyles, { useSingleTabStyles, useTabsStyles } from './style'
+export interface ILeverProps {
+  setLeverStatus: (val: boolean) => void
+}
+export const SwitchButton: React.FC<ILeverProps> = ({ setLeverStatus }) => {
+  const classes = useStyles()
+  const [value, setValue] = React.useState(0)
+  const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+    setTimeout(() => {
+      setValue(newValue)
+      setLeverStatus(newValue !== 0)
+    }, 100)
+  }
+  const singleTabClasses = useSingleTabStyles({ value })
+  const tabsClasses = useTabsStyles({ value })
   return (
     <Grid className={classes.root}>
-      <Grid>
-        <Typography className={classes.leverText}>Leverage</Typography>
-        <Typography className={classes.leverText}>{leverType}</Typography>
-      </Grid>
-      <FormGroup>
-        <Switch
-          className={classes.switch}
-          classes={{
-            switchBase: classes.switchBase,
-            root: classes.switch,
-            thumb: classes.switchThumb,
-            track: classes.switchTrack,
-            checked: classes.switchChecked
-          }}
-          disableRipple
-          checked={leverStatus}
-          onClick={() => {
-            setLeverStatus(!leverStatus)
-          }}
-        />
-      </FormGroup>
-      <MobileTooltip
-        hint={
-          <>
-            <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
-              When can you Short and Long?
-            </Typography>
-            <Typography className={classes.tooltipDescription} style={{ marginBottom: 10 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum justo dui,
-              vel gravida mi vulputate et. Nunc luctus hendrerit metus eget convallis. Praesent
-              elementum dignissim tristique. Pellentesque ante eros, venenatis id nisl eu,
-            </Typography>
-          </>
-        }
-        anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
-        mobilePlacement='top-end'
-        desktopPlacement='top-end'
-      />
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        variant='scrollable'
+        scrollButtons='off'
+        TabIndicatorProps={{ children: <span /> }}
+        classes={tabsClasses}>
+        <Tab disableRipple label='Long' classes={singleTabClasses} />
+        <Tab disableRipple label='Short' classes={singleTabClasses} />
+      </Tabs>
     </Grid>
   )
 }

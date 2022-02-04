@@ -109,7 +109,6 @@ export const WrappedLeverage: React.FC<IProp> = ({
       setLeverageType('long')
     } else {
       setLeverageIndex(null)
-
       setLeverageType('short')
     }
   }, [leverageStatus])
@@ -121,6 +120,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
         liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
         liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         allSynthetic={allSynthetic}
+        leverageType={leverageType}
         leveragePairs={leverageType === 'short' ? shortPairs : longPairs}
         sending={sending}
         pairIndex={pairs.length !== 0 ? pairIndex : null}
@@ -143,6 +143,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
         liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
         liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         allSynthetic={allSynthetic}
+        leverageType={leverageType}
         leveragePairs={leverageType === 'short' ? shortPairs : longPairs}
         sending={sending}
         pairIndex={pairs.length !== 0 ? pairIndex : null}
@@ -177,13 +178,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             }}
             currentLeverage={getLeverageLevel(Number(cRatio))}
             maxLeverage={getLeverageLevel(Number(minCRatio))}
-            switchButton={
-              <SwitchButton
-                leverStatus={leverageStatus}
-                setLeverStatus={setLeverageStatus}
-                leverType={leverageType}
-              />
-            }
+            switchButton={<SwitchButton setLeverStatus={setLeverageStatus} />}
           />
         </Grid>
 

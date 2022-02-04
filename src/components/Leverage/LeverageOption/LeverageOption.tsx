@@ -1,10 +1,8 @@
 import { Divider, Grid, Slider, Typography } from '@material-ui/core'
 import React from 'react'
 import { colors } from '@static/theme'
-
 import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
-
 interface IProp {
   onClickSubmitButton: () => void
   onClickRestartButton: () => void
@@ -13,8 +11,9 @@ interface IProp {
   cRatio: string
   changeCustomCRatio: (value: string) => void
   currentLeverage: string
-  maxLeverage: string
+
   action: string
+  switchButton: React.ReactNode
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -24,10 +23,11 @@ export const LeverageOption: React.FC<IProp> = ({
   cRatio,
   changeCustomCRatio,
   currentLeverage,
-  maxLeverage,
-  action
+  action,
+  switchButton
 }) => {
   const classes = useStyles()
+
   return (
     <Grid className={classes.wrapperOption}>
       <Grid className={classes.root}>
@@ -44,11 +44,19 @@ export const LeverageOption: React.FC<IProp> = ({
               </Typography>
             </Grid>
             <Grid>
-              <Typography className={classes.infoTitle}>Collateral ratio</Typography>
+              <Typography className={classes.infoTitle}>Leverage</Typography>
               <Typography className={classes.headerTitle} style={{ textAlign: 'end' }}>
-                {cRatio}%
+                {currentLeverage}x
               </Typography>
             </Grid>
+          </Grid>
+          <Grid container item justifyContent={'space-between'} alignItems={'center'}>
+            <Typography className={classes.sliderRisk} style={{ color: colors.green.button }}>
+              Decrease risk
+            </Typography>
+            <Typography className={classes.sliderRisk} style={{ color: colors.red.error }}>
+              Increase risk
+            </Typography>
           </Grid>
 
           <Slider
@@ -72,33 +80,20 @@ export const LeverageOption: React.FC<IProp> = ({
             max={-minCRatio}
             disabled={action === 'close'}
           />
-          <Grid container item justifyContent={'space-between'}>
-            <Typography className={classes.sliderRisk} style={{ color: colors.green.button }}>
-              Decrease risk
-            </Typography>
-            <Typography className={classes.sliderRisk} style={{ color: colors.red.error }}>
-              Increase risk
-            </Typography>
-          </Grid>
         </Grid>
+
         <Divider className={classes.divider} style={{ margin: '20px 0' }} />
         <Grid
           container
           direction='row'
           style={{ padding: ' 0 24px' }}
           justifyContent='space-between'>
+          <Grid>{switchButton}</Grid>
           <Grid>
-            <Typography className={classes.infoTitle}>Leverage:</Typography>
-            <Typography className={classes.infoValue}>{currentLeverage}x</Typography>
+            <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
+            <Typography className={classes.infoValue}>{cRatio}%</Typography>
           </Grid>
-          <Grid>
-            <Typography className={classes.infoTitle}>Max leverage:</Typography>
-            <Typography className={classes.infoValue}> {maxLeverage}x</Typography>
-          </Grid>
-          <Grid>
-            <Typography className={classes.infoTitle}>Slippage limit:</Typography>
-            <Typography className={classes.infoValue}>0.50%</Typography>
-          </Grid>
+
           <Grid>
             <Typography className={classes.infoTitle}>Fee:</Typography>
             <Typography className={classes.infoValue}>$30.5</Typography>
