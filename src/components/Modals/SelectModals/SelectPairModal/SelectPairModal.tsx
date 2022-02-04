@@ -52,7 +52,7 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
 
   const pairSymbol = (pair: { symbol1: string; symbol2: string }) =>
     `${pair.symbol1}/${pair.symbol2}`
-  const alphabetTable = ['A', 'B', 'C', 'D', 'E', 'F']
+  const alphabetTable = ['A', 'D', 'C', 'B', 'E', 'F']
   const getCountSameVaults = (
     array: Array<{ symbol1: string; symbol2: string; type?: number }>,
     tokenBorr: string,
@@ -128,7 +128,6 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                       <Typography className={classes.tokenName}>
                         {pairSymbol(pair)}
                         {typeof pair.type !== 'undefined' &&
-                        pair.type !== 3 &&
                         getCountSameVaults(pairs, pair.symbol2, pair.symbol1) > 1
                           ? ` - ${alphabetTable[pair.type]}`
                           : null}

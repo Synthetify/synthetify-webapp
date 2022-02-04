@@ -76,7 +76,9 @@ storiesOf('WrappedActionMenu/Menu', module).add('mock', () => (
           scale: 0
         },
         collateralValue: 1500000,
-        userMarinadeAmount: 15
+        userMarinadeAmount: 15,
+        mndePrice: 0,
+        mSolTvl: 0
       }}
       depositTokens={[]}
       withdrawTokens={[]}

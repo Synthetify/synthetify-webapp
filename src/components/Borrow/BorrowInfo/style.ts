@@ -45,6 +45,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   positionValue: {
+    display: 'flex',
+    alignItems: 'center',
     color: colors.navy.lightGrey,
     ...typography.subtitle1,
     [theme.breakpoints.down('md')]: {
@@ -71,6 +73,33 @@ const useStyles = makeStyles((theme: Theme) => ({
   infoTitle: {
     color: colors.navy.veryLightGrey,
     ...typography.body1
+  },
+  circleIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8,
+    marginTop: 6
+  },
+  tooltipTitle: {
+    ...typography.subtitle1
+  },
+  supplyTooltip: {
+    // backgroundColor: `${colors.red.error} !important`
+  },
+  exclamationMark: {
+    height: 14,
+    width: 14,
+    paddingBottom: 2,
+    marginLeft: 8,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 2
+    },
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }))
 export default useStyles
