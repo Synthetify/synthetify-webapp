@@ -29,6 +29,7 @@ storiesOf('Borrow/Info', module).add('default', () => (
       liqRatio={0}
       cRatio={0}
       openFee={0}
+      vaultType={0}
     />
   </Grid>
 ))

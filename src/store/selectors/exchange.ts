@@ -390,6 +390,23 @@ export const getSNYPrice = createSelector(collaterals, assets, (allColaterals, a
       }
 })
 
+export const getMSolTvl = createSelector(collaterals, assets, (allCollaterals, allAssets) => {
+  const mSolIndex = Object.values(allCollaterals).findIndex(coll => coll.symbol === 'mSOL')
+
+  if (mSolIndex === -1) {
+    return 0
+  }
+
+  const mSolAmount = Object.values(allCollaterals)[mSolIndex].reserveBalance
+  const mSolPrice = allAssets[Object.values(allCollaterals)[mSolIndex].assetIndex].price
+
+  const tvl = mSolAmount.val
+    .mul(mSolPrice.val)
+    .div(new BN(10 ** (mSolAmount.scale + ORACLE_OFFSET - ACCURACY)))
+
+  return +transformBN(tvl)
+})
+
 export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
@@ -490,7 +507,15 @@ export const getUserVaults = createSelector(
         vaultType: currentVault.vaultType
       })
     })
-    return vaultData
+
+    return vaultData.filter(
+      element =>
+        Number(
+          (+printBN(element.deposited.val, element.deposited.scale)).toFixed(
+            element.deposited.scale - 2
+          )
+        ) !== 0 || +printBN(element.currentDebt.val, element.currentDebt.scale) !== 0
+    )
   }
 )
 
@@ -511,15 +536,15 @@ export const getGeneralTotals = createSelector(
         typeof allAssetPrice[currentVault.collateral.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.collateral.toString()]
           : {
-              val: new BN(10 ** currentVault.maxBorrow.scale),
+              val: new BN(10 ** currentVault.collateralAmount.scale),
               scale: currentVault.collateralAmount.scale
             }
       const actualPriceSynthetic =
         typeof allAssetPrice[currentVault.synthetic.toString()] !== 'undefined'
           ? allAssetPrice[currentVault.synthetic.toString()]
           : {
-              val: new BN(10 ** currentVault.maxBorrow.scale),
-              scale: currentVault.maxBorrow.scale
+              val: new BN(10 ** currentVault.mintAmount.scale),
+              scale: currentVault.mintAmount.scale
             }
       totalCollatera =
         totalCollatera +
