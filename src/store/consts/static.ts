@@ -14,10 +14,11 @@ declare global {
 }
 
 enum SolanaNetworks {
-  DEV = 'https://api.devnet.solana.com',
+  // DEV = 'https://solana--devnet.datahub.figment.io/apikey/d2f60ac272929a3f43bd3bc05149d279',
+  DEV = 'https://api.devnet.solana.com/',
   TEST = 'https://api.testnet.solana.com',
   MAIN = 'https://api.mainnet-beta.solana.com',
-  MAIN_SERUM = 'https://solana-api.projectserum.com',
+  MAIN_SERUM = 'https://ssc-dao.genesysgo.net',
   LOCAL = 'http://127.0.0.1:8899'
 }
 enum NetworkType {
@@ -26,7 +27,8 @@ enum NetworkType {
   LOCALNET = 'Localnet',
   MAINNET = 'Mainnet'
 }
-const MAINNET_RPCS = [ // when adding new rpc: 1) make sure probability is between 0 and one; 2) sum od all probabilities is equal to 1
+const MAINNET_RPCS = [
+  // when adding new rpc: 1) make sure probability is between 0 and one; 2) sum od all probabilities is equal to 1
   // {
   //   rpc: SolanaNetworks.MAIN,
   //   probability: 0.6
@@ -63,7 +65,29 @@ const descrpitionForSymbol: { [key: string]: string } = {
   stSOL: 'Staked Solana',
   WSOL: 'Wrapped Solana',
   USDC: 'USD Coin',
-  renBTC: 'renBTC'
+  renBTC: 'renBTC',
+  whETH: 'Wormhole ETH',
+  whFTT: 'Wormhole FTT',
+  mSOL: 'Marinade SOL',
+  xLUNA: 'Synthetic LUNA',
+  xAVAX: 'Synthetic Avalanche',
+  xDOT: 'Synthetic Polkadot'
 }
 
-export { SolanaNetworks, DEFAULT_PUBLICKEY, ORACLE_OFFSET, ACCURACY, DEFAULT_STAKING_DATA, MAX_U64, MAINNET_RPCS, NetworkType, descrpitionForSymbol }
+const MARINADE_PER_POINT = 1.43e-7
+
+const MNDE_WEEK_AMOUNT = 9700
+
+export {
+  SolanaNetworks,
+  DEFAULT_PUBLICKEY,
+  ORACLE_OFFSET,
+  ACCURACY,
+  DEFAULT_STAKING_DATA,
+  MAX_U64,
+  MAINNET_RPCS,
+  NetworkType,
+  descrpitionForSymbol,
+  MARINADE_PER_POINT,
+  MNDE_WEEK_AMOUNT
+}

@@ -8,7 +8,7 @@ import classNames from 'classnames'
 import { descrpitionForSymbol } from '@consts/static'
 
 export interface ISelectPairModal {
-  pairs: Array<{ symbol1: string; symbol2: string }>
+  pairs: Array<{ symbol1: string; symbol2: string; type?: number }>
   open: boolean
   handleClose: () => void
   anchorEl: HTMLButtonElement | null
@@ -42,10 +42,28 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
       <Search className={classes.searchIcon} />
     </>
   )
+  const selectTokens = (token1: string, token2: string, type?: number): number => {
+    return type
+      ? pairs.findIndex(
+          token => token.symbol1 === token1 && token.symbol2 === token2 && token.type === type
+        )
+      : pairs.findIndex(token => token.symbol1 === token1 && token.symbol2 === token2)
+  }
 
   const pairSymbol = (pair: { symbol1: string; symbol2: string }) =>
     `${pair.symbol1}/${pair.symbol2}`
-
+  const alphabetTable = ['A', 'B', 'C', 'D', 'E', 'F']
+  const getCountSameVaults = (
+    array: Array<{ symbol1: string; symbol2: string; type?: number }>,
+    tokenBorr: string,
+    tokenColl: string
+  ) => {
+    let count = 0
+    array.forEach(
+      element => element.symbol2 === tokenBorr && element.symbol1 === tokenColl && count++
+    )
+    return count
+  }
   return (
     <Popover
       classes={{ paper: classes.paper }}
@@ -92,7 +110,7 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                     alignItems='center'
                     wrap='nowrap'
                     onClick={() => {
-                      onSelect(index)
+                      onSelect(selectTokens(pair.symbol1, pair.symbol2, pair.type))
                       handleClose()
                     }}>
                     <Grid className={classes.dualIcon}>
@@ -107,7 +125,14 @@ export const SelectPairModal: React.FC<ISelectPairModal> = ({
                       />{' '}
                     </Grid>
                     <Grid item>
-                      <Typography className={classes.tokenName}>{pairSymbol(pair)}</Typography>
+                      <Typography className={classes.tokenName}>
+                        {pairSymbol(pair)}
+                        {typeof pair.type !== 'undefined' &&
+                        pair.type !== 3 &&
+                        getCountSameVaults(pairs, pair.symbol2, pair.symbol1) > 1
+                          ? ` - ${alphabetTable[pair.type]}`
+                          : null}
+                      </Typography>
                       <Typography className={classes.tokenDescrpiption}>
                         {descrpitionForSymbol[pair.symbol1] ?? 'Asset'}/
                         {descrpitionForSymbol[pair.symbol2] ?? 'Asset'}

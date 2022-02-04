@@ -1,15 +1,24 @@
+/* eslint-disable @typescript-eslint/indent */
 import React from 'react'
 import { ResponsivePie } from '@nivo/pie'
-import AnimatedNumber from '@components/AnimatedNumber'
 import { Grid, Card, CardContent, Typography } from '@material-ui/core'
-import useStyles from './style'
 import { colors } from '@static/theme'
+import useStyles from './style'
+
 export interface Data {
   id: string
   label: string
-  value: number
   color: string
-  price: number
+  percent: number
+  value: number
+  debt: {
+    amount: number
+    usdValue: number
+  }
+  collateral: {
+    amount: number
+    usdValue: number
+  }
 }
 
 export interface IProps {
@@ -18,14 +27,25 @@ export interface IProps {
   data: Data[]
 }
 export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
+  const formatVal = (value: number) =>
+    Math.abs(+value) >= 10000000
+      ? Number((value / 1000000).toFixed(1))
+          .toLocaleString('pl-PL')
+          .replace(',', '.') + 'M'
+      : Number(value.toFixed(0)).toLocaleString('pl-PL')
+
   const [label, setLabel] = React.useState<String>('TOTAL DEBT')
-  const [info, setInfo] = React.useState<String>('')
-  const [display, setDisplay] = React.useState<boolean>(true)
+  const [infoNumber, setInfoNumber] = React.useState<number>(0)
 
   const classes = useStyles()
+  data.sort(
+    (a, b) =>
+      Math.abs(a.debt.usdValue - a.collateral.usdValue) -
+      Math.abs(b.debt.usdValue - b.collateral.usdValue)
+  )
 
   return (
-    <Card className={classes.debtPoolCard}>
+    <Card className={classes.debtPoolCard} id='debtPlot'>
       <CardContent className={classes.debtPoolCardContent}>
         <Typography className={classes.debtPoolCardTitle}>{title}</Typography>
         <Typography className={classes.debtPoolCardSubTitle}>{subTitle}</Typography>
@@ -35,36 +55,33 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
               <Typography component='h2' className={classes.tooltipLabel}>
                 {label}
               </Typography>
-              <Typography component='p' className={classes.tooltipValue}>
-                {info}
-              </Typography>
               <Typography
                 component='p'
-                className={classes.tooltipTotal}
-                style={{ display: `${display ? 'block' : 'none'}` }}>
-                <AnimatedNumber
-                  value={data.reduce((sum, item) => {
-                    return sum + item.price
-                  }, 0)}
-                  duration={500}
-                  formatValue={(value: string) =>
-                    Number(value) > 10000000
-                      ? Number((Number(value) / 1000000).toFixed(1)).toLocaleString('pl-PL') + 'M'
-                      : Number(Number(value).toFixed(0)).toLocaleString('pl-PL')
-                  }
-                />
+                className={classes.tooltipValue}
+                style={
+                  label !== 'TOTAL DEBT' && infoNumber < 0
+                    ? { color: colors.red.negative }
+                    : undefined
+                }>
                 $
+                {formatVal(
+                  label === 'TOTAL DEBT'
+                    ? data.reduce((sum, item) => {
+                        return sum + item.debt.usdValue
+                      }, 0)
+                    : infoNumber
+                )}
               </Typography>
             </Grid>
             <Grid className={classes.pieCanvasGrid}>
               <ResponsivePie
                 data={data}
                 margin={{ top: 6, right: 6, bottom: 6, left: 6 }}
-                sortByValue={true}
                 activeOuterRadiusOffset={5}
                 borderWidth={1}
                 borderColor={{ from: 'color' }}
                 startAngle={0}
+                endAngle={-360}
                 innerRadius={0.75}
                 padAngle={2.5}
                 enableArcLinkLabels={false}
@@ -77,25 +94,22 @@ export const DebtPool: React.FC<IProps> = ({ title, subTitle, data }) => {
                 arcLabelsTextColor='#000000'
                 tooltip={() => null}
                 onMouseEnter={event => {
-                  const variable: string = event.id.toString()
-                  setLabel(event.label.toString())
-                  setInfo(`${Number(event.formattedValue).toFixed(2)}%`)
-                  setDisplay(false)
-                  var element = document.getElementById(variable)
+                  const elementIndex = data.findIndex(element => element.label === event.label)
+                  setLabel(`${event.label.toString()} (${data[elementIndex].percent.toFixed(2)}%)`)
+                  setInfoNumber(
+                    data[elementIndex].debt.usdValue - data[elementIndex].collateral.usdValue
+                  )
+                  const element = document.getElementById(event.id.toString())
                   if (element != null) {
-                    element.style.background = `${colors.navy.navButton}40`
-                    element.style.borderRadius = '10px'
+                    element.classList.add('light')
                   }
                 }}
                 onMouseLeave={event => {
-                  const variable: string = event.id.toString()
                   setLabel('TOTAL DEBT')
-                  setInfo('')
-                  setDisplay(true)
-                  var element = document.getElementById(variable)
+                  setInfoNumber(0)
+                  const element = document.getElementById(event.id.toString())
                   if (element != null) {
-                    element.style.background = colors.navy.component
-                    element.style.borderRadius = '0px'
+                    element.classList.remove('light')
                   }
                 }}
                 legends={[]}

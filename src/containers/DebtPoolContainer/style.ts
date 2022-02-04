@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    alignItems: 'flex-start',
     [theme.breakpoints.down('sm')]: {
       padding: '0 0 4px 0'
     },
@@ -23,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '55.0%'
     },
     [theme.breakpoints.down('xs')]: {
-      width: '100%'
+      width: '100%',
+      marginBottom: 16
     }
   }
 }))

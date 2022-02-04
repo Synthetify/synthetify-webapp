@@ -4,7 +4,7 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: 'fit-content',
-    borderRadius: 10,
+    borderRadius: 8,
     paddingBlock: 11,
     paddingInline: 16,
     backgroundColor: colors.navy.background,
@@ -14,15 +14,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     minWidth: '80px',
     marginLeft: '16px',
+    [theme.breakpoints.down('sm')]: {
+      paddingInline: 10,
+      marginLeft: 0
+    },
     [theme.breakpoints.down('xs')]: {
-      marginLeft: '4px',
-      paddingBlock: 8,
-      paddingInline: 7
+      paddingBlock: 5,
+      paddingInline: 3
     }
   },
   percentIcon: {
-    width: 16,
-    height: 16,
+    width: 21,
+    height: 21,
     paddingRight: '6px',
     opacity: 0.75,
     [theme.breakpoints.down('xs')]: {
@@ -36,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle2,
     color: colors.navy.grey,
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1
+      ...typography.caption3
     }
   },
   popover: {

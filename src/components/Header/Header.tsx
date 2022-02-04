@@ -52,9 +52,9 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-  const routes = ['staking', 'stats', 'exchange']
-  if (typeOfNetwork === NetworkType.DEVNET) {
-    routes.push('swapline')
+  const routes = ['staking', 'exchange', 'vaults', 'statistics']
+  if (typeOfNetwork !== NetworkType.TESTNET) {
+    routes.splice(routes.length - 1, 0, 'swapline')
   }
 
   const [activePath, setActive] = React.useState(landing)
@@ -71,7 +71,10 @@ export const Header: React.FC<IHeader> = ({
     [WalletType.PHANTOM]: 'phantom',
     [WalletType.SOLLET]: 'sollet',
     [WalletType.MATH]: 'math wallet',
-    [WalletType.SOLFLARE]: 'solflare'
+    [WalletType.SOLFLARE]: 'solflare',
+    [WalletType.COIN98]: 'coin98',
+    [WalletType.SLOPE]: 'slope',
+    [WalletType.CLOVER]: 'clover'
   }
 
   return (
@@ -88,7 +91,7 @@ export const Header: React.FC<IHeader> = ({
             container
             wrap='nowrap'
             alignItems='center'
-            style={{ maxWidth: 93 * (routes.length) + 15 * (routes.length - 1) }}>
+            style={{ maxWidth: 93 * routes.length + 15 * (routes.length - 1) }}>
             {routes.map(path => (
               <Link key={`path-${path}`} to={`/${path}`} className={classes.link}>
                 <NavbarButton
@@ -131,7 +134,10 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.PHANTOM,
                 WalletType.SOLLET,
                 WalletType.MATH,
-                WalletType.SOLFLARE
+                WalletType.SOLFLARE,
+                WalletType.COIN98,
+                WalletType.SLOPE,
+                WalletType.CLOVER
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}
@@ -140,16 +146,17 @@ export const Header: React.FC<IHeader> = ({
             />
           ) : (
             <ChangeWalletButton
-              name={`${address
-                .toString()
-                .substr(0, isSmDown ? 2 : (isMdDown ? 3 : 6))}...${address
+              name={`${address.toString().substr(0, isSmDown ? 2 : isMdDown ? 3 : 6)}...${address
                 .toString()
                 .substr(address.toString().length - (isSmDown ? 2 : 3), isSmDown ? 2 : 3)}`}
               options={[
                 WalletType.PHANTOM,
                 WalletType.SOLLET,
                 WalletType.MATH,
-                WalletType.SOLFLARE
+                WalletType.SOLFLARE,
+                WalletType.COIN98,
+                WalletType.SLOPE,
+                WalletType.CLOVER
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}

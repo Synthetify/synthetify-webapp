@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: colors.navy.component,
     borderRadius: 10,
-    padding: '20px 24px 20px 24px',
+    padding: '20px 24px 5px 24px',
     [theme.breakpoints.down('xs')]: {
       padding: '12px 16px 12px 16px'
     }
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   legendWrapper: {
-    padding: '25px 0px 16px 0px',
+    padding: '24px 0px 10px 0px',
     fontSize: 18,
     width: '100%',
     display: 'flex',
@@ -105,10 +105,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   legendItem: {
-    marginRight: 35,
+    margin: '0 35px 10px 0',
     ...typography.body2,
     [theme.breakpoints.down('xs')]: {
-      marginRight: 0,
+      margin: '0 0 0 0',
       ...typography.subtitle2,
       display: 'flex',
       '&:not(:first-child)': {

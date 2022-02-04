@@ -21,11 +21,11 @@ const defaultSynthetic: Synthetic = {
   },
   settlementSlot: new BN(1),
   borrowedSupply: {
-    val: new BN(1e6),
+    val: new BN(1e5),
     scale: 0
   },
   swaplineSupply: {
-    val: new BN(1e6),
+    val: new BN(1e5),
     scale: 0
   }
 }
@@ -34,7 +34,7 @@ const defaultAsset: Asset = {
   feedAddress: new PublicKey(0),
   lastUpdate: new BN(1),
   price: {
-    val: (new BN(1)).mul(new BN(1000000)),
+    val: new BN(1).mul(new BN(1000000)),
     scale: 0
   },
   confidence: {
@@ -64,7 +64,7 @@ const tokens = 'xUSD Dogecoin SOL FFT ETH 1INCH AAVE AERGO AETH AKRO'
 tokens[0].balance = new BN(100).mul(new BN(10000))
 tokens[1].balance = new BN(10).mul(new BN(10000))
 tokens[1].price = {
-  val: (new BN(10)).mul(new BN(1000000)),
+  val: new BN(10).mul(new BN(1000000)),
   scale: 4
 }
 

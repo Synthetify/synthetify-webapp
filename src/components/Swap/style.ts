@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.component,
     borderRadius: 10,
     padding: 24,
-
     [theme.breakpoints.down('sm')]: {
       padding: 16
     }
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tokenComponentInfo: {
     marginBottom: 10,
-
     [theme.breakpoints.down('sm')]: {
       marginBottom: 8
     }
@@ -33,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.veryLightGrey,
     ...typography.subtitle1,
     whiteSpace: 'nowrap',
-
+    marginTop: 2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body3
     }
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     ...typography.subtitle2,
     whiteSpace: 'nowrap',
-
+    marginTop: 2,
     [theme.breakpoints.down('sm')]: {
       ...typography.body4
     }
@@ -122,7 +120,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   numbersField: {
     marginTop: 28,
-
     [theme.breakpoints.down('sm')]: {
       marginTop: 18
     }
@@ -132,7 +129,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     position: 'relative',
     lineHeight: '22px',
-
+    [theme.breakpoints.up('md')]: {
+      top: 2
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
     }
@@ -141,6 +140,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body1,
     color: colors.navy.veryLightGrey,
     lineHeight: '22px',
+    [theme.breakpoints.up('md')]: {
+      marginTop: 16
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle1
     }
@@ -153,6 +155,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   discount: {
     ...typography.body2,
     lineHeight: '22px',
+    [theme.breakpoints.up('md')]: {
+      marginTop: 16
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.subtitle2
     }

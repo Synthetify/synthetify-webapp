@@ -6,6 +6,7 @@ import TimeRemainingTooltip from '@components/WrappedActionMenu/RewardsTab/TimeR
 import BN from 'bn.js'
 import useStyles from './style'
 import { Placement } from '@components/MobileTooltip/MobileTooltip'
+import icons from '@static/icons'
 
 export interface IRewardsLineProps {
   name: string
@@ -19,6 +20,7 @@ export interface IRewardsLineProps {
   slot: number
   icon: string
   tooltipPlacement: Placement
+  userMarinadeAmount?: number
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -31,10 +33,10 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   slot,
   hint,
   icon,
-  tooltipPlacement
+  tooltipPlacement,
+  userMarinadeAmount
 }) => {
   const classes = useStyles()
-
   const processedNonBracket = (
     <>
       {nonBracket ? (
@@ -42,7 +44,9 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           <AnimatedNumber
             value={nonBracketValue ? transformBN(nonBracketValue) : new BN(0)}
             duration={300}
-            formatValue={(value: string) => Number(value).toFixed(4)}
+            formatValue={(value: string) =>
+              Number(value) > 1000 ? Number(value).toFixed(1) : Number(value).toFixed(4)
+            }
           />
           {` ${nonBracket}`}
         </>
@@ -66,13 +70,27 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
           ) : (
             'infinity'
           )}
-          {` ${bracket})`}
+          {`${bracket})`}
         </>
       ) : (
         ''
       )}
     </>
   )
+
+  const marinade = userMarinadeAmount ? (
+    <>
+      {' + '}
+      <img className={classes.marinadeIcon} src={icons.marinade} />{' '}
+      <AnimatedNumber
+        value={userMarinadeAmount}
+        duration={300}
+        formatValue={(value: string) => +Number(value).toFixed(9)}
+      />
+      {' MNDE'}
+    </>
+  ) : null
+
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
@@ -91,12 +109,13 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
             isPopoverOpen={isPopoverOpen}
             setIsPopoverOpen={setIsPopoverOpen}
           />
-          <Grid item style={{ marginLeft: 15 }}>
+          <Grid item className={classes.textContainer}>
             <Typography className={classes.text}>
               {name}
               {': '}
               {processedNonBracket}
               {processedBracket}
+              {marinade}
             </Typography>
           </Grid>
         </Grid>

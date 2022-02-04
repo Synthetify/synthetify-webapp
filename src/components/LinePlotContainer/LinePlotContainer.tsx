@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React from 'react'
 import { Grid, CardContent, Card, Button, Paper, Typography } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
@@ -143,14 +144,6 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
-                      setMenuOption('Liquidation')
-                      changeData('liquidation')
-                    }}>
-                    Liquidation
-                  </Button>
-                  <Button
-                    className={classes.optionItem}
-                    onClick={() => {
                       setMenuOption('Mint')
                       changeData('mint')
                     }}>
@@ -159,10 +152,10 @@ export const LinePlotContainer: React.FC<IProp> = ({
                   <Button
                     className={classes.optionItem}
                     onClick={() => {
-                      setMenuOption('Burn')
+                      setMenuOption('Repay')
                       changeData('burn')
                     }}>
-                    Burn
+                    Repay
                   </Button>
                   <Button
                     className={classes.optionItem}

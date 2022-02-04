@@ -5,7 +5,7 @@ export interface IProps {
   actionContents: IActionContents
 }
 
-export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'burn' | 'rewards'
+export type ActionType = 'mint' | 'deposit' | 'withdraw' | 'repay' | 'rewards'
 
 export type IActionContents = {
   [type in ActionType]: React.ReactNode

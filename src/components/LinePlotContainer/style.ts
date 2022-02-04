@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.body3,
+      lineHeight: '18px',
       minWidth: 95,
       height: 28
     }
@@ -60,11 +61,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   arrowIcon: {
     transform: 'rotate(0.25turn)',
-    width: 10,
-    marginTop: 2,
-    [theme.breakpoints.down('xs')]: {
-      marginTop: 4
-    }
+    width: 10
   },
   paperMenu: {
     display: 'none',

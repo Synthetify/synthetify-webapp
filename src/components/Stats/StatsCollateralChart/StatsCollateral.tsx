@@ -18,6 +18,8 @@ export interface IProps {
 export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
 
+  data.sort((a, b) => (b.percent - a.percent))
+
   const getCoinsName = (data: CoinToChart[]) => {
     return data.map(coin => coin.name)
   }
@@ -63,7 +65,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
     return coin.color
   })
 
-  const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs')) // under 600px return false
+  const layoutVertical = !useMediaQuery(theme.breakpoints.down('xs'))
 
   return (
     <>
@@ -105,7 +107,7 @@ export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
           </div>
           <Grid container className={classes.legendWrapper}>
             {data.map(coin => (
-              <Grid item className={classes.legendItem} style={{ color: coin.color }}>
+              <Grid item key={coin.name} className={classes.legendItem} style={{ color: coin.color }}>
                 <FiberManualRecordIcon
                   style={{ width: '10px', height: 'auto', paddingRight: '8px', margin: 'auto 0' }}
                 />

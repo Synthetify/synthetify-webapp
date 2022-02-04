@@ -8,7 +8,6 @@ import {
   select,
   takeLatest
 } from 'typed-redux-saga'
-
 import { actions, PayloadTypes } from '@reducers/solanaWallet'
 import { getConnection } from './connection'
 import { getSolanaWallet, connectWallet, disconnectWallet, WalletType } from '@web3/wallet'
@@ -27,6 +26,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { address, status } from '@selectors/solanaWallet'
 import { collaterals } from '@selectors/exchange'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
+import { initVaultEntry } from './vault'
 export function* getWallet(): SagaGenerator<WalletAdapter> {
   const wallet = yield* call(getSolanaWallet)
   return wallet
@@ -109,30 +109,43 @@ export function* handleAirdrop(): Generator {
   }
 
   const allCollaterals = yield* select(collaterals)
-  const snyToken = Object.values(allCollaterals)[0]
-  const stSolToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'stSOL')
-  const usdcToken = Object.values(allCollaterals).find((collateral) => collateral.symbol === 'USDC')
-  try {
-    yield* call(getCollateralTokenAirdrop, snyToken.collateralAddress, 1e8)
 
-    if (stSolToken) {
-      yield* call(getCollateralTokenAirdrop, stSolToken.collateralAddress, 1e11)
+  const airdropTokens: Array<{
+    collateralAddress?: PublicKey
+    quantity: number
+  }> = [
+    {
+      collateralAddress: Object.values(allCollaterals)[0].collateralAddress,
+      quantity: 1e8
+    },
+    {
+      collateralAddress: Object.values(allCollaterals).find(
+        collateral => collateral.symbol === 'whETH'
+      )?.collateralAddress,
+      quantity: 1e8
+    },
+    {
+      collateralAddress: Object.values(allCollaterals).find(
+        collateral => collateral.symbol === 'stSOL'
+      )?.collateralAddress,
+      quantity: 1e11
+    },
+    {
+      collateralAddress: Object.values(allCollaterals).find(
+        collateral => collateral.symbol === 'USDC'
+      )?.collateralAddress,
+      quantity: 1e8
     }
+  ]
 
-    if (usdcToken) {
-      yield* call(getCollateralTokenAirdrop, usdcToken.collateralAddress, 1e8)
-    }
-  } catch (error) {
-    if (error instanceof Error && error.message === 'Signature request denied') return
-    console.error(error)
-    return put(
-      snackbarsActions.add({
-        message: 'The airdrop failed',
-        variant: 'error',
-        persist: false
-      })
-    )
-  }
+  const airdropTokenAdresses = airdropTokens
+    .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
+    .map(collateral => collateral.collateralAddress) as PublicKey[]
+  const airdropTokenQuantities = airdropTokens
+    .filter(collateral => typeof collateral.collateralAddress !== 'undefined')
+    .map(collateral => collateral.quantity)
+
+  yield* call(getCollateralTokenAirdrop, airdropTokenAdresses, airdropTokenQuantities)
   yield put(
     snackbarsActions.add({
       message: 'You will receive an airdrop soon',
@@ -214,6 +227,7 @@ export function* init(): Generator {
     [exchangeProgram, exchangeProgram.getExchangeAccountAddress],
     wallet.publicKey
   )
+
   try {
     const account = yield* call([exchangeProgram, exchangeProgram.getExchangeAccount], address)
 
@@ -284,18 +298,29 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     case WalletType.SOLFLARE:
       enumWallet = 'solflare'
       break
+    case WalletType.COIN98:
+      enumWallet = 'coin98'
+      break
+    case WalletType.SLOPE:
+      enumWallet = 'slope'
+      break
+    case WalletType.CLOVER:
+      enumWallet = 'clover'
+      break
     default:
       enumWallet = 'phantom'
   }
-  yield call([sessionStorage, sessionStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
+  yield call([localStorage, localStorage.setItem], 'SYNTHETIFY_SESSION_WALLET', enumWallet)
   yield* call(init)
   yield* call(connectExchangeWallet)
+  yield* call(sleep, 1000)
+  yield* call(initVaultEntry)
 }
 
 export function* handleDisconnect(): Generator {
   try {
     yield* call(disconnectWallet)
-    yield call([sessionStorage, sessionStorage.removeItem], 'SYNTHETIFY_SESSION_WALLET')
+    yield call([localStorage, localStorage.removeItem], 'SYNTHETIFY_SESSION_WALLET')
     yield* put(actions.resetState())
     yield* put(
       exchangeActions.setExchangeAccount({

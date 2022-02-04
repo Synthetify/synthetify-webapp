@@ -9,28 +9,23 @@ import Arrows from '@static/svg/swapArrows.svg'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import AnimatedNumber from '@components/AnimatedNumber'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
-import Output from '@static/svg/output.svg'
 import ExclamationMark from '@static/svg/exclamationMark.svg'
 import RedExclamationMark from '@static/svg/redExclamationMark.svg'
-import { pyth } from '@static/links'
-import { colors, theme } from '@static/theme'
+import { theme } from '@static/theme'
 import ExchangeAmountInput from '@components/Inputs/ExchangeAmountInput/ExchangeAmountInput'
 import useStyles from '../style'
 import { SwaplinePair } from '@selectors/solanaWallet'
 import { SwaplineSwapType } from '@reducers/exchange'
 
 interface AssetPriceData {
-  priceVal: BN,
-  assetScale: number,
-  symbol: string | null,
-  maxAvailable: BN,
+  priceVal: BN
+  assetScale: number
+  symbol: string | null
+  maxAvailable: BN
   balance: BN
 }
 
-export const getAssetInAndFor = (
-  pair: SwaplinePair | null,
-  swapType: SwaplineSwapType
-): [AssetPriceData, AssetPriceData] => {
+export const getAssetInAndFor = (pair: SwaplinePair | null, swapType: SwaplineSwapType) => {
   if (pair === null) {
     return [
       {
@@ -53,7 +48,7 @@ export const getAssetInAndFor = (
     priceVal: pair.collateralData.price.val,
     assetScale: pair.collateralData.reserveBalance.scale,
     symbol: pair.collateralData.symbol,
-    maxAvailable: pair.balance.val,
+    maxAvailable: pair.balance.val.sub(pair.accumulatedFee.val),
     balance: pair.collateralData.balance
   }
 
@@ -61,13 +56,11 @@ export const getAssetInAndFor = (
     priceVal: pair.syntheticData.price.val,
     assetScale: pair.syntheticData.supply.scale,
     symbol: pair.syntheticData.symbol,
-    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val).sub(pair.syntheticData.swaplineSupply.val).sub(pair.syntheticData.borrowedSupply.val),
+    maxAvailable: pair.syntheticData.maxSupply.val.sub(pair.syntheticData.supply.val),
     balance: pair.syntheticData.balance
   }
 
-  return swapType === 'nativeToSynthetic'
-    ? [collateral, synthetic]
-    : [synthetic, collateral]
+  return swapType === 'nativeToSynthetic' ? [collateral, synthetic] : [synthetic, collateral]
 }
 
 export const calculateSwapOutAmount = (
@@ -134,7 +127,7 @@ export const calculateSwapOutAmountReversed = (
 export const swapOutAmountCurrencyName = (
   reserved: boolean,
   tokenToSymbol: string | null,
-  tokenFromSymbol: string | null,
+  tokenFromSymbol: string | null
 ) => {
   const per = tokenToSymbol === null || tokenFromSymbol === null ? '' : 'per'
   const firstSymbol = tokenToSymbol === null ? '' : tokenToSymbol
@@ -166,7 +159,10 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
 
   const [rotates, setRotates] = React.useState<number>(0)
 
-  const [tokenFrom, tokenTo] = getAssetInAndFor(pairIndex !== null ? pairs[pairIndex] : null, swapType)
+  const [tokenFrom, tokenTo] = getAssetInAndFor(
+    pairIndex !== null ? pairs[pairIndex] : null,
+    swapType
+  )
 
   useEffect(() => {
     updateEstimatedAmount()
@@ -175,12 +171,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
   const updateEstimatedAmount = (amount: string | null = null) => {
     if (pairIndex !== null) {
       setAmountTo(
-        calculateSwapOutAmount(
-          tokenFrom,
-          tokenTo,
-          amount ?? amountFrom,
-          pairs[pairIndex].fee
-        )
+        calculateSwapOutAmount(tokenFrom, tokenTo, amount ?? amountFrom, pairs[pairIndex].fee)
       )
     }
   }
@@ -253,7 +244,12 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
     if (printBNtoBN(amountFrom, tokenFrom.assetScale).gt(tokenFrom.balance)) {
       return 'Invalid swap amount'
     }
-    if (swapType === 'nativeToSynthetic' && printBNtoBN(amountFrom, tokenFrom.assetScale).gt(pairs[pairIndex].limit.val.sub(pairs[pairIndex].balance.val))) {
+    if (
+      swapType === 'nativeToSynthetic' &&
+      printBNtoBN(amountFrom, tokenFrom.assetScale).gt(
+        pairs[pairIndex].limit.val.sub(pairs[pairIndex].balance.val)
+      )
+    ) {
       return 'Collateral limit reached'
     }
     if (printBNtoBN(amountTo, tokenTo.assetScale).gt(tokenTo.maxAvailable)) {
@@ -271,16 +267,10 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                 <b style={{ wordWrap: 'break-word' }}>{` ${printBN(
                   tokenTo.maxAvailable,
                   tokenTo.assetScale
-                )} ${tokenTo.symbol}`}</b>
+                )} ${tokenTo.symbol ? tokenTo.symbol : ''}`}</b>
               </>
             }
-            anchor={
-              <img
-                src={RedExclamationMark}
-                alt=''
-                className={classes.exclamationMark}
-              />
-            }
+            anchor={<img src={RedExclamationMark} alt='' className={classes.exclamationMark} />}
             tooltipClasses={{ tooltip: classes.supplyTooltip }}
             mobilePlacement='top-end'
             desktopPlacement='top-end'
@@ -307,21 +297,16 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
               <>
                 Balance:{' '}
                 <AnimatedNumber
-                  value={printBN(
-                    tokenFrom.balance,
-                    tokenFrom.assetScale
-                  )}
+                  value={printBN(tokenFrom.balance, tokenFrom.assetScale)}
                   duration={300}
                   formatValue={formatNumbers}
                 />
-                {+printBN(tokenFrom.balance, tokenFrom.assetScale) >=
-                10000
-                  ? +printBN(tokenFrom.balance, tokenFrom.assetScale) >=
-                    1000000
+                {+printBN(tokenFrom.balance, tokenFrom.assetScale) >= 10000
+                  ? +printBN(tokenFrom.balance, tokenFrom.assetScale) >= 1000000
                     ? 'M'
                     : 'K'
                   : ''}
-                {` ${tokenFrom.symbol}`}
+                {` ${tokenFrom.symbol ? tokenFrom.symbol : ''}`}
               </>
             ) : (
               ''
@@ -340,15 +325,11 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
           placeholder={'0.0'}
           onMaxClick={() => {
             if (pairIndex !== null) {
-              setAmountFrom(
-                printBN(tokenFrom.balance, tokenFrom.assetScale)
-              )
-              updateEstimatedAmount(
-                printBN(tokenFrom.balance, tokenFrom.assetScale)
-              )
+              setAmountFrom(printBN(tokenFrom.balance, tokenFrom.assetScale))
+              updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.assetScale))
             }
           }}
-          pairs={pairs.map((pair) => ({
+          pairs={pairs.map(pair => ({
             symbol1: pair.syntheticData.symbol,
             symbol2: pair.collateralData.symbol
           }))}
@@ -366,7 +347,9 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
           className={classes.swapIconSquare}
           onClick={() => {
             setRotates(rotates + 1)
-            setSwapType(swapType === 'nativeToSynthetic' ? 'syntheticToNative' : 'nativeToSynthetic')
+            setSwapType(
+              swapType === 'nativeToSynthetic' ? 'syntheticToNative' : 'nativeToSynthetic'
+            )
           }}>
           <CardMedia
             className={classes.swapIcon}
@@ -395,10 +378,8 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
                   duration={300}
                   formatValue={formatNumbers}
                 />
-                {showPrefix(
-                  +printBN(tokenTo.balance, tokenTo.assetScale)
-                )}
-                {` ${tokenTo.symbol}`}
+                {showPrefix(+printBN(tokenTo.balance, tokenTo.assetScale))}
+                {` ${tokenTo.symbol ? tokenTo.symbol : ''}`}
               </>
             ) : (
               ''
@@ -417,15 +398,11 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
           placeholder={'0.0'}
           onMaxClick={() => {
             if (pairIndex !== null) {
-              setAmountFrom(
-                printBN(tokenFrom.balance, tokenFrom.assetScale)
-              )
-              updateEstimatedAmount(
-                printBN(tokenFrom.balance, tokenFrom.assetScale)
-              )
+              setAmountFrom(printBN(tokenFrom.balance, tokenFrom.assetScale))
+              updateEstimatedAmount(printBN(tokenFrom.balance, tokenFrom.assetScale))
             }
           }}
-          pairs={pairs.map((pair) => ({
+          pairs={pairs.map(pair => ({
             symbol1: pair.syntheticData.symbol,
             symbol2: pair.collateralData.symbol
           }))}
@@ -439,11 +416,13 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
       </Grid>
       <Grid container item className={classes.numbersField}>
         <Grid item className={classes.numbersFieldGrid}>
-            <Typography className={classes.numbersFieldTitle}>Fee</Typography>
-
-            <Typography className={classes.numbersFieldAmount}>
-              {pairIndex !== null ? +printBN(pairs[pairIndex].fee.val.mul(new BN(100)), pairs[pairIndex].fee.scale) : 0}%
-            </Typography>
+          <Typography className={classes.numbersFieldTitle}>Fee</Typography>
+          <Typography className={classes.numbersFieldAmount}>
+            {pairIndex !== null
+              ? +printBN(pairs[pairIndex].fee.val.mul(new BN(100)), pairs[pairIndex].fee.scale)
+              : 0}
+            %
+          </Typography>
         </Grid>
 
         <Divider className={classes.amountDivider} orientation='vertical' />
@@ -484,9 +463,7 @@ export const SwaplineComponent: React.FC<ISwaplineComponent> = ({
       <OutlinedButton
         name={getButtonMessage()}
         color='secondary'
-        disabled={
-          getButtonMessage() !== 'Swap'
-        }
+        disabled={getButtonMessage() !== 'Swap'}
         className={classes.swapButton}
         onClick={() => {
           if (pairIndex === null) return

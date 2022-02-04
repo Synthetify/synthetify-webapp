@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/indent */
 import React from 'react'
 import { Divider, Grid, Typography } from '@material-ui/core'
-import { displayDate, divUpNumber, printBN, transformBN } from '@consts/utils'
+import {
+  calculateTimeRemaining,
+  displayDate,
+  estimateRounds,
+  printBN,
+  transformBN
+} from '@consts/utils'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
@@ -14,6 +21,8 @@ import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
+import { Marinade } from './Marinade/Marinade'
+import { MNDE_WEEK_AMOUNT } from '@consts/static'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -31,28 +40,27 @@ export interface IRewardsProps {
   roundLength: number
   stakedUserValue: BN
   SNYPrice: Decimal
+  allDebtValue: Array<{ symbol: string; percent: number; value: number }>
   userDebtShares: BN
   rounds: RoundData
   onClaim: () => void
   onWithdraw: () => void
   amountPerRoundValue: Decimal
   collateralValue: number
+  userMarinadeAmount: number
+  mndePrice: number
+  mSolTvl: number
 }
+
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   timeRemainingEndSlot,
   slot
 }) => {
   const classes = useStyles()
 
-  const calculateTimeRemaining = (): BN => {
-    const slotTime = 0.4
-    const slotDiff = timeRemainingEndSlot.sub(new BN(slot))
-    if (slotDiff.lten(0)) {
-      return new BN(0)
-    }
-    return slotDiff.muln(slotTime)
-  }
-  const [timeRemaining, setTimeRemaining] = React.useState(calculateTimeRemaining())
+  const [timeRemaining, setTimeRemaining] = React.useState(
+    calculateTimeRemaining(slot, timeRemainingEndSlot)
+  )
   React.useEffect(() => {
     const interval = setInterval(() => {
       setTimeRemaining(time => {
@@ -66,7 +74,7 @@ const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   }, [])
 
   React.useEffect(() => {
-    setTimeRemaining(calculateTimeRemaining())
+    setTimeRemaining(calculateTimeRemaining(slot, timeRemainingEndSlot))
   }, [slot])
   return (
     <Grid className={classes.rootTimer}>
@@ -79,82 +87,26 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   slot = 0,
   amountToClaim,
   roundLength,
-  stakedUserValue,
   SNYPrice,
   userDebtShares,
   rounds,
   onClaim,
   onWithdraw,
   amountPerRoundValue,
-  collateralValue
+  allDebtValue,
+  userMarinadeAmount,
+  mndePrice,
+  mSolTvl
 }) => {
   const classes = useStyles()
 
-  const estimateRounds = (): RoundData => {
-    const { current, next } = rounds
-
-    if (next.roundStartSlot.toNumber() >= slot) {
-      return rounds
-    }
-    const slotDiff = slot - next.roundStartSlot.toNumber()
-    const roundDiff = divUpNumber(slotDiff, roundLength)
-
-    switch (roundDiff) {
-      case 1: {
-        return {
-          finished: current,
-          current: next,
-          next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          }
-        }
-      }
-      case 2: {
-        return {
-          finished: next,
-          current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          },
-          next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          }
-        }
-      }
-      default: {
-        return {
-          finished: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          },
-          current: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          },
-          next: {
-            roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
-            roundAllPoints: next.roundAllPoints,
-            roundPoints: userDebtShares,
-            roundAmount: next.roundAmount
-          }
-        }
-      }
-    }
-  }
-
-  const { finished, current, next } = estimateRounds()
+  const { finished, current, next } = estimateRounds({
+    slot,
+    amountToClaim,
+    rounds,
+    roundLength,
+    userDebtShares
+  })
   const {
     roundAllPoints: finishedRoundAllPoints,
     roundPoints: finishedRoundPoints,
@@ -192,26 +144,29 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   }
 
   const aprValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
-    return !stakedUserValue.eq(new BN(0))
+    return !userDebtShares.eq(new BN(0))
       ? calculateTokensBasedOnPoints(roundPoints, roundAllPoints, roundAmount)
           .mul(SNYPrice.val)
           .mul(new BN(52))
-          .div(stakedUserValue)
+          .div(userDebtShares)
       : new BN(0)
   }
   const apyValue = (roundPoints?: BN, roundAllPoints?: BN, roundAmount?: Decimal): BN => {
     const apr = aprValue(roundPoints, roundAllPoints, roundAmount)
-    return !stakedUserValue.eq(new BN(0))
+    return !userDebtShares.eq(new BN(0))
       ? new BN((Math.pow(+transformBN(apr) / 100 / 52 + 1, 52) - 1) * 10000)
       : new BN(0)
   }
 
   const avgAPR = new BN(transformBN(amountPerRoundValue.val))
     .mul(SNYPrice.val)
-    .div(new BN(collateralValue))
+    .div(new BN(allDebtValue.reduce((a, b) => a + b.value, 0)))
     .mul(new BN(52))
     .div(new BN(100))
   const avgAPY = new BN((Math.pow(+transformBN(avgAPR) / 52 + 1, 52) - 1) * 10000)
+
+  const mndeAPR = mSolTvl === 0 ? 0 : (((MNDE_WEEK_AMOUNT * mndePrice) / mSolTvl) * 52) / 100
+  const mndeAPY = ((mndeAPR / 52 + 1) ** 52 - 1) * 10000
 
   const rewardsLines: {
     [index: number]: {
@@ -236,8 +191,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       ),
       bracketValue: apyValue(nextRoundPoints, nextRoundAllPoints, nextRoundAmount),
       bracket: nextRoundPoints.eqn(0) ? '' : '%',
-      hint:
-        'In this round you receive or lose pro rata shares proportionally to the value of your debt when you mint or burn your xUSD.',
+      hint: 'In this round you receive or lose pro rata shares proportionally to the value of your debt when you mint or burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards1,
       tooltipPlacement: 'left-end'
@@ -252,8 +206,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: 'SNY',
       bracketValue: apyValue(currentRoundPoints, currentRoundAllPoints, currentRoundAmount),
       bracket: currentRoundPoints.eqn(0) ? '' : '%',
-      hint:
-        'In this round you join with the pro rata shares from the previous round. You will lose those when you burn your xUSD.',
+      hint: 'In this round you join with the pro rata shares from the previous round. You will lose those when you burn your xUSD.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards2,
       tooltipPlacement: 'left'
@@ -268,8 +221,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
       nonBracket: 'SNY',
       bracketValue: apyValue(finishedRoundPoints, finishedRoundAllPoints, finishedRoundAmount),
       bracket: finishedRoundPoints.eqn(0) ? '' : '%',
-      hint:
-        'In this round you join with the pro rata shares from the previous phase. You can now claim your reward in SNY tokens, being proportional to the number of your shares.',
+      hint: 'In this round you join with the pro rata shares from the previous phase. You can now claim your reward in SNY tokens, being proportional to the number of your shares.',
       timeRemainingEndSlot: nextRoundStartSlot,
       icon: Rewards3,
       tooltipPlacement: 'left-start'
@@ -280,7 +232,11 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
     const props = rewardsLines[+key]
     return (
       <Grid item key={index} className={classes.line}>
-        <RewardsLine {...props} slot={slot} />
+        <RewardsLine
+          {...props}
+          slot={slot}
+          userMarinadeAmount={index === 1 ? userMarinadeAmount : undefined}
+        />
         <Divider className={classes.divider} />
       </Grid>
     )
@@ -289,14 +245,18 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   return (
     <Grid container direction='column' justifyContent='space-around'>
       <Grid item className={classes.amount} justifyContent='space-between'>
-        <Grid item className={classes.timeGrid}>
-          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
-          <AverageAPY avgAPY={printBN(avgAPY, 2)} />
-        </Grid>
+        <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+        <AverageAPY avgAPY={(+printBN(avgAPY, 2)).toFixed(2)} />
+        <Marinade marinade={mndeAPY.toFixed(2)} />
 
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
-      <Grid item container justifyContent='space-between' direction='column'>
+      <Grid
+        item
+        container
+        justifyContent='space-between'
+        direction='column'
+        style={{ marginTop: 18 }}>
         {lines}
       </Grid>
       <Grid

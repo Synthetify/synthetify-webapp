@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React, { useEffect } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { ExchangeSyntheticTokens } from '@selectors/solanaWallet'
@@ -223,7 +224,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     }
     if (
       tokenToIndex !== null &&
-      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val).sub(tokenTo.swaplineSupply.val).sub(tokenTo.borrowedSupply.val))
+      printBNtoBN(amountTo, tokenTo.supply.scale).gt(tokenTo.maxSupply.val.sub(tokenTo.supply.val))
     ) {
       return (
         <>
@@ -237,7 +238,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
                 </Typography>
                 Your amount exceeded current supply of token. Available to trade:
                 <b style={{ wordWrap: 'break-word' }}>{` ${printBN(
-                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val).sub(tokenTo.swaplineSupply.val).sub(tokenTo.borrowedSupply.val),
+                  tokens[tokenToIndex].maxSupply.val.sub(tokens[tokenToIndex].supply.val),
                   tokens[tokenToIndex].supply.scale
                 )} ${tokens[tokenToIndex].symbol}`}</b>
               </>
@@ -256,6 +257,16 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
           />
         </>
       )
+    }
+    if (
+      tokenFrom.symbol === 'xUSD' &&
+      tokenFrom.supply.val
+        .sub(printBNtoBN(amountFrom, tokenFrom.supply.scale))
+        .sub(tokenFrom.swaplineSupply.val)
+        .sub(tokenFrom.borrowedSupply.val)
+        .lt(new BN(0))
+    ) {
+      return 'xUSD swap limit reached'
     }
     return 'Swap'
   }

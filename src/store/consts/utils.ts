@@ -1,3 +1,4 @@
+import { RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { BN } from '@project-serum/anchor'
 import { u64 } from '@solana/spl-token'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
@@ -96,20 +97,7 @@ export const discountData = (userCollateralBalance: BN) => {
   // decimals of token = 6
   const ONE_SNY = new BN(1000000)
   const thresholds = [
-    100,
-    200,
-    500,
-    1000,
-    2000,
-    5000,
-    10000,
-    25000,
-    50000,
-    100000,
-    250000,
-    500000,
-    1000000,
-    2000000,
+    100, 200, 500, 1000, 2000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000,
     5000000
   ]
 
@@ -166,4 +154,116 @@ export const formatNumbers = (value: string) => {
   }
 
   return (num / 1000000000).toFixed(2)
+}
+
+export const formatNumbersBorrowTable = (value: string) => {
+  const num = Number(value)
+  if (num < 0) {
+    return num.toFixed(3)
+  }
+  if (num < 1000) {
+    return num.toFixed(2)
+  }
+  if (num < 10000) {
+    return num.toFixed(1)
+  }
+  if (num < 1000000) {
+    return (num / 1000).toFixed(0)
+  }
+
+  return (num / 1000000).toFixed(0)
+}
+
+export const estimateRounds = (rewards: {
+  slot: number
+  amountToClaim: Decimal
+  rounds: RoundData
+  roundLength: number
+  userDebtShares: BN
+}): RoundData => {
+  const { userDebtShares, roundLength, rounds, slot } = rewards
+  const { current, next } = rounds
+
+  if (next.roundStartSlot.toNumber() >= slot) {
+    return rounds
+  }
+  const slotDiff = slot - next.roundStartSlot.toNumber()
+  const roundDiff = divUpNumber(slotDiff, roundLength)
+
+  switch (roundDiff) {
+    case 1: {
+      return {
+        finished: current,
+        current: next,
+        next: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        }
+      }
+    }
+    case 2: {
+      return {
+        finished: next,
+        current: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength)),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        },
+        next: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(2))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        }
+      }
+    }
+    default: {
+      return {
+        finished: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 2))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        },
+        current: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff - 1))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        },
+        next: {
+          roundStartSlot: next.roundStartSlot.add(new BN(roundLength).mul(new BN(roundDiff))),
+          roundAllPoints: next.roundAllPoints,
+          roundPoints: userDebtShares,
+          roundAmount: next.roundAmount
+        }
+      }
+    }
+  }
+}
+
+export const calculateTimeRemaining = (slot: number, nextRoundStartSlot: BN): BN => {
+  const slotTime = 0.5
+  const slotDiff = nextRoundStartSlot.sub(new BN(slot))
+  if (slotDiff.lten(0)) {
+    return new BN(1)
+  }
+  return slotDiff.muln(slotTime)
+}
+
+export const getMndePrice = async () => {
+  const res = await fetch(
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=marinade'
+  )
+
+  if (!res.ok) {
+    return 0
+  }
+
+  const mndeData: Array<{ current_price: number }> = await res.json()
+
+  return mndeData[0].current_price
 }

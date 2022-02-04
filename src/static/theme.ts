@@ -57,7 +57,9 @@ export const colors = {
     error: '#C52727',
     neon: '#FF2079',
     pinkish: '#FE53BB',
-    snackbar: '#DE3232'
+    snackbar: '#DE3232',
+    negative: '#A92D2D',
+    negativeLight: '#C24646'
   },
   purple: {
     magenta: '#A1045A',
@@ -82,7 +84,8 @@ export const colors = {
     darkGrey: '#292956',
     tooltip: '#5B54CE',
     '5756B3': '#5756B3',
-    '807ADC': '#807ADC'
+    '807ADC': '#807ADC',
+    '8E8DEF': '#8E8DEF'
   }
 }
 

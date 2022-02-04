@@ -40,22 +40,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   line: {},
   label: {
+    ...typography.subtitle1,
     top: -1
-  },
-  timeGrid: {
-    display: 'flex',
-    flexDirection: 'row'
   },
   time: {
     ...typography.subtitle2,
     color: colors.navy.grey,
     [theme.breakpoints.down('xs')]: {
-      ...typography.caption1
+      ...typography.caption3
     }
   },
   rootTimer: {
     width: 'fit-content',
-    borderRadius: 10,
+    borderRadius: 8,
     paddingBlock: 11,
     paddingInline: 16,
     backgroundColor: colors.navy.background,
@@ -64,15 +61,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: '87px',
+    [theme.breakpoints.down('sm')]: {
+      paddingInline: 10
+    },
     [theme.breakpoints.down('xs')]: {
       minWidth: '60px',
-      paddingBlock: 8,
-      paddingInline: 7
+      paddingBlock: 5,
+      paddingInline: 3
     }
   },
   clockIcon: {
-    width: 16,
-    height: 16,
+    width: 21,
+    height: 21,
+    opacity: 0.75,
     paddingRight: '6px',
     [theme.breakpoints.down('xs')]: {
       width: 13,

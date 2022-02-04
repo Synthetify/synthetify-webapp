@@ -1,12 +1,16 @@
 module.exports = {
   extends: ['standard-with-typescript'],
   parserOptions: {
-    project: './tsconfig.json'
+    project: './tsconfig.json',
+    ecmaVersion: 2021
   },
   parser: '@typescript-eslint/parser',
   plugins: ['react-hooks'],
   rules: {
+    indent: 'off',
+    '@typescript-eslint/indent': 'off',
     'no-unused-vars': 'off',
+    'multiline-ternary': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars-experimental': 'error',
     '@typescript-eslint/explicit-function-return-type': 'off',

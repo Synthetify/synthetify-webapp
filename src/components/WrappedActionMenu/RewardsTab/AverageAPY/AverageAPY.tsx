@@ -26,11 +26,9 @@ export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
       onMouseLeave={handlePopoverClose}>
       <img src={Percent} alt='' className={classes.percentIcon} />
       <Typography className={classes.apy}>
-        APY:
-        <span
+        APY: <span
           style={{
-            color: '#40BFA0',
-            paddingLeft: '8px'
+            color: '#40BFA0'
           }}>
           {avgAPY}%
         </span>
@@ -51,7 +49,7 @@ export const AverageAPY: React.FC<IProp> = ({ avgAPY = 0 }) => {
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus>
-        <Typography className={classes.text}>Average APY</Typography>
+        <Typography className={classes.text}>Average APY (based on total debt value)</Typography>
       </Popover>
     </Grid>
   )
