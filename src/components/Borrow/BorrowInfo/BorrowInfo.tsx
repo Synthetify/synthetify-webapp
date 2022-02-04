@@ -117,7 +117,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                   <>
                     <img src={ExclamationMark} alt='' className={classes.circleIcon} />
                     <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
-                      What is types?
+                      What are types?
                     </Typography>
                     Some of the pairs appear multiple times, they are distinguished by type.
                     Depending on the type, the following pairs change: <br />
