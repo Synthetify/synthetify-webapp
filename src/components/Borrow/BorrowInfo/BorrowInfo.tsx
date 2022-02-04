@@ -1,10 +1,13 @@
 import { Grid, Hidden, Typography } from '@material-ui/core'
 import React from 'react'
-import useStyles from './style'
 import { PublicKey } from '@solana/web3.js'
 import { CopyPopover } from '@components/CopyPopover/CopyPopover'
 import { formatNumbers, showPrefix } from '@consts/utils'
 import AnimatedNumber from '@components/AnimatedNumber'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import ExclamationMark from '@static/svg/exclamationMark.svg'
+import RedExclamationMark from '@static/svg/redExclamationMark.svg'
+import useStyles from './style'
 interface IGeneralInfo {
   collateralAmount: string
   debtAmount: string
@@ -21,6 +24,7 @@ interface IGeneralInfo {
   interestRate: string
   cRatio: number
   openFee: number
+  vaultType: number
 }
 
 export const BorrowInfo: React.FC<IGeneralInfo> = ({
@@ -38,10 +42,11 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
   borrPrice,
   interestRate,
   cRatio,
-  openFee
+  openFee,
+  vaultType
 }) => {
   const classes = useStyles()
-
+  const alphabetTable = ['A', 'D', 'C', 'B', 'E', 'F']
   return (
     <Grid className={classes.root}>
       <Grid className={classes.wrapper}>
@@ -99,6 +104,32 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
             <Typography className={classes.positionTitle}>Borrowed asset:</Typography>
             <Typography className={classes.positionValue}>{borrowed}</Typography>
           </Grid>
+          <Grid
+            container
+            item
+            className={classes.infoPosition}
+            justifyContent='space-between'
+            alignItems='center'>
+            <Typography className={classes.positionTitle}>Type:</Typography>
+            <Typography className={classes.positionValue}>
+              {alphabetTable[vaultType]}
+              <MobileTooltip
+                hint={
+                  <>
+                    <img src={ExclamationMark} alt='' className={classes.circleIcon} />
+                    <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
+                      What is Type?
+                    </Typography>
+                    Text about what is type and what are the differences between vaults.
+                  </>
+                }
+                anchor={<img src={ExclamationMark} alt='' className={classes.exclamationMark} />}
+                mobilePlacement='top-end'
+                desktopPlacement='top-end'
+              />
+            </Typography>
+          </Grid>
+
           <Grid
             container
             item

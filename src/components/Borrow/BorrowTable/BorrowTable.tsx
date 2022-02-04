@@ -22,14 +22,8 @@ export const BorrowTable: React.FC<IProp> = ({
   vaultType
 }) => {
   const classes = useStyles()
-  const alphabetTable = ['A', 'B', 'C', 'D', 'E', 'F']
-  const getCountSameVaults = (array: UserVaults[], tokenBorr: string, tokenColl: string) => {
-    let count = 0
-    array.forEach(
-      element => element.borrowed === tokenBorr && element.collateral === tokenColl && count++
-    )
-    return count
-  }
+  const alphabetTable = ['A', 'D', 'C', 'B', 'E', 'F']
+
   return (
     <Grid className={classes.root} component={Paper}>
       <Grid>
@@ -124,9 +118,7 @@ export const BorrowTable: React.FC<IProp> = ({
                   classes={{
                     root: classNames(classes.rootCell, classes.typeColumn)
                   }}>
-                  {getCountSameVaults(userVaults, element.borrowed, element.collateral) > 1
-                    ? alphabetTable[element.vaultType]
-                    : null}
+                  {alphabetTable[element.vaultType]}
                 </Grid>
                 <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                   <Tooltip
