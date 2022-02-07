@@ -309,7 +309,7 @@ export const ActionBorrow: React.FC<IProp> = ({
       setCRatioTo(calculateData.cRatioTo)
       setCRatioFrom(calculateData.cRatioFrom)
     }
-  }, [amountBorrow, amountCollateral, vaultAmount, cRatio])
+  }, [amountBorrow.toString(), amountCollateral.toString(), vaultAmount, cRatio])
 
   const blockSubmitButton = () => {
     if (pairIndex === null) {
@@ -480,7 +480,19 @@ export const ActionBorrow: React.FC<IProp> = ({
                     ? value.substr(0, value.indexOf('.')) +
                       value.substr(value.indexOf('.'), tokenTo.assetScale + 1)
                     : value
-                  const inputData = changeInputSynthetic(limitedNumber, tokenTo, tokenFrom, cRatio)
+                  const inputData = changeInputSynthetic(
+                    limitedNumber,
+                    tokenTo,
+                    tokenFrom,
+                    cRatio,
+                    pairIndex !== null
+                      ? (
+                          Number(
+                            printBN(pairs[pairIndex].openFee.val, pairs[pairIndex].openFee.scale)
+                          ) + 1
+                        ).toString()
+                      : '0'
+                  )
                   setMaxBehaviorTo('number')
                   setAmountBorrow(inputData.amountBorBN)
                   setAmountBorrowString(limitedNumber)
