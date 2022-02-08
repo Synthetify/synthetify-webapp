@@ -9,8 +9,6 @@ export interface ILeveragePair extends Vault {
   syntheticSymbol: string
   collateralBalance: Decimal
   syntheticBalance: Decimal
-  collateralPrice: Decimal
-  syntheticPrice: Decimal
   vaultAddress: PublicKey
 }
 export interface ILeverageSelected {
@@ -94,6 +92,25 @@ const leverageSlice = createSlice({
       state.currentlySelected.amountToken = action.payload.amountToken
       state.currentlySelected.leverage = action.payload.leverage
       state.currentlySelected.vaultType = action.payload.vaultType
+      return state
+    },
+    setVaultExist(state, action: PayloadAction<Pick<ILeverageSelected, 'vaultEntryExist'>>) {
+      state.currentlySelected.vaultEntryExist = action.payload.vaultEntryExist
+      return state
+    },
+    setVaultAddress(state, action: PayloadAction<Pick<ILeverageSelected, 'vaultAddress'>>) {
+      state.currentlySelected.vaultAddress = action.payload.vaultAddress
+      return state
+    },
+    actionDone(state, action: PayloadAction<Pick<ILeverageSelected, 'txid'>>) {
+      state.currentlySelected.txid = action.payload.txid
+      state.currentlySelected.loading = false
+      state.currentlySelected.error = undefined
+      return state
+    },
+    actionFailed(state, action: PayloadAction<Pick<ILeverageSelected, 'error'>>) {
+      state.currentlySelected.loading = false
+      state.currentlySelected.error = action.payload.error
       return state
     }
   }

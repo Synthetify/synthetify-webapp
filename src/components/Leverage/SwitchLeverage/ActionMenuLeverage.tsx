@@ -30,7 +30,6 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
   cRatio,
   changeCustomCRatio,
   currentLeverage,
-  maxLeverage,
   switchButton
 }) => {
   const actions: IMenuItem = { ...actionContents }
@@ -54,7 +53,6 @@ export const ActionMenuLeverage: React.FC<IProps> = ({
         cRatio={cRatio}
         changeCustomCRatio={changeCustomCRatio}
         currentLeverage={currentLeverage}
-        maxLeverage={maxLeverage}
         switchButton={switchButton}
       />
     </Grid>

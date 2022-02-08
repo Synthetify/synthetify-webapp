@@ -5,7 +5,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '@reducers/leverage'
 import { getGeneralTotals, UserVaults } from '@selectors/exchange'
-import { getCurrentVaultLeverage, vaultSwap } from '@selectors/vault'
+import { assetPrice, getCurrentVaultLeverage, vaultSwap } from '@selectors/vault'
 import { Status } from '@reducers/solanaWallet'
 import { actions as snackbarActions } from '@reducers/snackbars'
 import { WrappedLeverage } from '@components/Leverage/WrappedLeverage/WrappedLeverage'
@@ -27,6 +27,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
   const walletStatus = useSelector(status)
   const shortPairs = useSelector(short)
   const longPairs = useSelector(long)
+  const assetPrices = useSelector(assetPrice)
   return (
     <Grid className={classes.root}>
       <Typography className={classes.text}>Leverage</Typography>
@@ -80,6 +81,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         }
         shortPairs={Object.values(shortPairs)}
         longPairs={Object.values(longPairs)}
+        assetPrices={assetPrices}
       />
     </Grid>
   )

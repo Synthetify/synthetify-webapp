@@ -48,6 +48,7 @@ interface IProp {
   noWalletHandler: () => void
   shortPairs: ILeveragePair[]
   longPairs: ILeveragePair[]
+  assetPrices: { [key: string]: Decimal }
 }
 export const WrappedLeverage: React.FC<IProp> = ({
   allSynthetic,
@@ -62,7 +63,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
   walletStatus,
   noWalletHandler,
   shortPairs,
-  longPairs
+  longPairs,
+  assetPrices
 }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState('500')
@@ -154,6 +156,16 @@ export const WrappedLeverage: React.FC<IProp> = ({
         cRatio={cRatio}
         amountToken={amountToken}
         setAmountToken={setAmountToken}
+        price={{
+          collateralPrice:
+            currentLeverageTable.length > 0 && leverageIndex !== null
+              ? assetPrices[currentLeverageTable[leverageIndex].collateral.toString()]
+              : { val: new BN(1000000), scale: 6 },
+          syntheticPrice:
+            currentLeverageTable.length > 0 && leverageIndex !== null
+              ? assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()]
+              : { val: new BN(1000000), scale: 6 }
+        }}
       />
     ),
     close: (
@@ -179,6 +191,16 @@ export const WrappedLeverage: React.FC<IProp> = ({
         cRatio={cRatio}
         amountToken={amountToken}
         setAmountToken={setAmountToken}
+        price={{
+          collateralPrice:
+            currentLeverageTable.length > 0 && leverageIndex !== null
+              ? assetPrices[currentLeverageTable[leverageIndex].collateral.toString()]
+              : { val: new BN(1000000), scale: 6 },
+          syntheticPrice:
+            currentLeverageTable.length > 0 && leverageIndex !== null
+              ? assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()]
+              : { val: new BN(1000000), scale: 6 }
+        }}
       />
     )
   }
@@ -247,12 +269,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
             borrowedSign={currentLeverageTable[leverageIndex].syntheticSymbol}
             amountSign={'$'}
             callPrice={printBN(
-              currentLeverageTable[leverageIndex].collateralPrice.val,
-              currentLeverageTable[leverageIndex].collateralPrice.scale
+              assetPrices[currentLeverageTable[leverageIndex].collateral.toString()].val,
+              assetPrices[currentLeverageTable[leverageIndex].collateral.toString()].scale
             )}
             borrPrice={printBN(
-              currentLeverageTable[leverageIndex].syntheticPrice.val,
-              currentLeverageTable[leverageIndex].syntheticPrice.scale
+              assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()].val,
+              assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()].scale
             )}
             interestRate={printBN(
               currentLeverageTable[leverageIndex].debtInterestRate.val,

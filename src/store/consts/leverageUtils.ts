@@ -1,6 +1,7 @@
 import { ILeverageSynthetic } from '@selectors/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import { ILeveragePair } from '@reducers/leverage'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 interface AssetPriceData {
   priceVal: BN
   assetScale: number
@@ -8,7 +9,10 @@ interface AssetPriceData {
   maxAvailable: BN
   balance: BN
 }
-export const getAssetFromAndTo = (leveragePair: ILeveragePair | null) => {
+export const getAssetFromAndTo = (
+  leveragePair: ILeveragePair | null,
+  price: { collateralPrice: Decimal; syntheticPrice: Decimal }
+) => {
   if (leveragePair === null) {
     return [
       {
@@ -29,14 +33,14 @@ export const getAssetFromAndTo = (leveragePair: ILeveragePair | null) => {
   }
 
   const syntheticFrom: AssetPriceData = {
-    priceVal: leveragePair.collateralPrice.val,
+    priceVal: price.collateralPrice.val,
     assetScale: leveragePair.collateralBalance.scale,
     symbol: leveragePair.collateralSymbol,
     maxAvailable: leveragePair.collateralBalance.val,
     balance: leveragePair.collateralBalance.val
   }
   const syntheticTo: AssetPriceData = {
-    priceVal: leveragePair.syntheticPrice.val,
+    priceVal: price.syntheticPrice.val,
     assetScale: leveragePair.syntheticBalance.scale,
     symbol: leveragePair.syntheticSymbol,
     maxAvailable: leveragePair.syntheticBalance.val,
@@ -69,4 +73,7 @@ export const getSyntheticAsCollateral = (allSynthetic: ILeverageSynthetic | null
 
 export const getLeverageLevel = (percentageCRatio: number) => {
   return percentageCRatio > 100 ? (1 / (1 - 1 / (percentageCRatio / 100))).toFixed(2) : '1'
+}
+export const getCRatioFromLeverage = (leverage: number) => {
+  return leverage > 1 ? ((100 * leverage) / (leverage - 1)).toFixed(2) : '100'
 }

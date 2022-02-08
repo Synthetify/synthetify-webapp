@@ -34,6 +34,7 @@ interface IProp {
   leverageType: string
   amountToken: BN
   setAmountToken: (value: BN) => void
+  price: { collateralPrice: Decimal; syntheticPrice: Decimal }
 }
 export const ActionLeverage: React.FC<IProp> = ({
   action,
@@ -56,13 +57,15 @@ export const ActionLeverage: React.FC<IProp> = ({
   cRatio,
   leverageType,
   amountToken,
-  setAmountToken
+  setAmountToken,
+  price
 }) => {
   const classes = useStyles()
   const [amountTokenString, setAmountTokenString] = React.useState('')
   const [totalExposure, setTotalExposure] = React.useState(0)
   const [tokenFrom, tokenTo] = getAssetFromAndTo(
-    leverageIndex !== null ? leveragePairs[leverageIndex] : null
+    leverageIndex !== null ? leveragePairs[leverageIndex] : null,
+    price
   )
   const [collateralToken] = getSyntheticAsCollateral(
     pairIndex !== null ? allSynthetic[pairIndex] : null
@@ -302,7 +305,10 @@ export const ActionLeverage: React.FC<IProp> = ({
               </Typography>
               <Grid className={classes.valueContainer}>
                 <Typography className={classes.infoValueFrom}>
-                  {printBN(vaultAmount.collateralAmount.val, vaultAmount.collateralAmount.scale)}{' '}
+                  {(+printBN(
+                    vaultAmount.collateralAmount.val,
+                    vaultAmount.collateralAmount.scale
+                  )).toFixed(2)}{' '}
                   {tokenFrom.symbol}
                 </Typography>
                 <FlatIcon
@@ -325,7 +331,9 @@ export const ActionLeverage: React.FC<IProp> = ({
               <Typography className={classes.infoTitle}>Vault {tokenTo.symbol} Debt:</Typography>
               <Grid className={classes.valueContainer}>
                 <Typography className={classes.infoValueFrom}>
-                  {printBN(vaultAmount.borrowAmount.val, vaultAmount.borrowAmount.scale)}{' '}
+                  {(+printBN(vaultAmount.borrowAmount.val, vaultAmount.borrowAmount.scale)).toFixed(
+                    4
+                  )}{' '}
                   {tokenTo.symbol}
                 </Typography>
                 <FlatIcon
