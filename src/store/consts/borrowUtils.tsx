@@ -105,22 +105,20 @@ export const calculateLiqPrice = (
   const difDecimal = 10 ** (assetScaleTo - assetScaleFrom)
   if (difDecimal < 1) {
     return printBN(
-      amountUSDBorrow.div(
-        liqThreshold.val
-          .mul(amountCollateral)
-          .div(new BN(1 / difDecimal))
-          .div(new BN(10).pow(new BN(liqThreshold.scale)))
-      ),
+      amountUSDBorrow
+        .div(liqThreshold.val)
+        .mul(amountCollateral)
+        .div(new BN(1 / difDecimal))
+        .div(new BN(10).pow(new BN(liqThreshold.scale))),
       8
     )
   }
 
   return printBN(
-    amountUSDBorrow.div(
-      liqThreshold.val
-        .mul(amountCollateral.mul(new BN(difDecimal)))
-        .div(new BN(10).pow(new BN(liqThreshold.scale)))
-    ),
+    amountUSDBorrow
+      .div(liqThreshold.val)
+      .mul(amountCollateral.mul(new BN(difDecimal)))
+      .div(new BN(10).pow(new BN(liqThreshold.scale))),
     8
   )
 }
