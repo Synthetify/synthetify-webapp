@@ -65,7 +65,10 @@ export const calculateCRatio = (
   assetToAmount: BN,
   assetFromAmount: BN
 ) => {
-  if (Number((+printBN(assetToAmount, syntheticScale)).toFixed(syntheticScale - 2)) > 0) {
+  if (
+    Number((+printBN(assetToAmount, syntheticScale)).toFixed(syntheticScale - 2)) > 0 &&
+    Number((+printBN(assetFromAmount, collateralScale)).toFixed(6)) > 0
+  ) {
     const difDecimal = 10 ** (syntheticScale - collateralScale)
     if (difDecimal < 1) {
       return assetFromAmount
@@ -104,7 +107,8 @@ export const calculateLiqPrice = (
     return printBN(
       amountUSDBorrow.div(
         liqThreshold.val
-          .mul(amountCollateral.div(new BN(1 / difDecimal)))
+          .mul(amountCollateral)
+          .div(new BN(1 / difDecimal))
           .div(new BN(10).pow(new BN(liqThreshold.scale)))
       ),
       8
