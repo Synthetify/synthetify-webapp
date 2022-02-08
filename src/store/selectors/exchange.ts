@@ -9,12 +9,14 @@ import {
   stringToMinDecimalBN
 } from '@consts/utils'
 import { BN } from '@project-serum/anchor'
+import { Status } from '@reducers/solanaConnection'
 import { createSelector } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
 import { Decimal, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { addressToAssetSymbol, toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
+import { status } from './solanaConnection'
 import { assetPrice, userVaults, vaults } from './vault'
 
 const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
@@ -429,8 +431,12 @@ export const getUserVaults = createSelector(
   userVaults,
   synthetics,
   assetPrice,
-  (allVaults, allUserVaults, allSynthetics, allAssetPrice) => {
+  status,
+  (allVaults, allUserVaults, allSynthetics, allAssetPrice, statusState) => {
     const vaultData: UserVaults[] = []
+    if (statusState !== Status.Initialized) {
+      return vaultData
+    }
     Object.values(allUserVaults).forEach(userVault => {
       const currentVault = allVaults[userVault.vault.toString()]
       if (
