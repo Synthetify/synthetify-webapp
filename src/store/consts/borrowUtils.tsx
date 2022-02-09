@@ -1,5 +1,5 @@
 import { BN } from '@project-serum/anchor'
-import { printBN, printBNtoBN, stringToMinDecimalBN, transformBN } from '@consts/utils'
+import { printBN, printBNtoBN, stringToMinDecimalBN } from '@consts/utils'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import { ActionType } from '@reducers/vault'
 import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
@@ -60,23 +60,27 @@ export const calculateAmountBorrow = (
 export const calculateCRatio = (
   syntheticPrice: BN,
   syntheticScale: number,
-  collateraPrice: BN,
+  collateralPrice: BN,
   collateralScale: number,
   assetToAmount: BN,
   assetFromAmount: BN
 ) => {
-  if (assetToAmount > new BN(0)) {
+  if (
+    Number((+printBN(assetToAmount, syntheticScale)).toFixed(syntheticScale - 2)) > 0 &&
+    Number((+printBN(assetFromAmount, collateralScale)).toFixed(6)) > 0
+  ) {
     const difDecimal = 10 ** (syntheticScale - collateralScale)
     if (difDecimal < 1) {
       return assetFromAmount
-        .mul(collateraPrice)
+        .mul(collateralPrice)
         .div(new BN((1 / difDecimal) * 10 ** 4))
-        .div(syntheticPrice.mul(assetToAmount).div(new BN(10 ** 8)))
+        .div(assetToAmount.mul(syntheticPrice).div(new BN(10 ** 8)))
     } else {
       return assetFromAmount
-        .mul(collateraPrice)
-        .mul(new BN(difDecimal * 10 ** 4))
-        .div(assetToAmount.mul(syntheticPrice))
+        .mul(collateralPrice)
+        .mul(new BN(difDecimal))
+        .div(assetToAmount.mul(syntheticPrice).div(new BN(10 ** 8)))
+        .div(new BN(10 ** 4))
     }
   } else {
     return 'NaN'
@@ -100,6 +104,18 @@ export const calculateLiqPrice = (
   }
   const difDecimal = 10 ** (assetScaleTo - assetScaleFrom)
   if (difDecimal < 1) {
+    if (
+      liqThreshold.val
+        .mul(amountCollateral.div(new BN(1 / difDecimal)))
+        .div(new BN(10).pow(new BN(liqThreshold.scale)))
+        .eq(new BN(0))
+    ) {
+      return printBN(
+        priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale))),
+        8
+      )
+    }
+
     return printBN(
       amountUSDBorrow.div(
         liqThreshold.val
@@ -110,6 +126,17 @@ export const calculateLiqPrice = (
     )
   }
 
+  if (
+    liqThreshold.val
+      .mul(amountCollateral.mul(new BN(difDecimal)))
+      .div(new BN(10).pow(new BN(liqThreshold.scale)))
+      .eq(new BN(0))
+  ) {
+    return printBN(
+      priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale))),
+      8
+    )
+  }
   return printBN(
     amountUSDBorrow.div(
       liqThreshold.val
@@ -194,10 +221,9 @@ export const calculateLiqAndCRatio = (
   liqThreshold: Decimal,
   assetScaleTo: number,
   assetScaleFrom: number,
-  openFee: BN
+  openFee: Decimal
 ) => {
-  const openFeeBN = stringToMinDecimalBN(transformBN(openFee))
-  const openFeePercent = new BN(10 ** (openFeeBN.decimal - 1) + +openFeeBN.BN.toString())
+  const openFeePercent = openFee.val.add(new BN(10 ** openFee.scale))
   const ratioTo = calculateCRatio(
     priceTo,
     assetScaleTo,
@@ -206,7 +232,7 @@ export const calculateLiqAndCRatio = (
     action === 'borrow'
       ? amountBorrow
           .mul(openFeePercent.mul(new BN(10 ** assetScaleTo)))
-          .div(new BN(10 ** (openFeeBN.decimal + assetScaleTo - 1)))
+          .div(new BN(10 ** (assetScaleTo + openFee.scale)))
           .add(vaultAmountBorrow)
       : vaultAmountBorrow.sub(amountBorrow),
     action === 'borrow'
