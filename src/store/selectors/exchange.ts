@@ -17,7 +17,7 @@ import { addressToAssetSymbol, toEffectiveFee } from '@synthetify/sdk/lib/utils'
 import { IExchange, exchangeSliceName } from '../reducers/exchange'
 import { keySelectors, AnyProps } from './helpers'
 import { status } from './solanaConnection'
-import { assetPrice, userVaults, vaults } from './vault'
+import { assetPrice, initVaultEntry, userVaults, vaults } from './vault'
 
 const store = (s: AnyProps) => s[exchangeSliceName] as IExchange
 
@@ -432,9 +432,10 @@ export const getUserVaults = createSelector(
   synthetics,
   assetPrice,
   status,
-  (allVaults, allUserVaults, allSynthetics, allAssetPrice, statusState) => {
+  initVaultEntry,
+  (allVaults, allUserVaults, allSynthetics, allAssetPrice, statusState, initVaultEntryStatus) => {
     const vaultData: UserVaults[] = []
-    if (statusState !== Status.Initialized) {
+    if (statusState !== Status.Initialized || !initVaultEntryStatus) {
       return vaultData
     }
     Object.values(allUserVaults).forEach(userVault => {
