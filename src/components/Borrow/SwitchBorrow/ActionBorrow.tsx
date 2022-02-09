@@ -302,14 +302,14 @@ export const ActionBorrow: React.FC<IProp> = ({
         pairs[pairIndex].liquidationThreshold,
         tokenTo.assetScale,
         tokenFrom.assetScale,
-        pairs[pairIndex].openFee.val
+        pairs[pairIndex].openFee
       )
       setLiquidationPriceTo(calculateData.liquidationTo)
       setLiquidationPriceFrom(calculateData.liquidationFrom)
       setCRatioTo(calculateData.cRatioTo)
       setCRatioFrom(calculateData.cRatioFrom)
     }
-  }, [amountBorrow.toString(), amountCollateral.toString(), vaultAmount, cRatio])
+  }, [amountBorrowString, amountCollateralString, vaultAmount, cRatio])
 
   const blockSubmitButton = () => {
     if (pairIndex === null) {

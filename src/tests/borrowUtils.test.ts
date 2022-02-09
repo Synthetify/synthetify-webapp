@@ -145,7 +145,7 @@ describe('calculateLiqAndCRatio', () => {
       { val: new BN(5000), scale: 5 },
       6,
       6,
-      new BN(10000)
+      { val: new BN(10000), scale: 5 }
     )
     expect(result.cRatioTo.toString()).toBe('386')
     expect(result.cRatioFrom.toString()).toBe('700')
