@@ -275,3 +275,17 @@ export const getAddressFromIndex = (
 
   return [syntheticAddress, collateralAddress]
 }
+
+export const getMndePrice = async () => {
+  const res = await fetch(
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=marinade'
+  )
+
+  if (!res.ok) {
+    return 0
+  }
+
+  const mndeData: Array<{ current_price: number }> = await res.json()
+
+  return mndeData[0].current_price
+}

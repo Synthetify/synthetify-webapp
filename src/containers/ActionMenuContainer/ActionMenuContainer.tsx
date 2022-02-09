@@ -13,7 +13,8 @@ import {
   stakedValue,
   getSNYPrice,
   getCollateralValue,
-  getSyntheticsStructure
+  getSyntheticsStructure,
+  getMSolTvl
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import {
@@ -31,7 +32,7 @@ import { Status } from '@reducers/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import BurnWarning from '@components/BurnWarning/BurnWarning'
 import { XUSD_DECIMALS } from '@synthetify/sdk/lib/utils'
-import { printBNtoBN } from '@consts/utils'
+import { getMndePrice, printBNtoBN } from '@consts/utils'
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
@@ -66,6 +67,7 @@ export const ActionMenuContainer: React.FC = () => {
   const collateralValue = useSelector(getCollateralValue)
   const userMarinadeAmount = useSelector(userMarinadeRewardAmount)
   const xUSDBalance = useSelector(tokenBalance(xUSDTokenAddress))
+  const mSolTvl = useSelector(getMSolTvl)
 
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
@@ -85,6 +87,18 @@ export const ActionMenuContainer: React.FC = () => {
       setWithdrawIndex(0)
     }
   }, [userStaked, withdrawIndex])
+
+  const [mndePrice, setMndePrice] = useState(0)
+
+  useEffect(() => {
+    getMndePrice()
+      .then(val => {
+        setMndePrice(val)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
 
   const estimateUserDebtShares = () => {
     if (stakingState.currentRound.start.toNumber() <= userStakingState.lastUpdate.toNumber()) {
@@ -240,7 +254,9 @@ export const ActionMenuContainer: React.FC = () => {
           onClaim: () => dispatch(actions.claimRewards()),
           onWithdraw: () => dispatch(actions.withdrawRewards()),
           amountPerRoundValue: stakingState.amountPerRound,
-          collateralValue: collateralValue
+          collateralValue: collateralValue,
+          mSolTvl,
+          mndePrice
         }}
         depositTokens={walletStatus === Status.Initialized ? userCollaterals : []}
         withdrawTokens={userStaked}
