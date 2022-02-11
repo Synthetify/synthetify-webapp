@@ -9,12 +9,13 @@ import BN from 'bn.js'
 import React from 'react'
 import { BorrowInfo } from '@components/Borrow/BorrowInfo/BorrowInfo'
 import { BorrowTable } from '@components/Borrow/BorrowTable/BorrowTable'
-import { ActionLeverage } from '../SwitchLeverage/ActionLeverage'
-import ActionMenuLeverage, { IActionContents } from '../SwitchLeverage/ActionMenuLeverage'
+import { OpenLeverage } from '../OpenLeverage/OpenLeverage'
+import { LeverageAction, IActionContents } from '../LeverageAction/LeverageAction'
 import useStyles from './style'
 import { ILeveragePair } from '@reducers/leverage'
 import { getLeverageLevel } from '@consts/leverageUtils'
-import { SwitchButton } from '../SwitchButton/SwitchButton'
+import { CloseLeverage } from '../CloseLeverage/CloseLeverage'
+import { blurContent, unblurContent } from '@consts/uiUtils'
 export interface BorrowedPair extends Vault {
   collateralData: { reserveBalance: number; symbol: string; price: Decimal; balance: BN }
   syntheticData: ExchangeSyntheticTokens
@@ -70,16 +71,23 @@ export const WrappedLeverage: React.FC<IProp> = ({
   const [cRatio, setCRatio] = React.useState('500')
   const [amountToken, setAmountToken] = React.useState<BN>(new BN(0))
   const [liquidationPriceTo, setLiquidationPriceTo] = React.useState(0)
-  const [liquidationPriceFrom, setLiquidationPriceFrom] = React.useState(0)
   const [minCRatio, setMinCRatio] = React.useState<number>(100)
   const [leverageType, setLeverageType] = React.useState<string>('short')
   const [leverageStatus, setLeverageStatus] = React.useState(false)
   const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
   const [leverageIndex, setLeverageIndex] = React.useState<number | null>(pairs.length ? 0 : null)
+  const [blockSubmitButton, setBlockSubmitButton] = React.useState(true)
   const [currentLeverageTable, setCurrentLeverageTable] = React.useState<ILeveragePair[]>(
     leverageType === 'short' ? shortPairs : longPairs
   )
-  const onClickRestartButton = () => {}
+  const [action, setAction] = React.useState('open')
+  const [openCloseModal, setOpenCloseModal] = React.useState(false)
+  const onClickResetButton = () => {
+    setAmountToken(new BN(0))
+    setCRatio('500')
+    setLeverageIndex(null)
+    setPairIndex(null)
+  }
   const onClickOpenLeverage = () => {
     if (pairIndex !== null && leverageIndex !== null) {
       onClickSubmitButton(
@@ -93,6 +101,18 @@ export const WrappedLeverage: React.FC<IProp> = ({
       )
     }
   }
+
+  const openCloseLeverage = () => {
+    setOpenCloseModal(true)
+    blurContent()
+  }
+
+  const handleClose = () => {
+    setAction('open')
+    setOpenCloseModal(false)
+    unblurContent()
+  }
+
   React.useEffect(() => {
     if (allSynthetic.length === 0) {
       setPairIndex(null)
@@ -100,7 +120,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
   }, [allSynthetic])
   React.useEffect(() => {
     setCurrentLeverageTable(leverageType === 'short' ? shortPairs : longPairs)
-  }, [leverageType, leverageIndex])
+  }, [leverageType, leverageIndex, pairIndex])
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null) {
       setMinCRatio(
@@ -112,7 +132,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             )
           ) / 100,
           -1
-        )
+        ) * 1.005
       )
       setActualPair(
         currentLeverageTable[leverageIndex].synthetic,
@@ -120,24 +140,39 @@ export const WrappedLeverage: React.FC<IProp> = ({
         currentLeverageTable[leverageIndex].vaultType
       )
     }
-  }, [leverageIndex])
+  }, [leverageIndex, pairIndex])
 
   React.useEffect(() => {
     if (leverageStatus) {
       setLeverageIndex(null)
-      setLeverageType('long')
+      setLeverageType('short')
     } else {
       setLeverageIndex(null)
-      setLeverageType('short')
+      setLeverageType('long')
     }
   }, [leverageStatus])
 
+  React.useEffect(() => {
+    if (currentLeverageTable.length === 0 || leverageIndex === null || pairIndex === null) {
+      setBlockSubmitButton(true)
+      return
+    }
+    if (
+      !amountToken.eq(new BN(0)) &&
+      allSynthetic[pairIndex].syntheticData.balance.gte(amountToken)
+    ) {
+      setBlockSubmitButton(false)
+      return
+    }
+
+    setBlockSubmitButton(true)
+  }, [amountToken.toString(), leverageIndex, pairIndex])
+
   const actionContents: IActionContents = {
     open: (
-      <ActionLeverage
+      <OpenLeverage
         action={'open'}
         liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
-        liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
         allSynthetic={allSynthetic}
         leverageType={leverageType}
         leveragePairs={leverageType === 'short' ? shortPairs : longPairs}
@@ -152,7 +187,6 @@ export const WrappedLeverage: React.FC<IProp> = ({
         setLeverageIndex={setLeverageIndex}
         currentLeverage={getLeverageLevel(Number(cRatio))}
         setLiquidationPriceTo={setLiquidationPriceTo}
-        setLiquidationPriceFrom={setLiquidationPriceFrom}
         cRatio={cRatio}
         amountToken={amountToken}
         setAmountToken={setAmountToken}
@@ -169,38 +203,14 @@ export const WrappedLeverage: React.FC<IProp> = ({
       />
     ),
     close: (
-      <ActionLeverage
-        action={'close'}
-        liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
-        liquidationPriceFrom={liquidationPriceFrom > 0 ? liquidationPriceFrom : 0}
-        allSynthetic={allSynthetic}
-        leverageType={leverageType}
-        leveragePairs={leverageType === 'short' ? shortPairs : longPairs}
-        sending={sending}
-        pairIndex={pairs.length !== 0 ? pairIndex : null}
-        setPairIndex={setPairIndex}
-        hasError={hasError}
-        vaultAmount={actualVault}
-        walletStatus={walletStatus}
-        noWalletHandler={noWalletHandler}
-        leverageIndex={leverageIndex}
-        setLeverageIndex={setLeverageIndex}
-        currentLeverage={getLeverageLevel(Number(cRatio))}
-        setLiquidationPriceTo={setLiquidationPriceTo}
-        setLiquidationPriceFrom={setLiquidationPriceFrom}
-        cRatio={cRatio}
-        amountToken={amountToken}
-        setAmountToken={setAmountToken}
-        price={{
-          collateralPrice:
-            currentLeverageTable.length > 0 && leverageIndex !== null
-              ? assetPrices[currentLeverageTable[leverageIndex].collateral.toString()]
-              : { val: new BN(1000000), scale: 6 },
-          syntheticPrice:
-            currentLeverageTable.length > 0 && leverageIndex !== null
-              ? assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()]
-              : { val: new BN(1000000), scale: 6 }
-        }}
+      <CloseLeverage
+        open={openCloseModal}
+        handleClose={handleClose}
+        tokenFrom={'xUSD'}
+        tokenTo={'xETH'}
+        leverage={'3.33'}
+        percent={50}
+        amount={'0.0052564'}
       />
     )
   }
@@ -209,19 +219,25 @@ export const WrappedLeverage: React.FC<IProp> = ({
     <Grid className={classes.root}>
       <Grid className={classes.actionGrid}>
         <Grid>
-          <ActionMenuLeverage
+          <LeverageAction
             actionContents={actionContents}
             liquidationPriceTo={liquidationPriceTo > 0 ? liquidationPriceTo : 0}
             cRatio={cRatio}
             onClickSubmitButton={onClickOpenLeverage}
-            onClickRestartButton={onClickRestartButton}
+            onClickResetButton={onClickResetButton}
             minCRatio={minCRatio}
             changeCustomCRatio={(value: string) => {
               setCRatio(value)
             }}
             currentLeverage={getLeverageLevel(Number(cRatio))}
             maxLeverage={getLeverageLevel(Number(minCRatio))}
-            switchButton={<SwitchButton setLeverStatus={setLeverageStatus} />}
+            setLeverageStatus={setLeverageStatus}
+            leverageType={leverageType}
+            blockSubmitButton={blockSubmitButton}
+            action={action}
+            setAction={setAction}
+            openCloseLeverage={openCloseLeverage}
+            openCloseModal={openCloseModal}
           />
         </Grid>
 
@@ -288,6 +304,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
                 )
               ) * 100
             }
+            vaultType={currentLeverageTable[leverageIndex].vaultType}
           />
         ) : (
           <BorrowInfo
@@ -306,6 +323,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             borrPrice={'0'}
             interestRate={'0'}
             openFee={0}
+            vaultType={-1}
           />
         )}
       </Grid>

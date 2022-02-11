@@ -4,20 +4,64 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   wrapperOption: {
     width: '100%',
-    maxWidth: '480px'
+    maxWidth: '480px',
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '100%'
+    }
   },
   root: {
     background: colors.navy.component,
     borderRadius: '10px 10px',
     marginLeft: '24px',
-    height: '100%'
+    height: '100%',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '0px'
+    }
   },
   header: {
-    padding: '24px 0px 15px 24px'
+    padding: '24px 0px 24px 24px',
+    [theme.breakpoints.down('md')]: {
+      padding: '16px 0px 16px 16px'
+    }
+  },
+  middleGrid: {
+    padding: ' 0 24px 24px 24px',
+    [theme.breakpoints.down('md')]: {
+      padding: ' 0 16px 16px 16px'
+    }
+  },
+  sliderContainer: {
+    padding: '12px 24px 24px 24px',
+    [theme.breakpoints.down('md')]: {
+      padding: ' 12px 16px 6px 16px'
+    }
   },
   headerTitle: {
     ...typography.heading4,
     color: colors.navy.veryLightGrey
+  },
+  smallTitle: {
+    ...typography.body4,
+    color: colors.navy.grey
+  },
+  smallValue: {
+    ...typography.body3,
+    color: colors.navy.veryLightGrey,
+    paddingLeft: '5px'
+  },
+  smallInfoGrid: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: '8px'
+  },
+  infoGrid: {
+    display: 'flex',
+    width: 'max-content',
+    flexDirection: 'row',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
+    }
   },
   infoTitle: {
     ...typography.subtitle2,
@@ -76,9 +120,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: '5px 0',
       ...typography.subtitle1
     }
-  },
-  sliderContainer: {
-    padding: ' 0px 24px 0px 24px'
   },
   sliderRisk: {
     ...typography.body4
@@ -143,6 +184,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   blur: {
     filter: 'blur(4px) brightness(0.7)'
+  },
+  buttonRed: {
+    background: colors.red.error,
+    '&:hover': {
+      background: '#CC4949'
+    }
+  },
+  buttonGreen: {
+    background: colors.green.button,
+    color: colors.navy.background,
+    '&:hover': {
+      background: '#53dbba'
+    }
   }
 }))
 export default useStyles

@@ -4,28 +4,32 @@ import { colors } from '@static/theme'
 import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import classNames from 'classnames'
+import { SwitchButton } from '../SwitchButton/SwitchButton'
 interface IProp {
   onClickSubmitButton: () => void
-  onClickRestartButton: () => void
+  onClickResetButton: () => void
   minCRatio: number
   liquidationPriceTo: number
   cRatio: string
   changeCustomCRatio: (value: string) => void
   currentLeverage: string
-
   action: string
-  switchButton: React.ReactNode
+  setLeverageStatus: (value: boolean) => void
+  leverageType: string
+  blockSubmitButton: boolean
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
-  onClickRestartButton,
+  onClickResetButton,
   minCRatio,
   liquidationPriceTo,
   cRatio,
   changeCustomCRatio,
   currentLeverage,
   action,
-  switchButton
+  setLeverageStatus,
+  leverageType,
+  blockSubmitButton
 }) => {
   const classes = useStyles()
 
@@ -36,6 +40,30 @@ export const LeverageOption: React.FC<IProp> = ({
           <Typography className={classes.headerTitle}>Adjust your multiply</Typography>
         </Grid>
         <Divider className={classes.divider} style={{ marginBottom: '20px' }} />
+        <Grid
+          container
+          direction='row'
+          className={classes.middleGrid}
+          justifyContent='space-between'>
+          <Grid style={{ display: 'flex' }}>
+            <SwitchButton
+              setLeverStatus={setLeverageStatus}
+              firstOption={'long'}
+              secondOption={'short'}
+            />
+          </Grid>
+          <Grid className={classes.infoGrid}>
+            <Grid className={classes.smallInfoGrid}>
+              <Typography className={classes.smallTitle}>C-ratio:</Typography>
+              <Typography className={classes.smallValue}>{Number(cRatio).toFixed(0)}%</Typography>
+            </Grid>
+
+            <Grid className={classes.smallInfoGrid}>
+              <Typography className={classes.smallTitle}>Fee:</Typography>
+              <Typography className={classes.smallValue}>$30.5</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid className={classes.sliderContainer}>
           <Grid container justifyContent='space-between'>
             <Grid>
@@ -82,25 +110,7 @@ export const LeverageOption: React.FC<IProp> = ({
           />
         </Grid>
 
-        <Divider className={classes.divider} style={{ margin: '20px 0' }} />
-        <Grid
-          container
-          direction='row'
-          style={{ padding: ' 0 24px' }}
-          justifyContent='space-between'>
-          <Grid alignItems='center' style={{ display: 'flex' }}>
-            {switchButton}
-          </Grid>
-          <Grid>
-            <Typography className={classes.infoTitle}>Collateral ratio:</Typography>
-            <Typography className={classes.infoValue}>{cRatio}%</Typography>
-          </Grid>
-
-          <Grid>
-            <Typography className={classes.infoTitle}>Fee:</Typography>
-            <Typography className={classes.infoValue}>$30.5</Typography>
-          </Grid>
-        </Grid>
+        <Divider className={classes.divider} style={{ margin: '10px 0' }} />
 
         <Grid
           container
@@ -111,19 +121,21 @@ export const LeverageOption: React.FC<IProp> = ({
             name={'Reset all'}
             className={classes.resetButton}
             onClick={() => {
-              onClickRestartButton()
+              onClickResetButton()
             }}
             disabled={false}
             fontWeight={900}
           />
           <OutlinedButton
             name={action}
-            className={classes.actionButton}
-            color='secondary'
+            className={classNames(
+              classes.actionButton,
+              leverageType === 'long' ? classes.buttonGreen : classes.buttonRed
+            )}
             onClick={() => {
               onClickSubmitButton()
             }}
-            disabled={false}
+            disabled={blockSubmitButton}
             fontWeight={900}
           />
         </Grid>

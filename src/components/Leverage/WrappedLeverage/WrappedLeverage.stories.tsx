@@ -209,8 +209,6 @@ storiesOf('leverage/wrappedLeverage', module).add('default', () =>
           userVaults={userVaults}
           onClickSubmitButton={() => {}}
           setActualPair={() => {}}
-          availableCollateral={new BN(100000000)}
-          availableRepay={new BN(1000000000)}
           actualVault={{
             collateralAmount: { val: new BN(0), scale: 0 },
             borrowAmount: { val: new BN(0), scale: 0 }
@@ -224,6 +222,7 @@ storiesOf('leverage/wrappedLeverage', module).add('default', () =>
           allSynthetic={[]}
           shortPairs={[]}
           longPairs={[]}
+          assetPrices={{}}
         />
       </Grid>
     )

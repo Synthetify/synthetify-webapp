@@ -42,11 +42,11 @@ export const getCurrentVaultLeverage = createSelector(
         collateralAmount: actualUserVault.collateralAmount,
         borrowAmount: actualUserVault.syntheticAmount
       }
-    } else {
-      return {
-        collateralAmount: { val: new BN(0), scale: 0 },
-        borrowAmount: { val: new BN(0), scale: 0 }
-      }
+    }
+
+    return {
+      collateralAmount: { val: new BN(0), scale: 0 },
+      borrowAmount: { val: new BN(0), scale: 0 }
     }
   }
 )
