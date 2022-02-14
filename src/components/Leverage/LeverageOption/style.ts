@@ -36,6 +36,30 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: ' 12px 16px 6px 16px'
     }
   },
+  markActive: {
+    width: '16px',
+    height: '16px',
+    borderRadius: '50%',
+    opacity: 1,
+    transform: 'translateX(-40%) translateY(-5px)',
+    border: '1px solid transparent',
+    background: 'linear-gradient(#1C1C1C, #505050)',
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: '0px',
+      bottom: '0px',
+      left: '0px',
+      right: '0px',
+      borderRadius: '50%',
+      background: colors.navy.dark
+    }
+  },
+  markLabel: {
+    color: colors.navy.info,
+    ...typography.caption1,
+    paddingTop: '2px'
+  },
   headerTitle: {
     ...typography.heading4,
     color: colors.navy.veryLightGrey

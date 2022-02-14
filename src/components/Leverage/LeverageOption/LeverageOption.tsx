@@ -5,6 +5,7 @@ import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import classNames from 'classnames'
 import { SwitchButton } from '../SwitchButton/SwitchButton'
+import { getLeverageLevel } from '@consts/leverageUtils'
 interface IProp {
   onClickSubmitButton: () => void
   onClickResetButton: () => void
@@ -32,6 +33,34 @@ export const LeverageOption: React.FC<IProp> = ({
   blockSubmitButton
 }) => {
   const classes = useStyles()
+
+  const [marks, setMarks] = React.useState<
+    Array<{
+      value: number
+      label: string
+    }>
+  >([
+    {
+      value: -600,
+      label: '1.25x'
+    },
+    {
+      value: -100,
+      label: '100x'
+    }
+  ])
+
+  React.useEffect(() => {
+    const tmp: Array<{
+      value: number
+      label: string
+    }> = []
+    for (let step = -600; step < -minCRatio - 50; step = step + 100) {
+      tmp.push({ value: step, label: `${getLeverageLevel(step * -1)}x` })
+    }
+    tmp.push({ value: -minCRatio, label: `${getLeverageLevel(minCRatio)}x` })
+    setMarks(tmp)
+  }, [minCRatio])
 
   return (
     <Grid className={classNames(classes.wrapperOption, action === 'close' ? classes.blur : null)}>
@@ -93,7 +122,11 @@ export const LeverageOption: React.FC<IProp> = ({
             classes={{
               rail: classes.sliderRail,
               track: classes.sliderTrack,
-              thumb: classes.sliderThumb
+              thumb: classes.sliderThumb,
+              markActive: classes.markActive,
+              mark: classes.markActive,
+              markLabel: classes.markLabel,
+              markLabelActive: classes.markLabel
             }}
             onChange={(_event, newValue) => {
               changeCustomCRatio(
@@ -107,6 +140,7 @@ export const LeverageOption: React.FC<IProp> = ({
             step={-2}
             min={-600}
             max={-minCRatio}
+            marks={marks}
           />
         </Grid>
 

@@ -21,6 +21,32 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
   amount
 }) => {
   const classes = useStyles()
+  const marks: Array<{
+    value: number
+    label: string
+  }> = [
+    {
+      value: 0,
+      label: '0%'
+    },
+    {
+      value: 25,
+      label: '25%'
+    },
+    {
+      value: 50,
+      label: '50%'
+    },
+    {
+      value: 75,
+      label: '75%'
+    },
+    {
+      value: 100,
+      label: '100%'
+    }
+  ]
+
   return (
     <Popover open={open} onClose={handleClose} classes={{ paper: classes.popover }}>
       <Grid>
@@ -38,7 +64,7 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
           </Grid>
           <Grid container justifyContent='space-between'>
             <Typography className={classes.infoTitle}>Repaying:</Typography>
-            <Typography className={classes.infoValue}>xETH</Typography>
+            <Typography className={classes.infoValue}>{tokenTo}</Typography>
           </Grid>
           <Grid container justifyContent='space-between'>
             <Typography className={classes.infoTitle}>Leverage:</Typography>
@@ -55,7 +81,11 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
             classes={{
               rail: classes.sliderRail,
               track: classes.sliderTrack,
-              thumb: classes.sliderThumb
+              thumb: classes.sliderThumb,
+              markActive: classes.markActive,
+              mark: classes.markActive,
+              markLabel: classes.markLabel,
+              markLabelActive: classes.markLabel
             }}
             // onChange={(_event, newValue) => {
             // //   changeCustomCRatio(
@@ -69,6 +99,7 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
             step={2}
             min={0}
             max={100}
+            marks={marks}
           />
         </Grid>
         <Grid container justifyContent='space-between'>
