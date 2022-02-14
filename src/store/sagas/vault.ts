@@ -9,7 +9,12 @@ import {
   handleRepaySyntheticVault,
   handleWithdrawCollateralVault
 } from './exchange'
-import { userVaults, vaults, vaultSwap } from '@selectors/vault'
+import {
+  userVaults,
+  vaults,
+  vaultSwap,
+  initVaultEntry as initVaultEntrySelector
+} from '@selectors/vault'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import BN from 'bn.js'
@@ -18,8 +23,10 @@ import { Decimal, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { VAULTS_MAP } from '@synthetify/sdk/lib/utils'
 import { networkTypetoProgramNetwork } from '@web3/connection'
 import { network } from '@selectors/solanaConnection'
-import { address } from '@selectors/solanaWallet'
+import { address, status } from '@selectors/solanaWallet'
 import { PublicKey } from '@solana/web3.js'
+import { Status } from '@reducers/solanaWallet'
+
 function* checkVaultEntry(): Generator {
   const wallet = yield* call(getWallet)
   const exchangeProgram = yield* call(getExchangeProgram)
@@ -269,9 +276,14 @@ export function* handleSendAction(): Generator {
 export function* updateSyntheticAmountUserVault(): Generator {
   const vaultsData = yield* select(vaults)
   const userVaultsData = yield* select(userVaults)
+  const initVaultEntryStatus = yield* select(initVaultEntrySelector)
+  const statusWallet = yield* select(status)
   const MINUTES_IN_YEAR = 525600
   const DENUMERATOR = new BN(10).pow(new BN(12))
 
+  if (statusWallet !== Status.Initialized || !initVaultEntryStatus) {
+    return
+  }
   for (const [_key, userVault] of Object.entries(userVaultsData)) {
     const currentVault = vaultsData[userVault.vault.toString()]
     if (typeof currentVault === 'undefined') {
@@ -359,7 +371,6 @@ export function* initVaultEntry(): Generator {
   const exchangeProgram = yield* call(getExchangeProgram)
   const userVaultState = yield* select(userVaults)
   const networkType = yield* select(network)
-
   for (const vault of VAULTS_MAP[networkTypetoProgramNetwork(networkType)]) {
     const { vaultAddress } = yield* call(
       [exchangeProgram, exchangeProgram.getVaultAddress],
@@ -379,6 +390,8 @@ export function* initVaultEntry(): Generator {
       }
     }
   }
+  yield* put(actions.setInitVaultEntryStatus({ initVaultEntry: true }))
+  yield* call(updateSyntheticAmountUserVault)
 }
 
 export function* addNewVaultEntryHandle(): Generator {
@@ -407,7 +420,7 @@ export function* handleAssetPrice(): Generator {
 }
 
 export function* assetPriceHandler(): Generator {
-  yield* throttle(1000, actions.setAssetPrice, handleAssetPrice)
+  yield* throttle(3000, actions.setAssetPrice, handleAssetPrice)
 }
 export function* assetPriceBatcher(): Generator {
   yield* takeEvery(actions.setAssetPrice, batchAssetsPrices)

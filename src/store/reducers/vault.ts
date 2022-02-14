@@ -27,6 +27,7 @@ export interface IVault {
   userVaults: { [key in string]: VaultEntry }
   vaultSwap: VaultSwap
   newVaultEntryAddress: PublicKey
+  initVaultEntry: boolean
   assetPrice: { [key in string]: Decimal }
 }
 interface ISetAssetPrice {
@@ -48,6 +49,7 @@ export const defaultState: IVault = {
     vaultType: 0
   },
   newVaultEntryAddress: DEFAULT_PUBLICKEY,
+  initVaultEntry: false,
   assetPrice: {}
 }
 
@@ -126,6 +128,10 @@ const vaultSlice = createSlice({
       return state
     },
 
+    setInitVaultEntryStatus(state, action: PayloadAction<Pick<IVault, 'initVaultEntry'>>) {
+      state.initVaultEntry = action.payload.initVaultEntry
+      return state
+    },
     clearUserVault(state) {
       state.userVaults = {}
     },
