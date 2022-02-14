@@ -74,8 +74,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
   const [minCRatio, setMinCRatio] = React.useState<number>(100)
   const [leverageType, setLeverageType] = React.useState<string>('short')
   const [leverageStatus, setLeverageStatus] = React.useState(false)
-  const [pairIndex, setPairIndex] = React.useState<number | null>(pairs.length ? 0 : null)
-  const [leverageIndex, setLeverageIndex] = React.useState<number | null>(pairs.length ? 0 : null)
+  const [pairIndex, setPairIndex] = React.useState<number | null>(null)
+  const [leverageIndex, setLeverageIndex] = React.useState<number | null>(null)
   const [blockSubmitButton, setBlockSubmitButton] = React.useState(true)
   const [currentLeverageTable, setCurrentLeverageTable] = React.useState<ILeveragePair[]>(
     leverageType === 'short' ? shortPairs : longPairs
@@ -176,10 +176,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
         allSynthetic={allSynthetic}
         leverageType={leverageType}
         leveragePairs={leverageType === 'short' ? shortPairs : longPairs}
-        sending={sending}
         pairIndex={pairs.length !== 0 ? pairIndex : null}
         setPairIndex={setPairIndex}
-        hasError={hasError}
         vaultAmount={actualVault}
         walletStatus={walletStatus}
         noWalletHandler={noWalletHandler}
@@ -238,6 +236,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
             setAction={setAction}
             openCloseLeverage={openCloseLeverage}
             openCloseModal={openCloseModal}
+            sending={sending}
+            hasError={hasError}
           />
         </Grid>
 

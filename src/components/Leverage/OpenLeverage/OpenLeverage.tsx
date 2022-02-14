@@ -15,10 +15,8 @@ interface IProp {
   action: string
   liquidationPriceTo: number
   allSynthetic: ILeverageSynthetic[]
-  sending: boolean
   pairIndex: number | null
   setPairIndex: (nr: number) => void
-  hasError?: boolean
   vaultAmount: { collateralAmount: Decimal; borrowAmount: Decimal }
   walletStatus: boolean
   noWalletHandler: () => void
@@ -37,8 +35,6 @@ export const OpenLeverage: React.FC<IProp> = ({
   action,
   liquidationPriceTo,
   allSynthetic,
-  sending,
-  hasError,
   pairIndex,
   setPairIndex,
   walletStatus,
@@ -65,24 +61,9 @@ export const OpenLeverage: React.FC<IProp> = ({
   const [collateralToken] = getSyntheticAsCollateral(
     pairIndex !== null ? allSynthetic[pairIndex] : null
   )
-  const [showOperationProgressFinale, setShowOperationProgressFinale] = React.useState(false)
   const [amountInputTouched, setAmountInputTouched] = React.useState(false)
   const [debtValue, setDebtValue] = React.useState<BN>(new BN(0))
   const [buyingValue, setBuyingValue] = React.useState<number>(0)
-  React.useEffect(() => {
-    if (sending) {
-      setShowOperationProgressFinale(true)
-    }
-    if (!sending || hasError) {
-      // reset value
-    }
-  }, [sending])
-
-  React.useEffect(() => {
-    if (showOperationProgressFinale) {
-      setShowOperationProgressFinale(false)
-    }
-  }, [amountTokenString])
   React.useEffect(() => {
     if (leverageIndex !== null && pairIndex !== null) {
       setDebtValue(
@@ -210,7 +191,12 @@ export const OpenLeverage: React.FC<IProp> = ({
                         }
                       }}
                       placeholder={'0.0'}
-                      onMaxClick={() => {}}
+                      onMaxClick={() => {
+                        setAmountTokenString(
+                          printBN(collateralToken.balance, collateralToken.assetScale)
+                        )
+                        setAmountToken(collateralToken.balance)
+                      }}
                       tokens={allSynthetic.map(tokens => ({
                         symbol: tokens.syntheticData.symbol,
                         balance: tokens.syntheticData.balance,

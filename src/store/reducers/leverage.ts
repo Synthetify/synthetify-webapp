@@ -85,6 +85,7 @@ const leverageSlice = createSlice({
         >
       >
     ) {
+      state.currentlySelected.loading = true
       state.currentlySelected.action = action.payload.action
       state.currentlySelected.vaultCollateral = action.payload.vaultCollateral
       state.currentlySelected.actualCollateral = action.payload.actualCollateral

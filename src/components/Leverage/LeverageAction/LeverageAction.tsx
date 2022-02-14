@@ -23,6 +23,8 @@ export interface IProps {
   setAction: (value: string) => void
   openCloseLeverage: (event: any) => void
   openCloseModal: boolean
+  sending: boolean
+  hasError?: boolean
 }
 export type ActionType = 'open' | 'close'
 
@@ -45,7 +47,9 @@ export const LeverageAction: React.FC<IProps> = ({
   action,
   setAction,
   openCloseLeverage,
-  openCloseModal
+  openCloseModal,
+  sending,
+  hasError
 }) => {
   const classes = useStyles()
   return (
@@ -104,6 +108,8 @@ export const LeverageAction: React.FC<IProps> = ({
         setLeverageStatus={setLeverageStatus}
         leverageType={leverageType}
         blockSubmitButton={blockSubmitButton}
+        sending={sending}
+        hasError={hasError}
       />
     </Grid>
   )

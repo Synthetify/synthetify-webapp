@@ -6,6 +6,7 @@ import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import classNames from 'classnames'
 import { SwitchButton } from '../SwitchButton/SwitchButton'
 import { getLeverageLevel } from '@consts/leverageUtils'
+import { Progress, ProgressState } from '@components/WrappedActionMenu/Progress/Progress'
 interface IProp {
   onClickSubmitButton: () => void
   onClickResetButton: () => void
@@ -18,6 +19,8 @@ interface IProp {
   setLeverageStatus: (value: boolean) => void
   leverageType: string
   blockSubmitButton: boolean
+  sending: boolean
+  hasError?: boolean
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -30,10 +33,13 @@ export const LeverageOption: React.FC<IProp> = ({
   action,
   setLeverageStatus,
   leverageType,
-  blockSubmitButton
+  blockSubmitButton,
+  sending,
+  hasError
 }) => {
   const classes = useStyles()
-
+  const [showOperationProgressFinale, setShowOperationProgressFinale] =
+    React.useState<ProgressState>('none')
   const [marks, setMarks] = React.useState<
     Array<{
       value: number
@@ -61,6 +67,19 @@ export const LeverageOption: React.FC<IProp> = ({
     tmp.push({ value: -minCRatio, label: `${getLeverageLevel(minCRatio)}x` })
     setMarks(tmp)
   }, [minCRatio])
+  React.useEffect(() => {
+    if (sending) {
+      setShowOperationProgressFinale('progress')
+      return
+    }
+    if (hasError) {
+      setShowOperationProgressFinale('failed')
+      return
+    }
+    if (!sending) {
+      setShowOperationProgressFinale('none')
+    }
+  }, [sending, hasError])
 
   return (
     <Grid className={classNames(classes.wrapperOption, action === 'close' ? classes.blur : null)}>
@@ -150,7 +169,9 @@ export const LeverageOption: React.FC<IProp> = ({
           container
           direction='row'
           justifyContent='flex-end'
+          alignItems='center'
           style={{ padding: '20px 24px 24px 0px' }}>
+          <Progress className={classes.progress} state={showOperationProgressFinale} />
           <OutlinedButton
             name={'Reset all'}
             className={classes.resetButton}

@@ -37,11 +37,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   markActive: {
-    width: '16px',
-    height: '16px',
+    width: '10px',
+    height: '10px',
     borderRadius: '50%',
     opacity: 1,
-    transform: 'translateX(-40%) translateY(-5px)',
+    transform: 'translateX(-35%) translateY(-3px)',
     border: '1px solid transparent',
     background: 'linear-gradient(#1C1C1C, #505050)',
     '&::after': {
@@ -153,7 +153,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '10px'
   },
   sliderRail: {
-    height: '6px',
+    height: '4px',
     opacity: 1,
     border: '0.5px solid transparent',
     background: 'linear-gradient(#1C1C1C, #505050)',
@@ -170,7 +170,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   sliderTrack: {
-    height: '6px',
+    height: '4px',
     opacity: 1,
     border: '0.5px solid transparent',
     background: 'linear-gradient(#1C1C1C, #505050)',
@@ -187,10 +187,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   sliderThumb: {
-    marginTop: '-8px',
-    width: '24px',
-    height: '24px',
-    border: '5px solid transparent',
+    marginTop: '-6px',
+    width: '16px',
+    height: '16px',
+    border: '3px solid transparent',
     background: '#7A73EA',
 
     '&::after': {
@@ -220,6 +220,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.background,
     '&:hover': {
       background: '#53dbba'
+    }
+  },
+  progress: {
+    transform: 'scale(0.7)',
+    height: '30px',
+    alignItems: 'center',
+    '& >div': {
+      height: '30px!important'
     }
   }
 }))
