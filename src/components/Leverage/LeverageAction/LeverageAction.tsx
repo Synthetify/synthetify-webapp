@@ -25,6 +25,7 @@ export interface IProps {
   openCloseModal: boolean
   sending: boolean
   hasError?: boolean
+  fee: string
 }
 export type ActionType = 'open' | 'close'
 
@@ -49,7 +50,8 @@ export const LeverageAction: React.FC<IProps> = ({
   openCloseLeverage,
   openCloseModal,
   sending,
-  hasError
+  hasError,
+  fee
 }) => {
   const classes = useStyles()
   return (
@@ -110,6 +112,7 @@ export const LeverageAction: React.FC<IProps> = ({
         blockSubmitButton={blockSubmitButton}
         sending={sending}
         hasError={hasError}
+        fee={fee}
       />
     </Grid>
   )

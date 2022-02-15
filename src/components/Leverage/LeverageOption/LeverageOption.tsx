@@ -1,12 +1,14 @@
 import { Divider, Grid, Slider, Typography } from '@material-ui/core'
 import React from 'react'
 import { colors } from '@static/theme'
-import useStyles from './style'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import classNames from 'classnames'
 import { SwitchButton } from '../SwitchButton/SwitchButton'
 import { getLeverageLevel } from '@consts/leverageUtils'
 import { Progress, ProgressState } from '@components/WrappedActionMenu/Progress/Progress'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import ExclamationMark from '@static/svg/exclamationMark.svg'
+import useStyles from './style'
 interface IProp {
   onClickSubmitButton: () => void
   onClickResetButton: () => void
@@ -21,6 +23,7 @@ interface IProp {
   blockSubmitButton: boolean
   sending: boolean
   hasError?: boolean
+  fee: string
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -35,7 +38,8 @@ export const LeverageOption: React.FC<IProp> = ({
   leverageType,
   blockSubmitButton,
   sending,
-  hasError
+  hasError,
+  fee
 }) => {
   const classes = useStyles()
   const [showOperationProgressFinale, setShowOperationProgressFinale] =
@@ -76,6 +80,10 @@ export const LeverageOption: React.FC<IProp> = ({
       setShowOperationProgressFinale('failed')
       return
     }
+    if (!sending && !hasError && minCRatio > 100) {
+      setShowOperationProgressFinale('success')
+      return
+    }
     if (!sending) {
       setShowOperationProgressFinale('none')
     }
@@ -108,7 +116,7 @@ export const LeverageOption: React.FC<IProp> = ({
 
             <Grid className={classes.smallInfoGrid}>
               <Typography className={classes.smallTitle}>Fee:</Typography>
-              <Typography className={classes.smallValue}>$30.5</Typography>
+              <Typography className={classes.smallValue}>${fee}</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -192,6 +200,28 @@ export const LeverageOption: React.FC<IProp> = ({
             }}
             disabled={blockSubmitButton}
             fontWeight={900}
+            startIcon={
+              <MobileTooltip
+                hint={
+                  <>
+                    <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
+                      The leverage is dangerous!
+                    </Typography>
+                    There is a high risk of loss and a possibility of large profits <br />
+                  </>
+                }
+                anchor={
+                  <img
+                    src={ExclamationMark}
+                    alt=''
+                    className={classNames(
+                      classes.exclamationMark,
+                      blockSubmitButton ? classes.disabled : null
+                    )}
+                  />
+                }
+              />
+            }
           />
         </Grid>
       </Grid>

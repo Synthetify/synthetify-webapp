@@ -4,13 +4,13 @@ import { ILeverageSynthetic, status } from '@selectors/solanaWallet'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '@reducers/leverage'
-import { getGeneralTotals, UserVaults } from '@selectors/exchange'
-import { assetPrice, getCurrentVaultLeverage, vaultSwap } from '@selectors/vault'
+import { effectiveFeeData, getGeneralTotals, UserVaults } from '@selectors/exchange'
+import { assetPrice, getCurrentVaultLeverage } from '@selectors/vault'
 import { Status } from '@reducers/solanaWallet'
 import { actions as snackbarActions } from '@reducers/snackbars'
 import { WrappedLeverage } from '@components/Leverage/WrappedLeverage/WrappedLeverage'
 import useStyles from './style'
-import { long, short } from '@selectors/leverage'
+import { currentlySelected, long, short } from '@selectors/leverage'
 
 interface IProp {
   allSynthetic: ILeverageSynthetic[]
@@ -20,7 +20,7 @@ interface IProp {
 export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, pairs }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const vaultSwapData = useSelector(vaultSwap)
+  const currentlySelectedState = useSelector(currentlySelected)
 
   const actualVault = useSelector(getCurrentVaultLeverage)
   const totalGeneralAmount = useSelector(getGeneralTotals)
@@ -28,6 +28,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
   const shortPairs = useSelector(short)
   const longPairs = useSelector(long)
   const assetPrices = useSelector(assetPrice)
+  const feeData = useSelector(effectiveFeeData)
   return (
     <Grid className={classes.root}>
       <Typography className={classes.text}>Leverage</Typography>
@@ -35,8 +36,8 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         allSynthetic={allSynthetic}
         pairs={pairs}
         userVaults={userVaults}
-        sending={vaultSwapData.loading}
-        hasError={vaultSwapData.error}
+        sending={currentlySelectedState.loading}
+        hasError={currentlySelectedState.error}
         onClickSubmitButton={(
           action,
           vaultSynthetic,
@@ -82,6 +83,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         shortPairs={Object.values(shortPairs)}
         longPairs={Object.values(longPairs)}
         assetPrices={assetPrices}
+        feeData={feeData.fee}
       />
     </Grid>
   )

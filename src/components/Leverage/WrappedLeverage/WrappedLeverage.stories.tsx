@@ -223,6 +223,7 @@ storiesOf('leverage/wrappedLeverage', module).add('default', () =>
           shortPairs={[]}
           longPairs={[]}
           assetPrices={{}}
+          feeData={{ val: new BN(10000000), scale: 7 }}
         />
       </Grid>
     )

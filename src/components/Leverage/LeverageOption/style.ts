@@ -229,6 +229,34 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& >div': {
       height: '30px!important'
     }
+  },
+  circleIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: 8,
+    marginTop: 6
+  },
+  tooltipTitle: {
+    ...typography.subtitle1
+  },
+  exclamationMark: {
+    height: 14,
+    width: 14,
+
+    marginLeft: 8,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 2
+    },
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  disabled: {
+    backgroundColor: 'transparent',
+    filter: 'brightness(0.5)'
   }
 }))
 export default useStyles

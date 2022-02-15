@@ -13,7 +13,7 @@ import { OpenLeverage } from '../OpenLeverage/OpenLeverage'
 import { LeverageAction, IActionContents } from '../LeverageAction/LeverageAction'
 import useStyles from './style'
 import { ILeveragePair } from '@reducers/leverage'
-import { getLeverageLevel } from '@consts/leverageUtils'
+import { calculateFee, getLeverageLevel } from '@consts/leverageUtils'
 import { CloseLeverage } from '../CloseLeverage/CloseLeverage'
 import { blurContent, unblurContent } from '@consts/uiUtils'
 export interface BorrowedPair extends Vault {
@@ -50,6 +50,7 @@ interface IProp {
   shortPairs: ILeveragePair[]
   longPairs: ILeveragePair[]
   assetPrices: { [key: string]: Decimal }
+  feeData: Decimal
 }
 export const WrappedLeverage: React.FC<IProp> = ({
   allSynthetic,
@@ -65,7 +66,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
   noWalletHandler,
   shortPairs,
   longPairs,
-  assetPrices
+  assetPrices,
+  feeData
 }) => {
   const classes = useStyles()
   const [cRatio, setCRatio] = React.useState('500')
@@ -82,6 +84,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
   )
   const [action, setAction] = React.useState('open')
   const [openCloseModal, setOpenCloseModal] = React.useState(false)
+  const [fee, setFee] = React.useState<string>('0')
   const onClickResetButton = () => {
     setAmountToken(new BN(0))
     setCRatio('500')
@@ -168,6 +171,39 @@ export const WrappedLeverage: React.FC<IProp> = ({
     setBlockSubmitButton(true)
   }, [amountToken.toString(), leverageIndex, pairIndex])
 
+  React.useEffect(() => {
+    if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
+      const collateral = {
+        price: assetPrices[allSynthetic[pairIndex].syntheticData.assetAddress.toString()].val,
+        publicKey: allSynthetic[pairIndex].syntheticData.assetAddress,
+        assetScale: allSynthetic[pairIndex].syntheticData.supply.scale
+      }
+      const tokenToFee = {
+        price: assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()].val,
+        publicKey: currentLeverageTable[leverageIndex].synthetic,
+        assetScale: currentLeverageTable[leverageIndex].maxBorrow.scale
+      }
+      const tokenFromFee = {
+        price: assetPrices[currentLeverageTable[leverageIndex].collateral.toString()].val,
+        publicKey: currentLeverageTable[leverageIndex].collateral,
+        assetScale: currentLeverageTable[leverageIndex].collateralAmount.scale
+      }
+      const openFee = currentLeverageTable[leverageIndex].openFee
+
+      setFee(
+        calculateFee(
+          collateral,
+          tokenToFee,
+          tokenFromFee,
+          amountToken,
+          feeData,
+          cRatio,
+          minCRatio.toFixed(10),
+          openFee
+        )
+      )
+    }
+  }, [amountToken.toString()])
   const actionContents: IActionContents = {
     open: (
       <OpenLeverage
@@ -238,6 +274,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             openCloseModal={openCloseModal}
             sending={sending}
             hasError={hasError}
+            fee={fee}
           />
         </Grid>
 

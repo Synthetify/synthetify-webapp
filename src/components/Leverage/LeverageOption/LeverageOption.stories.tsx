@@ -23,5 +23,7 @@ storiesOf('Leverage', module).add('leverage option', () => (
     }}
     leverageType={''}
     blockSubmitButton={false}
+    sending={true}
+    fee={'3.05'}
   />
 ))

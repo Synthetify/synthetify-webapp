@@ -8,7 +8,6 @@ storiesOf('Leverage', module).add('open leverage', () => (
     action={'Open'}
     liquidationPriceTo={0.85}
     allSynthetic={[]}
-    sending={false}
     pairIndex={null}
     setPairIndex={() => {
       console.log('change Pair index')
