@@ -61,7 +61,9 @@ export const LeverageAction: React.FC<IProps> = ({
           <SwitchButton
             setLeverStatus={value => {
               if (value) {
-                setAction('close')
+                if (openCloseModal) {
+                  setAction('close')
+                }
               } else {
                 setAction('open')
               }

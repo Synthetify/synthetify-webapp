@@ -19,7 +19,7 @@ interface IProp {
   setPairIndex: (num: number) => void
   vaultAmount: { collateralAmount: Decimal; borrowAmount: Decimal }
   walletStatus: boolean
-  noWalletHandler: () => void
+  noWalletHandler: (warningMessage: string) => void
   leveragePairs: ILeveragePair[]
   leverageIndex: number | null
   setLeverageIndex: (num: number) => void
@@ -215,7 +215,9 @@ export const OpenLeverage: React.FC<IProp> = ({
                       className={classes.input}
                       selectText='Select'
                       walletConnected={walletStatus}
-                      noWalletHandler={noWalletHandler}
+                      noWalletHandler={() => {
+                        noWalletHandler('Connect your wallet first')
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -253,7 +255,9 @@ export const OpenLeverage: React.FC<IProp> = ({
                       }
                       name='Select'
                       walletConnected={walletStatus}
-                      noWalletHandler={noWalletHandler}
+                      noWalletHandler={() => {
+                        noWalletHandler('Connect your wallet first')
+                      }}
                     />
                     <Grid container alignItems='center'>
                       {leverageIndex !== null ? (

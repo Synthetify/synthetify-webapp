@@ -344,8 +344,10 @@ export function* openLeverage(
     currentVault.collateralAmount.scale,
     amountToken
       .mul(new BN(Number(leverage + 0.01) * 10 ** collateralDecimal))
+      .div(new BN(10 ** collateralDecimal))
+      .mul(new BN(Number(0.9995) * 10 ** collateralDecimal))
       .div(new BN(10 ** collateralDecimal)),
-    getCRatioFromLeverage(leverage)
+    getCRatioFromLeverage(leverage + 0.01)
   )
     .mul(new BN(10 ** currentVault.openFee.scale))
     .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale)))
@@ -568,9 +570,8 @@ export function* openLeveragePosition(
   txs.push(tx2)
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
-  console.log(signTxs.length)
   for (const tx of signTxs) {
-    yield* call(sleep, 500)
+    yield* call(sleep, 300)
     signature.push(yield* call([connection, connection.sendRawTransaction], tx.serialize()))
   }
 

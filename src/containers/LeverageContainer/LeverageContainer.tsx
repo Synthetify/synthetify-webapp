@@ -71,10 +71,10 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         actualVault={actualVault}
         totalGeneralAmount={totalGeneralAmount}
         walletStatus={walletStatus === Status.Initialized}
-        noWalletHandler={() =>
+        noWalletHandler={(warningMessage: string) =>
           dispatch(
             snackbarActions.add({
-              message: 'Connect your wallet first',
+              message: warningMessage,
               variant: 'warning',
               persist: false
             })

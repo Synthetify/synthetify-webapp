@@ -28,7 +28,7 @@ export const SwitchButton: React.FC<ILeverProps> = ({
     if (!openCloseModal) {
       setValue(0)
     }
-  }, [openCloseModal])
+  }, [openCloseModal, value])
 
   const singleTabClasses = useSingleTabStyles({ value })
   const tabsClasses = useTabsStyles({ value })

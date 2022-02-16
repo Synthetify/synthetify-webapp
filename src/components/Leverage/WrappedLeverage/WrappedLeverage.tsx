@@ -46,7 +46,7 @@ interface IProp {
     totalDebtAmount: number
   }
   walletStatus: boolean
-  noWalletHandler: () => void
+  noWalletHandler: (warningMessage: string) => void
   shortPairs: ILeveragePair[]
   longPairs: ILeveragePair[]
   assetPrices: { [key: string]: Decimal }
@@ -106,8 +106,13 @@ export const WrappedLeverage: React.FC<IProp> = ({
   }
 
   const openCloseLeverage = () => {
-    setOpenCloseModal(true)
-    blurContent()
+    if (true) {
+      setOpenCloseModal(true)
+      blurContent()
+    } else {
+      setAction('open')
+      noWalletHandler('Open new positions first')
+    }
   }
 
   const handleClose = () => {
@@ -135,7 +140,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             )
           ) / 100,
           -1
-        ) * 1.005
+        ) * 1.02
       )
       setActualPair(
         currentLeverageTable[leverageIndex].synthetic,
