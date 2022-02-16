@@ -16,15 +16,15 @@ interface IProp {
   liquidationPriceTo: number
   allSynthetic: ILeverageSynthetic[]
   pairIndex: number | null
-  setPairIndex: (nr: number) => void
+  setPairIndex: (num: number) => void
   vaultAmount: { collateralAmount: Decimal; borrowAmount: Decimal }
   walletStatus: boolean
   noWalletHandler: () => void
   leveragePairs: ILeveragePair[]
   leverageIndex: number | null
-  setLeverageIndex: (nr: number) => void
+  setLeverageIndex: (num: number) => void
   currentLeverage: string
-  setLiquidationPriceTo: (nr: number) => void
+  setLiquidationPriceTo: (num: number) => void
   cRatio: string
   leverageType: string
   amountToken: BN
@@ -52,8 +52,8 @@ export const OpenLeverage: React.FC<IProp> = ({
   price
 }) => {
   const classes = useStyles()
-  const [amountTokenString, setAmountTokenString] = React.useState('')
-  const [totalExposure, setTotalExposure] = React.useState(0)
+  const [amountTokenString, setAmountTokenString] = React.useState<string>('')
+  const [totalExposure, setTotalExposure] = React.useState<number>(0)
   const [tokenFrom, tokenTo] = getAssetFromAndTo(
     leverageIndex !== null ? leveragePairs[leverageIndex] : null,
     price
@@ -61,7 +61,7 @@ export const OpenLeverage: React.FC<IProp> = ({
   const [collateralToken] = getSyntheticAsCollateral(
     pairIndex !== null ? allSynthetic[pairIndex] : null
   )
-  const [amountInputTouched, setAmountInputTouched] = React.useState(false)
+  const [amountInputTouched, setAmountInputTouched] = React.useState<boolean>(false)
   const [debtValue, setDebtValue] = React.useState<BN>(new BN(0))
   const [buyingValue, setBuyingValue] = React.useState<number>(0)
   React.useEffect(() => {
@@ -245,7 +245,11 @@ export const OpenLeverage: React.FC<IProp> = ({
                         setLeverageIndex(chosen)
                       }}
                       current={
-                        leverageIndex !== null ? leveragePairs[leverageIndex].syntheticSymbol : null
+                        leverageIndex !== null
+                          ? leverageType === 'short'
+                            ? leveragePairs[leverageIndex].syntheticSymbol
+                            : leveragePairs[leverageIndex].collateralSymbol
+                          : null
                       }
                       name='Select'
                       walletConnected={walletStatus}

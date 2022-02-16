@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: '16px',
     textTransform: 'capitalize',
     '&:hover': {
-      background: '#4ADFBA'
+      background: colors.green.button
     },
     '&:disabled': {
       pointerEvents: 'auto !important'

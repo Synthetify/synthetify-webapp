@@ -17,7 +17,7 @@ export const SwitchButton: React.FC<ILeverProps> = ({
   openCloseModal
 }) => {
   const classes = useStyles()
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = React.useState<number>(0)
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setTimeout(() => {
       setValue(newValue)

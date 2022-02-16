@@ -220,7 +220,7 @@ const exchangeSlice = createSlice({
     },
     setAssetPrice(
       _state,
-      _action: PayloadAction<{ tableAddress: string[]; tokenIndex: number; price: Decimal }>
+      _action: PayloadAction<{ tokenAddresses: string[]; tokenIndex: number; price: Decimal }>
     ) {},
     batchSetAssetPrice(state, action: PayloadAction<{ [x: string]: Decimal }>) {
       for (const [key, value] of Object.entries(action.payload)) {

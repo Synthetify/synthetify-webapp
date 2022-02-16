@@ -254,7 +254,7 @@ export const calculateTimeRemaining = (slot: number, nextRoundStartSlot: BN): BN
   }
   return slotDiff.muln(slotTime)
 }
-export const getAddressFromIndex = (
+export const getSyntheticAndCollateralAdresses = (
   synthetics: { [x: string]: ISynthetic },
   collateral: { [x: string]: ICollateral },
   nr: number
@@ -268,7 +268,7 @@ export const getAddressFromIndex = (
 
   let collateralAddress: string = ''
   R.forEachObj(collateral, element => {
-    if (element.assetIndex === nr) {
+    if (element.assetIndex === nr && element.symbol !== 'XYZ') {
       collateralAddress = element.collateralAddress.toString()
     }
   })

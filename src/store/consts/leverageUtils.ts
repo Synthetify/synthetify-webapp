@@ -96,9 +96,21 @@ export const calculateAmountAfterSwap = (
   const decimalChange = 10 ** (assetForScale - assetInScale)
 
   if (decimalChange < 1) {
-    return amountAfterFee.div(new BN(1 / decimalChange))
+    return {
+      amount: amountAfterFee.div(new BN(1 / decimalChange)),
+      fee: amountOutBeforeFee
+        .mul(effectiveFee.val)
+        .div(new BN(10 ** effectiveFee.scale))
+        .div(new BN(1 / decimalChange))
+    }
   } else {
-    return amountAfterFee.mul(new BN(decimalChange))
+    return {
+      amount: amountAfterFee.mul(new BN(decimalChange)),
+      fee: amountOutBeforeFee
+        .mul(effectiveFee.val)
+        .div(new BN(10 ** effectiveFee.scale))
+        .mul(new BN(decimalChange))
+    }
   }
 }
 export interface IFeeData {
@@ -116,7 +128,7 @@ export const calculateFee = (
   maxCRatio: string,
   openFee: Decimal
 ) => {
-  let totalFee: BN = new BN(0)
+  let totalFee: number = 0
   let amountTokenTmp = amountToken
   let amountCollateral: BN = amountToken
   let sumCollateralAmount: BN = amountToken
@@ -126,7 +138,7 @@ export const calculateFee = (
   let tmp = 0
   const leverage = getLeverageLevel(Number((+cRatio).toFixed(5)))
   if (collateral.publicKey.toString() !== tokenFrom.publicKey.toString()) {
-    const amount = calculateAmountAfterSwap(
+    const { amount, fee } = calculateAmountAfterSwap(
       collateral.price,
       tokenFrom.price,
       collateral.assetScale,
@@ -134,13 +146,9 @@ export const calculateFee = (
       amountToken,
       feeData
     )
-    totalFee = totalFee.add(
-      tokenFrom.price
-        .mul(amountToken)
-        .mul(feeData.val)
-        .div(new BN(10 ** feeData.scale))
-        .div(new BN(10 ** 8))
-    )
+    totalFee =
+      totalFee + +printBN(fee.mul(tokenFrom.price).div(new BN(10 ** 8)), tokenFrom.assetScale)
+
     amountCollateral = amount
     amountTokenTmp = amount
     sumCollateralAmount = amount
@@ -163,7 +171,7 @@ export const calculateFee = (
       .div(openFee.val.add(new BN(10 ** openFee.scale))),
     feeData
   )
-    .mul(new BN(Number(0.995) * 10 ** tokenFrom.assetScale))
+    .amount.mul(new BN(Number(0.998) * 10 ** tokenFrom.assetScale))
     .div(new BN(10 ** tokenFrom.assetScale))
   while (
     amountTokenTmp
@@ -184,15 +192,20 @@ export const calculateFee = (
     )
       .mul(new BN(10 ** openFee.scale))
       .div(openFee.val.add(new BN(10 ** openFee.scale)))
-    totalFee = totalFee.add(
-      amountSynthetic
-        .mul(tokenTo.price)
-        .mul(openFee.val)
-        .div(new BN(10 ** (openFee.scale + 2)))
-        .div(new BN(10 ** 8))
-    )
+
+    totalFee =
+      totalFee +
+      +printBN(
+        amountSynthetic
+          .mul(openFee.val)
+          .div(new BN(10 ** openFee.scale))
+          .mul(tokenTo.price)
+          .div(new BN(10 ** 8)),
+        tokenTo.assetScale
+      )
+
     sumAmountSynthetic = sumAmountSynthetic.add(amountSynthetic)
-    amountCollateral = calculateAmountAfterSwap(
+    const { amount, fee } = calculateAmountAfterSwap(
       tokenTo.price,
       tokenFrom.price,
       tokenTo.assetScale,
@@ -200,22 +213,20 @@ export const calculateFee = (
       amountSynthetic,
       feeData
     )
-      .mul(new BN(Number(0.995) * 10 ** tokenFrom.assetScale))
+
+    amountCollateral = amount
+      .mul(new BN(Number(0.998) * 10 ** tokenFrom.assetScale))
       .div(new BN(10 ** tokenFrom.assetScale))
 
-    totalFee = totalFee.add(
-      tokenFrom.price
-        .mul(amountCollateral)
-        .mul(feeData.val)
-        .div(new BN(10 ** feeData.scale))
-        .div(new BN(10 ** 8))
-    )
+    totalFee =
+      totalFee + +printBN(fee.mul(tokenFrom.price).div(new BN(10 ** 8)), tokenFrom.assetScale)
+
     sumCollateralAmount = sumCollateralAmount.add(amountCollateral)
     symulatedSumCollateral = calculateAmountAfterSwap(
-      tokenFrom.price,
       tokenTo.price,
-      tokenFrom.assetScale,
+      tokenFrom.price,
       tokenTo.assetScale,
+      tokenFrom.assetScale,
       calculateAmountBorrow(
         tokenTo.price,
         tokenTo.assetScale,
@@ -228,7 +239,7 @@ export const calculateFee = (
         .div(openFee.val.add(new BN(10 ** openFee.scale))),
       feeData
     )
-      .mul(new BN(Number(0.995) * 10 ** tokenFrom.assetScale))
+      .amount.mul(new BN(Number(0.998) * 10 ** tokenFrom.assetScale))
       .div(new BN(10 ** tokenFrom.assetScale))
     tmp = tmp + 1
   }
@@ -238,19 +249,23 @@ export const calculateFee = (
     tokenFrom.price,
     tokenFrom.assetScale,
     amountCollateral,
-    (+maxCRatio + 2).toFixed(10)
+    (+cRatio).toFixed(10)
   )
     .mul(new BN(10 ** openFee.scale))
     .div(openFee.val.add(new BN(10 ** openFee.scale)))
-  totalFee = totalFee.add(
-    amountSynthetic
-      .mul(tokenTo.price)
-      .mul(openFee.val)
-      .div(new BN(10 ** (openFee.scale + 2)))
-      .div(new BN(10 ** 8))
-  )
 
-  amountCollateral = calculateAmountAfterSwap(
+  totalFee =
+    totalFee +
+    +printBN(
+      amountSynthetic
+        .mul(openFee.val)
+        .div(new BN(10 ** openFee.scale))
+        .mul(tokenTo.price)
+        .div(new BN(10 ** 8)),
+      tokenTo.assetScale
+    )
+
+  const { amount, fee } = calculateAmountAfterSwap(
     tokenTo.price,
     tokenFrom.price,
     tokenTo.assetScale,
@@ -258,14 +273,13 @@ export const calculateFee = (
     amountSynthetic,
     feeData
   )
-    .mul(new BN(Number(0.995) * 10 ** tokenFrom.assetScale))
+
+  amountCollateral = amount
+    .mul(new BN(Number(0.998) * 10 ** tokenFrom.assetScale))
     .div(new BN(10 ** tokenFrom.assetScale))
-  totalFee = totalFee.add(
-    tokenFrom.price
-      .mul(amountCollateral)
-      .mul(feeData.val)
-      .div(new BN(10 ** feeData.scale))
-      .div(new BN(10 ** 8))
-  )
-  return (+printBN(totalFee, 8)).toFixed(2)
+
+  totalFee =
+    totalFee + +printBN(fee.mul(tokenFrom.price).div(new BN(10 ** 8)), tokenFrom.assetScale)
+
+  return totalFee.toFixed(2)
 }

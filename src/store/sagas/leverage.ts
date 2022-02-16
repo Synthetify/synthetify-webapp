@@ -13,7 +13,6 @@ import { DEFAULT_PUBLICKEY } from '@consts/static'
 import { createAccount, getWallet, signAllTransaction, sleep } from './wallet'
 import { currentlySelected } from '@selectors/leverage'
 import { actions as snackbarsActions } from '@reducers/snackbars'
-// import { openLeveragePosition } from './exchange'
 import { calculateAmountBorrow } from '@consts/borrowUtils'
 import { getCRatioFromLeverage } from '@consts/leverageUtils'
 import { printBN } from '@consts/utils'
@@ -115,8 +114,6 @@ function* setVaultAddress(): Generator {
 }
 
 export function* handleOpenLeverage(): Generator {
-  // yield* call(checkVaultEntry)
-  // yield* call(setVaultAddress)
   const currentlySelectedState = yield* select(currentlySelected)
   try {
     const txids = yield* call(openLeveragePosition, currentlySelectedState)
@@ -222,7 +219,7 @@ export function* openLeverage(
       .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale))),
     feeData.fee
   ))
-    .mul(new BN(Number(0.995) * 10 ** collateralDecimal))
+    .mul(new BN(Number(0.998) * 10 ** collateralDecimal))
     .div(new BN(10 ** collateralDecimal))
 
   while (
@@ -234,11 +231,6 @@ export function* openLeverage(
       .gt(sumCollateralAmount.add(symulatedSumCollateral)) &&
     tmp < 10
   ) {
-    console.log(
-      'amountSynthetic wejscie',
-      printBN(amountCollateral, currentVault.collateralAmount.scale)
-    )
-
     const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
@@ -261,12 +253,8 @@ export function* openLeverage(
     )
       .mul(new BN(10 ** currentVault.openFee.scale))
       .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale)))
-    console.log('syn price: ', printBN(assetPriceState[vaultSynthetic.toString()].val, 8))
-    console.log('col price: ', printBN(assetPriceState[vaultCollateral.toString()].val, 8))
-    console.log('col price: ', printBN(assetPriceState[vaultCollateral.toString()].val, 8))
 
     sumAmountSynthetic = sumAmountSynthetic.add(amountSynthetic)
-    console.log('amountSynthetic', printBN(amountSynthetic, currentVault.maxBorrow.scale))
 
     const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultTransaction], {
       owner: wallet,
@@ -279,7 +267,6 @@ export function* openLeverage(
     })
     instructionArray.push(borrowedIx)
 
-    // console.log('fromAddress', fromAddress.toString(), 'toAddress', toAddress.toString())
     const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
       amount: amountSynthetic,
       exchangeAccount: userExchangeAccount.address,
@@ -300,14 +287,10 @@ export function* openLeverage(
       amountSynthetic,
       feeData.fee
     ))
-      .mul(new BN(Number(0.995) * 10 ** collateralDecimal))
+      .mul(new BN(Number(0.998) * 10 ** collateralDecimal))
       .div(new BN(10 ** collateralDecimal))
-    console.log('amountCollateral', printBN(amountCollateral, currentVault.collateralAmount.scale))
+
     sumCollateralAmount = sumCollateralAmount.add(amountCollateral)
-    console.log(
-      'sumCollateralAmount',
-      printBN(sumCollateralAmount, currentVault.collateralAmount.scale)
-    )
 
     symulatedSumCollateral = (yield* call(
       calculateAmountAfterSwap,
@@ -327,13 +310,10 @@ export function* openLeverage(
         .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale))),
       feeData.fee
     ))
-      .mul(new BN(Number(0.995) * 10 ** collateralDecimal))
+      .mul(new BN(Number(0.998) * 10 ** collateralDecimal))
       .div(new BN(10 ** collateralDecimal))
 
-    console.log('amountSynthetic', printBN(symulatedSumCollateral, currentVault.maxBorrow.scale))
-
     tmp = tmp + 1
-    console.log('===================koniec petli ==================')
   }
 
   instructionArray.push(
@@ -348,7 +328,7 @@ export function* openLeverage(
       vaultType: currentVault.vaultType
     })
   )
-  console.log('poza sumAmountSynthetic', printBN(sumAmountSynthetic, currentVault.maxBorrow.scale))
+
   amountSynthetic = calculateAmountBorrow(
     assetPriceState[vaultSynthetic.toString()].val,
     currentVault.maxBorrow.scale,
@@ -362,8 +342,6 @@ export function* openLeverage(
     .mul(new BN(10 ** currentVault.openFee.scale))
     .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale)))
     .sub(sumAmountSynthetic)
-
-  console.log('poza amountSynthetic', printBN(amountSynthetic, currentVault.maxBorrow.scale))
 
   const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultTransaction], {
     owner: wallet,
@@ -385,7 +363,7 @@ export function* openLeverage(
     amountSynthetic,
     feeData.fee
   ))
-    .mul(new BN(Number(0.995) * 10 ** collateralDecimal))
+    .mul(new BN(Number(0.998) * 10 ** collateralDecimal))
     .div(new BN(10 ** collateralDecimal))
 
   const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
@@ -531,17 +509,13 @@ export function* openLeveragePosition(
   )
   const txs: Transaction[] = []
   const tx1 = new Transaction().add(updatePricesIx)
-  console.log('tworzenie')
-
   if (!currentlySelectedState.vaultEntryExist) {
-    console.log('create vault')
     tx1.add(ix)
   }
   if (
     currentlySelectedState.actualCollateral.toString() !==
     currentlySelectedState.vaultCollateral.toString()
   ) {
-    console.log('swap inne tokeny')
     tx1.add(approveIx).add(swapIx)
   }
 
@@ -570,7 +544,6 @@ export function* openLeveragePosition(
     }
   }
   txs.push(tx2)
-  console.log('podpis')
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
 

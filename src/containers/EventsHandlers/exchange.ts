@@ -11,7 +11,7 @@ import { getCurrentSolanaConnection, networkTypetoProgramNetwork } from '@web3/c
 import { BN } from '@synthetify/sdk'
 import { parsePriceData } from '@pythnetwork/client'
 import { SWAPLINE_MAP } from '@synthetify/sdk/lib/utils'
-import { getAddressFromIndex } from '@consts/utils'
+import { getSyntheticAndCollateralAdresses } from '@consts/utils'
 const ExhcangeEvents = () => {
   const dispatch = useDispatch()
   const networkStatus = useSelector(status)
@@ -99,13 +99,13 @@ const ExhcangeEvents = () => {
     }
     const connectEvents = () => {
       allAssets.forEach((asset, index) => {
-        const table = getAddressFromIndex(allSynthetics, allCollaterals, index)
+        const table = getSyntheticAndCollateralAdresses(allSynthetics, allCollaterals, index)
         connection.onAccountChange(asset.feedAddress, accountInfo => {
           const data = parsePriceData(accountInfo.data)
           data.price &&
             dispatch(
               actions.setAssetPrice({
-                tableAddress: table,
+                tokenAddresses: table,
                 tokenIndex: index,
                 price: {
                   val: new BN(data.price * 10 ** asset.price.scale),

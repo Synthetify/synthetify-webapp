@@ -873,7 +873,7 @@ export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
   pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
-  action.payload.tableAddress.forEach(element => {
+  action.payload.tokenAddresses.forEach(element => {
     if (element !== '') {
       pendingUpdatesVaults[element] = action.payload.price
     }

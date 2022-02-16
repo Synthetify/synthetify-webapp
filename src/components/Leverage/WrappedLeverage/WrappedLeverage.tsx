@@ -70,15 +70,15 @@ export const WrappedLeverage: React.FC<IProp> = ({
   feeData
 }) => {
   const classes = useStyles()
-  const [cRatio, setCRatio] = React.useState('500')
+  const [cRatio, setCRatio] = React.useState<string>('500')
   const [amountToken, setAmountToken] = React.useState<BN>(new BN(0))
-  const [liquidationPriceTo, setLiquidationPriceTo] = React.useState(0)
+  const [liquidationPriceTo, setLiquidationPriceTo] = React.useState<number>(0)
   const [minCRatio, setMinCRatio] = React.useState<number>(100)
   const [leverageType, setLeverageType] = React.useState<string>('short')
-  const [leverageStatus, setLeverageStatus] = React.useState(false)
+  const [leverageStatus, setLeverageStatus] = React.useState<boolean>(false)
   const [pairIndex, setPairIndex] = React.useState<number | null>(null)
   const [leverageIndex, setLeverageIndex] = React.useState<number | null>(null)
-  const [blockSubmitButton, setBlockSubmitButton] = React.useState(true)
+  const [blockSubmitButton, setBlockSubmitButton] = React.useState<boolean>(true)
   const [currentLeverageTable, setCurrentLeverageTable] = React.useState<ILeveragePair[]>(
     leverageType === 'short' ? shortPairs : longPairs
   )
@@ -203,7 +203,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
         )
       )
     }
-  }, [amountToken.toString()])
+  }, [amountToken.toString(), cRatio, leverageIndex, pairIndex])
   const actionContents: IActionContents = {
     open: (
       <OpenLeverage
