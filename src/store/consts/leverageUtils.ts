@@ -78,7 +78,7 @@ export const getLeverageLevel = (percentageCRatio: number) => {
   return percentageCRatio > 100 ? (1 / (1 - 1 / (percentageCRatio / 100))).toFixed(2) : '1'
 }
 export const getCRatioFromLeverage = (leverage: number) => {
-  return leverage > 1 ? ((100 * leverage) / (leverage - 1)).toFixed(2) : '100'
+  return leverage > 1 ? ((100 * leverage) / (leverage - 1)).toFixed(8) : '100'
 }
 
 export const calculateAmountAfterSwap = (

@@ -586,15 +586,11 @@ export const getLeverageVaultPairs = createSelector(
   vaults,
   synthetics,
   (allVaults, allSynthetics) => {
-    // eslint-disable-next-line array-callback-return
-    return Object.values(allVaults).filter(vault => {
-      if (
+    return Object.values(allVaults).filter(
+      vault =>
         typeof allSynthetics[vault.synthetic.toString()] !== 'undefined' &&
         typeof allSynthetics[vault.collateral.toString()] !== 'undefined'
-      ) {
-        return vault
-      }
-    })
+    )
   }
 )
 export default exchangeSelectors

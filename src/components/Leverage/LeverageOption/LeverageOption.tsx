@@ -164,7 +164,7 @@ export const LeverageOption: React.FC<IProp> = ({
             }}
             value={-cRatio}
             defaultValue={-minCRatio}
-            step={-2}
+            step={-5}
             min={-600}
             max={-minCRatio}
             marks={marks}

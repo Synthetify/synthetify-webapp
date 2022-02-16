@@ -259,7 +259,11 @@ export const OpenLeverage: React.FC<IProp> = ({
                       {leverageIndex !== null ? (
                         <Grid container>
                           <Typography className={classes.tokenName}>
-                            {descrpitionForSymbol[leveragePairs[leverageIndex].syntheticSymbol]
+                            {descrpitionForSymbol[
+                              leverageType === 'short'
+                                ? leveragePairs[leverageIndex].syntheticSymbol
+                                : leveragePairs[leverageIndex].collateralSymbol
+                            ]
                               .split(' ')
                               .slice(1)}
                           </Typography>
@@ -267,7 +271,9 @@ export const OpenLeverage: React.FC<IProp> = ({
                             (
                             {
                               descrpitionForSymbol[
-                                leveragePairs[leverageIndex].syntheticSymbol
+                                leverageType === 'short'
+                                  ? leveragePairs[leverageIndex].syntheticSymbol
+                                  : leveragePairs[leverageIndex].collateralSymbol
                               ].split(' ')[0]
                             }
                             )
