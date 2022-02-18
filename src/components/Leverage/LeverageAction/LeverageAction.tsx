@@ -21,7 +21,7 @@ export interface IProps {
   blockSubmitButton: boolean
   action: string
   setAction: (value: string) => void
-  openCloseLeverage: (event: any) => void
+  openCloseLeverage?: () => void
   openCloseModal: boolean
   sending: boolean
   hasError?: boolean

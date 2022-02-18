@@ -6,7 +6,7 @@ export interface ILeverProps {
   setLeverStatus: (val: boolean) => void
   firstOption: string
   secondOption: string
-  openCloseLeverage?: (event: any) => void
+  openCloseLeverage?: () => void
   openCloseModal?: boolean
   changeStatus?: number
 }

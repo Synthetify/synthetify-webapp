@@ -131,6 +131,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
     if (index >= 0) {
       setAvailableToClosePosition(true)
       setLeverageIndex(index)
+    } else {
+      setAvailableToClosePosition(false)
     }
   }
 
@@ -192,11 +194,6 @@ export const WrappedLeverage: React.FC<IProp> = ({
       setActualPair(
         currentLeverageTable[leverageIndex].synthetic,
         currentLeverageTable[leverageIndex].collateral,
-        currentLeverageTable[leverageIndex].vaultType
-      )
-      availableClosePosition(
-        currentLeverageTable[leverageIndex].collateralSymbol,
-        currentLeverageTable[leverageIndex].syntheticSymbol,
         currentLeverageTable[leverageIndex].vaultType
       )
       const index = userVaults.findIndex(
@@ -357,7 +354,20 @@ export const WrappedLeverage: React.FC<IProp> = ({
             blockSubmitButton={blockSubmitButton}
             action={action}
             setAction={setAction}
-            openCloseLeverage={openCloseLeverage}
+            openCloseLeverage={
+              leverageIndex !== null
+                ? () => {
+                    setCloseStatus(false)
+                    closePositionWithTable(
+                      currentLeverageTable[leverageIndex].collateralSymbol,
+                      currentLeverageTable[leverageIndex].syntheticSymbol,
+                      currentLeverageTable[leverageIndex].vaultType
+                    )
+                  }
+                : () => {
+                    noWalletHandler('Open new positions first')
+                  }
+            }
             openCloseModal={openCloseModal}
             sending={sending}
             hasError={hasError}
