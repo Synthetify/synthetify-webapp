@@ -8,28 +8,33 @@ export interface ILeverProps {
   secondOption: string
   openCloseLeverage?: (event: any) => void
   openCloseModal?: boolean
+  changeStatus?: number
 }
 export const SwitchButton: React.FC<ILeverProps> = ({
   setLeverStatus,
   firstOption,
   secondOption,
   openCloseLeverage,
-  openCloseModal
+  openCloseModal,
+  changeStatus
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState<number>(0)
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
-    setTimeout(() => {
-      setValue(newValue)
-      setLeverStatus(newValue !== 0)
-    }, 100)
+    setValue(newValue)
+    setLeverStatus(newValue !== 0)
   }
   React.useEffect(() => {
-    if (!openCloseModal) {
+    if (typeof openCloseModal !== 'undefined' && !openCloseModal) {
       setValue(0)
     }
   }, [openCloseModal, value])
 
+  React.useEffect(() => {
+    if (typeof changeStatus !== 'undefined') {
+      setValue(changeStatus)
+    }
+  }, [changeStatus])
   const singleTabClasses = useSingleTabStyles({ value })
   const tabsClasses = useTabsStyles({ value })
   return (

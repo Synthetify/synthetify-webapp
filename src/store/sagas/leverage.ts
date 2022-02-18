@@ -226,7 +226,7 @@ export function* openLeverage(
     amountToken
       .mul(new BN(Number(leverage) * 10 ** collateralDecimal))
       .div(new BN(10 ** collateralDecimal))
-      .mul(new BN(Number(0.9995) * 10 ** collateralDecimal))
+      .mul(new BN(Number(0.998) * 10 ** collateralDecimal))
       .div(new BN(10 ** collateralDecimal))
       .gt(sumCollateralAmount.add(symulatedSumCollateral)) &&
     tmp < 10
@@ -349,14 +349,13 @@ export function* openLeverage(
       .div(new BN(10 ** collateralDecimal)),
     getCRatioFromLeverage(leverage + 0.01)
   )
-    .mul(new BN(10 ** currentVault.openFee.scale))
-    .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale)))
     .sub(
       sumAmountSynthetic
         .mul(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale)))
         .div(new BN(10 ** currentVault.openFee.scale))
     )
-  console.log('amount synthetic', printBN(amountSynthetic, currentVault.maxBorrow.scale))
+    .mul(new BN(10 ** currentVault.openFee.scale))
+    .div(currentVault.openFee.val.add(new BN(10 ** currentVault.openFee.scale)))
 
   const borrowedIx = yield* call([exchangeProgram, exchangeProgram.borrowVaultTransaction], {
     owner: wallet,

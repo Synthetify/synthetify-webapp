@@ -8,18 +8,24 @@ import { formatNumbersBorrowTable, printBN, showPrefix } from '@consts/utils'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive'
 import { UserVaults } from '@selectors/exchange'
 import useStyles from './style'
+import { getLeverageLevel } from '@consts/leverageUtils'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 
 interface IProp {
   userVaults: UserVaults[]
   setValueWithTable?: (collSymbol: string, synthSymbol: string, vaultType: number) => void
   active?: { collateral: string | null; synthetic: string | null }
   vaultType?: number
+  page: string
+  closePositionWithTable?: (collSymbol: string, synthSymbol: string, vaultType: number) => void
 }
 export const BorrowTable: React.FC<IProp> = ({
   userVaults,
   setValueWithTable,
   active,
-  vaultType
+  vaultType,
+  page,
+  closePositionWithTable
 }) => {
   const classes = useStyles()
   const alphabetTable = ['A', 'D', 'C', 'B', 'E', 'F']
@@ -32,7 +38,11 @@ export const BorrowTable: React.FC<IProp> = ({
             <Grid classes={{ root: classNames(classes.rootHeader, classes.symbolColumn) }}>
               Coll./Borr.
             </Grid>
-            <Grid classes={{ root: classNames(classes.rootHeader, classes.typeColumn) }}>Type</Grid>
+            {page === 'vault' ? (
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.typeColumn) }}>
+                Type
+              </Grid>
+            ) : null}
             <Grid classes={{ root: classNames(classes.rootHeader, classes.amountColumn) }}>
               <Hidden xsDown> Deposited</Hidden>
               <Hidden smUp> Depos.</Hidden>
@@ -41,23 +51,39 @@ export const BorrowTable: React.FC<IProp> = ({
               <Hidden xsDown>Current debt</Hidden>
               <Hidden smUp>Curr. debt</Hidden>
             </Grid>
-            <Grid classes={{ root: classNames(classes.rootHeader, classes.cRatioColumn) }}>
-              C-Ratio
-            </Grid>
-            <Hidden smDown>
-              <Grid classes={{ root: classNames(classes.rootHeader, classes.interestDebtColumn) }}>
-                Interest rate
+            {page === 'vault' ? (
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.cRatioColumn) }}>
+                C-Ratio
               </Grid>
-            </Hidden>
+            ) : (
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.LeverColumn) }}>
+                Lever
+              </Grid>
+            )}
+            {page === 'vault' ? (
+              <Hidden smDown>
+                <Grid
+                  classes={{ root: classNames(classes.rootHeader, classes.interestDebtColumn) }}>
+                  Interest rate
+                </Grid>
+              </Hidden>
+            ) : null}
             <Grid classes={{ root: classNames(classes.rootHeader, classes.liquidationColumn) }}>
               <Hidden mdDown>Liquidation price</Hidden>
               <Hidden only={['lg', 'xl']}>Liq. price</Hidden>
             </Grid>
-            <Hidden mdDown>
-              <Grid classes={{ root: classNames(classes.rootHeader, classes.maxBorrowColumn) }}>
-                Max borrows limit
+            {page === 'vault' ? (
+              <Hidden mdDown>
+                <Grid classes={{ root: classNames(classes.rootHeader, classes.maxBorrowColumn) }}>
+                  Max borrows limit
+                </Grid>
+              </Hidden>
+            ) : null}
+            {page === 'leverage' ? (
+              <Grid classes={{ root: classNames(classes.rootHeader, classes.buttonColumn) }}>
+                Close
               </Grid>
-            </Hidden>
+            ) : null}
           </Grid>
         </Grid>
         <Grid>
@@ -74,7 +100,13 @@ export const BorrowTable: React.FC<IProp> = ({
                   : null
               )}
               onClick={() =>
-                setValueWithTable
+                page === 'vault'
+                  ? setValueWithTable
+                    ? setValueWithTable(element.collateral, element.borrowed, element.vaultType)
+                    : null
+                  : setValueWithTable &&
+                    element.collateral[0] === 'x' &&
+                    element.borrowed[0] === 'x'
                   ? setValueWithTable(element.collateral, element.borrowed, element.vaultType)
                   : null
               }
@@ -115,12 +147,14 @@ export const BorrowTable: React.FC<IProp> = ({
                   </Grid>
                 </Grid>
               </Hidden>
-              <Grid
-                classes={{
-                  root: classNames(classes.rootCell, classes.typeColumn)
-                }}>
-                {alphabetTable[element.vaultType]}
-              </Grid>
+              {page === 'vault' ? (
+                <Grid
+                  classes={{
+                    root: classNames(classes.rootCell, classes.typeColumn)
+                  }}>
+                  {alphabetTable[element.vaultType]}
+                </Grid>
+              ) : null}
               <Grid classes={{ root: classNames(classes.rootCell, classes.amountColumn) }}>
                 <Tooltip
                   classes={{ tooltip: classes.tooltipNumber }}
@@ -163,34 +197,46 @@ export const BorrowTable: React.FC<IProp> = ({
                   </Grid>
                 </Tooltip>
               </Grid>
-              <Grid
-                classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
-                style={{
-                  color:
-                    element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
-                      ? colors.green.button
-                      : colors.red.error
-                }}>
-                <Grid container direction='row' alignItems='center'>
-                  {Number(element.cRatio) < 9999 ? (
-                    Number(element.cRatio).toFixed(2)
-                  ) : (
-                    <AllInclusiveIcon style={{ height: '0.70em' }} />
-                  )}
-                  {'%'}
+              {page === 'vault' ? (
+                <Grid
+                  classes={{ root: classNames(classes.rootCell, classes.cRatioColumn) }}
+                  style={{
+                    color:
+                      element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
+                        ? colors.green.button
+                        : colors.red.error
+                  }}>
+                  <Grid container direction='row' alignItems='center'>
+                    {Number(element.cRatio) < 9999 ? (
+                      Number(element.cRatio).toFixed(2)
+                    ) : (
+                      <AllInclusiveIcon style={{ height: '0.70em' }} />
+                    )}
+                    {'%'}
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Hidden smDown>
-                <Grid classes={{ root: classNames(classes.rootCell, classes.interestDebtColumn) }}>
-                  <AnimatedNumber
-                    value={element.interestRate}
-                    formatValue={(value: number) => value.toFixed(2)}
-                    duration={300}
-                  />
+              ) : (
+                <Grid classes={{ root: classNames(classes.rootCell, classes.LeverColumn) }}>
+                  <Grid container direction='row' alignItems='center'>
+                    {getLeverageLevel(Number(element.cRatio))}
+                    {'x'}
+                  </Grid>
+                </Grid>
+              )}
+              {page === 'vault' ? (
+                <Hidden smDown>
+                  <Grid
+                    classes={{ root: classNames(classes.rootCell, classes.interestDebtColumn) }}>
+                    <AnimatedNumber
+                      value={element.interestRate}
+                      formatValue={(value: number) => value.toFixed(2)}
+                      duration={300}
+                    />
 
-                  {'%'}
-                </Grid>
-              </Hidden>
+                    {'%'}
+                  </Grid>
+                </Hidden>
+              ) : null}
               <Grid classes={{ root: classNames(classes.rootCell, classes.liquidationColumn) }}>
                 <Tooltip
                   classes={{ tooltip: classes.tooltipNumber }}
@@ -211,31 +257,54 @@ export const BorrowTable: React.FC<IProp> = ({
                   </Grid>
                 </Tooltip>
               </Grid>
-              <Hidden mdDown>
-                <Grid
-                  classes={{ root: classNames(classes.rootCell, classes.maxBorrowColumn) }}
-                  style={{
-                    color:
-                      element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
-                        ? colors.green.button
-                        : colors.red.error
-                  }}>
-                  <Tooltip
-                    classes={{ tooltip: classes.tooltipNumber }}
-                    title={`${element.maxBorrow} ${element.borrowed}`}
-                    placement='bottom-start'>
-                    <Grid>
-                      {'~ '}
-                      <AnimatedNumber
-                        value={element.maxBorrow}
-                        formatValue={formatNumbersBorrowTable}
-                        duration={300}
-                      />
-                      {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
-                    </Grid>
-                  </Tooltip>
+              {page === 'vault' ? (
+                <Hidden mdDown>
+                  <Grid
+                    classes={{ root: classNames(classes.rootCell, classes.maxBorrowColumn) }}
+                    style={{
+                      color:
+                        element.cRatio === 'NaN' || Number(element.cRatio) >= element.minCRatio
+                          ? colors.green.button
+                          : colors.red.error
+                    }}>
+                    <Tooltip
+                      classes={{ tooltip: classes.tooltipNumber }}
+                      title={`${element.maxBorrow} ${element.borrowed}`}
+                      placement='bottom-start'>
+                      <Grid>
+                        {'~ '}
+                        <AnimatedNumber
+                          value={element.maxBorrow}
+                          formatValue={formatNumbersBorrowTable}
+                          duration={300}
+                        />
+                        {showPrefix(Number(element.maxBorrow))} {element.borrowed} left
+                      </Grid>
+                    </Tooltip>
+                  </Grid>
+                </Hidden>
+              ) : null}
+              {page === 'leverage' ? (
+                <Grid classes={{ root: classNames(classes.rootCell, classes.buttonColumn) }}>
+                  <OutlinedButton
+                    name={'Close'}
+                    className={classes.closeButton}
+                    fontWeight={900}
+                    onClick={
+                      typeof closePositionWithTable !== 'undefined'
+                        ? () => {
+                            closePositionWithTable(
+                              element.collateral,
+                              element.borrowed,
+                              element.vaultType
+                            )
+                          }
+                        : undefined
+                    }
+                    disabled={element.collateral[0] !== 'x' || element.borrowed[0] !== 'x'}
+                  />
                 </Grid>
-              </Hidden>
+              ) : null}
             </Grid>
           ))}
         </Grid>

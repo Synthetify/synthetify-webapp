@@ -106,6 +106,7 @@ export const LeverageOption: React.FC<IProp> = ({
               setLeverStatus={setLeverageStatus}
               firstOption={'long'}
               secondOption={'short'}
+              changeStatus={leverageType === 'long' ? 0 : 1}
             />
           </Grid>
           <Grid className={classes.infoGrid}>
@@ -164,7 +165,7 @@ export const LeverageOption: React.FC<IProp> = ({
             }}
             value={-cRatio}
             defaultValue={-minCRatio}
-            step={-5}
+            step={-2}
             min={-600}
             max={-minCRatio}
             marks={marks}

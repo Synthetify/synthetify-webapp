@@ -39,5 +39,9 @@ storiesOf('Leverage', module).add('open leverage', () => (
       collateralPrice: { val: new BN(0), scale: 0 },
       syntheticPrice: { val: new BN(0), scale: 0 }
     }}
+    buyingValue={10}
+    setBuyingValue={(num: number) => {
+      console.log(num)
+    }}
   />
 ))

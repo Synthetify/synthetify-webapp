@@ -3,6 +3,7 @@ import { Grid } from '@material-ui/core'
 import { storiesOf } from '@storybook/react'
 import { BorrowInfo } from './BorrowInfo'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { BN } from '@project-serum/anchor'
 
 storiesOf('Borrow/Info', module).add('default', () => (
   <Grid
@@ -23,13 +24,14 @@ storiesOf('Borrow/Info', module).add('default', () => (
       borrowedAddress={DEFAULT_PUBLICKEY}
       borrowedSign={'xSOL'}
       amountSign={'$'}
-      callPrice={''}
-      borrPrice={''}
+      callPrice={{ val: new BN(0), scale: 0 }}
+      borrPrice={{ val: new BN(0), scale: 0 }}
       interestRate={''}
-      liqRatio={0}
+      liqRatio={{ val: new BN(0), scale: 0 }}
       cRatio={0}
       openFee={0}
       vaultType={0}
+      page={'vault'}
     />
   </Grid>
 ))

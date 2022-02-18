@@ -30,6 +30,8 @@ interface IProp {
   amountToken: BN
   setAmountToken: (value: BN) => void
   price: { collateralPrice: Decimal; syntheticPrice: Decimal }
+  buyingValue: number
+  setBuyingValue: (num: number) => void
 }
 export const OpenLeverage: React.FC<IProp> = ({
   action,
@@ -49,7 +51,9 @@ export const OpenLeverage: React.FC<IProp> = ({
   leverageType,
   amountToken,
   setAmountToken,
-  price
+  price,
+  buyingValue,
+  setBuyingValue
 }) => {
   const classes = useStyles()
   const [amountTokenString, setAmountTokenString] = React.useState<string>('')
@@ -63,7 +67,7 @@ export const OpenLeverage: React.FC<IProp> = ({
   )
   const [amountInputTouched, setAmountInputTouched] = React.useState<boolean>(false)
   const [debtValue, setDebtValue] = React.useState<BN>(new BN(0))
-  const [buyingValue, setBuyingValue] = React.useState<number>(0)
+
   React.useEffect(() => {
     if (leverageIndex !== null && pairIndex !== null) {
       setDebtValue(
