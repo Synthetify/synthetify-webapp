@@ -199,15 +199,16 @@ export const WrappedLeverage: React.FC<IProp> = ({
         currentLeverageTable[leverageIndex].syntheticSymbol,
         currentLeverageTable[leverageIndex].vaultType
       )
-      setUserVaultIndex(
-        userVaults.findIndex(
-          element =>
-            leverageIndex !== null &&
-            element.collateral === currentLeverageTable[leverageIndex].collateralSymbol &&
-            element.borrowed === currentLeverageTable[leverageIndex].syntheticSymbol &&
-            element.vaultType === currentLeverageTable[leverageIndex].vaultType
-        )
+      const index = userVaults.findIndex(
+        element =>
+          leverageIndex !== null &&
+          element.collateral === currentLeverageTable[leverageIndex].collateralSymbol &&
+          element.borrowed === currentLeverageTable[leverageIndex].syntheticSymbol &&
+          element.vaultType === currentLeverageTable[leverageIndex].vaultType
       )
+      if (index >= 0) {
+        setUserVaultIndex(index)
+      }
     }
   }, [leverageIndex, currentLeverageTable.length])
 
