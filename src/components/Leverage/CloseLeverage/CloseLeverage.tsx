@@ -10,6 +10,9 @@ export interface ICloseLeverage {
   leverage: string
   percent: number
   amount: string
+  onChange: (value: number) => void
+  onSubmitButton: () => void
+  blockButton: boolean
 }
 export const CloseLeverage: React.FC<ICloseLeverage> = ({
   open,
@@ -18,7 +21,10 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
   tokenTo,
   leverage,
   percent,
-  amount
+  amount,
+  onChange,
+  onSubmitButton,
+  blockButton
 }) => {
   const classes = useStyles()
   const marks: Array<{
@@ -26,8 +32,8 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
     label: string
   }> = [
     {
-      value: 0,
-      label: '0%'
+      value: 10,
+      label: '10%'
     },
     {
       value: 25,
@@ -87,17 +93,13 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
               markLabel: classes.markLabel,
               markLabelActive: classes.markLabel
             }}
-            // onChange={(_event, newValue) => {
-            // //   changeCustomCRatio(
-            // //     Number(-newValue) > Number(minCRatio.toFixed(2))
-            // //       ? (-newValue).toString()
-            // //       : minCRatio.toFixed(2)
-            // //   )
-            // }}
+            onChange={(_event, newValue) => {
+              onChange(Number(newValue))
+            }}
             value={percent}
             defaultValue={50}
-            step={2}
-            min={0}
+            step={5}
+            min={10}
             max={100}
             marks={marks}
           />
@@ -117,13 +119,12 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
         <Grid container justifyContent='center' style={{ paddingTop: '16px' }}>
           <OutlinedButton
             className={classes.button}
-            name={'Close leverage'}
+            name={!blockButton ? 'Close leverage' : "You don't have enouth token to close"}
             color='secondary'
             onClick={() => {
-              // onClickSubmitButton()
+              onSubmitButton()
             }}
-            disabled={false}
-            //   fontWeight={900}
+            disabled={blockButton}
           />
         </Grid>
       </Grid>

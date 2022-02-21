@@ -82,10 +82,9 @@ export const LeverageAction: React.FC<IProps> = ({
                     When can you Short and Long?
                   </Typography>
                   <Typography className={classes.tooltipDescription} style={{ marginBottom: 10 }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas interdum justo
-                    dui, vel gravida mi vulputate et. Nunc luctus hendrerit metus eget convallis.
-                    Praesent elementum dignissim tristique. Pellentesque ante eros, venenatis id
-                    nisl eu,
+                    Leverage allow you to operate the higher capital, than you have, after paying a
+                    collateral deposit. The value of the collateral depends on you and is the basis
+                    for calculating the final loan amount.
                   </Typography>
                 </>
               }

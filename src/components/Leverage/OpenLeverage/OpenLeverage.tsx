@@ -321,8 +321,7 @@ export const OpenLeverage: React.FC<IProp> = ({
                 <Typography className={classes.infoTitle}>Buying {tokenFrom.symbol}:</Typography>
                 <Grid className={classes.valueContainer}>
                   <Typography className={classes.infoValueTo}>
-                    {buyingValue.toFixed(2)}
-                    {tokenFrom.symbol}
+                    {buyingValue.toFixed(2)} {tokenFrom.symbol}
                   </Typography>
                 </Grid>
               </Grid>
@@ -333,8 +332,7 @@ export const OpenLeverage: React.FC<IProp> = ({
                 <Grid className={classes.valueContainer}>
                   <Typography className={classes.infoValueTo}>
                     {' '}
-                    {totalExposure.toFixed(2)}
-                    {tokenFrom.symbol}
+                    {totalExposure.toFixed(2)} {tokenFrom.symbol}
                   </Typography>
                 </Grid>
               </Grid>

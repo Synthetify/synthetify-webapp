@@ -187,13 +187,14 @@ export function* signAllTransaction(
   txs: Transaction[]
 ): SagaGenerator<Transaction[]> {
   const connection = yield* call(getConnection)
-  const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  // const blockhash = yield* call([connection, connection.getRecentBlockhash])
   for (const tx of txs) {
+    const blockhash = yield* call([connection, connection.getRecentBlockhash])
     tx.feePayer = wallet.publicKey
     tx.recentBlockhash = blockhash.blockhash
-    yield* call([wallet, wallet.signTransaction], tx)
+    yield* call(sleep, 300)
   }
-
+  yield* call([wallet, wallet.signAllTransactions], txs)
   return txs
 }
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {

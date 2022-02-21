@@ -38,7 +38,7 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
         userVaults={userVaults}
         sending={currentlySelectedState.loading}
         hasError={currentlySelectedState.error}
-        onClickSubmitButton={(
+        onClickOpenButton={(
           action,
           vaultSynthetic,
           vaultCollateral,
@@ -53,6 +53,25 @@ export const LeverageContainer: React.FC<IProp> = ({ allSynthetic, userVaults, p
               vaultSynthetic: vaultSynthetic,
               vaultCollateral: vaultCollateral,
               actualCollateral: actualCollateral,
+              amountToken,
+              vaultType,
+              leverage
+            })
+          )
+        }}
+        onClickCloseButton={(
+          action,
+          vaultSynthetic,
+          vaultCollateral,
+          amountToken,
+          vaultType,
+          leverage
+        ) => {
+          dispatch(
+            actions.setCloseLeverage({
+              action,
+              vaultSynthetic: vaultSynthetic,
+              vaultCollateral: vaultCollateral,
               amountToken,
               vaultType,
               leverage

@@ -27,11 +27,19 @@ interface IProp {
   userVaults: UserVaults[]
   sending: boolean
   hasError: boolean | undefined
-  onClickSubmitButton: (
+  onClickOpenButton: (
     action: string,
     vaultSynthetic: PublicKey,
     vaultCollateral: PublicKey,
     actualCollateral: PublicKey,
+    amountToken: BN,
+    vaultType: number,
+    leverage: number
+  ) => void
+  onClickCloseButton: (
+    action: string,
+    vaultSynthetic: PublicKey,
+    vaultCollateral: PublicKey,
     amountToken: BN,
     vaultType: number,
     leverage: number
@@ -58,7 +66,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
   sending,
   hasError,
   userVaults,
-  onClickSubmitButton,
+  onClickOpenButton,
+  onClickCloseButton,
   setActualPair,
   actualVault,
   totalGeneralAmount,
@@ -79,6 +88,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
   const [pairIndex, setPairIndex] = React.useState<number | null>(null)
   const [leverageIndex, setLeverageIndex] = React.useState<number | null>(null)
   const [blockSubmitButton, setBlockSubmitButton] = React.useState<boolean>(true)
+  const [blockCloseButton, setBlockCloseButton] = React.useState<boolean>(true)
+
   const [availableToClosePosition, setAvailableToClosePosition] = React.useState<boolean>(false)
   const [userVaultIndex, setUserVaultIndex] = React.useState<number | null>(null)
   const [closeStatus, setCloseStatus] = React.useState<boolean>(false)
@@ -95,9 +106,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
     setLeverageIndex(null)
     setPairIndex(null)
   }
+  const [closeAmount, setCloseAmount] = React.useState<BN>(new BN(0))
+  const [closePercent, setClosePercent] = React.useState<number>(10)
+
   const onClickOpenLeverage = () => {
     if (pairIndex !== null && leverageIndex !== null) {
-      onClickSubmitButton(
+      onClickOpenButton(
         'open',
         currentLeverageTable[leverageIndex].synthetic,
         currentLeverageTable[leverageIndex].collateral,
@@ -107,6 +121,24 @@ export const WrappedLeverage: React.FC<IProp> = ({
         Number(getLeverageLevel(Number(cRatio)))
       )
     }
+  }
+  const onSubmitCloseButton = () => {
+    if (
+      pairIndex !== null &&
+      leverageIndex !== null &&
+      userVaultIndex !== null &&
+      typeof userVaults[userVaultIndex] !== 'undefined'
+    ) {
+      onClickCloseButton(
+        'close',
+        currentLeverageTable[leverageIndex].synthetic,
+        currentLeverageTable[leverageIndex].collateral,
+        closeAmount,
+        currentLeverageTable[leverageIndex].vaultType,
+        Number(getLeverageLevel(Number(userVaults[userVaultIndex].cRatio)))
+      )
+    }
+    handleClose()
   }
   const availableClosePosition = (collateral: string, synthetic: string, vaultType: number) => {
     let index = -1
@@ -129,7 +161,17 @@ export const WrappedLeverage: React.FC<IProp> = ({
     }
     setPairIndex(0)
     if (index >= 0) {
-      setAvailableToClosePosition(true)
+      if (
+        userVaults.findIndex(
+          element =>
+            element.collateral === collateral &&
+            element.borrowed === synthetic &&
+            element.vaultType === vaultType
+        ) >= 0
+      ) {
+        setAvailableToClosePosition(true)
+      }
+
       setLeverageIndex(index)
     } else {
       setAvailableToClosePosition(false)
@@ -146,6 +188,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
     }
   }
   const closePositionWithTable = (collateral: string, synthetic: string, vaultType: number) => {
+    onChangeCloseModal(50)
     availableClosePosition(collateral, synthetic, vaultType)
     setCloseStatus(true)
   }
@@ -154,6 +197,15 @@ export const WrappedLeverage: React.FC<IProp> = ({
     setAction('open')
     setOpenCloseModal(false)
     unblurContent()
+  }
+  const onChangeCloseModal = (value: number) => {
+    setClosePercent(value)
+
+    setCloseAmount(
+      actualVault.borrowAmount.val
+        .mul(new BN(Number(value / 100) * 10 ** actualVault.borrowAmount.scale))
+        .div(new BN(10 ** actualVault.borrowAmount.scale))
+    )
   }
 
   React.useEffect(() => {
@@ -189,7 +241,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             )
           ) / 100,
           -1
-        ) * 1.015
+        ) * 1.025
       )
       setActualPair(
         currentLeverageTable[leverageIndex].synthetic,
@@ -274,6 +326,27 @@ export const WrappedLeverage: React.FC<IProp> = ({
       )
     }
   }, [amountToken.toString(), cRatio, leverageIndex, pairIndex])
+
+  React.useEffect(() => {
+    if (currentLeverageTable.length > 0 && pairIndex !== null && leverageIndex !== null) {
+      const balance = allSynthetic.find(
+        element =>
+          element.syntheticData.symbol === currentLeverageTable[leverageIndex].syntheticSymbol
+      )?.syntheticData.balance
+      if (balance) {
+        setBlockCloseButton(
+          !balance.gt(
+            closeAmount
+              .mul(new BN(Number(0.1) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
+              .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
+          )
+        )
+        return
+      }
+      console.log()
+      setBlockCloseButton(true)
+    }
+  }, [closeAmount.toString()])
   const actionContents: IActionContents = {
     open: (
       <OpenLeverage
@@ -323,12 +396,23 @@ export const WrappedLeverage: React.FC<IProp> = ({
             : ''
         }
         leverage={getLeverageLevel(
-          availableToClosePosition && userVaultIndex !== null
+          availableToClosePosition &&
+            userVaultIndex !== null &&
+            typeof userVaults[userVaultIndex] !== 'undefined'
             ? Number(userVaults[userVaultIndex].cRatio)
             : 500
         )}
-        percent={50}
-        amount={'0.0052564'}
+        onChange={onChangeCloseModal}
+        onSubmitButton={onSubmitCloseButton}
+        percent={closePercent}
+        amount={
+          currentLeverageTable.length > 0 && leverageIndex !== null
+            ? Number(
+                printBN(closeAmount, currentLeverageTable[leverageIndex].maxBorrow.scale)
+              ).toFixed(8)
+            : '0.00'
+        }
+        blockButton={blockCloseButton}
       />
     )
   }

@@ -95,6 +95,23 @@ const leverageSlice = createSlice({
       state.currentlySelected.vaultType = action.payload.vaultType
       return state
     },
+    setCloseLeverage(
+      state,
+      action: PayloadAction<
+        Pick<
+          ILeverageSelected,
+          'vaultCollateral' | 'vaultSynthetic' | 'amountToken' | 'action' | 'vaultType' | 'leverage'
+        >
+      >
+    ) {
+      state.currentlySelected.action = action.payload.action
+      state.currentlySelected.vaultCollateral = action.payload.vaultCollateral
+      state.currentlySelected.vaultSynthetic = action.payload.vaultSynthetic
+      state.currentlySelected.amountToken = action.payload.amountToken
+      state.currentlySelected.vaultType = action.payload.vaultType
+      state.currentlySelected.leverage = action.payload.leverage
+      return state
+    },
     setVaultExist(state, action: PayloadAction<Pick<ILeverageSelected, 'vaultEntryExist'>>) {
       state.currentlySelected.vaultEntryExist = action.payload.vaultEntryExist
       return state

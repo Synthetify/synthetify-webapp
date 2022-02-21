@@ -207,7 +207,8 @@ storiesOf('leverage/wrappedLeverage', module).add('default', () =>
           sending={false}
           hasError={false}
           userVaults={userVaults}
-          onClickSubmitButton={() => {}}
+          onClickOpenButton={() => {}}
+          onClickCloseButton={() => {}}
           setActualPair={() => {}}
           actualVault={{
             collateralAmount: { val: new BN(0), scale: 0 },

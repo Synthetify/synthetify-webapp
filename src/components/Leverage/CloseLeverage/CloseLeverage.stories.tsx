@@ -13,5 +13,12 @@ storiesOf('Leverage', module).add('closeLeverage', () => (
     leverage={'2'}
     percent={24}
     amount={'0.004'}
+    onChange={() => {
+      console.log('onchange')
+    }}
+    onSubmitButton={() => {
+      console.log('onchange')
+    }}
+    blockButton={false}
   />
 ))
