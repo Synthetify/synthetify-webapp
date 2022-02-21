@@ -228,7 +228,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
         setUserVaultIndex(index)
       }
     }
-  }, [leverageType, leverageIndex, pairIndex, currentLeverageTable.length])
+  }, [leverageType, leverageIndex, pairIndex, currentLeverageTable.length, userVaults.length])
 
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null) {
@@ -329,13 +329,13 @@ export const WrappedLeverage: React.FC<IProp> = ({
 
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && pairIndex !== null && leverageIndex !== null) {
-      const balance = allSynthetic.find(
+      const synthetic = allSynthetic.find(
         element =>
           element.syntheticData.symbol === currentLeverageTable[leverageIndex].syntheticSymbol
-      )?.syntheticData.balance
-      if (balance) {
+      )
+      if (synthetic) {
         setBlockCloseButton(
-          !balance.gt(
+          !synthetic.syntheticData.balance.gt(
             closeAmount
               .mul(new BN(Number(0.1) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
               .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
@@ -343,7 +343,6 @@ export const WrappedLeverage: React.FC<IProp> = ({
         )
         return
       }
-      console.log()
       setBlockCloseButton(true)
     }
   }, [closeAmount.toString()])

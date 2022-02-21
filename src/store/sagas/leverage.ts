@@ -612,6 +612,7 @@ export function* closeLeveragePosition(
   const vaultsPair = yield* select(vaults)
   const connection = yield* call(getConnection)
   const userVaultsData = yield* select(userVaults)
+  const exchangeProgram = yield* call(getExchangeProgram)
   const cRatio = Math.pow(
     Number(
       printBN(
@@ -639,8 +640,12 @@ export function* closeLeveragePosition(
     currentlySelectedState.leverage,
     userVaultsData[currentlySelectedState.vaultAddress.toString()]
   )
+  const updatePricesIx = yield* call(
+    [exchangeProgram, exchangeProgram.updatePricesInstruction],
+    exchangeProgram.state.assetsList
+  )
   const txs: Transaction[] = []
-  let tx2 = new Transaction()
+  let tx2 = new Transaction().add(updatePricesIx)
   let index = 0
   const amountInstruction = 4 * 3
   for (const tx of instructionArray) {
@@ -651,14 +656,14 @@ export function* closeLeveragePosition(
       tx2.add(tx)
       txs.push(tx2)
       index = 0
-      tx2 = new Transaction()
+      tx2 = new Transaction().add(updatePricesIx)
     }
   }
   txs.push(tx2)
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
   for (const tx of signTxs) {
-    yield* call(sleep, 400)
+    yield* call(sleep, 100)
     signature.push(yield* call([connection, connection.sendRawTransaction], tx.serialize()))
   }
 
@@ -701,7 +706,7 @@ export function* closeLeverage(
     sumSyntheticAmount = sumSyntheticAmount.add(amountToken)
   }
 
-  while (sumSyntheticAmount.lt(amountToken.add(symulatedAmountSynthetic)) && tmp < 15) {
+  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 15) {
     const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultTransaction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
@@ -761,7 +766,7 @@ export function* closeLeverage(
       amountCollateral,
       feeData.fee
     ))
-      .mul(new BN(Number(0.998) * 10 ** syntheticDecimal))
+      .mul(new BN(Number(0.995) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
     sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     symulatedAmountSynthetic = (yield* call(
@@ -780,7 +785,7 @@ export function* closeLeverage(
       ),
       feeData.fee
     ))
-      .mul(new BN(Number(0.998) * 10 ** syntheticDecimal))
+      .mul(new BN(Number(0.995) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
     tmp = tmp + 1
   }
@@ -809,7 +814,7 @@ export function* closeLeverage(
   })
   instructionArray.push(repayIx)
 
-  const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
+  const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
     amount: amountCollateral,
     owner: wallet,
     synthetic: vaultSynthetic,
