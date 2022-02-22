@@ -232,7 +232,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
 
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null) {
-      setMinCRatio(
+      const min =
         Math.pow(
           Number(
             printBN(
@@ -242,7 +242,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
           ) / 100,
           -1
         ) * 1.025
-      )
+      if (min < 100) {
+        setMinCRatio(153)
+      } else {
+        setMinCRatio(min)
+      }
+
       setActualPair(
         currentLeverageTable[leverageIndex].synthetic,
         currentLeverageTable[leverageIndex].collateral,
@@ -337,7 +342,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
         setBlockCloseButton(
           !synthetic.syntheticData.balance.gt(
             closeAmount
-              .mul(new BN(Number(0.1) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
+              .mul(new BN(Number(0.2) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
               .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
           )
         )
@@ -481,12 +486,16 @@ export const WrappedLeverage: React.FC<IProp> = ({
         ) : null}
       </Grid>
       <Grid className={classes.borrowInfoGrid}>
-        {currentLeverageTable.length > 0 && leverageIndex !== null ? (
+        {currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null ? (
           <BorrowInfo
             collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
-            collateral={currentLeverageTable[leverageIndex].collateralSymbol}
-            borrowed={currentLeverageTable[leverageIndex].syntheticSymbol}
+            collateral={allSynthetic[pairIndex].syntheticData.symbol}
+            borrowed={
+              leverageType === 'short'
+                ? currentLeverageTable[leverageIndex].syntheticSymbol
+                : currentLeverageTable[leverageIndex].collateralSymbol
+            }
             limit={Number(
               printBN(
                 currentLeverageTable[leverageIndex].maxBorrow.val.sub(

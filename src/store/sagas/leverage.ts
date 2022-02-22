@@ -18,7 +18,12 @@ import { getCRatioFromLeverage } from '@consts/leverageUtils'
 import { printBN } from '@consts/utils'
 import { assetPrice, vaults, userVaults } from '@selectors/vault'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { PublicKey, Transaction, TransactionInstruction, Account } from '@solana/web3.js'
+import {
+  PublicKey,
+  Transaction,
+  TransactionInstruction,
+  sendAndConfirmRawTransaction
+} from '@solana/web3.js'
 import { Decimal, Vault, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { tou64 } from '@synthetify/sdk/lib/utils'
 import { getConnection } from './connection'
@@ -180,7 +185,6 @@ export function* openLeverage(
   wallet: PublicKey,
   amountToken: BN,
   currentVault: Vault,
-  collateralToken: Token,
   leverage: number,
   fromAddress: PublicKey,
   toAddress: PublicKey,
@@ -227,14 +231,13 @@ export function* openLeverage(
       .gt(sumCollateralAmount.add(symulatedSumCollateral)) &&
     tmp < 10
   ) {
-    const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
+    const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
       owner: wallet,
       amount: amountCollateral,
       userCollateralAccount: fromAddress,
       reserveAddress: currentVault.collateralReserve,
-      collateralToken: collateralToken,
       vaultType: currentVault.vaultType
     })
     instructionArray.push(depositIx)
@@ -264,16 +267,6 @@ export function* openLeverage(
       vaultType: currentVault.vaultType
     })
     instructionArray.push(borrowedIx)
-
-    const approveSwapIx = Token.createApproveInstruction(
-      TOKEN_PROGRAM_ID,
-      toAddress,
-      exchangeProgram.exchangeAuthority,
-      wallet,
-      [],
-      tou64(amountSynthetic)
-    )
-    instructionArray.push(approveSwapIx)
     const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
       amount: amountSynthetic,
       exchangeAccount: userExchangeAccount.address,
@@ -322,14 +315,13 @@ export function* openLeverage(
   }
 
   instructionArray.push(
-    yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
+    yield* call([exchangeProgram, exchangeProgram.vaultDepositInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
       owner: wallet,
       amount: amountCollateral,
       userCollateralAccount: fromAddress,
       reserveAddress: currentVault.collateralReserve,
-      collateralToken: collateralToken,
       vaultType: currentVault.vaultType
     })
   )
@@ -371,16 +363,6 @@ export function* openLeverage(
   ))
     .mul(new BN(Number(0.995) * 10 ** collateralDecimal))
     .div(new BN(10 ** collateralDecimal))
-
-  const approveSwapIx = Token.createApproveInstruction(
-    TOKEN_PROGRAM_ID,
-    toAddress,
-    exchangeProgram.exchangeAuthority,
-    wallet,
-    [],
-    tou64(amountSynthetic)
-  )
-  instructionArray.push(approveSwapIx)
   const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
     amount: amountSynthetic,
     exchangeAccount: userExchangeAccount.address,
@@ -392,14 +374,13 @@ export function* openLeverage(
   })
   instructionArray.push(swapIx)
 
-  const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositTransaction], {
+  const depositIx = yield* call([exchangeProgram, exchangeProgram.vaultDepositInstruction], {
     collateral: vaultCollateral,
     synthetic: vaultSynthetic,
     owner: wallet,
     amount: amountCollateral,
     userCollateralAccount: fromAddress,
     reserveAddress: currentVault.collateralReserve,
-    collateralToken: collateralToken,
     vaultType: currentVault.vaultType
   })
   instructionArray.push(depositIx)
@@ -418,12 +399,6 @@ export function* openLeveragePosition(
   const connection = yield* call(getConnection)
   const assetPriceState = yield* select(assetPrice)
   const feeData = yield* select(effectiveFeeData)
-  const token = new Token(
-    connection,
-    tokensAccounts[currentlySelectedState.vaultCollateral.toString()].address,
-    TOKEN_PROGRAM_ID,
-    new Account()
-  )
   const syntheticState = yield* select(synthetics)
   const userVaultState = yield* select(userVaults)
   const cRatio = Math.pow(
@@ -470,15 +445,6 @@ export function* openLeveragePosition(
   }
 
   let amountCollateral: BN = currentlySelectedState.amountToken
-  const approveIx = Token.createApproveInstruction(
-    TOKEN_PROGRAM_ID,
-    currentCollateralfromAddress,
-    exchangeProgram.exchangeAuthority,
-    wallet.publicKey,
-    [],
-    tou64(amountCollateral)
-  )
-
   if (
     currentlySelectedState.actualCollateral.toString() !==
     currentlySelectedState.vaultCollateral.toString()
@@ -507,6 +473,22 @@ export function* openLeveragePosition(
     userTokenAccountIn: currentCollateralfromAddress,
     userTokenAccountFor: fromAddress
   })
+  const approveAllSwapIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    toAddress,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(MAX_U64)
+  )
+  const approveAllDepositIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    fromAddress,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(MAX_U64)
+  )
   const instructionArray = yield* call(
     openLeverage,
     currentlySelectedState.vaultCollateral,
@@ -514,54 +496,57 @@ export function* openLeveragePosition(
     wallet.publicKey,
     amountCollateral,
     vaultsPair[currentlySelectedState.vaultAddress.toString()],
-    token,
     currentlySelectedState.leverage,
     fromAddress,
     toAddress,
     cRatio
   )
-  const txs: Transaction[] = []
+
   const tx1 = new Transaction().add(updatePricesIx)
   if (!currentlySelectedState.vaultEntryExist) {
     tx1.add(ix)
   }
+
+  const tx2 = new Transaction()
+  tx1.add(approveAllSwapIx).add(approveAllDepositIx)
   if (
     currentlySelectedState.actualCollateral.toString() !==
     currentlySelectedState.vaultCollateral.toString()
   ) {
-    tx1.add(approveIx).add(swapIx)
+    tx1.add(swapIx)
   }
 
-  if (
-    currentlySelectedState.actualCollateral.toString() !==
-      currentlySelectedState.vaultCollateral.toString() ||
-    !currentlySelectedState.vaultEntryExist
-  ) {
-    txs.push(tx1)
-  }
-
-  let tx2 = new Transaction().add(updatePricesIx)
-  let index = 0
-  const amountInstruction = 13
-  for (const tx of instructionArray) {
-    if (index < amountInstruction) {
+  const tx3 = new Transaction()
+  let txs: Transaction[] = []
+  if (instructionArray.length > 21) {
+    for (const tx of instructionArray.slice(0, 21)) {
       tx2.add(tx)
-      index = index + 1
-    } else {
-      tx2.add(tx)
-      txs.push(tx2)
-      index = 0
-      tx2 = new Transaction().add(updatePricesIx)
     }
+    for (const tx of instructionArray.slice(21, instructionArray.length)) {
+      tx3.add(tx)
+    }
+
+    txs = [tx1, tx2, tx3]
+  } else {
+    for (const tx of instructionArray) {
+      tx2.add(tx)
+    }
+    txs = [tx1, tx2]
   }
 
-  txs.push(tx2)
   const signTxs = yield* call(signAllTransaction, wallet, txs)
-
   const signature: string[] = []
-  for (const tx of signTxs) {
-    yield* call(sleep, 100)
-    signature.push(yield* call([connection, connection.sendRawTransaction], tx.serialize()))
+  signature.push(
+    yield* call(sendAndConfirmRawTransaction, connection, signTxs[0].serialize(), {
+      skipPreflight: true,
+      commitment: 'processed'
+    })
+  )
+  yield* call(sleep, 500)
+  signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
+  yield* call(sleep, 500)
+  if (signTxs.length > 2) {
+    signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize()))
   }
 
   yield* call(sleep, 1500)
@@ -706,7 +691,7 @@ export function* closeLeverage(
     sumSyntheticAmount = sumSyntheticAmount.add(amountToken)
   }
 
-  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 15) {
+  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 10) {
     const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultTransaction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,

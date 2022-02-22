@@ -119,7 +119,7 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
         <Grid container justifyContent='center' style={{ paddingTop: '16px' }}>
           <OutlinedButton
             className={classes.button}
-            name={!blockButton ? 'Close leverage' : "You don't have enouth token to close"}
+            name={!blockButton ? 'Close leverage' : "You don't have enough token to close"}
             color='secondary'
             onClick={() => {
               onSubmitButton()

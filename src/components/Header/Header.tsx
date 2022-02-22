@@ -9,7 +9,7 @@ import {
   Button,
   useMediaQuery
 } from '@material-ui/core'
-import { MoreHoriz, Menu } from '@material-ui/icons'
+import { Menu } from '@material-ui/icons'
 import snyIcon from '@static/svg/logo-ic-nav.svg'
 import NavbarButton from '@components/Navbar/Button'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
@@ -171,14 +171,6 @@ export const Header: React.FC<IHeader> = ({
             />
           )}
         </Grid>
-        <Hidden smDown>
-          <Grid item container className={classes.right} wrap='nowrap' alignItems='center'>
-            <Divider orientation='vertical' className={classes.verticalDivider} />
-            <IconButton className={classes.dotsButton} onClick={() => {}}>
-              <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
-            </IconButton>
-          </Grid>
-        </Hidden>
         <Hidden mdUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Divider orientation='vertical' className={classes.verticalDivider} />
