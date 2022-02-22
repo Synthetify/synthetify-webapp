@@ -24,6 +24,7 @@ interface IProp {
   sending: boolean
   hasError?: boolean
   fee: string
+  showWarning: boolean
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -39,7 +40,8 @@ export const LeverageOption: React.FC<IProp> = ({
   blockSubmitButton,
   sending,
   hasError,
-  fee
+  fee,
+  showWarning
 }) => {
   const classes = useStyles()
   const [showOperationProgressFinale, setShowOperationProgressFinale] =
@@ -209,6 +211,11 @@ export const LeverageOption: React.FC<IProp> = ({
                       The leverage is dangerous!
                     </Typography>
                     There is a high risk of loss and a possibility of large profits <br />
+                    {showWarning ? (
+                      <strong style={{ fontWeight: 900, color: 'red' }}>
+                        There is no such pair, we will swap the collateral for a token from the pair
+                      </strong>
+                    ) : null}
                   </>
                 }
                 anchor={

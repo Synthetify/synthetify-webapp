@@ -26,6 +26,7 @@ export interface IProps {
   sending: boolean
   hasError?: boolean
   fee: string
+  showWarning: boolean
 }
 export type ActionType = 'open' | 'close'
 
@@ -51,7 +52,8 @@ export const LeverageAction: React.FC<IProps> = ({
   openCloseModal,
   sending,
   hasError,
-  fee
+  fee,
+  showWarning
 }) => {
   const classes = useStyles()
   return (
@@ -114,6 +116,7 @@ export const LeverageAction: React.FC<IProps> = ({
         sending={sending}
         hasError={hasError}
         fee={fee}
+        showWarning={showWarning}
       />
     </Grid>
   )

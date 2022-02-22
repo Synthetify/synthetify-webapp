@@ -94,6 +94,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
   const [userVaultIndex, setUserVaultIndex] = React.useState<number | null>(null)
   const [closeStatus, setCloseStatus] = React.useState<boolean>(false)
   const [buyingValue, setBuyingValue] = React.useState<number>(0)
+  const [showWarning, setShowWarning] = React.useState<boolean>(false)
+
   const [currentLeverageTable, setCurrentLeverageTable] = React.useState<ILeveragePair[]>(
     leverageType === 'short' ? shortPairs : longPairs
   )
@@ -207,7 +209,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
         .div(new BN(10 ** actualVault.borrowAmount.scale))
     )
   }
-
+  React.useEffect(() => {
+    if (!sending) {
+      setPairIndex(null)
+      setLeverageIndex(null)
+    }
+  }, [sending])
   React.useEffect(() => {
     if (allSynthetic.length === 0) {
       setPairIndex(null)
@@ -297,6 +304,14 @@ export const WrappedLeverage: React.FC<IProp> = ({
 
     setBlockSubmitButton(true)
   }, [amountToken.toString(), leverageIndex, pairIndex])
+  React.useEffect(() => {
+    if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
+      setShowWarning(
+        allSynthetic[pairIndex].syntheticData.symbol !==
+          currentLeverageTable[leverageIndex].collateralSymbol
+      )
+    }
+  }, [leverageIndex, pairIndex])
 
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
@@ -460,6 +475,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             sending={sending}
             hasError={hasError}
             fee={fee}
+            showWarning={showWarning}
           />
         </Grid>
 
@@ -486,16 +502,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
         ) : null}
       </Grid>
       <Grid className={classes.borrowInfoGrid}>
-        {currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null ? (
+        {currentLeverageTable.length > 0 && leverageIndex !== null ? (
           <BorrowInfo
             collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
-            collateral={allSynthetic[pairIndex].syntheticData.symbol}
-            borrowed={
-              leverageType === 'short'
-                ? currentLeverageTable[leverageIndex].syntheticSymbol
-                : currentLeverageTable[leverageIndex].collateralSymbol
-            }
+            collateral={currentLeverageTable[leverageIndex].collateralSymbol}
+            borrowed={currentLeverageTable[leverageIndex].syntheticSymbol}
             limit={Number(
               printBN(
                 currentLeverageTable[leverageIndex].maxBorrow.val.sub(
