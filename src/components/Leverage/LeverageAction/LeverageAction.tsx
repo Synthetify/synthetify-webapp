@@ -26,7 +26,7 @@ export interface IProps {
   sending: boolean
   hasError?: boolean
   fee: string
-  showWarning: boolean
+  showWarning: { status: boolean; tokenFrom: string; tokenTo: string }
 }
 export type ActionType = 'open' | 'close'
 

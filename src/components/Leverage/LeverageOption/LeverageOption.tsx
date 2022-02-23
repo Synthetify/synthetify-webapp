@@ -24,7 +24,7 @@ interface IProp {
   sending: boolean
   hasError?: boolean
   fee: string
-  showWarning: boolean
+  showWarning: { status: boolean; tokenFrom: string; tokenTo: string }
 }
 export const LeverageOption: React.FC<IProp> = ({
   onClickSubmitButton,
@@ -128,7 +128,10 @@ export const LeverageOption: React.FC<IProp> = ({
             <Grid>
               <Typography className={classes.infoTitle}>Liquidation price</Typography>
               <Typography className={classes.headerTitle}>
-                ${liquidationPriceTo.toFixed(3)}
+                $
+                {Number(liquidationPriceTo) > 99999
+                  ? Number(Number(liquidationPriceTo).toFixed(0)).toLocaleString('pl-PL')
+                  : Number(liquidationPriceTo).toLocaleString('pl-PL').replace(',', '.')}
               </Typography>
             </Grid>
             <Grid>
@@ -213,10 +216,10 @@ export const LeverageOption: React.FC<IProp> = ({
                     There is a risk of loss and a possibility of higher profits. Use it responsibly.{' '}
                     <br />
                     <br />
-                    {showWarning ? (
+                    {showWarning.status ? (
                       <strong style={{ fontWeight: 900 }}>
-                        This pair is impossible. We are going to swap the collateral for a token
-                        from the existing pair.
+                        This pair does not exist. We are going to swap {showWarning.tokenFrom} for{' '}
+                        {showWarning.tokenTo} from the existing pair.
                       </strong>
                     ) : null}
                   </>

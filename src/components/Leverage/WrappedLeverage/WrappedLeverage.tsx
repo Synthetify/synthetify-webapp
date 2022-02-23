@@ -475,7 +475,15 @@ export const WrappedLeverage: React.FC<IProp> = ({
             sending={sending}
             hasError={hasError}
             fee={fee}
-            showWarning={showWarning}
+            showWarning={
+              pairIndex !== null && leverageIndex !== null
+                ? {
+                    status: showWarning,
+                    tokenFrom: allSynthetic[pairIndex].syntheticData.symbol,
+                    tokenTo: currentLeverageTable[leverageIndex].collateralSymbol
+                  }
+                : { status: false, tokenFrom: ' ', tokenTo: ' ' }
+            }
           />
         </Grid>
 
