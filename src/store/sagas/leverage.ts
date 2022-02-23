@@ -542,9 +542,9 @@ export function* openLeveragePosition(
       commitment: 'processed'
     })
   )
-  yield* call(sleep, 500)
+  yield* call(sleep, 1000)
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
-  yield* call(sleep, 500)
+  yield* call(sleep, 1000)
   if (signTxs.length > 2) {
     signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize()))
   }

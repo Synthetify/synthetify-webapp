@@ -54,7 +54,10 @@ export const SliderRatio: React.FC<IProp> = ({
               classes={{ input: classes.customInput }}
               disableUnderline
               value={customCRatio}
-              placeholder={'custom'}
+              placeholder={' '}
+              onClick={() => {
+                setCustomCRatio('')
+              }}
               onChange={event => {
                 if (event.currentTarget.value.match(/^\d/)) {
                   setCustomCRatio(event.currentTarget.value)
