@@ -81,10 +81,10 @@ export const LeverageAction: React.FC<IProps> = ({
               hint={
                 <>
                   <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
-                    When can you Short and Long?
+                    How does leverage work?
                   </Typography>
                   <Typography className={classes.tooltipDescription} style={{ marginBottom: 10 }}>
-                    Leverage allows you to operate the higher capital, than you have, after paying a
+                    Leverage allows you to operate with higher capital than you have, after paying a
                     collateral deposit. The value of the collateral depends on you and is the basis
                     for calculating the final loan amount.
                   </Typography>

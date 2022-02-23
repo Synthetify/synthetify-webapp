@@ -208,12 +208,15 @@ export const LeverageOption: React.FC<IProp> = ({
                 hint={
                   <>
                     <Typography className={classes.tooltipTitle} style={{ marginBottom: 10 }}>
-                      The leverage is dangerous!
+                      Remember: leverage is a risky tool.
                     </Typography>
-                    There is a high risk of loss and a possibility of large profits <br />
+                    There is a risk of loss and a possibility of higher profits. Use it responsibly.{' '}
+                    <br />
+                    <br />
                     {showWarning ? (
-                      <strong style={{ fontWeight: 900, color: 'red' }}>
-                        There is no such pair, we will swap the collateral for a token from the pair
+                      <strong style={{ fontWeight: 900 }}>
+                        This pair is impossible. We are going to swap the collateral for a token
+                        from the existing pair.
                       </strong>
                     ) : null}
                   </>

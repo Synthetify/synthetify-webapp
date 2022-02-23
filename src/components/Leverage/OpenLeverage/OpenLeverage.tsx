@@ -238,14 +238,7 @@ export const OpenLeverage: React.FC<IProp> = ({
                           leverageType === 'short'
                             ? tokens.syntheticSymbol
                             : tokens.collateralSymbol,
-                        balance:
-                          leverageType === 'short'
-                            ? tokens.syntheticBalance.val
-                            : tokens.collateralBalance.val,
-                        decimals:
-                          leverageType === 'short'
-                            ? tokens.syntheticBalance.scale
-                            : tokens.collateralBalance.scale
+                        type: tokens.vaultType
                       }))}
                       onSelect={(chosen: number) => {
                         setLeverageIndex(chosen)
