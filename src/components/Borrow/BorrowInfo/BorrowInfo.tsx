@@ -280,7 +280,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                 alignItems='center'>
                 <Typography className={classes.positionTitle}>Max leverage:</Typography>
                 <Typography className={classes.positionValue}>
-                  {getLeverageLevel(cRatio * 1.025)}x
+                  {getLeverageLevel(cRatio * 1.025 < 153 ? 153 : cRatio * 1.025)}x
                 </Typography>
               </Grid>
               <Grid
