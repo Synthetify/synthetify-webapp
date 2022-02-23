@@ -71,7 +71,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
   mSOL: 'Marinade SOL',
   xLUNA: 'Synthetic LUNA',
   xAVAX: 'Synthetic Avalanche',
-  xDOT: 'Synthetic Polkadot'
+  xDOT: 'Synthetic Polkadot',
+  xDOGE: 'Synthetic Dogecoin'
 }
 
 const MARINADE_PER_POINT = 1.43e-7
