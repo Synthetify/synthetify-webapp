@@ -516,17 +516,13 @@ export function* openLeveragePosition(
     tx1.add(swapIx)
   }
 
-  const tx3 = new Transaction()
   let txs: Transaction[] = []
   if (instructionArray.length > 21) {
-    for (const tx of instructionArray.slice(0, 21)) {
+    for (const tx of instructionArray.slice(0, instructionArray.length)) {
       tx2.add(tx)
     }
-    for (const tx of instructionArray.slice(21, instructionArray.length)) {
-      tx3.add(tx)
-    }
 
-    txs = [tx1, tx2, tx3]
+    txs = [tx1, tx2]
   } else {
     for (const tx of instructionArray) {
       tx2.add(tx)
@@ -542,12 +538,15 @@ export function* openLeveragePosition(
       commitment: 'processed'
     })
   )
+
+  signature.push(
+    yield* call(sendAndConfirmRawTransaction, connection, signTxs[0].serialize(), {
+      skipPreflight: true,
+      commitment: 'processed'
+    })
+  )
   yield* call(sleep, 1000)
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
-  yield* call(sleep, 1000)
-  if (signTxs.length > 2) {
-    signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize()))
-  }
 
   yield* call(sleep, 1500)
   if (typeof userVaultState[currentlySelectedState.vaultAddress.toString()] === 'undefined') {

@@ -209,12 +209,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
         .div(new BN(10 ** actualVault.borrowAmount.scale))
     )
   }
-  React.useEffect(() => {
-    if (!sending) {
-      setPairIndex(null)
-      setLeverageIndex(null)
-    }
-  }, [sending])
+
   React.useEffect(() => {
     if (allSynthetic.length === 0) {
       setPairIndex(null)
