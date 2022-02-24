@@ -244,8 +244,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
           ) / 100,
           -1
         ) * 1.025
-      if (min < 153) {
-        setMinCRatio(153)
+      if (min < 163) {
+        setMinCRatio(163)
       } else {
         setMinCRatio(min)
       }
