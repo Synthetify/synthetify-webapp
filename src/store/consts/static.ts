@@ -17,7 +17,8 @@ enum SolanaNetworks {
   // DEV = 'https://solana--devnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
   DEV = 'https://api.devnet.solana.com/',
   TEST = 'https://api.testnet.solana.com',
-  MAIN = 'https://api.mainnet-beta.solana.com',
+  // MAIN = 'https://api.mainnet-beta.solana.com',
+  MAIN = 'https://solana--mainnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
   MAIN_SERUM = 'https://ssc-dao.genesysgo.net',
   LOCAL = 'http://127.0.0.1:8899'
 }
@@ -34,7 +35,8 @@ const MAINNET_RPCS = [
   //   probability: 0.6
   // },
   {
-    rpc: SolanaNetworks.MAIN_SERUM,
+    // rpc: SolanaNetworks.MAIN_SERUM,
+    rpc: SolanaNetworks.MAIN,
     probability: 1
   }
 ]
