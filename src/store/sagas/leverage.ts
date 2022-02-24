@@ -18,12 +18,7 @@ import { getCRatioFromLeverage } from '@consts/leverageUtils'
 import { printBN } from '@consts/utils'
 import { assetPrice, vaults, userVaults } from '@selectors/vault'
 import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import {
-  PublicKey,
-  Transaction,
-  TransactionInstruction,
-  sendAndConfirmRawTransaction
-} from '@solana/web3.js'
+import { PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js'
 import { Decimal, Vault, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { tou64 } from '@synthetify/sdk/lib/utils'
 import { getConnection } from './connection'
@@ -464,6 +459,14 @@ export function* openLeveragePosition(
       .mul(new BN(Number(0.995) * 10 ** collateralDecimal))
       .div(new BN(10 ** collateralDecimal))
   }
+  const approveIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    currentCollateralfromAddress,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(MAX_U64)
+  )
   const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
     amount: currentlySelectedState.amountToken,
     exchangeAccount: userExchangeAccount.address,
@@ -508,44 +511,24 @@ export function* openLeveragePosition(
   }
 
   const tx2 = new Transaction()
-  tx1.add(approveAllSwapIx).add(approveAllDepositIx)
+
   if (
     currentlySelectedState.actualCollateral.toString() !==
     currentlySelectedState.vaultCollateral.toString()
   ) {
-    tx1.add(swapIx)
+    tx1.add(approveIx).add(swapIx)
   }
-
+  tx2.add(approveAllSwapIx).add(approveAllDepositIx)
   let txs: Transaction[] = []
-  if (instructionArray.length > 21) {
-    for (const tx of instructionArray.slice(0, instructionArray.length)) {
-      tx2.add(tx)
-    }
-
-    txs = [tx1, tx2]
-  } else {
-    for (const tx of instructionArray) {
-      tx2.add(tx)
-    }
-    txs = [tx1, tx2]
+  for (const tx of instructionArray) {
+    tx2.add(tx)
   }
+  txs = [tx1, tx2]
 
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
-  signature.push(
-    yield* call(sendAndConfirmRawTransaction, connection, signTxs[0].serialize(), {
-      skipPreflight: true,
-      commitment: 'processed'
-    })
-  )
-
-  signature.push(
-    yield* call(sendAndConfirmRawTransaction, connection, signTxs[0].serialize(), {
-      skipPreflight: true,
-      commitment: 'processed'
-    })
-  )
-  yield* call(sleep, 1000)
+  signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
+  yield* call(sleep, 2000)
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
 
   yield* call(sleep, 1500)

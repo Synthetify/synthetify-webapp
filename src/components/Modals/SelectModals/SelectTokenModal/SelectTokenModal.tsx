@@ -85,10 +85,10 @@ export const SelectTokenModal: React.FC<ISelectTokenModal> = ({
     if (filteredList.length !== 0) {
       return (
         <CustomScrollbar>
-          {filteredList.map(token => (
+          {filteredList.map((token, index) => (
             <Grid
               container
-              key={`tokens-${token.symbol}`}
+              key={`tokens-${token.symbol}-${index}`}
               className={classes.tokenItem}
               alignItems='center'
               wrap='nowrap'

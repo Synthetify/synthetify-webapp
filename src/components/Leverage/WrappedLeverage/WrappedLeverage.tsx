@@ -299,14 +299,6 @@ export const WrappedLeverage: React.FC<IProp> = ({
 
     setBlockSubmitButton(true)
   }, [amountToken.toString(), leverageIndex, pairIndex])
-  React.useEffect(() => {
-    if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
-      setShowWarning(
-        allSynthetic[pairIndex].syntheticData.symbol !==
-          currentLeverageTable[leverageIndex].collateralSymbol
-      )
-    }
-  }, [leverageIndex, pairIndex])
 
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
@@ -361,6 +353,14 @@ export const WrappedLeverage: React.FC<IProp> = ({
       setBlockCloseButton(true)
     }
   }, [closeAmount.toString()])
+  React.useEffect(() => {
+    if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
+      setShowWarning(
+        allSynthetic[pairIndex].syntheticData.symbol !==
+          currentLeverageTable[leverageIndex].collateralSymbol
+      )
+    }
+  }, [leverageIndex, pairIndex])
   const actionContents: IActionContents = {
     open: (
       <OpenLeverage
@@ -471,7 +471,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             hasError={hasError}
             fee={fee}
             showWarning={
-              pairIndex !== null && leverageIndex !== null
+              currentLeverageTable.length > 0 && pairIndex !== null && leverageIndex !== null
                 ? {
                     status: showWarning,
                     tokenFrom: allSynthetic[pairIndex].syntheticData.symbol,

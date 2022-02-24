@@ -19,7 +19,7 @@ import { actions as snackbarsActions } from '@reducers/snackbars'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
 import BN from 'bn.js'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { Decimal, VaultEntry } from '@synthetify/sdk/lib/exchange'
+import { Decimal, Vault, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { VAULTS_MAP } from '@synthetify/sdk/lib/utils'
 import { networkTypetoProgramNetwork } from '@web3/connection'
 import { network } from '@selectors/solanaConnection'
@@ -273,47 +273,46 @@ export function* handleSendAction(): Generator {
   }
 }
 
-export function* updateSyntheticAmountUserVault(): Generator {
-  const vaultsData = yield* select(vaults)
-  const userVaultsData = yield* select(userVaults)
-  const initVaultEntryStatus = yield* select(initVaultEntrySelector)
-  const statusWallet = yield* select(status)
+export function updateSyntheticAmountUserVault(
+  vaultsData: {
+    [x: string]: Vault
+  },
+  userVault: VaultEntry,
+  initVaultEntryStatus: boolean,
+  statusWallet: Status
+) {
   const MINUTES_IN_YEAR = 525600
   const DENUMERATOR = new BN(10).pow(new BN(12))
 
   if (statusWallet !== Status.Initialized || !initVaultEntryStatus) {
     return
   }
-  for (const [_key, userVault] of Object.entries(userVaultsData)) {
-    const currentVault = vaultsData[userVault.vault.toString()]
-    if (typeof currentVault === 'undefined') {
-      return
-    }
-    const difTimestamp = Math.floor(
-      (Date.now() / 1000 - Number(currentVault.lastUpdate.toString())) / 60
+  const currentVault = vaultsData[userVault.vault.toString()]
+  if (typeof currentVault === 'undefined') {
+    return
+  }
+  const difTimestamp = Math.floor(
+    (Date.now() / 1000 - Number(currentVault.lastUpdate.toString())) / 60
+  )
+  if (difTimestamp >= 1 && userVault.syntheticAmount.val.gt(new BN(0))) {
+    const interestRate = Number(
+      printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale - 2)
     )
-    if (difTimestamp > 1) {
-      const interestRate =
-        Number(printBN(currentVault.debtInterestRate.val, currentVault.debtInterestRate.scale)) *
-        100
-      const minuteInterestRate = interestRate / MINUTES_IN_YEAR
-      const base = stringToMinDecimalBN(minuteInterestRate.toString())
-      const timePeriodIterest = base.BN.add(new BN(10).pow(new BN(base.decimal + 2))).pow(
-        new BN(difTimestamp)
-      )
-      const actualAccumulatedInterestRate = currentVault.accumulatedInterestRate.val
-        .mul(timePeriodIterest)
-        .div(new BN(10).pow(new BN(difTimestamp * (base.decimal + 2))))
-      const diffAccumulate = actualAccumulatedInterestRate
-        .mul(DENUMERATOR)
-        .div(userVault.lastAccumulatedInterestRate.val)
-      const currentDebt = userVault.syntheticAmount.val.mul(diffAccumulate).div(DENUMERATOR)
-      yield put(
-        actions.updateAmountSynthetic({
-          syntheticAmount: { val: currentDebt, scale: userVault.syntheticAmount.scale },
-          vault: userVault.vault
-        })
-      )
+    const minuteInterestRate = interestRate / MINUTES_IN_YEAR
+    const base = stringToMinDecimalBN(minuteInterestRate.toFixed(12))
+    const timePeriodIterest = base.BN.add(new BN(10).pow(new BN(base.decimal + 2))).pow(
+      new BN(difTimestamp)
+    )
+    const actualAccumulatedInterestRate = currentVault.accumulatedInterestRate.val
+      .mul(timePeriodIterest)
+      .div(new BN(10).pow(new BN(difTimestamp * (base.decimal + 2))))
+    const diffAccumulate = actualAccumulatedInterestRate
+      .mul(DENUMERATOR)
+      .div(userVault.lastAccumulatedInterestRate.val)
+    const currentDebt = userVault.syntheticAmount.val.mul(diffAccumulate).div(DENUMERATOR)
+    return {
+      syntheticAmount: { val: currentDebt, scale: userVault.syntheticAmount.scale },
+      vault: userVault.vault
     }
   }
 }
@@ -391,7 +390,22 @@ export function* initVaultEntry(): Generator {
     }
   }
   yield* put(actions.setInitVaultEntryStatus({ initVaultEntry: true }))
-  yield* call(updateSyntheticAmountUserVault)
+  yield* call(sleep, 1500)
+  const vaultsData = yield* select(vaults)
+  const userVaultsData = yield* select(userVaults)
+  const initVaultEntryStatus = yield* select(initVaultEntrySelector)
+  const statusWallet = yield* select(status)
+  for (const [_key, userVault] of Object.entries(userVaultsData)) {
+    const data = updateSyntheticAmountUserVault(
+      vaultsData,
+      userVault,
+      initVaultEntryStatus,
+      statusWallet
+    )
+    if (data) {
+      yield* put(actions.updateAmountSynthetic(data))
+    }
+  }
 }
 
 export function* addNewVaultEntryHandle(): Generator {
@@ -429,9 +443,6 @@ export function* assetPriceBatcher(): Generator {
 export function* vaultSendActionHandler(): Generator {
   yield* takeEvery(actions.setVaultSwap, handleSendAction)
 }
-export function* updateSyntheticHandler(): Generator {
-  yield* takeEvery(actions.setUserVaults, updateSyntheticAmountUserVault)
-}
 export function* setActualVault(): Generator {
   yield* takeEvery(actions.setActualVaultSwap, setVaultAddress)
 }
@@ -445,7 +456,6 @@ export function* vaultSaga(): Generator {
   yield all(
     [
       initVaults,
-      updateSyntheticHandler,
       vaultSendActionHandler,
       setActualVault,
       assetPriceBatcher,
