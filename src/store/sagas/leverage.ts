@@ -509,9 +509,7 @@ export function* openLeveragePosition(
   if (!currentlySelectedState.vaultEntryExist) {
     tx1.add(ix)
   }
-
   const tx2 = new Transaction()
-
   if (
     currentlySelectedState.actualCollateral.toString() !==
     currentlySelectedState.vaultCollateral.toString()
@@ -523,14 +521,14 @@ export function* openLeveragePosition(
   for (const tx of instructionArray) {
     tx2.add(tx)
   }
+  console.log(tx2)
   txs = [tx1, tx2]
 
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
-  yield* call(sleep, 2000)
+  yield* call(sleep, 4000)
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
-
   yield* call(sleep, 1500)
   if (typeof userVaultState[currentlySelectedState.vaultAddress.toString()] === 'undefined') {
     yield* put(
