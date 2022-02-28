@@ -25,5 +25,10 @@ storiesOf('Leverage', module).add('leverage option', () => (
     blockSubmitButton={false}
     sending={true}
     fee={'3.05'}
+    showWarning={{
+      status: false,
+      tokenFrom: '',
+      tokenTo: ''
+    }}
   />
 ))

@@ -125,7 +125,7 @@ export function* handleOpenLeverage(): Generator {
       )
       yield put(
         snackbarsActions.add({
-          message: 'Synthetic leverage successfully.',
+          message: 'Leverage used successfully.',
           variant: 'success',
           txid: txid,
           persist: false
@@ -530,7 +530,7 @@ export function* openLeveragePosition(
   yield* call(sleep, 2000)
   signature.push(
     yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
-      skipPreflight: true
+      skipPreflight: false
     })
   )
   yield* call(sleep, 1500)

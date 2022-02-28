@@ -298,7 +298,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
     }
 
     setBlockSubmitButton(true)
-  }, [amountToken.toString(), leverageIndex, pairIndex])
+  }, [amountToken.toString(), leverageIndex, pairIndex, leverageType])
 
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
