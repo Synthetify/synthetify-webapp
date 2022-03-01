@@ -56,9 +56,18 @@ export const BorrowTable: React.FC<IProp> = ({
                 C-Ratio
               </Grid>
             ) : (
-              <Grid classes={{ root: classNames(classes.rootHeader, classes.LeverColumn) }}>
-                Lever
-              </Grid>
+              <>
+                <Hidden smUp>
+                  <Grid classes={{ root: classNames(classes.rootHeader, classes.LeverColumn) }}>
+                    Lever
+                  </Grid>
+                </Hidden>
+                <Hidden xsDown>
+                  <Grid classes={{ root: classNames(classes.rootHeader, classes.LeverColumn) }}>
+                    Leverage
+                  </Grid>
+                </Hidden>
+              </>
             )}
             {page === 'vault' ? (
               <Hidden smDown>

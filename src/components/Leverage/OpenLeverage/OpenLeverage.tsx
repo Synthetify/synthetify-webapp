@@ -168,7 +168,7 @@ export const OpenLeverage: React.FC<IProp> = ({
                           hint={
                             <Grid style={{ padding: 7 }}>
                               We are going to swap {collateralToken.symbol} for {tokenFrom.symbol}{' '}
-                              from the existing pair, becouse this pair does not exist.
+                              from the existing pair, because this pair does not exist.
                             </Grid>
                           }
                           anchor={

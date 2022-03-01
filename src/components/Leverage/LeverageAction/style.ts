@@ -8,7 +8,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-between',
     paddingBottom: '24px',
     [theme.breakpoints.down('md')]: {
-      flexDirection: 'column'
+      flexDirection: 'column',
+      paddingBottom: '16px'
     }
   },
   header: {

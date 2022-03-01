@@ -271,7 +271,7 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                       hint={
                         <Grid style={{ padding: 7 }}>
                           We are going to swap {chooseCollateral} for {collateral} from the existing
-                          pair, becouse this pair does not exist.
+                          pair, because this pair does not exist.
                         </Grid>
                       }
                       anchor={
