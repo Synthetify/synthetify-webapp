@@ -6,7 +6,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.navy.background,
     paddingRight: 0,
     height: 74,
-
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'space-between'
+    },
     [theme.breakpoints.down('sm')]: {
       height: 54
     }
@@ -56,19 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 'auto',
     fill: colors.navy.navBar
   },
-  dotsButton: {
-    borderRadius: 10,
-    padding: '0px 2px',
-    marginRight: 25,
 
-    '&:hover': {
-      background: colors.navy.navButton
-    },
-
-    '& $dehazeIcon': {
-      fill: colors.navy.lightGrey
-    }
-  },
   left: {
     maxWidth: 121,
     [theme.breakpoints.down('sm')]: {
@@ -83,8 +73,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   buttons: {
     justifyContent: 'flex-end',
-
+    [theme.breakpoints.down('md')]: {
+      width: 'max-content'
+    },
     [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      minWidth: '250px',
       justifyContent: 'space-evenly'
     }
   },

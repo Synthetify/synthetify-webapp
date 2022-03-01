@@ -59,7 +59,8 @@ export const colors = {
     pinkish: '#FE53BB',
     snackbar: '#DE3232',
     negative: '#A92D2D',
-    negativeLight: '#C24646'
+    negativeLight: '#C24646',
+    button: '#AE4141 '
   },
   purple: {
     magenta: '#A1045A',

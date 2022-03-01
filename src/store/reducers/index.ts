@@ -10,6 +10,7 @@ import { reducer as stakingReducer, stakingSliceName } from './staking'
 import { reducer as statsReducer, statsSliceName } from './stats'
 import { NetworkType } from '@consts/static'
 import { reducer as vaultReducer, vaultSliceName } from './vault'
+import { reducer as leverageReducer, leverageSliceName } from './leverage'
 
 const transformNetwork = createTransform(
   (inboundState: any, _key) => {
@@ -38,6 +39,7 @@ const combinedReducers = combineReducers({
   [solanaWalletSliceName]: solanaWalletReducer,
   [stakingSliceName]: stakingReducer,
   [statsSliceName]: statsReducer,
-  [vaultSliceName]: vaultReducer
+  [vaultSliceName]: vaultReducer,
+  [leverageSliceName]: leverageReducer
 })
 export default combinedReducers

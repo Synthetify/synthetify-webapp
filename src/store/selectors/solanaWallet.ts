@@ -18,7 +18,6 @@ import { ACCURACY, DEFAULT_PUBLICKEY, MARINADE_PER_POINT, ORACLE_OFFSET } from '
 import { ICollateral, ISynthetic } from '@reducers/exchange'
 import { Asset, Swapline } from '@synthetify/sdk/lib/exchange'
 import { BorrowedPair } from '@components/Borrow/WrappedBorrow/WrappedBorrow'
-import * as R from 'remeda'
 import { addressToAssetSymbol } from '@synthetify/sdk'
 const store = (s: AnyProps) => s[solanaWalletSliceName] as ISolanaWallet
 
@@ -161,6 +160,27 @@ export const vaultPairs = createSelector(
   }
 )
 
+export interface ILeverageSynthetic {
+  syntheticData: ExchangeSyntheticTokens
+}
+export const getLeverageSynthetics = createSelector(
+  synthetics,
+  accounts,
+  assets,
+  (allSynthetics, tokensAccounts, allAssets) => {
+    return Object.values(allSynthetics).map(asset => {
+      const syntheticAccount = tokensAccounts[asset.assetAddress.toString()]
+      const token: ILeverageSynthetic = {
+        syntheticData: {
+          ...allAssets[allSynthetics[asset.assetAddress.toString()].assetIndex],
+          ...allSynthetics[asset.assetAddress.toString()],
+          balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
+        }
+      }
+      return token
+    })
+  }
+)
 export type TokenAccounts = ITokenAccount & {
   symbol: string
   usdValue: BN
@@ -413,25 +433,6 @@ export const getAvailableRepay = createSelector(
     }
   }
 )
-
-export const getAddressFromIndex = (nr: number) =>
-  createSelector(synthetics, collaterals, (allSynthetic, allCollaterals) => {
-    let syntheticAddress: string = ''
-    R.forEachObj(allSynthetic, element => {
-      if (element.assetIndex === nr) {
-        syntheticAddress = element.assetAddress.toString()
-      }
-    })
-
-    let collateralAddress: string = ''
-    R.forEachObj(allCollaterals, element => {
-      if (element.assetIndex === nr) {
-        collateralAddress = element.collateralAddress.toString()
-      }
-    })
-
-    return [syntheticAddress, collateralAddress]
-  })
 
 export const solanaWalletSelectors = {
   address,

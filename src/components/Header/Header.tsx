@@ -9,7 +9,7 @@ import {
   Button,
   useMediaQuery
 } from '@material-ui/core'
-import { MoreHoriz, Menu } from '@material-ui/icons'
+import { Menu } from '@material-ui/icons'
 import snyIcon from '@static/svg/logo-ic-nav.svg'
 import NavbarButton from '@components/Navbar/Button'
 import ChangeWalletButton from '@components/HeaderButton/ChangeWalletButton'
@@ -52,9 +52,9 @@ export const Header: React.FC<IHeader> = ({
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-  const routes = ['staking', 'exchange', 'vaults', 'statistics']
+  const routes = ['staking', 'exchange', 'vaults', 'leverage', 'statistics']
   if (typeOfNetwork !== NetworkType.TESTNET) {
-    routes.splice(routes.length - 1, 0, 'swapline')
+    routes.splice(routes.length - 3, 0, 'swapline')
   }
 
   const [activePath, setActive] = React.useState(landing)
@@ -171,14 +171,6 @@ export const Header: React.FC<IHeader> = ({
             />
           )}
         </Grid>
-        <Hidden smDown>
-          <Grid item container className={classes.right} wrap='nowrap' alignItems='center'>
-            <Divider orientation='vertical' className={classes.verticalDivider} />
-            <IconButton className={classes.dotsButton} onClick={() => {}}>
-              <MoreHoriz fontSize='large' className={classes.dehazeIcon} />
-            </IconButton>
-          </Grid>
-        </Hidden>
         <Hidden mdUp>
           <Grid item container className={classes.mobileRight} wrap='nowrap' alignItems='center'>
             <Divider orientation='vertical' className={classes.verticalDivider} />

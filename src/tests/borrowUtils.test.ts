@@ -28,20 +28,10 @@ describe('calculateAmountBorrow', () => {
 describe('calculateAmountCollateral', () => {
   test('test', () => {
     const result = calculateAmountCollateral(
-      {
-        priceVal: new BN(1000000),
-        assetScale: 6,
-        symbol: 'SNY',
-        maxAvailable: new BN(100000000),
-        balance: new BN(10000000)
-      },
-      {
-        priceVal: new BN(2000000),
-        assetScale: 6,
-        symbol: 'xUSD',
-        maxAvailable: new BN(100000000),
-        balance: new BN(10000000)
-      },
+      new BN(1000000),
+      6,
+      new BN(2000000),
+      6,
       new BN(1000000),
       '100.00'
     )
@@ -109,26 +99,16 @@ describe('calculateAvailableBorrow', () => {
 describe('calculateAvailableWithdraw', () => {
   test('test', () => {
     const result = calculateAvailableWithdraw(
-      {
-        priceVal: new BN(1000000),
-        assetScale: 6,
-        symbol: 'xUSD',
-        maxAvailable: new BN(100000000),
-        balance: new BN(10000000)
-      },
-      {
-        priceVal: new BN(3500000),
-        assetScale: 6,
-        symbol: 'SNY',
-        maxAvailable: new BN(100000000),
-        balance: new BN(10000000)
-      },
+      new BN(1000000),
+      new BN(1500000),
+      6,
+      6,
       '200',
       new BN(5500000),
       new BN(100000),
       new BN(2000000)
     )
-    expect(result.toString()).toBe('4414286')
+    expect(result.toString()).toBe('2966667')
   })
 })
 
