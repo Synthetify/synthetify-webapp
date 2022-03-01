@@ -108,7 +108,7 @@ describe('calculateAvailableWithdraw', () => {
       new BN(100000),
       new BN(2000000)
     )
-    expect(result.toString()).toBe('4414286')
+    expect(result.toString()).toBe('2966667')
   })
 })
 
