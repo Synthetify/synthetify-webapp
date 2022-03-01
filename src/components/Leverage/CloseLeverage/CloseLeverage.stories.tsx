@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { CloseLeverage } from './CloseLeverage'
+import { BN } from '@project-serum/anchor'
 
 storiesOf('Leverage', module).add('closeLeverage', () => (
   <CloseLeverage
@@ -12,7 +13,7 @@ storiesOf('Leverage', module).add('closeLeverage', () => (
     tokenTo={'xETH'}
     leverage={'2'}
     percent={24}
-    amount={'0.004'}
+    amount={{ val: new BN(1000000), scale: 6 }}
     onChange={() => {
       console.log('onchange')
     }}

@@ -15,6 +15,7 @@ interface IGeneralInfo {
   collateralAmount: string
   debtAmount: string
   collateral: string
+  chooseCollateral?: string
   borrowed: string
   limit: number
   liqRatio: Decimal
@@ -35,6 +36,7 @@ interface IGeneralInfo {
 
 export const BorrowInfo: React.FC<IGeneralInfo> = ({
   collateral,
+  chooseCollateral,
   collateralAddress,
   collateralAmount,
   borrowed,
@@ -260,7 +262,24 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                 className={classes.infoPosition}
                 justifyContent='space-between'
                 alignItems='center'>
-                <Typography className={classes.positionTitle}>Collateral:</Typography>
+                <Grid container item xs={5} alignItems='center'>
+                  <Typography className={classes.positionTitle}>Collateral:</Typography>
+                  {chooseCollateral !== collateral ? (
+                    <MobileTooltip
+                      hint={
+                        <Grid style={{ padding: 5 }}>
+                          We are going to swap {chooseCollateral} for {collateral} from the existing
+                          pair, becouse this pair does not exist.
+                        </Grid>
+                      }
+                      anchor={
+                        <img src={ExclamationMark} alt='' className={classes.exclamationMark} />
+                      }
+                      mobilePlacement='top-end'
+                      desktopPlacement='top-end'
+                    />
+                  ) : null}
+                </Grid>
                 <Typography className={classes.positionValue}>{collateral}</Typography>
               </Grid>
               <Grid

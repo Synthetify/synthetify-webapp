@@ -13,7 +13,11 @@ import { DEFAULT_PUBLICKEY, MAX_U64 } from '@consts/static'
 import { createAccount, getWallet, signAllTransaction, sleep } from './wallet'
 import { currentlySelected } from '@selectors/leverage'
 import { actions as snackbarsActions } from '@reducers/snackbars'
-import { calculateAmountBorrow, calculateAmountCollateral } from '@consts/borrowUtils'
+import {
+  calculateAmountBorrow,
+  calculateAmountCollateral,
+  calculateAvailableWithdraw
+} from '@consts/borrowUtils'
 import { getCRatioFromLeverage } from '@consts/leverageUtils'
 import { printBN } from '@consts/utils'
 import { assetPrice, vaults, userVaults } from '@selectors/vault'
@@ -125,7 +129,7 @@ export function* handleOpenLeverage(): Generator {
       )
       yield put(
         snackbarsActions.add({
-          message: 'Leverage used successfully.',
+          message: 'Position has been opened',
           variant: 'success',
           txid: txid,
           persist: false
@@ -133,7 +137,6 @@ export function* handleOpenLeverage(): Generator {
       )
     }
   } catch (error: any) {
-    console.log(error)
     yield* put(
       actions.actionFailed({
         error: true
@@ -526,7 +529,7 @@ export function* openLeveragePosition(
 
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
-  signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
+  yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize())
   yield* call(sleep, 2000)
   signature.push(
     yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
@@ -551,14 +554,15 @@ export function* handleCloseLeverage(): Generator {
     for (const txid of txids) {
       yield put(
         snackbarsActions.add({
-          message: 'Closed leverage successfully.',
+          message: 'Position has been closed.',
           variant: 'success',
           txid: txid,
           persist: false
         })
       )
     }
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error.message.toString())
     yield put(
       snackbarsActions.add({
         message:
@@ -593,7 +597,6 @@ export function* closeLeveragePosition(
   )
   const fromAddress = tokensAccounts[currentlySelectedState.vaultCollateral.toString()].address
   const toAddress = tokensAccounts[currentlySelectedState.vaultSynthetic.toString()].address
-  const toTokenBalance = tokensAccounts[currentlySelectedState.vaultSynthetic.toString()].balance
 
   const instructionArray = yield* call(
     closeLeverage,
@@ -604,7 +607,6 @@ export function* closeLeveragePosition(
     vaultsPair[currentlySelectedState.vaultAddress.toString()],
     fromAddress,
     toAddress,
-    toTokenBalance,
     cRatio,
     currentlySelectedState.leverage,
     userVaultsData[currentlySelectedState.vaultAddress.toString()]
@@ -613,29 +615,44 @@ export function* closeLeveragePosition(
     [exchangeProgram, exchangeProgram.updatePricesInstruction],
     exchangeProgram.state.assetsList
   )
-  const txs: Transaction[] = []
-  let tx2 = new Transaction().add(updatePricesIx)
-  let index = 0
-  const amountInstruction = 4 * 3
-  for (const tx of instructionArray) {
-    if (index < amountInstruction) {
-      tx2.add(tx)
-      index = index + 1
-    } else {
-      tx2.add(tx)
-      txs.push(tx2)
-      index = 0
-      tx2 = new Transaction().add(updatePricesIx)
-    }
+  const approveAllSwapIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    fromAddress,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(MAX_U64)
+  )
+  const approveAllRepayIx = Token.createApproveInstruction(
+    TOKEN_PROGRAM_ID,
+    toAddress,
+    exchangeProgram.exchangeAuthority,
+    wallet.publicKey,
+    [],
+    tou64(MAX_U64)
+  )
+  let txs: Transaction[] = []
+  const tx1 = new Transaction().add(updatePricesIx).add(approveAllSwapIx).add(approveAllRepayIx)
+  const tx2 = new Transaction()
+  for (const tx of instructionArray.slice(0, 13)) {
+    tx1.add(tx)
   }
-  txs.push(tx2)
-  const signTxs = yield* call(signAllTransaction, wallet, txs)
-  const signature: string[] = []
-  for (const tx of signTxs) {
-    yield* call(sleep, 100)
-    signature.push(yield* call([connection, connection.sendRawTransaction], tx.serialize()))
+  txs = [tx1]
+  if (instructionArray.length > 13) {
+    for (const tx of instructionArray.slice(13, instructionArray.length)) {
+      tx2.add(tx)
+    }
+    txs = [tx1, tx2]
   }
 
+  const signTxs = yield* call(signAllTransaction, wallet, txs)
+  const signature: string[] = []
+  yield* call(sleep, 200)
+  signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
+  yield* call(sleep, 2000)
+  if (instructionArray.length > 13) {
+    signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
+  }
   return signature
 }
 
@@ -647,7 +664,6 @@ export function* closeLeverage(
   currentVault: Vault,
   fromAddress: PublicKey,
   toAddress: PublicKey,
-  toTokenBalance: BN,
   cRatio: number,
   leverage: number,
   userVault: VaultEntry
@@ -666,17 +682,99 @@ export function* closeLeverage(
 
   let tmp = 0
   const assetPriceState = yield* select(assetPrice)
+  const availableWithdraw = calculateAvailableWithdraw(
+    assetPriceState[vaultSynthetic.toString()].val,
+    assetPriceState[vaultCollateral.toString()].val,
+    syntheticDecimal,
+    currentVault.collateralAmount.scale,
+    cRatio.toFixed(12),
+    userVault.collateralAmount.val,
+    new BN(0),
+    userVault.syntheticAmount.val
+  )
+    .mul(new BN(Number(0.9) * 10 ** currentVault.collateralAmount.scale))
+    .div(new BN(10 ** currentVault.collateralAmount.scale))
 
-  if (amountToken.gt(toTokenBalance)) {
-    amountSynthetic = toTokenBalance
-    sumSyntheticAmount = sumSyntheticAmount.add(toTokenBalance)
-  } else {
-    amountSynthetic = amountToken
-    sumSyntheticAmount = sumSyntheticAmount.add(amountToken)
+  if (availableWithdraw.gt(new BN(0))) {
+    const extraAmountSynthetic = (yield* call(
+      calculateAmountAfterSwap,
+      assetPriceState[vaultCollateral.toString()].val,
+      assetPriceState[vaultSynthetic.toString()].val,
+      currentVault.collateralAmount.scale,
+      currentVault.maxBorrow.scale,
+      availableWithdraw,
+      feeData.fee
+    ))
+      .mul(new BN(Number(0.995) * 10 ** syntheticDecimal))
+      .div(new BN(10 ** syntheticDecimal))
+    const reducedAmountToken = amountToken
+      .mul(new BN(Number(0.2) * 10 ** syntheticDecimal))
+      .div(new BN(10 ** syntheticDecimal))
+
+    if (extraAmountSynthetic.gte(reducedAmountToken)) {
+      amountSynthetic = reducedAmountToken
+      sumSyntheticAmount = sumSyntheticAmount.add(reducedAmountToken)
+      const amountColl = calculateAmountCollateral(
+        assetPriceState[vaultSynthetic.toString()].val,
+        currentVault.maxBorrow.scale,
+        assetPriceState[vaultCollateral.toString()].val,
+        currentVault.collateralAmount.scale,
+        reducedAmountToken,
+        cRatio.toFixed(15)
+      )
+      const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
+        amount: amountColl,
+        owner: wallet,
+        synthetic: vaultSynthetic,
+        collateral: vaultCollateral,
+        userCollateralAccount: fromAddress,
+        reserveAddress: currentVault.collateralReserve,
+        collateralPriceFeed: currentVault.collateralPriceFeed,
+        vaultType: currentVault.vaultType
+      })
+      instructionArray.push(withdrawIx)
+
+      const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
+        amount: amountColl,
+        exchangeAccount: userExchangeAccount.address,
+        owner: wallet,
+        tokenIn: vaultCollateral,
+        tokenFor: vaultSynthetic,
+        userTokenAccountIn: fromAddress,
+        userTokenAccountFor: toAddress
+      })
+      instructionArray.push(swapIx)
+    }
+    if (extraAmountSynthetic.lt(reducedAmountToken)) {
+      const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
+        amount: availableWithdraw,
+        owner: wallet,
+        synthetic: vaultSynthetic,
+        collateral: vaultCollateral,
+        userCollateralAccount: fromAddress,
+        reserveAddress: currentVault.collateralReserve,
+        collateralPriceFeed: currentVault.collateralPriceFeed,
+        vaultType: currentVault.vaultType
+      })
+      instructionArray.push(withdrawIx)
+
+      const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
+        amount: availableWithdraw,
+        exchangeAccount: userExchangeAccount.address,
+        owner: wallet,
+        tokenIn: vaultCollateral,
+        tokenFor: vaultSynthetic,
+        userTokenAccountIn: fromAddress,
+        userTokenAccountFor: toAddress
+      })
+      instructionArray.push(swapIx)
+
+      amountSynthetic = reducedAmountToken.sub(extraAmountSynthetic)
+      sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
+    }
   }
-
-  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 10) {
-    const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultTransaction], {
+  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 7) {
+    const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
       amount: amountSynthetic,
@@ -692,10 +790,10 @@ export function* closeLeverage(
       assetPriceState[vaultCollateral.toString()].val,
       currentVault.collateralAmount.scale,
       amountSynthetic,
-      cRatio.toFixed(10)
+      cRatio.toFixed(15)
     )
     sumAmountCollateral = sumAmountCollateral.add(amountCollateral)
-    const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultTransaction], {
+    const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
       amount: amountCollateral,
       owner: wallet,
       synthetic: vaultSynthetic,
@@ -707,15 +805,6 @@ export function* closeLeverage(
     })
     instructionArray.push(withdrawIx)
 
-    const approveSwapIx = Token.createApproveInstruction(
-      TOKEN_PROGRAM_ID,
-      fromAddress,
-      exchangeProgram.exchangeAuthority,
-      wallet,
-      [],
-      tou64(amountCollateral)
-    )
-    instructionArray.push(approveSwapIx)
     const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
       amount: amountCollateral,
       exchangeAccount: userExchangeAccount.address,
@@ -750,7 +839,7 @@ export function* closeLeverage(
         assetPriceState[vaultCollateral.toString()].val,
         currentVault.collateralAmount.scale,
         amountSynthetic,
-        cRatio.toFixed(10)
+        cRatio.toFixed(15)
       ),
       feeData.fee
     ))

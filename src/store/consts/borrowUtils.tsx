@@ -189,18 +189,20 @@ export const calculateAvailableBorrow = (
 }
 
 export const calculateAvailableWithdraw = (
-  assetTo: AssetPriceData,
-  assetFrom: AssetPriceData,
+  assetToPrice: BN,
+  assetFromPrice: BN,
+  assetToScale: number,
+  assetFromScale: number,
   cRatio: string,
   vaultEntryAmountCollateral: BN,
   amountSynthetic: BN,
   vaultEntryAmountBorrow: BN
 ) => {
   const amountAfterCalculation = calculateAmountCollateral(
-    assetTo.priceVal,
-    assetTo.assetScale,
-    assetFrom.priceVal,
-    assetFrom.assetScale,
+    assetToPrice,
+    assetToScale,
+    assetFromPrice,
+    assetFromScale,
     vaultEntryAmountBorrow.sub(amountSynthetic),
     cRatio
   )
@@ -313,8 +315,10 @@ export const calculateAvailableBorrowAndWithdraw = (
       openFee
     ),
     availableWithdraw: calculateAvailableWithdraw(
-      assetTo,
-      assetFrom,
+      assetTo.priceVal,
+      assetFrom.priceVal,
+      assetTo.assetScale,
+      assetFrom.assetScale,
       cRatio,
       vaultEntryAmountCollateral,
       amountBorrow,

@@ -1,5 +1,8 @@
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { printBN } from '@consts/utils'
 import { Divider, Grid, Popover, Slider, Typography } from '@material-ui/core'
+import BN from 'bn.js'
+import { Decimal } from '@synthetify/sdk/lib/exchange'
 import React from 'react'
 import useStyles from './style'
 export interface ICloseLeverage {
@@ -9,7 +12,7 @@ export interface ICloseLeverage {
   tokenTo: string
   leverage: string
   percent: number
-  amount: string
+  amount: Decimal
   onChange: (value: number) => void
   onSubmitButton: () => void
   blockButton: boolean
@@ -110,7 +113,7 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
         </Grid>
         <Grid container justifyContent='space-between'>
           <Typography className={classes.smallValue}>
-            {amount} {tokenTo}
+            {Number(printBN(amount.val, amount.scale)).toFixed(8)} {tokenTo}
           </Typography>
           <Typography className={classes.smallValue}>
             {percent}% {tokenTo}
@@ -119,7 +122,25 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
         <Grid container justifyContent='center' style={{ paddingTop: '16px' }}>
           <OutlinedButton
             className={classes.button}
-            name={!blockButton ? 'Close leverage' : "You don't have enough token to close"}
+            name={
+              !blockButton ? (
+                'Close leverage'
+              ) : (
+                <>
+                  You need a minimum of
+                  <br />
+                  {Number(
+                    printBN(
+                      amount.val
+                        .mul(new BN(Number(0.2) * 10 ** amount.scale))
+                        .div(new BN(10 ** amount.scale)),
+                      amount.scale
+                    )
+                  ).toFixed(6)}{' '}
+                  {tokenTo}
+                </>
+              )
+            }
             color='secondary'
             onClick={() => {
               onSubmitButton()

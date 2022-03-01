@@ -13,9 +13,10 @@ import { OpenLeverage } from '../OpenLeverage/OpenLeverage'
 import { LeverageAction, IActionContents } from '../LeverageAction/LeverageAction'
 import useStyles from './style'
 import { ILeveragePair } from '@reducers/leverage'
-import { calculateFee, getLeverageLevel } from '@consts/leverageUtils'
+import { calculateAmountAfterSwap, calculateFee, getLeverageLevel } from '@consts/leverageUtils'
 import { CloseLeverage } from '../CloseLeverage/CloseLeverage'
 import { blurContent, unblurContent } from '@consts/uiUtils'
+import { calculateAvailableWithdraw } from '@consts/borrowUtils'
 export interface BorrowedPair extends Vault {
   collateralData: { reserveBalance: number; symbol: string; price: Decimal; balance: BN }
   syntheticData: ExchangeSyntheticTokens
@@ -335,24 +336,57 @@ export const WrappedLeverage: React.FC<IProp> = ({
   }, [amountToken.toString(), cRatio, leverageIndex, pairIndex])
 
   React.useEffect(() => {
-    if (currentLeverageTable.length > 0 && pairIndex !== null && leverageIndex !== null) {
+    if (
+      currentLeverageTable.length > 0 &&
+      pairIndex !== null &&
+      leverageIndex !== null &&
+      userVaultIndex !== null
+    ) {
       const synthetic = allSynthetic.find(
         element =>
           element.syntheticData.symbol === currentLeverageTable[leverageIndex].syntheticSymbol
       )
       if (synthetic) {
         setBlockCloseButton(
-          !synthetic.syntheticData.balance.gt(
-            closeAmount
-              .mul(new BN(Number(0.2) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
-              .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
-          )
+          !synthetic.syntheticData.balance
+            .add(
+              calculateAmountAfterSwap(
+                assetPrices[currentLeverageTable[leverageIndex].collateral.toString()].val,
+                assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()].val,
+                currentLeverageTable[leverageIndex].collateralAmount.scale,
+                currentLeverageTable[leverageIndex].maxBorrow.scale,
+                calculateAvailableWithdraw(
+                  assetPrices[currentLeverageTable[leverageIndex].synthetic.toString()].val,
+                  assetPrices[currentLeverageTable[leverageIndex].collateral.toString()].val,
+                  currentLeverageTable[leverageIndex].maxBorrow.scale,
+                  currentLeverageTable[leverageIndex].collateralAmount.scale,
+                  minCRatio.toFixed(12),
+                  actualVault.collateralAmount.val,
+                  new BN(0),
+                  actualVault.borrowAmount.val
+                )
+                  .mul(
+                    new BN(
+                      Number(0.9) * 10 ** currentLeverageTable[leverageIndex].collateralAmount.scale
+                    )
+                  )
+                  .div(new BN(10 ** currentLeverageTable[leverageIndex].collateralAmount.scale)),
+                feeData
+              ).amount
+            )
+            .gt(
+              closeAmount
+                .mul(
+                  new BN(Number(0.2) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale)
+                )
+                .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
+            )
         )
         return
       }
       setBlockCloseButton(true)
     }
-  }, [closeAmount.toString()])
+  }, [closeAmount.toString(), actualVault])
   React.useEffect(() => {
     if (currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null) {
       setShowWarning(
@@ -421,10 +455,8 @@ export const WrappedLeverage: React.FC<IProp> = ({
         percent={closePercent}
         amount={
           currentLeverageTable.length > 0 && leverageIndex !== null
-            ? Number(
-                printBN(closeAmount, currentLeverageTable[leverageIndex].maxBorrow.scale)
-              ).toFixed(8)
-            : '0.00'
+            ? { val: closeAmount, scale: currentLeverageTable[leverageIndex].maxBorrow.scale }
+            : { val: new BN(0), scale: 0 }
         }
         blockButton={blockCloseButton}
       />
@@ -482,9 +514,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
           />
         </Grid>
 
-        {userVaults.length !== 0 ? (
+        {userVaults.filter(element => element.collateral[0] === 'x' && element.borrowed[0] === 'x')
+          .length !== 0 ? (
           <BorrowTable
-            userVaults={userVaults}
+            userVaults={userVaults.filter(
+              element => element.collateral[0] === 'x' && element.borrowed[0] === 'x'
+            )}
             setValueWithTable={availableClosePosition}
             active={
               currentLeverageTable.length > 0 && leverageIndex !== null
@@ -505,11 +540,12 @@ export const WrappedLeverage: React.FC<IProp> = ({
         ) : null}
       </Grid>
       <Grid className={classes.borrowInfoGrid}>
-        {currentLeverageTable.length > 0 && leverageIndex !== null ? (
+        {currentLeverageTable.length > 0 && leverageIndex !== null && pairIndex !== null ? (
           <BorrowInfo
             collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
             collateral={currentLeverageTable[leverageIndex].collateralSymbol}
+            chooseCollateral={allSynthetic[pairIndex].syntheticData.symbol}
             borrowed={currentLeverageTable[leverageIndex].syntheticSymbol}
             limit={Number(
               printBN(
@@ -563,6 +599,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             collateralAmount={totalGeneralAmount.totalCollateralAmount.toString()}
             debtAmount={totalGeneralAmount.totalDebtAmount.toString()}
             collateral={' '}
+            chooseCollateral={' '}
             borrowed={' '}
             cRatio={0}
             limit={0}
