@@ -99,20 +99,10 @@ describe('calculateAvailableBorrow', () => {
 describe('calculateAvailableWithdraw', () => {
   test('test', () => {
     const result = calculateAvailableWithdraw(
-      {
-        priceVal: new BN(1000000),
-        assetScale: 6,
-        symbol: 'xUSD',
-        maxAvailable: new BN(100000000),
-        balance: new BN(10000000)
-      },
-      {
-        priceVal: new BN(3500000),
-        assetScale: 6,
-        symbol: 'SNY',
-        maxAvailable: new BN(100000000),
-        balance: new BN(10000000)
-      },
+      new BN(1000000),
+      new BN(1500000),
+      6,
+      6,
       '200',
       new BN(5500000),
       new BN(100000),
