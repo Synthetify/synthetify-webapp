@@ -11,10 +11,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.subtitle1,
     height: 44,
     minWidth: 110,
+    marginRight: 15,
 
-    '&:not(:last-child)': {
-      marginRight: 15
-    },
     '&:hover': {
       background: colors.navy['807ADC']
     },

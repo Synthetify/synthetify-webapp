@@ -52,6 +52,7 @@ storiesOf('Borrow/table', module).add('default', () =>
           }}
           active={{ collateral: 'Sol', synthetic: 'xUSD' }}
           vaultType={0}
+          page={'vault'}
         />
       </div>
     )

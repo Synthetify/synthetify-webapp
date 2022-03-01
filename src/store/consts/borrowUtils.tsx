@@ -11,19 +11,21 @@ interface AssetPriceData {
   balance: BN
 }
 export const calculateAmountCollateral = (
-  assetTo: AssetPriceData,
-  assetFrom: AssetPriceData,
+  syntheticPrice: BN,
+  syntheticScale: number,
+  collateraPrice: BN,
+  collateralScale: number,
   amount: BN,
   cRatio: string
 ) => {
   const cRatioBN = stringToMinDecimalBN(cRatio)
-  const amountBeforeCalculations = assetTo.priceVal
+  const amountBeforeCalculations = syntheticPrice
     .mul(amount)
     .mul(cRatioBN.BN)
-    .div(assetFrom.priceVal)
+    .div(collateraPrice)
     .div(new BN(10).pow(new BN(cRatioBN.decimal + 2)))
 
-  const decimalChange = 10 ** (assetTo.assetScale - assetFrom.assetScale)
+  const decimalChange = 10 ** (syntheticScale - collateralScale)
   if (decimalChange < 1) {
     return amountBeforeCalculations.mul(new BN(1 / decimalChange))
   } else {
@@ -187,16 +189,20 @@ export const calculateAvailableBorrow = (
 }
 
 export const calculateAvailableWithdraw = (
-  assetTo: AssetPriceData,
-  assetFrom: AssetPriceData,
+  assetToPrice: BN,
+  assetFromPrice: BN,
+  assetToScale: number,
+  assetFromScale: number,
   cRatio: string,
   vaultEntryAmountCollateral: BN,
   amountSynthetic: BN,
   vaultEntryAmountBorrow: BN
 ) => {
   const amountAfterCalculation = calculateAmountCollateral(
-    assetTo,
-    assetFrom,
+    assetToPrice,
+    assetToScale,
+    assetFromPrice,
+    assetFromScale,
     vaultEntryAmountBorrow.sub(amountSynthetic),
     cRatio
   )
@@ -309,8 +315,10 @@ export const calculateAvailableBorrowAndWithdraw = (
       openFee
     ),
     availableWithdraw: calculateAvailableWithdraw(
-      assetTo,
-      assetFrom,
+      assetTo.priceVal,
+      assetFrom.priceVal,
+      assetTo.assetScale,
+      assetFrom.assetScale,
       cRatio,
       vaultEntryAmountCollateral,
       amountBorrow,
@@ -495,8 +503,10 @@ export const changeInputSynthetic = (
   const difDecimal = tokenTo.assetScale - BNValue.decimal
   if (cRatio !== '---') {
     amountCollBN = calculateAmountCollateral(
-      tokenTo,
-      tokenFrom,
+      tokenTo.priceVal,
+      tokenTo.assetScale,
+      tokenFrom.priceVal,
+      tokenFrom.assetScale,
       printBNtoBN(
         (Number(value) * Number(openFee)).toFixed(tokenTo.assetScale),
         tokenTo.assetScale

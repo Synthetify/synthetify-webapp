@@ -123,7 +123,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   typeColumn: {
     minWidth: '40px',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('xs')]: {
+      minWidth: '25px'
+    }
   },
   amountColumn: {
     minWidth: '95px',
@@ -139,6 +142,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       minWidth: '35px'
     }
   },
+  LeverColumn: {
+    minWidth: '55px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '30px'
+    }
+  },
   interestDebtColumn: {
     minWidth: '85px',
     justifyContent: 'flex-start',
@@ -147,15 +157,60 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   liquidationColumn: {
-    minWidth: '120px',
+    minWidth: '110px',
     justifyContent: 'flex-start',
     [theme.breakpoints.down('md')]: {
+      minWidth: '80px'
+    },
+    [theme.breakpoints.down('sm')]: {
       minWidth: '60px'
     }
   },
   maxBorrowColumn: {
     minWidth: '135px',
     justifyContent: 'flex-start'
+  },
+  buttonColumn: {
+    minWidth: '110px',
+    padding: '6px 6px 6px 5px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '80px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      minWidth: '40px',
+      paddingLeft: '0px'
+    }
+  },
+  closeButton: {
+    minWidth: '80px',
+    ...typography.body3,
+    background: colors.red.error,
+    textTransform: 'capitalize',
+    padding: '4px 0',
+    [theme.breakpoints.down('sm')]: {
+      ...typography.caption2,
+      padding: '2px 0',
+      minWidth: '60px'
+    },
+    [theme.breakpoints.down('xs')]: {
+      ...typography.caption4,
+      minWidth: '40px',
+      padding: '0px 0'
+    },
+    '&:hover': {
+      background: `${colors.red.error}95`
+    },
+    '&:disabled': {
+      pointerEvents: 'auto !important'
+    },
+
+    '&:disabled:hover': {
+      backgroundColor: `${colors.navy.darkGrey} !important`,
+      pointerEvents: 'auto !important'
+    }
   }
 }))
 

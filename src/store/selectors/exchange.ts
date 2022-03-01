@@ -582,4 +582,15 @@ export const getGeneralTotals = createSelector(
   }
 )
 
+export const getLeverageVaultPairs = createSelector(
+  vaults,
+  synthetics,
+  (allVaults, allSynthetics) => {
+    return Object.values(allVaults).filter(
+      vault =>
+        typeof allSynthetics[vault.synthetic.toString()] !== 'undefined' &&
+        typeof allSynthetics[vault.collateral.toString()] !== 'undefined'
+    )
+  }
+)
 export default exchangeSelectors
