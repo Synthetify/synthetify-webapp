@@ -214,12 +214,13 @@ export const LeverageOption: React.FC<IProp> = ({
                       Remember: leverage is a risky tool.
                     </Typography>
                     There is a risk of loss and a possibility of higher profits. Use it responsibly.{' '}
-                    <br />
-                    <br />
                     {showWarning.status ? (
                       <strong style={{ fontWeight: 900 }}>
-                        This pair does not exist. We are going to swap {showWarning.tokenFrom} for{' '}
-                        {showWarning.tokenTo} from the existing pair.
+                        <br />
+                        <br />
+                        This pair does not exist. We are going to swap {
+                          showWarning.tokenFrom
+                        } for {showWarning.tokenTo} from the existing pair.
                       </strong>
                     ) : null}
                   </>

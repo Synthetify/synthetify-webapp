@@ -130,6 +130,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('xs')]: {
       ...typography.caption1
     }
+  },
+  tooltipTitle: {
+    ...typography.subtitle1
+  },
+  exclamationMark: {
+    height: 14,
+    width: 14,
+    paddingBottom: 11,
+    marginLeft: 8,
+
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 2
+    },
+
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  tootlipMain: {
+    padding: 0,
+    background: colors.red.error
   }
 }))
 

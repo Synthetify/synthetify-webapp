@@ -262,12 +262,14 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                 className={classes.infoPosition}
                 justifyContent='space-between'
                 alignItems='center'>
-                <Grid container item xs={5} alignItems='center'>
-                  <Typography className={classes.positionTitle}>Collateral:</Typography>
+                <Typography className={classes.positionTitle}>Collateral:</Typography>
+
+                <Grid container item xs={3} alignItems='center' justifyContent='flex-end'>
+                  <Typography className={classes.positionValue}>{collateral}</Typography>
                   {chooseCollateral !== collateral ? (
                     <MobileTooltip
                       hint={
-                        <Grid style={{ padding: 5 }}>
+                        <Grid style={{ padding: 7 }}>
                           We are going to swap {chooseCollateral} for {collateral} from the existing
                           pair, becouse this pair does not exist.
                         </Grid>
@@ -277,10 +279,10 @@ export const BorrowInfo: React.FC<IGeneralInfo> = ({
                       }
                       mobilePlacement='top-end'
                       desktopPlacement='top-end'
+                      tooltipClasses={{ tooltip: classes.tootlipMain }}
                     />
                   ) : null}
                 </Grid>
-                <Typography className={classes.positionValue}>{collateral}</Typography>
               </Grid>
               <Grid
                 container

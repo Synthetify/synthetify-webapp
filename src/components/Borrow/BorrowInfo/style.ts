@@ -84,9 +84,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltipTitle: {
     ...typography.subtitle1
   },
-  supplyTooltip: {
-    // backgroundColor: `${colors.red.error} !important`
-  },
   exclamationMark: {
     height: 14,
     width: 14,
@@ -100,6 +97,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  tootlipMain: {
+    padding: 0
   }
 }))
 export default useStyles

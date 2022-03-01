@@ -10,6 +10,8 @@ import { ILeveragePair } from '@reducers/leverage'
 import { calculateAmountBorrow, calculateLiqPrice } from '@consts/borrowUtils'
 import { Select } from '@components/Inputs/Select/Select'
 import { descrpitionForSymbol } from '@consts/static'
+import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
+import RedExclamationMark from '@static/svg/redExclamationMark.svg'
 import useStyles from './style'
 interface IProp {
   action: string
@@ -159,8 +161,28 @@ export const OpenLeverage: React.FC<IProp> = ({
                 }}>
                 <Grid>
                   <Grid container justifyContent='space-between'>
-                    <Grid container alignItems='center' style={{ width: 'auto' }}>
+                    <Grid container item alignItems='flex-end' style={{ width: 'auto' }}>
                       <Typography className={classes.title}>Choose your token</Typography>
+                      {collateralToken.symbol !== tokenFrom.symbol ? (
+                        <MobileTooltip
+                          hint={
+                            <Grid style={{ padding: 7 }}>
+                              We are going to swap {collateralToken.symbol} for {tokenFrom.symbol}{' '}
+                              from the existing pair, becouse this pair does not exist.
+                            </Grid>
+                          }
+                          anchor={
+                            <img
+                              src={RedExclamationMark}
+                              alt=''
+                              className={classes.exclamationMark}
+                            />
+                          }
+                          mobilePlacement='top-end'
+                          desktopPlacement='top-end'
+                          tooltipClasses={{ tooltip: classes.tootlipMain }}
+                        />
+                      ) : null}
                     </Grid>
                     <Grid container alignItems='center' style={{ width: 'auto' }}>
                       <Typography className={classes.balance}>
