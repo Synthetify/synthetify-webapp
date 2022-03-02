@@ -137,6 +137,7 @@ export function* handleOpenLeverage(): Generator {
       )
     }
   } catch (error: any) {
+    console.log(error.message.toString())
     yield* put(
       actions.actionFailed({
         error: true
@@ -529,11 +530,12 @@ export function* openLeveragePosition(
 
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
+
   yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize())
-  yield* call(sleep, 2000)
+  yield* call(sleep, 1000)
   signature.push(
     yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
-      skipPreflight: false
+      skipPreflight: true
     })
   )
   yield* call(sleep, 1500)
@@ -570,7 +572,7 @@ export function* handleCloseLeverage(): Generator {
           error.message ===
             'failed to send transaction: Transaction simulation failed: Insufficient funds for fee'
             ? 'Insufficient funds for fee'
-            : 'Failed to send. Please try again.',
+            : 'Failed to close. Choose less percentage.',
         variant: 'error',
         persist: false
       })
@@ -634,24 +636,34 @@ export function* closeLeveragePosition(
   let txs: Transaction[] = []
   const tx1 = new Transaction().add(updatePricesIx).add(approveAllSwapIx).add(approveAllRepayIx)
   const tx2 = new Transaction()
-  for (const tx of instructionArray.slice(0, 13)) {
+  const tx3 = new Transaction()
+  for (const tx of instructionArray.slice(0, 9)) {
     tx1.add(tx)
   }
   txs = [tx1]
-  if (instructionArray.length > 13) {
-    for (const tx of instructionArray.slice(13, instructionArray.length)) {
+  if (instructionArray.length > 9) {
+    for (const tx of instructionArray.slice(9, 25)) {
       tx2.add(tx)
     }
     txs = [tx1, tx2]
   }
-
+  if (instructionArray.length > 25) {
+    for (const tx of instructionArray.slice(25, instructionArray.length)) {
+      tx3.add(tx)
+    }
+    txs = [tx1, tx2, tx3]
+  }
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
   yield* call(sleep, 200)
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
   yield* call(sleep, 2000)
-  if (instructionArray.length > 13) {
+  if (instructionArray.length > 9) {
     signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
+  }
+  yield* call(sleep, 2000)
+  if (instructionArray.length > 25) {
+    signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize()))
   }
   return signature
 }
@@ -773,7 +785,7 @@ export function* closeLeverage(
       sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     }
   }
-  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 7) {
+  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 12) {
     const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,

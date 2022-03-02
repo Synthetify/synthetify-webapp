@@ -180,7 +180,7 @@ export const calculateFee = (
       .mul(new BN(Number(0.9995) * 10 ** tokenFrom.assetScale))
       .div(new BN(10 ** tokenFrom.assetScale))
       .gt(sumCollateralAmount.add(symulatedSumCollateral)) &&
-    tmp < 3
+    tmp < 15
   ) {
     amountSynthetic = calculateAmountBorrow(
       tokenTo.price,
