@@ -637,20 +637,23 @@ export function* closeLeveragePosition(
   )
   let txs: Transaction[] = []
   const tx1 = new Transaction().add(updatePricesIx).add(approveAllSwapIx).add(approveAllRepayIx)
-  const tx2 = new Transaction()
+  let tx2 = new Transaction()
   const tx3 = new Transaction()
-  for (const tx of instructionArray.slice(0, 8)) {
-    tx1.add(tx)
-  }
+
   txs = [tx1]
-  if (instructionArray.length > 8) {
-    for (const tx of instructionArray.slice(8, 25)) {
+  if (instructionArray.length <= 20) {
+    for (const tx of instructionArray.slice(0, instructionArray.length)) {
       tx2.add(tx)
     }
     txs = [tx1, tx2]
   }
-  if (instructionArray.length > 25) {
-    for (const tx of instructionArray.slice(25, instructionArray.length)) {
+  if (instructionArray.length > 20) {
+    tx2 = new Transaction()
+    for (const tx of instructionArray.slice(0, 20)) {
+      tx2.add(tx)
+    }
+    txs = [tx1, tx2]
+    for (const tx of instructionArray.slice(20, instructionArray.length)) {
       tx3.add(tx)
     }
     txs = [tx1, tx2, tx3]
@@ -658,27 +661,31 @@ export function* closeLeveragePosition(
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
   yield* call(sleep, 200)
-  signature.push(
-    yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize(), {
-      skipPreflight: true
-    })
-  )
+  yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize(), {
+    skipPreflight: false
+  })
   yield* call(sleep, 2000)
-  if (instructionArray.length > 8) {
+  if (instructionArray.length <= 20) {
     signature.push(
       yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
-        skipPreflight: true
+        skipPreflight: false
       })
     )
   }
-  yield* call(sleep, 2000)
-  if (instructionArray.length > 25) {
+  if (instructionArray.length > 20) {
+    signature.push(
+      yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
+        skipPreflight: false
+      })
+    )
+    yield* call(sleep, 2000)
     signature.push(
       yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize(), {
-        skipPreflight: true
+        skipPreflight: false
       })
     )
   }
+
   return signature
 }
 
