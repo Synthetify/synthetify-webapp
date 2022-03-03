@@ -534,7 +534,7 @@ export function* openLeveragePosition(
   yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize(), {
     skipPreflight: true
   })
-  yield* call(sleep, 2000)
+  yield* call(sleep, 3000)
   signature.push(
     yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
       skipPreflight: true
@@ -642,7 +642,7 @@ export function* closeLeveragePosition(
 
   txs = [tx1]
   if (instructionArray.length <= 20) {
-    for (const tx of instructionArray.slice(0, instructionArray.length)) {
+    for (const tx of instructionArray) {
       tx2.add(tx)
     }
     txs = [tx1, tx2]
@@ -662,9 +662,9 @@ export function* closeLeveragePosition(
   const signature: string[] = []
   yield* call(sleep, 200)
   yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize(), {
-    skipPreflight: false
+    skipPreflight: true
   })
-  yield* call(sleep, 2000)
+  yield* call(sleep, 3000)
   if (instructionArray.length <= 20) {
     signature.push(
       yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
@@ -678,7 +678,7 @@ export function* closeLeveragePosition(
         skipPreflight: false
       })
     )
-    yield* call(sleep, 2000)
+    yield* call(sleep, 1500)
     signature.push(
       yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize(), {
         skipPreflight: false
