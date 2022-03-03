@@ -637,12 +637,12 @@ export function* closeLeveragePosition(
   const tx1 = new Transaction().add(updatePricesIx).add(approveAllSwapIx).add(approveAllRepayIx)
   const tx2 = new Transaction()
   const tx3 = new Transaction()
-  for (const tx of instructionArray.slice(0, 9)) {
+  for (const tx of instructionArray.slice(0, 8)) {
     tx1.add(tx)
   }
   txs = [tx1]
-  if (instructionArray.length > 9) {
-    for (const tx of instructionArray.slice(9, 25)) {
+  if (instructionArray.length > 8) {
+    for (const tx of instructionArray.slice(8, 25)) {
       tx2.add(tx)
     }
     txs = [tx1, tx2]
@@ -658,7 +658,7 @@ export function* closeLeveragePosition(
   yield* call(sleep, 200)
   signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
   yield* call(sleep, 2000)
-  if (instructionArray.length > 9) {
+  if (instructionArray.length > 8) {
     signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
   }
   yield* call(sleep, 2000)
@@ -720,7 +720,7 @@ export function* closeLeverage(
       .mul(new BN(Number(0.995) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
     const reducedAmountToken = amountToken
-      .mul(new BN(Number(0.2) * 10 ** syntheticDecimal))
+      .mul(new BN(Number(0.25) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
 
     if (extraAmountSynthetic.gte(reducedAmountToken)) {
@@ -781,7 +781,7 @@ export function* closeLeverage(
       })
       instructionArray.push(swapIx)
 
-      amountSynthetic = reducedAmountToken.sub(extraAmountSynthetic)
+      amountSynthetic = reducedAmountToken
       sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     }
   }
