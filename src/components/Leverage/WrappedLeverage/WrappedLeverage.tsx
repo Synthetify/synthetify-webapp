@@ -381,7 +381,7 @@ export const WrappedLeverage: React.FC<IProp> = ({
             .gt(
               closeAmount
                 .mul(
-                  new BN(Number(0.25) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale)
+                  new BN(Number(0.3) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale)
                 )
                 .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
             )

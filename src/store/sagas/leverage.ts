@@ -531,8 +531,10 @@ export function* openLeveragePosition(
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
 
-  yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize())
-  yield* call(sleep, 1000)
+  yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize(), {
+    skipPreflight: true
+  })
+  yield* call(sleep, 2000)
   signature.push(
     yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
       skipPreflight: true
@@ -656,14 +658,26 @@ export function* closeLeveragePosition(
   const signTxs = yield* call(signAllTransaction, wallet, txs)
   const signature: string[] = []
   yield* call(sleep, 200)
-  signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize()))
+  signature.push(
+    yield* call([connection, connection.sendRawTransaction], signTxs[0].serialize(), {
+      skipPreflight: true
+    })
+  )
   yield* call(sleep, 2000)
   if (instructionArray.length > 8) {
-    signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize()))
+    signature.push(
+      yield* call([connection, connection.sendRawTransaction], signTxs[1].serialize(), {
+        skipPreflight: true
+      })
+    )
   }
   yield* call(sleep, 2000)
   if (instructionArray.length > 25) {
-    signature.push(yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize()))
+    signature.push(
+      yield* call([connection, connection.sendRawTransaction], signTxs[2].serialize(), {
+        skipPreflight: true
+      })
+    )
   }
   return signature
 }
@@ -785,7 +799,7 @@ export function* closeLeverage(
       sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     }
   }
-  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 12) {
+  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 20) {
     const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
@@ -827,6 +841,7 @@ export function* closeLeverage(
       userTokenAccountFor: toAddress
     })
     instructionArray.push(swapIx)
+
     amountSynthetic = (yield* call(
       calculateAmountAfterSwap,
       assetPriceState[vaultCollateral.toString()].val,
@@ -859,7 +874,6 @@ export function* closeLeverage(
       .div(new BN(10 ** syntheticDecimal))
     tmp = tmp + 1
   }
-
   amountCollateral = calculateAmountCollateral(
     assetPriceState[vaultSynthetic.toString()].val,
     currentVault.maxBorrow.scale,
