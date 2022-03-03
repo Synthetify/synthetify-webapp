@@ -773,7 +773,9 @@ export function* closeLeverage(
     }
     if (extraAmountSynthetic.lt(reducedAmountToken)) {
       const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawVaultInstruction], {
-        amount: availableWithdraw,
+        amount: availableWithdraw
+          .mul(new BN(Number(0.99) * 10 ** currentVault.collateralAmount.scale))
+          .div(new BN(10 ** currentVault.collateralAmount.scale)),
         owner: wallet,
         synthetic: vaultSynthetic,
         collateral: vaultCollateral,
