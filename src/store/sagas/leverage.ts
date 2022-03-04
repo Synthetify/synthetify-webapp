@@ -470,7 +470,7 @@ export function* openLeveragePosition(
     exchangeProgram.exchangeAuthority,
     wallet.publicKey,
     [],
-    tou64(MAX_U64)
+    tou64(currentlySelectedState.amountToken)
   )
   const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
     amount: currentlySelectedState.amountToken,

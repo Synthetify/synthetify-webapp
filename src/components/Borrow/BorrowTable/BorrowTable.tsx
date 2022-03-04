@@ -268,24 +268,45 @@ export const BorrowTable: React.FC<IProp> = ({
                 </Hidden>
               ) : null}
               <Grid classes={{ root: classNames(classes.rootCell, classes.liquidationColumn) }}>
-                <Tooltip
-                  classes={{ tooltip: classes.tooltipNumber }}
-                  title={`${Number(element.liquidationPrice).toFixed(6)} $`}
-                  placement='bottom-start'>
-                  <Grid container direction='row' alignItems='center'>
-                    <CardMedia
-                      className={classes.icon}
-                      image={icons[element.collateral] ?? icons.SNY}
-                    />
-                    {'$'}
-                    <AnimatedNumber
-                      value={Number(element.liquidationPrice)}
-                      formatValue={formatNumbersBorrowTable}
-                      duration={300}
-                    />
-                    {showPrefix(Number(element.liquidationPrice))}
-                  </Grid>
-                </Tooltip>
+                {page === 'leverage' && element.collateral === 'xUSD' ? (
+                  <Tooltip
+                    classes={{ tooltip: classes.tooltipNumber }}
+                    title={`${Number(element.liquidationShortPrice).toFixed(6)} $`}
+                    placement='bottom-start'>
+                    <Grid container direction='row' alignItems='center'>
+                      <CardMedia
+                        className={classes.icon}
+                        image={icons[element.collateral] ?? icons.SNY}
+                      />
+                      {'$'}
+                      <AnimatedNumber
+                        value={Number(element.liquidationShortPrice)}
+                        formatValue={formatNumbersBorrowTable}
+                        duration={300}
+                      />
+                      {showPrefix(Number(element.liquidationShortPrice))}
+                    </Grid>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    classes={{ tooltip: classes.tooltipNumber }}
+                    title={`${Number(element.liquidationPrice).toFixed(6)} $`}
+                    placement='bottom-start'>
+                    <Grid container direction='row' alignItems='center'>
+                      <CardMedia
+                        className={classes.icon}
+                        image={icons[element.collateral] ?? icons.SNY}
+                      />
+                      {'$'}
+                      <AnimatedNumber
+                        value={Number(element.liquidationPrice)}
+                        formatValue={formatNumbersBorrowTable}
+                        duration={300}
+                      />
+                      {showPrefix(Number(element.liquidationPrice))}
+                    </Grid>
+                  </Tooltip>
+                )}
               </Grid>
               {page === 'vault' ? (
                 <Hidden mdDown>
