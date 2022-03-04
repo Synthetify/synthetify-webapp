@@ -276,7 +276,7 @@ export const BorrowTable: React.FC<IProp> = ({
                     <Grid container direction='row' alignItems='center'>
                       <CardMedia
                         className={classes.icon}
-                        image={icons[element.collateral] ?? icons.SNY}
+                        image={icons[element.borrowed] ?? icons.SNY}
                       />
                       {'$'}
                       <AnimatedNumber
