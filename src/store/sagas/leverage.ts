@@ -601,7 +601,6 @@ export function* closeLeveragePosition(
   )
   const fromAddress = tokensAccounts[currentlySelectedState.vaultCollateral.toString()].address
   const toAddress = tokensAccounts[currentlySelectedState.vaultSynthetic.toString()].address
-
   const instructionArray = yield* call(
     closeLeverage,
     currentlySelectedState.vaultCollateral,
@@ -637,9 +636,8 @@ export function* closeLeveragePosition(
   )
   let txs: Transaction[] = []
   const tx1 = new Transaction().add(updatePricesIx).add(approveAllSwapIx).add(approveAllRepayIx)
-  let tx2 = new Transaction()
+  const tx2 = new Transaction()
   const tx3 = new Transaction()
-
   txs = [tx1]
   if (instructionArray.length <= 20) {
     for (const tx of instructionArray) {
@@ -648,7 +646,6 @@ export function* closeLeveragePosition(
     txs = [tx1, tx2]
   }
   if (instructionArray.length > 20) {
-    tx2 = new Transaction()
     for (const tx of instructionArray.slice(0, 20)) {
       tx2.add(tx)
     }
@@ -808,7 +805,7 @@ export function* closeLeverage(
       sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     }
   }
-  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 20) {
+  while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 15) {
     const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
@@ -860,7 +857,7 @@ export function* closeLeverage(
       amountCollateral,
       feeData.fee
     ))
-      .mul(new BN(Number(0.995) * 10 ** syntheticDecimal))
+      .mul(new BN(Number(0.998) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
     sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     symulatedAmountSynthetic = (yield* call(
@@ -879,7 +876,7 @@ export function* closeLeverage(
       ),
       feeData.fee
     ))
-      .mul(new BN(Number(0.995) * 10 ** syntheticDecimal))
+      .mul(new BN(Number(0.99) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
     tmp = tmp + 1
   }
