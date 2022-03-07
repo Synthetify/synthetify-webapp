@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     display: 'flex',
     [theme.breakpoints.down('md')]: {
-      minWidth: '80px'
+      minWidth: '65px'
     },
     [theme.breakpoints.down('xs')]: {
       minWidth: '40px',
@@ -190,10 +190,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: colors.red.error,
     textTransform: 'capitalize',
     padding: '4px 0',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '60px'
+    },
     [theme.breakpoints.down('sm')]: {
       ...typography.caption2,
-      padding: '2px 0',
-      minWidth: '60px'
+      padding: '2px 0'
     },
     [theme.breakpoints.down('xs')]: {
       ...typography.caption4,
