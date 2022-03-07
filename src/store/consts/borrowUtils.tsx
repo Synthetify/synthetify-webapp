@@ -148,6 +148,39 @@ export const calculateLiqPrice = (
     8
   )
 }
+export const calculateLiqPriceShort = (
+  priceFrom: BN,
+  amountCollateral: BN,
+  amountBorrow: BN,
+  liqThreshold: Decimal,
+  assetScaleTo: number,
+  assetScaleFrom: number
+) => {
+  const liqPrice = priceFrom.mul(liqThreshold.val).div(new BN(10).pow(new BN(liqThreshold.scale)))
+
+  if (amountBorrow.eq(new BN(0)) || amountCollateral.eq(new BN(0))) {
+    return '0.0'
+  }
+  const difDecimal = 10 ** (assetScaleTo - assetScaleFrom)
+  if (difDecimal < 1) {
+    return printBN(
+      liqPrice
+        .mul(liqThreshold.val)
+        .mul(amountCollateral.div(new BN(1 / difDecimal)))
+        .div(new BN(10).pow(new BN(liqThreshold.scale)))
+        .div(amountBorrow),
+      8
+    )
+  }
+  return printBN(
+    liqPrice
+      .mul(liqThreshold.val)
+      .mul(amountCollateral.mul(new BN(difDecimal)))
+      .div(new BN(10).pow(new BN(liqThreshold.scale)))
+      .div(amountBorrow),
+    8
+  )
+}
 export const calculateAvailableBorrow = (
   assetTo: AssetPriceData,
   assetFrom: AssetPriceData,

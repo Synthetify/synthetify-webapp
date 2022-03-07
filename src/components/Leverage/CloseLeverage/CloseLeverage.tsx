@@ -132,7 +132,7 @@ export const CloseLeverage: React.FC<ICloseLeverage> = ({
                   {Number(
                     printBN(
                       amount.val
-                        .mul(new BN(Number(0.2) * 10 ** amount.scale))
+                        .mul(new BN(Number(0.3) * 10 ** amount.scale))
                         .div(new BN(10 ** amount.scale)),
                       amount.scale
                     )

@@ -169,6 +169,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         cRatio: '125.645',
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
+        liquidationShortPrice: '125.32654',
         maxBorrow: '300',
         minCRatio: 100,
         vaultType: 0
@@ -195,6 +196,7 @@ storiesOf('borrow/wrappedborrow', module).add('default', () =>
         cRatio: '25.645',
         interestRate: '15.45',
         liquidationPrice: '15.32654',
+        liquidationShortPrice: '125.32654',
         maxBorrow: '500',
         minCRatio: 100,
         vaultType: 0

@@ -347,6 +347,10 @@ export const WrappedLeverage: React.FC<IProp> = ({
           element.syntheticData.symbol === currentLeverageTable[leverageIndex].syntheticSymbol
       )
       if (synthetic) {
+        if (actualVault.borrowAmount.val.eq(new BN(0))) {
+          setBlockCloseButton(true)
+          return
+        }
         setBlockCloseButton(
           !synthetic.syntheticData.balance
             .add(
@@ -377,13 +381,14 @@ export const WrappedLeverage: React.FC<IProp> = ({
             .gt(
               closeAmount
                 .mul(
-                  new BN(Number(0.2) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale)
+                  new BN(Number(0.3) * 10 ** currentLeverageTable[leverageIndex].maxBorrow.scale)
                 )
                 .div(new BN(10 ** currentLeverageTable[leverageIndex].maxBorrow.scale))
             )
         )
         return
       }
+
       setBlockCloseButton(true)
     }
   }, [closeAmount.toString(), actualVault])

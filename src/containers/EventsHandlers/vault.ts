@@ -104,6 +104,7 @@ const VaultEvents = () => {
       !exchangeProgram ||
       walletStat !== Status.Initialized ||
       networkStatus !== Status.Initialized ||
+      Object.keys(vaultsState).length === 0 ||
       !connection
     ) {
       return
@@ -133,7 +134,14 @@ const VaultEvents = () => {
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     connectEvents()
-  }, [dispatch, exchangeProgram, networkStatus, walletStat, Object.keys(userVaultsState).length])
+  }, [
+    dispatch,
+    exchangeProgram,
+    networkStatus,
+    walletStat,
+    Object.keys(userVaultsState).length,
+    Object.keys(vaultsState).length
+  ])
 
   return null
 }
