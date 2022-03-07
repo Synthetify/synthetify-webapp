@@ -747,7 +747,6 @@ export function* closeLeverage(
 
     if (extraAmountSynthetic.gte(reducedAmountToken)) {
       amountSynthetic = reducedAmountToken
-      sumSyntheticAmount = sumSyntheticAmount.add(reducedAmountToken)
       const amountColl = calculateAmountCollateral(
         assetPriceState[vaultSynthetic.toString()].val,
         currentVault.maxBorrow.scale,
@@ -804,12 +803,11 @@ export function* closeLeverage(
         userTokenAccountFor: toAddress
       })
       instructionArray.push(swapIx)
-
       amountSynthetic = reducedAmountToken
-      sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     }
   }
   while (sumSyntheticAmount.add(symulatedAmountSynthetic).lt(amountToken) && tmp < 15) {
+    sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     const repayIx = yield* call([exchangeProgram, exchangeProgram.repayVaultInstruction], {
       collateral: vaultCollateral,
       synthetic: vaultSynthetic,
@@ -863,7 +861,6 @@ export function* closeLeverage(
     ))
       .mul(new BN(Number(0.998) * 10 ** syntheticDecimal))
       .div(new BN(10 ** syntheticDecimal))
-    sumSyntheticAmount = sumSyntheticAmount.add(amountSynthetic)
     symulatedAmountSynthetic = (yield* call(
       calculateAmountAfterSwap,
       assetPriceState[vaultCollateral.toString()].val,
