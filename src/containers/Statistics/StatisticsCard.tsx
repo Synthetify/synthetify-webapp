@@ -14,7 +14,7 @@ export const StatisticsCard: React.FC = () => {
   const statsData = useSelector(statsSelector.last24)
   const synthetics = useSelector(getSyntheticsValue)
   const swaplineCollateralValue = useSelector(getSwaplineCollateralBalance)
-  const vaultColllateralValue = useSelector(getVaultCollateralBalance)
+  const vaultCollateralValue = useSelector(getVaultCollateralBalance)
   const collateralValue = useSelector(getCollateralValue)
   const syntheticData: Array<{
     value: number
@@ -31,7 +31,7 @@ export const StatisticsCard: React.FC = () => {
     <StatisticCardAll
       data={statsData}
       debtCurrent={syntheticData}
-      collateralValue={collateralValue + swaplineCollateralValue + vaultColllateralValue}
+      collateralValue={collateralValue + swaplineCollateralValue + vaultCollateralValue}
     />
   )
 }

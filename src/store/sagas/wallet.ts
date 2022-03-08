@@ -182,6 +182,20 @@ export function* signAndSend(wallet: WalletAdapter, tx: Transaction): SagaGenera
   const signature = yield* call([connection, connection.sendRawTransaction], signedTx.serialize())
   return signature
 }
+export function* signAllTransaction(
+  wallet: WalletAdapter,
+  txs: Transaction[]
+): SagaGenerator<Transaction[]> {
+  const connection = yield* call(getConnection)
+  const blockhash = yield* call([connection, connection.getRecentBlockhash])
+  for (const tx of txs) {
+    tx.feePayer = wallet.publicKey
+    tx.recentBlockhash = blockhash.blockhash
+  }
+
+  yield* call([wallet, wallet.signAllTransactions], txs)
+  return txs
+}
 export function* createAccount(tokenAddress: PublicKey): SagaGenerator<PublicKey> {
   const wallet = yield* call(getWallet)
   const associatedAccount = yield* call(

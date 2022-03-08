@@ -19,6 +19,7 @@ import { loader } from '@selectors/ui'
 import { balance, status } from '@selectors/solanaWallet'
 import { SolWarning } from '@components/SolWarning/SolWarning'
 import { printBN } from '@consts/utils'
+import { LeveragePage } from './LeveragePage/LeveragePage'
 
 export const PagesRouter: React.FC = () => {
   const dispatch = useDispatch()
@@ -55,6 +56,7 @@ export const PagesRouter: React.FC = () => {
             </Redirect>
           </Route>
           <Route path={'/vaults'} component={BorrowPage} />
+          <Route path={'/leverage'} component={LeveragePage} />
           <Route path={'/swapline'} component={SwaplinePage} />
           <Route path='*'>
             <Redirect to='/staking'>

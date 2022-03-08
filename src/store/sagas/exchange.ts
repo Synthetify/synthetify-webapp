@@ -2,7 +2,7 @@ import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } fro
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, ExchangeAccount, PayloadTypes, SwaplineSwapType } from '@reducers/exchange'
 import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
-import { accounts, address, getAddressFromIndex, tokenAccount } from '@selectors/solanaWallet'
+import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import {
@@ -462,7 +462,6 @@ export function* withdrawRewards(): SagaGenerator<string> {
   }
   const wallet = yield* call(getWallet)
   const userExchangeAccount = yield* select(exchangeAccount)
-
   return yield* call([exchangeProgram, exchangeProgram.withdrawRewards], {
     exchangeAccount: userExchangeAccount.address,
     owner: wallet.publicKey,
@@ -874,8 +873,7 @@ export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
   pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
-  const state = yield* select(getAddressFromIndex(action.payload.tokenIndex))
-  state.forEach(element => {
+  action.payload.tokenAddresses.forEach(element => {
     if (element !== '') {
       pendingUpdatesVaults[element] = action.payload.price
     }

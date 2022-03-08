@@ -158,6 +158,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
               synthetic: pairIndex !== null ? pairs[pairIndex].syntheticData.symbol : null
             }}
             vaultType={pairIndex !== null ? pairs[pairIndex].vaultType : 0}
+            page={'vault'}
           />
         ) : null}
       </Grid>
@@ -174,17 +175,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
                 pairs[pairIndex].maxBorrow.scale
               )
             )}
-            liqRatio={Number(
-              Math.pow(
-                Number(
-                  printBN(
-                    pairs[pairIndex].liquidationThreshold.val,
-                    pairs[pairIndex].liquidationThreshold.scale
-                  )
-                ),
-                -1
-              ) * 100
-            )}
+            liqRatio={pairs[pairIndex].liquidationThreshold}
             cRatio={
               Math.pow(
                 Number(
@@ -200,14 +191,8 @@ export const WrappedBorrow: React.FC<IProp> = ({
             borrowedAddress={pairs[pairIndex].synthetic}
             borrowedSign={pairs[pairIndex].syntheticData.symbol}
             amountSign={'$'}
-            callPrice={printBN(
-              pairs[pairIndex].collateralData.price.val,
-              pairs[pairIndex].collateralData.price.scale
-            )}
-            borrPrice={printBN(
-              pairs[pairIndex].syntheticData.price.val,
-              pairs[pairIndex].syntheticData.price.scale
-            )}
+            callPrice={pairs[pairIndex].collateralData.price}
+            borrPrice={pairs[pairIndex].syntheticData.price}
             interestRate={printBN(
               pairs[pairIndex].debtInterestRate.val,
               pairs[pairIndex].debtInterestRate.scale - 4
@@ -216,6 +201,7 @@ export const WrappedBorrow: React.FC<IProp> = ({
               Number(printBN(pairs[pairIndex].openFee.val, pairs[pairIndex].openFee.scale)) * 100
             }
             vaultType={pairs[pairIndex].vaultType}
+            page={'vault'}
           />
         ) : (
           <BorrowInfo
@@ -225,16 +211,17 @@ export const WrappedBorrow: React.FC<IProp> = ({
             borrowed={' '}
             cRatio={0}
             limit={0}
-            liqRatio={0}
+            liqRatio={{ val: new BN(0), scale: 0 }}
             collateralAddress={DEFAULT_PUBLICKEY}
             borrowedAddress={DEFAULT_PUBLICKEY}
             borrowedSign={' '}
             amountSign={'$'}
-            callPrice={'0'}
-            borrPrice={'0'}
+            callPrice={{ val: new BN(0), scale: 0 }}
+            borrPrice={{ val: new BN(0), scale: 0 }}
             interestRate={'0'}
             openFee={0}
             vaultType={-1}
+            page={'vault'}
           />
         )}
       </Grid>

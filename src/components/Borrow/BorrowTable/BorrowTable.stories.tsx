@@ -16,6 +16,7 @@ storiesOf('Borrow/table', module).add('default', () =>
         cRatio: '125.645',
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
+        liquidationShortPrice: '125.32654',
         maxBorrow: '300',
         minCRatio: 100,
         lastAccumulatedInterestRate: { val: new BN(0), scale: 0 },
@@ -33,6 +34,7 @@ storiesOf('Borrow/table', module).add('default', () =>
         cRatio: '125.645',
         interestRate: '25.4545',
         liquidationPrice: '125.32654',
+        liquidationShortPrice: '125.32654',
         maxBorrow: '300',
         minCRatio: 100,
         lastAccumulatedInterestRate: { val: new BN(0), scale: 0 },
@@ -52,6 +54,7 @@ storiesOf('Borrow/table', module).add('default', () =>
           }}
           active={{ collateral: 'Sol', synthetic: 'xUSD' }}
           vaultType={0}
+          page={'vault'}
         />
       </div>
     )

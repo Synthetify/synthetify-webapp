@@ -1,4 +1,9 @@
-import { calculateAmountBorrow, calculateCRatio, calculateLiqPrice } from '@consts/borrowUtils'
+import {
+  calculateAmountBorrow,
+  calculateCRatio,
+  calculateLiqPrice,
+  calculateLiqPriceShort
+} from '@consts/borrowUtils'
 import { ACCURACY, DEFAULT_PUBLICKEY, ORACLE_OFFSET } from '@consts/static'
 import {
   divUp,
@@ -423,6 +428,7 @@ export interface UserVaults extends VaultEntry {
   maxBorrow: string
   interestRate: string
   liquidationPrice: string
+  liquidationShortPrice: string
   vaultType: number
 }
 
@@ -483,6 +489,15 @@ export const getUserVaults = createSelector(
         .sub(userVault.syntheticAmount.val)
         .mul(new BN(10).pow(new BN(openFeeBN.decimal + 2)))
         .div(new BN(10).pow(new BN(openFeeBN.decimal + 2)).add(openFeeBN.BN))
+      const liquidationPrice = calculateLiqPrice(
+        allAssetPrice[currentVault.collateral.toString()].val,
+        userVault.collateralAmount.val,
+        allAssetPrice[currentVault.synthetic.toString()].val,
+        userVault.syntheticAmount.val,
+        currentVault.liquidationThreshold,
+        allSynthetics[currentVault.synthetic.toString()].supply.scale,
+        currentVault.collateralAmount.scale
+      )
       vaultData.push({
         ...userVault,
         borrowed: addressToAssetSymbol[currentVault.synthetic.toString()] || 'XYZ',
@@ -502,10 +517,10 @@ export const getUserVaults = createSelector(
           allSynthetics[currentVault.synthetic.toString()].supply.scale
         ),
         interestRate: interestRate.toString(),
-        liquidationPrice: calculateLiqPrice(
+        liquidationPrice: liquidationPrice,
+        liquidationShortPrice: calculateLiqPriceShort(
           allAssetPrice[currentVault.collateral.toString()].val,
           userVault.collateralAmount.val,
-          allAssetPrice[currentVault.synthetic.toString()].val,
           userVault.syntheticAmount.val,
           currentVault.liquidationThreshold,
           allSynthetics[currentVault.synthetic.toString()].supply.scale,
@@ -582,4 +597,15 @@ export const getGeneralTotals = createSelector(
   }
 )
 
+export const getLeverageVaultPairs = createSelector(
+  vaults,
+  synthetics,
+  (allVaults, allSynthetics) => {
+    return Object.values(allVaults).filter(
+      vault =>
+        typeof allSynthetics[vault.synthetic.toString()] !== 'undefined' &&
+        typeof allSynthetics[vault.collateral.toString()] !== 'undefined'
+    )
+  }
+)
 export default exchangeSelectors

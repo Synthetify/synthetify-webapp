@@ -150,6 +150,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       marginRight: 6
     }
+  },
+  emptyName: {
+    color: colors.navy.grey,
+    width: '100%',
+    ...typography.heading3
+  },
+  emptyIcon: {
+    width: 70,
+    height: 70
+  },
+  emptyIconGrid: {
+    width: '148px',
+    height: '148px',
+    marginTop: '36px',
+    borderRadius: '50%',
+    background: '#3A3A8525',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }))
 
