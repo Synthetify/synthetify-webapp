@@ -41,7 +41,6 @@ import xAVAXIcon from './icons/xavax.svg'
 import xDOTIcon from './icons/xdot.svg'
 import closeXIcon from './svg/closeX.svg'
 
-
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
   xSNY: xSNYIcon,
