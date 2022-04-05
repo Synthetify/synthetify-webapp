@@ -866,13 +866,16 @@ export function* swapHandler(): Generator {
 export function* swaplineSwapHandler(): Generator {
   yield* takeEvery(actions.swaplineSwap, handleSwaplineSwap)
 }
-const pendingUpdates: { [x: string]: Decimal } = {}
+const pendingUpdates: { [x: string]: { status: number; price: Decimal } } = {}
 const pendingUpdatesVaults: { [x: string]: Decimal } = {}
 
 export function* batchAssetsPrices(
   action: PayloadAction<PayloadTypes['setAssetPrice']>
 ): Generator {
-  pendingUpdates[action.payload.tokenIndex.toString()] = action.payload.price
+  pendingUpdates[action.payload.tokenIndex.toString()] = {
+    price: action.payload.price,
+    status: action.payload.status
+  }
   action.payload.tokenAddresses.forEach(element => {
     if (element !== '') {
       pendingUpdatesVaults[element] = action.payload.price
