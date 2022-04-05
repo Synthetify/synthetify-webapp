@@ -238,6 +238,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down('xs')]: {
+      ...importantStyles(typography.body3),
       height: 48,
       marginTop: 24
     }
