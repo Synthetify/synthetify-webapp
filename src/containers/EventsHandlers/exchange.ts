@@ -107,6 +107,7 @@ const ExhcangeEvents = () => {
               actions.setAssetPrice({
                 tokenAddresses: table,
                 tokenIndex: index,
+                status: data.status,
                 price: {
                   val: new BN(data.price * 10 ** asset.price.scale),
                   scale: asset.price.scale

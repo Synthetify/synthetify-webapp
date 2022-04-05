@@ -157,6 +157,17 @@ const ExchangePlot: React.FC<IProps> = ({
               />
             </Typography>
           </Grid>
+          {tokenName === 'xGOLD' ? (
+            <Grid
+              container
+              item
+              className={classes.infoPosition}
+              justifyContent='space-between'
+              alignItems='center'>
+              <Typography className={classes.positionTitle}>Unit:</Typography>
+              <Typography className={classes.positionValue}>Troy ounce (ozt)</Typography>
+            </Grid>
+          ) : null}
         </Grid>
       </Grid>
       <Grid container item className={classes.plotWrapper}>
