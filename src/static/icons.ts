@@ -56,6 +56,7 @@ const icons: { [key: string]: string } = {
   xLTC: xLTCIcon,
   xDOGE: xDOGEIcon,
   xLUNA: xLUNAIcon,
+  xGOLD: xGOLDIcon,
   xMKR: xMKRIcon,
   xSUSHI: xSUSHIIcon,
   xUNI: xUNIIcon,
