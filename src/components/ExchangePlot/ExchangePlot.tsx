@@ -165,7 +165,7 @@ const ExchangePlot: React.FC<IProps> = ({
               justifyContent='space-between'
               alignItems='center'>
               <Typography className={classes.positionTitle}>Unit:</Typography>
-              <Typography className={classes.positionValue}>Troy ounce (OZT)</Typography>
+              <Typography className={classes.positionValue}>Troy ounce (ozt)</Typography>
             </Grid>
           ) : null}
         </Grid>
