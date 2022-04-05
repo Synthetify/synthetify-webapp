@@ -74,7 +74,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xLUNA: 'Synthetic LUNA',
   xAVAX: 'Synthetic Avalanche',
   xDOT: 'Synthetic Polkadot',
-  xDOGE: 'Synthetic Dogecoin'
+  xDOGE: 'Synthetic Dogecoin',
+  xGOLD: 'Synthetic Gold'
 }
 
 const MARINADE_PER_POINT = 1.43e-7

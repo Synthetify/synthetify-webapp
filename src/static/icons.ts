@@ -16,6 +16,7 @@ import xSUSHIIcon from './icons/xsushi.svg'
 import xUNIIcon from './icons/xuni.svg'
 import xYFIIcon from './icons/xyfi.svg'
 import xUSDIcon from './icons/xusd.svg'
+import xGOLDIcon from './icons/xgold.svg'
 import WSOLIcon from './icons/wsol.svg'
 import USDCIcon from './icons/usdc.svg'
 import phantomIcon from './svg/phantom.svg'
@@ -39,6 +40,7 @@ import marinadeWhite from './svg/Marinade.svg'
 import xAVAXIcon from './icons/xavax.svg'
 import xDOTIcon from './icons/xdot.svg'
 import closeXIcon from './svg/closeX.svg'
+
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
