@@ -210,6 +210,9 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
     if (!tokenTo) {
       return 'Select output token'
     }
+    if (tokenFrom.status === 0 || tokenTo.status === 0) {
+      return 'Due to price issue, swapping is temporarily disabled'
+    }
     if (tokenFrom.symbol === tokenTo.symbol) {
       return 'Choose another token'
     }
