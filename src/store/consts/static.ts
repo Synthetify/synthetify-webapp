@@ -80,7 +80,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
 
 const MARINADE_PER_POINT = 1.43e-7
 
-const MNDE_WEEK_AMOUNT = 9700
+const MNDE_WEEK_AMOUNT = 19231
 
 export {
   SolanaNetworks,
