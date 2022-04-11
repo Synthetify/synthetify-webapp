@@ -82,7 +82,7 @@ const AVERAGE_MNDE_APY = 28.24
 
 const MARINADE_PER_POINT = 6.62e-7
 
-const MNDE_WEEK_AMOUNT = 9700
+const MNDE_WEEK_AMOUNT = 19231
 
 export {
   SolanaNetworks,
