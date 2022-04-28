@@ -17,6 +17,7 @@ import xUNIIcon from './icons/xuni.svg'
 import xYFIIcon from './icons/xyfi.svg'
 import xUSDIcon from './icons/xusd.svg'
 import xGOLDIcon from './icons/xgold.svg'
+import xC98Icon from './icons/xc98.svg'
 import WSOLIcon from './icons/wsol.svg'
 import USDCIcon from './icons/usdc.svg'
 import phantomIcon from './svg/phantom.svg'
@@ -57,6 +58,7 @@ const icons: { [key: string]: string } = {
   xDOGE: xDOGEIcon,
   xLUNA: xLUNAIcon,
   xGOLD: xGOLDIcon,
+  xC98: xC98Icon,
   xMKR: xMKRIcon,
   xSUSHI: xSUSHIIcon,
   xUNI: xUNIIcon,
