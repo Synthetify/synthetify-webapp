@@ -35,8 +35,8 @@ const MAINNET_RPCS = [
   //   probability: 0.6
   // },
   {
-    // rpc: SolanaNetworks.MAIN_SERUM,
-    rpc: SolanaNetworks.MAIN,
+    rpc: SolanaNetworks.MAIN_SERUM,
+    // rpc: SolanaNetworks.MAIN,
     probability: 1
   }
 ]
