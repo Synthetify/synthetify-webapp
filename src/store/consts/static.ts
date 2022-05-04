@@ -35,8 +35,8 @@ const MAINNET_RPCS = [
   //   probability: 0.6
   // },
   {
-    // rpc: SolanaNetworks.MAIN_SERUM,
-    rpc: SolanaNetworks.MAIN,
+    rpc: SolanaNetworks.MAIN_SERUM,
+    // rpc: SolanaNetworks.MAIN,
     probability: 1
   }
 ]
@@ -79,7 +79,9 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xC98: 'Synthetic xC98'
 }
 
-const MARINADE_PER_POINT = 1.43e-7
+const AVERAGE_MNDE_APY = 28.24
+
+const MARINADE_PER_POINT = 6.62e-7
 
 const MNDE_WEEK_AMOUNT = 19231
 
