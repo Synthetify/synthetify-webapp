@@ -1,7 +1,7 @@
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { printBN } from '@consts/utils'
 import { Divider, Grid, Popover, Slider, Typography } from '@material-ui/core'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import React from 'react'
 import useStyles from './style'

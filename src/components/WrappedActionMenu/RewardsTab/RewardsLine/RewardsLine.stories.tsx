@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { colors } from '@static/theme'
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import Rewards1 from '@static/svg/rewards1.svg'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 import { Provider } from 'react-redux'
 import { store } from '@store/index'

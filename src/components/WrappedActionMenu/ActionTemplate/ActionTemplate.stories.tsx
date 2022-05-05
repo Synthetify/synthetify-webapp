@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import ActionTemplate from '@components/WrappedActionMenu/ActionTemplate/ActionTemplate'
 import { action } from '@storybook/addon-actions'
 import { colors } from '@static/theme'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 storiesOf('WrappedActionMenu/ActionContent', module).add('{template}', () => (
   <div style={{ maxWidth: 800, backgroundColor: colors.navy.component, padding: '30px' }}>
