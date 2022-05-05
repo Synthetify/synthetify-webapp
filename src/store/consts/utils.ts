@@ -6,7 +6,7 @@ import { Decimal } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 export const tou64 = (amount: BN | String) => {
   // eslint-disable-next-line new-cap
-  return u64.fromBuffer(new BN(amount.toString()).toBuffer())
+  return u64.fromBuffer(Buffer.from(amount.toString()))
 }
 export const transformBN = (amount: BN): string => {
   // eslint-disable-next-line new-cap
