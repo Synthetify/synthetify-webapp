@@ -12,7 +12,7 @@ const loremHint =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc imperdiet varius orci.'
 
 storiesOf('WrappedActionMenu/RewardsTab', module)
-  .addDecorator((Story) => <Provider store={store}>{<Story />}</Provider>)
+  .addDecorator(Story => <Provider store={store}>{<Story />}</Provider>)
   .add('amount per round line', () => (
     <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>
       <RewardsLine

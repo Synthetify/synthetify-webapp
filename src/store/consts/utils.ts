@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { RoundData } from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { BN } from '@project-serum/anchor'
 import { ICollateral, ISynthetic } from '@reducers/exchange'
