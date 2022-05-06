@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import KeyValue from '@components/WrappedActionMenu/KeyValue/KeyValue'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { colors } from '@static/theme'
 
 storiesOf('WrappedActionMenu/KeyValue', module).add('Available to withdraw', () => (

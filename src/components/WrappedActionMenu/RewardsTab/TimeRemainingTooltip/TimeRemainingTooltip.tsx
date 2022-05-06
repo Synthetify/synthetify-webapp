@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import React, { useEffect, useState } from 'react'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { displayDate } from '@consts/utils'
 import { useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
@@ -21,7 +21,7 @@ export interface ITimeRemainingTooltipInterface {
 }
 
 export const CountDown: React.FC<
-Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement' | 'isPopoverOpen' | 'setIsPopoverOpen'>
+  Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement' | 'isPopoverOpen' | 'setIsPopoverOpen'>
 > = ({ timeRemainingEndSlot, slot, hint }) => {
   const classes = useStyles()
 
@@ -42,7 +42,7 @@ Omit<ITimeRemainingTooltipInterface, 'icon' | 'placement' | 'isPopoverOpen' | 's
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeRemaining(time => {
+      setTimeRemaining((time: BN) => {
         if (time.eqn(0)) {
           return time
         }

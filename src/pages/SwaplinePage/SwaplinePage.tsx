@@ -6,7 +6,7 @@ import { swaplinePairs } from '@selectors/solanaWallet'
 import useStyles from './style'
 import { SwapInfo } from '@components/SwapInfo/SwapInfo'
 import { printDecimal } from '@consts/utils'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 export const SwaplinePage: React.FC = () => {
   const classes = useStyles()

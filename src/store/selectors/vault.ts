@@ -1,7 +1,7 @@
 import { printBN } from '@consts/utils'
 import { IVault, vaultSliceName } from '@reducers/vault'
 import { createSelector } from '@reduxjs/toolkit'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { keySelectors, AnyProps } from './helpers'
 import { currentlySelected } from './leverage'
 

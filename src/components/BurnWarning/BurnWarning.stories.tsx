@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
 import BurnWarning from './BurnWarning'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 storiesOf('Modals/burnWarning', module)
   .addDecorator(withKnobs)

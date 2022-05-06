@@ -1,7 +1,7 @@
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PublicKey } from '@solana/web3.js'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { PayloadType } from './types'
 import {
   ExchangeState,
