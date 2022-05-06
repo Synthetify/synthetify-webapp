@@ -6,7 +6,9 @@ import { Decimal } from '@synthetify/sdk/lib/exchange'
 import * as R from 'remeda'
 export const tou64 = (amount: BN | String) => {
   // eslint-disable-next-line new-cap
-  return u64.fromBuffer(Buffer.from(amount.toString()))
+  // @ts-expect-error
+  // eslint-disable-next-line new-cap
+  return new u64(amount.toString()) // this works but ts has some problem with using u64 constructor
 }
 export const transformBN = (amount: BN): string => {
   // eslint-disable-next-line new-cap
