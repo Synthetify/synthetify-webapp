@@ -1,7 +1,15 @@
 import { all, call, put, SagaGenerator, select, spawn, takeEvery, throttle } from 'typed-redux-saga'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { actions, ExchangeAccount, PayloadTypes, SwaplineSwapType } from '@reducers/exchange'
-import { collaterals, exchangeAccount, swap, swaplineSwap, xUSDAddress } from '@selectors/exchange'
+import {
+  assets,
+  collaterals,
+  exchangeAccount,
+  swap,
+  swaplineSwap,
+  synthetics,
+  xUSDAddress
+} from '@selectors/exchange'
 import { accounts, address, tokenAccount } from '@selectors/solanaWallet'
 import testAdmin from '@consts/testAdmin'
 import { DEFAULT_PUBLICKEY, DEFAULT_STAKING_DATA } from '@consts/static'
@@ -369,7 +377,7 @@ export function* withdrawCollateralWSOL(amount: BN): SagaGenerator<string> {
   const exchangeProgram = yield* call(getExchangeProgram)
   const userExchangeAccount = yield* select(exchangeAccount)
   const wallet = yield* call(getWallet)
-
+  const allAssets = yield* select(assets)
   const allCollaterals = yield* select(collaterals)
   const wrappedSolAccount = Keypair.generate()
   const connection = yield* call(getConnection)
@@ -388,10 +396,11 @@ export function* withdrawCollateralWSOL(amount: BN): SagaGenerator<string> {
     wrappedSolAccount.publicKey,
     wallet.publicKey
   )
+  const wrappedSolPriceFeed = allAssets[3].feedAddress
   const updatePricesIx = yield* call(
     [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
     exchangeProgram.state.assetsList,
-    [wrappedSolAccount.publicKey]
+    [wrappedSolPriceFeed]
   )
   const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawInstruction], {
     amount,
@@ -475,11 +484,12 @@ export function* handleSwap(): Generator {
 
   try {
     const wallet = yield* call(getWallet)
-
+    const connection = yield* call(getConnection)
     const tokensAccounts = yield* select(accounts)
     const exchangeProgram = yield* call(getExchangeProgram)
     const userExchangeAccount = yield* select(exchangeAccount)
-
+    const allAssets = yield* select(assets)
+    const allSynthetics = yield* select(synthetics)
     let fromAddress = tokensAccounts[swapData.fromToken.toString()]
       ? tokensAccounts[swapData.fromToken.toString()].address
       : null
@@ -492,7 +502,31 @@ export function* handleSwap(): Generator {
     if (toAddress == null) {
       toAddress = yield* call(createAccount, swapData.toToken)
     }
-    const txid = yield* call([exchangeProgram, exchangeProgram.swap], {
+    const updateAsset: PublicKey[] = []
+    if (swapData.fromToken.toString() !== '83LGLCm7QKpYZbX8q4W2kYWbtt8NJBwbVwEepzkVnJ9y') {
+      const fromTokenPriceFeed = allAssets[allSynthetics[swapData.fromToken.toString()].assetIndex]
+      updateAsset.push(fromTokenPriceFeed.feedAddress)
+    }
+    if (swapData.toToken.toString() !== '83LGLCm7QKpYZbX8q4W2kYWbtt8NJBwbVwEepzkVnJ9y') {
+      const toTokenPriceFeed = allAssets[allSynthetics[swapData.toToken.toString()].assetIndex]
+      updateAsset.push(toTokenPriceFeed.feedAddress)
+    }
+
+    const updatePricesIx = yield* call(
+      [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
+      exchangeProgram.state.assetsList,
+      updateAsset
+    )
+
+    const approveIx = Token.createApproveInstruction(
+      TOKEN_PROGRAM_ID,
+      fromAddress,
+      exchangeProgram.exchangeAuthority,
+      wallet.publicKey,
+      [],
+      tou64(swapData.amount)
+    )
+    const swapIx = yield* call([exchangeProgram, exchangeProgram.swapInstruction], {
       amount: swapData.amount,
       exchangeAccount: userExchangeAccount.address,
       owner: wallet.publicKey,
@@ -501,6 +535,13 @@ export function* handleSwap(): Generator {
       userTokenAccountIn: fromAddress,
       userTokenAccountFor: toAddress
     })
+    const tx: Transaction = new Transaction().add(updatePricesIx).add(approveIx).add(swapIx)
+    const blockhash = yield* call([connection, connection.getRecentBlockhash])
+    tx.feePayer = wallet.publicKey
+    tx.recentBlockhash = blockhash.blockhash
+    const signedTx = yield* call([wallet, wallet.signTransaction], tx)
+    const txid = yield* call(sendAndConfirmRawTransaction, connection, signedTx.serialize())
+
     yield* put(actions.swapDone({ txid: txid[1] }))
 
     yield put(
@@ -512,6 +553,7 @@ export function* handleSwap(): Generator {
       })
     )
   } catch (error) {
+    console.log(error)
     yield* put(actions.swapDone({ txid: '12' }))
     yield put(
       snackbarsActions.add({

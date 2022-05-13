@@ -3,7 +3,8 @@ import {
   synthetics,
   getLeverageVaultPairs,
   effectiveFeeData,
-  exchangeAccount
+  exchangeAccount,
+  assets
 } from '@selectors/exchange'
 import { accounts } from '@selectors/solanaWallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
@@ -406,6 +407,7 @@ export function* openLeveragePosition(
   const feeData = yield* select(effectiveFeeData)
   const syntheticState = yield* select(synthetics)
   const userVaultState = yield* select(userVaults)
+  const allAsstets = yield* select(assets)
   const cRatio = Math.pow(
     Number(
       printBN(
@@ -421,13 +423,17 @@ export function* openLeveragePosition(
     collateral: currentlySelectedState.vaultCollateral,
     vaultType: vaultsPair[currentlySelectedState.vaultAddress.toString()].vaultType
   })
+
   const updatePricesIx = yield* call(
     [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
     exchangeProgram.state.assetsList,
     [
-      currentlySelectedState.vaultSynthetic,
-      currentlySelectedState.vaultCollateral,
-      currentlySelectedState.actualCollateral
+      allAsstets[syntheticState[currentlySelectedState.vaultSynthetic.toString()].assetIndex]
+        .feedAddress,
+      allAsstets[syntheticState[currentlySelectedState.vaultCollateral.toString()].assetIndex]
+        .feedAddress,
+      allAsstets[syntheticState[currentlySelectedState.actualCollateral.toString()].assetIndex]
+        .feedAddress
     ]
   )
   let currentCollateralfromAddress = tokensAccounts[
@@ -600,6 +606,8 @@ export function* closeLeveragePosition(
   const connection = yield* call(getConnection)
   const userVaultsData = yield* select(userVaults)
   const exchangeProgram = yield* call(getExchangeProgram)
+  const allAsstets = yield* select(assets)
+  const syntheticState = yield* select(synthetics)
   const cRatio = Math.pow(
     Number(
       printBN(
@@ -628,9 +636,12 @@ export function* closeLeveragePosition(
     [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
     exchangeProgram.state.assetsList,
     [
-      currentlySelectedState.vaultAddress,
-      currentlySelectedState.vaultCollateral,
-      currentlySelectedState.vaultSynthetic
+      allAsstets[syntheticState[currentlySelectedState.vaultSynthetic.toString()].assetIndex]
+        .feedAddress,
+      allAsstets[syntheticState[currentlySelectedState.vaultCollateral.toString()].assetIndex]
+        .feedAddress,
+      allAsstets[syntheticState[currentlySelectedState.actualCollateral.toString()].assetIndex]
+        .feedAddress
     ]
   )
   const approveAllSwapIx = Token.createApproveInstruction(
