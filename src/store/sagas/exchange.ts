@@ -389,8 +389,9 @@ export function* withdrawCollateralWSOL(amount: BN): SagaGenerator<string> {
     wallet.publicKey
   )
   const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
+    [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
+    exchangeProgram.state.assetsList,
+    [wrappedSolAccount.publicKey]
   )
   const withdrawIx = yield* call([exchangeProgram, exchangeProgram.withdrawInstruction], {
     amount,

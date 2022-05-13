@@ -422,8 +422,13 @@ export function* openLeveragePosition(
     vaultType: vaultsPair[currentlySelectedState.vaultAddress.toString()].vaultType
   })
   const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
+    [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
+    exchangeProgram.state.assetsList,
+    [
+      currentlySelectedState.vaultSynthetic,
+      currentlySelectedState.vaultCollateral,
+      currentlySelectedState.actualCollateral
+    ]
   )
   let currentCollateralfromAddress = tokensAccounts[
     currentlySelectedState.actualCollateral.toString()
@@ -620,8 +625,13 @@ export function* closeLeveragePosition(
     userVaultsData[currentlySelectedState.vaultAddress.toString()]
   )
   const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
+    [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
+    exchangeProgram.state.assetsList,
+    [
+      currentlySelectedState.vaultAddress,
+      currentlySelectedState.vaultCollateral,
+      currentlySelectedState.vaultSynthetic
+    ]
   )
   const approveAllSwapIx = Token.createApproveInstruction(
     TOKEN_PROGRAM_ID,
