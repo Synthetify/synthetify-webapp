@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PayloadType } from './types'
 import { PublicKey } from '@solana/web3.js'
 import { Decimal, Vault } from '@synthetify/sdk/lib/exchange'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 export interface ILeveragePair extends Vault {
   collateralSymbol: string

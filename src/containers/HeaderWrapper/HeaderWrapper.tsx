@@ -20,7 +20,16 @@ export const HeaderWrapper: React.FC = () => {
   useEffect(() => {
     let enumWallet = WalletType.PHANTOM
     const sessionWallet = localStorage.getItem('SYNTHETIFY_SESSION_WALLET')
-    if (sessionWallet === 'phantom' || sessionWallet === 'sollet' || sessionWallet === 'math' || sessionWallet === 'solflare' || sessionWallet === 'coin98' || sessionWallet === 'slope' || sessionWallet === 'clover') {
+    if (
+      sessionWallet === 'phantom' ||
+      sessionWallet === 'sollet' ||
+      sessionWallet === 'math' ||
+      sessionWallet === 'solflare' ||
+      sessionWallet === 'coin98' ||
+      sessionWallet === 'slope' ||
+      sessionWallet === 'clover' ||
+      sessionWallet === 'nightly'
+    ) {
       switch (sessionWallet) {
         case 'phantom':
           enumWallet = WalletType.PHANTOM
@@ -43,6 +52,9 @@ export const HeaderWrapper: React.FC = () => {
         case 'clover':
           enumWallet = WalletType.CLOVER
           break
+        case 'nightly':
+          enumWallet = WalletType.NIGHTLY
+          break
         default:
           enumWallet = WalletType.PHANTOM
       }
@@ -54,10 +66,10 @@ export const HeaderWrapper: React.FC = () => {
   return (
     <Header
       address={walletAddress}
-      onNetworkSelect={(chosen) => {
+      onNetworkSelect={chosen => {
         dispatch(actions.setNetwork(chosen))
       }}
-      onWalletSelect={(chosen) => {
+      onWalletSelect={chosen => {
         if (walletAddress.equals(DEFAULT_PUBLICKEY)) {
           setTypeOfWallet(chosen)
         }
@@ -65,8 +77,12 @@ export const HeaderWrapper: React.FC = () => {
       }}
       landing={location.pathname.substr(1)}
       walletConnected={walletStatus === Status.Initialized}
-      onFaucet={() => { dispatch(walletActions.airdrop()) }}
-      onDisconnectWallet={() => { dispatch(walletActions.disconnect()) }}
+      onFaucet={() => {
+        dispatch(walletActions.airdrop())
+      }}
+      onDisconnectWallet={() => {
+        dispatch(walletActions.disconnect())
+      }}
       typeOfNetwork={currentNetwork}
       typeOfWallet={typeOfWallet}
     />

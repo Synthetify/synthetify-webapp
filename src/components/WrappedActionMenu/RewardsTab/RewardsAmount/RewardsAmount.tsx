@@ -3,7 +3,7 @@ import { Grid, Typography } from '@material-ui/core'
 import AnimatedNumber from '@components/AnimatedNumber'
 import HintIcon from '@static/svg/questionMark.svg'
 import { printBN } from '@consts/utils'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 import { Decimal } from '@synthetify/sdk/lib/exchange'
 import Rewards from '@static/svg/rewards.svg'
@@ -51,20 +51,23 @@ export const RewardsAmount: React.FC<IRewardsAmountProps> = ({ amountToClaim }) 
         />
         {+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 10000
           ? 'K '
-          : (+printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 1000000 ? 'M ' : ' ')
-        }
-          SNY
+          : +printBN(amountToClaim.val || new BN(0), amountToClaim.scale || 0) >= 1000000
+          ? 'M '
+          : ' '}
+        SNY
       </Typography>
       <MobileTooltip
         mobilePlacement='bottom-start'
         desktopPlacement='bottom-start'
-        hint={(
+        hint={
           <>
             <img src={Rewards} alt='' className={classes.rewardsIcon} />
             <Typography className={classes.title}>Rewards</Typography>
-            <p style={{ margin: 0, color: colors.navy.lightGrey }}>Amount of SNY tokens you can withdraw </p>
+            <p style={{ margin: 0, color: colors.navy.lightGrey }}>
+              Amount of SNY tokens you can withdraw{' '}
+            </p>
           </>
-        )}
+        }
         anchor={<img src={HintIcon} alt='' className={classes.questionMark} />}
       />
     </Grid>
