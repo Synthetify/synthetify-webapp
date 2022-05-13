@@ -1,7 +1,7 @@
 import React from 'react'
 import { printBN, showPrefix } from '@consts/utils'
 import { Typography } from '@material-ui/core'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import classNames from 'classnames'
 import useStyles from './style'
 import AnimatedNumber from '@components/AnimatedNumber'

@@ -17,7 +17,7 @@ import {
 } from '@selectors/vault'
 import { actions as snackbarsActions } from '@reducers/snackbars'
 import { printBN, stringToMinDecimalBN } from '@consts/utils'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { Decimal, Vault, VaultEntry } from '@synthetify/sdk/lib/exchange'
 import { VAULTS_MAP } from '@synthetify/sdk/lib/utils'

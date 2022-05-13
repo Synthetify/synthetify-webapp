@@ -11,7 +11,7 @@ import {
 import { RewardsLine } from '@components/WrappedActionMenu/RewardsTab/RewardsLine/RewardsLine'
 import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
 import { RewardsAmount } from '@components/WrappedActionMenu/RewardsTab/RewardsAmount/RewardsAmount'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 import Rewards1 from '@static/svg/rewards1.svg'
 import Rewards2 from '@static/svg/rewards2.svg'
@@ -63,7 +63,7 @@ const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
   )
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setTimeRemaining(time => {
+      setTimeRemaining((time: BN) => {
         if (time.eqn(0)) {
           return time
         }

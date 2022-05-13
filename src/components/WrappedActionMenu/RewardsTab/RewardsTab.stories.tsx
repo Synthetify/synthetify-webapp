@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import RewardsTab from '@components/WrappedActionMenu/RewardsTab/RewardsTab'
 import { colors } from '@static/theme'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 
 storiesOf('WrappedActionMenu/RewardsTab', module).add('rewards tab', () => (
   <div style={{ backgroundColor: colors.navy.component, padding: '10px' }}>

@@ -3,7 +3,9 @@ import {
   synthetics,
   getLeverageVaultPairs,
   effectiveFeeData,
-  exchangeAccount
+  exchangeAccount,
+  assets,
+  xUSDAddress
 } from '@selectors/exchange'
 import { accounts } from '@selectors/solanaWallet'
 import { getExchangeProgram } from '@web3/programs/exchange'
@@ -406,6 +408,8 @@ export function* openLeveragePosition(
   const feeData = yield* select(effectiveFeeData)
   const syntheticState = yield* select(synthetics)
   const userVaultState = yield* select(userVaults)
+  const allAsstets = yield* select(assets)
+  const xUSD = yield* select(xUSDAddress)
   const cRatio = Math.pow(
     Number(
       printBN(
@@ -421,10 +425,7 @@ export function* openLeveragePosition(
     collateral: currentlySelectedState.vaultCollateral,
     vaultType: vaultsPair[currentlySelectedState.vaultAddress.toString()].vaultType
   })
-  const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
-  )
+
   let currentCollateralfromAddress = tokensAccounts[
     currentlySelectedState.actualCollateral.toString()
   ]
@@ -514,6 +515,35 @@ export function* openLeveragePosition(
     toAddress,
     cRatio
   )
+  const updateAssests: PublicKey[] = []
+
+  if (currentlySelectedState.vaultSynthetic.toString() !== xUSD.toString()) {
+    updateAssests.push(
+      allAsstets[syntheticState[currentlySelectedState.vaultSynthetic.toString()].assetIndex]
+        .feedAddress
+    )
+  }
+  if (currentlySelectedState.vaultCollateral.toString() !== xUSD.toString()) {
+    updateAssests.push(
+      allAsstets[syntheticState[currentlySelectedState.vaultCollateral.toString()].assetIndex]
+        .feedAddress
+    )
+  }
+  if (
+    currentlySelectedState.actualCollateral.toString() !== xUSD.toString() &&
+    currentlySelectedState.actualCollateral.toString() !==
+      currentlySelectedState.vaultCollateral.toString()
+  ) {
+    updateAssests.push(
+      allAsstets[syntheticState[currentlySelectedState.actualCollateral.toString()].assetIndex]
+        .feedAddress
+    )
+  }
+  const updatePricesIx = yield* call(
+    [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
+    exchangeProgram.state.assetsList,
+    updateAssests
+  )
 
   const tx1 = new Transaction().add(updatePricesIx)
   if (!currentlySelectedState.vaultEntryExist) {
@@ -595,6 +625,10 @@ export function* closeLeveragePosition(
   const connection = yield* call(getConnection)
   const userVaultsData = yield* select(userVaults)
   const exchangeProgram = yield* call(getExchangeProgram)
+  const allAsstets = yield* select(assets)
+  const syntheticState = yield* select(synthetics)
+  const xUSD = yield* select(xUSDAddress)
+
   const cRatio = Math.pow(
     Number(
       printBN(
@@ -619,9 +653,26 @@ export function* closeLeveragePosition(
     currentlySelectedState.leverage,
     userVaultsData[currentlySelectedState.vaultAddress.toString()]
   )
+
+  const updateAssests: PublicKey[] = []
+
+  if (currentlySelectedState.vaultSynthetic.toString() !== xUSD.toString()) {
+    updateAssests.push(
+      allAsstets[syntheticState[currentlySelectedState.vaultSynthetic.toString()].assetIndex]
+        .feedAddress
+    )
+  }
+  if (currentlySelectedState.vaultCollateral.toString() !== xUSD.toString()) {
+    updateAssests.push(
+      allAsstets[syntheticState[currentlySelectedState.vaultCollateral.toString()].assetIndex]
+        .feedAddress
+    )
+  }
+
   const updatePricesIx = yield* call(
-    [exchangeProgram, exchangeProgram.updatePricesInstruction],
-    exchangeProgram.state.assetsList
+    [exchangeProgram, exchangeProgram.updateSelectedPricesInstruction],
+    exchangeProgram.state.assetsList,
+    updateAssests
   )
   const approveAllSwapIx = Token.createApproveInstruction(
     TOKEN_PROGRAM_ID,

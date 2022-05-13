@@ -1,6 +1,6 @@
 import React from 'react'
 import { CardMedia, Grid, Typography } from '@material-ui/core'
-import BN from 'bn.js'
+import { BN } from '@project-serum/anchor'
 import { printBN, showPrefix } from '@consts/utils'
 import useStyles from './style'
 import icons from '@static/icons'

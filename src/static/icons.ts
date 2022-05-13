@@ -40,6 +40,7 @@ import marinadeWhite from './svg/Marinade.svg'
 import xAVAXIcon from './icons/xavax.svg'
 import xDOTIcon from './icons/xdot.svg'
 import closeXIcon from './svg/closeX.svg'
+import nightlyIcon from './svg/nightly.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -84,7 +85,8 @@ const icons: { [key: string]: string } = {
   exclamation: exclamation,
   marinadeWhite: marinadeWhite,
   xAVAX: xAVAXIcon,
-  closeX: closeXIcon
+  closeX: closeXIcon,
+  nightly: nightlyIcon
 }
 
 export default icons
