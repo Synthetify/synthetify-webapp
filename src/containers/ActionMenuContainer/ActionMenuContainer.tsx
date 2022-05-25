@@ -32,7 +32,7 @@ import { Status } from '@reducers/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import BurnWarning from '@components/BurnWarning/BurnWarning'
 import { XUSD_DECIMALS } from '@synthetify/sdk/lib/utils'
-import { getMndePrice, printBNtoBN } from '@consts/utils'
+import { getMndePrice, getLidoPrice, printBNtoBN } from '@consts/utils'
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
@@ -89,11 +89,19 @@ export const ActionMenuContainer: React.FC = () => {
   }, [userStaked, withdrawIndex])
 
   const [mndePrice, setMndePrice] = useState(0)
+  const [lidoPrice, setLidoPrice] = useState(0)
 
   useEffect(() => {
     getMndePrice()
       .then(val => {
         setMndePrice(val)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    getLidoPrice()
+      .then(val => {
+        setLidoPrice(val)
       })
       .catch(error => {
         console.log(error)
@@ -256,7 +264,8 @@ export const ActionMenuContainer: React.FC = () => {
           amountPerRoundValue: stakingState.amountPerRound,
           collateralValue: collateralValue,
           mSolTvl,
-          mndePrice
+          mndePrice,
+          lidoPrice
         }}
         depositTokens={walletStatus === Status.Initialized ? userCollaterals : []}
         withdrawTokens={userStaked}

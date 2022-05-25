@@ -414,6 +414,21 @@ export const getMSolTvl = createSelector(collaterals, assets, (allCollaterals, a
   return +transformBN(tvl)
 })
 
+export const getstSolTvl = createSelector(collaterals, assets, (allCollaterals, allAssets) => {
+  const stSolIndex = Object.values(allCollaterals).findIndex(coll => coll.symbol === 'stSOL')
+  if (stSolIndex === -1) {
+    return 0
+  }
+  const stSolAmount = Object.values(allCollaterals)[stSolIndex].reserveBalance
+  const stSolPrice = allAssets[Object.values(allCollaterals)[stSolIndex].assetIndex].price
+
+  const tvl = stSolAmount.val
+    .mul(stSolPrice.val)
+    .div(new BN(10 ** (stSolAmount.scale + ORACLE_OFFSET - ACCURACY)))
+
+  return +transformBN(tvl)
+})
+
 export const getHaltedState = createSelector(state, allState => {
   return allState.halted
 })
