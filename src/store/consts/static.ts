@@ -79,8 +79,10 @@ const descrpitionForSymbol: { [key: string]: string } = {
 }
 
 const MARINADE_PER_POINT = 1.43e-7
+const LIDO_PER_POINT = 1.43e-7
 
 const MNDE_WEEK_AMOUNT = 19231
+const LIDO_WEEK_AMOUNT = 19231
 
 export {
   SolanaNetworks,
@@ -93,5 +95,7 @@ export {
   NetworkType,
   descrpitionForSymbol,
   MARINADE_PER_POINT,
-  MNDE_WEEK_AMOUNT
+  MNDE_WEEK_AMOUNT,
+  LIDO_PER_POINT,
+  LIDO_WEEK_AMOUNT
 }
