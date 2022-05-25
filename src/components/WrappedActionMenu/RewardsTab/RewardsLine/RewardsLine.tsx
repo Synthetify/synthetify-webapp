@@ -87,7 +87,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
       <AnimatedNumber
         value={userMarinadeAmount}
         duration={300}
-        formatValue={(value: string) => +Number(value).toFixed(9)}
+        formatValue={(value: string) => +Number(value).toFixed(3)}
       />
       {' MNDE'}
     </>
@@ -100,7 +100,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
       <AnimatedNumber
         value={userLidoAmount}
         duration={300}
-        formatValue={(value: string) => +Number(value).toFixed(9)}
+        formatValue={(value: string) => +Number(value).toFixed(3)}
       />
       {' Lido'}
     </>
