@@ -21,6 +21,7 @@ export interface IRewardsLineProps {
   icon: string
   tooltipPlacement: Placement
   userMarinadeAmount?: number
+  userLidoAmount?: number
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -34,7 +35,8 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   hint,
   icon,
   tooltipPlacement,
-  userMarinadeAmount
+  userMarinadeAmount,
+  userLidoAmount
 }) => {
   const classes = useStyles()
   const processedNonBracket = (
@@ -91,6 +93,19 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
     </>
   ) : null
 
+  const Lido = userLidoAmount ? (
+    <>
+      {' + '}
+      <img className={classes.marinadeIcon} src={icons.marinade} />{' '}
+      <AnimatedNumber
+        value={userLidoAmount}
+        duration={300}
+        formatValue={(value: string) => +Number(value).toFixed(9)}
+      />
+      {' Lido'}
+    </>
+  ) : null
+
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   return (
     <ClickAwayListener onClickAway={() => setIsPopoverOpen(false)}>
@@ -116,6 +131,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
               {processedNonBracket}
               {processedBracket}
               {marinade}
+              {Lido}
             </Typography>
           </Grid>
         </Grid>

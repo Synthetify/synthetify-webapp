@@ -5,9 +5,9 @@ import icons from '@static/icons'
 import { colors, theme } from '@static/theme'
 import MobileTooltip from '@components/MobileTooltip/MobileTooltip'
 interface IProp {
-  marinade: string
+  lido: string
 }
-export const DebtShares: React.FC<IProp> = ({ marinade }) => {
+export const Lido: React.FC<IProp> = ({ lido }) => {
   const classes = useStyles()
 
   const isSmDown = useMediaQuery(theme.breakpoints.down('sm'))
@@ -19,11 +19,11 @@ export const DebtShares: React.FC<IProp> = ({ marinade }) => {
       hint={
         <>
           <Grid style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between' }}>
-            <Typography className={classes.title}>Average MNDE APY</Typography>{' '}
+            <Typography className={classes.title}>Average Lido APY</Typography>{' '}
             <img src={icons.marinadeWhite} alt='' className={classes.marinadeIconTooltip} />
           </Grid>
           <p style={{ margin: 0, color: colors.navy.lightGrey }}>
-            To receive MNDE tokens, you need to have deposited mSOL and minted debt. Tokens are
+            To receive Lido tokens, you need to have deposited stSOL and minted debt. Tokens are
             distributed once a week. Snapshots are taken once a day to determine, how much tokens
             you would receive.
           </p>
@@ -33,7 +33,7 @@ export const DebtShares: React.FC<IProp> = ({ marinade }) => {
         <Grid className={classes.root}>
           <img src={icons.marinade} alt='' className={classes.marinadeIcon} />
           <Typography className={classes.mnde}>
-            {marinade}% {!isSmDown ? 'MNDE' : ''}
+            {lido}% {!isSmDown ? 'Lido' : ''}
           </Typography>
         </Grid>
       }

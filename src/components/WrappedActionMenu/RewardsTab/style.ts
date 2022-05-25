@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   button: {
     ...typography.subtitle1,
-    width: 130
+    width: 210
   },
   amount: {
     display: 'flex',

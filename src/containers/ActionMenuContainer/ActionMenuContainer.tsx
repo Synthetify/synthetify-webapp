@@ -14,7 +14,8 @@ import {
   getSNYPrice,
   getCollateralValue,
   getSyntheticsStructure,
-  getMSolTvl
+  getMSolTvl,
+  getstSolTvl
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import {
@@ -70,6 +71,7 @@ export const ActionMenuContainer: React.FC = () => {
   const userLidoAmount = useSelector(userLidoredRewardAmount)
   const xUSDBalance = useSelector(tokenBalance(xUSDTokenAddress))
   const mSolTvl = useSelector(getMSolTvl)
+  const stSolTvl = useSelector(getstSolTvl)
 
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
@@ -267,6 +269,7 @@ export const ActionMenuContainer: React.FC = () => {
           amountPerRoundValue: stakingState.amountPerRound,
           collateralValue: collateralValue,
           mSolTvl,
+          stSolTvl,
           mndePrice,
           lidoPrice
         }}
