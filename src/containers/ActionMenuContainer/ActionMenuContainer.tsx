@@ -24,7 +24,8 @@ import {
   userMaxDeposit,
   status,
   userMarinadeRewardAmount,
-  tokenBalance
+  tokenBalance,
+  userLidoredRewardAmount
 } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -66,6 +67,7 @@ export const ActionMenuContainer: React.FC = () => {
   const SNYPrice = useSelector(getSNYPrice)
   const collateralValue = useSelector(getCollateralValue)
   const userMarinadeAmount = useSelector(userMarinadeRewardAmount)
+  const userLidoAmount = useSelector(userLidoredRewardAmount)
   const xUSDBalance = useSelector(tokenBalance(xUSDTokenAddress))
   const mSolTvl = useSelector(getMSolTvl)
 
@@ -236,6 +238,7 @@ export const ActionMenuContainer: React.FC = () => {
           SNYPrice: SNYPrice,
           allDebtValue: allDebtValue,
           userMarinadeAmount: userMarinadeAmount,
+          userLidoAmount: userLidoAmount,
           slot: slotState,
           roundLength: stakingState.roundLength,
           userDebtShares: userDebtSharesState,

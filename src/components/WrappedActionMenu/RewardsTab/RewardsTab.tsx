@@ -48,6 +48,7 @@ export interface IRewardsProps {
   amountPerRoundValue: Decimal
   collateralValue: number
   userMarinadeAmount: number
+  userLidoAmount: number
   mndePrice: number
   lidoPrice: number
   mSolTvl: number
