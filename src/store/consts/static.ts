@@ -79,7 +79,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xC98: 'Synthetic Coin98'
 }
 
-const AVERAGE_MNDE_APY = 28.24
+//const AVERAGE_MNDE_APY = 28.24
 
 const MARINADE_PER_POINT = 6.62e-7
 
