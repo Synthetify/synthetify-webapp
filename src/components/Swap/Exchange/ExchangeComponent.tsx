@@ -199,7 +199,7 @@ export const ExchangeComponent: React.FC<IExchangeComponent> = ({
 
     return num.toFixed(0)
   }
-  console.log(tokens)
+
   const getButtonMessage = (
     amountFrom: string,
     tokenFrom: ExchangeSyntheticTokens | null,
