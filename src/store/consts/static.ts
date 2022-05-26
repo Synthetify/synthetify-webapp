@@ -76,7 +76,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xDOT: 'Synthetic Polkadot',
   xDOGE: 'Synthetic Dogecoin',
   xGOLD: 'Synthetic Gold',
-  xC98: 'Synthetic xC98'
+  xC98: 'Synthetic Coin98'
 }
 
 const AVERAGE_MNDE_APY = 28.24
