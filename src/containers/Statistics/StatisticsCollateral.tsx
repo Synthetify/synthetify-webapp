@@ -15,7 +15,6 @@ export const StatisticsCollateral: React.FC = () => {
         color: colors[index]
       }
     })
-
   return (
     <>
       <StatsCollateralChart data={CollateralData}/>

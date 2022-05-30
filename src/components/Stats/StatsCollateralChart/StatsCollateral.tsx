@@ -17,7 +17,6 @@ export interface IProps {
 
 export const StatsCollateralChart: React.FC<IProps> = ({ data }) => {
   const classes = useStyles()
-
   data.sort((a, b) => (b.percent - a.percent))
 
   const getCoinsName = (data: CoinToChart[]) => {
