@@ -17,6 +17,7 @@ import xUNIIcon from './icons/xuni.svg'
 import xYFIIcon from './icons/xyfi.svg'
 import xUSDIcon from './icons/xusd.svg'
 import xGOLDIcon from './icons/xgold.svg'
+import xC98Icon from './icons/xc98.svg'
 import WSOLIcon from './icons/wsol.svg'
 import USDCIcon from './icons/usdc.svg'
 import phantomIcon from './svg/phantom.svg'
@@ -29,6 +30,7 @@ import mainnet from './svg/mainnet.svg'
 import devnet from './svg/devnet.svg'
 import testnet from './svg/testnet.svg'
 import renBTC from './svg/renBTC.svg'
+import stSOL from './svg/stSOL.svg'
 import whETH from './icons/whETH.png'
 import whFTT from './icons/whFTT.svg'
 import slope from './svg/slope.svg'
@@ -57,6 +59,7 @@ const icons: { [key: string]: string } = {
   xLTC: xLTCIcon,
   xDOGE: xDOGEIcon,
   xLUNA: xLUNAIcon,
+  xC98: xC98Icon,
   xGOLD: xGOLDIcon,
   xMKR: xMKRIcon,
   xSUSHI: xSUSHIIcon,
@@ -64,7 +67,7 @@ const icons: { [key: string]: string } = {
   xYFI: xYFIIcon,
   xDOT: xDOTIcon,
   WSOL: WSOLIcon,
-  stSOL: WSOLIcon,
+  stSOL: stSOL,
   USDC: USDCIcon,
   phantom: phantomIcon,
   sollet: solletIcon,

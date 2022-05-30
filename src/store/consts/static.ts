@@ -64,7 +64,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xSOL: 'Synthetic Solana',
   xSRM: 'Synthetic Serum',
   xUSD: 'Synthetic USD',
-  stSOL: 'Staked Solana',
+  stSOL: 'Lido Staked SOL',
   WSOL: 'Wrapped Solana',
   USDC: 'USD Coin',
   renBTC: 'renBTC',
@@ -75,7 +75,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xAVAX: 'Synthetic Avalanche',
   xDOT: 'Synthetic Polkadot',
   xDOGE: 'Synthetic Dogecoin',
-  xGOLD: 'Synthetic Gold'
+  xGOLD: 'Synthetic Gold',
+  xC98: 'Synthetic Coin98'
 }
 
 const MARINADE_PER_POINT = 1.43e-7
