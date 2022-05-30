@@ -177,7 +177,6 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
 
   const lidoAPR = stSolTvl === 0 ? 0 : (((LIDO_WEEK_AMOUNT * lidoPrice) / stSolTvl) * 52) / 100
   const lidoAPY = ((lidoAPR / 52 + 1) ** 52 - 1) * 10000
-  console.log(lidoAPY.toFixed(2))
 
   const rewardsLines: {
     [index: number]: {

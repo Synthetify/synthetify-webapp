@@ -425,7 +425,6 @@ export const getstSolTvl = createSelector(collaterals, assets, (allCollaterals, 
   const tvl = stSolAmount.val
     .mul(stSolPrice.val)
     .div(new BN(10 ** (stSolAmount.scale + ORACLE_OFFSET - ACCURACY)))
-
   return +transformBN(tvl)
 })
 

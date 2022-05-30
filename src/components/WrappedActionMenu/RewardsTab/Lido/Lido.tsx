@@ -20,7 +20,7 @@ export const Lido: React.FC<IProp> = ({ lido }) => {
         <>
           <Grid style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between' }}>
             <Typography className={classes.title}>Average Lido APY</Typography>{' '}
-            <img src={icons.marinadeWhite} alt='' className={classes.marinadeIconTooltip} />
+            <img src={icons.LidoIcon} alt='' className={classes.marinadeIconTooltip} />
           </Grid>
           <p style={{ margin: 0, color: colors.navy.lightGrey }}>
             To receive Lido tokens, you need to have deposited stSOL and minted debt. Tokens are
@@ -31,9 +31,9 @@ export const Lido: React.FC<IProp> = ({ lido }) => {
       }
       anchor={
         <Grid className={classes.root}>
-          <img src={icons.marinade} alt='' className={classes.marinadeIcon} />
+          <img src={icons.LidoIcon} alt='' className={classes.marinadeIcon} />
           <Typography className={classes.mnde}>
-            {lido}% {!isSmDown ? 'Lido' : ''}
+            {lido}% {!isSmDown ? 'LIDO' : ''}
           </Typography>
         </Grid>
       }
