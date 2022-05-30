@@ -30,6 +30,7 @@ import mainnet from './svg/mainnet.svg'
 import devnet from './svg/devnet.svg'
 import testnet from './svg/testnet.svg'
 import renBTC from './svg/renBTC.svg'
+import stSOL from './svg/stSOL.svg'
 import whETH from './icons/whETH.png'
 import whFTT from './icons/whFTT.svg'
 import slope from './svg/slope.svg'
@@ -66,7 +67,7 @@ const icons: { [key: string]: string } = {
   xYFI: xYFIIcon,
   xDOT: xDOTIcon,
   WSOL: WSOLIcon,
-  stSOL: WSOLIcon,
+  stSOL: stSOL,
   USDC: USDCIcon,
   phantom: phantomIcon,
   sollet: solletIcon,
