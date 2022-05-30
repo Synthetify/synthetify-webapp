@@ -64,7 +64,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xSOL: 'Synthetic Solana',
   xSRM: 'Synthetic Serum',
   xUSD: 'Synthetic USD',
-  stSOL: 'Staked Solana',
+  stSOL: 'Lido Staked SOL',
   WSOL: 'Wrapped Solana',
   USDC: 'USD Coin',
   renBTC: 'renBTC',
