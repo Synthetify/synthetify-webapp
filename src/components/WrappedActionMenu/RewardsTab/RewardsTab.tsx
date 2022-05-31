@@ -21,8 +21,9 @@ import { Placement } from '@components/MobileTooltip/MobileTooltip'
 import Clock from '@static/svg/clock.svg'
 import useStyles from './style'
 import { AverageAPY } from './AverageAPY/AverageAPY'
-import { Marinade } from './Marinade/Marinade'
-import { MNDE_WEEK_AMOUNT } from '@consts/static'
+import { DebtShares } from './Marinade/Marinade'
+import { MNDE_WEEK_AMOUNT, LIDO_WEEK_AMOUNT } from '@consts/static'
+import { Lido } from './Lido/Lido'
 export type RoundType = 'next' | 'current' | 'finished'
 
 export type RoundData = {
@@ -48,8 +49,11 @@ export interface IRewardsProps {
   amountPerRoundValue: Decimal
   collateralValue: number
   userMarinadeAmount: number
+  userLidoAmount: number
   mndePrice: number
+  lidoPrice: number
   mSolTvl: number
+  stSolTvl: number
 }
 
 const Timer: React.FC<{ timeRemainingEndSlot: BN; slot: number }> = ({
@@ -96,7 +100,10 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   allDebtValue,
   userMarinadeAmount,
   mndePrice,
-  mSolTvl
+  userLidoAmount,
+  lidoPrice,
+  mSolTvl,
+  stSolTvl
 }) => {
   const classes = useStyles()
 
@@ -168,6 +175,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   const mndeAPR = mSolTvl === 0 ? 0 : (((MNDE_WEEK_AMOUNT * mndePrice) / mSolTvl) * 52) / 100
   const mndeAPY = ((mndeAPR / 52 + 1) ** 52 - 1) * 10000
 
+  const lidoAPR = stSolTvl === 0 ? 0 : (((LIDO_WEEK_AMOUNT * lidoPrice) / stSolTvl) * 52) / 100
+  const lidoAPY = ((lidoAPR / 52 + 1) ** 52 - 1) * 10000
+
   const rewardsLines: {
     [index: number]: {
       name: string
@@ -236,6 +246,7 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
           {...props}
           slot={slot}
           userMarinadeAmount={index === 1 ? userMarinadeAmount : undefined}
+          userLidoAmount={index === 1 ? userLidoAmount : undefined}
         />
         <Divider className={classes.divider} />
       </Grid>
@@ -245,10 +256,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
   return (
     <Grid container direction='column' justifyContent='space-around'>
       <Grid item className={classes.amount} justifyContent='space-between'>
-        <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
         <AverageAPY avgAPY={(+printBN(avgAPY, 2)).toFixed(2)} />
-        <Marinade marinade={mndeAPY.toFixed(2)} />
-
+        <DebtShares marinade={mndeAPY.toFixed(2)} />
+        <Lido lido={lidoAPY.toFixed(2)} />
         <RewardsAmount amountToClaim={amountToClaim} />
       </Grid>
       <Grid
@@ -266,6 +276,9 @@ export const RewardsTab: React.FC<IRewardsProps> = ({
         justifyContent='flex-end'
         wrap='nowrap'
         className={classes.buttonsWrapper}>
+        <Grid container>
+          <Timer timeRemainingEndSlot={rewardsLines[0].timeRemainingEndSlot} slot={slot} />
+        </Grid>
         <Grid item>
           <OutlinedButton
             color='secondary'

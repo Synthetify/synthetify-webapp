@@ -79,11 +79,11 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xC98: 'Synthetic Coin98'
 }
 
-// const AVERAGE_MNDE_APY = 28.24
-
-const MARINADE_PER_POINT = 6.62e-7
+const MARINADE_PER_POINT = 1.43e-7
+const LIDO_PER_POINT = 1.43e-7
 
 const MNDE_WEEK_AMOUNT = 19231
+const LIDO_WEEK_AMOUNT = 2257.99
 
 export {
   SolanaNetworks,
@@ -96,5 +96,7 @@ export {
   NetworkType,
   descrpitionForSymbol,
   MARINADE_PER_POINT,
-  MNDE_WEEK_AMOUNT
+  MNDE_WEEK_AMOUNT,
+  LIDO_PER_POINT,
+  LIDO_WEEK_AMOUNT
 }

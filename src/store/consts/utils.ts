@@ -292,3 +292,17 @@ export const getMndePrice = async () => {
 
   return mndeData[0].current_price
 }
+
+export const getLidoPrice = async () => {
+  const res = await fetch(
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=lido-dao'
+  )
+
+  if (!res.ok) {
+    return 0
+  }
+
+  const lidoData: Array<{ current_price: number }> = await res.json()
+
+  return lidoData[0].current_price
+}
