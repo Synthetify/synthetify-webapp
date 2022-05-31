@@ -14,7 +14,8 @@ import {
   getSNYPrice,
   getCollateralValue,
   getSyntheticsStructure,
-  getMSolTvl
+  getMSolTvl,
+  getstSolTvl
 } from '@selectors/exchange'
 import { slot } from '@selectors/solanaConnection'
 import {
@@ -24,7 +25,8 @@ import {
   userMaxDeposit,
   status,
   userMarinadeRewardAmount,
-  tokenBalance
+  tokenBalance,
+  userLidoRewardAmount
 } from '@selectors/solanaWallet'
 import { mint, deposit, withdraw, burn } from '@selectors/staking'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
@@ -32,7 +34,7 @@ import { Status } from '@reducers/solanaWallet'
 import { BN } from '@project-serum/anchor'
 import BurnWarning from '@components/BurnWarning/BurnWarning'
 import { XUSD_DECIMALS } from '@synthetify/sdk/lib/utils'
-import { getMndePrice, printBNtoBN } from '@consts/utils'
+import { getMndePrice, getLidoPrice, printBNtoBN } from '@consts/utils'
 export const ActionMenuContainer: React.FC = () => {
   const dispatch = useDispatch()
 
@@ -66,8 +68,10 @@ export const ActionMenuContainer: React.FC = () => {
   const SNYPrice = useSelector(getSNYPrice)
   const collateralValue = useSelector(getCollateralValue)
   const userMarinadeAmount = useSelector(userMarinadeRewardAmount)
+  const userLidoAmount = useSelector(userLidoRewardAmount)
   const xUSDBalance = useSelector(tokenBalance(xUSDTokenAddress))
   const mSolTvl = useSelector(getMSolTvl)
+  const stSolTvl = useSelector(getstSolTvl)
 
   useEffect(() => {
     if (walletStatus === Status.Uninitialized) {
@@ -89,11 +93,19 @@ export const ActionMenuContainer: React.FC = () => {
   }, [userStaked, withdrawIndex])
 
   const [mndePrice, setMndePrice] = useState(0)
+  const [lidoPrice, setLidoPrice] = useState(0)
 
   useEffect(() => {
     getMndePrice()
       .then(val => {
         setMndePrice(val)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    getLidoPrice()
+      .then(val => {
+        setLidoPrice(val)
       })
       .catch(error => {
         console.log(error)
@@ -228,6 +240,7 @@ export const ActionMenuContainer: React.FC = () => {
           SNYPrice: SNYPrice,
           allDebtValue: allDebtValue,
           userMarinadeAmount: userMarinadeAmount,
+          userLidoAmount: userLidoAmount,
           slot: slotState,
           roundLength: stakingState.roundLength,
           userDebtShares: userDebtSharesState,
@@ -256,7 +269,9 @@ export const ActionMenuContainer: React.FC = () => {
           amountPerRoundValue: stakingState.amountPerRound,
           collateralValue: collateralValue,
           mSolTvl,
-          mndePrice
+          stSolTvl,
+          mndePrice,
+          lidoPrice
         }}
         depositTokens={walletStatus === Status.Initialized ? userCollaterals : []}
         withdrawTokens={userStaked}

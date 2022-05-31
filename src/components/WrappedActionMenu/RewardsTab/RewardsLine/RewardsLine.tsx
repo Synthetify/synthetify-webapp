@@ -21,6 +21,7 @@ export interface IRewardsLineProps {
   icon: string
   tooltipPlacement: Placement
   userMarinadeAmount?: number
+  userLidoAmount?: number
 }
 
 export const RewardsLine: React.FC<IRewardsLineProps> = ({
@@ -34,7 +35,8 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   hint,
   icon,
   tooltipPlacement,
-  userMarinadeAmount
+  userMarinadeAmount,
+  userLidoAmount
 }) => {
   const classes = useStyles()
   const processedNonBracket = (
@@ -85,9 +87,22 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
       <AnimatedNumber
         value={userMarinadeAmount}
         duration={300}
-        formatValue={(value: string) => +Number(value).toFixed(9)}
+        formatValue={(value: string) => +Number(value).toFixed(3)}
       />
       {' MNDE'}
+    </>
+  ) : null
+
+  const Lido = userLidoAmount ? (
+    <>
+      {' + '}
+      <img className={classes.marinadeIcon} src={icons.LidoIconBg} />{' '}
+      <AnimatedNumber
+        value={userLidoAmount}
+        duration={300}
+        formatValue={(value: string) => +Number(value).toFixed(4)}
+      />
+      {' LIDO'}
     </>
   ) : null
 
@@ -116,6 +131,7 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
               {processedNonBracket}
               {processedBracket}
               {marinade}
+              {Lido}
             </Typography>
           </Grid>
         </Grid>
