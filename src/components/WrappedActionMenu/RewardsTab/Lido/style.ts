@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       paddingInline: 3
     }
   },
-  marinadeIcon: {
+  lidoIcon: {
     width: 28,
     height: 28,
     paddingRight: '6px',
@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '14px'
     }
   },
-  marinadeIconTooltip: {
-    width: 24
+  lidoIconTooltip: {
+    width: 18
   },
   mnde: {
     ...typography.subtitle2,

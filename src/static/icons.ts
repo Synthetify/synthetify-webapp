@@ -43,7 +43,8 @@ import xAVAXIcon from './icons/xavax.svg'
 import xDOTIcon from './icons/xdot.svg'
 import closeXIcon from './svg/closeX.svg'
 import nightlyIcon from './svg/nightly.svg'
-import LidoIcon from './svg/Lido.svg'
+import lidoIconBg from './svg/LidoBg.svg'
+import lidoIcon from './svg/Lido.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -91,7 +92,8 @@ const icons: { [key: string]: string } = {
   xAVAX: xAVAXIcon,
   closeX: closeXIcon,
   nightly: nightlyIcon,
-  LidoIcon: LidoIcon
+  LidoIconBg: lidoIconBg,
+  lidoIcon: lidoIcon
 }
 
 export default icons
