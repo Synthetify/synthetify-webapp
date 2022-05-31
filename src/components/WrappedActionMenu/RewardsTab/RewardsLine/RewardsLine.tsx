@@ -96,13 +96,13 @@ export const RewardsLine: React.FC<IRewardsLineProps> = ({
   const Lido = userLidoAmount ? (
     <>
       {' + '}
-      <img className={classes.marinadeIcon} src={icons.marinade} />{' '}
+      <img className={classes.marinadeIcon} src={icons.LidoIconBg} />{' '}
       <AnimatedNumber
         value={userLidoAmount}
         duration={300}
         formatValue={(value: string) => +Number(value).toFixed(4)}
       />
-      {' Lido'}
+      {' LIDO'}
     </>
   ) : null
 
