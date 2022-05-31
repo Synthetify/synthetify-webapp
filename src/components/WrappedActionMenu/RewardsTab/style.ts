@@ -45,10 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   time: {
     ...typography.subtitle2,
-    color: colors.navy.grey,
-    [theme.breakpoints.down('xs')]: {
-      ...typography.caption3
-    }
+    color: colors.navy.grey
   },
   rootTimer: {
     width: 'fit-content',
@@ -61,13 +58,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: '87px',
-    [theme.breakpoints.down('sm')]: {
-      paddingInline: 10
-    },
     [theme.breakpoints.down('xs')]: {
-      minWidth: '60px',
-      paddingBlock: 5,
-      paddingInline: 3
+      minWidth: '60px'
     }
   },
   clockIcon: {
