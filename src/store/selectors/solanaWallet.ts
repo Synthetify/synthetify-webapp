@@ -404,7 +404,7 @@ export const userMarinadeRewardAmount = createSelector(
     )
   }
 )
-export const userLidoredRewardAmount = createSelector(
+export const userLidoRewardAmount = createSelector(
   collaterals,
   exchangeAccount,
   userDebtShares,
