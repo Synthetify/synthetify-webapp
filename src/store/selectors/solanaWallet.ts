@@ -123,46 +123,48 @@ export const vaultPairs = createSelector(
   balance,
   assetPrice,
   (allVaults, allSynthetics, tokensAccounts, allAssets, wSOLBalance, allAssetPrice) => {
-    return Object.values(allVaults).map(vault => {
-      const syntheticAccount = tokensAccounts[vault.synthetic.toString()]
-      const collateralAccount = tokensAccounts[vault.collateral.toString()]
-      const pair: BorrowedPair = {
-        ...vault,
-        syntheticData: {
-          ...allAssets[allSynthetics[vault.synthetic.toString()].assetIndex],
-          ...allSynthetics[vault.synthetic.toString()],
-          balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
-        },
-        collateralData:
-          addressToAssetSymbol[vault.collateral.toString()] !== 'WSOL'
-            ? {
-                reserveBalance: vault.collateralAmount.scale,
-                symbol: addressToAssetSymbol[vault.collateral.toString()],
-                price:
-                  typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
-                    ? allAssetPrice[vault.collateral.toString()]
-                    : {
-                        val: new BN(100000),
-                        scale: vault.collateralAmount.scale
-                      },
-                balance: collateralAccount ? collateralAccount.balance : new BN(0)
-              }
-            : {
-                reserveBalance: vault.collateralAmount.scale,
-                symbol: addressToAssetSymbol[vault.collateral.toString()],
-                price:
-                  typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
-                    ? allAssetPrice[vault.collateral.toString()]
-                    : {
-                        val: new BN(0),
-                        scale: vault.collateralAmount.scale
-                      },
-                balance: wSOLBalance
-              }
-      }
+    return Object.values(allVaults)
+      .filter(vault => typeof allSynthetics?.[vault.synthetic.toString()] !== 'undefined')
+      .map(vault => {
+        const syntheticAccount = tokensAccounts[vault.synthetic.toString()]
+        const collateralAccount = tokensAccounts[vault.collateral.toString()]
+        const pair: BorrowedPair = {
+          ...vault,
+          syntheticData: {
+            ...allAssets[allSynthetics[vault.synthetic.toString()].assetIndex],
+            ...allSynthetics[vault.synthetic.toString()],
+            balance: syntheticAccount ? syntheticAccount.balance : new BN(0)
+          },
+          collateralData:
+            addressToAssetSymbol[vault.collateral.toString()] !== 'WSOL'
+              ? {
+                  reserveBalance: vault.collateralAmount.scale,
+                  symbol: addressToAssetSymbol[vault.collateral.toString()],
+                  price:
+                    typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
+                      ? allAssetPrice[vault.collateral.toString()]
+                      : {
+                          val: new BN(100000),
+                          scale: vault.collateralAmount.scale
+                        },
+                  balance: collateralAccount ? collateralAccount.balance : new BN(0)
+                }
+              : {
+                  reserveBalance: vault.collateralAmount.scale,
+                  symbol: addressToAssetSymbol[vault.collateral.toString()],
+                  price:
+                    typeof allAssetPrice[vault.collateral.toString()] !== 'undefined'
+                      ? allAssetPrice[vault.collateral.toString()]
+                      : {
+                          val: new BN(0),
+                          scale: vault.collateralAmount.scale
+                        },
+                  balance: wSOLBalance
+                }
+        }
 
-      return pair
-    })
+        return pair
+      })
   }
 )
 
