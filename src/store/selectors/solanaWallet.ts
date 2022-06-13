@@ -124,7 +124,11 @@ export const vaultPairs = createSelector(
   assetPrice,
   (allVaults, allSynthetics, tokensAccounts, allAssets, wSOLBalance, allAssetPrice) => {
     return Object.values(allVaults)
-      .filter(vault => typeof allSynthetics?.[vault.synthetic.toString()] !== 'undefined')
+      .filter(
+        vault =>
+          typeof allSynthetics?.[vault.synthetic.toString()] !== 'undefined' &&
+          addressToAssetSymbol[vault.collateral.toString()] !== 'xLUNA'
+      )
       .map(vault => {
         const syntheticAccount = tokensAccounts[vault.synthetic.toString()]
         const collateralAccount = tokensAccounts[vault.collateral.toString()]
