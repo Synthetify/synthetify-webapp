@@ -30,6 +30,9 @@ const getSolanaWallet = (): WalletAdapter => {
   _wallet = new PhantomWalletAdapter()
   return _wallet
 }
+
+let _nightlyConnectAdapter: NightlyConnectWalletAdapter | undefined
+
 // Here we will pass wallet type right
 const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
   let providerUrl
@@ -102,7 +105,10 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         _wallet.connect()
         break
       case WalletType.NIGHTLY_CONNECT:
-        _wallet = new NightlyConnectWalletAdapter()
+        if (!_nightlyConnectAdapter) {
+          _nightlyConnectAdapter = new NightlyConnectWalletAdapter()
+        }
+        _wallet = _nightlyConnectAdapter
         _wallet.on('connect', () => {
           resolve(_wallet)
         })

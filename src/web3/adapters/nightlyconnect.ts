@@ -2,16 +2,19 @@ import EventEmitter from 'eventemitter3'
 import { PublicKey, Transaction } from '@solana/web3.js'
 import { WalletAdapter } from './types'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { AppSolana } from '@nightlylabs/connect'
+import { AppSolana, NightlyConnectModal } from '@nightlylabs/connect'
 
 export class NightlyConnectWalletAdapter extends EventEmitter implements WalletAdapter {
   _publicKey: PublicKey
   _connected: boolean
   _app: AppSolana | undefined
+  _modal: NightlyConnectModal
+
   constructor() {
     super()
     this._connected = false
     this._publicKey = DEFAULT_PUBLICKEY
+    this._modal = new NightlyConnectModal()
   }
 
   get autoApprove() {
@@ -44,20 +47,24 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
 
   async connect() {
     try {
-      const app = await AppSolana.build({
-        additionalInfo: '',
-        application: 'Synthetify',
-        description: 'Test description',
-        icon: 'https://docs.nightly.app/img/logo.png',
-        url: 'ws://localhost:3000/app',
-        onUserConnect: key => {
-          this._publicKey = key
-          this._connected = true
-          this.emit('connect')
-        }
-      })
+      if (!this._app) {
+        const app = await AppSolana.build({
+          additionalInfo: '',
+          application: 'Synthetify',
+          description: 'Test description',
+          icon: 'https://docs.nightly.app/img/logo.png',
+          url: 'ws://localhost:3000/app',
+          onUserConnect: key => {
+            this._publicKey = key
+            this._connected = true
+            this.emit('connect')
+          }
+        })
 
-      this._app = app
+        this._app = app
+      }
+
+      this._modal.openModal(this._app.sessionId)
     } catch (error) {
       console.log(error)
       window.open('https://nightly.app/', '_blank')

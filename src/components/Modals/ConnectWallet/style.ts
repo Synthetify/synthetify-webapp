@@ -4,7 +4,7 @@ import { colors, typography } from '@static/theme'
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     background: colors.navy.component,
-    width: 164,
+    width: 204,
     borderRadius: 10,
     marginTop: 13,
     padding: 8,
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.navy.grey,
     borderRadius: 8,
     padding: 8,
-    width: 150,
+    width: 190,
     display: 'flex',
     cursor: 'pointer',
     '&:hover': {
