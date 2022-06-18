@@ -93,7 +93,8 @@ const icons: { [key: string]: string } = {
   closeX: closeXIcon,
   nightly: nightlyIcon,
   LidoIconBg: lidoIconBg,
-  lidoIcon: lidoIcon
+  lidoIcon: lidoIcon,
+  'nightly connect': nightlyIcon
 }
 
 export default icons
