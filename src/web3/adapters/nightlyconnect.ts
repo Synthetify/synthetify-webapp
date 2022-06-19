@@ -58,6 +58,7 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
             this._publicKey = key
             this._connected = true
             this.emit('connect')
+            this._modal.closeModal()
           }
         })
 
