@@ -55,7 +55,6 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
           icon: 'https://docs.nightly.app/img/logo.png',
           url: 'ws://localhost:3000/app',
           onUserConnect: data => {
-            console.log(data)
             this._publicKey = new PublicKey(Buffer.from(data.publicKey, 'hex'))
             this._connected = true
             this.emit('connect')
