@@ -9,6 +9,7 @@ import { SlopeWalletAdapter } from './adapters/slope'
 import { CloverWalletAdapter } from './adapters/clover'
 import { NightlyWalletAdapter } from './adapters/nightly'
 import { NightlyConnectWalletAdapter } from './adapters/nightlyconnect'
+import { NightlyConnectModal } from '@nightlylabs/connect'
 
 export enum WalletType {
   PHANTOM,
@@ -32,6 +33,7 @@ const getSolanaWallet = (): WalletAdapter => {
 }
 
 let _nightlyConnectAdapter: NightlyConnectWalletAdapter | undefined
+let _nightlyConnectModal: NightlyConnectModal | undefined
 
 // Here we will pass wallet type right
 const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
@@ -105,8 +107,11 @@ const connectWallet = async (wallet: WalletType): Promise<WalletAdapter> => {
         _wallet.connect()
         break
       case WalletType.NIGHTLY_CONNECT:
+        if (!_nightlyConnectModal) {
+          _nightlyConnectModal = new NightlyConnectModal()
+        }
         if (!_nightlyConnectAdapter) {
-          _nightlyConnectAdapter = new NightlyConnectWalletAdapter()
+          _nightlyConnectAdapter = new NightlyConnectWalletAdapter(_nightlyConnectModal)
         }
         _wallet = _nightlyConnectAdapter
         _wallet.on('connect', () => {
