@@ -51,9 +51,9 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
         const app = await AppSolana.build({
           additionalInfo: '',
           application: 'Synthetify',
-          description: 'Test description',
-          icon: 'https://docs.nightly.app/img/logo.png',
-          url: 'ws://localhost:3000/app',
+          description: 'Synthetify - The Future of Synthetic Assests',
+          icon: 'https://synthetify.io/icons/sny.png',
+          url: 'wss://ncproxy.nightly.app/app',
           onUserConnect: data => {
             this._publicKey = new PublicKey(Buffer.from(data.publicKey, 'hex'))
             this._connected = true
