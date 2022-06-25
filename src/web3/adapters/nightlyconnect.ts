@@ -10,11 +10,11 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
   _app: AppSolana | undefined
   _modal: NightlyConnectModal
 
-  constructor(modal: NightlyConnectModal) {
+  constructor() {
     super()
     this._connected = false
     this._publicKey = DEFAULT_PUBLICKEY
-    this._modal = modal
+    this._modal = new NightlyConnectModal()
   }
 
   get autoApprove() {
