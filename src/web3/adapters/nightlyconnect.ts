@@ -55,7 +55,7 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
           icon: 'https://synthetify.io/icons/sny.png',
           url: 'wss://ncproxy.nightly.app/app',
           onUserConnect: data => {
-            this._publicKey = new PublicKey(Buffer.from(data.publicKey, 'hex'))
+            this._publicKey = data.publicKey
             this._connected = true
             this.emit('connect')
             this._modal.closeModal()
