@@ -13,7 +13,3 @@ body {
   background-color: #0C0D2C;
   letter-spacing: -0.02em;
 }
-
-.nightlyConnect_overlay {
-  z-index: 10;
-}

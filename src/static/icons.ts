@@ -45,6 +45,7 @@ import closeXIcon from './svg/closeX.svg'
 import nightlyIcon from './svg/nightly.svg'
 import lidoIconBg from './svg/LidoBg.svg'
 import lidoIcon from './svg/Lido.svg'
+import nightlyConnectIcon from './svg/nightlyConnect.svg'
 
 const icons: { [key: string]: string } = {
   SNY: SNYIcon,
@@ -94,7 +95,7 @@ const icons: { [key: string]: string } = {
   nightly: nightlyIcon,
   LidoIconBg: lidoIconBg,
   lidoIcon: lidoIcon,
-  'nightly connect': nightlyIcon
+  'nightly connect': nightlyConnectIcon
 }
 
 export default icons
