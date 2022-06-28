@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3'
 import { PublicKey, Transaction } from '@solana/web3.js'
 import { WalletAdapter } from './types'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { AppSolana, NightlyConnectModal } from '@nightlylabs/connect'
+import { AppSolana, Network, NightlyConnectModal } from '@nightlylabs/connect'
 
 export class NightlyConnectWalletAdapter extends EventEmitter implements WalletAdapter {
   _publicKey: PublicKey
@@ -65,7 +65,7 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
         this._app = app
       }
 
-      this._modal.openModal(this._app.sessionId)
+      this._modal.openModal(this._app.sessionId, Network.Solana)
     } catch (error) {
       console.log(error)
       window.open('https://nightly.app/', '_blank')
