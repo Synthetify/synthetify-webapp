@@ -15,13 +15,13 @@ jobs:
         with:
           node-version: '16'
       - name: install
-        run: yarn install
+        run: npm i
       - name: Trunk Check
         uses: trunk-io/trunk-action@v0.3.0-beta
       - name: test
-        run: yarn run test
+        run: npm run test
       - name: build
-        run: yarn run build
+        run: npm run build
   upload:
     runs-on: ubuntu-latest
     steps:
