@@ -75,7 +75,8 @@ export const Header: React.FC<IHeader> = ({
     [WalletType.COIN98]: 'coin98',
     [WalletType.SLOPE]: 'slope',
     [WalletType.CLOVER]: 'clover',
-    [WalletType.NIGHTLY]: 'nightly'
+    [WalletType.NIGHTLY]: 'nightly',
+    [WalletType.NIGHTLY_CONNECT]: 'nightly connect'
   }
 
   return (
@@ -139,7 +140,8 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.COIN98,
                 WalletType.SLOPE,
                 WalletType.CLOVER,
-                WalletType.NIGHTLY
+                WalletType.NIGHTLY,
+                WalletType.NIGHTLY_CONNECT
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}
@@ -158,7 +160,9 @@ export const Header: React.FC<IHeader> = ({
                 WalletType.SOLFLARE,
                 WalletType.COIN98,
                 WalletType.SLOPE,
-                WalletType.CLOVER
+                WalletType.CLOVER,
+                WalletType.NIGHTLY,
+                WalletType.NIGHTLY_CONNECT
               ]}
               onSelect={onWalletSelect}
               connected={walletConnected}

@@ -324,6 +324,9 @@ export function* handleConnect(action: PayloadAction<PayloadTypes['connect']>): 
     case WalletType.NIGHTLY:
       enumWallet = 'nightly'
       break
+    case WalletType.NIGHTLY_CONNECT:
+      enumWallet = 'nightly connect'
+      break
     default:
       enumWallet = 'phantom'
   }
