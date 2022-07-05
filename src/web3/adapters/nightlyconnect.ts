@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3'
 import { PublicKey, Transaction } from '@solana/web3.js'
 import { WalletAdapter } from './types'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { AppSolana, Network, NightlyConnectModal } from '@nightlylabs/connect'
+import { AppSolana, NETWORK, NightlyConnectModal } from '@nightlylabs/connect'
 
 export class NightlyConnectWalletAdapter extends EventEmitter implements WalletAdapter {
   _publicKey: PublicKey
@@ -49,10 +49,12 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
     try {
       if (!this._app) {
         const app = await AppSolana.build({
-          additionalInfo: '',
-          application: 'Synthetify',
-          description: 'Synthetify - The Future of Synthetic Assests',
-          icon: 'https://synthetify.io/icons/sny.png',
+          appMetadata: {
+            additionalInfo: '',
+            application: 'Synthetify',
+            description: 'Synthetify - The Future of Synthetic Assests',
+            icon: 'https://synthetify.io/icons/sny.png'
+          },
           url: 'wss://ncproxy.nightly.app/app',
           onUserConnect: data => {
             this._publicKey = data.publicKey
@@ -65,7 +67,7 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
         this._app = app
       }
 
-      this._modal.openModal(this._app.sessionId, Network.Solana)
+      this._modal.openModal(this._app.sessionId, NETWORK.SOLANA)
     } catch (error) {
       console.log(error)
       window.open('https://nightly.app/', '_blank')
