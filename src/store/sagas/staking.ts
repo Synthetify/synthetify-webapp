@@ -136,6 +136,7 @@ export function* handleWithdraw(): Generator {
       })
     )
   } catch (error) {
+    console.log(error)
     yield* put(
       actions.withdrawFailed({ error: error instanceof Error ? error.message : 'Unknown error' })
     )
