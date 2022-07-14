@@ -70,7 +70,6 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
       this._modal.openModal(this._app.sessionId, NETWORK.SOLANA)
     } catch (error) {
       console.log(error)
-      window.open('https://nightly.app/', '_blank')
     }
   }
 
