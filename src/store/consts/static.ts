@@ -82,7 +82,7 @@ const descrpitionForSymbol: { [key: string]: string } = {
 const MARINADE_PER_POINT = 1.43e-7
 const LIDO_PER_POINT = 1.43e-7
 
-const MNDE_WEEK_AMOUNT = 9615
+const MNDE_WEEK_AMOUNT = 5101.9997
 const LIDO_WEEK_AMOUNT = 1128.99
 
 export {
