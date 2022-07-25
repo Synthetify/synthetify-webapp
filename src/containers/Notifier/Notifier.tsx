@@ -24,46 +24,61 @@ const Notifier = () => {
   const currentNetwork: string = useSelector(network)
 
   React.useEffect(() => {
-    notifications.forEach(({ key = '', message, open, variant, txid, isAccount, persist = true }) => {
-      if (!open) {
-        // dismiss snackbar using notistack
-        closeSnackbar(key)
-        return
-      }
-
-      // do nothing if snackbar is already displayed
-      if (key && displayed.includes(key)) return
-      const action = () => (
-
-        txid &&
-        <button className={classes.button} onClick={() => {
-          if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined && !isAccount) {
-            window.open(`https://solana.fm/tx/${txid}?cluster=${currentNetwork.toLowerCase()}-solana`)
-          } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined && !isAccount) {
-            window.open(`https://solana.fm/tx/${txid}`)
-          } else if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && isAccount) {
-            window.open(`https://solana.fm/address/${txid}?cluster=${currentNetwork.toLowerCase()}-solana`)
-          } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && isAccount) {
-            window.open(`https://solana.fm/address/${txid}`)
-          }
-        }}>
-          <span>Details</span>
-        </button>
-      )
-
-      // display snackbar using notistack
-      enqueueSnackbar(message, {
-        key,
-        action: action,
-        variant: variant,
-        persist: persist,
-        onExited: (_event, myKey) => {
-          dispatch(actions.remove(myKey as string))
-          removeDisplayed(myKey as string)
+    notifications.forEach(
+      ({ key = '', message, open, variant, txid, isAccount, persist = true }) => {
+        if (!open) {
+          // dismiss snackbar using notistack
+          closeSnackbar(key)
+          return
         }
-      })
-      storeDisplayed(key)
-    })
+
+        // do nothing if snackbar is already displayed
+        if (key && displayed.includes(key)) return
+        const action = () =>
+          txid && (
+            <button
+              className={classes.button}
+              onClick={() => {
+                if (
+                  currentNetwork.toLocaleLowerCase() !== 'mainnet' &&
+                  txid !== undefined &&
+                  !isAccount
+                ) {
+                  window.open(
+                    `https://solana.fm/tx/${txid}?cluster=${currentNetwork.toLowerCase()}-solana`
+                  )
+                } else if (
+                  currentNetwork.toLocaleLowerCase() === 'mainnet' &&
+                  txid !== undefined &&
+                  !isAccount
+                ) {
+                  window.open(`https://solana.fm/tx/${txid}`)
+                } else if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && isAccount) {
+                  window.open(
+                    `https://solana.fm/address/${txid}?cluster=${currentNetwork.toLowerCase()}-solana`
+                  )
+                } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && isAccount) {
+                  window.open(`https://solana.fm/address/${txid}`)
+                }
+              }}>
+              <span>Details</span>
+            </button>
+          )
+
+        // display snackbar using notistack
+        enqueueSnackbar(message, {
+          key,
+          action: action,
+          variant: variant,
+          persist: persist,
+          onExited: (_event, myKey) => {
+            dispatch(actions.remove(myKey as string))
+            removeDisplayed(myKey as string)
+          }
+        })
+        storeDisplayed(key)
+      }
+    )
   }, [notifications, closeSnackbar, enqueueSnackbar, dispatch])
 
   return null
