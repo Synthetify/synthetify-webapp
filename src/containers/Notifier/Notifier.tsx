@@ -38,13 +38,13 @@ const Notifier = () => {
         txid &&
         <button className={classes.button} onClick={() => {
           if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && txid !== undefined && !isAccount) {
-            window.open('https://explorer.solana.com/tx/' + txid + '?cluster=' + currentNetwork.toLowerCase())
+            window.open(`https://solana.fm/tx/${txid}?cluster=${currentNetwork.toLowerCase()}-solana`)
           } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && txid !== undefined && !isAccount) {
-            window.open('https://explorer.solana.com/tx/' + txid)
+            window.open(`https://solana.fm/tx/${txid}`)
           } else if (currentNetwork.toLocaleLowerCase() !== 'mainnet' && isAccount) {
-            window.open('https://explorer.solana.com/address/' + txid + '?cluster=' + currentNetwork.toLowerCase())
+            window.open(`https://solana.fm/address/${txid}?cluster=${currentNetwork.toLowerCase()}-solana`)
           } else if (currentNetwork.toLocaleLowerCase() === 'mainnet' && isAccount) {
-            window.open('https://explorer.solana.com/address/' + txid)
+            window.open(`https://solana.fm/address/${txid}`)
           }
         }}>
           <span>Details</span>
