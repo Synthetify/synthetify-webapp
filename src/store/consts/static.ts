@@ -19,7 +19,7 @@ enum SolanaNetworks {
   TEST = 'https://api.testnet.solana.com',
   // MAIN = 'https://api.mainnet-beta.solana.com',
   MAIN = 'https://solana--mainnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
-  MAIN_SERUM = 'https://tame-ancient-mountain.solana-mainnet.quiknode.pro/6a9a95bf7bbb108aea620e7ee4c1fd5e1b67cc62',
+  MAIN_SERUM = 'https://ssc-dao.genesysgo.net',
   LOCAL = 'http://127.0.0.1:8899'
 }
 enum NetworkType {
