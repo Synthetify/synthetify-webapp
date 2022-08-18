@@ -50,7 +50,6 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
       if (!this._app) {
         const app = await AppSolana.build({
           appMetadata: {
-            persistent: true,
             additionalInfo: '',
             application: 'Synthetify',
             description: 'Synthetify - The Future of Synthetic Assests',
