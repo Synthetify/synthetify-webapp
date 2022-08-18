@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import { ViteAliases } from 'vite-aliases'
 import react from '@vitejs/plugin-react'
+import rollupNodePolyFill from 'rollup-plugin-polyfill-node'
+
 export default defineConfig({
   plugins: [
     react(),
@@ -10,7 +12,10 @@ export default defineConfig({
     })
   ],
   build: {
-    target: 'es2020'
+    target: 'es2020',
+    rollupOptions: {
+      plugins: [rollupNodePolyFill()]
+    }
   },
   define: {
     'process.env.NODE_DEBUG': 'false'

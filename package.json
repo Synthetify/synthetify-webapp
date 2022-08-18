@@ -133,6 +133,7 @@
     "prettier": "^2.1.0",
     "prettier-config-standard": "^1.0.1",
     "react-app-rewired": "^2.1.6",
+    "rollup-plugin-polyfill-node": "^0.10.2",
     "storybook-addon-material-ui": "^0.9.0-alpha.21",
     "vite-aliases": "^0.8.2",
     "vitest": "^0.0.131"
