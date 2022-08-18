@@ -9,6 +9,9 @@ export default defineConfig({
       depth: 4
     })
   ],
+  build: {
+    target: 'es2020'
+  },
   define: {
     'process.env.NODE_DEBUG': 'false'
   }
