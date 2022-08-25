@@ -58,7 +58,7 @@ const WelcomeModal: React.FC<{
                       <Typography className={classes.text}>{textModal.secondParagraph}</Typography>
                     </Grid>
                     <Grid item>
-                      <ul>
+                      <ul className={classes.oneListItem}>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
                             {textModal.firstPoint}
@@ -70,10 +70,6 @@ const WelcomeModal: React.FC<{
                             .
                           </Typography>
                         </li>
-                      </ul>
-                    </Grid>
-                    <Grid item>
-                      <ul>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
                             <a className={classes.link} href='https://synthetify.io/blog/staking'>
@@ -82,10 +78,6 @@ const WelcomeModal: React.FC<{
                             {textModal.secondPoint}
                           </Typography>
                         </li>
-                      </ul>
-                    </Grid>
-                    <Grid item>
-                      <ul>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
                             <a
@@ -96,10 +88,6 @@ const WelcomeModal: React.FC<{
                             {textModal.thirdPoint}
                           </Typography>
                         </li>
-                      </ul>
-                    </Grid>
-                    <Grid item>
-                      <ul>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
                             <a className={classes.link} href='https://synthetify.io/blog/borrowing'>
@@ -108,10 +96,6 @@ const WelcomeModal: React.FC<{
                             {textModal.fourthPoint}
                           </Typography>
                         </li>
-                      </ul>
-                    </Grid>
-                    <Grid item>
-                      <ul>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
                             <a className={classes.link} href='https://synthetify.io/blog/rewards'>
@@ -137,7 +121,7 @@ const WelcomeModal: React.FC<{
                   </Grid>
                 </Grid>
                 <Grid item className={classes.backgroundFooter}>
-                  <Grid container>
+                  <Grid container className={classes.buttonContainer}>
                     <Grid item>
                       <OutlinedButton
                         className={classes.closeButton}

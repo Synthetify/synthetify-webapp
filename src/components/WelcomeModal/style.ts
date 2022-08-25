@@ -1,31 +1,43 @@
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { colors, typography } from '@static/theme'
 import headerImage from '../../static/png/headerImage.png'
 import footerImage from '../../static/png/footerImage.png'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   backgroundHeader: {
     backgroundImage: `url("${headerImage}")`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     height: 102,
-    width: 456,
+    width: '100%',
     backgroundPosition: 'center'
   },
   container: {
     position: 'relative',
     background: 'none',
     overflow: 'hidden',
-    zIndex: 1
+    zIndex: 1,
+    overflowY: 'scroll',
+    scrollbarWidth: 'none',
+    '&::-webkit-scrollbar': {
+      display: 'none'
+    }
   },
   textContainer: {
-    width: 456,
-    height: 638,
+    maxWidth: 456,
     backgroundColor: colors.navy.component,
     paddingRight: 24,
     paddingLeft: 24
   },
-  textInfo: {},
+  oneListItem: {
+    margin: 0,
+    '&:first-child': {
+      marginTop: 16
+    },
+    '&:last-child': {
+      marginBottom: 16
+    }
+  },
   heading: {
     ...typography.heading4,
     color: colors.white.main,
@@ -53,15 +65,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     height: 102,
-    width: 456
+    width: 456,
+    borderRadius: '0 0 20px 20px'
+  },
+  buttonContainer: {
+    width: '100%',
+    padding: '26px 24px 28px 24px'
   },
   closeButton: {
-    width: 408,
+    width: 456,
     height: 56,
     borderRadius: 8,
     ...typography.body1,
     color: colors.black.background,
-    margin: 26,
     border: 'none'
   }
 }))
