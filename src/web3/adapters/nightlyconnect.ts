@@ -48,8 +48,14 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
   async connect() {
     try {
       if (!this._app) {
-        const persistedId = localStorage.getItem('nightly-id-solana')
+        let persistedId = localStorage.getItem('nightly-id-solana')
         const persistedPubkey = localStorage.getItem('NIGHTLY_CONNECT_PERSISTED_PUBKEY')
+
+        if (persistedId !== null && persistedPubkey === null) {
+          localStorage.removeItem('nightly-id-solana')
+          persistedId = null
+        }
+
         const app = await AppSolana.build({
           appMetadata: {
             additionalInfo: '',
