@@ -70,7 +70,6 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
 
         if (persistedId === app.sessionId && persistedPubkey !== null) {
           this._publicKey = new PublicKey(persistedPubkey)
-          console.log(persistedPubkey)
           this._connected = true
           this.emit('connect')
 
