@@ -18,7 +18,7 @@ const textModal = {
   fifthPoint: '. Remember, to receive these rewards, you have to be a debt pool participant.',
   social: 'If you need any more explanation feel free to DM us on our ',
   conjunction: '  or  ',
-  buttonText: `Let’s begin!`
+  buttonText: 'Let’s begin!'
 }
 
 const WelcomeModal: React.FC<{
