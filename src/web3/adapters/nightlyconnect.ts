@@ -89,6 +89,8 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
       this._app = undefined
       this._publicKey = DEFAULT_PUBLICKEY
       this._connected = false
+      localStorage.removeItem('nightly-id-solana')
+      localStorage.removeItem('NIGHTLY_CONNECT_PERSISTED_PUBKEY')
       this.emit('disconnect')
     }
   }
