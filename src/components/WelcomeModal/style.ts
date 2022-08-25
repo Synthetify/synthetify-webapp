@@ -12,8 +12,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 456,
     backgroundPosition: 'center'
   },
+  container: {
+    position: 'relative',
+    background: 'none',
+    overflow: 'hidden',
+    zIndex: 1
+  },
   textContainer: {
     width: 456,
+    height: 638,
     backgroundColor: colors.navy.component,
     paddingRight: 24,
     paddingLeft: 24
@@ -30,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   text: {
     ...typography.subtitle2,
     color: colors.white.main,
-    paddingTop: 20
+    paddingTop: 12
   },
   textPoint: {
     ...typography.subtitle2,
@@ -40,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: colors.white.main
   },
   backgroundFooter: {
+    backgroundColor: colors.navy.component,
     backgroundImage: `url("${footerImage}")`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',

@@ -1,5 +1,7 @@
-import { Button, Grid, Typography } from '@material-ui/core'
-import React from 'react'
+import { OutlinedButton } from '@components/OutlinedButton/OutlinedButton'
+import { blurContent, unblurContent } from '@consts/uiUtils'
+import { Grid, Popover, Typography } from '@material-ui/core'
+import React, { useEffect } from 'react'
 import useStyles from './style'
 
 const textModal = {
@@ -16,110 +18,134 @@ const textModal = {
   fifthPoint: '. Remember, to receive these rewards, you have to be a debt pool participant.',
   social: 'If you need any more explanation feel free to DM us on our ',
   conjunction: '  or  ',
-  buttonText: `Let's begin!`
+  buttonText: `Let’s begin!`
 }
 
-const WelcomeModal = () => {
+const WelcomeModal: React.FC<{
+  open: boolean
+  handleClose: (value: boolean) => void
+}> = ({ open, handleClose }) => {
   const classes = useStyles()
+
+  const clickClose = () => {
+    unblurContent()
+    handleClose(false)
+  }
+
+  useEffect(() => {
+    if (open) blurContent()
+  }, [open])
+
   return (
-    <Grid container alignItems='center' direction='column'>
-      <Grid item>
-        <Grid container alignItems='center' direction='column'>
-          <Grid item>
-            <Typography className={classes.heading}>{textModal.textHeader}</Typography>
-          </Grid>
-          <Grid item>
-            <Grid container justifyContent='center' direction='column'>
-              <Grid item className={classes.backgroundHeader}></Grid>
-              <Grid item>
-                <Grid container className={classes.textContainer}>
-                  <Grid item>
-                    <Typography className={classes.textPoint}>
-                      {textModal.firstParagraph}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.text}>{textModal.secondParagraph}</Typography>
-                  </Grid>
-                  <Grid item>
-                    <ul>
-                      <li className={classes.pointer}>
-                        <Typography className={classes.textPoint}>
-                          {textModal.firstPoint}
-                          <a className={classes.link} href=''>
-                            tutorial
-                          </a>
-                          .
-                        </Typography>
-                      </li>
-                    </ul>
-                  </Grid>
-                  <Grid item>
-                    <ul>
-                      <li className={classes.pointer}>
-                        <Typography className={classes.textPoint}>
-                          <a className={classes.link} href=''>
-                            Here
-                          </a>
-                          {textModal.secondPoint}
-                        </Typography>
-                      </li>
-                    </ul>
-                  </Grid>
-                  <Grid item>
-                    <ul>
-                      <li className={classes.pointer}>
-                        <Typography className={classes.textPoint}>
-                          <a className={classes.link} href=''>
-                            Liquidation in a nutshell
-                          </a>
-                          {textModal.thirdPoint}
-                        </Typography>
-                      </li>
-                    </ul>
-                  </Grid>
-                  <Grid item>
-                    <ul>
-                      <li className={classes.pointer}>
-                        <Typography className={classes.textPoint}>
-                          <a className={classes.link} href=''>
-                            Introduction to borrowing money
-                          </a>
-                          {textModal.fourthPoint}
-                        </Typography>
-                      </li>
-                    </ul>
-                  </Grid>
-                  <Grid item>
-                    <ul>
-                      <li className={classes.pointer}>
-                        <Typography className={classes.textPoint}>
-                          <a className={classes.link} href=''>
-                            The clue of rewarding
-                          </a>
-                          {textModal.fifthPoint}
-                        </Typography>
-                      </li>
-                    </ul>
-                  </Grid>
-                  <Grid item>
-                    <Typography className={classes.text}>
-                      {textModal.social}
-                      <a className={classes.link} href=''>
-                        Discord
-                      </a>
-                      {textModal.conjunction}
-                      <a className={classes.link} href=''>
-                        Telegram!
-                      </a>
-                    </Typography>
+    <Popover classes={{ paper: classes.container }} open={open}>
+      <Grid container alignItems='center' direction='column'>
+        <Grid item>
+          <Grid container alignItems='center' direction='column'>
+            <Grid item>
+              <Typography className={classes.heading}>{textModal.textHeader}</Typography>
+            </Grid>
+            <Grid item>
+              <Grid container justifyContent='center' direction='column'>
+                <Grid item className={classes.backgroundHeader}></Grid>
+                <Grid item>
+                  <Grid container className={classes.textContainer}>
+                    <Grid item>
+                      <Typography className={classes.textPoint}>
+                        {textModal.firstParagraph}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography className={classes.text}>{textModal.secondParagraph}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <ul>
+                        <li className={classes.pointer}>
+                          <Typography className={classes.textPoint}>
+                            {textModal.firstPoint}
+                            <a
+                              className={classes.link}
+                              href='https://synthetify.io/blog/app-tutorial'>
+                              tutorial
+                            </a>
+                            .
+                          </Typography>
+                        </li>
+                      </ul>
+                    </Grid>
+                    <Grid item>
+                      <ul>
+                        <li className={classes.pointer}>
+                          <Typography className={classes.textPoint}>
+                            <a className={classes.link} href='https://synthetify.io/blog/staking'>
+                              Here
+                            </a>
+                            {textModal.secondPoint}
+                          </Typography>
+                        </li>
+                      </ul>
+                    </Grid>
+                    <Grid item>
+                      <ul>
+                        <li className={classes.pointer}>
+                          <Typography className={classes.textPoint}>
+                            <a
+                              className={classes.link}
+                              href='https://synthetify.io/blog/liquidation'>
+                              Liquidation in a nutshell
+                            </a>
+                            {textModal.thirdPoint}
+                          </Typography>
+                        </li>
+                      </ul>
+                    </Grid>
+                    <Grid item>
+                      <ul>
+                        <li className={classes.pointer}>
+                          <Typography className={classes.textPoint}>
+                            <a className={classes.link} href='https://synthetify.io/blog/borrowing'>
+                              Introduction to borrowing money
+                            </a>
+                            {textModal.fourthPoint}
+                          </Typography>
+                        </li>
+                      </ul>
+                    </Grid>
+                    <Grid item>
+                      <ul>
+                        <li className={classes.pointer}>
+                          <Typography className={classes.textPoint}>
+                            <a className={classes.link} href='https://synthetify.io/blog/rewards'>
+                              The clue of rewarding
+                            </a>
+                            {textModal.fifthPoint}
+                          </Typography>
+                        </li>
+                      </ul>
+                    </Grid>
+                    <Grid item>
+                      <Typography className={classes.text}>
+                        {textModal.social}
+                        <a className={classes.link} href='https://discord.gg/EDrf437'>
+                          Discord
+                        </a>
+                        {textModal.conjunction}
+                        <a className={classes.link} href='https://t.me/synthetify'>
+                          Telegram!
+                        </a>
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item className={classes.backgroundFooter}>
-                <Grid container>
-                  <Grid item>
-                    <button className={classes.closeButton}>{textModal.buttonText}</button>
+                <Grid item className={classes.backgroundFooter}>
+                  <Grid container>
+                    <Grid item>
+                      <OutlinedButton
+                        className={classes.closeButton}
+                        name={textModal.buttonText}
+                        color={'secondary'}
+                        onClick={clickClose}
+                      />
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -127,7 +153,7 @@ const WelcomeModal = () => {
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Popover>
   )
 }
 
