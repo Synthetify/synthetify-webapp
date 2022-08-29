@@ -64,7 +64,9 @@ const WelcomeModal: React.FC<{
                             {textModal.firstPoint}
                             <a
                               className={classes.link}
-                              href='https://synthetify.io/blog/app-tutorial'>
+                              href='https://synthetify.io/blog/app-tutorial'
+                              rel='noopener'
+                              target='_blank'>
                               tutorial
                             </a>
                             .
@@ -72,7 +74,11 @@ const WelcomeModal: React.FC<{
                         </li>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
-                            <a className={classes.link} href='https://synthetify.io/blog/staking'>
+                            <a
+                              className={classes.link}
+                              href='https://synthetify.io/blog/staking'
+                              rel='noopener'
+                              target='_blank'>
                               Here
                             </a>
                             {textModal.secondPoint}
@@ -82,7 +88,9 @@ const WelcomeModal: React.FC<{
                           <Typography className={classes.textPoint}>
                             <a
                               className={classes.link}
-                              href='https://synthetify.io/blog/liquidation'>
+                              href='https://synthetify.io/blog/liquidation'
+                              rel='noopener'
+                              target='_blank'>
                               Liquidation in a nutshell
                             </a>
                             {textModal.thirdPoint}
@@ -90,7 +98,11 @@ const WelcomeModal: React.FC<{
                         </li>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
-                            <a className={classes.link} href='https://synthetify.io/blog/borrowing'>
+                            <a
+                              className={classes.link}
+                              href='https://synthetify.io/blog/borrowing'
+                              rel='noopener'
+                              target='_blank'>
                               Introduction to borrowing money
                             </a>
                             {textModal.fourthPoint}
@@ -98,7 +110,11 @@ const WelcomeModal: React.FC<{
                         </li>
                         <li className={classes.pointer}>
                           <Typography className={classes.textPoint}>
-                            <a className={classes.link} href='https://synthetify.io/blog/rewards'>
+                            <a
+                              className={classes.link}
+                              href='https://synthetify.io/blog/rewards'
+                              rel='noopener'
+                              target='_blank'>
                               The clue of rewarding
                             </a>
                             {textModal.fifthPoint}
@@ -109,11 +125,19 @@ const WelcomeModal: React.FC<{
                     <Grid item>
                       <Typography className={classes.text}>
                         {textModal.social}
-                        <a className={classes.link} href='https://discord.gg/EDrf437'>
+                        <a
+                          className={classes.link}
+                          href='https://discord.gg/EDrf437'
+                          rel='noopener'
+                          target='_blank'>
                           Discord
                         </a>
                         {textModal.conjunction}
-                        <a className={classes.link} href='https://t.me/synthetify'>
+                        <a
+                          className={classes.link}
+                          href='https://t.me/synthetify'
+                          rel='noopener'
+                          target='_blank'>
                           Telegram!
                         </a>
                       </Typography>
