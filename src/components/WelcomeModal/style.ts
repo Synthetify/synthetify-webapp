@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
     overflow: 'hidden',
     zIndex: 1,
     overflowY: 'scroll',
+    boxShadow: 'none',
     scrollbarWidth: 'none',
     '&::-webkit-scrollbar': {
       display: 'none'
