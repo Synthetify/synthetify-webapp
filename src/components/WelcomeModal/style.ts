@@ -10,9 +10,12 @@ const useStyles = makeStyles(() => ({
     backgroundRepeat: 'no-repeat',
     height: 102,
     width: '100%',
-    backgroundPosition: 'center'
+    backgroundPosition: 'center',
+    backgroundColor: colors.navy.component,
+    borderRadius: '20px 20px 0 0'
   },
   container: {
+    height: '100%',
     position: 'relative',
     background: 'none',
     overflow: 'hidden',
