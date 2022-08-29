@@ -6,10 +6,12 @@ export interface Loader {
 }
 export interface IUIStore {
   loader: Loader
+  welcomeModal: boolean
 }
 
 export const defaultState: IUIStore = {
-  loader: { open: true, message: '' }
+  loader: { open: true, message: '' },
+  welcomeModal: true
 }
 export const uiSliceName = 'ui'
 const uiSlice = createSlice({
@@ -18,6 +20,10 @@ const uiSlice = createSlice({
   reducers: {
     setLoader(state, action: PayloadAction<Loader>) {
       state.loader = action.payload
+      return state
+    },
+    setWelcomeModal(state, action: PayloadAction<boolean>) {
+      state.welcomeModal = action.payload
       return state
     }
   }

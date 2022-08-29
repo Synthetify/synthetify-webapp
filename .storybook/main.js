@@ -32,6 +32,7 @@ module.exports = {
       '@consts': resolve('src/store/consts'),
       '@store': resolve('src/store')
     })
+    config.build = { target: 'es2020' }
     config.define = { 'process.env.NODE_DEBUG': 'false' }
     // return the customized config
     return config
