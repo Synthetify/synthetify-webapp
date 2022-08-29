@@ -83,6 +83,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     bottom: -23,
     left: 42
+  },
+  noFoundInfo: {
+    ...typography.heading5,
+    color: colors.gray.light
   }
 }))
 

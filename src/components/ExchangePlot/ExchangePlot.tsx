@@ -12,6 +12,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import { MAX_U64 } from '@consts/static'
 import useStyles from './style'
 import { CopyPopover } from '@components/CopyPopover/CopyPopover'
+import noDataFound from '@static/png/noDataFound.png'
 interface IProps {
   tokenName: string
   supply: Decimal
@@ -170,67 +171,80 @@ const ExchangePlot: React.FC<IProps> = ({
           ) : null}
         </Grid>
       </Grid>
-      <Grid container item className={classes.plotWrapper}>
-        <ResponsiveLine
-          data={[
-            {
-              id: 'plot',
-              data
-            }
-          ]}
-          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-          xScale={{ type: 'point' }}
-          yScale={{
-            type: 'linear',
-            min: getPlotMin(),
-            max: getPlotMax()
-          }}
-          yFormat=' >-.2f'
-          curve='catmullRom'
-          axisTop={null}
-          axisRight={null}
-          axisBottom={null}
-          axisLeft={null}
-          enableGridX={false}
-          enableGridY={false}
-          enablePoints={false}
-          crosshairType='bottom'
-          useMesh={true}
-          colors={isDecreasing() ? colors.green.main : colors.red.main}
-          defs={[
-            linearGradientDef('gradientA', [
-              { offset: 0, color: 'inherit' },
-              { offset: getGradientEnd(), color: 'inherit', opacity: 0 }
-            ])
-          ]}
-          fill={[{ match: '*', id: 'gradientA' }]}
-          tooltip={({
-            point: {
-              data: { x, y }
-            }
-          }) => (
-            <div className={classes.tooltipRoot}>
-              <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
-              <Typography
-                className={classes.tooltipValue}
-                style={{ color: isDecreasing() ? colors.green.main : colors.red.main }}>
-                ${(y as number).toFixed(2)}
-              </Typography>
-              <FiberManualRecordIcon className={classes.tooltipPoint} />
-            </div>
-          )}
-          theme={{
-            crosshair: {
-              line: {
-                stroke: colors.white.main,
-                strokeDasharray: 'none',
-                strokeWidth: 0.5,
-                strokeOpacity: 1
+      <Grid container direction='column' className={classes.plotWrapper}>
+        {tokenName === 'xGOLD' ? (
+          <Grid item>
+            <Grid container alignItems='center' direction='column'>
+              <Grid item>
+                <img src={noDataFound} />
+              </Grid>
+              <Grid item>
+                <Typography className={classes.noFoundInfo}>No data found...</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        ) : (
+          <ResponsiveLine
+            data={[
+              {
+                id: 'plot',
+                data
               }
-            }
-          }}
-          enableArea={true}
-        />
+            ]}
+            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            xScale={{ type: 'point' }}
+            yScale={{
+              type: 'linear',
+              min: getPlotMin(),
+              max: getPlotMax()
+            }}
+            yFormat=' >-.2f'
+            curve='catmullRom'
+            axisTop={null}
+            axisRight={null}
+            axisBottom={null}
+            axisLeft={null}
+            enableGridX={false}
+            enableGridY={false}
+            enablePoints={false}
+            crosshairType='bottom'
+            useMesh={true}
+            colors={isDecreasing() ? colors.green.main : colors.red.main}
+            defs={[
+              linearGradientDef('gradientA', [
+                { offset: 0, color: 'inherit' },
+                { offset: getGradientEnd(), color: 'inherit', opacity: 0 }
+              ])
+            ]}
+            fill={[{ match: '*', id: 'gradientA' }]}
+            tooltip={({
+              point: {
+                data: { x, y }
+              }
+            }) => (
+              <div className={classes.tooltipRoot}>
+                <Typography className={classes.tooltipDate}>{formatDate(x as number)}</Typography>
+                <Typography
+                  className={classes.tooltipValue}
+                  style={{ color: isDecreasing() ? colors.green.main : colors.red.main }}>
+                  ${(y as number).toFixed(2)}
+                </Typography>
+                <FiberManualRecordIcon className={classes.tooltipPoint} />
+              </div>
+            )}
+            theme={{
+              crosshair: {
+                line: {
+                  stroke: colors.white.main,
+                  strokeDasharray: 'none',
+                  strokeWidth: 0.5,
+                  strokeOpacity: 1
+                }
+              }
+            }}
+            enableArea={true}
+          />
+        )}
       </Grid>
     </Grid>
   )
