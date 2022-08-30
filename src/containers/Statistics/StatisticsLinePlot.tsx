@@ -32,13 +32,16 @@ export const StatisticsLinePlot: React.FC = () => {
   }
 
   const findEarlierRecord = () => {
+    const points = statsData.find(element => element.id === timeActive.serieId)?.points
+    const earlierRecord = points?.find(p => p.x === timeActive.timestamp)
+    console.log(earlierRecord)
     return statsData.find(element => element.id === timeActive.serieId)?.points[
       timeActive.index - 1
     ]?.y
   }
   React.useEffect(() => {
     let percentTmp = '0.00'
-    const option: string = (menuOption === 'User count') ? 'userCount' : menuOption.toLowerCase()
+    const option: string = menuOption === 'User count' ? 'userCount' : menuOption.toLowerCase()
     if (option !== timeActive.serieId) {
       const tmp = statsData.find(element => element.id === option)?.points
       if (typeof tmp !== 'undefined') {
@@ -48,6 +51,7 @@ export const StatisticsLinePlot: React.FC = () => {
             100
           ).toFixed(2)
         } else if (tmp[tmp.length - 1].y) {
+          console.log(tmp[tmp.length - 1].y)
           percentTmp = 'NaN'
         }
 
@@ -64,6 +68,7 @@ export const StatisticsLinePlot: React.FC = () => {
       }
       setInfoData({ name: menuOption, value: timeActive.value, percent: percentTmp })
     }
+    console.log(statsData)
   }, [statsData, timeActive, menuOption])
   return (
     <LinePlotContainer
