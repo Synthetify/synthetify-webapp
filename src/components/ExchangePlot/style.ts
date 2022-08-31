@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...typography.body4
   },
   tokenInfo: {
+    minHeight: 131,
     marginTop: 24,
     padding: '8px 16px 10px',
     backgroundColor: 'rgba(12, 13, 44, 0.4)',
