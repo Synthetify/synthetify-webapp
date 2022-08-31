@@ -48,7 +48,6 @@ export const StatisticsLinePlot: React.FC = () => {
             100
           ).toFixed(2)
         } else if (tmp[tmp.length - 1].y) {
-          console.log(tmp[tmp.length - 1].y)
           percentTmp = 'NaN'
         }
 
@@ -65,7 +64,6 @@ export const StatisticsLinePlot: React.FC = () => {
       }
       setInfoData({ name: menuOption, value: timeActive.value, percent: percentTmp })
     }
-    console.log(statsData)
   }, [statsData, timeActive, menuOption])
   return (
     <LinePlotContainer
