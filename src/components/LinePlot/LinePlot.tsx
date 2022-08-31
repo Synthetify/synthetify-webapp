@@ -114,7 +114,6 @@ export const LinePlot: React.FC<IProps> = ({ data, sign, setTimeActive }) => {
           }
         }}
         onMouseMove={event => {
-          console.log(event)
           setTimeActive(
             data.data.length - 30 + event.index,
             event.serieId.toString(),

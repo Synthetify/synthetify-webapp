@@ -32,8 +32,6 @@ export const StatisticsLinePlot: React.FC = () => {
   }
 
   const findEarlierRecord = () => {
-    const points = statsData.find(element => element.id === timeActive.serieId)?.points
-    const earlierRecord = points?.find(p => p.x === timeActive.timestamp)
     return statsData.find(element => element.id === timeActive.serieId)?.points[
       timeActive.index - 1
     ]?.y
