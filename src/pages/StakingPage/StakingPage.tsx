@@ -4,13 +4,25 @@ import useStyles from './style'
 import StakingStats from '@containers/StakingStats/StakingStats'
 import TokenListWrapper from '@containers/TokenListWrapper/TokenListWrapper'
 import ActionMenuContainer from '@containers/ActionMenuContainer/ActionMenuContainer'
+import WelcomeModal from '@components/WelcomeModal/WelcomeModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { actions } from '@reducers/ui'
+import navigationSelectors from '@selectors/ui'
 
 export const StakingPage: React.FC = () => {
   const classes = useStyles()
-
+  const welcomeModalStatus = useSelector(navigationSelectors.welcomeModal)
+  const loader = useSelector(navigationSelectors.loader)
+  const dispatch = useDispatch()
   return (
-    <Fade in={true} >
-      <Grid container classes={{ root: classes.root }} className={classes.slide} item xs={12} justifyContent="center">
+    <Fade in={true}>
+      <Grid
+        container
+        classes={{ root: classes.root }}
+        className={classes.slide}
+        item
+        xs={12}
+        justifyContent='center'>
         <Grid container className={classes.innerWrapper}>
           <Grid container className={classes.pageRow} item xs={12}>
             <StakingStats />
@@ -22,6 +34,10 @@ export const StakingPage: React.FC = () => {
             <TokenListWrapper />
           </Grid>
         </Grid>
+        <WelcomeModal
+          open={welcomeModalStatus && !loader.open}
+          handleClose={value => dispatch(actions.setWelcomeModal(value))}
+        />
       </Grid>
     </Fade>
   )

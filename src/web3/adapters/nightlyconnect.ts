@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3'
 import { PublicKey, Transaction } from '@solana/web3.js'
 import { WalletAdapter } from './types'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
-import { AppSolana, NETWORK, NightlyConnectModal } from '@nightlylabs/connect'
+import { AppSolana, clearPersistedSessionId, clearPersistedSessionPublicKey, getPersistedSessionId, getPersistedSessionPublicKey, NETWORK, NightlyConnectModal, setPersistedSessionPublicKey } from '@nightlylabs/connect-solana'
 
 export class NightlyConnectWalletAdapter extends EventEmitter implements WalletAdapter {
   _publicKey: PublicKey
@@ -48,6 +48,14 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
   async connect() {
     try {
       if (!this._app) {
+        let persistedId = getPersistedSessionId()
+        const persistedPubkey = getPersistedSessionPublicKey()
+
+        if (persistedId !== null && persistedPubkey === null) {
+          clearPersistedSessionId()
+          persistedId = null
+        }
+
         const app = await AppSolana.build({
           appMetadata: {
             additionalInfo: '',
@@ -55,9 +63,9 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
             description: 'Synthetify - The Future of Synthetic Assests',
             icon: 'https://synthetify.io/icons/sny.png'
           },
-          url: 'wss://ncproxy.nightly.app/app',
           onUserConnect: data => {
             this._publicKey = data.publicKey
+            setPersistedSessionPublicKey(data.publicKey.toString())
             this._connected = true
             this.emit('connect')
             this._modal.closeModal()
@@ -65,6 +73,14 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
         })
 
         this._app = app
+
+        if (persistedId === app.sessionId && persistedPubkey !== null) {
+          this._publicKey = new PublicKey(persistedPubkey)
+          this._connected = true
+          this.emit('connect')
+
+          return
+        }
       }
 
       this._modal.openModal(this._app.sessionId, NETWORK.SOLANA)
@@ -78,6 +94,8 @@ export class NightlyConnectWalletAdapter extends EventEmitter implements WalletA
       this._app = undefined
       this._publicKey = DEFAULT_PUBLICKEY
       this._connected = false
+      clearPersistedSessionId()
+      clearPersistedSessionPublicKey()
       this.emit('disconnect')
     }
   }

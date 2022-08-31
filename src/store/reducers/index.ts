@@ -31,9 +31,15 @@ const connectionPersistConfig = {
   transforms: [transformNetwork]
 }
 
+const uiPresistConfig = {
+  key: uiSliceName,
+  storage: storage,
+  whitelist: ['welcomeModal']
+}
+
 const combinedReducers = combineReducers({
   [snackbarsSliceName]: snackbarsReducer,
-  [uiSliceName]: uiReducer,
+  [uiSliceName]: persistReducer(uiPresistConfig, uiReducer),
   [solanaConnectionSliceName]: persistReducer(connectionPersistConfig, solanaConnectionReducer),
   [exchangeSliceName]: exhcangeReducer,
   [solanaWalletSliceName]: solanaWalletReducer,
