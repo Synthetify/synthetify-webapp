@@ -7,16 +7,17 @@ import useStyles from './style'
 const textModal = {
   textHeader: 'Welcome to Synthetify!',
   firstParagraph:
-    'We are glad that you’ve decided to use Synthetify and want us to assist you in this journey',
+    'We are glad that you’ve decided to use Synthetify and want us to assist you in this journey!',
   secondParagraph:
-    'In the beginning, it is obvious to have questions and to have some second thoughts. We have prepared a few articles for you which should help you to findyourself on our page.',
-  firstPoint: 'If you need some clarification about app functioning, you can take a look at our ',
+    'In the beginning, it is normal to have some questions and doubts. We have prepared a few articles to help you find yourself on our website.',
+  firstPoint:
+    'If you need some clarification about the app’s functionalities, you can take a look at our  ',
   secondPoint:
-    ' you have staking described in a few words, and how can you earn while staking tokens.',
-  thirdPoint: ' and tips on how not to be liqudated.',
-  fourthPoint: '. Step by step, it’s easier than you think!',
+    ' you can read the short text about staking, where we described its mechanisms and how you can earn while doing it.',
+  thirdPoint: ' We’ve got you covered with this post with some tips.',
+  fourthPoint: '. - step by step, it’s easier than you think!',
   fifthPoint: '. Remember, to receive these rewards, you have to be a debt pool participant.',
-  social: 'If you need any more explanation feel free to DM us on our ',
+  social: 'If you need any more explanations, feel free to DM us on our ',
   conjunction: '  or  ',
   buttonText: 'Let’s begin!'
 }
@@ -91,7 +92,7 @@ const WelcomeModal: React.FC<{
                               href='https://synthetify.io/blog/liquidation'
                               rel='noopener'
                               target='_blank'>
-                              Liquidation in a nutshell
+                              Want to know how not to be liquidated?
                             </a>
                             {textModal.thirdPoint}
                           </Typography>
