@@ -3,5 +3,10 @@ import React from 'react'
 import WelcomeModal from './WelcomeModal'
 
 storiesOf('modal/welcomeModal', module).add('welcomeModal', () => (
-  <WelcomeModal open={true} handleClose={function (value: boolean): void {}} />
+  <WelcomeModal
+    open={true}
+    handleClose={() => {
+      console.log('textClick')
+    }}
+  />
 ))
