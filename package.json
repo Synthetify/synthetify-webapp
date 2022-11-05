@@ -136,5 +136,13 @@
     "storybook-addon-material-ui": "^0.9.0-alpha.21",
     "vite-aliases": "^0.8.2",
     "vitest": "^0.0.131"
+  },
+  "resolutions": {
+    "immer": "^9.0.6",
+    "set-value": "^4.0.1",
+    "nth-check": "^2.0.1",
+    "node-fetch": "^2.6.1",
+    "trim": "^1.0.1",
+    "glob-parent": "^5.1.2"
   }
 }
