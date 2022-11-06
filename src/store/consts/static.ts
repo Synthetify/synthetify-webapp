@@ -17,9 +17,9 @@ enum SolanaNetworks {
   // DEV = 'https://solana--devnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
   DEV = 'https://api.devnet.solana.com/',
   TEST = 'https://api.testnet.solana.com',
-  MAIN = 'https://api.mainnet-beta.solana.com',
+  MAIN = 'https://rpc.ankr.com/solana',
   // MAIN = 'https://solana--mainnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
-  MAIN_SERUM = 'https://solana--mainnet.datahub.figment.io/apikey/ee90d8826a200fb8f584dc82a7bf543e',
+  MAIN_SERUM = 'https://rpc.ankr.com/solana',
   LOCAL = 'http://127.0.0.1:8899'
 }
 enum NetworkType {
