@@ -82,8 +82,8 @@ const descrpitionForSymbol: { [key: string]: string } = {
 const MARINADE_PER_POINT = 1.43e-7
 const LIDO_PER_POINT = 1.43e-7
 
-const MNDE_WEEK_AMOUNT = 151.99996
-const LIDO_WEEK_AMOUNT = 1128.99
+const MNDE_WEEK_AMOUNT = 0.0001
+const LIDO_WEEK_AMOUNT = 250
 
 export {
   SolanaNetworks,
