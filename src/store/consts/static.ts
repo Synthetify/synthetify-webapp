@@ -20,13 +20,13 @@ enum SolanaNetworks {
   MAIN = 'https://damp-multi-brook.solana-mainnet.discover.quiknode.pro/ac90edd4f808139b1a196c4a91c21acfb4bdd53c',
   // MAIN = 'https://solana--mainnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
   MAIN_SERUM = 'https://damp-multi-brook.solana-mainnet.discover.quiknode.pro/ac90edd4f808139b1a196c4a91c21acfb4bdd53c',
-  LOCAL = 'http://127.0.0.1:8899',
+  LOCAL = 'http://127.0.0.1:8899'
 }
 enum NetworkType {
   DEVNET = 'Devnet',
   TESTNET = 'Testnet',
   LOCALNET = 'Localnet',
-  MAINNET = 'Mainnet',
+  MAINNET = 'Mainnet'
 }
 const MAINNET_RPCS = [
   // when adding new rpc: 1) make sure probability is between 0 and one; 2) sum od all probabilities is equal to 1
@@ -37,8 +37,8 @@ const MAINNET_RPCS = [
   {
     // rpc: SolanaNetworks.MAIN_SERUM,
     rpc: SolanaNetworks.MAIN,
-    probability: 1,
-  },
+    probability: 1
+  }
 ]
 const DEFAULT_PUBLICKEY = new PublicKey(0)
 const ORACLE_OFFSET = 8
@@ -46,12 +46,12 @@ const ACCURACY = 6
 const DEFAULT_STAKING_DATA: UserStaking = {
   amountToClaim: {
     val: new BN(0),
-    scale: 0,
+    scale: 0
   },
   currentRoundPoints: new BN(0),
   finishedRoundPoints: new BN(0),
   nextRoundPoints: new BN(0),
-  lastUpdate: new BN(0),
+  lastUpdate: new BN(0)
 }
 const MAX_U64 = new BN('18446744073709551615')
 
@@ -76,14 +76,14 @@ const descrpitionForSymbol: { [key: string]: string } = {
   xDOT: 'Synthetic Polkadot',
   xDOGE: 'Synthetic Dogecoin',
   xGOLD: 'Synthetic Gold',
-  xC98: 'Synthetic Coin98',
+  xC98: 'Synthetic Coin98'
 }
 
 const MARINADE_PER_POINT = 1.43e-7
 const LIDO_PER_POINT = 1.43e-7
 
-const MNDE_WEEK_AMOUNT = 151.99996
-const LIDO_WEEK_AMOUNT = 1128.99
+const MNDE_WEEK_AMOUNT = 0.001
+const LIDO_WEEK_AMOUNT = 0.001
 
 export {
   SolanaNetworks,
@@ -98,5 +98,5 @@ export {
   MARINADE_PER_POINT,
   MNDE_WEEK_AMOUNT,
   LIDO_PER_POINT,
-  LIDO_WEEK_AMOUNT,
+  LIDO_WEEK_AMOUNT
 }
