@@ -75,10 +75,6 @@ export const HeaderWrapper: React.FC = () => {
   return (
     <div>
       <div className={classes.banner}>
-        <Typography className={classes.textWithIcon}>
-          <img src={twitterIcon} style={{ width: '16px', marginRight: '4px' }} />
-          <Typography style={{ ...typography.subtitle1 }}>New tweet! &nbsp;</Typography>
-        </Typography>
         <Typography style={{ ...typography.subtitle2 }}>
           Check out our Twitter{' '}
           <a
