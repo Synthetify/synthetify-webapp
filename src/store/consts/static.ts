@@ -17,7 +17,7 @@ enum SolanaNetworks {
   // DEV = 'https://solana--devnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
   DEV = 'https://api.devnet.solana.com/',
   TEST = 'https://api.testnet.solana.com',
-  MAIN = 'https://081a1nwnkvcz0slbfyn8fxvhpdqfxgrjtuspsa1l8wg85rbqkruxw4jmq3se5.xyz2.hyperplane.dev',
+  MAIN = 'https://rpc.hellomoon.io/35e9759f-d37d-4fd5-b243-a5f3deeb6d5f',
   // MAIN = 'https://solana--mainnet.datahub.figment.io/apikey/52c60049a8f23b7ca8cc9633c1170036',
   MAIN_SERUM = 'https://081a1nwnkvcz0slbfyn8fxvhpdqfxgrjtuspsa1l8wg85rbqkruxw4jmq3se5.xyz2.hyperplane.dev',
   LOCAL = 'http://127.0.0.1:8899'
