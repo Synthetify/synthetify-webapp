@@ -82,7 +82,7 @@ const ExhcangeEvents = () => {
         })
       })
     }
-    connectEvents()
+    // connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
 
   React.useEffect(() => {
@@ -117,7 +117,7 @@ const ExhcangeEvents = () => {
         })
       })
     }
-    connectEvents()
+    // connectEvents()
   }, [dispatch, allAssets.length, networkStatus])
 
   React.useEffect(() => {
@@ -136,7 +136,7 @@ const ExhcangeEvents = () => {
         dispatch(actions.mergeCollaterals(assets.collaterals.slice(0, assets.headCollaterals)))
       })
     }
-    connectEvents()
+    // connectEvents()
   }, [dispatch, exchangeState.assetsList.toString(), networkStatus])
 
   return null

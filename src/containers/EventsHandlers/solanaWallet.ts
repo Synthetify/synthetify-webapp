@@ -60,7 +60,7 @@ const SolanaWalletEvents = () => {
       })
       setInitializedAccount(tempSet)
     }
-    connectEvents()
+    // connectEvents()
   }, [dispatch, tokensAccounts, networkStatus, walletStat])
 
   return null

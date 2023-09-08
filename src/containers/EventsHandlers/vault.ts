@@ -95,7 +95,7 @@ const VaultEvents = () => {
       setInitializedVault(tempSet)
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    connectEvents()
+    // connectEvents()
   }, [dispatch, exchangeProgram, networkStatus, walletStat, Object.keys(vaultsState).length])
 
   React.useEffect(() => {
@@ -133,7 +133,7 @@ const VaultEvents = () => {
       setInitializedVaultEntry(tempSet)
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    connectEvents()
+    // connectEvents()
   }, [
     dispatch,
     exchangeProgram,
