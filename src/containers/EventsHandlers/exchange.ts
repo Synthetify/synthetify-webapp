@@ -67,22 +67,22 @@ const ExhcangeEvents = () => {
             swapline: data
           })
         )
-        connection.onAccountChange(swaplineAddress, () => {
-          exchangeProgram.getSwapline(swaplineAddress).then(
-            swaplineData => {
-              dispatch(
-                actions.setSwapline({
-                  address: swaplineAddress,
-                  swapline: swaplineData
-                })
-              )
-            },
-            () => {}
-          )
-        })
+        // connection.onAccountChange(swaplineAddress, () => {
+        //   exchangeProgram.getSwapline(swaplineAddress).then(
+        //     swaplineData => {
+        //       dispatch(
+        //         actions.setSwapline({
+        //           address: swaplineAddress,
+        //           swapline: swaplineData
+        //         })
+        //       )
+        //     },
+        //     () => {}
+        //   )
+        // })
       })
     }
-    // connectEvents()
+    connectEvents()
   }, [dispatch, exchangeProgram, networkStatus])
 
   React.useEffect(() => {
