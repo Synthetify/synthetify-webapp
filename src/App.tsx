@@ -18,7 +18,8 @@ setConfig({
 })
 const App: React.FC = () => {
   const persistor = persistStore(store)
-
+  // Redirect to https://twitter.com/synthetify
+  window.location.href = 'https://twitter.com/synthetify'
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
