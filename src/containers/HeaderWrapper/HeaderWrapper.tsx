@@ -8,6 +8,9 @@ import { Status, actions as walletActions } from '@reducers/solanaWallet'
 import { WalletType } from '@web3/wallet'
 import { network } from '@selectors/solanaConnection'
 import { DEFAULT_PUBLICKEY } from '@consts/static'
+import { typography } from '@static/theme'
+import useStyles from './style'
+import { Typography } from '@material-ui/core'
 
 export const HeaderWrapper: React.FC = () => {
   const dispatch = useDispatch()
@@ -16,6 +19,7 @@ export const HeaderWrapper: React.FC = () => {
   const currentNetwork = useSelector(network)
   const location = useLocation()
   const [typeOfWallet, setTypeOfWallet] = useState<WalletType>(WalletType.PHANTOM)
+  const classes = useStyles()
 
   useEffect(() => {
     let enumWallet = WalletType.PHANTOM
@@ -68,28 +72,42 @@ export const HeaderWrapper: React.FC = () => {
   }, [])
 
   return (
-    <Header
-      address={walletAddress}
-      onNetworkSelect={chosen => {
-        dispatch(actions.setNetwork(chosen))
-      }}
-      onWalletSelect={chosen => {
-        if (walletAddress.equals(DEFAULT_PUBLICKEY)) {
-          setTypeOfWallet(chosen)
-        }
-        dispatch(walletActions.connect(chosen))
-      }}
-      landing={location.pathname.substr(1)}
-      walletConnected={walletStatus === Status.Initialized}
-      onFaucet={() => {
-        dispatch(walletActions.airdrop())
-      }}
-      onDisconnectWallet={() => {
-        dispatch(walletActions.disconnect())
-      }}
-      typeOfNetwork={currentNetwork}
-      typeOfWallet={typeOfWallet}
-    />
+    <div>
+      <div className={classes.banner}>
+        <Typography style={{ ...typography.subtitle2 }}>
+          Check out our Twitter{' '}
+          <a
+            href='https://twitter.com/synthetify/status/1651947991094161410'
+            target='_blank'
+            className={classes.tweet}>
+            thread
+          </a>{' '}
+          about status of application.
+        </Typography>
+      </div>
+      <Header
+        address={walletAddress}
+        onNetworkSelect={chosen => {
+          dispatch(actions.setNetwork(chosen))
+        }}
+        onWalletSelect={chosen => {
+          if (walletAddress.equals(DEFAULT_PUBLICKEY)) {
+            setTypeOfWallet(chosen)
+          }
+          dispatch(walletActions.connect(chosen))
+        }}
+        landing={location.pathname.substr(1)}
+        walletConnected={walletStatus === Status.Initialized}
+        onFaucet={() => {
+          dispatch(walletActions.airdrop())
+        }}
+        onDisconnectWallet={() => {
+          dispatch(walletActions.disconnect())
+        }}
+        typeOfNetwork={currentNetwork}
+        typeOfWallet={typeOfWallet}
+      />
+    </div>
   )
 }
 
